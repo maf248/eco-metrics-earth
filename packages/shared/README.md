@@ -45,3 +45,7 @@ import { ApiResponse, EcoCategory, ECO_CATEGORIES } from '@eco-metrics/shared';
 npx nx build shared   # compile to dist/
 npx nx test shared    # run unit tests
 ```
+
+## TypeScript Config Notes
+
+`tsconfig.lib.json` sets `emitDeclarationOnly: false` intentionally — this overrides the root `tsconfig.base.json` (`emitDeclarationOnly: true`) because the shared package emits full JS output to `dist/` when built as a standalone library. When consumed via the `@eco-metrics/shared` path alias (dev workflow), no compilation is needed.

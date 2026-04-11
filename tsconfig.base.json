@@ -5,7 +5,9 @@
     "emitDeclarationOnly": true,
     "importHelpers": true,
     "isolatedModules": true,
-    "lib": ["es2022"],
+    "lib": [
+      "es2022"
+    ],
     "module": "nodenext",
     "moduleResolution": "nodenext",
     "noEmitOnError": true,
@@ -16,10 +18,13 @@
     "skipLibCheck": true,
     "strict": true,
     "target": "es2022",
-    "customConditions": ["@org/source"],
-    "baseUrl": ".",
+    "customConditions": [
+      "@org/source"
+    ],
     "paths": {
-      "@eco-metrics/shared": ["packages/shared/src/index.ts"]
+      "@eco-metrics/shared": [
+        "./packages/shared/src/index.ts"
+      ]
     }
   }
 }
