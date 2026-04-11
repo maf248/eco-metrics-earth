@@ -14,6 +14,7 @@ const config = {
   coverageDirectory: '../../coverage/apps/web',
   testEnvironment: 'jsdom',
   testMatch: ['<rootDir>/__tests__/**/*.test.{ts,tsx}'],
+  verbose: true,
 };
 
 module.exports = createJestConfig(config);
