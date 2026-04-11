@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import RootLayout from './layout';
+import RootLayout from '../../src/app/layout';
 
 describe('RootLayout', () => {
   it('should be defined', () => {

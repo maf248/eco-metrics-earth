@@ -10,14 +10,8 @@
   "include": [
     "jest.config.ts",
     "jest.config.cts",
-    "src/**/*.test.ts",
-    "src/**/*.spec.ts",
-    "src/**/*.test.tsx",
-    "src/**/*.spec.tsx",
-    "src/**/*.test.js",
-    "src/**/*.spec.js",
-    "src/**/*.test.jsx",
-    "src/**/*.spec.jsx",
+    "__tests__/**/*.test.ts",
+    "__tests__/**/*.test.tsx",
     "src/**/*.d.ts"
   ],
   "references": [

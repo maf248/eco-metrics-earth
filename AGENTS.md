@@ -81,13 +81,13 @@ npx nx build api
 - React components: `PascalCase.tsx` (e.g., `MetricsCard.tsx`)
 - Utilities/helpers: `camelCase.ts` (e.g., `formatDate.ts`)
 - NestJS: NX/Nest conventions — `kebab-case.controller.ts`, `kebab-case.service.ts`, `kebab-case.module.ts`
-- Test files: `*.spec.ts` or `*.spec.tsx` co-located with source files
+- Test files: `*.test.ts` or `*.test.tsx` inside a `__tests__/` folder at project root, mirroring the `src/` structure without the `src/` prefix (e.g., `src/health/health.controller.ts` → `__tests__/health/health.controller.test.ts`)
 
 ### Testing Conventions
 
 - Always use `it('...')` instead of `test('...')` for individual test cases.
 - Group related tests with `describe('...')` blocks.
-- Test file names must match the source file: `foo.spec.ts` for `foo.ts`.
+- Test file names must match the source file: `foo.test.ts` for `foo.ts`.
 - Test descriptions must be written in English and describe the expected behavior (e.g., `it('should return 404 when resource is not found')`).
 
 ### Git/Commit Conventions
@@ -146,7 +146,7 @@ eco-metrics-earth/
 1. Create `apps/api/src/modules/<category>/` folder
 2. Add `<category>.module.ts`, `<category>.controller.ts`, `<category>.service.ts`
 3. Import the new module into `AppModule`
-4. Write smoke test in `<category>.controller.spec.ts`
+4. Write smoke test in `__tests__/<category>/<category>.controller.test.ts`
 
 ### Adding a new shared type
 
