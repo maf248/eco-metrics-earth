@@ -18,6 +18,20 @@ eco-metrics earth is an environmental metrics dashboard monorepo built with NX.
 
 ---
 
+## Development Workflow (SDD)
+
+All non-trivial changes — new features, significant refactors, API contracts — **must follow the Spec-Driven Development (SDD) workflow**:
+
+1. **Propose** — generate a proposal + specs + design + tasks using `openspec-propose` before writing any code.
+2. **Review** — the user reviews and approves the OpenSpec artifacts in `openspec/changes/`.
+3. **Implement** — code is written strictly based on the approved spec, delegated to `@coder`.
+4. **Validate** — `@tester` writes/updates tests; `@reviewer` does the final quality audit.
+5. **Close** — verify Definition of Done, then commit and optionally open a PR.
+
+> Only small, self-contained fixes (typos, config tweaks, trivial one-liners) may skip the full SDD cycle. When in doubt, propose first.
+
+---
+
 ## Build/Lint/Test Commands
 
 ```bash
@@ -89,6 +103,9 @@ npx nx build api
 - Group related tests with `describe('...')` blocks.
 - Test file names must match the source file: `foo.test.ts` for `foo.ts`.
 - Test descriptions must be written in English and describe the expected behavior (e.g., `it('should return 404 when resource is not found')`).
+- **Tests must produce zero errors and zero warnings.** A passing test that emits `console.error` or `console.warn` is not acceptable — the warning is a symptom of a real problem and must be fixed at the root.
+- If a test warning or error appears, investigate the cause and apply the cleanest, most idiomatic fix (e.g., use the right render strategy, fix the component structure, use proper async handling). Do **not** suppress or silence output as a workaround.
+- If the correct fix is unclear or multiple approaches exist, **ask before implementing** — prefer the most standard/best-practice solution.
 
 ### Git/Commit Conventions
 
@@ -180,6 +197,15 @@ npx prettier --write "**/*.{ts,tsx,js,json}"
 ```
 
 Pre-PR checklist: `npm run lint` and `npm run build` must pass with zero errors.
+
+---
+
+## Engineering Principles
+
+- **Always apply best practices.** Prefer idiomatic, well-established patterns over clever or novel solutions.
+- **If it feels hacky, it probably is.** Before implementing a workaround, shortcut, or non-standard approach, stop and ask. There is almost always a cleaner solution.
+- **Correctness over convenience.** Never silence, suppress, or work around an error/warning without understanding and fixing the root cause.
+- **Ask when uncertain.** If two valid approaches exist and the tradeoffs are non-trivial, present the options and ask before proceeding.
 
 <!-- nx configuration start-->
 <!-- Leave the start & end comments to automatically receive updates. -->
