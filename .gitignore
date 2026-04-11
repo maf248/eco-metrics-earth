@@ -29,3 +29,22 @@ Thumbs.db
 
 # Local Claude settings (personal)
 .claude/settings.local.json
+
+# NX
+.nx/cache
+.nx/workspace-data
+
+# Coverage
+coverage/
+test-output/
+
+# Next.js
+.next/
+
+# NestJS / API build
+apps/api/dist/
+
+# TypeScript incremental build outputs
+**/out-tsc/
+**/dist/
+packages/shared/dist/

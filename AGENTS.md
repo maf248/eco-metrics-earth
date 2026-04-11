@@ -2,22 +2,66 @@
 
 ## Project Overview
 
-> **TODO:** Define the project overview once the tech stack and structure are established.
-> Replace this section with: package manager, main app location, libs, infrastructure, Node/runtime version requirements.
+eco-metrics earth is an environmental metrics dashboard monorepo built with NX.
+
+- **Package manager:** npm (workspaces)
+- **Runtime:** Node.js v20 LTS (see `.nvmrc`)
+- **Monorepo tool:** NX v22
+- **Apps:**
+  - `apps/web` — Next.js 14+ App Router, TypeScript, Tailwind CSS (port 3000)
+  - `apps/api` — NestJS, TypeScript — BFF with global prefix `/api/v1` (port 3001)
+- **Packages:**
+  - `packages/shared` — Shared TypeScript types (`@eco-metrics/shared`)
+- **Testing:** Jest + Testing Library (web), Jest (api, shared)
+- **Linting/Format:** ESLint + Prettier
+- **Deploy targets:** Vercel (web), Railway (api)
 
 ---
 
 ## Build/Lint/Test Commands
 
-> **TODO:** Add build, lint, test, and dev commands once the project tooling is defined.
+```bash
+# Development (starts both apps in parallel)
+npm run dev
+# or: npx nx run-many --target=serve --all --parallel
+
+# Build all apps
+npm run build
+# or: npx nx run-many --target=build --all
+
+# Run all tests
+npm run test
+# or: npx nx run-many --target=test --all
+
+# Lint all projects
+npm run lint
+# or: npx nx run-many --target=lint --all
+
+# Single app commands
+npx nx serve web        # http://localhost:3000
+npx nx serve api        # http://localhost:3001
+npx nx test web
+npx nx test api
+npx nx test shared
+npx nx build web
+npx nx build api
+```
 
 ---
 
 ## Code Style Guidelines
 
+### Language
+
+- **All code must be in English**: variable names, function names, class names, type names, comments, commit messages, PR titles and descriptions, and documentation.
+- The only exception is conversational chat with the team, which may be in Spanish.
+
 ### Formatting
 
-> **TODO:** Define formatter (Prettier, ESLint, etc.) and rules (tab width, quotes, line endings).
+- **Formatter:** Prettier (v3)
+- **Config:** `.prettierrc` at repo root
+- Rules: `singleQuote: true`, `semi: true`, `tabWidth: 2`, `trailingComma: 'all'`
+- Run: `npx prettier --write "**/*.{ts,tsx,js,json}"`
 
 ### TypeScript (if applicable)
 
@@ -28,33 +72,111 @@
 
 ### Imports
 
-> **TODO:** Define import order conventions once the project structure is established.
+- External imports first, then internal/workspace imports, then relative imports
+- Use `@eco-metrics/shared` for shared types (path alias configured in `tsconfig.base.json`)
+- Use `@/` alias for imports within `apps/web/src/`
 
 ### File Naming Conventions
 
-> **TODO:** Define naming conventions (PascalCase components, camelCase utilities, etc.).
+- React components: `PascalCase.tsx` (e.g., `MetricsCard.tsx`)
+- Utilities/helpers: `camelCase.ts` (e.g., `formatDate.ts`)
+- NestJS: NX/Nest conventions — `kebab-case.controller.ts`, `kebab-case.service.ts`, `kebab-case.module.ts`
+- Test files: `*.spec.ts` or `*.spec.tsx` co-located with source files
+
+### Testing Conventions
+
+- Always use `it('...')` instead of `test('...')` for individual test cases.
+- Group related tests with `describe('...')` blocks.
+- Test file names must match the source file: `foo.spec.ts` for `foo.ts`.
+- Test descriptions must be written in English and describe the expected behavior (e.g., `it('should return 404 when resource is not found')`).
 
 ### Git/Commit Conventions
 
-- Uses Conventional Commits
+- Uses [Conventional Commits](https://www.conventionalcommits.org/) enforced via Commitizen
 - Format: `type(scope): description`
   - Types: `feat`, `fix`, `docs`, `style`, `refactor`, `test`, `chore`
 - Examples: `feat(metrics): add new chart widget`, `fix(api): resolve data fetch error`
+
+#### Rules — for humans and AI agents alike
+
+1. **Never commit without explicit request** — do not create a commit unless the user explicitly asks for it.
+2. **Never push to `main` directly** — all changes to `main` must go through a Pull Request.
+3. **Never push without confirmation** — always ask the user before running `git push`, regardless of the branch.
+4. **Always use Commitizen format** — every commit message must follow `type(scope): description`. Free-form messages are not allowed.
+5. **One logical change per commit** — keep commits atomic and focused.
 
 ---
 
 ## Project Structure
 
-> **TODO:** Document the project structure once established.
+```
+eco-metrics-earth/
+├── apps/
+│   ├── api/                     # NestJS BFF
+│   │   └── src/
+│   │       ├── app/             # AppModule, AppController, AppService
+│   │       ├── health/          # HealthController (GET /api/v1/health)
+│   │       ├── modules/         # Future: per-category eco modules
+│   │       ├── common/          # Shared pipes, guards, interceptors, filters
+│   │       ├── config/          # AppConfigService (typed env vars)
+│   │       └── main.ts          # Bootstrap — port 3001, prefix /api/v1
+│   └── web/                     # Next.js App Router
+│       └── src/
+│           ├── app/             # Routes, layouts, pages (App Router)
+│           ├── components/      # Reusable UI components
+│           ├── lib/             # Utilities and helpers
+│           └── types/           # Frontend-local TypeScript types
+├── packages/
+│   └── shared/                  # @eco-metrics/shared
+│       └── src/lib/
+│           ├── api-response.ts  # ApiResponse<T> interface
+│           └── eco-category.ts  # EcoCategory type + ECO_CATEGORIES const
+├── .nvmrc                       # Node.js v20
+├── nx.json                      # NX workspace config (cache, targets)
+├── tsconfig.base.json           # Root TS config + path aliases
+└── package.json                 # Root workspace (npm workspaces)
+```
 
 ---
 
 ## Common Development Tasks
 
-> **TODO:** Document recurring tasks (adding a new feature, running against local env, etc.).
+### Adding a new eco-category module (API)
+
+1. Create `apps/api/src/modules/<category>/` folder
+2. Add `<category>.module.ts`, `<category>.controller.ts`, `<category>.service.ts`
+3. Import the new module into `AppModule`
+4. Write smoke test in `<category>.controller.spec.ts`
+
+### Adding a new shared type
+
+1. Create the type file in `packages/shared/src/lib/`
+2. Export it from `packages/shared/src/index.ts`
+3. Both apps can now import from `@eco-metrics/shared`
+
+### Running only affected projects
+
+```bash
+npx nx affected --target=test
+npx nx affected --target=build
+```
 
 ---
 
 ## Linting & Type Checking
 
-> **TODO:** Document linting setup and pre-PR checks once tooling is configured.
+```bash
+# Lint all
+npm run lint
+
+# Type check via build
+npx nx run-many --target=build --all
+
+# Format check
+npx prettier --check "**/*.{ts,tsx,js,json}"
+
+# Format fix
+npx prettier --write "**/*.{ts,tsx,js,json}"
+```
+
+Pre-PR checklist: `npm run lint` and `npm run build` must pass with zero errors.

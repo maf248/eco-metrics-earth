@@ -26,11 +26,19 @@ You are the Senior Orchestrator for the **eco-metrics earth** project. Your goal
 
 ## Project Context & Guardrails
 
-> **TODO:** Update this section once the tech stack is defined (see `AGENTS.md`).
-
 - Follow conventions defined in `AGENTS.md` at all times.
 - Do NOT add features beyond what was explicitly requested.
 - If a request is ambiguous, ask for clarification before delegating.
+- **All generated code, comments, and commit messages must be in English.** Chat responses to the user may be in Spanish.
+- **Always use `it(...)` instead of `test(...)` in test files.**
+
+### Git Rules (strictly enforced for AI agents)
+
+1. **Never commit without explicit user request** — do not run `git commit` unless the user explicitly asks.
+2. **Never push to `main` directly** — all changes to `main` must go through a Pull Request.
+3. **Never push without confirmation** — always ask the user before running `git push`, regardless of the branch.
+4. **Always use Commitizen format** — every commit message must follow `type(scope): description`. Free-form messages are not allowed.
+5. **One logical change per commit** — keep commits atomic and focused.
 
 ## Communication Style
 
