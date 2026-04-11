@@ -1,0 +1,21 @@
+schema: spec-driven
+
+context: |
+  # TODO: Define the tech stack for eco-metrics earth.
+  # Replace this section with:
+  #   - Language & runtime (e.g. TypeScript, Node 20)
+  #   - Frontend framework (e.g. React, Vue, Svelte)
+  #   - State management (e.g. Redux, Zustand, none)
+  #   - Styling (e.g. Tailwind, SASS, CSS Modules)
+  #   - Testing framework (e.g. Jest, Vitest, Testing Library)
+  #   - Build tool (e.g. Vite, Webpack, Turbopack)
+  #   - Path aliases (if any)
+  #   - Code style (quotes, tab width)
+  #   - Key domain concepts
+
+rules:
+  proposal:
+    - Always include a "Non-Goals" section to prevent scope creep
+  tasks:
+    - Each task must be independently verifiable
+    - Include a test task for every implementation task
