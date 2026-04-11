@@ -48,3 +48,6 @@ apps/api/dist/
 **/out-tsc/
 **/dist/
 packages/shared/dist/
+
+.nx/polygraph
+.claude/worktrees
