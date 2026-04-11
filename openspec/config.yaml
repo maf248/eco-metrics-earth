@@ -1,21 +1,69 @@
 schema: spec-driven
 
 context: |
-  # TODO: Define the tech stack for eco-metrics earth.
-  # Replace this section with:
-  #   - Language & runtime (e.g. TypeScript, Node 20)
-  #   - Frontend framework (e.g. React, Vue, Svelte)
-  #   - State management (e.g. Redux, Zustand, none)
-  #   - Styling (e.g. Tailwind, SASS, CSS Modules)
-  #   - Testing framework (e.g. Jest, Vitest, Testing Library)
-  #   - Build tool (e.g. Vite, Webpack, Turbopack)
-  #   - Path aliases (if any)
-  #   - Code style (quotes, tab width)
-  #   - Key domain concepts
+  ## Project: eco-metrics earth
+  Environmental metrics dashboard — NX v22 monorepo with npm workspaces.
+
+  ### Runtime & Tooling
+  - **Node.js**: v20 LTS (`.nvmrc`)
+  - **Package manager**: npm (workspaces, always `--save-exact`, no `^` or `~`)
+  - **Monorepo**: NX v22
+  - **Language**: TypeScript 5.x (strict mode) — all code in English
+
+  ### Apps
+  - `apps/web` — Next.js 16+ App Router, React 19, Tailwind CSS v3, port 3000
+  - `apps/api` — NestJS 11, BFF, global prefix `/api/v1`, port 3001
+
+  ### Shared Package
+  - `packages/shared` → `@eco-metrics/shared` — shared TypeScript types only
+  - Key types: `ApiResponse<T>`, `EcoCategory`, `ECO_CATEGORIES`
+
+  ### Styling
+  - Tailwind CSS v3 with dark mode class strategy (`className="dark"` on `<html>`)
+  - Global styles in `apps/web/src/app/globals.css`
+
+  ### State Management
+  - None yet — React built-ins (useState, useContext) until complexity demands more
+
+  ### Testing
+  - **Framework**: Jest 30 + Testing Library (web), Jest (api, shared)
+  - **Test location**: `__tests__/` folder per project, mirroring `src/` without the prefix
+  - **File pattern**: `*.test.ts` / `*.test.tsx`
+  - **Convention**: always `it()` not `test()`, grouped with `describe()`
+  - Tests must produce zero errors and zero warnings — warnings are bugs
+  - Run all: `npm run test` / single project: `npx nx test <project>`
+
+  ### Build
+  - Web: Next.js with Turbopack (dev) / standard build (prod)
+  - API: Webpack via NX
+  - Shared: tsc
+  - Run all: `npm run build`
+
+  ### Linting & Formatting
+  - ESLint 10 + typescript-eslint — `npm run lint`
+  - Prettier v3: `singleQuote: true`, `semi: true`, `tabWidth: 2`, `trailingComma: 'all'`
+  - Pre-commit: Husky + lint-staged (ESLint --fix + Prettier --write on staged files)
+  - Commit messages: commitlint enforces `type(scope): description` on commit-msg hook
+
+  ### Path Aliases
+  - `@eco-metrics/shared` → `packages/shared/src/index.ts` (all projects)
+  - `@/*` → `apps/web/src/*` (web only)
+
+  ### Code Style
+  - No `any` — use `unknown` with type guards
+  - Explicit types on function params and return values
+  - Interfaces for object shapes, types for unions/primitives
+  - Imports order: external → workspace → relative
+
+  ### Key Domain Concepts
+  - **EcoCategory**: one of 6 environmental categories (`air-quality`, `endangered-species`,
+    `global-temperature`, `deforestation`, `ocean-health`, `co2-emissions`)
+  - **ApiResponse<T>**: generic BFF response wrapper `{ data, timestamp, error? }`
+  - The API is a BFF — it aggregates external data sources and serves the web app
 
 rules:
   proposal:
     - Always include a "Non-Goals" section to prevent scope creep
   tasks:
     - Each task must be independently verifiable
-    - Include a test task for every implementation task
+    - Include a verification task (build + test) at the end of every implementation group

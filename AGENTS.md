@@ -77,7 +77,7 @@ npx nx build api
 - Rules: `singleQuote: true`, `semi: true`, `tabWidth: 2`, `trailingComma: 'all'`
 - Run: `npx prettier --write "**/*.{ts,tsx,js,json}"`
 
-### TypeScript (if applicable)
+### TypeScript
 
 - Use strict mode when possible
 - Avoid `any` — prefer `unknown` with type guards when the type is uncertain
@@ -117,10 +117,11 @@ npx nx build api
 #### Rules — for humans and AI agents alike
 
 1. **Never commit without explicit request** — do not create a commit unless the user explicitly asks for it.
-2. **Never push to `main` directly** — all changes to `main` must go through a Pull Request.
+2. **Never push to `main` directly** — all non-trivial changes (features, refactors, fixes) must go through a Pull Request. Direct pushes to `main` are only acceptable for configuration, tooling, or maintenance tasks, and only with explicit user authorization.
 3. **Never push without confirmation** — always ask the user before running `git push`, regardless of the branch.
-4. **Always use Commitizen format** — every commit message must follow `type(scope): description`. Free-form messages are not allowed.
-5. **One logical change per commit** — keep commits atomic and focused.
+4. **Always run tests before pushing** — run `npm run test` before any push. If all tests pass and the push has been authorized, proceed. If any test fails, show a summary of the failing suites and do not push until they are fixed.
+5. **Always use Commitizen format** — every commit message must follow `type(scope): description`. Free-form messages are not allowed.
+6. **One logical change per commit** — keep commits atomic and focused.
 
 ---
 
@@ -196,7 +197,16 @@ npx prettier --check "**/*.{ts,tsx,js,json}"
 npx prettier --write "**/*.{ts,tsx,js,json}"
 ```
 
-Pre-PR checklist: `npm run lint` and `npm run build` must pass with zero errors.
+Pre-PR checklist: `npm run lint`, `npm run build`, and `npm run test` must all pass with zero errors.
+
+---
+
+## Dependency Management
+
+- **Always pin exact versions** — never use `^` or `~` in `package.json`. Use `npm install --save-exact` or manually set the exact version.
+- **Use the latest compatible version** when adding or updating a package — check for peer dependency constraints before upgrading across major versions.
+- **`@types/node` must match the runtime** — the project uses Node 20 LTS, so always use `@types/node@20.x`.
+- To update a package: check `npm outdated`, verify compatibility, install with `--save-exact`, then run `npm run build` and `npm run test` before committing.
 
 ---
 
