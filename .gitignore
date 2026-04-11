@@ -51,3 +51,4 @@ packages/shared/dist/
 
 .nx/polygraph
 .claude/worktrees
+apps/web/next-env.d.ts
