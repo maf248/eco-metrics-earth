@@ -10,8 +10,8 @@
     "target": "es2022",
     "strict": true,
     "emitDeclarationOnly": false,
-    "module": "preserve",
-    "moduleResolution": "bundler"
+    "module": "commonjs",
+    "moduleResolution": "node"
   },
   "include": ["src/**/*.ts"],
   "exclude": [
