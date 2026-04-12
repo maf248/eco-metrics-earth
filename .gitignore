@@ -46,6 +46,7 @@ apps/api/dist/
 
 # TypeScript incremental build outputs
 **/out-tsc/
+**/*.tsbuildinfo
 **/dist/
 packages/shared/dist/
 
