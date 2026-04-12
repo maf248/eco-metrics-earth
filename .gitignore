@@ -47,6 +47,7 @@ apps/api/dist/
 # TypeScript incremental build outputs
 **/out-tsc/
 **/*.tsbuildinfo
+apps/api/package-lock.json
 **/dist/
 packages/shared/dist/
 
