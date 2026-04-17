@@ -20,7 +20,8 @@
       }
     ],
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@eco-metrics/shared": ["../../packages/shared/dist/index"]
     },
     "types": ["node"],
     "outDir": "dist",
