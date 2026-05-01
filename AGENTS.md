@@ -26,9 +26,40 @@ All non-trivial changes — new features, significant refactors, API contracts �
 2. **Review** — the user reviews and approves the OpenSpec artifacts in `openspec/changes/`.
 3. **Implement** — code is written strictly based on the approved spec, delegated to `@coder`.
 4. **Validate** — `@tester` writes/updates tests; `@reviewer` does the final quality audit.
-5. **Close** — verify Definition of Done, then commit and optionally open a PR.
+5. **Close** — verify Definition of Done, archive the change, then commit and optionally open a PR.
 
-> Only small, self-contained fixes (typos, config tweaks, trivial one-liners) may skip the full SDD cycle. When in doubt, propose first.
+### What requires a spec (non-trivial)
+
+Always propose before implementing:
+- New pages, routes, or HTTP status behavior
+- New or modified API endpoints (NestJS)
+- New or modified shared types in `@eco-metrics/shared`
+- Data fetching integration (SWR, fetch, external APIs)
+- New reusable components with state or side effects
+- New NestJS modules
+- Cross-cutting changes (multiple apps/packages)
+- Loading states, error boundaries, accessibility overhauls
+- Auth, security, or environment variable changes
+- Significant refactors that change architecture (not just rename/move)
+
+### What skips the spec (trivial)
+
+Implement directly without a spec:
+- Copy/text changes in any page
+- Swapping or resizing icons (pure visual, no logic)
+- Tailwind class adjustments (spacing, color, size)
+- Snapshot updates following a trivial visual change
+- Lint fixes, import reordering, formatting
+- Adding `data-testid` attributes
+- Patch/minor dependency updates
+- Single-line config tweaks
+
+### When in doubt
+
+The AI orchestrator **must ask the user** before deciding: _"This could be trivial or non-trivial — do you want a spec for this?"_  
+Never silently skip a spec for something borderline. The rule: **if it introduces new behavior or changes existing behavior, it needs a spec.**
+
+> **Key test:** Does the change introduce new behavior, modify existing behavior, or establish a new architectural pattern? Yes → spec. No → trivial.
 
 ---
 
