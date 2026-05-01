@@ -51,7 +51,7 @@ export default function NavScrollContainer({ children }: NavScrollContainerProps
       {canScrollLeft && (
         <div
           aria-hidden="true"
-          className="lg:hidden absolute left-0 top-0 bottom-0 w-8 z-10 pointer-events-none bg-gradient-to-r from-gray-900 to-transparent"
+          className="lg:hidden absolute left-0 top-0 bottom-0 w-8 z-10 pointer-events-none bg-gradient-to-r from-black to-transparent"
         />
       )}
 
@@ -59,7 +59,7 @@ export default function NavScrollContainer({ children }: NavScrollContainerProps
       {canScrollRight && (
         <div
           aria-hidden="true"
-          className="lg:hidden absolute right-0 top-0 bottom-0 w-8 z-10 pointer-events-none bg-gradient-to-l from-gray-900 to-transparent"
+          className="lg:hidden absolute right-0 top-0 bottom-0 w-8 z-10 pointer-events-none bg-gradient-to-l from-black to-transparent"
         />
       )}
 

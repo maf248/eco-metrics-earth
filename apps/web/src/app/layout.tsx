@@ -6,7 +6,10 @@ import Navbar from '@/components/Navbar';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'eco-metrics earth',
+  title: {
+    default: 'eco-metrics earth',
+    template: '%s — eco-metrics earth',
+  },
   description: 'Track and visualize environmental metrics for a sustainable planet.',
 };
 
