@@ -3,6 +3,10 @@ import { render, screen } from '@testing-library/react';
 
 import CategoryPage, { generateMetadata } from '../../../src/app/[category]/page';
 
+jest.mock('next/navigation', () => ({
+  notFound: jest.fn(),
+}));
+
 describe('CategoryPage', () => {
   it('should render an h1 heading', async () => {
     const element = await CategoryPage({ params: Promise.resolve({ category: 'ocean-health' }) });
@@ -130,5 +134,27 @@ describe('generateMetadata', () => {
       expect(typeof metadata.title).toBe('string');
       expect((metadata.title as string).length).toBeGreaterThan(0);
     }
+  });
+});
+
+describe('notFound behavior', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it('should call notFound() for an unknown category slug', async () => {
+    const { notFound } = jest.requireMock('next/navigation') as {
+      notFound: jest.Mock;
+    };
+    await CategoryPage({ params: Promise.resolve({ category: 'papa' }) });
+    expect(notFound).toHaveBeenCalled();
+  });
+
+  it('should call notFound() from generateMetadata for an unknown category slug', async () => {
+    const { notFound } = jest.requireMock('next/navigation') as {
+      notFound: jest.Mock;
+    };
+    await generateMetadata({ params: Promise.resolve({ category: 'papa' }) });
+    expect(notFound).toHaveBeenCalled();
   });
 });

@@ -20,6 +20,8 @@ export const CATEGORY_ICONS: Record<EcoCategory, string> = {
 
 export const SITE_LOGO_ICON = '/icons/planet-earth-global-svgrepo-com.svg';
 
+export const NOT_FOUND_ICON = '/icons/error-page-svgrepo-com.svg';
+
 export function getCategoryIcon(slug: string): string {
   return CATEGORY_ICONS[slug as EcoCategory] ?? SITE_LOGO_ICON;
 }

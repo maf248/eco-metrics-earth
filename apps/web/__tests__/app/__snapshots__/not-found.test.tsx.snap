@@ -1,0 +1,50 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`NotFound page should match snapshot 1`] = `
+<DocumentFragment>
+  <main
+    class="flex min-h-screen flex-col items-center justify-center px-4"
+    id="main-content"
+  >
+    <div
+      class="flex flex-col items-center gap-6"
+    >
+      <a
+        aria-label="Go back to home"
+        href="/"
+      >
+        <div
+          class="flex items-center justify-center w-48 h-48 rounded-2xl bg-white/10 p-4"
+          data-testid="not-found-icon"
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            data-nimg="1"
+            decoding="async"
+            height="128"
+            loading="lazy"
+            src="/icons/error-page-svgrepo-com.svg"
+            style="color: transparent;"
+            width="128"
+          />
+        </div>
+      </a>
+      <div
+        class="text-center"
+      >
+        <h1
+          class="text-4xl font-bold text-white"
+        >
+          ¡Ups! We couldn't find that...
+        </h1>
+        <p
+          class="mt-4 text-gray-400"
+        >
+          The page you're looking for doesn't exist or may have moved.
+        </p>
+      </div>
+    </div>
+  </main>
+</DocumentFragment>
+`;

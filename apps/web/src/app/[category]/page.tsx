@@ -1,5 +1,8 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
+import { notFound } from 'next/navigation';
+
+import { ECO_CATEGORIES } from '@eco-metrics/shared';
 
 import { getCategoryIcon } from '@/lib/categoryIcon';
 import { getCategoryTitle } from '@/lib/categoryTitle';
@@ -10,6 +13,9 @@ interface CategoryPageProps {
 
 export async function generateMetadata({ params }: CategoryPageProps): Promise<Metadata> {
   const { category } = await params;
+  if (!(Object.values(ECO_CATEGORIES) as string[]).includes(category)) {
+    notFound();
+  }
   const title = getCategoryTitle(category);
   return {
     title: title,
@@ -19,6 +25,9 @@ export async function generateMetadata({ params }: CategoryPageProps): Promise<M
 
 export default async function CategoryPage({ params }: CategoryPageProps) {
   const { category } = await params;
+  if (!(Object.values(ECO_CATEGORIES) as string[]).includes(category)) {
+    notFound();
+  }
   const title = getCategoryTitle(category);
   const icon = getCategoryIcon(category);
 

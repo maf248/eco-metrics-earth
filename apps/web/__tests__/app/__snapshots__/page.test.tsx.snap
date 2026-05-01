@@ -9,18 +9,18 @@ exports[`HomePage snapshots should match the full page snapshot 1`] = `
       class="flex flex-col items-center gap-6"
     >
       <div
-        class="flex items-center justify-center w-24 h-24 rounded-2xl bg-white/10 p-4"
+        class="flex items-center justify-center w-48 h-48 rounded-2xl bg-white/10 p-4"
       >
         <img
           alt=""
           aria-hidden="true"
           data-nimg="1"
           decoding="async"
-          height="64"
+          height="128"
           loading="lazy"
           src="/icons/planet-earth-global-svgrepo-com.svg"
           style="color: transparent;"
-          width="64"
+          width="128"
         />
       </div>
       <div
