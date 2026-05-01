@@ -23,14 +23,14 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
   const icon = getCategoryIcon(category);
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center bg-white dark:bg-gray-950 px-4">
+    <main className="flex min-h-screen flex-col items-center justify-center px-4">
       <div className="flex flex-col items-center gap-6">
         <div className="flex items-center justify-center w-24 h-24 rounded-2xl bg-white/10 p-4">
           <Image src={icon} alt={title} width={64} height={64} />
         </div>
         <div className="text-center">
-          <h1 className="text-4xl font-bold text-gray-900 dark:text-white">{title}</h1>
-          <p className="mt-4 text-gray-500 dark:text-gray-400">{title} metrics — coming soon.</p>
+          <h1 className="text-4xl font-bold text-white">{title}</h1>
+          <p className="mt-4 text-gray-400">{title} metrics — coming soon.</p>
         </div>
       </div>
     </main>
