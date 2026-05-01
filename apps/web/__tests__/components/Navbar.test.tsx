@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 
 import { ECO_CATEGORIES } from '@eco-metrics/shared';
 
@@ -29,7 +29,9 @@ describe('Navbar', () => {
 
   it('should render exactly one link per ECO_CATEGORY', () => {
     render(<Navbar />);
-    const links = screen.getAllByRole('link');
+    // Scope to the <ul role="list"> to exclude the brand link (href="/")
+    const navList = screen.getByRole('list');
+    const links = within(navList).getAllByRole('link');
     const categoryCount = Object.values(ECO_CATEGORIES).length;
     expect(links).toHaveLength(categoryCount);
   });
