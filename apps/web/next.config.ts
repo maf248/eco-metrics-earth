@@ -29,6 +29,7 @@ function withoutSharedTranspile(config: NextConfig): NextConfig {
 }
 
 const baseConfig: WithNxOptions = {
+  trailingSlash: true,
   nx: {},
 };
 

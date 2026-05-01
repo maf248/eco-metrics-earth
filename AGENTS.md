@@ -217,6 +217,16 @@ Pre-PR checklist: `npm run lint`, `npm run build`, and `npm run test` must all p
 - **Correctness over convenience.** Never silence, suppress, or work around an error/warning without understanding and fixing the root cause.
 - **Ask when uncertain.** If two valid approaches exist and the tradeoffs are non-trivial, present the options and ask before proceeding.
 
+## SEO Guidelines
+
+- **Always apply SEO best practices** — use semantic HTML, descriptive `<title>` tags, `<meta name="description">`, Open Graph tags, and structured data where appropriate.
+- **All navigable URLs must end with a trailing slash** — e.g., `/air-quality/` not `/air-quality`. This enforces a canonical URL format and avoids duplicate-content issues.
+- **Respect URL hierarchy** — URL paths must reflect the content structure (e.g., `/category/subcategory/`). Never flatten hierarchies or create inconsistent nesting.
+- **Canonical URLs** — always declare a canonical `<link>` when content is accessible via multiple paths.
+- **No mixed slash patterns** — internal links, redirects, and sitemap entries must all use the same trailing-slash convention (with slash).
+
+---
+
 <!-- nx configuration start-->
 <!-- Leave the start & end comments to automatically receive updates. -->
 

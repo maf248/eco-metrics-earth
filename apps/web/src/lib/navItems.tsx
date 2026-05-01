@@ -77,6 +77,6 @@ export interface NavItem {
 export const NAV_ITEMS: NavItem[] = Object.values(ECO_CATEGORIES).map((slug) => ({
   slug,
   label: slugToTitle(slug),
-  href: `/${slug}`,
+  href: `/${slug}/`,
   icon: ICONS[slug],
 }));
