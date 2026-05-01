@@ -1,7 +1,7 @@
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 
-import RootLayout from '../../src/app/layout';
+import RootLayout, { metadata } from '../../src/app/layout';
 
 // Navbar uses NavLink which calls usePathname — mock it for SSR tests
 jest.mock('next/navigation', () => ({
@@ -41,5 +41,39 @@ describe('RootLayout', () => {
     );
     expect(html).toContain('pb-16');
     expect(html).toContain('lg:pl-64');
+  });
+
+  it('should render a skip-to-content link with href="#main-content"', () => {
+    const html = renderToString(
+      <RootLayout>
+        <div>test content</div>
+      </RootLayout>,
+    );
+    expect(html).toContain('href="#main-content"');
+    expect(html).toContain('Skip to main content');
+  });
+
+  it('should render the main content wrapper with id="main-content"', () => {
+    const html = renderToString(
+      <RootLayout>
+        <div>test content</div>
+      </RootLayout>,
+    );
+    expect(html).toContain('id="main-content"');
+  });
+});
+
+describe('metadata', () => {
+  it('should have a default title', () => {
+    expect((metadata.title as { default: string }).default).toBe('eco-metrics earth');
+  });
+
+  it('should have a title template', () => {
+    expect((metadata.title as { template: string }).template).toBe('%s — eco-metrics earth');
+  });
+
+  it('should have a non-empty description', () => {
+    expect(typeof metadata.description).toBe('string');
+    expect((metadata.description as string).length).toBeGreaterThan(0);
   });
 });

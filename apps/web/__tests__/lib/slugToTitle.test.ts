@@ -22,6 +22,26 @@ describe('slugToTitle', () => {
     expect(slugToTitle('co2-emissions')).toBe('Co2 Emissions');
   });
 
+  it('should return the correct title for waste-recycling', () => {
+    expect(slugToTitle('waste-recycling')).toBe('Waste Recycling');
+  });
+
+  it('should return the correct title for reforestation', () => {
+    expect(slugToTitle('reforestation')).toBe('Reforestation');
+  });
+
+  it('should return the correct title for glacier-melting', () => {
+    expect(slugToTitle('glacier-melting')).toBe('Glacier Melting');
+  });
+
+  it('should return the correct title for plastic-pollution', () => {
+    expect(slugToTitle('plastic-pollution')).toBe('Plastic Pollution');
+  });
+
+  it('should return the correct title for renewable-energy', () => {
+    expect(slugToTitle('renewable-energy')).toBe('Renewable Energy');
+  });
+
   it('should return the correct title for every ECO_CATEGORY slug', () => {
     const expected: Record<string, string> = {
       [ECO_CATEGORIES.AIR_QUALITY]: 'Air Quality',
@@ -30,6 +50,11 @@ describe('slugToTitle', () => {
       [ECO_CATEGORIES.DEFORESTATION]: 'Deforestation',
       [ECO_CATEGORIES.OCEAN_HEALTH]: 'Ocean Health',
       [ECO_CATEGORIES.CO2_EMISSIONS]: 'Co2 Emissions',
+      [ECO_CATEGORIES.WASTE_RECYCLING]: 'Waste Recycling',
+      [ECO_CATEGORIES.REFORESTATION]: 'Reforestation',
+      [ECO_CATEGORIES.GLACIER_MELTING]: 'Glacier Melting',
+      [ECO_CATEGORIES.PLASTIC_POLLUTION]: 'Plastic Pollution',
+      [ECO_CATEGORIES.RENEWABLE_ENERGY]: 'Renewable Energy',
     };
 
     Object.entries(expected).forEach(([slug, title]) => {

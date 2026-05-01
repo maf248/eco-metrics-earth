@@ -90,4 +90,10 @@ describe('Navbar', () => {
     // next/link strips trailing slashes in jsdom — assert the normalized form
     expect(activeLinks[0].getAttribute('href')).toBe('/ocean-health');
   });
+
+  it('should render a brand link to the home page', () => {
+    render(<Navbar />);
+    const brandLink = screen.getByRole('link', { name: /eco-metrics earth/i });
+    expect(brandLink.getAttribute('href')).toBe('/');
+  });
 });

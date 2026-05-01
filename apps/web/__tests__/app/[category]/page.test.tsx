@@ -1,3 +1,4 @@
+import { ECO_CATEGORIES } from '@eco-metrics/shared';
 import { render, screen } from '@testing-library/react';
 
 import CategoryPage, { generateMetadata } from '../../../src/app/[category]/page';
@@ -50,6 +51,46 @@ describe('CategoryPage', () => {
     render(element);
     expect(screen.getByText('Air Quality')).toBeTruthy();
   });
+
+  it('should display the correct title for waste-recycling', async () => {
+    const element = await CategoryPage({
+      params: Promise.resolve({ category: 'waste-recycling' }),
+    });
+    render(element);
+    expect(screen.getByText('Waste & Recycling')).toBeTruthy();
+  });
+
+  it('should display the correct title for reforestation', async () => {
+    const element = await CategoryPage({
+      params: Promise.resolve({ category: 'reforestation' }),
+    });
+    render(element);
+    expect(screen.getByText('Reforestation')).toBeTruthy();
+  });
+
+  it('should display the correct title for glacier-melting', async () => {
+    const element = await CategoryPage({
+      params: Promise.resolve({ category: 'glacier-melting' }),
+    });
+    render(element);
+    expect(screen.getByText('Glacier Melting')).toBeTruthy();
+  });
+
+  it('should display the correct title for plastic-pollution', async () => {
+    const element = await CategoryPage({
+      params: Promise.resolve({ category: 'plastic-pollution' }),
+    });
+    render(element);
+    expect(screen.getByText('Plastic Pollution')).toBeTruthy();
+  });
+
+  it('should display the correct title for renewable-energy', async () => {
+    const element = await CategoryPage({
+      params: Promise.resolve({ category: 'renewable-energy' }),
+    });
+    render(element);
+    expect(screen.getByText('Renewable Energy')).toBeTruthy();
+  });
 });
 
 describe('generateMetadata', () => {
@@ -57,7 +98,7 @@ describe('generateMetadata', () => {
     const metadata = await generateMetadata({
       params: Promise.resolve({ category: 'ocean-health' }),
     });
-    expect(metadata.title).toBe('Ocean Health — eco-metrics earth');
+    expect(metadata.title).toBe('Ocean Health');
   });
 
   it('should return a description referencing the category name', async () => {
@@ -71,6 +112,23 @@ describe('generateMetadata', () => {
     const metadata = await generateMetadata({
       params: Promise.resolve({ category: 'co2-emissions' }),
     });
-    expect(metadata.title).toBe('Co2 Emissions — eco-metrics earth');
+    expect(metadata.title).toBe('Co2 Emissions');
+  });
+
+  it('should return the correct title for waste-recycling', async () => {
+    const metadata = await generateMetadata({
+      params: Promise.resolve({ category: 'waste-recycling' }),
+    });
+    expect(metadata.title).toBe('Waste & Recycling');
+  });
+
+  it('should generate metadata for all ECO_CATEGORY slugs without throwing', async () => {
+    for (const slug of Object.values(ECO_CATEGORIES)) {
+      const metadata = await generateMetadata({
+        params: Promise.resolve({ category: slug }),
+      });
+      expect(typeof metadata.title).toBe('string');
+      expect((metadata.title as string).length).toBeGreaterThan(0);
+    }
   });
 });
