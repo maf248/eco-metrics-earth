@@ -1,3 +1,6 @@
+import Image from 'next/image';
+
+import { SITE_LOGO_ICON } from '@/lib/categoryIcon';
 import { NAV_ITEMS } from '@/lib/navItems';
 
 import NavLink from './NavLink';
@@ -34,7 +37,14 @@ export default function Navbar() {
       ].join(' ')}
     >
       {/* Brand — desktop sidebar only */}
-      <div className="hidden lg:flex items-center h-16 px-5 border-b border-gray-800 flex-shrink-0">
+      <div className="hidden lg:flex items-center h-16 px-5 gap-2.5 border-b border-gray-800 flex-shrink-0">
+        <Image
+          src={SITE_LOGO_ICON}
+          alt="eco-metrics earth logo"
+          width={28}
+          height={28}
+          className="flex-shrink-0"
+        />
         <span className="text-emerald-400 font-semibold tracking-tight text-sm">
           eco-metrics earth
         </span>

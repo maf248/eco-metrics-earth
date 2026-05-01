@@ -1,12 +1,12 @@
 'use client';
 
+import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import type { ReactNode } from 'react';
 
 interface NavLinkProps {
   href: string;
-  icon: ReactNode;
+  icon: string;
   label: string;
 }
 
@@ -31,7 +31,14 @@ export default function NavLink({ href, icon, label }: NavLinkProps) {
           : 'text-gray-400 hover:text-white hover:bg-white/5 lg:rounded-lg',
       ].join(' ')}
     >
-      <span className="w-5 h-5 flex-shrink-0 flex items-center justify-center">{icon}</span>
+      <span
+        className={[
+          'w-7 h-7 flex-shrink-0 flex items-center justify-center rounded-lg p-1',
+          isActive ? 'bg-white/15' : 'bg-white/8',
+        ].join(' ')}
+      >
+        <Image src={icon} alt="" width={20} height={20} aria-hidden />
+      </span>
       <span className="truncate max-w-full lg:max-w-none">{label}</span>
     </Link>
   );
