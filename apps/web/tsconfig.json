@@ -21,7 +21,7 @@
     ],
     "paths": {
       "@/*": ["./src/*"],
-      "@eco-metrics/shared": ["../../packages/shared/dist/index"]
+      "@eco-metrics/shared": ["../../packages/shared/src/index.ts"]
     },
     "types": ["node"],
     "outDir": "dist",
