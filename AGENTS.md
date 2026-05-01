@@ -107,6 +107,11 @@ npx nx build api
 - If a test warning or error appears, investigate the cause and apply the cleanest, most idiomatic fix (e.g., use the right render strategy, fix the component structure, use proper async handling). Do **not** suppress or silence output as a workaround.
 - If the correct fix is unclear or multiple approaches exist, **ask before implementing** — prefer the most standard/best-practice solution.
 
+#### Known jsdom / Next.js testing gotchas
+
+- **`next/link` strips trailing slashes in jsdom** — when `trailingSlash: true` is set in `next.config.ts`, the Next.js router adds trailing slashes at the browser/server level. However, `<Link href="/foo/">` renders `<a href="/foo">` in the jsdom test environment. Assertions on rendered `href` attributes must use the non-trailing-slash form (e.g., `toBe('/air-quality')`). The `isActive` logic in components should still receive and compare trailing-slash hrefs (matching real `usePathname()` output).
+- **`aria-hidden="true"` on `<img>` maps to role `presentation`** — `next/image` with `aria-hidden` removes the element from the accessibility tree; `getByRole('img', { hidden: true })` will not find it. Use a `data-testid` on the wrapper element instead.
+
 ### Git/Commit Conventions
 
 - Uses [Conventional Commits](https://www.conventionalcommits.org/) enforced via Commitizen
