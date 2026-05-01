@@ -4,7 +4,7 @@ import { render, screen } from '@testing-library/react';
 import { ECO_CATEGORIES } from '@eco-metrics/shared';
 
 import Navbar from '../../src/components/Navbar';
-import { slugToTitle } from '../../src/lib/slugToTitle';
+import { getCategoryTitle } from '../../src/lib/categoryTitle';
 
 const mockUsePathname = jest.fn();
 
@@ -39,6 +39,7 @@ describe('Navbar', () => {
     const links = screen.getAllByRole('link');
     const renderedHrefs = links.map((l) => l.getAttribute('href'));
 
+    // next/link strips trailing slashes in jsdom — assert the normalized form
     Object.values(ECO_CATEGORIES).forEach((slug) => {
       expect(renderedHrefs).toContain(`/${slug}`);
     });
@@ -47,26 +48,28 @@ describe('Navbar', () => {
   it('should render the human-readable label for each link', () => {
     render(<Navbar />);
     Object.values(ECO_CATEGORIES).forEach((slug) => {
-      expect(screen.getByText(slugToTitle(slug))).toBeTruthy();
+      expect(screen.getByText(getCategoryTitle(slug))).toBeTruthy();
     });
   });
 
   it('should mark only the active link with aria-current="page"', () => {
-    mockUsePathname.mockReturnValue('/air-quality');
+    mockUsePathname.mockReturnValue('/air-quality/');
     render(<Navbar />);
 
     const allLinks = screen.getAllByRole('link');
     const activeLinks = allLinks.filter((l) => l.getAttribute('aria-current') === 'page');
 
     expect(activeLinks).toHaveLength(1);
+    // next/link strips trailing slashes in jsdom — assert the normalized form
     expect(activeLinks[0].getAttribute('href')).toBe('/air-quality');
   });
 
   it('should NOT mark inactive links with aria-current', () => {
-    mockUsePathname.mockReturnValue('/air-quality');
+    mockUsePathname.mockReturnValue('/air-quality/');
     render(<Navbar />);
 
     const allLinks = screen.getAllByRole('link');
+    // next/link strips trailing slashes in jsdom — filter by normalized href
     const inactiveLinks = allLinks.filter((l) => l.getAttribute('href') !== '/air-quality');
 
     inactiveLinks.forEach((link) => {
@@ -75,13 +78,14 @@ describe('Navbar', () => {
   });
 
   it('should update the active link when the pathname changes', () => {
-    mockUsePathname.mockReturnValue('/ocean-health');
+    mockUsePathname.mockReturnValue('/ocean-health/');
     render(<Navbar />);
 
     const allLinks = screen.getAllByRole('link');
     const activeLinks = allLinks.filter((l) => l.getAttribute('aria-current') === 'page');
 
     expect(activeLinks).toHaveLength(1);
+    // next/link strips trailing slashes in jsdom — assert the normalized form
     expect(activeLinks[0].getAttribute('href')).toBe('/ocean-health');
   });
 });

@@ -32,6 +32,7 @@ export default function NavLink({ href, icon, label }: NavLinkProps) {
       ].join(' ')}
     >
       <span
+        data-testid="nav-icon"
         className={[
           'w-7 h-7 flex-shrink-0 flex items-center justify-center rounded-lg p-1',
           isActive ? 'bg-white/15' : 'bg-white/8',
