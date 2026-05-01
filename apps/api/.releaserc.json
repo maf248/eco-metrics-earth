@@ -1,0 +1,44 @@
+{
+  "branches": ["main"],
+  "tagFormat": "api-v${version}",
+  "plugins": [
+    ["@semantic-release/npm", { "npmPublish": false }],
+    [
+      "@semantic-release/commit-analyzer",
+      {
+        "preset": "conventionalcommits",
+        "releaseRules": [
+          { "scope": "web", "release": false },
+          { "breaking": true, "release": "major" },
+          { "type": "feat", "release": "minor" },
+          { "type": "fix", "release": "patch" }
+        ],
+        "parserOpts": {
+          "noteKeywords": ["BREAKING CHANGE", "BREAKING CHANGES"]
+        }
+      }
+    ],
+    [
+      "@semantic-release/release-notes-generator",
+      {
+        "preset": "conventionalcommits",
+        "parserOpts": {
+          "noteKeywords": ["BREAKING CHANGE", "BREAKING CHANGES"]
+        }
+      }
+    ],
+    [
+      "@semantic-release/changelog",
+      {
+        "changelogFile": "CHANGELOG.md"
+      }
+    ],
+    [
+      "@semantic-release/git",
+      {
+        "assets": ["CHANGELOG.md", "package.json"],
+        "message": "chore(release): api-v${nextRelease.version} [skip ci]"
+      }
+    ]
+  ]
+}
