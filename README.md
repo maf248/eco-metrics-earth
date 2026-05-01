@@ -39,6 +39,7 @@ An environmental metrics dashboard monorepo — tracking air quality, endangered
 
 - **Node.js** v20 LTS — install via [nvm](https://github.com/nvm-sh/nvm): `nvm use`
 - **npm** v10+ (bundled with Node 20)
+- **Caddy** _(optional)_ — only needed for `npm run dev:local` (custom domain). See [`dev/README.md`](./dev/README.md)
 
 ---
 
@@ -57,6 +58,9 @@ npm install
 
 # Start both apps in parallel (web: 3000, api: 3001)
 npm run dev
+
+# Or start with custom local domain (requires Caddy — see dev/README.md)
+npm run dev:local   # → https://eco-metrics.localhost
 ```
 
 ---
@@ -66,6 +70,7 @@ npm run dev
 ```bash
 # Development
 npm run dev              # Start web (port 3000) + api (port 3001) in parallel
+npm run dev:local        # Start apps + Caddy proxy → https://eco-metrics.localhost (requires Caddy)
 
 # Build
 npm run build            # Build all apps and packages
@@ -120,6 +125,7 @@ eco-metrics-earth/
 │       └── src/lib/
 │           ├── api-response.ts  # ApiResponse<T> interface
 │           └── eco-category.ts  # EcoCategory type + ECO_CATEGORIES const
+├── dev/                         # Local development tooling (Caddy reverse proxy)
 ├── openspec/                    # Spec-Driven Development artifacts
 │   └── changes/                 # Per-change: proposal, design, specs, tasks
 ├── .nvmrc                       # Node.js v20

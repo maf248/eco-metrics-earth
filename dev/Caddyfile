@@ -1,0 +1,15 @@
+# Local development reverse proxy
+# Serves eco-metrics.localhost → Next.js (port 3000)
+# Serves api.eco-metrics.localhost → NestJS (port 3001)
+#
+# Requirements:
+#   - Caddy installed in WSL: https://caddyserver.com/docs/install#debian-ubuntu-raspbian
+#   - One-time permission setup (see dev/README.md)
+
+eco-metrics.localhost {
+  reverse_proxy localhost:3000
+}
+
+api.eco-metrics.localhost {
+  reverse_proxy localhost:3001
+}
