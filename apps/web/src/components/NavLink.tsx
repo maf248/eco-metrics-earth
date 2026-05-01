@@ -22,13 +22,13 @@ export default function NavLink({ href, icon, label }: NavLinkProps) {
         // Mobile: stacked column, full equal flex share
         'flex flex-col items-center justify-center flex-1 gap-0.5 py-2 px-1',
         // Desktop: horizontal row, fixed height
-        'lg:flex-none lg:flex-row lg:justify-start lg:gap-3 lg:px-5 lg:py-3 lg:w-full',
+        'lg:flex-none lg:flex-row lg:justify-start lg:gap-3 lg:px-5 lg:py-3 lg:w-full lg:rounded-lg',
         // Typography
         'text-[10px] lg:text-sm font-medium leading-tight transition-colors duration-150',
-        // Colour: active vs inactive
+        // Colour + background: active vs inactive
         isActive
-          ? 'text-emerald-400'
-          : 'text-gray-400 hover:text-white hover:bg-white/5 lg:rounded-lg',
+          ? 'text-emerald-400 lg:bg-white/5'
+          : 'text-gray-400 hover:text-white hover:bg-white/5',
       ].join(' ')}
     >
       <span

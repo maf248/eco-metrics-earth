@@ -1,9 +1,11 @@
 import Image from 'next/image';
+import Link from 'next/link';
 
 import { SITE_LOGO_ICON } from '@/lib/categoryIcon';
 import { NAV_ITEMS } from '@/lib/navItems';
 
 import NavLink from './NavLink';
+import NavScrollContainer from './NavScrollContainer';
 
 /**
  * Main site navigation.
@@ -14,8 +16,10 @@ import NavLink from './NavLink';
  *
  * SEO / Accessibility:
  *  - Semantic <nav> landmark with aria-label
+ *  - <ul>/<li> list semantics — screen readers announce item count
  *  - Active link receives aria-current="page" (via NavLink)
  *  - All icons are aria-hidden; labels are always visible text
+ *  - Skip-to-content link in layout.tsx bypasses this nav for keyboard users
  */
 export default function Navbar() {
   return (
@@ -33,11 +37,14 @@ export default function Navbar() {
         'lg:flex-col',
         'lg:border-t-0 lg:border-r lg:border-gray-800',
         // Background
-        'bg-gray-900',
+        'bg-white/10',
       ].join(' ')}
     >
-      {/* Brand — desktop sidebar only */}
-      <div className="hidden lg:flex items-center h-16 px-5 gap-2.5 border-b border-gray-800 flex-shrink-0">
+      {/* Brand — desktop sidebar only, links to home */}
+      <Link
+        href="/"
+        className="hidden lg:flex items-center h-16 px-5 gap-2.5 border-b border-gray-800 flex-shrink-0 hover:bg-white/5 transition-colors duration-150"
+      >
         <Image
           src={SITE_LOGO_ICON}
           alt="eco-metrics earth logo"
@@ -48,14 +55,16 @@ export default function Navbar() {
         <span className="text-emerald-400 font-semibold tracking-tight text-sm">
           eco-metrics earth
         </span>
-      </div>
+      </Link>
 
-      {/* Navigation links */}
-      <div className="flex flex-row lg:flex-col flex-1 lg:flex-none overflow-x-auto lg:overflow-x-visible overflow-y-visible lg:overflow-y-auto lg:py-2">
+      {/* Navigation links — scroll container handles mobile gradients + ul/li semantics */}
+      <NavScrollContainer>
         {NAV_ITEMS.map((item) => (
-          <NavLink key={item.slug} href={item.href} icon={item.icon} label={item.label} />
+          <li key={item.slug} className="flex flex-1 lg:flex-none">
+            <NavLink href={item.href} icon={item.icon} label={item.label} />
+          </li>
         ))}
-      </div>
+      </NavScrollContainer>
     </nav>
   );
 }
