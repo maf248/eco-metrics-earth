@@ -9,7 +9,9 @@
     "lint": "nx run-many --target=lint --all",
     "format": "prettier --write \"**/*.{ts,tsx,js,json}\"",
     "format:check": "prettier --check \"**/*.{ts,tsx,js,json}\"",
-    "prepare": "husky"
+    "prepare": "husky",
+    "reset": "rm -rf node_modules .nx apps/web/.next packages/shared/dist && npm ci",
+    "update-snapshots": "nx run-many --target=test --all -- --updateSnapshot"
   },
   "private": true,
   "devDependencies": {
