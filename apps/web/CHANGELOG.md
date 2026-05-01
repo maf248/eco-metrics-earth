@@ -1,3 +1,9 @@
+## [1.1.0](https://github.com/maf248/eco-metrics-earth/compare/web-v1.0.0...web-v1.1.0) (2026-05-01)
+
+### Features
+
+* **release:** add root-level global versioning and CHANGELOG via semantic-release ([68aba55](https://github.com/maf248/eco-metrics-earth/commit/68aba553fe2bb7a281e8e6ceaf785352508a4a11))
+
 ## 1.0.0 (2026-05-01)
 
 ### Features
