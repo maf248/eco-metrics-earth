@@ -97,3 +97,17 @@ describe('Navbar', () => {
     expect(brandLink.getAttribute('href')).toBe('/');
   });
 });
+
+describe('Navbar snapshots', () => {
+  it('should match snapshot with no active route', () => {
+    mockUsePathname.mockReturnValue('/');
+    const { asFragment } = render(<Navbar />);
+    expect(asFragment()).toMatchSnapshot();
+  });
+
+  it('should match snapshot with an active route', () => {
+    mockUsePathname.mockReturnValue('/air-quality/');
+    const { asFragment } = render(<Navbar />);
+    expect(asFragment()).toMatchSnapshot();
+  });
+});

@@ -1,0 +1,43 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`HomePage snapshots should match the full page snapshot 1`] = `
+<DocumentFragment>
+  <main
+    class="flex min-h-screen flex-col items-center justify-center px-4"
+  >
+    <div
+      class="flex flex-col items-center gap-6"
+    >
+      <div
+        class="flex items-center justify-center w-24 h-24 rounded-2xl bg-white/10 p-4"
+      >
+        <img
+          alt=""
+          aria-hidden="true"
+          data-nimg="1"
+          decoding="async"
+          height="64"
+          loading="lazy"
+          src="/icons/planet-earth-global-svgrepo-com.svg"
+          style="color: transparent;"
+          width="64"
+        />
+      </div>
+      <div
+        class="text-center"
+      >
+        <h1
+          class="text-4xl font-bold text-white"
+        >
+          eco-metrics earth
+        </h1>
+        <p
+          class="mt-4 text-gray-400"
+        >
+          Environmental metrics dashboard — coming soon.
+        </p>
+      </div>
+    </div>
+  </main>
+</DocumentFragment>
+`;

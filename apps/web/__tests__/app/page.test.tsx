@@ -28,3 +28,10 @@ describe('HomePage', () => {
     expect(screen.queryByRole('img')).toBeNull();
   });
 });
+
+describe('HomePage snapshots', () => {
+  it('should match the full page snapshot', () => {
+    const { asFragment } = render(<HomePage />);
+    expect(asFragment()).toMatchSnapshot();
+  });
+});
