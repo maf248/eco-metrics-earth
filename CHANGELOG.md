@@ -1,3 +1,9 @@
+## [1.0.1](https://github.com/maf248/eco-metrics-earth/compare/v1.0.0...v1.0.1) (2026-05-02)
+
+### Bug Fixes
+
+* **web:** fix LCP priority, navbar alt text, focus-visible ring, and Oops heading ([934d73c](https://github.com/maf248/eco-metrics-earth/commit/934d73c11237bc9ac1198437867ae05b42e4c633))
+
 ## 1.0.0 (2026-05-01)
 
 ### Features
