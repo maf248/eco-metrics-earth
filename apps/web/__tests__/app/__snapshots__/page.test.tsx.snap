@@ -17,7 +17,6 @@ exports[`HomePage snapshots should match the full page snapshot 1`] = `
           data-nimg="1"
           decoding="async"
           height="128"
-          loading="lazy"
           src="/icons/planet-earth-global-svgrepo-com.svg"
           style="color: transparent;"
           width="128"

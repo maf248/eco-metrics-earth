@@ -7,7 +7,7 @@ describe('NotFound page', () => {
   it('should render the not-found heading', () => {
     render(<NotFound />);
     const heading = screen.getByRole('heading', { level: 1 });
-    expect(heading.textContent).toContain("¡Ups! We couldn't find that...");
+    expect(heading.textContent).toContain("Oops! We couldn't find that...");
   });
 
   it('should not display the URL or slug', () => {

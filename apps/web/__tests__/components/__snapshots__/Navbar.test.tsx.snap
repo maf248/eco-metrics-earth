@@ -11,12 +11,12 @@ exports[`Navbar snapshots should match snapshot with an active route 1`] = `
       href="/"
     >
       <img
-        alt="eco-metrics earth logo"
+        alt=""
+        aria-hidden="true"
         class="flex-shrink-0"
         data-nimg="1"
         decoding="async"
         height="28"
-        loading="lazy"
         src="/icons/planet-earth-global-svgrepo-com.svg"
         style="color: transparent;"
         width="28"
@@ -38,7 +38,7 @@ exports[`Navbar snapshots should match snapshot with an active route 1`] = `
           class="flex flex-1 lg:flex-none"
         >
           <a
-            class="flex flex-col items-center justify-center flex-1 gap-0.5 py-2 px-1 lg:flex-none lg:flex-row lg:justify-start lg:gap-3 lg:px-5 lg:py-3 lg:w-full lg:rounded-lg text-[10px] lg:text-sm font-medium leading-tight transition-colors duration-150 text-gray-400 hover:text-white hover:bg-white/5"
+            class="flex flex-col items-center justify-center flex-1 gap-0.5 py-2 px-1 lg:flex-none lg:flex-row lg:justify-start lg:gap-3 lg:px-5 lg:py-3 lg:w-full lg:rounded-lg text-[10px] lg:text-sm font-medium leading-tight transition-colors duration-150 text-gray-400 hover:text-white hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
             href="/waste-recycling"
           >
             <span
@@ -69,7 +69,7 @@ exports[`Navbar snapshots should match snapshot with an active route 1`] = `
         >
           <a
             aria-current="page"
-            class="flex flex-col items-center justify-center flex-1 gap-0.5 py-2 px-1 lg:flex-none lg:flex-row lg:justify-start lg:gap-3 lg:px-5 lg:py-3 lg:w-full lg:rounded-lg text-[10px] lg:text-sm font-medium leading-tight transition-colors duration-150 text-emerald-400 lg:bg-white/5"
+            class="flex flex-col items-center justify-center flex-1 gap-0.5 py-2 px-1 lg:flex-none lg:flex-row lg:justify-start lg:gap-3 lg:px-5 lg:py-3 lg:w-full lg:rounded-lg text-[10px] lg:text-sm font-medium leading-tight transition-colors duration-150 text-emerald-400 lg:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
             href="/air-quality"
           >
             <span
@@ -99,7 +99,7 @@ exports[`Navbar snapshots should match snapshot with an active route 1`] = `
           class="flex flex-1 lg:flex-none"
         >
           <a
-            class="flex flex-col items-center justify-center flex-1 gap-0.5 py-2 px-1 lg:flex-none lg:flex-row lg:justify-start lg:gap-3 lg:px-5 lg:py-3 lg:w-full lg:rounded-lg text-[10px] lg:text-sm font-medium leading-tight transition-colors duration-150 text-gray-400 hover:text-white hover:bg-white/5"
+            class="flex flex-col items-center justify-center flex-1 gap-0.5 py-2 px-1 lg:flex-none lg:flex-row lg:justify-start lg:gap-3 lg:px-5 lg:py-3 lg:w-full lg:rounded-lg text-[10px] lg:text-sm font-medium leading-tight transition-colors duration-150 text-gray-400 hover:text-white hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
             href="/endangered-species"
           >
             <span
@@ -129,7 +129,7 @@ exports[`Navbar snapshots should match snapshot with an active route 1`] = `
           class="flex flex-1 lg:flex-none"
         >
           <a
-            class="flex flex-col items-center justify-center flex-1 gap-0.5 py-2 px-1 lg:flex-none lg:flex-row lg:justify-start lg:gap-3 lg:px-5 lg:py-3 lg:w-full lg:rounded-lg text-[10px] lg:text-sm font-medium leading-tight transition-colors duration-150 text-gray-400 hover:text-white hover:bg-white/5"
+            class="flex flex-col items-center justify-center flex-1 gap-0.5 py-2 px-1 lg:flex-none lg:flex-row lg:justify-start lg:gap-3 lg:px-5 lg:py-3 lg:w-full lg:rounded-lg text-[10px] lg:text-sm font-medium leading-tight transition-colors duration-150 text-gray-400 hover:text-white hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
             href="/global-temperature"
           >
             <span
@@ -159,7 +159,7 @@ exports[`Navbar snapshots should match snapshot with an active route 1`] = `
           class="flex flex-1 lg:flex-none"
         >
           <a
-            class="flex flex-col items-center justify-center flex-1 gap-0.5 py-2 px-1 lg:flex-none lg:flex-row lg:justify-start lg:gap-3 lg:px-5 lg:py-3 lg:w-full lg:rounded-lg text-[10px] lg:text-sm font-medium leading-tight transition-colors duration-150 text-gray-400 hover:text-white hover:bg-white/5"
+            class="flex flex-col items-center justify-center flex-1 gap-0.5 py-2 px-1 lg:flex-none lg:flex-row lg:justify-start lg:gap-3 lg:px-5 lg:py-3 lg:w-full lg:rounded-lg text-[10px] lg:text-sm font-medium leading-tight transition-colors duration-150 text-gray-400 hover:text-white hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
             href="/deforestation"
           >
             <span
@@ -189,7 +189,7 @@ exports[`Navbar snapshots should match snapshot with an active route 1`] = `
           class="flex flex-1 lg:flex-none"
         >
           <a
-            class="flex flex-col items-center justify-center flex-1 gap-0.5 py-2 px-1 lg:flex-none lg:flex-row lg:justify-start lg:gap-3 lg:px-5 lg:py-3 lg:w-full lg:rounded-lg text-[10px] lg:text-sm font-medium leading-tight transition-colors duration-150 text-gray-400 hover:text-white hover:bg-white/5"
+            class="flex flex-col items-center justify-center flex-1 gap-0.5 py-2 px-1 lg:flex-none lg:flex-row lg:justify-start lg:gap-3 lg:px-5 lg:py-3 lg:w-full lg:rounded-lg text-[10px] lg:text-sm font-medium leading-tight transition-colors duration-150 text-gray-400 hover:text-white hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
             href="/ocean-health"
           >
             <span
@@ -219,7 +219,7 @@ exports[`Navbar snapshots should match snapshot with an active route 1`] = `
           class="flex flex-1 lg:flex-none"
         >
           <a
-            class="flex flex-col items-center justify-center flex-1 gap-0.5 py-2 px-1 lg:flex-none lg:flex-row lg:justify-start lg:gap-3 lg:px-5 lg:py-3 lg:w-full lg:rounded-lg text-[10px] lg:text-sm font-medium leading-tight transition-colors duration-150 text-gray-400 hover:text-white hover:bg-white/5"
+            class="flex flex-col items-center justify-center flex-1 gap-0.5 py-2 px-1 lg:flex-none lg:flex-row lg:justify-start lg:gap-3 lg:px-5 lg:py-3 lg:w-full lg:rounded-lg text-[10px] lg:text-sm font-medium leading-tight transition-colors duration-150 text-gray-400 hover:text-white hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
             href="/co2-emissions"
           >
             <span
@@ -249,7 +249,7 @@ exports[`Navbar snapshots should match snapshot with an active route 1`] = `
           class="flex flex-1 lg:flex-none"
         >
           <a
-            class="flex flex-col items-center justify-center flex-1 gap-0.5 py-2 px-1 lg:flex-none lg:flex-row lg:justify-start lg:gap-3 lg:px-5 lg:py-3 lg:w-full lg:rounded-lg text-[10px] lg:text-sm font-medium leading-tight transition-colors duration-150 text-gray-400 hover:text-white hover:bg-white/5"
+            class="flex flex-col items-center justify-center flex-1 gap-0.5 py-2 px-1 lg:flex-none lg:flex-row lg:justify-start lg:gap-3 lg:px-5 lg:py-3 lg:w-full lg:rounded-lg text-[10px] lg:text-sm font-medium leading-tight transition-colors duration-150 text-gray-400 hover:text-white hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
             href="/reforestation"
           >
             <span
@@ -279,7 +279,7 @@ exports[`Navbar snapshots should match snapshot with an active route 1`] = `
           class="flex flex-1 lg:flex-none"
         >
           <a
-            class="flex flex-col items-center justify-center flex-1 gap-0.5 py-2 px-1 lg:flex-none lg:flex-row lg:justify-start lg:gap-3 lg:px-5 lg:py-3 lg:w-full lg:rounded-lg text-[10px] lg:text-sm font-medium leading-tight transition-colors duration-150 text-gray-400 hover:text-white hover:bg-white/5"
+            class="flex flex-col items-center justify-center flex-1 gap-0.5 py-2 px-1 lg:flex-none lg:flex-row lg:justify-start lg:gap-3 lg:px-5 lg:py-3 lg:w-full lg:rounded-lg text-[10px] lg:text-sm font-medium leading-tight transition-colors duration-150 text-gray-400 hover:text-white hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
             href="/glacier-melting"
           >
             <span
@@ -309,7 +309,7 @@ exports[`Navbar snapshots should match snapshot with an active route 1`] = `
           class="flex flex-1 lg:flex-none"
         >
           <a
-            class="flex flex-col items-center justify-center flex-1 gap-0.5 py-2 px-1 lg:flex-none lg:flex-row lg:justify-start lg:gap-3 lg:px-5 lg:py-3 lg:w-full lg:rounded-lg text-[10px] lg:text-sm font-medium leading-tight transition-colors duration-150 text-gray-400 hover:text-white hover:bg-white/5"
+            class="flex flex-col items-center justify-center flex-1 gap-0.5 py-2 px-1 lg:flex-none lg:flex-row lg:justify-start lg:gap-3 lg:px-5 lg:py-3 lg:w-full lg:rounded-lg text-[10px] lg:text-sm font-medium leading-tight transition-colors duration-150 text-gray-400 hover:text-white hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
             href="/plastic-pollution"
           >
             <span
@@ -339,7 +339,7 @@ exports[`Navbar snapshots should match snapshot with an active route 1`] = `
           class="flex flex-1 lg:flex-none"
         >
           <a
-            class="flex flex-col items-center justify-center flex-1 gap-0.5 py-2 px-1 lg:flex-none lg:flex-row lg:justify-start lg:gap-3 lg:px-5 lg:py-3 lg:w-full lg:rounded-lg text-[10px] lg:text-sm font-medium leading-tight transition-colors duration-150 text-gray-400 hover:text-white hover:bg-white/5"
+            class="flex flex-col items-center justify-center flex-1 gap-0.5 py-2 px-1 lg:flex-none lg:flex-row lg:justify-start lg:gap-3 lg:px-5 lg:py-3 lg:w-full lg:rounded-lg text-[10px] lg:text-sm font-medium leading-tight transition-colors duration-150 text-gray-400 hover:text-white hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
             href="/renewable-energy"
           >
             <span
@@ -382,12 +382,12 @@ exports[`Navbar snapshots should match snapshot with no active route 1`] = `
       href="/"
     >
       <img
-        alt="eco-metrics earth logo"
+        alt=""
+        aria-hidden="true"
         class="flex-shrink-0"
         data-nimg="1"
         decoding="async"
         height="28"
-        loading="lazy"
         src="/icons/planet-earth-global-svgrepo-com.svg"
         style="color: transparent;"
         width="28"
@@ -409,7 +409,7 @@ exports[`Navbar snapshots should match snapshot with no active route 1`] = `
           class="flex flex-1 lg:flex-none"
         >
           <a
-            class="flex flex-col items-center justify-center flex-1 gap-0.5 py-2 px-1 lg:flex-none lg:flex-row lg:justify-start lg:gap-3 lg:px-5 lg:py-3 lg:w-full lg:rounded-lg text-[10px] lg:text-sm font-medium leading-tight transition-colors duration-150 text-gray-400 hover:text-white hover:bg-white/5"
+            class="flex flex-col items-center justify-center flex-1 gap-0.5 py-2 px-1 lg:flex-none lg:flex-row lg:justify-start lg:gap-3 lg:px-5 lg:py-3 lg:w-full lg:rounded-lg text-[10px] lg:text-sm font-medium leading-tight transition-colors duration-150 text-gray-400 hover:text-white hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
             href="/waste-recycling"
           >
             <span
@@ -439,7 +439,7 @@ exports[`Navbar snapshots should match snapshot with no active route 1`] = `
           class="flex flex-1 lg:flex-none"
         >
           <a
-            class="flex flex-col items-center justify-center flex-1 gap-0.5 py-2 px-1 lg:flex-none lg:flex-row lg:justify-start lg:gap-3 lg:px-5 lg:py-3 lg:w-full lg:rounded-lg text-[10px] lg:text-sm font-medium leading-tight transition-colors duration-150 text-gray-400 hover:text-white hover:bg-white/5"
+            class="flex flex-col items-center justify-center flex-1 gap-0.5 py-2 px-1 lg:flex-none lg:flex-row lg:justify-start lg:gap-3 lg:px-5 lg:py-3 lg:w-full lg:rounded-lg text-[10px] lg:text-sm font-medium leading-tight transition-colors duration-150 text-gray-400 hover:text-white hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
             href="/air-quality"
           >
             <span
@@ -469,7 +469,7 @@ exports[`Navbar snapshots should match snapshot with no active route 1`] = `
           class="flex flex-1 lg:flex-none"
         >
           <a
-            class="flex flex-col items-center justify-center flex-1 gap-0.5 py-2 px-1 lg:flex-none lg:flex-row lg:justify-start lg:gap-3 lg:px-5 lg:py-3 lg:w-full lg:rounded-lg text-[10px] lg:text-sm font-medium leading-tight transition-colors duration-150 text-gray-400 hover:text-white hover:bg-white/5"
+            class="flex flex-col items-center justify-center flex-1 gap-0.5 py-2 px-1 lg:flex-none lg:flex-row lg:justify-start lg:gap-3 lg:px-5 lg:py-3 lg:w-full lg:rounded-lg text-[10px] lg:text-sm font-medium leading-tight transition-colors duration-150 text-gray-400 hover:text-white hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
             href="/endangered-species"
           >
             <span
@@ -499,7 +499,7 @@ exports[`Navbar snapshots should match snapshot with no active route 1`] = `
           class="flex flex-1 lg:flex-none"
         >
           <a
-            class="flex flex-col items-center justify-center flex-1 gap-0.5 py-2 px-1 lg:flex-none lg:flex-row lg:justify-start lg:gap-3 lg:px-5 lg:py-3 lg:w-full lg:rounded-lg text-[10px] lg:text-sm font-medium leading-tight transition-colors duration-150 text-gray-400 hover:text-white hover:bg-white/5"
+            class="flex flex-col items-center justify-center flex-1 gap-0.5 py-2 px-1 lg:flex-none lg:flex-row lg:justify-start lg:gap-3 lg:px-5 lg:py-3 lg:w-full lg:rounded-lg text-[10px] lg:text-sm font-medium leading-tight transition-colors duration-150 text-gray-400 hover:text-white hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
             href="/global-temperature"
           >
             <span
@@ -529,7 +529,7 @@ exports[`Navbar snapshots should match snapshot with no active route 1`] = `
           class="flex flex-1 lg:flex-none"
         >
           <a
-            class="flex flex-col items-center justify-center flex-1 gap-0.5 py-2 px-1 lg:flex-none lg:flex-row lg:justify-start lg:gap-3 lg:px-5 lg:py-3 lg:w-full lg:rounded-lg text-[10px] lg:text-sm font-medium leading-tight transition-colors duration-150 text-gray-400 hover:text-white hover:bg-white/5"
+            class="flex flex-col items-center justify-center flex-1 gap-0.5 py-2 px-1 lg:flex-none lg:flex-row lg:justify-start lg:gap-3 lg:px-5 lg:py-3 lg:w-full lg:rounded-lg text-[10px] lg:text-sm font-medium leading-tight transition-colors duration-150 text-gray-400 hover:text-white hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
             href="/deforestation"
           >
             <span
@@ -559,7 +559,7 @@ exports[`Navbar snapshots should match snapshot with no active route 1`] = `
           class="flex flex-1 lg:flex-none"
         >
           <a
-            class="flex flex-col items-center justify-center flex-1 gap-0.5 py-2 px-1 lg:flex-none lg:flex-row lg:justify-start lg:gap-3 lg:px-5 lg:py-3 lg:w-full lg:rounded-lg text-[10px] lg:text-sm font-medium leading-tight transition-colors duration-150 text-gray-400 hover:text-white hover:bg-white/5"
+            class="flex flex-col items-center justify-center flex-1 gap-0.5 py-2 px-1 lg:flex-none lg:flex-row lg:justify-start lg:gap-3 lg:px-5 lg:py-3 lg:w-full lg:rounded-lg text-[10px] lg:text-sm font-medium leading-tight transition-colors duration-150 text-gray-400 hover:text-white hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
             href="/ocean-health"
           >
             <span
@@ -589,7 +589,7 @@ exports[`Navbar snapshots should match snapshot with no active route 1`] = `
           class="flex flex-1 lg:flex-none"
         >
           <a
-            class="flex flex-col items-center justify-center flex-1 gap-0.5 py-2 px-1 lg:flex-none lg:flex-row lg:justify-start lg:gap-3 lg:px-5 lg:py-3 lg:w-full lg:rounded-lg text-[10px] lg:text-sm font-medium leading-tight transition-colors duration-150 text-gray-400 hover:text-white hover:bg-white/5"
+            class="flex flex-col items-center justify-center flex-1 gap-0.5 py-2 px-1 lg:flex-none lg:flex-row lg:justify-start lg:gap-3 lg:px-5 lg:py-3 lg:w-full lg:rounded-lg text-[10px] lg:text-sm font-medium leading-tight transition-colors duration-150 text-gray-400 hover:text-white hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
             href="/co2-emissions"
           >
             <span
@@ -619,7 +619,7 @@ exports[`Navbar snapshots should match snapshot with no active route 1`] = `
           class="flex flex-1 lg:flex-none"
         >
           <a
-            class="flex flex-col items-center justify-center flex-1 gap-0.5 py-2 px-1 lg:flex-none lg:flex-row lg:justify-start lg:gap-3 lg:px-5 lg:py-3 lg:w-full lg:rounded-lg text-[10px] lg:text-sm font-medium leading-tight transition-colors duration-150 text-gray-400 hover:text-white hover:bg-white/5"
+            class="flex flex-col items-center justify-center flex-1 gap-0.5 py-2 px-1 lg:flex-none lg:flex-row lg:justify-start lg:gap-3 lg:px-5 lg:py-3 lg:w-full lg:rounded-lg text-[10px] lg:text-sm font-medium leading-tight transition-colors duration-150 text-gray-400 hover:text-white hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
             href="/reforestation"
           >
             <span
@@ -649,7 +649,7 @@ exports[`Navbar snapshots should match snapshot with no active route 1`] = `
           class="flex flex-1 lg:flex-none"
         >
           <a
-            class="flex flex-col items-center justify-center flex-1 gap-0.5 py-2 px-1 lg:flex-none lg:flex-row lg:justify-start lg:gap-3 lg:px-5 lg:py-3 lg:w-full lg:rounded-lg text-[10px] lg:text-sm font-medium leading-tight transition-colors duration-150 text-gray-400 hover:text-white hover:bg-white/5"
+            class="flex flex-col items-center justify-center flex-1 gap-0.5 py-2 px-1 lg:flex-none lg:flex-row lg:justify-start lg:gap-3 lg:px-5 lg:py-3 lg:w-full lg:rounded-lg text-[10px] lg:text-sm font-medium leading-tight transition-colors duration-150 text-gray-400 hover:text-white hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
             href="/glacier-melting"
           >
             <span
@@ -679,7 +679,7 @@ exports[`Navbar snapshots should match snapshot with no active route 1`] = `
           class="flex flex-1 lg:flex-none"
         >
           <a
-            class="flex flex-col items-center justify-center flex-1 gap-0.5 py-2 px-1 lg:flex-none lg:flex-row lg:justify-start lg:gap-3 lg:px-5 lg:py-3 lg:w-full lg:rounded-lg text-[10px] lg:text-sm font-medium leading-tight transition-colors duration-150 text-gray-400 hover:text-white hover:bg-white/5"
+            class="flex flex-col items-center justify-center flex-1 gap-0.5 py-2 px-1 lg:flex-none lg:flex-row lg:justify-start lg:gap-3 lg:px-5 lg:py-3 lg:w-full lg:rounded-lg text-[10px] lg:text-sm font-medium leading-tight transition-colors duration-150 text-gray-400 hover:text-white hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
             href="/plastic-pollution"
           >
             <span
@@ -709,7 +709,7 @@ exports[`Navbar snapshots should match snapshot with no active route 1`] = `
           class="flex flex-1 lg:flex-none"
         >
           <a
-            class="flex flex-col items-center justify-center flex-1 gap-0.5 py-2 px-1 lg:flex-none lg:flex-row lg:justify-start lg:gap-3 lg:px-5 lg:py-3 lg:w-full lg:rounded-lg text-[10px] lg:text-sm font-medium leading-tight transition-colors duration-150 text-gray-400 hover:text-white hover:bg-white/5"
+            class="flex flex-col items-center justify-center flex-1 gap-0.5 py-2 px-1 lg:flex-none lg:flex-row lg:justify-start lg:gap-3 lg:px-5 lg:py-3 lg:w-full lg:rounded-lg text-[10px] lg:text-sm font-medium leading-tight transition-colors duration-150 text-gray-400 hover:text-white hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
             href="/renewable-energy"
           >
             <span

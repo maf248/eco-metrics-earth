@@ -29,6 +29,7 @@ export default function NavLink({ href, icon, label }: NavLinkProps) {
         isActive
           ? 'text-emerald-400 lg:bg-white/5'
           : 'text-gray-400 hover:text-white hover:bg-white/5',
+        'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 focus-visible:ring-offset-black',
       ].join(' ')}
     >
       <span

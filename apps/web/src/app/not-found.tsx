@@ -21,7 +21,7 @@ export default function NotFound() {
           </div>
         </Link>
         <div className="text-center">
-          <h1 className="text-4xl font-bold text-white">¡Ups! We couldn&apos;t find that...</h1>
+          <h1 className="text-4xl font-bold text-white">Oops! We couldn&apos;t find that...</h1>
           <p className="mt-4 text-gray-400">
             The page you&apos;re looking for doesn&apos;t exist or may have moved.
           </p>

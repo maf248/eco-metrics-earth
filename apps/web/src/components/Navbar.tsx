@@ -47,10 +47,12 @@ export default function Navbar() {
       >
         <Image
           src={SITE_LOGO_ICON}
-          alt="eco-metrics earth logo"
+          alt=""
+          aria-hidden
           width={28}
           height={28}
           className="flex-shrink-0"
+          priority
         />
         <span className="text-emerald-400 font-semibold tracking-tight text-sm">
           eco-metrics earth
