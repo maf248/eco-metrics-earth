@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import HomePage from '../../src/app/page';
+import HomePage, { metadata } from '../../src/app/page';
 
 describe('HomePage', () => {
   it('should render successfully', () => {
@@ -26,6 +26,34 @@ describe('HomePage', () => {
   it('should render the site logo with aria-hidden', () => {
     render(<HomePage />);
     expect(screen.queryByRole('img')).toBeNull();
+  });
+
+  it('should render a <main> element with id="main-content" and tabIndex={-1}', () => {
+    const { container } = render(<HomePage />);
+    const main = container.querySelector('main');
+    expect(main).not.toBeNull();
+    expect(main?.getAttribute('id')).toBe('main-content');
+    expect(main?.getAttribute('tabindex')).toBe('-1');
+  });
+});
+
+describe('HomePage metadata', () => {
+  it('should have title "eco-metrics earth"', () => {
+    expect(metadata.title).toBe('eco-metrics earth');
+  });
+
+  it('should have a canonical URL ending with trailing slash', () => {
+    const canonical = metadata.alternates?.canonical as string;
+    expect(canonical).toMatch(/\/$/);
+  });
+
+  it('should have openGraph title set', () => {
+    expect(metadata.openGraph?.title).toBe('eco-metrics earth');
+  });
+
+  it('should have openGraph url ending with trailing slash', () => {
+    const url = metadata.openGraph?.url as string;
+    expect(url).toMatch(/\/$/);
   });
 });
 

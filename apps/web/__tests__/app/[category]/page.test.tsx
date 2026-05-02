@@ -95,6 +95,15 @@ describe('CategoryPage', () => {
     render(element);
     expect(screen.getByText('Renewable Energy')).toBeTruthy();
   });
+
+  it('should render a <main> element with id="main-content" and tabIndex={-1}', async () => {
+    const element = await CategoryPage({ params: Promise.resolve({ category: 'air-quality' }) });
+    const { container } = render(element);
+    const main = container.querySelector('main');
+    expect(main).not.toBeNull();
+    expect(main?.getAttribute('id')).toBe('main-content');
+    expect(main?.getAttribute('tabindex')).toBe('-1');
+  });
 });
 
 describe('generateMetadata', () => {
@@ -134,6 +143,29 @@ describe('generateMetadata', () => {
       expect(typeof metadata.title).toBe('string');
       expect((metadata.title as string).length).toBeGreaterThan(0);
     }
+  });
+
+  it('should include a canonical URL with trailing slash for air-quality', async () => {
+    const metadata = await generateMetadata({
+      params: Promise.resolve({ category: 'air-quality' }),
+    });
+    const canonical = metadata.alternates?.canonical as string;
+    expect(canonical).toMatch(/\/air-quality\/$/);
+  });
+
+  it('should include openGraph title matching the page title for air-quality', async () => {
+    const metadata = await generateMetadata({
+      params: Promise.resolve({ category: 'air-quality' }),
+    });
+    expect(metadata.openGraph?.title).toBe('Air Quality');
+  });
+
+  it('should include openGraph url matching the canonical URL for air-quality', async () => {
+    const metadata = await generateMetadata({
+      params: Promise.resolve({ category: 'air-quality' }),
+    });
+    const canonical = metadata.alternates?.canonical as string;
+    expect(metadata.openGraph?.url).toBe(canonical);
   });
 });
 

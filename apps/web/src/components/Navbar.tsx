@@ -1,4 +1,5 @@
-import Image from 'next/image';
+'use client';
+
 import Link from 'next/link';
 
 import { SITE_LOGO_ICON } from '@/lib/categoryIcon';
@@ -6,6 +7,8 @@ import { NAV_ITEMS } from '@/lib/navItems';
 
 import NavLink from './NavLink';
 import NavScrollContainer from './NavScrollContainer';
+
+const SiteLogoIcon = SITE_LOGO_ICON;
 
 /**
  * Main site navigation.
@@ -45,15 +48,7 @@ export default function Navbar() {
         href="/"
         className="hidden lg:flex items-center h-16 px-5 gap-2.5 border-b border-gray-800 flex-shrink-0 hover:bg-white/5 transition-colors duration-150"
       >
-        <Image
-          src={SITE_LOGO_ICON}
-          alt=""
-          aria-hidden
-          width={28}
-          height={28}
-          className="flex-shrink-0"
-          priority
-        />
+        <SiteLogoIcon aria-hidden className="w-7 h-7 flex-shrink-0" />
         <span className="text-emerald-400 font-semibold tracking-tight text-sm">
           eco-metrics earth
         </span>

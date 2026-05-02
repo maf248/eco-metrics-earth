@@ -1,8 +1,9 @@
 import type { Metadata } from 'next';
-import Image from 'next/image';
 import Link from 'next/link';
 
 import { NOT_FOUND_ICON } from '@/lib/categoryIcon';
+
+const NotFoundIcon = NOT_FOUND_ICON;
 
 export const metadata: Metadata = {
   title: 'Page Not Found',
@@ -17,7 +18,7 @@ export default function NotFound() {
             data-testid="not-found-icon"
             className="flex items-center justify-center w-48 h-48 rounded-2xl bg-white/10 p-4"
           >
-            <Image src={NOT_FOUND_ICON} alt="" width={128} height={128} aria-hidden />
+            <NotFoundIcon aria-hidden className="w-32 h-32" />
           </div>
         </Link>
         <div className="text-center">

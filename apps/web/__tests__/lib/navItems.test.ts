@@ -18,9 +18,9 @@ describe('NAV_ITEMS', () => {
     expect(item?.label).toBe('Waste & Recycling');
   });
 
-  it('should have an icon path starting with /icons/ for each item', () => {
+  it('should have a React component as icon for each item', () => {
     NAV_ITEMS.forEach((item) => {
-      expect(item.icon).toMatch(/^\/icons\//);
+      expect(typeof item.icon).toBe('function');
     });
   });
 

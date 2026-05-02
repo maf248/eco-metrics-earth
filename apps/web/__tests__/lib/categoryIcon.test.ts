@@ -3,11 +3,10 @@ import { ECO_CATEGORIES } from '@eco-metrics/shared';
 import { CATEGORY_ICONS, getCategoryIcon, SITE_LOGO_ICON } from '../../src/lib/categoryIcon';
 
 describe('getCategoryIcon', () => {
-  it('should return the correct icon path for every ECO_CATEGORY slug', () => {
+  it('should return a React component for every ECO_CATEGORY slug', () => {
     for (const slug of Object.values(ECO_CATEGORIES)) {
       const icon = getCategoryIcon(slug);
-      expect(icon).toMatch(/^\/icons\//);
-      expect(icon).toMatch(/\.svg$/);
+      expect(typeof icon).toBe('function');
     }
   });
 
@@ -19,7 +18,7 @@ describe('getCategoryIcon', () => {
     expect(getCategoryIcon('')).toBe(SITE_LOGO_ICON);
   });
 
-  it('should have a unique icon for each ECO_CATEGORY', () => {
+  it('should have a unique icon component for each ECO_CATEGORY', () => {
     const icons = Object.values(CATEGORY_ICONS);
     const uniqueIcons = new Set(icons);
     expect(uniqueIcons.size).toBe(icons.length);

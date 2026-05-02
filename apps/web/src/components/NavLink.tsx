@@ -1,16 +1,17 @@
 'use client';
 
-import Image from 'next/image';
+import type React from 'react';
+
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 interface NavLinkProps {
   href: string;
-  icon: string;
+  icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
   label: string;
 }
 
-export default function NavLink({ href, icon, label }: NavLinkProps) {
+export default function NavLink({ href, icon: Icon, label }: NavLinkProps) {
   const pathname = usePathname();
   const isActive = pathname === href;
 
@@ -39,7 +40,7 @@ export default function NavLink({ href, icon, label }: NavLinkProps) {
           isActive ? 'bg-white/15' : 'bg-white/8',
         ].join(' ')}
       >
-        <Image src={icon} alt="" width={20} height={20} aria-hidden />
+        <Icon aria-hidden className="w-5 h-5" />
       </span>
       <span className="truncate max-w-full lg:max-w-none">{label}</span>
     </Link>

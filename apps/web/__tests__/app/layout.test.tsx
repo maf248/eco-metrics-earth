@@ -53,13 +53,14 @@ describe('RootLayout', () => {
     expect(html).toContain('Skip to main content');
   });
 
-  it('should render the main content wrapper with id="main-content"', () => {
+  it('should NOT assign id="main-content" to the layout wrapper div', () => {
     const html = renderToString(
       <RootLayout>
         <div>test content</div>
       </RootLayout>,
     );
-    expect(html).toContain('id="main-content"');
+    // id="main-content" belongs on the <main> inside each page, not the layout wrapper
+    expect(html).not.toContain('id="main-content"');
   });
 });
 
@@ -75,5 +76,13 @@ describe('metadata', () => {
   it('should have a non-empty description', () => {
     expect(typeof metadata.description).toBe('string');
     expect((metadata.description as string).length).toBeGreaterThan(0);
+  });
+
+  it('should have openGraph.siteName set to "eco-metrics earth"', () => {
+    expect(metadata.openGraph?.siteName).toBe('eco-metrics earth');
+  });
+
+  it('should have twitter.card set to "summary"', () => {
+    expect(metadata.twitter?.card).toBe('summary');
   });
 });

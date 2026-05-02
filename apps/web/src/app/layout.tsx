@@ -11,6 +11,12 @@ export const metadata: Metadata = {
     template: '%s — eco-metrics earth',
   },
   description: 'Track and visualize environmental metrics for a sustainable planet.',
+  openGraph: {
+    siteName: 'eco-metrics earth',
+  },
+  twitter: {
+    card: 'summary',
+  },
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
@@ -33,9 +39,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
          *  - Mobile/tablet: pb-16 to clear the fixed bottom nav
          *  - Desktop:       lg:pl-64 to clear the fixed left sidebar
          */}
-        <div id="main-content" tabIndex={-1} className="pb-16 lg:pb-0 lg:pl-64">
-          {children}
-        </div>
+        <div className="pb-16 lg:pb-0 lg:pl-64">{children}</div>
       </body>
     </html>
   );
