@@ -1,3 +1,9 @@
+## [1.2.0](https://github.com/maf248/eco-metrics-earth/compare/api-v1.1.1...api-v1.2.0) (2026-05-03)
+
+### Features
+
+* **web:** add SEO metadata, discovery routes, a11y landmark fix, and inline SVG icons ([de5b256](https://github.com/maf248/eco-metrics-earth/commit/de5b2566bd1942c7ff181cbc539aff1699eb6c72))
+
 ## [1.1.1](https://github.com/maf248/eco-metrics-earth/compare/api-v1.1.0...api-v1.1.1) (2026-05-02)
 
 ### Bug Fixes
