@@ -56,6 +56,7 @@ Tracks carbon dioxide emissions by country, sector, and source. Includes histori
 - **Model:** Free. Static downloadable.
 - **Data type:** Monthly and annual atmospheric CO₂ (Mauna Loa from 1958; global from 1979), CH₄, N₂O, SF₆, halogenated gases.
 - **API key:** Not required.
+- **Validated (May 2026):** Monthly CO₂ data available through April 2026. CH₄ and N₂O annual data through 2025.
 
 | Field | Details |
 |---|---|
@@ -114,6 +115,7 @@ Tracks carbon dioxide emissions by country, sector, and source. Includes histori
 - **Data:** Total CO₂ emissions, per-capita, intensity, etc., by country and year.
 - **API key:** Not required.
 - **CORS:** Enabled — can be called from the client.
+- **Validated indicators (May 2026):** Total emissions work (`EN.GHG.CO2.MT.CE.AR5`, `EN.GHG.ALL.MT.CE.AR5`, `EN.GHG.CH4.MT.CE.AR5`, `EN.GHG.N2O.MT.CE.AR5`). Sector-specific GHG breakdowns return "Invalid value" errors.
 
 | Field | Details |
 |---|---|

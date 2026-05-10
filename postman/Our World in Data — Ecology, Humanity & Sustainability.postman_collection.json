@@ -1980,6 +1980,221 @@
       "description": "Charts de cambio climatico, emisiones de GHG, temperatura, etc."
     },
     {
+      "name": "♻️ Waste & Plastic Pollution",
+      "item": [
+        {
+          "name": "Plastic Waste Generation — per capita by country",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{grapher_base_url}}/plastic-waste-per-capita.csv?v=1&csvType=full&useColumnShortNames=false",
+              "host": ["{{grapher_base_url}}"],
+              "path": ["plastic-waste-per-capita.csv"],
+              "query": [
+                {
+                  "key": "v",
+                  "value": "1"
+                },
+                {
+                  "key": "csvType",
+                  "value": "full"
+                },
+                {
+                  "key": "useColumnShortNames",
+                  "value": "false"
+                }
+              ]
+            },
+            "description": "Per capita plastic waste generation (kg/person/day) by country. variableId: 1206211. Coverage: 186 countries. Year: 2010 (single snapshot). Source: Jambeck et al. (2015)."
+          },
+          "response": []
+        },
+        {
+          "name": "Plastic Waste Generation — total by country",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{grapher_base_url}}/plastic-waste-generation-total.csv?v=1&csvType=full&useColumnShortNames=false",
+              "host": ["{{grapher_base_url}}"],
+              "path": ["plastic-waste-generation-total.csv"],
+              "query": [
+                {
+                  "key": "v",
+                  "value": "1"
+                },
+                {
+                  "key": "csvType",
+                  "value": "full"
+                },
+                {
+                  "key": "useColumnShortNames",
+                  "value": "false"
+                }
+              ]
+            },
+            "description": "Total plastic waste generation (tonnes) by country. variableId: 1207243. Coverage: 168 countries. Year: 2010 (single snapshot). Source: Jambeck et al. (2015)."
+          },
+          "response": []
+        },
+        {
+          "name": "Mismanaged Plastic Waste — by country",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{grapher_base_url}}/plastic-waste-mismanaged.csv?v=1&csvType=full&useColumnShortNames=false",
+              "host": ["{{grapher_base_url}}"],
+              "path": ["plastic-waste-mismanaged.csv"],
+              "query": [
+                {
+                  "key": "v",
+                  "value": "1"
+                },
+                {
+                  "key": "csvType",
+                  "value": "full"
+                },
+                {
+                  "key": "useColumnShortNames",
+                  "value": "false"
+                }
+              ]
+            },
+            "description": "Mismanaged plastic waste (tonnes) by country — waste not recycled, incinerated, or in sealed landfills. variableId: 1206159. Coverage: 171 countries. Year: 2019 (single snapshot)."
+          },
+          "response": []
+        },
+        {
+          "name": "Share of Global Plastic Emitted to Ocean — by country",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{grapher_base_url}}/share-of-global-mismanaged-plastic-waste.csv?v=1&csvType=full&useColumnShortNames=false",
+              "host": ["{{grapher_base_url}}"],
+              "path": ["share-of-global-mismanaged-plastic-waste.csv"],
+              "query": [
+                {
+                  "key": "v",
+                  "value": "1"
+                },
+                {
+                  "key": "csvType",
+                  "value": "full"
+                },
+                {
+                  "key": "useColumnShortNames",
+                  "value": "false"
+                }
+              ]
+            },
+            "description": "Each country's share (%) of global plastics emitted to ocean. variableId: 1206165. Coverage: 170 countries. Year: 2019. Good for choropleth maps."
+          },
+          "response": []
+        },
+        {
+          "name": "API v1 — Plastic Fate: Recycled (ID 814671) ⭐ time series",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{api_v1_base_url}}/indicators/814671.data.json",
+              "host": ["{{api_v1_base_url}}"],
+              "path": ["indicators", "814671.data.json"]
+            },
+            "description": "Recycled plastic waste (tonnes). variableId: 814671. Time series: 2000-2019 (20 years). Entities: 10 regional aggregates (World, China, USA, India, Europe, Africa, etc.). Source: Geyer et al. (2017). Use World entity (id=355) for global trends."
+          },
+          "response": []
+        },
+        {
+          "name": "API v1 — Plastic Fate: Incinerated (ID 814667) ⭐ time series",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{api_v1_base_url}}/indicators/814667.data.json",
+              "host": ["{{api_v1_base_url}}"],
+              "path": ["indicators", "814667.data.json"]
+            },
+            "description": "Incinerated plastic waste (tonnes). variableId: 814667. Time series: 2000-2019. Entities: 10 regional aggregates. Source: Geyer et al. (2017)."
+          },
+          "response": []
+        },
+        {
+          "name": "API v1 — Plastic Fate: Landfilled (ID 814668) ⭐ time series",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{api_v1_base_url}}/indicators/814668.data.json",
+              "host": ["{{api_v1_base_url}}"],
+              "path": ["indicators", "814668.data.json"]
+            },
+            "description": "Landfilled plastic waste (tonnes). variableId: 814668. Time series: 2000-2019. Entities: 10 regional aggregates. Source: Geyer et al. (2017)."
+          },
+          "response": []
+        },
+        {
+          "name": "API v1 — Plastic Fate: Littered & Mismanaged (ID 815663) ⭐ time series",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{api_v1_base_url}}/indicators/815663.data.json",
+              "host": ["{{api_v1_base_url}}"],
+              "path": ["indicators", "815663.data.json"]
+            },
+            "description": "Littered and mismanaged plastic waste (tonnes). variableId: 815663. Time series: 2000-2019. Entities: 10 regional aggregates. Use with IDs 814671, 814667, 814668 to show full plastic fate breakdown (stacked area chart)."
+          },
+          "response": []
+        },
+        {
+          "name": "API v1 — Plastic Recycling Rate % by region (ID 814682) ⭐ time series",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{api_v1_base_url}}/indicators/814682.data.json",
+              "host": ["{{api_v1_base_url}}"],
+              "path": ["indicators", "814682.data.json"]
+            },
+            "description": "Share of plastic waste recycled (%) from total regional waste. variableId: 814682. Time series: 2000-2019. Entities: 10 regional aggregates (World, China, USA, India, Europe, etc.). Source: Geyer et al. (2017). Note: no country-level recycling rates available in free APIs."
+          },
+          "response": []
+        },
+        {
+          "name": "API v1 — CH4 from Waste Sector (ID 1146696) ⭐⭐ 1990-2023",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{api_v1_base_url}}/indicators/1146696.data.json",
+              "host": ["{{api_v1_base_url}}"],
+              "path": ["indicators", "1146696.data.json"]
+            },
+            "description": "Methane emissions from waste sector (tonnes). variableId: 1146696. Time series: 1990-2023 (34 years). Coverage: 205 countries + regions. Source: Climate Analysis Indicators Tool (CAIT). BEST waste indicator for country-level trends — landfills are main CH4 source."
+          },
+          "response": []
+        },
+        {
+          "name": "API v1 — CH4 from Waste Metadata",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{api_v1_base_url}}/indicators/1146696.metadata.json",
+              "host": ["{{api_v1_base_url}}"],
+              "path": ["indicators", "1146696.metadata.json"]
+            },
+            "description": "Metadata for CH4 from waste indicator: entity list (with ISO codes), year range, source info."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
       "name": "⚡ Energy",
       "item": [
         {
@@ -4485,9 +4700,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{grapher_base_url}}/mismanaged-plastic-waste.csv?v=1&csvType=full&useColumnShortNames=false",
+                  "raw": "{{grapher_base_url}}/plastic-waste-mismanaged.csv?v=1&csvType=full&useColumnShortNames=false",
                   "host": ["{{grapher_base_url}}"],
-                  "path": ["mismanaged-plastic-waste.csv"],
+                  "path": ["plastic-waste-mismanaged.csv"],
                   "query": [
                     {
                       "key": "v",
@@ -4615,9 +4830,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{grapher_base_url}}/share-of-global-mismanaged-plastic-waste.csv?v=1&csvType=full&useColumnShortNames=false",
+                  "raw": "{{grapher_base_url}}/share-of-global-plastic-waste-mismanaged.csv?v=1&csvType=full&useColumnShortNames=false",
                   "host": ["{{grapher_base_url}}"],
-                  "path": ["share-of-global-mismanaged-plastic-waste.csv"],
+                  "path": ["share-of-global-plastic-waste-mismanaged.csv"],
                   "query": [
                     {
                       "key": "v",
@@ -5765,35 +5980,17 @@
           "description": "Uso de pesticidas por hectarea."
         },
         {
-          "name": "Food Waste",
+          "name": "Food Waste (per capita, by sector)",
           "item": [
             {
-              "name": "Data (CSV)",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "type": "text/javascript",
-                    "exec": [
-                      "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
-                      "pm.test(\"Tiempo de respuesta < 30s\", () => pm.expect(pm.response.responseTime).to.be.below(30000));",
-                      "pm.test(\"Tiene contenido CSV\", () => pm.expect(pm.response.text()).to.include(\",\"));"
-                    ]
-                  }
-                }
-              ],
+              "name": "Data — Households (CSV)",
               "request": {
                 "method": "GET",
-                "header": [
-                  {
-                    "key": "User-Agent",
-                    "value": "Postman OWID Collection/1.0"
-                  }
-                ],
+                "header": [],
                 "url": {
-                  "raw": "{{grapher_base_url}}/food-waste-by-sector.csv?v=1&csvType=full&useColumnShortNames=false",
+                  "raw": "{{grapher_base_url}}/food-waste-per-capita.csv?v=1&csvType=full&useColumnShortNames=false",
                   "host": ["{{grapher_base_url}}"],
-                  "path": ["food-waste-by-sector.csv"],
+                  "path": ["food-waste-per-capita.csv"],
                   "query": [
                     {
                       "key": "v",
@@ -5809,85 +6006,62 @@
                     }
                   ]
                 },
-                "description": "Datos en formato CSV del chart `food-waste-by-sector`."
+                "description": "SDG 12.3.1 — Food waste per capita by sector (household, retail, out-of-home). Source: FAO/UNEP. Coverage: 249 countries. Years: 2018, 2019, 2020, 2022."
               },
               "response": []
             },
             {
               "name": "Metadata (JSON)",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "type": "text/javascript",
-                    "exec": [
-                      "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
-                      "pm.test(\"Tiempo de respuesta < 30s\", () => pm.expect(pm.response.responseTime).to.be.below(30000));",
-                      "pm.test(\"Es JSON valido\", () => { pm.response.to.have.header(\"Content-Type\"); pm.response.json(); });"
-                    ]
-                  }
-                }
-              ],
               "request": {
                 "method": "GET",
-                "header": [
-                  {
-                    "key": "User-Agent",
-                    "value": "Postman OWID Collection/1.0"
-                  }
-                ],
+                "header": [],
                 "url": {
-                  "raw": "{{grapher_base_url}}/food-waste-by-sector.metadata.json?v=1&csvType=full&useColumnShortNames=false",
+                  "raw": "{{grapher_base_url}}/food-waste-per-capita.metadata.json?v=1&csvType=full&useColumnShortNames=false",
                   "host": ["{{grapher_base_url}}"],
-                  "path": ["food-waste-by-sector.metadata.json"],
-                  "query": [
-                    {
-                      "key": "v",
-                      "value": "1"
-                    },
-                    {
-                      "key": "csvType",
-                      "value": "full"
-                    },
-                    {
-                      "key": "useColumnShortNames",
-                      "value": "false"
-                    }
-                  ]
-                },
-                "description": "Metadata (titulo, unidades, fuentes, citas) del chart `food-waste-by-sector`."
+                  "path": ["food-waste-per-capita.metadata.json"]
+                }
               },
               "response": []
             },
             {
-              "name": "ZIP completo (data + metadata + readme)",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "type": "text/javascript",
-                    "exec": [
-                      "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
-                      "pm.test(\"Tiempo de respuesta < 30s\", () => pm.expect(pm.response.responseTime).to.be.below(30000));",
-                      "pm.test(\"Body no vacio\", () => pm.expect(pm.response.text().length).to.be.above(0));"
-                    ]
-                  }
-                }
-              ],
+              "name": "API v1 — Households (ID 1123161)",
               "request": {
                 "method": "GET",
-                "header": [
-                  {
-                    "key": "User-Agent",
-                    "value": "Postman OWID Collection/1.0"
-                  }
-                ],
+                "header": [],
                 "url": {
-                  "raw": "{{grapher_base_url}}/food-waste-by-sector.zip",
-                  "host": ["{{grapher_base_url}}"],
-                  "path": ["food-waste-by-sector.zip"]
+                  "raw": "{{api_v1_base_url}}/indicators/1123161.data.json",
+                  "host": ["{{api_v1_base_url}}"],
+                  "path": ["indicators", "1123161.data.json"]
                 },
-                "description": "ZIP con CSV, metadata.json y README.md."
+                "description": "Food waste per capita (kg) — Households sector. variableId: 1123161. 249 countries, years 2018-2022."
+              },
+              "response": []
+            },
+            {
+              "name": "API v1 — Retail (ID 1123163)",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{api_v1_base_url}}/indicators/1123163.data.json",
+                  "host": ["{{api_v1_base_url}}"],
+                  "path": ["indicators", "1123163.data.json"]
+                },
+                "description": "Food waste per capita (kg) — Retail sector. variableId: 1123163. 249 countries, years 2018-2022."
+              },
+              "response": []
+            },
+            {
+              "name": "API v1 — Out-of-home (ID 1123162)",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{api_v1_base_url}}/indicators/1123162.data.json",
+                  "host": ["{{api_v1_base_url}}"],
+                  "path": ["indicators", "1123162.data.json"]
+                },
+                "description": "Food waste per capita (kg) — Out-of-home consumption sector. variableId: 1123162. 250 countries, years 2018-2022."
               },
               "response": []
             }
@@ -10516,6 +10690,11 @@
     {
       "key": "time_range",
       "value": "1990..2024"
+    },
+    {
+      "key": "api_v1_base_url",
+      "value": "https://api.ourworldindata.org/v1",
+      "type": "string"
     }
   ]
 }

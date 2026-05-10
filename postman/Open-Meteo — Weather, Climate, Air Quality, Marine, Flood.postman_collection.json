@@ -1515,6 +1515,47 @@
       "name": "🌡️ Climate Projections (IPCC CMIP6)",
       "item": [
         {
+          "name": "✅ Working — multi-model daily projection (2025-2050)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://climate-api.open-meteo.com/v1/climate?latitude=40.71&longitude=-74.01&start_date=2025-01-01&end_date=2050-12-31&models=CMCC_CM2_VHR4,EC_Earth3P_HR&daily=temperature_2m_max,temperature_2m_min,precipitation_sum",
+              "protocol": "https",
+              "host": ["climate-api", "open-meteo", "com"],
+              "path": ["v1", "climate"],
+              "query": [
+                {
+                  "key": "latitude",
+                  "value": "40.71"
+                },
+                {
+                  "key": "longitude",
+                  "value": "-74.01"
+                },
+                {
+                  "key": "start_date",
+                  "value": "2025-01-01"
+                },
+                {
+                  "key": "end_date",
+                  "value": "2050-12-31"
+                },
+                {
+                  "key": "models",
+                  "value": "CMCC_CM2_VHR4,EC_Earth3P_HR"
+                },
+                {
+                  "key": "daily",
+                  "value": "temperature_2m_max,temperature_2m_min,precipitation_sum"
+                }
+              ]
+            },
+            "description": "VERIFIED WORKING (May 2026). Returns daily projections 2025-2050 for 2 CMIP6 models. Response variables are prefixed by model name: temperature_2m_max_CMCC_CM2_VHR4, temperature_2m_max_EC_Earth3P_HR, etc. Aggregate daily→yearly in backend. Available models: CMCC_CM2_VHR4, EC_Earth3P_HR, MRI_AGCM3_2_S, NICAM16_8S, and others. NOTE: 'yearly' param does NOT work — always use 'daily'."
+          },
+          "response": []
+        },
+        {
           "name": "Climate projection — full range (1950-2050)",
           "event": [
             {

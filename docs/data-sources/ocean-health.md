@@ -114,6 +114,7 @@ Tracks ocean-related indicators including sea surface temperature, acidity (pH),
 - **Model:** Free. JSON. No API key required.
 - **Data:** Sea levels, tide predictions, water temperature, salinity.
 - **API key:** Not required.
+- **Validated (May 2026):** Sea level and tide prediction endpoints confirmed working.
 
 | Field | Details |
 |---|---|

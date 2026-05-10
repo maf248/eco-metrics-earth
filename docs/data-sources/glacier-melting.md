@@ -12,6 +12,7 @@ Tracks glacier mass balance, retreat rates, and ice volume loss globally. Key in
 - **Data type:** Daily and monthly from 1978–present.
 - **Data:** Arctic and Antarctic sea ice extent and concentration, anomalies, trends.
 - **API key:** Not required for Sea Ice Index; other NASA datasets require free Earthdata Login.
+- **Validated (May 2026):** v4.0 endpoints confirmed working. Daily and monthly data available through present.
 
 | Field | Details |
 |---|---|

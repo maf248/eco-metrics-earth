@@ -14,6 +14,7 @@ Tracks concentrations of atmospheric pollutants (PM2.5, PM10, NO₂, O₃, CO, S
 - **API key:** Not required.
 - **CORS:** Enabled — can be called directly from the client.
 - **Limitations:** Recommended < 10,000 calls/day, < 5,000/hour, < 600/minute per IP. Commercial use requires a paid plan.
+- **Validated (May 2026):** Real-time air quality endpoints confirmed working.
 
 | Field | Details |
 |---|---|

@@ -34,6 +34,7 @@ Tracks municipal solid waste generation, recycling rates, landfill usage, and wa
 - **Data:** Waste-related indicators (e.g. `EN.POP.SLUM.UR.ZS`), solid waste management, urbanization.
 - **API key:** Not required.
 - **CORS:** Enabled — can be called from the client.
+- **Validated indicators (May 2026):** Total GHG indicators work (e.g., `EN.GHG.CO2.MT.CE.AR5`, `EN.GHG.ALL.MT.CE.AR5`). Sector-specific GHG indicators (waste, energy, agriculture) return "Invalid value" errors.
 
 | Field | Details |
 |---|---|
@@ -86,11 +87,12 @@ Tracks municipal solid waste generation, recycling rates, landfill usage, and wa
 
 ### 5. Our World in Data — Waste & Recycling
 
-- **URL:** https://ourworldindata.org/waste-management — CSV via grapher
+- **URL:** https://ourworldindata.org/waste-management — CSV via grapher — API v1: `https://api.ourworldindata.org/v1/indicators/{id}.data.json`
 - **License:** ✅ Comercial/ads OK — CC BY.
 - **Model:** Free (CC BY). CSV downloadable.
 - **Data:** Recycling rates, per-capita waste generation, mismanaged waste, plastic entering the ocean.
 - **API key:** Not required.
+- **Validated endpoint (May 2026):** CH₄ emissions from waste sector (ID 1146696): 1990–2023 time series, 205 countries. Best longitudinal waste indicator available.
 
 | Field | Details |
 |---|---|

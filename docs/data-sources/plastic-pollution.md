@@ -8,15 +8,21 @@ Tracks plastic waste generation, mismanagement rates, and ocean plastic accumula
 
 ### 1. Our World in Data — Plastic Pollution
 
-- **URL:** https://ourworldindata.org/plastic-pollution — grapher CSV: `https://ourworldindata.org/grapher/global-plastics-production.csv`
+- **URL:** https://ourworldindata.org/plastic-pollution — grapher CSV: `https://ourworldindata.org/grapher/global-plastics-production.csv` — API v1: `https://api.ourworldindata.org/v1/indicators/{id}.data.json`
 - **License:** ✅ Comercial/ads OK — CC BY.
 - **Model:** Free (CC BY). Static downloadable.
 - **Data:** Global plastics production, plastic waste by country, mismanaged plastic waste, plastic entering the ocean (Jambeck et al., Meijer et al.), microplastics.
 - **API key:** Not required.
+- **Validated endpoints (May 2026):**
+  - Plastic waste generation: 2010 snapshot only (168 countries, ID 1207243)
+  - Mismanaged plastic: 2019 snapshot only (171 countries, ID 1206159)
+  - Plastic fate breakdown (recycled/incinerated/landfilled/littered): 2000–2019 time series, 10 regional aggregates (IDs 814671, 814667, 814668, 815663)
+  - **Limitation:** No country-level recycling rates or longitudinal plastic waste time series available in free APIs.
 
 | Field | Details |
 |---|---|
-| Base URL | `https://ourworldindata.org/grapher/` |
+| Base URL (Grapher) | `https://ourworldindata.org/grapher/` |
+| Base URL (API v1) | `https://api.ourworldindata.org/v1/indicators/` |
 | Auth | None |
 | Free tier | Yes |
 | Rate limit | None |
