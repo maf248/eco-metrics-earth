@@ -1,3 +1,9 @@
+## [1.4.1](https://github.com/maf248/eco-metrics-earth/compare/v1.4.0...v1.4.1) (2026-05-10)
+
+### Bug Fixes
+
+* **tests:** fix VS Code type errors in test files ([71ea5e9](https://github.com/maf248/eco-metrics-earth/commit/71ea5e9d5507c3b69d34e71e134a0a337bb98011))
+
 ## [1.4.0](https://github.com/maf248/eco-metrics-earth/compare/v1.3.1...v1.4.0) (2026-05-10)
 
 ### Features
