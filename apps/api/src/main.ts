@@ -1,11 +1,19 @@
 import { NestFactory } from '@nestjs/core';
+import helmet from 'helmet';
+
 import { AppModule } from './app/app.module';
+import { AppConfigService } from './config/app-config.service';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  app.use(helmet());
   app.setGlobalPrefix('api/v1');
-  app.enableCors({ origin: process.env['CORS_ORIGIN'] ?? 'http://localhost:3000' });
-  await app.listen(process.env['PORT'] ?? 3001);
+
+  const appConfig = app.get(AppConfigService);
+  app.enableCors({ origin: appConfig.corsOrigin });
+
+  await app.listen(appConfig.port);
 }
 
 bootstrap().catch((err: unknown) => {

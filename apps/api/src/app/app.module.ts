@@ -1,10 +1,13 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import { APP_GUARD } from '@nestjs/core';
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import * as Joi from 'joi';
+
+import { AppConfigService } from '../config/app-config.service';
+import { HealthController } from '../health/health.controller';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { HealthController } from '../health/health.controller';
-import { AppConfigService } from '../config/app-config.service';
 
 @Module({
   imports: [
@@ -13,14 +16,16 @@ import { AppConfigService } from '../config/app-config.service';
       validationSchema: Joi.object({
         PORT: Joi.number().port().default(3001),
         NODE_ENV: Joi.string().valid('development', 'test', 'production').default('development'),
+        CORS_ORIGIN: Joi.string().uri().default('http://localhost:3000'),
       }),
       validationOptions: {
         allowUnknown: true,
         abortEarly: true,
       },
     }),
+    ThrottlerModule.forRoot([{ ttl: 60_000, limit: 60 }]),
   ],
   controllers: [AppController, HealthController],
-  providers: [AppService, AppConfigService],
+  providers: [AppService, AppConfigService, { provide: APP_GUARD, useClass: ThrottlerGuard }],
 })
 export class AppModule {}

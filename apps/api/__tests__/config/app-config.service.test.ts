@@ -1,10 +1,17 @@
 import { ConfigService } from '@nestjs/config';
+
 import { AppConfigService } from '../../src/config/app-config.service';
 
 describe('AppConfigService', () => {
   function buildService(env: Record<string, unknown>): AppConfigService {
     const configService = {
-      get: jest.fn((key: string) => env[key]),
+      getOrThrow: jest.fn((key: string) => {
+        const value = env[key];
+        if (value === undefined) {
+          throw new Error(`Configuration key "${key}" does not exist`);
+        }
+        return value;
+      }),
     } as unknown as ConfigService;
     return new AppConfigService(configService);
   }
@@ -15,9 +22,9 @@ describe('AppConfigService', () => {
       expect(service.port).toBe(4000);
     });
 
-    it('should return 3001 when ConfigService returns undefined for PORT', () => {
+    it('should throw when PORT is not in config', () => {
       const service = buildService({});
-      expect(service.port).toBe(3001);
+      expect(() => service.port).toThrow('PORT');
     });
   });
 
@@ -27,9 +34,23 @@ describe('AppConfigService', () => {
       expect(service.nodeEnv).toBe('production');
     });
 
-    it('should return "development" when ConfigService returns undefined for NODE_ENV', () => {
+    it('should throw when NODE_ENV is not in config', () => {
       const service = buildService({});
-      expect(service.nodeEnv).toBe('development');
+      expect(() => service.nodeEnv).toThrow('NODE_ENV');
+    });
+  });
+
+  describe('corsOrigin', () => {
+    it('should return the configured URI when CORS_ORIGIN is set', () => {
+      const service = buildService({
+        CORS_ORIGIN: 'https://eco-metrics.earth',
+      });
+      expect(service.corsOrigin).toBe('https://eco-metrics.earth');
+    });
+
+    it('should throw when CORS_ORIGIN is not in config', () => {
+      const service = buildService({});
+      expect(() => service.corsOrigin).toThrow('CORS_ORIGIN');
     });
   });
 });
