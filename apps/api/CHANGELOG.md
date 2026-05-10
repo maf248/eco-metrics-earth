@@ -1,3 +1,9 @@
+## [1.5.0](https://github.com/maf248/eco-metrics-earth/compare/api-v1.4.1...api-v1.5.0) (2026-05-10)
+
+### Features
+
+* **a11y:** fix skip-link focus, CO2 title, NavLink normalisation, icon title props, aria-labels ([6ba74c3](https://github.com/maf248/eco-metrics-earth/commit/6ba74c3b006e290909ef9c742e943c963282cb75))
+
 ## [1.4.1](https://github.com/maf248/eco-metrics-earth/compare/api-v1.4.0...api-v1.4.1) (2026-05-10)
 
 ### Bug Fixes
