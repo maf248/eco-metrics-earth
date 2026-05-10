@@ -9,6 +9,8 @@ import type { WithNxOptions } from '@nx/next/plugins/with-nx';
  * Note: no WATCHPACK_POLLING needed — the repo lives on the WSL2 ext4
  * filesystem (/home/...) where inotify works natively.
  */
+const isDev = process.env.NODE_ENV === 'development';
+
 const baseConfig: WithNxOptions = {
   trailingSlash: true,
   nx: {},
@@ -18,9 +20,17 @@ const baseConfig: WithNxOptions = {
     // which injects inline hydration scripts that cannot be nonce-tagged without
     // custom middleware. This should be tightened with nonces once Next.js
     // provides first-class nonce support in the App Router.
+    //
+    // NOTE: `unsafe-eval` is added in development only. React (Turbopack) uses
+    // eval() in dev mode for HMR and call-stack reconstruction. It is never
+    // used in production, so the production CSP remains strict.
+    const scriptSrc = isDev
+      ? "script-src 'self' 'unsafe-inline' 'unsafe-eval'"
+      : "script-src 'self' 'unsafe-inline'";
+
     const csp = [
       "default-src 'self'",
-      "script-src 'self' 'unsafe-inline'",
+      scriptSrc,
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
       "font-src 'self' https://fonts.gstatic.com",
       "img-src 'self' data: blob:",
