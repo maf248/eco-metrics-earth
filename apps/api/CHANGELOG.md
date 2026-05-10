@@ -1,3 +1,9 @@
+## [1.4.1](https://github.com/maf248/eco-metrics-earth/compare/api-v1.4.0...api-v1.4.1) (2026-05-10)
+
+### Bug Fixes
+
+* **security:** allow unsafe-eval in CSP for dev mode (React Turbopack HMR) ([3c57771](https://github.com/maf248/eco-metrics-earth/commit/3c57771ea8ae687e66c98e69aed343659c5181bb))
+
 ## [1.4.0](https://github.com/maf248/eco-metrics-earth/compare/api-v1.3.0...api-v1.4.0) (2026-05-10)
 
 ### Features
