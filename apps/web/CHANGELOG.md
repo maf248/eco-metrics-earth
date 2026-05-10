@@ -1,3 +1,9 @@
+## [1.5.2](https://github.com/maf248/eco-metrics-earth/compare/web-v1.5.1...web-v1.5.2) (2026-05-10)
+
+### Bug Fixes
+
+* **config:** add jest types and __tests__ include to tsconfig.json for VS Code ([80fa787](https://github.com/maf248/eco-metrics-earth/commit/80fa7874e846f0eafac97efd43107d5d514534f0))
+
 ## [1.5.1](https://github.com/maf248/eco-metrics-earth/compare/web-v1.5.0...web-v1.5.1) (2026-05-10)
 
 ### Bug Fixes
