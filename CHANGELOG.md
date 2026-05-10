@@ -1,3 +1,17 @@
+## [1.5.0](https://github.com/maf248/eco-metrics-earth/compare/v1.4.2...v1.5.0) (2026-05-10)
+
+### Features
+
+* **docs:** validate and fix Postman collections, enrich data source docs ([2762642](https://github.com/maf248/eco-metrics-earth/commit/2762642370bb8f50a1df51756eac22ae56623fc0))
+* **tooling:** add eslint plugins, API smoke test, and scroll tests ([fd0bd85](https://github.com/maf248/eco-metrics-earth/commit/fd0bd851cb300433eef86946d6dc1dfebc6b844b))
+
+### Bug Fixes
+
+* **deps:** add overrides for chokidar and readdirp to resolve npm ci conflicts ([7a8b878](https://github.com/maf248/eco-metrics-earth/commit/7a8b8785391e7f239965082dfde87990b89a973c))
+* **deps:** downgrade eslint to v9 for jsx-a11y compatibility ([6cee0ad](https://github.com/maf248/eco-metrics-earth/commit/6cee0ad75f7e28b6f2875f74023d7b47066ae53e))
+* **postman:** correct World Bank GHG indicators and add sectoral CO2 endpoints ([84d05ad](https://github.com/maf248/eco-metrics-earth/commit/84d05ad0df02ac797a5dd1672e730237d6a88918))
+* **release:** ignore non-app scopes and add Git config to workflow ([29e27ae](https://github.com/maf248/eco-metrics-earth/commit/29e27ae575558a7533a401e44f7abc3e5fe94886))
+
 ## [1.4.2](https://github.com/maf248/eco-metrics-earth/compare/v1.4.1...v1.4.2) (2026-05-10)
 
 ### Bug Fixes
