@@ -99,5 +99,9 @@
     "**/*.json": [
       "prettier --write"
     ]
+  },
+  "overrides": {
+    "chokidar": "5.0.0",
+    "readdirp": "5.0.0"
   }
 }
