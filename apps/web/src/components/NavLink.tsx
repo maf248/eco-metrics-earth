@@ -11,9 +11,15 @@ interface NavLinkProps {
   label: string;
 }
 
+/**
+ * Normalise a path by removing trailing slashes.
+ * The `|| '/'` guard prevents the root `/` from becoming an empty string.
+ */
+const normalise = (p: string): string => p.replace(/\/$/, '') || '/';
+
 export default function NavLink({ href, icon: Icon, label }: NavLinkProps) {
   const pathname = usePathname();
-  const isActive = pathname === href;
+  const isActive = normalise(href) === normalise(pathname);
 
   return (
     <Link
@@ -30,7 +36,7 @@ export default function NavLink({ href, icon: Icon, label }: NavLinkProps) {
         isActive
           ? 'text-emerald-400 lg:bg-white/5'
           : 'text-gray-400 hover:text-white hover:bg-white/5',
-        'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 focus-visible:ring-offset-black',
+        'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 ring-offset-white dark:ring-offset-gray-950',
       ].join(' ')}
     >
       <span

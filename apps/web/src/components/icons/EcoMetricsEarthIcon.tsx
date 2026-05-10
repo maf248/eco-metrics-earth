@@ -1,8 +1,20 @@
 import React from 'react';
 
-export default function EcoMetricsEarthIcon(props: React.SVGProps<SVGSVGElement>) {
+interface IconProps extends React.SVGProps<SVGSVGElement> {
+  title?: string;
+}
+
+export default function EcoMetricsEarthIcon({ title, ...props }: IconProps) {
   return (
-    <svg viewBox="0 0 511.874 511.874" xmlns="http://www.w3.org/2000/svg" {...props}>
+    <svg
+      viewBox="0 0 511.874 511.874"
+      xmlns="http://www.w3.org/2000/svg"
+      {...(title
+        ? { 'aria-labelledby': 'eco-metrics-earth-icon-title' }
+        : { 'aria-hidden': 'true' })}
+      {...props}
+    >
+      {title && <title id="eco-metrics-earth-icon-title">{title}</title>}
       <g transform="translate(0 -1)">
         <path
           fill="#FDC794"

@@ -60,3 +60,29 @@ describe('NavLink', () => {
     expect(link.getAttribute('aria-current')).toBeNull();
   });
 });
+
+describe('NavLink — isActive trailing-slash normalisation', () => {
+  it('should be active when href has trailing slash but pathname does not', () => {
+    mockUsePathname.mockReturnValue('/air-quality');
+    render(<NavLink href="/air-quality/" icon={AirQualityIcon} label="Air Quality" />);
+    expect(screen.getByRole('link').getAttribute('aria-current')).toBe('page');
+  });
+
+  it('should be active when href has no trailing slash but pathname does', () => {
+    mockUsePathname.mockReturnValue('/air-quality/');
+    render(<NavLink href="/air-quality" icon={AirQualityIcon} label="Air Quality" />);
+    expect(screen.getByRole('link').getAttribute('aria-current')).toBe('page');
+  });
+
+  it('should keep root path "/" active', () => {
+    mockUsePathname.mockReturnValue('/');
+    render(<NavLink href="/" icon={AirQualityIcon} label="Home" />);
+    expect(screen.getByRole('link').getAttribute('aria-current')).toBe('page');
+  });
+
+  it('should return false for different paths', () => {
+    mockUsePathname.mockReturnValue('/ocean-health/');
+    render(<NavLink href="/air-quality/" icon={AirQualityIcon} label="Air Quality" />);
+    expect(screen.getByRole('link').getAttribute('aria-current')).toBeNull();
+  });
+});

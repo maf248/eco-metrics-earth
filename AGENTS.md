@@ -286,3 +286,18 @@ Pre-PR checklist: `npm run lint`, `npm run build`, and `npm run test` must all p
 - The `nx-generate` skill handles generator discovery internally - don't call nx_docs just to look up generator syntax
 
 <!-- nx configuration end-->
+
+---
+
+## AI Orchestrator — Known Constraints
+
+> These notes are for the AI agent running this project, not for human developers.
+
+### "This model does not support assistant message prefill"
+
+This error is thrown by the model provider when the assistant's response is cut off mid-generation (e.g. in the middle of a large heredoc or code block) and the runtime tries to resume with a prefill. It happens consistently when a single tool call writes a very large file inline.
+
+**Mitigation rules for the AI agent:**
+- Never write files longer than ~60 lines via a single `bash` heredoc. Break large writes into multiple smaller `Edit` or `Write` tool calls instead.
+- When updating many files of the same type (e.g. icon components), use a script (`python3`, `node`, `sed`) to apply the transformation programmatically rather than inlining each file as a heredoc.
+- Always end assistant turns with a plain-text sentence after the last tool call block — never end mid-code-block.

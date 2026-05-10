@@ -33,3 +33,11 @@ describe('NotFound page', () => {
     expect(link.getAttribute('href')).toBe('/');
   });
 });
+
+it('should render <main> with id="main-content" and tabIndex={-1}', () => {
+  const { container } = render(<NotFound />);
+  const main = container.querySelector('main');
+  expect(main).not.toBeNull();
+  expect(main?.getAttribute('id')).toBe('main-content');
+  expect(main?.getAttribute('tabindex')).toBe('-1');
+});

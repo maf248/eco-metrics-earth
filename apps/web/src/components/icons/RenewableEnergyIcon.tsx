@@ -1,8 +1,20 @@
 import React from 'react';
 
-export default function RenewableEnergyIcon(props: React.SVGProps<SVGSVGElement>) {
+interface IconProps extends React.SVGProps<SVGSVGElement> {
+  title?: string;
+}
+
+export default function RenewableEnergyIcon({ title, ...props }: IconProps) {
   return (
-    <svg viewBox="0 0 494.4 494.4" xmlns="http://www.w3.org/2000/svg" {...props}>
+    <svg
+      viewBox="0 0 494.4 494.4"
+      xmlns="http://www.w3.org/2000/svg"
+      {...(title
+        ? { 'aria-labelledby': 'renewable-energy-icon-title' }
+        : { 'aria-hidden': 'true' })}
+      {...props}
+    >
+      {title && <title id="renewable-energy-icon-title">{title}</title>}
       <path fill="#1A6000" d="M24.8,342.4c34.4,88,120.8,152,222.4,152s188-64,222.4-152H24.8z" />
       <path fill="#144400" d="M247.2,342.4v152l0,0c101.6,0,188-64,222.4-152H247.2z" />
       <path

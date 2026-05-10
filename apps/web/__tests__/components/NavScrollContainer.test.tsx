@@ -26,3 +26,9 @@ describe('NavScrollContainer', () => {
     expect(hiddenElements.length).toBe(0);
   });
 });
+
+it('should render the <ul> with an aria-label attribute', () => {
+  render(<NavScrollContainer>{null}</NavScrollContainer>);
+  const ul = screen.getByRole('list');
+  expect(ul.getAttribute('aria-label')).toBeTruthy();
+});

@@ -26,7 +26,7 @@ describe('CategoryPage', () => {
   it('should display the correct title for co2-emissions', async () => {
     const element = await CategoryPage({ params: Promise.resolve({ category: 'co2-emissions' }) });
     render(element);
-    expect(screen.getByText('Co2 Emissions')).toBeTruthy();
+    expect(screen.getByText('CO2 Emissions')).toBeTruthy();
   });
 
   it('should display the correct title for endangered-species', async () => {
@@ -128,7 +128,7 @@ describe('generateMetadata', () => {
     const metadata = await generateMetadata({
       params: Promise.resolve({ category: 'co2-emissions' }),
     });
-    expect(metadata.title).toBe('Co2 Emissions');
+    expect(metadata.title).toBe('CO2 Emissions');
   });
 
   it('should return the correct title for waste-recycling', async () => {

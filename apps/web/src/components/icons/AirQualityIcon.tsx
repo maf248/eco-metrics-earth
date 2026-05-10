@@ -1,8 +1,18 @@
 import React from 'react';
 
-export default function AirQualityIcon(props: React.SVGProps<SVGSVGElement>) {
+interface IconProps extends React.SVGProps<SVGSVGElement> {
+  title?: string;
+}
+
+export default function AirQualityIcon({ title, ...props }: IconProps) {
   return (
-    <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" {...props}>
+    <svg
+      viewBox="0 0 64 64"
+      xmlns="http://www.w3.org/2000/svg"
+      {...(title ? { 'aria-labelledby': 'air-quality-icon-title' } : { 'aria-hidden': 'true' })}
+      {...props}
+    >
+      {title && <title id="air-quality-icon-title">{title}</title>}
       <path
         d="M43.89,6.23c-1.85,0-3.33,1.48-3.33,3.33,0,2.12-1.71,3.83-3.83,3.83h-2.05c-1.19,0-2.15,.96-2.15,2.15s.96,2.15,2.15,2.15h1.47c1.19,0,2.22,1.23,2.22,2.42v2.09l5.66,1.08,4.44-1.08v-3.08h3.3c1.19,0,2.15-.96,2.15-2.15s-.96-2.15-2.15-2.15h-2.87c-1.19,0-2.15-.96-2.15-2.15s.96-2.14,2.15-2.14h7.37c1.19,0,2.15-.96,2.15-2.15s-.96-2.15-2.15-2.15h-12.37Z"
         fill="#e2eef2"

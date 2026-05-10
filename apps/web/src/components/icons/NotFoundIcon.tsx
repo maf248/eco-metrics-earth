@@ -1,8 +1,18 @@
 import React from 'react';
 
-export default function NotFoundIcon(props: React.SVGProps<SVGSVGElement>) {
+interface IconProps extends React.SVGProps<SVGSVGElement> {
+  title?: string;
+}
+
+export default function NotFoundIcon({ title, ...props }: IconProps) {
   return (
-    <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" {...props}>
+    <svg
+      viewBox="0 0 60 60"
+      xmlns="http://www.w3.org/2000/svg"
+      {...(title ? { 'aria-labelledby': 'not-found-icon-title' } : { 'aria-hidden': 'true' })}
+      {...props}
+    >
+      {title && <title id="not-found-icon-title">{title}</title>}
       <g>
         <path d="M0,0v12v2v46h60V14v-2V0H0z M20,39h-3v8c0,0.552-0.448,1-1,1s-1-0.448-1-1v-8H9c-0.552,0-1-0.448-1-1V27c0-0.552,0.448-1,1-1s1,0.448,1,1v10h5v-2c0-0.552,0.448-1,1-1s1,0.448,1,1v2h3c0.552,0,1,0.448,1,1S20.552,39,20,39z M36,41.5c0,3.584-2.916,6.5-6.5,6.5S23,45.084,23,41.5v-9c0-3.584,2.916-6.5,6.5-6.5s6.5,2.916,6.5,6.5V41.5z M51,39h-3v8c0,0.552-0.448,1-1,1s-1-0.448-1-1v-8h-6c-0.552,0-1-0.448-1-1V27c0-0.552,0.448-1,1-1s1,0.448,1,1v10h5v-2c0-0.552,0.448-1,1-1s1,0.448,1,1v2h3c0.552,0,1,0.448,1,1S51.552,39,51,39z M2,12V2h56v10H2z" />
         <polygon points="54.293,3.293 52,5.586 49.707,3.293 48.293,4.707 50.586,7 48.293,9.293 49.707,10.707 52,8.414 54.293,10.707 55.707,9.293 53.414,7 55.707,4.707" />

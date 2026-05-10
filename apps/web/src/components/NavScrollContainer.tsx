@@ -66,6 +66,7 @@ export default function NavScrollContainer({ children }: NavScrollContainerProps
       <ul
         ref={scrollRef}
         role="list"
+        aria-label="Navigation items"
         className="flex flex-row lg:flex-col flex-1 overflow-x-auto lg:overflow-x-visible overflow-y-visible lg:overflow-y-auto lg:py-2"
       >
         {children}

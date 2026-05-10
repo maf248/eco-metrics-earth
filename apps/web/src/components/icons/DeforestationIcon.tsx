@@ -1,8 +1,18 @@
 import React from 'react';
 
-export default function DeforestationIcon(props: React.SVGProps<SVGSVGElement>) {
+interface IconProps extends React.SVGProps<SVGSVGElement> {
+  title?: string;
+}
+
+export default function DeforestationIcon({ title, ...props }: IconProps) {
   return (
-    <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" {...props}>
+    <svg
+      viewBox="0 0 64 64"
+      xmlns="http://www.w3.org/2000/svg"
+      {...(title ? { 'aria-labelledby': 'deforestation-icon-title' } : { 'aria-hidden': 'true' })}
+      {...props}
+    >
+      {title && <title id="deforestation-icon-title">{title}</title>}
       <circle cx="23.5" cy="23.5" r="22.5" fill="#ffded5" />
       <path
         d="M39,30.5A1.5,1.5,0,0,0,37.5,32v4.351A3.153,3.153,0,0,1,34.351,39.5H31V35H25V58h6V42.5h3.351A6.155,6.155,0,0,0,40.5,36.351V32A1.5,1.5,0,0,0,39,30.5Z"

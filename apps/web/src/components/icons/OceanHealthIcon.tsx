@@ -1,8 +1,18 @@
 import React from 'react';
 
-export default function OceanHealthIcon(props: React.SVGProps<SVGSVGElement>) {
+interface IconProps extends React.SVGProps<SVGSVGElement> {
+  title?: string;
+}
+
+export default function OceanHealthIcon({ title, ...props }: IconProps) {
   return (
-    <svg viewBox="0 0 340 340" xmlns="http://www.w3.org/2000/svg" {...props}>
+    <svg
+      viewBox="0 0 340 340"
+      xmlns="http://www.w3.org/2000/svg"
+      {...(title ? { 'aria-labelledby': 'ocean-health-icon-title' } : { 'aria-hidden': 'true' })}
+      {...props}
+    >
+      {title && <title id="ocean-health-icon-title">{title}</title>}
       <path
         d="M58.908,100.04a163.2,163.2,0,0,1-43.934,35.6A9.573,9.573,0,0,0,10,144v32.02l1.822,8.9L41.484,164.3Z"
         fill="#346b99"

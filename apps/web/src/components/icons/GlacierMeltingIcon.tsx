@@ -1,8 +1,18 @@
 import React from 'react';
 
-export default function GlacierMeltingIcon(props: React.SVGProps<SVGSVGElement>) {
+interface IconProps extends React.SVGProps<SVGSVGElement> {
+  title?: string;
+}
+
+export default function GlacierMeltingIcon({ title, ...props }: IconProps) {
   return (
-    <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" {...props}>
+    <svg
+      viewBox="0 0 512 512"
+      xmlns="http://www.w3.org/2000/svg"
+      {...(title ? { 'aria-labelledby': 'glacier-melting-icon-title' } : { 'aria-hidden': 'true' })}
+      {...props}
+    >
+      {title && <title id="glacier-melting-icon-title">{title}</title>}
       <path
         fill="#D7EDF3"
         d="M464.457,204.71c-3.014-64.752-23.121-120.797-59.834-167.05c2.196-3.431,3.486-7.495,3.486-11.862

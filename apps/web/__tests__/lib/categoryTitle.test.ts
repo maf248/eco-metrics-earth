@@ -20,3 +20,7 @@ describe('getCategoryTitle', () => {
     expect(getCategoryTitle(ECO_CATEGORIES.WASTE_RECYCLING)).toBe('Waste & Recycling');
   });
 });
+
+it('should return "CO2 Emissions" for co2-emissions (uppercase formula)', () => {
+  expect(getCategoryTitle('co2-emissions')).toBe('CO2 Emissions');
+});

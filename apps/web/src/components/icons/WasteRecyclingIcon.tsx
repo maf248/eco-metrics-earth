@@ -1,8 +1,18 @@
 import React from 'react';
 
-export default function WasteRecyclingIcon(props: React.SVGProps<SVGSVGElement>) {
+interface IconProps extends React.SVGProps<SVGSVGElement> {
+  title?: string;
+}
+
+export default function WasteRecyclingIcon({ title, ...props }: IconProps) {
   return (
-    <svg viewBox="0 0 511.999 511.999" xmlns="http://www.w3.org/2000/svg" {...props}>
+    <svg
+      viewBox="0 0 511.999 511.999"
+      xmlns="http://www.w3.org/2000/svg"
+      {...(title ? { 'aria-labelledby': 'waste-recycling-icon-title' } : { 'aria-hidden': 'true' })}
+      {...props}
+    >
+      {title && <title id="waste-recycling-icon-title">{title}</title>}
       <path
         fill="#A2CE86"
         d="M160.346,458.147c-0.522,0-1.047-0.02-1.574-0.059L50.44,450.03
