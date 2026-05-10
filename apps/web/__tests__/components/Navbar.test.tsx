@@ -1,4 +1,3 @@
-import React from 'react';
 import { render, screen, within } from '@testing-library/react';
 
 import { ECO_CATEGORIES } from '@eco-metrics/shared';

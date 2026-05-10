@@ -1,4 +1,3 @@
-import React from 'react';
 import { renderToString } from 'react-dom/server';
 
 import RootLayout, { metadata } from '../../src/app/layout';
@@ -83,6 +82,6 @@ describe('metadata', () => {
   });
 
   it('should have twitter.card set to "summary"', () => {
-    expect(metadata.twitter?.card).toBe('summary');
+    expect((metadata.twitter as { card?: string } | null | undefined)?.card).toBe('summary');
   });
 });
