@@ -9,6 +9,10 @@
         "preset": "conventionalcommits",
         "releaseRules": [
           { "scope": "api", "release": false },
+          { "scope": "tooling", "release": false },
+          { "scope": "docs", "release": false },
+          { "scope": "postman", "release": false },
+          { "scope": "release", "release": false },
           { "breaking": true, "release": "major" },
           { "type": "feat", "release": "minor" },
           { "type": "fix", "release": "patch" }
