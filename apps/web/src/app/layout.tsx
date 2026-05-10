@@ -1,21 +1,44 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import type { ReactNode } from 'react';
 
+import { siteUrl } from '@/lib/siteUrl';
 import Navbar from '@/components/Navbar';
 
 import './globals.css';
 
+export const viewport: Viewport = {
+  themeColor: [
+    { media: '(prefers-color-scheme: dark)', color: '#0a0a0a' },
+    { media: '(prefers-color-scheme: light)', color: '#ffffff' },
+  ],
+};
+
 export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl()),
   title: {
     default: 'eco-metrics earth',
     template: '%s — eco-metrics earth',
   },
   description: 'Track and visualize environmental metrics for a sustainable planet.',
+  icons: {
+    icon: '/icons/eco-metrics-earth.svg',
+    apple: '/icons/eco-metrics-earth.svg',
+  },
   openGraph: {
+    type: 'website',
     siteName: 'eco-metrics earth',
+    images: [
+      {
+        url: '/icons/eco-metrics-earth.svg',
+        width: 512,
+        height: 512,
+        alt: 'eco-metrics earth logo',
+      },
+    ],
   },
   twitter: {
     card: 'summary',
+    images: ['/icons/eco-metrics-earth.svg'],
   },
 };
 

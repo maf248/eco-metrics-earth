@@ -9,12 +9,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   const homeEntry: MetadataRoute.Sitemap[number] = {
     url: base + '/',
+    lastModified: new Date(),
     changeFrequency: 'weekly',
     priority: 1.0,
   };
 
   const categoryEntries: MetadataRoute.Sitemap = Object.values(ECO_CATEGORIES).map((slug) => ({
     url: `${base}/${slug}/`,
+    lastModified: new Date(),
     changeFrequency: 'weekly',
     priority: 0.8,
   }));

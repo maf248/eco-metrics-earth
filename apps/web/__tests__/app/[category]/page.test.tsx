@@ -1,7 +1,10 @@
 import { ECO_CATEGORIES } from '@eco-metrics/shared';
 import { render, screen } from '@testing-library/react';
 
-import CategoryPage, { generateMetadata } from '../../../src/app/[category]/page';
+import CategoryPage, {
+  generateMetadata,
+  generateStaticParams,
+} from '../../../src/app/[category]/page';
 
 jest.mock('next/navigation', () => ({
   notFound: jest.fn(),
@@ -188,5 +191,20 @@ describe('notFound behavior', () => {
     };
     await generateMetadata({ params: Promise.resolve({ category: 'papa' }) });
     expect(notFound).toHaveBeenCalled();
+  });
+});
+
+describe('generateStaticParams', () => {
+  it('should return an array of objects with { category: string } shape', async () => {
+    const params = await generateStaticParams();
+    expect(Array.isArray(params)).toBe(true);
+    params.forEach((param) => {
+      expect(typeof param.category).toBe('string');
+    });
+  });
+
+  it('should return the correct count matching ECO_CATEGORIES', async () => {
+    const params = await generateStaticParams();
+    expect(params).toHaveLength(Object.keys(ECO_CATEGORIES).length);
   });
 });

@@ -7,6 +7,7 @@ const NotFoundIcon = NOT_FOUND_ICON;
 
 export const metadata: Metadata = {
   title: 'Page Not Found',
+  description: 'The page you are looking for does not exist. Return to eco-metrics earth.',
 };
 
 export default function NotFound() {

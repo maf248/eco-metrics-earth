@@ -7,8 +7,14 @@ import { getCategoryIcon } from '@/lib/categoryIcon';
 import { getCategoryTitle } from '@/lib/categoryTitle';
 import { siteUrl } from '@/lib/siteUrl';
 
+export const dynamicParams = false;
+
 interface CategoryPageProps {
   params: Promise<{ category: string }>;
+}
+
+export async function generateStaticParams(): Promise<{ category: string }[]> {
+  return Object.values(ECO_CATEGORIES).map((slug) => ({ category: slug }));
 }
 
 export async function generateMetadata({ params }: CategoryPageProps): Promise<Metadata> {

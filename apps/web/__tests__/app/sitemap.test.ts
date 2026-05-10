@@ -45,4 +45,11 @@ describe('sitemap', () => {
       expect(entry.changeFrequency).toBe('weekly');
     });
   });
+
+  it('should have lastModified as a Date instance for every entry', () => {
+    const result = sitemap();
+    result.forEach((entry) => {
+      expect(entry.lastModified).toBeInstanceOf(Date);
+    });
+  });
 });
