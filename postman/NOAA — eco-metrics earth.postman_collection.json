@@ -1,0 +1,1351 @@
+{
+  "info": {
+    "_postman_id": "179bed8a-6f1e-4e31-8112-13d75009e46b",
+    "name": "NOAA — eco-metrics earth",
+    "description": "Colección verificada de endpoints NOAA para eco-metrics earth.\nTodos los requests retornan 200 con JSON o CSV.\n\n📦 Categorías cubiertas:\n  💨 CO₂ Emissions          → NOAA GML (Mauna Loa)\n  🌊 Ocean Health            → Tides & Currents + IOOS ERDDAP\n  🧊 Glacier Melting         → NSIDC Sea Ice Index v4.0\n  🌡️ Global Temperature      → NCEI Climate at a Glance + PSL Indices\n  🌤️ Weather & Alerts        → NWS\n  🔑 NCEI CDO API            → requiere token gratuito\n\n📋 Licencia: Public Domain (US Federal Government)\n\n⚠️  NCEI CDO requiere token gratuito:\n    https://www.ncdc.noaa.gov/cdo-web/token\n    Setear en variable {{CDO_TOKEN}}",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "14886935"
+  },
+  "item": [
+    {
+      "name": "💨 CO₂ & Greenhouse Gases — NOAA GML",
+      "item": [
+        {
+          "name": "CO₂ — Concentración mensual (Mauna Loa)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://gml.noaa.gov/webdata/ccgg/trends/co2/co2_mm_mlo.txt",
+              "protocol": "https",
+              "host": ["gml", "noaa", "gov"],
+              "path": ["webdata", "ccgg", "trends", "co2", "co2_mm_mlo.txt"]
+            },
+            "description": "Concentración mensual de CO₂ en Mauna Loa desde 1958.\n\n📋 Columnas (separadas por espacios):\n  year | month | decimal_date | average (ppm) | deseasonalized | ndays | sdev | unc\n\n⚠️  -99.99 indica datos faltantes."
+          },
+          "response": []
+        },
+        {
+          "name": "CO₂ — Media anual (Mauna Loa)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://gml.noaa.gov/webdata/ccgg/trends/co2/co2_annmean_mlo.txt",
+              "protocol": "https",
+              "host": ["gml", "noaa", "gov"],
+              "path": ["webdata", "ccgg", "trends", "co2", "co2_annmean_mlo.txt"]
+            },
+            "description": "Media anual de CO₂ en Mauna Loa.\n\n📋 Columnas: year | mean (ppm) | unc\n\nIdeal para gráfico de tendencia a largo plazo."
+          },
+          "response": []
+        },
+        {
+          "name": "CO₂ — Datos semanales (Mauna Loa)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://gml.noaa.gov/webdata/ccgg/trends/co2/co2_weekly_mlo.txt",
+              "protocol": "https",
+              "host": ["gml", "noaa", "gov"],
+              "path": ["webdata", "ccgg", "trends", "co2", "co2_weekly_mlo.txt"]
+            },
+            "description": "Lecturas semanales de CO₂ en Mauna Loa.\n\n📋 Columnas: year | month | day | decimal_date | ppm | days | 1yr_ago | 10yr_ago | unc"
+          },
+          "response": []
+        },
+        {
+          "name": "CO₂ — Tasa de crecimiento anual (Mauna Loa)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://gml.noaa.gov/webdata/ccgg/trends/co2/co2_gr_mlo.txt",
+              "protocol": "https",
+              "host": ["gml", "noaa", "gov"],
+              "path": ["webdata", "ccgg", "trends", "co2", "co2_gr_mlo.txt"]
+            },
+            "description": "Tasa de crecimiento anual de CO₂ (ppm/año) en Mauna Loa.\n\n📋 Columnas: year | ann_inc | unc\n\nPermite ver si las emisiones aceleran o desaceleran."
+          },
+          "response": []
+        },
+        {
+          "name": "CH₄ — Metano mensual global",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://gml.noaa.gov/webdata/ccgg/trends/ch4/ch4_mm_gl.txt",
+              "protocol": "https",
+              "host": ["gml", "noaa", "gov"],
+              "path": ["webdata", "ccgg", "trends", "ch4", "ch4_mm_gl.txt"]
+            },
+            "description": "Concentración mensual de metano (CH₄) global en ppb.\n\n📋 Columnas: year | month | decimal | average (ppb) | average_unc | trend | trend_unc\n\nCH₄ tiene ~80x el potencial de calentamiento del CO₂ a 20 años."
+          },
+          "response": []
+        },
+        {
+          "name": "CH₄ — Media anual global",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://gml.noaa.gov/webdata/ccgg/trends/ch4/ch4_annmean_gl.txt",
+              "protocol": "https",
+              "host": ["gml", "noaa", "gov"],
+              "path": ["webdata", "ccgg", "trends", "ch4", "ch4_annmean_gl.txt"]
+            },
+            "description": "Media anual de CH₄ global en ppb.\n\n📋 Columnas: year | mean (ppb) | unc"
+          },
+          "response": []
+        },
+        {
+          "name": "N₂O — Óxido nitroso mensual global",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://gml.noaa.gov/webdata/ccgg/trends/n2o/n2o_mm_gl.txt",
+              "protocol": "https",
+              "host": ["gml", "noaa", "gov"],
+              "path": ["webdata", "ccgg", "trends", "n2o", "n2o_mm_gl.txt"]
+            },
+            "description": "Concentración mensual de N₂O global en ppb.\n\n📋 Columnas: year | month | decimal | average (ppb) | average_unc | trend | trend_unc\n\nN₂O tiene ~265x el potencial de calentamiento del CO₂ a 100 años."
+          },
+          "response": []
+        },
+        {
+          "name": "N₂O — Media anual global",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://gml.noaa.gov/webdata/ccgg/trends/n2o/n2o_annmean_gl.txt",
+              "protocol": "https",
+              "host": ["gml", "noaa", "gov"],
+              "path": ["webdata", "ccgg", "trends", "n2o", "n2o_annmean_gl.txt"]
+            },
+            "description": "Media anual de N₂O global en ppb.\n\n📋 Columnas: year | mean (ppb) | unc"
+          },
+          "response": []
+        },
+        {
+          "name": "SF₆ — Hexafluoruro de azufre mensual global",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://gml.noaa.gov/webdata/ccgg/trends/sf6/sf6_mm_gl.txt",
+              "protocol": "https",
+              "host": ["gml", "noaa", "gov"],
+              "path": ["webdata", "ccgg", "trends", "sf6", "sf6_mm_gl.txt"]
+            },
+            "description": "Concentración mensual de SF₆ global en ppt.\n\n📋 Columnas: year | month | decimal | average (ppt) | average_unc | trend | trend_unc\n\nSF₆ tiene ~23,500x el potencial de calentamiento del CO₂."
+          },
+          "response": []
+        }
+      ],
+      "description": "NOAA Global Monitoring Laboratory — Mauna Loa Observatory, Hawai'i.\nRegistro atmosférico más largo del mundo (desde 1958).\n\n🔗 https://gml.noaa.gov/ccgg/trends/\nLicencia: Public Domain | Auth: Ninguna | Formato: TXT (plain text)\n\nCategoría: CO₂ Emissions"
+    },
+    {
+      "name": "🌊 Ocean Health — Tides & Currents (NOAA CO-OPS)",
+      "item": [
+        {
+          "name": "Estaciones — Listar todas (Water Levels)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://api.tidesandcurrents.noaa.gov/mdapi/prod/webapi/stations.json?type=waterlevels&units=metric",
+              "protocol": "https",
+              "host": ["api", "tidesandcurrents", "noaa", "gov"],
+              "path": ["mdapi", "prod", "webapi", "stations.json"],
+              "query": [
+                {
+                  "key": "type",
+                  "value": "waterlevels",
+                  "description": "waterlevels | tidepredictions | currents"
+                },
+                {
+                  "key": "units",
+                  "value": "metric"
+                }
+              ]
+            },
+            "description": "Lista todas las estaciones activas de nivel del mar (301 estaciones).\n\n📋 Retorna: id, name, lat, lon, state, tidal, greatlakes, shefcode.\n\n💡 Usar los IDs en los requests de datos."
+          },
+          "response": []
+        },
+        {
+          "name": "Nivel del mar — Media mensual (New York Battery)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?product=monthly_mean&application=eco_metrics_earth&begin_date=20000101&end_date=20241231&station={{TIDES_STATION_NYC}}&datum=MSL&units=metric&time_zone=GMT&format=json",
+              "protocol": "https",
+              "host": ["api", "tidesandcurrents", "noaa", "gov"],
+              "path": ["api", "prod", "datagetter"],
+              "query": [
+                {
+                  "key": "product",
+                  "value": "monthly_mean"
+                },
+                {
+                  "key": "application",
+                  "value": "eco_metrics_earth"
+                },
+                {
+                  "key": "begin_date",
+                  "value": "20000101"
+                },
+                {
+                  "key": "end_date",
+                  "value": "20241231"
+                },
+                {
+                  "key": "station",
+                  "value": "{{TIDES_STATION_NYC}}",
+                  "description": "8518750 = The Battery, NY"
+                },
+                {
+                  "key": "datum",
+                  "value": "MSL"
+                },
+                {
+                  "key": "units",
+                  "value": "metric"
+                },
+                {
+                  "key": "time_zone",
+                  "value": "GMT"
+                },
+                {
+                  "key": "format",
+                  "value": "json"
+                }
+              ]
+            },
+            "description": "Media mensual del nivel del mar en Battery, New York (2000–2024).\n\n📋 Response: { metadata: {...}, data: [{ year, month, highest, MHHW, MHW, MSL, ... }] }\n\n🌊 Registro disponible desde 1856 — el más largo de EE. UU."
+          },
+          "response": []
+        },
+        {
+          "name": "Nivel del mar — Media mensual (San Francisco)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?product=monthly_mean&application=eco_metrics_earth&begin_date=20000101&end_date=20241231&station={{TIDES_STATION_SF}}&datum=MSL&units=metric&time_zone=GMT&format=json",
+              "protocol": "https",
+              "host": ["api", "tidesandcurrents", "noaa", "gov"],
+              "path": ["api", "prod", "datagetter"],
+              "query": [
+                {
+                  "key": "product",
+                  "value": "monthly_mean"
+                },
+                {
+                  "key": "application",
+                  "value": "eco_metrics_earth"
+                },
+                {
+                  "key": "begin_date",
+                  "value": "20000101"
+                },
+                {
+                  "key": "end_date",
+                  "value": "20241231"
+                },
+                {
+                  "key": "station",
+                  "value": "{{TIDES_STATION_SF}}",
+                  "description": "9414290 = San Francisco"
+                },
+                {
+                  "key": "datum",
+                  "value": "MSL"
+                },
+                {
+                  "key": "units",
+                  "value": "metric"
+                },
+                {
+                  "key": "time_zone",
+                  "value": "GMT"
+                },
+                {
+                  "key": "format",
+                  "value": "json"
+                }
+              ]
+            },
+            "description": "Media mensual del nivel del mar en San Francisco (2000–2024).\n\nRegistro disponible desde 1897."
+          },
+          "response": []
+        },
+        {
+          "name": "Nivel del mar — Media mensual (Virginia Key, Florida)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?product=monthly_mean&application=eco_metrics_earth&begin_date=20000101&end_date=20241231&station={{TIDES_STATION_FLORIDA}}&datum=MSL&units=metric&time_zone=GMT&format=json",
+              "protocol": "https",
+              "host": ["api", "tidesandcurrents", "noaa", "gov"],
+              "path": ["api", "prod", "datagetter"],
+              "query": [
+                {
+                  "key": "product",
+                  "value": "monthly_mean"
+                },
+                {
+                  "key": "application",
+                  "value": "eco_metrics_earth"
+                },
+                {
+                  "key": "begin_date",
+                  "value": "20000101"
+                },
+                {
+                  "key": "end_date",
+                  "value": "20241231"
+                },
+                {
+                  "key": "station",
+                  "value": "{{TIDES_STATION_FLORIDA}}",
+                  "description": "8723214 = Virginia Key, FL (Miami area)"
+                },
+                {
+                  "key": "datum",
+                  "value": "MSL"
+                },
+                {
+                  "key": "units",
+                  "value": "metric"
+                },
+                {
+                  "key": "time_zone",
+                  "value": "GMT"
+                },
+                {
+                  "key": "format",
+                  "value": "json"
+                }
+              ]
+            },
+            "description": "Media mensual del nivel del mar en Virginia Key, FL (área de Miami, 2000–2024).\n\nFlorida es uno de los estados más vulnerables al sea level rise."
+          },
+          "response": []
+        },
+        {
+          "name": "Temperatura del agua — Enero 2024 (New York Battery)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?product=water_temperature&application=eco_metrics_earth&begin_date=20240601&end_date=20240630&station={{TIDES_STATION_NYC}}&units=metric&time_zone=GMT&format=json&interval=d",
+              "protocol": "https",
+              "host": ["api", "tidesandcurrents", "noaa", "gov"],
+              "path": ["api", "prod", "datagetter"],
+              "query": [
+                {
+                  "key": "product",
+                  "value": "water_temperature"
+                },
+                {
+                  "key": "application",
+                  "value": "eco_metrics_earth"
+                },
+                {
+                  "key": "begin_date",
+                  "value": "20240601",
+                  "description": "⚠️ Límite: máximo 31 días por request"
+                },
+                {
+                  "key": "end_date",
+                  "value": "20240630"
+                },
+                {
+                  "key": "station",
+                  "value": "{{TIDES_STATION_NYC}}"
+                },
+                {
+                  "key": "units",
+                  "value": "metric"
+                },
+                {
+                  "key": "time_zone",
+                  "value": "GMT"
+                },
+                {
+                  "key": "format",
+                  "value": "json"
+                },
+                {
+                  "key": "interval",
+                  "value": "d",
+                  "description": "h = horario (6 min) | d = diario"
+                }
+              ]
+            },
+            "description": "Temperatura diaria del agua en Battery, New York — junio 2024.\n\n⚠️ Límite de la API: máximo 31 días por request.\n   Para un año completo, iterar mes a mes.\n\n📋 Response: { data: [{ t: 'YYYY-MM-DD HH:MM', v: '22.5', f: '0,0,0' }] }"
+          },
+          "response": []
+        },
+        {
+          "name": "Temperatura del agua — Junio 2024 (Virginia Key, Florida)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?product=water_temperature&application=eco_metrics_earth&begin_date=20240601&end_date=20240630&station={{TIDES_STATION_FLORIDA}}&units=metric&time_zone=GMT&format=json&interval=d",
+              "protocol": "https",
+              "host": ["api", "tidesandcurrents", "noaa", "gov"],
+              "path": ["api", "prod", "datagetter"],
+              "query": [
+                {
+                  "key": "product",
+                  "value": "water_temperature"
+                },
+                {
+                  "key": "application",
+                  "value": "eco_metrics_earth"
+                },
+                {
+                  "key": "begin_date",
+                  "value": "20240601"
+                },
+                {
+                  "key": "end_date",
+                  "value": "20240630"
+                },
+                {
+                  "key": "station",
+                  "value": "{{TIDES_STATION_FLORIDA}}"
+                },
+                {
+                  "key": "units",
+                  "value": "metric"
+                },
+                {
+                  "key": "time_zone",
+                  "value": "GMT"
+                },
+                {
+                  "key": "format",
+                  "value": "json"
+                },
+                {
+                  "key": "interval",
+                  "value": "d"
+                }
+              ]
+            },
+            "description": "Temperatura diaria del agua en Virginia Key, FL — junio 2024.\n\nFlorida en verano: temperatura del océano clave para indicadores de blanqueamiento de corales."
+          },
+          "response": []
+        },
+        {
+          "name": "Metadata de estación — The Battery, New York",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://api.tidesandcurrents.noaa.gov/mdapi/prod/webapi/stations/8518750.json?expand=products",
+              "protocol": "https",
+              "host": ["api", "tidesandcurrents", "noaa", "gov"],
+              "path": ["mdapi", "prod", "webapi", "stations", "8518750.json"],
+              "query": [
+                {
+                  "key": "expand",
+                  "value": "products",
+                  "description": "Incluye lista de productos disponibles"
+                }
+              ]
+            },
+            "description": "Metadata completa de la estación The Battery, NY.\n\n📋 Retorna: nombre, lat/lon, estado, datums disponibles, productos, rango de fechas históricas."
+          },
+          "response": []
+        }
+      ],
+      "description": "NOAA Center for Operational Oceanographic Products and Services.\n\n🔗 https://tidesandcurrents.noaa.gov/\nLicencia: Public Domain | Auth: Ninguna | Formato: JSON | CORS: ✅\n\n⚠️  water_temperature tiene límite de 31 días por request.\n\nCategoría: Ocean Health"
+    },
+    {
+      "name": "🌊 Ocean Health — IOOS ERDDAP",
+      "item": [
+        {
+          "name": "Datasets — Info index (primeros 20)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://erddap.ioos.us/erddap/info/index.json?page=1&itemsPerPage=20",
+              "protocol": "https",
+              "host": ["erddap", "ioos", "us"],
+              "path": ["erddap", "info", "index.json"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "itemsPerPage",
+                  "value": "20"
+                }
+              ]
+            },
+            "description": "Lista datasets disponibles en IOOS ERDDAP.\n\n📋 Retorna: datasetID, title, minLongitude, maxLongitude, minLatitude, maxLatitude, minTime, maxTime, institution.\n\n💡 Usar datasetIDs para queries de datos específicos."
+          },
+          "response": []
+        },
+        {
+          "name": "Buscar datasets — Sea Surface Temperature",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://erddap.ioos.us/erddap/search/index.json?searchFor=sea surface temperature&page=1&itemsPerPage=10",
+              "protocol": "https",
+              "host": ["erddap", "ioos", "us"],
+              "path": ["erddap", "search", "index.json"],
+              "query": [
+                {
+                  "key": "searchFor",
+                  "value": "sea surface temperature"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "itemsPerPage",
+                  "value": "10"
+                }
+              ]
+            },
+            "description": "Busca datasets de temperatura superficial del mar (SST).\n\n💡 Cambiar searchFor por: 'ocean acidification' | 'chlorophyll' | 'salinity' | 'coral' | 'sea level'"
+          },
+          "response": []
+        },
+        {
+          "name": "Buscar datasets — Ocean Acidification",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://erddap.ioos.us/erddap/search/index.json?searchFor=ocean acidification&page=1&itemsPerPage=10",
+              "protocol": "https",
+              "host": ["erddap", "ioos", "us"],
+              "path": ["erddap", "search", "index.json"],
+              "query": [
+                {
+                  "key": "searchFor",
+                  "value": "ocean acidification"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "itemsPerPage",
+                  "value": "10"
+                }
+              ]
+            },
+            "description": "Busca datasets de acidificación oceánica (bajada de pH).\n\nIndicador clave para la sección Ocean Health."
+          },
+          "response": []
+        },
+        {
+          "name": "Buscar datasets — Chlorophyll",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://erddap.ioos.us/erddap/search/index.json?searchFor=chlorophyll&page=1&itemsPerPage=10",
+              "protocol": "https",
+              "host": ["erddap", "ioos", "us"],
+              "path": ["erddap", "search", "index.json"],
+              "query": [
+                {
+                  "key": "searchFor",
+                  "value": "chlorophyll"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "itemsPerPage",
+                  "value": "10"
+                }
+              ]
+            },
+            "description": "Busca datasets de clorofila — indicador de productividad y salud de ecosistemas marinos."
+          },
+          "response": []
+        }
+      ],
+      "description": "Integrated Ocean Observing System — ERDDAP con datasets oceanográficos.\n\n🔗 https://erddap.ioos.us/erddap/\nLicencia: Public Domain / CC BY (varía por dataset)\nAuth: Ninguna | Formato: JSON | CORS: ✅\n\nCategoría: Ocean Health"
+    },
+    {
+      "name": "🧊 Glacier Melting — NSIDC Sea Ice Index v4.0",
+      "item": [
+        {
+          "name": "Ártico — Enero (todos los años, 1979–presente)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://noaadata.apps.nsidc.org/NOAA/G02135/north/monthly/data/N_01_extent_v4.0.csv",
+              "protocol": "https",
+              "host": ["noaadata", "apps", "nsidc", "org"],
+              "path": ["NOAA", "G02135", "north", "monthly", "data", "N_01_extent_v4.0.csv"]
+            },
+            "description": "Extensión del hielo ártico en enero para todos los años (1979–presente).\n\nEnero = máximo estacional del Ártico. Extensión típica: ~13–16 M km²."
+          },
+          "response": []
+        },
+        {
+          "name": "Ártico — Marzo (máximo anual)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://noaadata.apps.nsidc.org/NOAA/G02135/north/monthly/data/N_03_extent_v4.0.csv",
+              "protocol": "https",
+              "host": ["noaadata", "apps", "nsidc", "org"],
+              "path": ["NOAA", "G02135", "north", "monthly", "data", "N_03_extent_v4.0.csv"]
+            },
+            "description": "Extensión del hielo ártico en marzo — máximo anual del Ártico."
+          },
+          "response": []
+        },
+        {
+          "name": "Ártico — Julio (inicio del deshielo estival)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://noaadata.apps.nsidc.org/NOAA/G02135/north/monthly/data/N_07_extent_v4.0.csv",
+              "protocol": "https",
+              "host": ["noaadata", "apps", "nsidc", "org"],
+              "path": ["NOAA", "G02135", "north", "monthly", "data", "N_07_extent_v4.0.csv"]
+            },
+            "description": "Extensión del hielo ártico en julio — inicio del deshielo estival."
+          },
+          "response": []
+        },
+        {
+          "name": "Ártico — Septiembre ⭐ (mínimo anual)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://noaadata.apps.nsidc.org/NOAA/G02135/north/monthly/data/N_09_extent_v4.0.csv",
+              "protocol": "https",
+              "host": ["noaadata", "apps", "nsidc", "org"],
+              "path": ["NOAA", "G02135", "north", "monthly", "data", "N_09_extent_v4.0.csv"]
+            },
+            "description": "Extensión del hielo ártico en septiembre — MÍNIMO ANUAL del Ártico.\n\n⭐ El dato más citado en estudios de cambio climático.\nRécord mínimo: septiembre 2012 (~3.37 M km²).\nTendencia: -13% por década."
+          },
+          "response": []
+        },
+        {
+          "name": "Antártico — Febrero ⭐ (mínimo anual)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://noaadata.apps.nsidc.org/NOAA/G02135/south/monthly/data/S_02_extent_v4.0.csv",
+              "protocol": "https",
+              "host": ["noaadata", "apps", "nsidc", "org"],
+              "path": ["NOAA", "G02135", "south", "monthly", "data", "S_02_extent_v4.0.csv"]
+            },
+            "description": "Extensión del hielo antártico en febrero — mínimo anual (hemisferio sur).\n\nRécord mínimo: febrero 2023 (~1.92 M km²), dramáticamente por debajo de la media histórica."
+          },
+          "response": []
+        },
+        {
+          "name": "Antártico — Septiembre (máximo anual)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://noaadata.apps.nsidc.org/NOAA/G02135/south/monthly/data/S_09_extent_v4.0.csv",
+              "protocol": "https",
+              "host": ["noaadata", "apps", "nsidc", "org"],
+              "path": ["NOAA", "G02135", "south", "monthly", "data", "S_09_extent_v4.0.csv"]
+            },
+            "description": "Extensión del hielo antártico en septiembre — máximo anual del Antártico.\n\nExtensión típica: ~17–19 M km²."
+          },
+          "response": []
+        },
+        {
+          "name": "Antártico — Enero",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://noaadata.apps.nsidc.org/NOAA/G02135/south/monthly/data/S_01_extent_v4.0.csv",
+              "protocol": "https",
+              "host": ["noaadata", "apps", "nsidc", "org"],
+              "path": ["NOAA", "G02135", "south", "monthly", "data", "S_01_extent_v4.0.csv"]
+            },
+            "description": "Extensión del hielo antártico en enero (todos los años, 1979–presente)."
+          },
+          "response": []
+        }
+      ],
+      "description": "National Snow and Ice Data Center — Sea Ice Index v4.0\nExtensión del hielo ártico y antártico desde 1979.\n\n🔗 https://nsidc.org/data/seaice_index/\nLicencia: Public Domain | Auth: Ninguna | Formato: CSV\nActualización: mensual (~día 4 de cada mes)\n\n📋 Columnas: year | mo | source_dataset | region | extent (M km²) | area (M km²)\n\nCategoría: Glacier Melting"
+    },
+    {
+      "name": "🌡️ Global Temperature — NCEI Climate at a Glance + PSL Indices",
+      "item": [
+        {
+          "name": "Temperatura global — Tierra + Océano (1880–2024)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://www.ncei.noaa.gov/access/monitoring/climate-at-a-glance/global/time-series/globe/land_ocean/ytd/12/1880-2024.csv",
+              "protocol": "https",
+              "host": ["www", "ncei", "noaa", "gov"],
+              "path": [
+                "access",
+                "monitoring",
+                "climate-at-a-glance",
+                "global",
+                "time-series",
+                "globe",
+                "land_ocean",
+                "ytd",
+                "12",
+                "1880-2024.csv"
+              ]
+            },
+            "description": "Anomalías de temperatura global (tierra + océano) desde 1880.\n\n📋 Columnas: Year | Anomaly (°C)\nBase period: 1901–2000\n\n⭐ El dataset de referencia para Global Temperature en eco-metrics earth."
+          },
+          "response": []
+        },
+        {
+          "name": "Temperatura global — Solo tierra (1880–2024)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://www.ncei.noaa.gov/access/monitoring/climate-at-a-glance/global/time-series/globe/land/ytd/12/1880-2024.csv",
+              "protocol": "https",
+              "host": ["www", "ncei", "noaa", "gov"],
+              "path": [
+                "access",
+                "monitoring",
+                "climate-at-a-glance",
+                "global",
+                "time-series",
+                "globe",
+                "land",
+                "ytd",
+                "12",
+                "1880-2024.csv"
+              ]
+            },
+            "description": "Anomalías de temperatura de superficie terrestre global desde 1880.\n\nLas anomalías de tierra sola son más pronunciadas que tierra+océano (los océanos amortiguan el calentamiento)."
+          },
+          "response": []
+        },
+        {
+          "name": "Temperatura global — Solo océano (1880–2024)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://www.ncei.noaa.gov/access/monitoring/climate-at-a-glance/global/time-series/globe/ocean/ytd/12/1880-2024.csv",
+              "protocol": "https",
+              "host": ["www", "ncei", "noaa", "gov"],
+              "path": [
+                "access",
+                "monitoring",
+                "climate-at-a-glance",
+                "global",
+                "time-series",
+                "globe",
+                "ocean",
+                "ytd",
+                "12",
+                "1880-2024.csv"
+              ]
+            },
+            "description": "Anomalías de temperatura superficial del océano (SST) desde 1880.\n\nÚtil también para la sección Ocean Health como indicador de calentamiento oceánico."
+          },
+          "response": []
+        },
+        {
+          "name": "Temperatura — Hemisferio Norte (1880–2024)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://www.ncei.noaa.gov/access/monitoring/climate-at-a-glance/global/time-series/nhem/land_ocean/ytd/12/1880-2024.csv",
+              "protocol": "https",
+              "host": ["www", "ncei", "noaa", "gov"],
+              "path": [
+                "access",
+                "monitoring",
+                "climate-at-a-glance",
+                "global",
+                "time-series",
+                "nhem",
+                "land_ocean",
+                "ytd",
+                "12",
+                "1880-2024.csv"
+              ]
+            },
+            "description": "Anomalías de temperatura del hemisferio norte (tierra + océano) desde 1880.\n\nEl HN se calienta más rápido que el HS por mayor proporción de tierra."
+          },
+          "response": []
+        },
+        {
+          "name": "Temperatura — Hemisferio Sur (1880–2024)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://www.ncei.noaa.gov/access/monitoring/climate-at-a-glance/global/time-series/shem/land_ocean/ytd/12/1880-2024.csv",
+              "protocol": "https",
+              "host": ["www", "ncei", "noaa", "gov"],
+              "path": [
+                "access",
+                "monitoring",
+                "climate-at-a-glance",
+                "global",
+                "time-series",
+                "shem",
+                "land_ocean",
+                "ytd",
+                "12",
+                "1880-2024.csv"
+              ]
+            },
+            "description": "Anomalías de temperatura del hemisferio sur (tierra + océano) desde 1880."
+          },
+          "response": []
+        },
+        {
+          "name": "El Niño — Índice MEI v2 (ENSO, desde 1979)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://psl.noaa.gov/enso/mei/data/meiv2.data",
+              "protocol": "https",
+              "host": ["psl", "noaa", "gov"],
+              "path": ["enso", "mei", "data", "meiv2.data"]
+            },
+            "description": "Índice MEI v2 — indicador más comprehensivo de El Niño / La Niña (desde 1979).\n\n📋 Columnas: year | DJ | JF | FM | MA | AM | MJ | JJ | JA | AS | SO | ON | ND\n   (bimestres solapados)\n\n⚠️  Positivo = El Niño | Negativo = La Niña\n\nImpacta directamente: temperatura global, coral bleaching, incendios forestales, precipitaciones."
+          },
+          "response": []
+        },
+        {
+          "name": "PDO — Pacific Decadal Oscillation",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://psl.noaa.gov/pdo/data/pdo.timeseries.ersstv5.csv",
+              "protocol": "https",
+              "host": ["psl", "noaa", "gov"],
+              "path": ["pdo", "data", "pdo.timeseries.ersstv5.csv"]
+            },
+            "description": "Índice PDO — variabilidad climática multi-decadal del Pacífico norte.\n\n📋 Formato CSV: Date | Value\n\nModula el impacto de El Niño en escalas de décadas. Útil para contexto de largo plazo."
+          },
+          "response": []
+        },
+        {
+          "name": "AMO — Atlantic Multidecadal Oscillation",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://psl.noaa.gov/data/correlation/amon.us.long.data",
+              "protocol": "https",
+              "host": ["psl", "noaa", "gov"],
+              "path": ["data", "correlation", "amon.us.long.data"]
+            },
+            "description": "Índice AMO — variabilidad del Atlántico norte en ciclos de 60–80 años (desde 1856).\n\n📋 Formato: year | valores mensuales (12 columnas)\n\nInfluye en: huracanes, lluvias en Sahel, temperatura del Atlántico Norte, hielo ártico."
+          },
+          "response": []
+        }
+      ],
+      "description": "NCEI Climate at a Glance — Anomalías de temperatura globales y hemisféricas desde 1880.\nPSL — Índices climáticos multi-decadales (El Niño, PDO, AMO).\n\n🔗 https://www.ncei.noaa.gov/access/monitoring/climate-at-a-glance/\n🔗 https://psl.noaa.gov/\nLicencia: Public Domain | Auth: Ninguna | Formato: CSV/TXT\n\n📋 Formato NCEI CSV: # comentarios de cabecera, luego Year,Anomaly\n📋 Base period: 1901–2000 | Unidades: °C\n\nCategoría: Global Temperature"
+    },
+    {
+      "name": "🌤️ Weather & Alerts — NWS (National Weather Service)",
+      "item": [
+        {
+          "name": "Punto de pronóstico — New York City",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "User-Agent",
+                "value": "(eco-metrics.earth, contact@eco-metrics.earth)",
+                "description": "Obligatorio — NWS rechaza requests sin User-Agent descriptivo"
+              }
+            ],
+            "url": {
+              "raw": "https://api.weather.gov/points/40.7128,-74.0060",
+              "protocol": "https",
+              "host": ["api", "weather", "gov"],
+              "path": ["points", "40.7128,-74.0060"]
+            },
+            "description": "Metadata de punto para NYC (40.7128°N, 74.0060°W).\n\n📋 Retorna URLs para:\n  - forecast: pronóstico 7 días\n  - forecastHourly: pronóstico horario\n  - forecastGridData: datos grillados\n  - observationStations: estaciones cercanas\n\n💡 Primer paso — el response contiene el gridId, gridX, gridY necesarios para el request de pronóstico."
+          },
+          "response": []
+        },
+        {
+          "name": "Pronóstico 7 días — New York City (OKX/33,42)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "User-Agent",
+                "value": "(eco-metrics.earth, contact@eco-metrics.earth)"
+              }
+            ],
+            "url": {
+              "raw": "https://api.weather.gov/gridpoints/OKX/33,42/forecast",
+              "protocol": "https",
+              "host": ["api", "weather", "gov"],
+              "path": ["gridpoints", "OKX", "33,42", "forecast"]
+            },
+            "description": "Pronóstico 7 días para NYC (grilla OKX/33,42).\n\n📋 Retorna períodos día/noche con: temperatura, probabilidad de lluvia, viento, descripción, ícono.\n\n💡 gridId/gridX/gridY se obtienen del endpoint /points — OKX/33,42 es el valor real para NYC."
+          },
+          "response": []
+        },
+        {
+          "name": "Alertas activas — Todos los estados (EE. UU.)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "User-Agent",
+                "value": "(eco-metrics.earth, contact@eco-metrics.earth)"
+              }
+            ],
+            "url": {
+              "raw": "https://api.weather.gov/alerts/active?status=actual",
+              "protocol": "https",
+              "host": ["api", "weather", "gov"],
+              "path": ["alerts", "active"],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "actual",
+                  "description": "actual | exercise | system | test | draft"
+                }
+              ]
+            },
+            "description": "Todas las alertas meteorológicas activas en EE. UU.\n\nTipos posibles: Tornado Warning, Flash Flood, Hurricane, Extreme Heat, Air Quality Alert, Winter Storm, Dense Smoke Advisory, etc.\n\n⚠️  La API NWS NO acepta el parámetro 'limit'."
+          },
+          "response": []
+        },
+        {
+          "name": "Alertas activas — Calidad del aire",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "User-Agent",
+                "value": "(eco-metrics.earth, contact@eco-metrics.earth)"
+              }
+            ],
+            "url": {
+              "raw": "https://api.weather.gov/alerts/active?status=actual&event=Air Quality Alert",
+              "protocol": "https",
+              "host": ["api", "weather", "gov"],
+              "path": ["alerts", "active"],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "actual"
+                },
+                {
+                  "key": "event",
+                  "value": "Air Quality Alert",
+                  "description": "Cambiar por: Excessive Heat Warning | Extreme Fire Danger | Dense Smoke Advisory | Freeze Warning"
+                }
+              ]
+            },
+            "description": "Alertas de calidad del aire activas en EE. UU.\n\nRelevante para las secciones: Air Quality, Global Temperature.\n\n💡 Otros valores para 'event':\n  - 'Excessive Heat Warning'\n  - 'Extreme Fire Danger'\n  - 'Dense Smoke Advisory'"
+          },
+          "response": []
+        },
+        {
+          "name": "Alertas activas — por Estado (Florida)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "User-Agent",
+                "value": "(eco-metrics.earth, contact@eco-metrics.earth)"
+              }
+            ],
+            "url": {
+              "raw": "https://api.weather.gov/alerts/active?status=actual&area=FL",
+              "protocol": "https",
+              "host": ["api", "weather", "gov"],
+              "path": ["alerts", "active"],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "actual"
+                },
+                {
+                  "key": "area",
+                  "value": "FL",
+                  "description": "Código de 2 letras: FL | CA | TX | NY | LA | AK..."
+                }
+              ]
+            },
+            "description": "Alertas activas para el estado de Florida.\n\nFlorida es especialmente relevante: calidad del aire, calor extremo, huracanes, nivel del mar."
+          },
+          "response": []
+        },
+        {
+          "name": "Zonas meteorológicas — públicas",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "User-Agent",
+                "value": "(eco-metrics.earth, contact@eco-metrics.earth)"
+              }
+            ],
+            "url": {
+              "raw": "https://api.weather.gov/zones?type=public",
+              "protocol": "https",
+              "host": ["api", "weather", "gov"],
+              "path": ["zones"],
+              "query": [
+                {
+                  "key": "type",
+                  "value": "public",
+                  "description": "public | coastal | offshore | fire | county"
+                }
+              ]
+            },
+            "description": "Lista de zonas de pronóstico meteorológico público.\n\nCada zona tiene un ID (ej: NYZ072) usado para filtrar alertas por zona específica."
+          },
+          "response": []
+        },
+        {
+          "name": "Oficina meteorológica — OKX (New York/Upton)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "User-Agent",
+                "value": "(eco-metrics.earth, contact@eco-metrics.earth)"
+              }
+            ],
+            "url": {
+              "raw": "https://api.weather.gov/offices/OKX",
+              "protocol": "https",
+              "host": ["api", "weather", "gov"],
+              "path": ["offices", "OKX"]
+            },
+            "description": "Metadata de la oficina meteorológica OKX (New York/Upton).\n\n📋 Retorna: nombre, área de responsabilidad, condados cubiertos, zonas.\n\n💡 Otras oficinas: MIA (Miami) | LAX (Los Angeles) | CHI (Chicago) | HFO (Honolulu)"
+          },
+          "response": []
+        }
+      ],
+      "description": "NOAA National Weather Service — Pronósticos y alertas meteorológicas EE. UU.\n\n🔗 https://www.weather.gov/documentation/services-web-api\nLicencia: Public Domain | Auth: Ninguna | Formato: GeoJSON | CORS: ✅\n\n⚠️  Cobertura solo territorio estadounidense.\n⚠️  El header User-Agent es obligatorio (la API lo requiere para identificar la app).\n\nCategoría: Air Quality, Global Temperature (eventos extremos)"
+    },
+    {
+      "name": "🔑 NCEI CDO API (Token gratuito requerido)",
+      "item": [
+        {
+          "name": "Datasets — Listar todos",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "token",
+                "value": "{{CDO_TOKEN}}",
+                "description": "Token gratuito de NCEI CDO"
+              }
+            ],
+            "url": {
+              "raw": "https://www.ncdc.noaa.gov/cdo-web/api/v2/datasets?limit=25",
+              "protocol": "https",
+              "host": ["www", "ncdc", "noaa", "gov"],
+              "path": ["cdo-web", "api", "v2", "datasets"],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "25"
+                }
+              ]
+            },
+            "description": "Lista todos los datasets disponibles.\n\nDatasets clave:\n  GHCND  = Global Historical Climatology Network Daily\n  GSOM   = Global Summary of the Month\n  GSOY   = Global Summary of the Year\n  NORMAL_MLY = US Monthly Climate Normals\n  PRECIP_15  = 15-Minute Precipitation"
+          },
+          "response": []
+        },
+        {
+          "name": "Tipos de datos — GSOM (temperatura mensual)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "token",
+                "value": "{{CDO_TOKEN}}"
+              }
+            ],
+            "url": {
+              "raw": "https://www.ncdc.noaa.gov/cdo-web/api/v2/datatypes?datasetid=GSOM&limit=50",
+              "protocol": "https",
+              "host": ["www", "ncdc", "noaa", "gov"],
+              "path": ["cdo-web", "api", "v2", "datatypes"],
+              "query": [
+                {
+                  "key": "datasetid",
+                  "value": "GSOM"
+                },
+                {
+                  "key": "limit",
+                  "value": "50"
+                }
+              ]
+            },
+            "description": "Lista los tipos de datos disponibles en GSOM (Global Summary of the Month).\n\nDatatype IDs clave:\n  TAVG = Temperatura media mensual (°C)\n  TMAX = Temperatura máxima\n  TMIN = Temperatura mínima\n  PRCP = Precipitación total\n  SNOW = Nieve total"
+          },
+          "response": []
+        },
+        {
+          "name": "Estaciones — Globales con TAVG (GSOM)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "token",
+                "value": "{{CDO_TOKEN}}"
+              }
+            ],
+            "url": {
+              "raw": "https://www.ncdc.noaa.gov/cdo-web/api/v2/stations?datasetid=GSOM&datatypeid=TAVG&limit=25&sortfield=name&sortorder=asc",
+              "protocol": "https",
+              "host": ["www", "ncdc", "noaa", "gov"],
+              "path": ["cdo-web", "api", "v2", "stations"],
+              "query": [
+                {
+                  "key": "datasetid",
+                  "value": "GSOM"
+                },
+                {
+                  "key": "datatypeid",
+                  "value": "TAVG"
+                },
+                {
+                  "key": "limit",
+                  "value": "25"
+                },
+                {
+                  "key": "sortfield",
+                  "value": "name"
+                },
+                {
+                  "key": "sortorder",
+                  "value": "asc"
+                }
+              ]
+            },
+            "description": "Lista estaciones globales con datos TAVG en GSOM.\n\n💡 Agregar filtros:\n  &locationid=FIPS:AR (Argentina)\n  &locationid=FIPS:US (Estados Unidos)\n  &extent=minLat,minLon,maxLat,maxLon"
+          },
+          "response": []
+        },
+        {
+          "name": "Datos — Temperatura mensual (Central Park NY, 2010–2024)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "token",
+                "value": "{{CDO_TOKEN}}"
+              }
+            ],
+            "url": {
+              "raw": "https://www.ncdc.noaa.gov/cdo-web/api/v2/data?datasetid=GSOM&datatypeid=TAVG&stationid=GHCND:USW00094728&startdate=2010-01-01&enddate=2024-12-31&units=metric&limit=200",
+              "protocol": "https",
+              "host": ["www", "ncdc", "noaa", "gov"],
+              "path": ["cdo-web", "api", "v2", "data"],
+              "query": [
+                {
+                  "key": "datasetid",
+                  "value": "GSOM"
+                },
+                {
+                  "key": "datatypeid",
+                  "value": "TAVG"
+                },
+                {
+                  "key": "stationid",
+                  "value": "GHCND:USW00094728",
+                  "description": "Central Park, New York"
+                },
+                {
+                  "key": "startdate",
+                  "value": "2010-01-01"
+                },
+                {
+                  "key": "enddate",
+                  "value": "2024-12-31"
+                },
+                {
+                  "key": "units",
+                  "value": "metric"
+                },
+                {
+                  "key": "limit",
+                  "value": "200",
+                  "description": "Máximo: 1000 por request"
+                }
+              ]
+            },
+            "description": "Temperatura media mensual en Central Park, NYC (2010–2024).\n\n📋 Response: { results: [{ date, datatype, station, attributes, value }] }\n\n💡 Estaciones de referencia:\n  GHCND:USW00094728 = New York Central Park\n  GHCND:ASN00066062 = Sydney, Australia\n  GHCND:GME00111445 = Berlin, Germany\n  GHCND:RSM00027612 = Moscow, Russia"
+          },
+          "response": []
+        },
+        {
+          "name": "Datos — Temperatura anual (Central Park NY, 1980–2024)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "token",
+                "value": "{{CDO_TOKEN}}"
+              }
+            ],
+            "url": {
+              "raw": "https://www.ncdc.noaa.gov/cdo-web/api/v2/data?datasetid=GSOY&datatypeid=TAVG&stationid=GHCND:USW00094728&startdate=1980-01-01&enddate=2024-12-31&units=metric&limit=100",
+              "protocol": "https",
+              "host": ["www", "ncdc", "noaa", "gov"],
+              "path": ["cdo-web", "api", "v2", "data"],
+              "query": [
+                {
+                  "key": "datasetid",
+                  "value": "GSOY",
+                  "description": "GSOY = Global Summary of the Year"
+                },
+                {
+                  "key": "datatypeid",
+                  "value": "TAVG"
+                },
+                {
+                  "key": "stationid",
+                  "value": "GHCND:USW00094728"
+                },
+                {
+                  "key": "startdate",
+                  "value": "1980-01-01"
+                },
+                {
+                  "key": "enddate",
+                  "value": "2024-12-31"
+                },
+                {
+                  "key": "units",
+                  "value": "metric"
+                },
+                {
+                  "key": "limit",
+                  "value": "100"
+                }
+              ]
+            },
+            "description": "Temperatura media anual en Central Park, NYC (1980–2024).\n\nIdeal para gráfico de tendencia de temperatura a largo plazo."
+          },
+          "response": []
+        },
+        {
+          "name": "Categorías de datos disponibles",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "token",
+                "value": "{{CDO_TOKEN}}"
+              }
+            ],
+            "url": {
+              "raw": "https://www.ncdc.noaa.gov/cdo-web/api/v2/datacategories?limit=50",
+              "protocol": "https",
+              "host": ["www", "ncdc", "noaa", "gov"],
+              "path": ["cdo-web", "api", "v2", "datacategories"],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "50"
+                }
+              ]
+            },
+            "description": "Lista todas las categorías de datos en NCEI CDO.\n\nÚtil para descubrir qué variables climáticas tiene disponible la API."
+          },
+          "response": []
+        },
+        {
+          "name": "Tipos de ubicación disponibles",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "token",
+                "value": "{{CDO_TOKEN}}"
+              }
+            ],
+            "url": {
+              "raw": "https://www.ncdc.noaa.gov/cdo-web/api/v2/locationcategories?limit=50",
+              "protocol": "https",
+              "host": ["www", "ncdc", "noaa", "gov"],
+              "path": ["cdo-web", "api", "v2", "locationcategories"],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "50"
+                }
+              ]
+            },
+            "description": "Lista todos los tipos de ubicación soportados:\nCITY | CLIM_DIV | CLIM_REG | CNTRY | CNTY | HYD_ACC | HYD_CAT | HYD_REG | ST | ZIP"
+          },
+          "response": []
+        }
+      ],
+      "description": "NOAA National Centers for Environmental Information — Climate Data Online API v2.\n\n🔗 Docs: https://www.ncdc.noaa.gov/cdo-web/webservices/v2\n📋 Token gratuito (email): https://www.ncdc.noaa.gov/cdo-web/token\n\nLicencia: Public Domain | Formato: JSON\nRate limit: 5 req/seg, 1000 req/día (plan gratuito)\n\n⚠️  TODOS los requests de esta carpeta requieren:\n    Header: token: {{CDO_TOKEN}}\n    Sin token válido la API devuelve: {\"status\":\"400\",\"message\":\"The token parameter provided is not valid.\"}\n\nCategoría: Global Temperature, CO₂ Emissions, Glacier Melting"
+    }
+  ],
+  "variable": [
+    {
+      "key": "CDO_TOKEN",
+      "value": "YOUR_FREE_TOKEN_HERE",
+      "description": "Token gratuito NCEI CDO → https://www.ncdc.noaa.gov/cdo-web/token"
+    },
+    {
+      "key": "TIDES_STATION_NYC",
+      "value": "8518750",
+      "description": "The Battery, New York — registro desde 1856"
+    },
+    {
+      "key": "TIDES_STATION_SF",
+      "value": "9414290",
+      "description": "San Francisco, CA — registro desde 1897"
+    },
+    {
+      "key": "TIDES_STATION_FLORIDA",
+      "value": "8723214",
+      "description": "Virginia Key, FL (Miami area)"
+    }
+  ]
+}

@@ -1,0 +1,3061 @@
+{
+  "info": {
+    "_postman_id": "928ecf88-cf96-41eb-8b1e-6567f7449dde",
+    "name": "Open-Meteo — Weather, Climate, Air Quality, Marine, Flood",
+    "description": "# Open-Meteo API\n\nColeccion completa de las APIs publicas de **Open-Meteo**: forecast, archive historico, calidad del aire, marine, climate (proyecciones IPCC), flood, ensemble, geocoding, elevation y mas.\n\n## Caracteristicas\n\n- **Sin API key** — Todas las APIs son publicas y abiertas.\n- **CORS habilitado** — Se pueden llamar directamente desde el cliente.\n- **Free tier no comercial** (CC BY 4.0). Uso comercial requiere plan pago.\n- Rate limits sugeridos: < 10.000 req/dia, < 5.000/hora, < 600/min por IP.\n\n## Estructura\n\n- **🌦️ Weather Forecast**: Pronostico estandar (best_match) y por modelo especifico.\n- **🏛️ Historical Weather (Archive)**: 80+ años de datos historicos (ERA5).\n- **💨 Air Quality**: Contaminantes, AQI, polen.\n- **🌊 Marine Weather**: Olas, sea surface temperature.\n- **🌡️ Climate Projections**: Datos IPCC CMIP6 hasta 2050.\n- **🌊 Flood Forecast**: GloFAS river discharge.\n- **🎲 Ensemble Forecast**: Multiples corridas para incertidumbre.\n- **📍 Utility APIs**: Geocoding y Elevation.\n- **🤖 Models**: Endpoints de modelos especificos (GFS, ICON, ECMWF, GEM).\n\n## Variables de entorno\n\nTodas las URLs base estan parametrizadas:\n- `{{forecast_url}}` = `https://api.open-meteo.com`\n- `{{air_quality_url}}` = `https://air-quality-api.open-meteo.com`\n- `{{marine_url}}` = `https://marine-api.open-meteo.com`\n- `{{archive_url}}` = `https://archive-api.open-meteo.com`\n- `{{climate_url}}` = `https://climate-api.open-meteo.com`\n- `{{flood_url}}` = `https://flood-api.open-meteo.com`\n- `{{ensemble_url}}` = `https://ensemble-api.open-meteo.com`\n- `{{geocoding_url}}` = `https://geocoding-api.open-meteo.com`\n\nY datos de ubicacion:\n- `{{lat}}`, `{{lon}}` — Coordenadas por defecto (Buenos Aires).\n- `{{timezone}}` — TZ identifier (ej: `America/Argentina/Buenos_Aires`).\n- `{{start_date}}`, `{{end_date}}` — Rango para queries historicas.\n\n## Tests\n\nCada request valida status 200, JSON valido y campos esperados (`latitude`/`longitude`).\nPara correr todos: click derecho en la coleccion → **Run collection**.\n\n## Atribucion (CC BY 4.0)\n\nCuando uses los datos publicamente: \"Weather data by Open-Meteo.com\" + link a https://open-meteo.com/ \nMas las atribuciones de los modelos subyacentes (CAMS, ECMWF, NOAA, DWD, etc.) que vienen en cada response.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "14886935"
+  },
+  "item": [
+    {
+      "name": "🌦️ Weather Forecast",
+      "item": [
+        {
+          "name": "Current weather (temperature + wind)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Tiempo de respuesta < 15s\", () => pm.expect(pm.response.responseTime).to.be.below(15000));",
+                  "pm.test(\"Es JSON valido\", () => {",
+                  "    const j = pm.response.json();",
+                  "    pm.expect(j).to.be.an(\"object\");",
+                  "    pm.expect(j.error, \"API devolvio error: \" + (j.reason || \"\")).to.not.equal(true);",
+                  "});",
+                  "pm.test(\"Tiene latitude/longitude\", () => {",
+                  "    const j = pm.response.json();",
+                  "    pm.expect(j).to.have.property(\"latitude\");",
+                  "    pm.expect(j).to.have.property(\"longitude\");",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{forecast_url}}/v1/forecast?latitude={{lat}}&longitude={{lon}}&current=temperature_2m,wind_speed_10m,relative_humidity_2m,weather_code&timezone={{timezone}}",
+              "host": ["{{forecast_url}}"],
+              "path": ["v1", "forecast"],
+              "query": [
+                {
+                  "key": "latitude",
+                  "value": "{{lat}}"
+                },
+                {
+                  "key": "longitude",
+                  "value": "{{lon}}"
+                },
+                {
+                  "key": "current",
+                  "value": "temperature_2m,wind_speed_10m,relative_humidity_2m,weather_code"
+                },
+                {
+                  "key": "timezone",
+                  "value": "{{timezone}}"
+                }
+              ]
+            },
+            "description": "Clima actual: temperatura, viento, humedad, codigo de clima."
+          },
+          "response": []
+        },
+        {
+          "name": "Hourly forecast — 7 days",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Tiempo de respuesta < 15s\", () => pm.expect(pm.response.responseTime).to.be.below(15000));",
+                  "pm.test(\"Es JSON valido\", () => {",
+                  "    const j = pm.response.json();",
+                  "    pm.expect(j).to.be.an(\"object\");",
+                  "    pm.expect(j.error, \"API devolvio error: \" + (j.reason || \"\")).to.not.equal(true);",
+                  "});",
+                  "pm.test(\"Tiene latitude/longitude\", () => {",
+                  "    const j = pm.response.json();",
+                  "    pm.expect(j).to.have.property(\"latitude\");",
+                  "    pm.expect(j).to.have.property(\"longitude\");",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{forecast_url}}/v1/forecast?latitude={{lat}}&longitude={{lon}}&hourly=temperature_2m,relative_humidity_2m,precipitation,wind_speed_10m,cloud_cover&timezone={{timezone}}",
+              "host": ["{{forecast_url}}"],
+              "path": ["v1", "forecast"],
+              "query": [
+                {
+                  "key": "latitude",
+                  "value": "{{lat}}"
+                },
+                {
+                  "key": "longitude",
+                  "value": "{{lon}}"
+                },
+                {
+                  "key": "hourly",
+                  "value": "temperature_2m,relative_humidity_2m,precipitation,wind_speed_10m,cloud_cover"
+                },
+                {
+                  "key": "timezone",
+                  "value": "{{timezone}}"
+                }
+              ]
+            },
+            "description": "Pronostico horario por defecto (7 dias = 168 horas)."
+          },
+          "response": []
+        },
+        {
+          "name": "Hourly forecast — 16 days",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Tiempo de respuesta < 15s\", () => pm.expect(pm.response.responseTime).to.be.below(15000));",
+                  "pm.test(\"Es JSON valido\", () => {",
+                  "    const j = pm.response.json();",
+                  "    pm.expect(j).to.be.an(\"object\");",
+                  "    pm.expect(j.error, \"API devolvio error: \" + (j.reason || \"\")).to.not.equal(true);",
+                  "});",
+                  "pm.test(\"Tiene latitude/longitude\", () => {",
+                  "    const j = pm.response.json();",
+                  "    pm.expect(j).to.have.property(\"latitude\");",
+                  "    pm.expect(j).to.have.property(\"longitude\");",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{forecast_url}}/v1/forecast?latitude={{lat}}&longitude={{lon}}&hourly=temperature_2m,precipitation,wind_speed_10m&forecast_days=16&timezone={{timezone}}",
+              "host": ["{{forecast_url}}"],
+              "path": ["v1", "forecast"],
+              "query": [
+                {
+                  "key": "latitude",
+                  "value": "{{lat}}"
+                },
+                {
+                  "key": "longitude",
+                  "value": "{{lon}}"
+                },
+                {
+                  "key": "hourly",
+                  "value": "temperature_2m,precipitation,wind_speed_10m"
+                },
+                {
+                  "key": "forecast_days",
+                  "value": "16"
+                },
+                {
+                  "key": "timezone",
+                  "value": "{{timezone}}"
+                }
+              ]
+            },
+            "description": "Pronostico extendido a 16 dias (maximo soportado)."
+          },
+          "response": []
+        },
+        {
+          "name": "Daily forecast (max/min/sum)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Tiempo de respuesta < 15s\", () => pm.expect(pm.response.responseTime).to.be.below(15000));",
+                  "pm.test(\"Es JSON valido\", () => {",
+                  "    const j = pm.response.json();",
+                  "    pm.expect(j).to.be.an(\"object\");",
+                  "    pm.expect(j.error, \"API devolvio error: \" + (j.reason || \"\")).to.not.equal(true);",
+                  "});",
+                  "pm.test(\"Tiene latitude/longitude\", () => {",
+                  "    const j = pm.response.json();",
+                  "    pm.expect(j).to.have.property(\"latitude\");",
+                  "    pm.expect(j).to.have.property(\"longitude\");",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{forecast_url}}/v1/forecast?latitude={{lat}}&longitude={{lon}}&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,wind_speed_10m_max,uv_index_max,sunrise,sunset&timezone={{timezone}}",
+              "host": ["{{forecast_url}}"],
+              "path": ["v1", "forecast"],
+              "query": [
+                {
+                  "key": "latitude",
+                  "value": "{{lat}}"
+                },
+                {
+                  "key": "longitude",
+                  "value": "{{lon}}"
+                },
+                {
+                  "key": "daily",
+                  "value": "temperature_2m_max,temperature_2m_min,precipitation_sum,wind_speed_10m_max,uv_index_max,sunrise,sunset"
+                },
+                {
+                  "key": "timezone",
+                  "value": "{{timezone}}"
+                }
+              ]
+            },
+            "description": "Agregaciones diarias: max/min de temperatura, suma de precipitacion, salida/puesta del sol."
+          },
+          "response": []
+        },
+        {
+          "name": "Solar radiation (energia solar)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Tiempo de respuesta < 15s\", () => pm.expect(pm.response.responseTime).to.be.below(15000));",
+                  "pm.test(\"Es JSON valido\", () => {",
+                  "    const j = pm.response.json();",
+                  "    pm.expect(j).to.be.an(\"object\");",
+                  "    pm.expect(j.error, \"API devolvio error: \" + (j.reason || \"\")).to.not.equal(true);",
+                  "});",
+                  "pm.test(\"Tiene latitude/longitude\", () => {",
+                  "    const j = pm.response.json();",
+                  "    pm.expect(j).to.have.property(\"latitude\");",
+                  "    pm.expect(j).to.have.property(\"longitude\");",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{forecast_url}}/v1/forecast?latitude={{lat}}&longitude={{lon}}&hourly=shortwave_radiation,direct_radiation,diffuse_radiation,direct_normal_irradiance,global_tilted_irradiance&timezone={{timezone}}",
+              "host": ["{{forecast_url}}"],
+              "path": ["v1", "forecast"],
+              "query": [
+                {
+                  "key": "latitude",
+                  "value": "{{lat}}"
+                },
+                {
+                  "key": "longitude",
+                  "value": "{{lon}}"
+                },
+                {
+                  "key": "hourly",
+                  "value": "shortwave_radiation,direct_radiation,diffuse_radiation,direct_normal_irradiance,global_tilted_irradiance"
+                },
+                {
+                  "key": "timezone",
+                  "value": "{{timezone}}"
+                }
+              ]
+            },
+            "description": "Radiacion solar para proyectos fotovoltaicos."
+          },
+          "response": []
+        },
+        {
+          "name": "Wind at multiple altitudes",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Tiempo de respuesta < 15s\", () => pm.expect(pm.response.responseTime).to.be.below(15000));",
+                  "pm.test(\"Es JSON valido\", () => {",
+                  "    const j = pm.response.json();",
+                  "    pm.expect(j).to.be.an(\"object\");",
+                  "    pm.expect(j.error, \"API devolvio error: \" + (j.reason || \"\")).to.not.equal(true);",
+                  "});",
+                  "pm.test(\"Tiene latitude/longitude\", () => {",
+                  "    const j = pm.response.json();",
+                  "    pm.expect(j).to.have.property(\"latitude\");",
+                  "    pm.expect(j).to.have.property(\"longitude\");",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{forecast_url}}/v1/forecast?latitude={{lat}}&longitude={{lon}}&hourly=wind_speed_10m,wind_speed_80m,wind_speed_120m,wind_speed_180m,wind_direction_10m,wind_direction_80m&timezone={{timezone}}",
+              "host": ["{{forecast_url}}"],
+              "path": ["v1", "forecast"],
+              "query": [
+                {
+                  "key": "latitude",
+                  "value": "{{lat}}"
+                },
+                {
+                  "key": "longitude",
+                  "value": "{{lon}}"
+                },
+                {
+                  "key": "hourly",
+                  "value": "wind_speed_10m,wind_speed_80m,wind_speed_120m,wind_speed_180m,wind_direction_10m,wind_direction_80m"
+                },
+                {
+                  "key": "timezone",
+                  "value": "{{timezone}}"
+                }
+              ]
+            },
+            "description": "Viento a multiples alturas (util para energia eolica)."
+          },
+          "response": []
+        },
+        {
+          "name": "Soil moisture & temperature",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Tiempo de respuesta < 15s\", () => pm.expect(pm.response.responseTime).to.be.below(15000));",
+                  "pm.test(\"Es JSON valido\", () => {",
+                  "    const j = pm.response.json();",
+                  "    pm.expect(j).to.be.an(\"object\");",
+                  "    pm.expect(j.error, \"API devolvio error: \" + (j.reason || \"\")).to.not.equal(true);",
+                  "});",
+                  "pm.test(\"Tiene latitude/longitude\", () => {",
+                  "    const j = pm.response.json();",
+                  "    pm.expect(j).to.have.property(\"latitude\");",
+                  "    pm.expect(j).to.have.property(\"longitude\");",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{forecast_url}}/v1/forecast?latitude={{lat}}&longitude={{lon}}&hourly=soil_temperature_0cm,soil_temperature_6cm,soil_moisture_0_to_1cm,soil_moisture_1_to_3cm,soil_moisture_3_to_9cm,et0_fao_evapotranspiration&timezone={{timezone}}",
+              "host": ["{{forecast_url}}"],
+              "path": ["v1", "forecast"],
+              "query": [
+                {
+                  "key": "latitude",
+                  "value": "{{lat}}"
+                },
+                {
+                  "key": "longitude",
+                  "value": "{{lon}}"
+                },
+                {
+                  "key": "hourly",
+                  "value": "soil_temperature_0cm,soil_temperature_6cm,soil_moisture_0_to_1cm,soil_moisture_1_to_3cm,soil_moisture_3_to_9cm,et0_fao_evapotranspiration"
+                },
+                {
+                  "key": "timezone",
+                  "value": "{{timezone}}"
+                }
+              ]
+            },
+            "description": "Temperatura y humedad del suelo + evapotranspiracion (agricultura)."
+          },
+          "response": []
+        },
+        {
+          "name": "15-minutely data (high resolution)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Tiempo de respuesta < 15s\", () => pm.expect(pm.response.responseTime).to.be.below(15000));",
+                  "pm.test(\"Es JSON valido\", () => {",
+                  "    const j = pm.response.json();",
+                  "    pm.expect(j).to.be.an(\"object\");",
+                  "    pm.expect(j.error, \"API devolvio error: \" + (j.reason || \"\")).to.not.equal(true);",
+                  "});",
+                  "pm.test(\"Tiene latitude/longitude\", () => {",
+                  "    const j = pm.response.json();",
+                  "    pm.expect(j).to.have.property(\"latitude\");",
+                  "    pm.expect(j).to.have.property(\"longitude\");",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{forecast_url}}/v1/forecast?latitude={{lat}}&longitude={{lon}}&minutely_15=temperature_2m,precipitation,wind_speed_10m&timezone={{timezone}}",
+              "host": ["{{forecast_url}}"],
+              "path": ["v1", "forecast"],
+              "query": [
+                {
+                  "key": "latitude",
+                  "value": "{{lat}}"
+                },
+                {
+                  "key": "longitude",
+                  "value": "{{lon}}"
+                },
+                {
+                  "key": "minutely_15",
+                  "value": "temperature_2m,precipitation,wind_speed_10m"
+                },
+                {
+                  "key": "timezone",
+                  "value": "{{timezone}}"
+                }
+              ]
+            },
+            "description": "Datos cada 15 minutos (HRRR en Norteamerica, ICON-D2 en Europa, interpolado en otras zonas)."
+          },
+          "response": []
+        },
+        {
+          "name": "Multiple locations en un request",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Tiempo de respuesta < 15s\", () => pm.expect(pm.response.responseTime).to.be.below(15000));",
+                  "pm.test(\"Es JSON valido\", () => {",
+                  "    const j = pm.response.json();",
+                  "    pm.expect(j).to.be.an(\"object\");",
+                  "    pm.expect(j.error, \"API devolvio error: \" + (j.reason || \"\")).to.not.equal(true);",
+                  "});",
+                  "pm.test(\"Tiene latitude/longitude\", () => {",
+                  "    const j = pm.response.json();",
+                  "    pm.expect(j).to.have.property(\"latitude\");",
+                  "    pm.expect(j).to.have.property(\"longitude\");",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{forecast_url}}/v1/forecast?latitude=-34.6037,-31.4201,-32.9442&longitude=-58.3816,-64.1888,-60.6505&current=temperature_2m,weather_code&timezone=auto",
+              "host": ["{{forecast_url}}"],
+              "path": ["v1", "forecast"],
+              "query": [
+                {
+                  "key": "latitude",
+                  "value": "-34.6037,-31.4201,-32.9442"
+                },
+                {
+                  "key": "longitude",
+                  "value": "-58.3816,-64.1888,-60.6505"
+                },
+                {
+                  "key": "current",
+                  "value": "temperature_2m,weather_code"
+                },
+                {
+                  "key": "timezone",
+                  "value": "auto"
+                }
+              ]
+            },
+            "description": "Hasta 1000 ubicaciones en una sola llamada (Buenos Aires, Cordoba, Rosario)."
+          },
+          "response": []
+        },
+        {
+          "name": "Past + future (past_days)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Tiempo de respuesta < 15s\", () => pm.expect(pm.response.responseTime).to.be.below(15000));",
+                  "pm.test(\"Es JSON valido\", () => {",
+                  "    const j = pm.response.json();",
+                  "    pm.expect(j).to.be.an(\"object\");",
+                  "    pm.expect(j.error, \"API devolvio error: \" + (j.reason || \"\")).to.not.equal(true);",
+                  "});",
+                  "pm.test(\"Tiene latitude/longitude\", () => {",
+                  "    const j = pm.response.json();",
+                  "    pm.expect(j).to.have.property(\"latitude\");",
+                  "    pm.expect(j).to.have.property(\"longitude\");",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{forecast_url}}/v1/forecast?latitude={{lat}}&longitude={{lon}}&hourly=temperature_2m,precipitation&past_days=7&forecast_days=7&timezone={{timezone}}",
+              "host": ["{{forecast_url}}"],
+              "path": ["v1", "forecast"],
+              "query": [
+                {
+                  "key": "latitude",
+                  "value": "{{lat}}"
+                },
+                {
+                  "key": "longitude",
+                  "value": "{{lon}}"
+                },
+                {
+                  "key": "hourly",
+                  "value": "temperature_2m,precipitation"
+                },
+                {
+                  "key": "past_days",
+                  "value": "7"
+                },
+                {
+                  "key": "forecast_days",
+                  "value": "7"
+                },
+                {
+                  "key": "timezone",
+                  "value": "{{timezone}}"
+                }
+              ]
+            },
+            "description": "Combina ultimos 7 dias + proximos 7 dias."
+          },
+          "response": []
+        },
+        {
+          "name": "Custom unit system",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Tiempo de respuesta < 15s\", () => pm.expect(pm.response.responseTime).to.be.below(15000));",
+                  "pm.test(\"Es JSON valido\", () => {",
+                  "    const j = pm.response.json();",
+                  "    pm.expect(j).to.be.an(\"object\");",
+                  "    pm.expect(j.error, \"API devolvio error: \" + (j.reason || \"\")).to.not.equal(true);",
+                  "});",
+                  "pm.test(\"Tiene latitude/longitude\", () => {",
+                  "    const j = pm.response.json();",
+                  "    pm.expect(j).to.have.property(\"latitude\");",
+                  "    pm.expect(j).to.have.property(\"longitude\");",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{forecast_url}}/v1/forecast?latitude={{lat}}&longitude={{lon}}&current=temperature_2m,wind_speed_10m&temperature_unit=fahrenheit&wind_speed_unit=mph&precipitation_unit=inch&timezone={{timezone}}",
+              "host": ["{{forecast_url}}"],
+              "path": ["v1", "forecast"],
+              "query": [
+                {
+                  "key": "latitude",
+                  "value": "{{lat}}"
+                },
+                {
+                  "key": "longitude",
+                  "value": "{{lon}}"
+                },
+                {
+                  "key": "current",
+                  "value": "temperature_2m,wind_speed_10m"
+                },
+                {
+                  "key": "temperature_unit",
+                  "value": "fahrenheit"
+                },
+                {
+                  "key": "wind_speed_unit",
+                  "value": "mph"
+                },
+                {
+                  "key": "precipitation_unit",
+                  "value": "inch"
+                },
+                {
+                  "key": "timezone",
+                  "value": "{{timezone}}"
+                }
+              ]
+            },
+            "description": "Unidades imperiales."
+          },
+          "response": []
+        }
+      ],
+      "description": "API principal de pronostico (`/v1/forecast`). Combina los mejores modelos por region (`best_match`) o permite elegir modelo especifico."
+    },
+    {
+      "name": "🏛️ Historical Weather (Archive)",
+      "item": [
+        {
+          "name": "Historical hourly — rango por defecto",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Tiempo de respuesta < 15s\", () => pm.expect(pm.response.responseTime).to.be.below(15000));",
+                  "pm.test(\"Es JSON valido\", () => {",
+                  "    const j = pm.response.json();",
+                  "    pm.expect(j).to.be.an(\"object\");",
+                  "    pm.expect(j.error, \"API devolvio error: \" + (j.reason || \"\")).to.not.equal(true);",
+                  "});",
+                  "pm.test(\"Tiene latitude/longitude\", () => {",
+                  "    const j = pm.response.json();",
+                  "    pm.expect(j).to.have.property(\"latitude\");",
+                  "    pm.expect(j).to.have.property(\"longitude\");",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{archive_url}}/v1/archive?latitude={{lat}}&longitude={{lon}}&start_date={{start_date}}&end_date={{end_date}}&hourly=temperature_2m,relative_humidity_2m,precipitation,wind_speed_10m&timezone={{timezone}}",
+              "host": ["{{archive_url}}"],
+              "path": ["v1", "archive"],
+              "query": [
+                {
+                  "key": "latitude",
+                  "value": "{{lat}}"
+                },
+                {
+                  "key": "longitude",
+                  "value": "{{lon}}"
+                },
+                {
+                  "key": "start_date",
+                  "value": "{{start_date}}"
+                },
+                {
+                  "key": "end_date",
+                  "value": "{{end_date}}"
+                },
+                {
+                  "key": "hourly",
+                  "value": "temperature_2m,relative_humidity_2m,precipitation,wind_speed_10m"
+                },
+                {
+                  "key": "timezone",
+                  "value": "{{timezone}}"
+                }
+              ]
+            },
+            "description": "Datos horarios para el rango definido en variables."
+          },
+          "response": []
+        },
+        {
+          "name": "Historical daily — full year 2023",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Tiempo de respuesta < 15s\", () => pm.expect(pm.response.responseTime).to.be.below(15000));",
+                  "pm.test(\"Es JSON valido\", () => {",
+                  "    const j = pm.response.json();",
+                  "    pm.expect(j).to.be.an(\"object\");",
+                  "    pm.expect(j.error, \"API devolvio error: \" + (j.reason || \"\")).to.not.equal(true);",
+                  "});",
+                  "pm.test(\"Tiene latitude/longitude\", () => {",
+                  "    const j = pm.response.json();",
+                  "    pm.expect(j).to.have.property(\"latitude\");",
+                  "    pm.expect(j).to.have.property(\"longitude\");",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{archive_url}}/v1/archive?latitude={{lat}}&longitude={{lon}}&start_date=2023-01-01&end_date=2023-12-31&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,wind_speed_10m_max&timezone={{timezone}}",
+              "host": ["{{archive_url}}"],
+              "path": ["v1", "archive"],
+              "query": [
+                {
+                  "key": "latitude",
+                  "value": "{{lat}}"
+                },
+                {
+                  "key": "longitude",
+                  "value": "{{lon}}"
+                },
+                {
+                  "key": "start_date",
+                  "value": "2023-01-01"
+                },
+                {
+                  "key": "end_date",
+                  "value": "2023-12-31"
+                },
+                {
+                  "key": "daily",
+                  "value": "temperature_2m_max,temperature_2m_min,precipitation_sum,wind_speed_10m_max"
+                },
+                {
+                  "key": "timezone",
+                  "value": "{{timezone}}"
+                }
+              ]
+            },
+            "description": "Agregaciones diarias para todo 2023."
+          },
+          "response": []
+        },
+        {
+          "name": "Historical — long range (1980-2024)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Tiempo de respuesta < 15s\", () => pm.expect(pm.response.responseTime).to.be.below(15000));",
+                  "pm.test(\"Es JSON valido\", () => {",
+                  "    const j = pm.response.json();",
+                  "    pm.expect(j).to.be.an(\"object\");",
+                  "    pm.expect(j.error, \"API devolvio error: \" + (j.reason || \"\")).to.not.equal(true);",
+                  "});",
+                  "pm.test(\"Tiene latitude/longitude\", () => {",
+                  "    const j = pm.response.json();",
+                  "    pm.expect(j).to.have.property(\"latitude\");",
+                  "    pm.expect(j).to.have.property(\"longitude\");",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{archive_url}}/v1/archive?latitude={{lat}}&longitude={{lon}}&start_date=1980-01-01&end_date=2024-12-31&daily=temperature_2m_mean,precipitation_sum&timezone={{timezone}}",
+              "host": ["{{archive_url}}"],
+              "path": ["v1", "archive"],
+              "query": [
+                {
+                  "key": "latitude",
+                  "value": "{{lat}}"
+                },
+                {
+                  "key": "longitude",
+                  "value": "{{lon}}"
+                },
+                {
+                  "key": "start_date",
+                  "value": "1980-01-01"
+                },
+                {
+                  "key": "end_date",
+                  "value": "2024-12-31"
+                },
+                {
+                  "key": "daily",
+                  "value": "temperature_2m_mean,precipitation_sum"
+                },
+                {
+                  "key": "timezone",
+                  "value": "{{timezone}}"
+                }
+              ]
+            },
+            "description": "Serie larga para analisis de tendencias climaticas. **Atencion: response grande.**"
+          },
+          "response": []
+        },
+        {
+          "name": "Specific model — ERA5",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Tiempo de respuesta < 15s\", () => pm.expect(pm.response.responseTime).to.be.below(15000));",
+                  "pm.test(\"Es JSON valido\", () => {",
+                  "    const j = pm.response.json();",
+                  "    pm.expect(j).to.be.an(\"object\");",
+                  "    pm.expect(j.error, \"API devolvio error: \" + (j.reason || \"\")).to.not.equal(true);",
+                  "});",
+                  "pm.test(\"Tiene latitude/longitude\", () => {",
+                  "    const j = pm.response.json();",
+                  "    pm.expect(j).to.have.property(\"latitude\");",
+                  "    pm.expect(j).to.have.property(\"longitude\");",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{archive_url}}/v1/archive?latitude={{lat}}&longitude={{lon}}&start_date={{start_date}}&end_date={{end_date}}&hourly=temperature_2m&models=era5&timezone={{timezone}}",
+              "host": ["{{archive_url}}"],
+              "path": ["v1", "archive"],
+              "query": [
+                {
+                  "key": "latitude",
+                  "value": "{{lat}}"
+                },
+                {
+                  "key": "longitude",
+                  "value": "{{lon}}"
+                },
+                {
+                  "key": "start_date",
+                  "value": "{{start_date}}"
+                },
+                {
+                  "key": "end_date",
+                  "value": "{{end_date}}"
+                },
+                {
+                  "key": "hourly",
+                  "value": "temperature_2m"
+                },
+                {
+                  "key": "models",
+                  "value": "era5"
+                },
+                {
+                  "key": "timezone",
+                  "value": "{{timezone}}"
+                }
+              ]
+            },
+            "description": "Forzar modelo ERA5 (0.25°). Otras opciones: era5_land, ecmwf_ifs, cerra."
+          },
+          "response": []
+        },
+        {
+          "name": "Soil data historico",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Tiempo de respuesta < 15s\", () => pm.expect(pm.response.responseTime).to.be.below(15000));",
+                  "pm.test(\"Es JSON valido\", () => {",
+                  "    const j = pm.response.json();",
+                  "    pm.expect(j).to.be.an(\"object\");",
+                  "    pm.expect(j.error, \"API devolvio error: \" + (j.reason || \"\")).to.not.equal(true);",
+                  "});",
+                  "pm.test(\"Tiene latitude/longitude\", () => {",
+                  "    const j = pm.response.json();",
+                  "    pm.expect(j).to.have.property(\"latitude\");",
+                  "    pm.expect(j).to.have.property(\"longitude\");",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{archive_url}}/v1/archive?latitude={{lat}}&longitude={{lon}}&start_date={{start_date}}&end_date={{end_date}}&hourly=soil_temperature_0_to_7cm,soil_moisture_0_to_7cm,soil_moisture_7_to_28cm&timezone={{timezone}}",
+              "host": ["{{archive_url}}"],
+              "path": ["v1", "archive"],
+              "query": [
+                {
+                  "key": "latitude",
+                  "value": "{{lat}}"
+                },
+                {
+                  "key": "longitude",
+                  "value": "{{lon}}"
+                },
+                {
+                  "key": "start_date",
+                  "value": "{{start_date}}"
+                },
+                {
+                  "key": "end_date",
+                  "value": "{{end_date}}"
+                },
+                {
+                  "key": "hourly",
+                  "value": "soil_temperature_0_to_7cm,soil_moisture_0_to_7cm,soil_moisture_7_to_28cm"
+                },
+                {
+                  "key": "timezone",
+                  "value": "{{timezone}}"
+                }
+              ]
+            },
+            "description": "Datos historicos de suelo (ERA5-Land)."
+          },
+          "response": []
+        }
+      ],
+      "description": "Datos historicos desde 1940 (ERA5/ERA5-Land + IFS). Endpoint: `/v1/archive`."
+    },
+    {
+      "name": "💨 Air Quality",
+      "item": [
+        {
+          "name": "All major pollutants",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Tiempo de respuesta < 15s\", () => pm.expect(pm.response.responseTime).to.be.below(15000));",
+                  "pm.test(\"Es JSON valido\", () => {",
+                  "    const j = pm.response.json();",
+                  "    pm.expect(j).to.be.an(\"object\");",
+                  "    pm.expect(j.error, \"API devolvio error: \" + (j.reason || \"\")).to.not.equal(true);",
+                  "});",
+                  "pm.test(\"Tiene latitude/longitude\", () => {",
+                  "    const j = pm.response.json();",
+                  "    pm.expect(j).to.have.property(\"latitude\");",
+                  "    pm.expect(j).to.have.property(\"longitude\");",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{air_quality_url}}/v1/air-quality?latitude={{lat}}&longitude={{lon}}&hourly=pm10,pm2_5,carbon_monoxide,nitrogen_dioxide,sulphur_dioxide,ozone,aerosol_optical_depth,dust,uv_index&timezone={{timezone}}",
+              "host": ["{{air_quality_url}}"],
+              "path": ["v1", "air-quality"],
+              "query": [
+                {
+                  "key": "latitude",
+                  "value": "{{lat}}"
+                },
+                {
+                  "key": "longitude",
+                  "value": "{{lon}}"
+                },
+                {
+                  "key": "hourly",
+                  "value": "pm10,pm2_5,carbon_monoxide,nitrogen_dioxide,sulphur_dioxide,ozone,aerosol_optical_depth,dust,uv_index"
+                },
+                {
+                  "key": "timezone",
+                  "value": "{{timezone}}"
+                }
+              ]
+            },
+            "description": "Contaminantes principales: PM10, PM2.5, CO, NO2, SO2, O3, polvo, indice UV."
+          },
+          "response": []
+        },
+        {
+          "name": "Air Quality Index (European + US)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Tiempo de respuesta < 15s\", () => pm.expect(pm.response.responseTime).to.be.below(15000));",
+                  "pm.test(\"Es JSON valido\", () => {",
+                  "    const j = pm.response.json();",
+                  "    pm.expect(j).to.be.an(\"object\");",
+                  "    pm.expect(j.error, \"API devolvio error: \" + (j.reason || \"\")).to.not.equal(true);",
+                  "});",
+                  "pm.test(\"Tiene latitude/longitude\", () => {",
+                  "    const j = pm.response.json();",
+                  "    pm.expect(j).to.have.property(\"latitude\");",
+                  "    pm.expect(j).to.have.property(\"longitude\");",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{air_quality_url}}/v1/air-quality?latitude={{lat}}&longitude={{lon}}&hourly=european_aqi,us_aqi,european_aqi_pm2_5,european_aqi_pm10,european_aqi_no2,european_aqi_o3,european_aqi_so2,us_aqi_pm2_5,us_aqi_pm10&timezone={{timezone}}",
+              "host": ["{{air_quality_url}}"],
+              "path": ["v1", "air-quality"],
+              "query": [
+                {
+                  "key": "latitude",
+                  "value": "{{lat}}"
+                },
+                {
+                  "key": "longitude",
+                  "value": "{{lon}}"
+                },
+                {
+                  "key": "hourly",
+                  "value": "european_aqi,us_aqi,european_aqi_pm2_5,european_aqi_pm10,european_aqi_no2,european_aqi_o3,european_aqi_so2,us_aqi_pm2_5,us_aqi_pm10"
+                },
+                {
+                  "key": "timezone",
+                  "value": "{{timezone}}"
+                }
+              ]
+            },
+            "description": "Indices europeos y estadounidenses, totales y por contaminante."
+          },
+          "response": []
+        },
+        {
+          "name": "Pollen forecast",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Tiempo de respuesta < 15s\", () => pm.expect(pm.response.responseTime).to.be.below(15000));",
+                  "pm.test(\"Es JSON valido\", () => {",
+                  "    const j = pm.response.json();",
+                  "    pm.expect(j).to.be.an(\"object\");",
+                  "    pm.expect(j.error, \"API devolvio error: \" + (j.reason || \"\")).to.not.equal(true);",
+                  "});",
+                  "pm.test(\"Tiene latitude/longitude\", () => {",
+                  "    const j = pm.response.json();",
+                  "    pm.expect(j).to.have.property(\"latitude\");",
+                  "    pm.expect(j).to.have.property(\"longitude\");",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{air_quality_url}}/v1/air-quality?latitude={{lat}}&longitude={{lon}}&hourly=alder_pollen,birch_pollen,grass_pollen,mugwort_pollen,olive_pollen,ragweed_pollen&timezone={{timezone}}",
+              "host": ["{{air_quality_url}}"],
+              "path": ["v1", "air-quality"],
+              "query": [
+                {
+                  "key": "latitude",
+                  "value": "{{lat}}"
+                },
+                {
+                  "key": "longitude",
+                  "value": "{{lon}}"
+                },
+                {
+                  "key": "hourly",
+                  "value": "alder_pollen,birch_pollen,grass_pollen,mugwort_pollen,olive_pollen,ragweed_pollen"
+                },
+                {
+                  "key": "timezone",
+                  "value": "{{timezone}}"
+                }
+              ]
+            },
+            "description": "Polen (alergenos). Disponible solo en Europa con el modelo CAMS European."
+          },
+          "response": []
+        },
+        {
+          "name": "Current air quality",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Tiempo de respuesta < 15s\", () => pm.expect(pm.response.responseTime).to.be.below(15000));",
+                  "pm.test(\"Es JSON valido\", () => {",
+                  "    const j = pm.response.json();",
+                  "    pm.expect(j).to.be.an(\"object\");",
+                  "    pm.expect(j.error, \"API devolvio error: \" + (j.reason || \"\")).to.not.equal(true);",
+                  "});",
+                  "pm.test(\"Tiene latitude/longitude\", () => {",
+                  "    const j = pm.response.json();",
+                  "    pm.expect(j).to.have.property(\"latitude\");",
+                  "    pm.expect(j).to.have.property(\"longitude\");",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{air_quality_url}}/v1/air-quality?latitude={{lat}}&longitude={{lon}}&current=european_aqi,us_aqi,pm10,pm2_5,carbon_monoxide,ozone,nitrogen_dioxide&timezone={{timezone}}",
+              "host": ["{{air_quality_url}}"],
+              "path": ["v1", "air-quality"],
+              "query": [
+                {
+                  "key": "latitude",
+                  "value": "{{lat}}"
+                },
+                {
+                  "key": "longitude",
+                  "value": "{{lon}}"
+                },
+                {
+                  "key": "current",
+                  "value": "european_aqi,us_aqi,pm10,pm2_5,carbon_monoxide,ozone,nitrogen_dioxide"
+                },
+                {
+                  "key": "timezone",
+                  "value": "{{timezone}}"
+                }
+              ]
+            },
+            "description": "Estado actual de calidad del aire."
+          },
+          "response": []
+        },
+        {
+          "name": "Past air quality (with past_days)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Tiempo de respuesta < 15s\", () => pm.expect(pm.response.responseTime).to.be.below(15000));",
+                  "pm.test(\"Es JSON valido\", () => {",
+                  "    const j = pm.response.json();",
+                  "    pm.expect(j).to.be.an(\"object\");",
+                  "    pm.expect(j.error, \"API devolvio error: \" + (j.reason || \"\")).to.not.equal(true);",
+                  "});",
+                  "pm.test(\"Tiene latitude/longitude\", () => {",
+                  "    const j = pm.response.json();",
+                  "    pm.expect(j).to.have.property(\"latitude\");",
+                  "    pm.expect(j).to.have.property(\"longitude\");",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{air_quality_url}}/v1/air-quality?latitude={{lat}}&longitude={{lon}}&hourly=pm2_5,pm10,european_aqi&past_days=30&timezone={{timezone}}",
+              "host": ["{{air_quality_url}}"],
+              "path": ["v1", "air-quality"],
+              "query": [
+                {
+                  "key": "latitude",
+                  "value": "{{lat}}"
+                },
+                {
+                  "key": "longitude",
+                  "value": "{{lon}}"
+                },
+                {
+                  "key": "hourly",
+                  "value": "pm2_5,pm10,european_aqi"
+                },
+                {
+                  "key": "past_days",
+                  "value": "30"
+                },
+                {
+                  "key": "timezone",
+                  "value": "{{timezone}}"
+                }
+              ]
+            },
+            "description": "Historial reciente (hasta 92 dias hacia atras)."
+          },
+          "response": []
+        },
+        {
+          "name": "Force CAMS European model",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Tiempo de respuesta < 15s\", () => pm.expect(pm.response.responseTime).to.be.below(15000));",
+                  "pm.test(\"Es JSON valido\", () => {",
+                  "    const j = pm.response.json();",
+                  "    pm.expect(j).to.be.an(\"object\");",
+                  "    pm.expect(j.error, \"API devolvio error: \" + (j.reason || \"\")).to.not.equal(true);",
+                  "});",
+                  "pm.test(\"Tiene latitude/longitude\", () => {",
+                  "    const j = pm.response.json();",
+                  "    pm.expect(j).to.have.property(\"latitude\");",
+                  "    pm.expect(j).to.have.property(\"longitude\");",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{air_quality_url}}/v1/air-quality?latitude={{lat}}&longitude={{lon}}&hourly=pm2_5,pm10,european_aqi&domains=cams_europe&timezone={{timezone}}",
+              "host": ["{{air_quality_url}}"],
+              "path": ["v1", "air-quality"],
+              "query": [
+                {
+                  "key": "latitude",
+                  "value": "{{lat}}"
+                },
+                {
+                  "key": "longitude",
+                  "value": "{{lon}}"
+                },
+                {
+                  "key": "hourly",
+                  "value": "pm2_5,pm10,european_aqi"
+                },
+                {
+                  "key": "domains",
+                  "value": "cams_europe"
+                },
+                {
+                  "key": "timezone",
+                  "value": "{{timezone}}"
+                }
+              ]
+            },
+            "description": "Forzar el modelo europeo (mayor resolucion 11km). Solo aplica en Europa."
+          },
+          "response": []
+        }
+      ],
+      "description": "Calidad del aire (CAMS Europa 11km + CAMS global 45km). Endpoint: `/v1/air-quality`."
+    },
+    {
+      "name": "🌊 Marine Weather",
+      "item": [
+        {
+          "name": "Wave height & direction",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Tiempo de respuesta < 15s\", () => pm.expect(pm.response.responseTime).to.be.below(15000));",
+                  "pm.test(\"Es JSON valido\", () => {",
+                  "    const j = pm.response.json();",
+                  "    pm.expect(j).to.be.an(\"object\");",
+                  "    pm.expect(j.error, \"API devolvio error: \" + (j.reason || \"\")).to.not.equal(true);",
+                  "});",
+                  "pm.test(\"Tiene latitude/longitude\", () => {",
+                  "    const j = pm.response.json();",
+                  "    pm.expect(j).to.have.property(\"latitude\");",
+                  "    pm.expect(j).to.have.property(\"longitude\");",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{marine_url}}/v1/marine?latitude=-38.0&longitude=-57.55&hourly=wave_height,wave_direction,wave_period,wind_wave_height,wind_wave_direction,wind_wave_period,swell_wave_height,swell_wave_direction,swell_wave_period&timezone=auto",
+              "host": ["{{marine_url}}"],
+              "path": ["v1", "marine"],
+              "query": [
+                {
+                  "key": "latitude",
+                  "value": "-38.0"
+                },
+                {
+                  "key": "longitude",
+                  "value": "-57.55"
+                },
+                {
+                  "key": "hourly",
+                  "value": "wave_height,wave_direction,wave_period,wind_wave_height,wind_wave_direction,wind_wave_period,swell_wave_height,swell_wave_direction,swell_wave_period"
+                },
+                {
+                  "key": "timezone",
+                  "value": "auto"
+                }
+              ]
+            },
+            "description": "Olas totales + olas de viento + olas de mar de fondo (Mar del Plata)."
+          },
+          "response": []
+        },
+        {
+          "name": "Sea surface temperature",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Tiempo de respuesta < 15s\", () => pm.expect(pm.response.responseTime).to.be.below(15000));",
+                  "pm.test(\"Es JSON valido\", () => {",
+                  "    const j = pm.response.json();",
+                  "    pm.expect(j).to.be.an(\"object\");",
+                  "    pm.expect(j.error, \"API devolvio error: \" + (j.reason || \"\")).to.not.equal(true);",
+                  "});",
+                  "pm.test(\"Tiene latitude/longitude\", () => {",
+                  "    const j = pm.response.json();",
+                  "    pm.expect(j).to.have.property(\"latitude\");",
+                  "    pm.expect(j).to.have.property(\"longitude\");",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{marine_url}}/v1/marine?latitude=-38.0&longitude=-57.55&hourly=sea_surface_temperature,ocean_current_velocity,ocean_current_direction&timezone=auto",
+              "host": ["{{marine_url}}"],
+              "path": ["v1", "marine"],
+              "query": [
+                {
+                  "key": "latitude",
+                  "value": "-38.0"
+                },
+                {
+                  "key": "longitude",
+                  "value": "-57.55"
+                },
+                {
+                  "key": "hourly",
+                  "value": "sea_surface_temperature,ocean_current_velocity,ocean_current_direction"
+                },
+                {
+                  "key": "timezone",
+                  "value": "auto"
+                }
+              ]
+            },
+            "description": "Temperatura del mar y corrientes oceanicas."
+          },
+          "response": []
+        },
+        {
+          "name": "Daily marine aggregates",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Tiempo de respuesta < 15s\", () => pm.expect(pm.response.responseTime).to.be.below(15000));",
+                  "pm.test(\"Es JSON valido\", () => {",
+                  "    const j = pm.response.json();",
+                  "    pm.expect(j).to.be.an(\"object\");",
+                  "    pm.expect(j.error, \"API devolvio error: \" + (j.reason || \"\")).to.not.equal(true);",
+                  "});",
+                  "pm.test(\"Tiene latitude/longitude\", () => {",
+                  "    const j = pm.response.json();",
+                  "    pm.expect(j).to.have.property(\"latitude\");",
+                  "    pm.expect(j).to.have.property(\"longitude\");",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{marine_url}}/v1/marine?latitude=-38.0&longitude=-57.55&daily=wave_height_max,wave_direction_dominant,wave_period_max,wind_wave_height_max,swell_wave_height_max&timezone=auto",
+              "host": ["{{marine_url}}"],
+              "path": ["v1", "marine"],
+              "query": [
+                {
+                  "key": "latitude",
+                  "value": "-38.0"
+                },
+                {
+                  "key": "longitude",
+                  "value": "-57.55"
+                },
+                {
+                  "key": "daily",
+                  "value": "wave_height_max,wave_direction_dominant,wave_period_max,wind_wave_height_max,swell_wave_height_max"
+                },
+                {
+                  "key": "timezone",
+                  "value": "auto"
+                }
+              ]
+            },
+            "description": "Maximos diarios."
+          },
+          "response": []
+        },
+        {
+          "name": "Current marine conditions",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Tiempo de respuesta < 15s\", () => pm.expect(pm.response.responseTime).to.be.below(15000));",
+                  "pm.test(\"Es JSON valido\", () => {",
+                  "    const j = pm.response.json();",
+                  "    pm.expect(j).to.be.an(\"object\");",
+                  "    pm.expect(j.error, \"API devolvio error: \" + (j.reason || \"\")).to.not.equal(true);",
+                  "});",
+                  "pm.test(\"Tiene latitude/longitude\", () => {",
+                  "    const j = pm.response.json();",
+                  "    pm.expect(j).to.have.property(\"latitude\");",
+                  "    pm.expect(j).to.have.property(\"longitude\");",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{marine_url}}/v1/marine?latitude=-38.0&longitude=-57.55&current=wave_height,wave_direction,wave_period,sea_surface_temperature&timezone=auto",
+              "host": ["{{marine_url}}"],
+              "path": ["v1", "marine"],
+              "query": [
+                {
+                  "key": "latitude",
+                  "value": "-38.0"
+                },
+                {
+                  "key": "longitude",
+                  "value": "-57.55"
+                },
+                {
+                  "key": "current",
+                  "value": "wave_height,wave_direction,wave_period,sea_surface_temperature"
+                },
+                {
+                  "key": "timezone",
+                  "value": "auto"
+                }
+              ]
+            },
+            "description": "Estado actual del mar."
+          },
+          "response": []
+        }
+      ],
+      "description": "Olas oceanicas y temperatura superficial del mar. Endpoint: `/v1/marine`."
+    },
+    {
+      "name": "🌡️ Climate Projections (IPCC CMIP6)",
+      "item": [
+        {
+          "name": "Climate projection — full range (1950-2050)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Tiempo de respuesta < 15s\", () => pm.expect(pm.response.responseTime).to.be.below(15000));",
+                  "pm.test(\"Es JSON valido\", () => {",
+                  "    const j = pm.response.json();",
+                  "    pm.expect(j).to.be.an(\"object\");",
+                  "    pm.expect(j.error, \"API devolvio error: \" + (j.reason || \"\")).to.not.equal(true);",
+                  "});",
+                  "pm.test(\"Tiene latitude/longitude\", () => {",
+                  "    const j = pm.response.json();",
+                  "    pm.expect(j).to.have.property(\"latitude\");",
+                  "    pm.expect(j).to.have.property(\"longitude\");",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{climate_url}}/v1/climate?latitude={{lat}}&longitude={{lon}}&start_date=1950-01-01&end_date=2050-12-31&models=EC_Earth3P_HR,MRI_AGCM3_2_S&daily=temperature_2m_max,temperature_2m_min,precipitation_sum",
+              "host": ["{{climate_url}}"],
+              "path": ["v1", "climate"],
+              "query": [
+                {
+                  "key": "latitude",
+                  "value": "{{lat}}"
+                },
+                {
+                  "key": "longitude",
+                  "value": "{{lon}}"
+                },
+                {
+                  "key": "start_date",
+                  "value": "1950-01-01"
+                },
+                {
+                  "key": "end_date",
+                  "value": "2050-12-31"
+                },
+                {
+                  "key": "models",
+                  "value": "EC_Earth3P_HR,MRI_AGCM3_2_S"
+                },
+                {
+                  "key": "daily",
+                  "value": "temperature_2m_max,temperature_2m_min,precipitation_sum"
+                }
+              ]
+            },
+            "description": "Proyeccion completa con 2 modelos. Util para tendencias de largo plazo."
+          },
+          "response": []
+        },
+        {
+          "name": "Climate — single model future projection",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Tiempo de respuesta < 15s\", () => pm.expect(pm.response.responseTime).to.be.below(15000));",
+                  "pm.test(\"Es JSON valido\", () => {",
+                  "    const j = pm.response.json();",
+                  "    pm.expect(j).to.be.an(\"object\");",
+                  "    pm.expect(j.error, \"API devolvio error: \" + (j.reason || \"\")).to.not.equal(true);",
+                  "});",
+                  "pm.test(\"Tiene latitude/longitude\", () => {",
+                  "    const j = pm.response.json();",
+                  "    pm.expect(j).to.have.property(\"latitude\");",
+                  "    pm.expect(j).to.have.property(\"longitude\");",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{climate_url}}/v1/climate?latitude={{lat}}&longitude={{lon}}&start_date=2025-01-01&end_date=2050-12-31&models=MRI_AGCM3_2_S&daily=temperature_2m_max,precipitation_sum",
+              "host": ["{{climate_url}}"],
+              "path": ["v1", "climate"],
+              "query": [
+                {
+                  "key": "latitude",
+                  "value": "{{lat}}"
+                },
+                {
+                  "key": "longitude",
+                  "value": "{{lon}}"
+                },
+                {
+                  "key": "start_date",
+                  "value": "2025-01-01"
+                },
+                {
+                  "key": "end_date",
+                  "value": "2050-12-31"
+                },
+                {
+                  "key": "models",
+                  "value": "MRI_AGCM3_2_S"
+                },
+                {
+                  "key": "daily",
+                  "value": "temperature_2m_max,precipitation_sum"
+                }
+              ]
+            },
+            "description": "Solo proyeccion futura con 1 modelo (mas rapido)."
+          },
+          "response": []
+        },
+        {
+          "name": "Climate — multi-model comparison",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Tiempo de respuesta < 15s\", () => pm.expect(pm.response.responseTime).to.be.below(15000));",
+                  "pm.test(\"Es JSON valido\", () => {",
+                  "    const j = pm.response.json();",
+                  "    pm.expect(j).to.be.an(\"object\");",
+                  "    pm.expect(j.error, \"API devolvio error: \" + (j.reason || \"\")).to.not.equal(true);",
+                  "});",
+                  "pm.test(\"Tiene latitude/longitude\", () => {",
+                  "    const j = pm.response.json();",
+                  "    pm.expect(j).to.have.property(\"latitude\");",
+                  "    pm.expect(j).to.have.property(\"longitude\");",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{climate_url}}/v1/climate?latitude={{lat}}&longitude={{lon}}&start_date=2020-01-01&end_date=2030-12-31&models=CMCC_CM2_VHR4,FGOALS_f3_H,HiRAM_SIT_HR,MRI_AGCM3_2_S,EC_Earth3P_HR,MPI_ESM1_2_XR,NICAM16_8S&daily=temperature_2m_mean,precipitation_sum",
+              "host": ["{{climate_url}}"],
+              "path": ["v1", "climate"],
+              "query": [
+                {
+                  "key": "latitude",
+                  "value": "{{lat}}"
+                },
+                {
+                  "key": "longitude",
+                  "value": "{{lon}}"
+                },
+                {
+                  "key": "start_date",
+                  "value": "2020-01-01"
+                },
+                {
+                  "key": "end_date",
+                  "value": "2030-12-31"
+                },
+                {
+                  "key": "models",
+                  "value": "CMCC_CM2_VHR4,FGOALS_f3_H,HiRAM_SIT_HR,MRI_AGCM3_2_S,EC_Earth3P_HR,MPI_ESM1_2_XR,NICAM16_8S"
+                },
+                {
+                  "key": "daily",
+                  "value": "temperature_2m_mean,precipitation_sum"
+                }
+              ]
+            },
+            "description": "Compara los 7 modelos disponibles para cuantificar incertidumbre."
+          },
+          "response": []
+        }
+      ],
+      "description": "Proyecciones climaticas hasta 2050 (modelos HighResMip downscaled a 10km). Endpoint: `/v1/climate`. **Requiere `start_date` y `end_date`.** Las llamadas son costosas: 1 query equivale a ~1800 llamadas regulares por el rango temporal/modelos."
+    },
+    {
+      "name": "🌊 Flood Forecast (GloFAS)",
+      "item": [
+        {
+          "name": "River discharge — daily",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Tiempo de respuesta < 15s\", () => pm.expect(pm.response.responseTime).to.be.below(15000));",
+                  "pm.test(\"Es JSON valido\", () => {",
+                  "    const j = pm.response.json();",
+                  "    pm.expect(j).to.be.an(\"object\");",
+                  "    pm.expect(j.error, \"API devolvio error: \" + (j.reason || \"\")).to.not.equal(true);",
+                  "});",
+                  "pm.test(\"Tiene latitude/longitude\", () => {",
+                  "    const j = pm.response.json();",
+                  "    pm.expect(j).to.have.property(\"latitude\");",
+                  "    pm.expect(j).to.have.property(\"longitude\");",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{flood_url}}/v1/flood?latitude=-34.6&longitude=-58.4&daily=river_discharge,river_discharge_mean,river_discharge_median,river_discharge_max,river_discharge_min,river_discharge_p25,river_discharge_p75",
+              "host": ["{{flood_url}}"],
+              "path": ["v1", "flood"],
+              "query": [
+                {
+                  "key": "latitude",
+                  "value": "-34.6"
+                },
+                {
+                  "key": "longitude",
+                  "value": "-58.4"
+                },
+                {
+                  "key": "daily",
+                  "value": "river_discharge,river_discharge_mean,river_discharge_median,river_discharge_max,river_discharge_min,river_discharge_p25,river_discharge_p75"
+                }
+              ]
+            },
+            "description": "Caudal de rio diario con percentiles del ensemble."
+          },
+          "response": []
+        },
+        {
+          "name": "River discharge — 30 day forecast",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Tiempo de respuesta < 15s\", () => pm.expect(pm.response.responseTime).to.be.below(15000));",
+                  "pm.test(\"Es JSON valido\", () => {",
+                  "    const j = pm.response.json();",
+                  "    pm.expect(j).to.be.an(\"object\");",
+                  "    pm.expect(j.error, \"API devolvio error: \" + (j.reason || \"\")).to.not.equal(true);",
+                  "});",
+                  "pm.test(\"Tiene latitude/longitude\", () => {",
+                  "    const j = pm.response.json();",
+                  "    pm.expect(j).to.have.property(\"latitude\");",
+                  "    pm.expect(j).to.have.property(\"longitude\");",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{flood_url}}/v1/flood?latitude=-34.6&longitude=-58.4&daily=river_discharge,river_discharge_mean,river_discharge_max&forecast_days=30",
+              "host": ["{{flood_url}}"],
+              "path": ["v1", "flood"],
+              "query": [
+                {
+                  "key": "latitude",
+                  "value": "-34.6"
+                },
+                {
+                  "key": "longitude",
+                  "value": "-58.4"
+                },
+                {
+                  "key": "daily",
+                  "value": "river_discharge,river_discharge_mean,river_discharge_max"
+                },
+                {
+                  "key": "forecast_days",
+                  "value": "30"
+                }
+              ]
+            },
+            "description": "Pronostico extendido."
+          },
+          "response": []
+        },
+        {
+          "name": "River discharge — past + future",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Tiempo de respuesta < 15s\", () => pm.expect(pm.response.responseTime).to.be.below(15000));",
+                  "pm.test(\"Es JSON valido\", () => {",
+                  "    const j = pm.response.json();",
+                  "    pm.expect(j).to.be.an(\"object\");",
+                  "    pm.expect(j.error, \"API devolvio error: \" + (j.reason || \"\")).to.not.equal(true);",
+                  "});",
+                  "pm.test(\"Tiene latitude/longitude\", () => {",
+                  "    const j = pm.response.json();",
+                  "    pm.expect(j).to.have.property(\"latitude\");",
+                  "    pm.expect(j).to.have.property(\"longitude\");",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{flood_url}}/v1/flood?latitude=-34.6&longitude=-58.4&daily=river_discharge,river_discharge_mean&past_days=30",
+              "host": ["{{flood_url}}"],
+              "path": ["v1", "flood"],
+              "query": [
+                {
+                  "key": "latitude",
+                  "value": "-34.6"
+                },
+                {
+                  "key": "longitude",
+                  "value": "-58.4"
+                },
+                {
+                  "key": "daily",
+                  "value": "river_discharge,river_discharge_mean"
+                },
+                {
+                  "key": "past_days",
+                  "value": "30"
+                }
+              ]
+            },
+            "description": "Incluye 30 dias de historial."
+          },
+          "response": []
+        }
+      ],
+      "description": "Pronostico de inundaciones basado en GloFAS (river discharge). Endpoint: `/v1/flood`."
+    },
+    {
+      "name": "🎲 Ensemble Forecast",
+      "item": [
+        {
+          "name": "ECMWF IFS — 51 ensemble members",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Tiempo de respuesta < 15s\", () => pm.expect(pm.response.responseTime).to.be.below(15000));",
+                  "pm.test(\"Es JSON valido\", () => {",
+                  "    const j = pm.response.json();",
+                  "    pm.expect(j).to.be.an(\"object\");",
+                  "    pm.expect(j.error, \"API devolvio error: \" + (j.reason || \"\")).to.not.equal(true);",
+                  "});",
+                  "pm.test(\"Tiene latitude/longitude\", () => {",
+                  "    const j = pm.response.json();",
+                  "    pm.expect(j).to.have.property(\"latitude\");",
+                  "    pm.expect(j).to.have.property(\"longitude\");",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{ensemble_url}}/v1/ensemble?latitude={{lat}}&longitude={{lon}}&hourly=temperature_2m,precipitation&models=ecmwf_ifs04&timezone={{timezone}}",
+              "host": ["{{ensemble_url}}"],
+              "path": ["v1", "ensemble"],
+              "query": [
+                {
+                  "key": "latitude",
+                  "value": "{{lat}}"
+                },
+                {
+                  "key": "longitude",
+                  "value": "{{lon}}"
+                },
+                {
+                  "key": "hourly",
+                  "value": "temperature_2m,precipitation"
+                },
+                {
+                  "key": "models",
+                  "value": "ecmwf_ifs04"
+                },
+                {
+                  "key": "timezone",
+                  "value": "{{timezone}}"
+                }
+              ]
+            },
+            "description": "ECMWF Integrated Forecast System con 51 miembros."
+          },
+          "response": []
+        },
+        {
+          "name": "GFS ensemble (GEFS)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Tiempo de respuesta < 15s\", () => pm.expect(pm.response.responseTime).to.be.below(15000));",
+                  "pm.test(\"Es JSON valido\", () => {",
+                  "    const j = pm.response.json();",
+                  "    pm.expect(j).to.be.an(\"object\");",
+                  "    pm.expect(j.error, \"API devolvio error: \" + (j.reason || \"\")).to.not.equal(true);",
+                  "});",
+                  "pm.test(\"Tiene latitude/longitude\", () => {",
+                  "    const j = pm.response.json();",
+                  "    pm.expect(j).to.have.property(\"latitude\");",
+                  "    pm.expect(j).to.have.property(\"longitude\");",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{ensemble_url}}/v1/ensemble?latitude={{lat}}&longitude={{lon}}&hourly=temperature_2m,wind_speed_10m&models=gfs025&timezone={{timezone}}",
+              "host": ["{{ensemble_url}}"],
+              "path": ["v1", "ensemble"],
+              "query": [
+                {
+                  "key": "latitude",
+                  "value": "{{lat}}"
+                },
+                {
+                  "key": "longitude",
+                  "value": "{{lon}}"
+                },
+                {
+                  "key": "hourly",
+                  "value": "temperature_2m,wind_speed_10m"
+                },
+                {
+                  "key": "models",
+                  "value": "gfs025"
+                },
+                {
+                  "key": "timezone",
+                  "value": "{{timezone}}"
+                }
+              ]
+            },
+            "description": "NOAA GEFS 0.25°."
+          },
+          "response": []
+        },
+        {
+          "name": "ICON ensemble (DWD)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Tiempo de respuesta < 15s\", () => pm.expect(pm.response.responseTime).to.be.below(15000));",
+                  "pm.test(\"Es JSON valido\", () => {",
+                  "    const j = pm.response.json();",
+                  "    pm.expect(j).to.be.an(\"object\");",
+                  "    pm.expect(j.error, \"API devolvio error: \" + (j.reason || \"\")).to.not.equal(true);",
+                  "});",
+                  "pm.test(\"Tiene latitude/longitude\", () => {",
+                  "    const j = pm.response.json();",
+                  "    pm.expect(j).to.have.property(\"latitude\");",
+                  "    pm.expect(j).to.have.property(\"longitude\");",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{ensemble_url}}/v1/ensemble?latitude={{lat}}&longitude={{lon}}&hourly=temperature_2m,precipitation&models=icon_global&timezone={{timezone}}",
+              "host": ["{{ensemble_url}}"],
+              "path": ["v1", "ensemble"],
+              "query": [
+                {
+                  "key": "latitude",
+                  "value": "{{lat}}"
+                },
+                {
+                  "key": "longitude",
+                  "value": "{{lon}}"
+                },
+                {
+                  "key": "hourly",
+                  "value": "temperature_2m,precipitation"
+                },
+                {
+                  "key": "models",
+                  "value": "icon_global"
+                },
+                {
+                  "key": "timezone",
+                  "value": "{{timezone}}"
+                }
+              ]
+            },
+            "description": "DWD ICON ensemble."
+          },
+          "response": []
+        }
+      ],
+      "description": "Multiples corridas del modelo para cuantificar incertidumbre. Endpoint: `/v1/ensemble`. Cada variable devuelve N series (una por miembro)."
+    },
+    {
+      "name": "📍 Utility — Geocoding & Elevation",
+      "item": [
+        {
+          "name": "Geocoding — buscar ciudad por nombre",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Es JSON valido\", () => pm.response.json());",
+                  "pm.test(\"Tiene results o generationtime_ms\", () => {",
+                  "    const j = pm.response.json();",
+                  "    pm.expect(j.results || j.generationtime_ms !== undefined, \"no tiene results ni generationtime_ms\").to.be.ok;",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{geocoding_url}}/v1/search?name=Buenos Aires&count=10&language=es&format=json",
+              "host": ["{{geocoding_url}}"],
+              "path": ["v1", "search"],
+              "query": [
+                {
+                  "key": "name",
+                  "value": "Buenos Aires"
+                },
+                {
+                  "key": "count",
+                  "value": "10"
+                },
+                {
+                  "key": "language",
+                  "value": "es"
+                },
+                {
+                  "key": "format",
+                  "value": "json"
+                }
+              ]
+            },
+            "description": "Devuelve coordenadas, pais, region, zona horaria, poblacion."
+          },
+          "response": []
+        },
+        {
+          "name": "Geocoding — multi-language",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Es JSON valido\", () => pm.response.json());",
+                  "pm.test(\"Tiene results o generationtime_ms\", () => {",
+                  "    const j = pm.response.json();",
+                  "    pm.expect(j.results || j.generationtime_ms !== undefined, \"no tiene results ni generationtime_ms\").to.be.ok;",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{geocoding_url}}/v1/search?name=Tokyo&count=5&language=en",
+              "host": ["{{geocoding_url}}"],
+              "path": ["v1", "search"],
+              "query": [
+                {
+                  "key": "name",
+                  "value": "Tokyo"
+                },
+                {
+                  "key": "count",
+                  "value": "5"
+                },
+                {
+                  "key": "language",
+                  "value": "en"
+                }
+              ]
+            },
+            "description": "Resultados con nombres en idioma deseado."
+          },
+          "response": []
+        },
+        {
+          "name": "Geocoding — codigo postal",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Es JSON valido\", () => pm.response.json());",
+                  "pm.test(\"Tiene results o generationtime_ms\", () => {",
+                  "    const j = pm.response.json();",
+                  "    pm.expect(j.results || j.generationtime_ms !== undefined, \"no tiene results ni generationtime_ms\").to.be.ok;",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{geocoding_url}}/v1/search?name=C1043&countryCode=AR&count=10",
+              "host": ["{{geocoding_url}}"],
+              "path": ["v1", "search"],
+              "query": [
+                {
+                  "key": "name",
+                  "value": "C1043"
+                },
+                {
+                  "key": "countryCode",
+                  "value": "AR"
+                },
+                {
+                  "key": "count",
+                  "value": "10"
+                }
+              ]
+            },
+            "description": "Buscar por codigo postal."
+          },
+          "response": []
+        },
+        {
+          "name": "Elevation — single coordinate",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Es JSON valido\", () => pm.response.json());"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{forecast_url}}/v1/elevation?latitude={{lat}}&longitude={{lon}}",
+              "host": ["{{forecast_url}}"],
+              "path": ["v1", "elevation"],
+              "query": [
+                {
+                  "key": "latitude",
+                  "value": "{{lat}}"
+                },
+                {
+                  "key": "longitude",
+                  "value": "{{lon}}"
+                }
+              ]
+            },
+            "description": "Elevacion de un punto (Copernicus DEM 90m)."
+          },
+          "response": []
+        },
+        {
+          "name": "Elevation — multiple coordinates",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Es JSON valido\", () => pm.response.json());"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{forecast_url}}/v1/elevation?latitude=-34.6037,-31.4201,-32.9442&longitude=-58.3816,-64.1888,-60.6505",
+              "host": ["{{forecast_url}}"],
+              "path": ["v1", "elevation"],
+              "query": [
+                {
+                  "key": "latitude",
+                  "value": "-34.6037,-31.4201,-32.9442"
+                },
+                {
+                  "key": "longitude",
+                  "value": "-58.3816,-64.1888,-60.6505"
+                }
+              ]
+            },
+            "description": "Hasta 100 puntos por request."
+          },
+          "response": []
+        }
+      ],
+      "description": "APIs auxiliares: buscar ciudades, obtener elevacion para coordenadas."
+    },
+    {
+      "name": "🤖 Specific Weather Models",
+      "item": [
+        {
+          "name": "DWD ICON (Europa, alta resolucion)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Tiempo de respuesta < 15s\", () => pm.expect(pm.response.responseTime).to.be.below(15000));",
+                  "pm.test(\"Es JSON valido\", () => {",
+                  "    const j = pm.response.json();",
+                  "    pm.expect(j).to.be.an(\"object\");",
+                  "    pm.expect(j.error, \"API devolvio error: \" + (j.reason || \"\")).to.not.equal(true);",
+                  "});",
+                  "pm.test(\"Tiene latitude/longitude\", () => {",
+                  "    const j = pm.response.json();",
+                  "    pm.expect(j).to.have.property(\"latitude\");",
+                  "    pm.expect(j).to.have.property(\"longitude\");",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{forecast_url}}/v1/dwd-icon?latitude=52.52&longitude=13.41&hourly=temperature_2m,precipitation,cloud_cover&minutely_15=temperature_2m,precipitation&timezone=Europe/Berlin",
+              "host": ["{{forecast_url}}"],
+              "path": ["v1", "dwd-icon"],
+              "query": [
+                {
+                  "key": "latitude",
+                  "value": "52.52"
+                },
+                {
+                  "key": "longitude",
+                  "value": "13.41"
+                },
+                {
+                  "key": "hourly",
+                  "value": "temperature_2m,precipitation,cloud_cover"
+                },
+                {
+                  "key": "minutely_15",
+                  "value": "temperature_2m,precipitation"
+                },
+                {
+                  "key": "timezone",
+                  "value": "Europe/Berlin"
+                }
+              ]
+            },
+            "description": "ICON-D2 (2km en Europa central) + ICON-EU (7km) + ICON-Global (13km). Berlin como ejemplo."
+          },
+          "response": []
+        },
+        {
+          "name": "NOAA GFS + HRRR (Norteamerica)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Tiempo de respuesta < 15s\", () => pm.expect(pm.response.responseTime).to.be.below(15000));",
+                  "pm.test(\"Es JSON valido\", () => {",
+                  "    const j = pm.response.json();",
+                  "    pm.expect(j).to.be.an(\"object\");",
+                  "    pm.expect(j.error, \"API devolvio error: \" + (j.reason || \"\")).to.not.equal(true);",
+                  "});",
+                  "pm.test(\"Tiene latitude/longitude\", () => {",
+                  "    const j = pm.response.json();",
+                  "    pm.expect(j).to.have.property(\"latitude\");",
+                  "    pm.expect(j).to.have.property(\"longitude\");",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{forecast_url}}/v1/gfs?latitude=40.71&longitude=-74.01&hourly=temperature_2m,precipitation,wind_speed_10m&minutely_15=temperature_2m,precipitation&timezone=America/New_York",
+              "host": ["{{forecast_url}}"],
+              "path": ["v1", "gfs"],
+              "query": [
+                {
+                  "key": "latitude",
+                  "value": "40.71"
+                },
+                {
+                  "key": "longitude",
+                  "value": "-74.01"
+                },
+                {
+                  "key": "hourly",
+                  "value": "temperature_2m,precipitation,wind_speed_10m"
+                },
+                {
+                  "key": "minutely_15",
+                  "value": "temperature_2m,precipitation"
+                },
+                {
+                  "key": "timezone",
+                  "value": "America/New_York"
+                }
+              ]
+            },
+            "description": "HRRR (3km Norteamerica) + GFS (13km global). NYC como ejemplo."
+          },
+          "response": []
+        },
+        {
+          "name": "ECMWF IFS",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Tiempo de respuesta < 15s\", () => pm.expect(pm.response.responseTime).to.be.below(15000));",
+                  "pm.test(\"Es JSON valido\", () => {",
+                  "    const j = pm.response.json();",
+                  "    pm.expect(j).to.be.an(\"object\");",
+                  "    pm.expect(j.error, \"API devolvio error: \" + (j.reason || \"\")).to.not.equal(true);",
+                  "});",
+                  "pm.test(\"Tiene latitude/longitude\", () => {",
+                  "    const j = pm.response.json();",
+                  "    pm.expect(j).to.have.property(\"latitude\");",
+                  "    pm.expect(j).to.have.property(\"longitude\");",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{forecast_url}}/v1/ecmwf?latitude={{lat}}&longitude={{lon}}&hourly=temperature_2m,precipitation&timezone={{timezone}}",
+              "host": ["{{forecast_url}}"],
+              "path": ["v1", "ecmwf"],
+              "query": [
+                {
+                  "key": "latitude",
+                  "value": "{{lat}}"
+                },
+                {
+                  "key": "longitude",
+                  "value": "{{lon}}"
+                },
+                {
+                  "key": "hourly",
+                  "value": "temperature_2m,precipitation"
+                },
+                {
+                  "key": "timezone",
+                  "value": "{{timezone}}"
+                }
+              ]
+            },
+            "description": "ECMWF Integrated Forecast System (9km global, 10 dias)."
+          },
+          "response": []
+        },
+        {
+          "name": "MeteoFrance (Arome + Arpege)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Tiempo de respuesta < 15s\", () => pm.expect(pm.response.responseTime).to.be.below(15000));",
+                  "pm.test(\"Es JSON valido\", () => {",
+                  "    const j = pm.response.json();",
+                  "    pm.expect(j).to.be.an(\"object\");",
+                  "    pm.expect(j.error, \"API devolvio error: \" + (j.reason || \"\")).to.not.equal(true);",
+                  "});",
+                  "pm.test(\"Tiene latitude/longitude\", () => {",
+                  "    const j = pm.response.json();",
+                  "    pm.expect(j).to.have.property(\"latitude\");",
+                  "    pm.expect(j).to.have.property(\"longitude\");",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{forecast_url}}/v1/meteofrance?latitude=48.85&longitude=2.35&hourly=temperature_2m,precipitation&timezone=Europe/Paris",
+              "host": ["{{forecast_url}}"],
+              "path": ["v1", "meteofrance"],
+              "query": [
+                {
+                  "key": "latitude",
+                  "value": "48.85"
+                },
+                {
+                  "key": "longitude",
+                  "value": "2.35"
+                },
+                {
+                  "key": "hourly",
+                  "value": "temperature_2m,precipitation"
+                },
+                {
+                  "key": "timezone",
+                  "value": "Europe/Paris"
+                }
+              ]
+            },
+            "description": "Arome (1.3km Francia) + Arpege (Europa+global). Paris como ejemplo."
+          },
+          "response": []
+        },
+        {
+          "name": "JMA (Japon)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Tiempo de respuesta < 15s\", () => pm.expect(pm.response.responseTime).to.be.below(15000));",
+                  "pm.test(\"Es JSON valido\", () => {",
+                  "    const j = pm.response.json();",
+                  "    pm.expect(j).to.be.an(\"object\");",
+                  "    pm.expect(j.error, \"API devolvio error: \" + (j.reason || \"\")).to.not.equal(true);",
+                  "});",
+                  "pm.test(\"Tiene latitude/longitude\", () => {",
+                  "    const j = pm.response.json();",
+                  "    pm.expect(j).to.have.property(\"latitude\");",
+                  "    pm.expect(j).to.have.property(\"longitude\");",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{forecast_url}}/v1/jma?latitude=35.68&longitude=139.69&hourly=temperature_2m,precipitation&timezone=Asia/Tokyo",
+              "host": ["{{forecast_url}}"],
+              "path": ["v1", "jma"],
+              "query": [
+                {
+                  "key": "latitude",
+                  "value": "35.68"
+                },
+                {
+                  "key": "longitude",
+                  "value": "139.69"
+                },
+                {
+                  "key": "hourly",
+                  "value": "temperature_2m,precipitation"
+                },
+                {
+                  "key": "timezone",
+                  "value": "Asia/Tokyo"
+                }
+              ]
+            },
+            "description": "Japan Meteorological Agency. Tokyo como ejemplo."
+          },
+          "response": []
+        },
+        {
+          "name": "GEM (Canada)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Tiempo de respuesta < 15s\", () => pm.expect(pm.response.responseTime).to.be.below(15000));",
+                  "pm.test(\"Es JSON valido\", () => {",
+                  "    const j = pm.response.json();",
+                  "    pm.expect(j).to.be.an(\"object\");",
+                  "    pm.expect(j.error, \"API devolvio error: \" + (j.reason || \"\")).to.not.equal(true);",
+                  "});",
+                  "pm.test(\"Tiene latitude/longitude\", () => {",
+                  "    const j = pm.response.json();",
+                  "    pm.expect(j).to.have.property(\"latitude\");",
+                  "    pm.expect(j).to.have.property(\"longitude\");",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{forecast_url}}/v1/gem?latitude=45.42&longitude=-75.69&hourly=temperature_2m,precipitation&timezone=America/Toronto",
+              "host": ["{{forecast_url}}"],
+              "path": ["v1", "gem"],
+              "query": [
+                {
+                  "key": "latitude",
+                  "value": "45.42"
+                },
+                {
+                  "key": "longitude",
+                  "value": "-75.69"
+                },
+                {
+                  "key": "hourly",
+                  "value": "temperature_2m,precipitation"
+                },
+                {
+                  "key": "timezone",
+                  "value": "America/Toronto"
+                }
+              ]
+            },
+            "description": "Environment Canada GEM (HRDPS). Ottawa como ejemplo."
+          },
+          "response": []
+        },
+        {
+          "name": "MET Norway",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Tiempo de respuesta < 15s\", () => pm.expect(pm.response.responseTime).to.be.below(15000));",
+                  "pm.test(\"Es JSON valido\", () => {",
+                  "    const j = pm.response.json();",
+                  "    pm.expect(j).to.be.an(\"object\");",
+                  "    pm.expect(j.error, \"API devolvio error: \" + (j.reason || \"\")).to.not.equal(true);",
+                  "});",
+                  "pm.test(\"Tiene latitude/longitude\", () => {",
+                  "    const j = pm.response.json();",
+                  "    pm.expect(j).to.have.property(\"latitude\");",
+                  "    pm.expect(j).to.have.property(\"longitude\");",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{forecast_url}}/v1/metno?latitude=59.91&longitude=10.75&hourly=temperature_2m,precipitation&timezone=Europe/Oslo",
+              "host": ["{{forecast_url}}"],
+              "path": ["v1", "metno"],
+              "query": [
+                {
+                  "key": "latitude",
+                  "value": "59.91"
+                },
+                {
+                  "key": "longitude",
+                  "value": "10.75"
+                },
+                {
+                  "key": "hourly",
+                  "value": "temperature_2m,precipitation"
+                },
+                {
+                  "key": "timezone",
+                  "value": "Europe/Oslo"
+                }
+              ]
+            },
+            "description": "MET Norway (Nordic). Oslo como ejemplo."
+          },
+          "response": []
+        },
+        {
+          "name": "BOM (Australia)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Tiempo de respuesta < 15s\", () => pm.expect(pm.response.responseTime).to.be.below(15000));",
+                  "pm.test(\"Es JSON valido\", () => {",
+                  "    const j = pm.response.json();",
+                  "    pm.expect(j).to.be.an(\"object\");",
+                  "    pm.expect(j.error, \"API devolvio error: \" + (j.reason || \"\")).to.not.equal(true);",
+                  "});",
+                  "pm.test(\"Tiene latitude/longitude\", () => {",
+                  "    const j = pm.response.json();",
+                  "    pm.expect(j).to.have.property(\"latitude\");",
+                  "    pm.expect(j).to.have.property(\"longitude\");",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{forecast_url}}/v1/bom?latitude=-33.87&longitude=151.21&hourly=temperature_2m,precipitation&timezone=Australia/Sydney",
+              "host": ["{{forecast_url}}"],
+              "path": ["v1", "bom"],
+              "query": [
+                {
+                  "key": "latitude",
+                  "value": "-33.87"
+                },
+                {
+                  "key": "longitude",
+                  "value": "151.21"
+                },
+                {
+                  "key": "hourly",
+                  "value": "temperature_2m,precipitation"
+                },
+                {
+                  "key": "timezone",
+                  "value": "Australia/Sydney"
+                }
+              ]
+            },
+            "description": "Australian Bureau of Meteorology. Sydney como ejemplo."
+          },
+          "response": []
+        }
+      ],
+      "description": "Endpoints dedicados por modelo. Util para comparar predicciones o elegir el modelo de mayor resolucion en una region."
+    },
+    {
+      "name": "⚙️ Examples — Casos de uso reales",
+      "item": [
+        {
+          "name": "Solar farm planning — 7 day radiation",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Tiempo de respuesta < 15s\", () => pm.expect(pm.response.responseTime).to.be.below(15000));",
+                  "pm.test(\"Es JSON valido\", () => {",
+                  "    const j = pm.response.json();",
+                  "    pm.expect(j).to.be.an(\"object\");",
+                  "    pm.expect(j.error, \"API devolvio error: \" + (j.reason || \"\")).to.not.equal(true);",
+                  "});",
+                  "pm.test(\"Tiene latitude/longitude\", () => {",
+                  "    const j = pm.response.json();",
+                  "    pm.expect(j).to.have.property(\"latitude\");",
+                  "    pm.expect(j).to.have.property(\"longitude\");",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{forecast_url}}/v1/forecast?latitude={{lat}}&longitude={{lon}}&hourly=shortwave_radiation,direct_radiation,diffuse_radiation,cloud_cover,temperature_2m&tilt=30&azimuth=0&timezone={{timezone}}",
+              "host": ["{{forecast_url}}"],
+              "path": ["v1", "forecast"],
+              "query": [
+                {
+                  "key": "latitude",
+                  "value": "{{lat}}"
+                },
+                {
+                  "key": "longitude",
+                  "value": "{{lon}}"
+                },
+                {
+                  "key": "hourly",
+                  "value": "shortwave_radiation,direct_radiation,diffuse_radiation,cloud_cover,temperature_2m"
+                },
+                {
+                  "key": "tilt",
+                  "value": "30"
+                },
+                {
+                  "key": "azimuth",
+                  "value": "0"
+                },
+                {
+                  "key": "timezone",
+                  "value": "{{timezone}}"
+                }
+              ]
+            },
+            "description": "Datos para estimar produccion solar (radiacion + temperatura del modulo)."
+          },
+          "response": []
+        },
+        {
+          "name": "Surf forecast — Mar del Plata",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Tiempo de respuesta < 15s\", () => pm.expect(pm.response.responseTime).to.be.below(15000));",
+                  "pm.test(\"Es JSON valido\", () => {",
+                  "    const j = pm.response.json();",
+                  "    pm.expect(j).to.be.an(\"object\");",
+                  "    pm.expect(j.error, \"API devolvio error: \" + (j.reason || \"\")).to.not.equal(true);",
+                  "});",
+                  "pm.test(\"Tiene latitude/longitude\", () => {",
+                  "    const j = pm.response.json();",
+                  "    pm.expect(j).to.have.property(\"latitude\");",
+                  "    pm.expect(j).to.have.property(\"longitude\");",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{marine_url}}/v1/marine?latitude=-38.0&longitude=-57.55&hourly=wave_height,wave_direction,wave_period,swell_wave_height,swell_wave_direction,swell_wave_period,sea_surface_temperature&timezone=auto",
+              "host": ["{{marine_url}}"],
+              "path": ["v1", "marine"],
+              "query": [
+                {
+                  "key": "latitude",
+                  "value": "-38.0"
+                },
+                {
+                  "key": "longitude",
+                  "value": "-57.55"
+                },
+                {
+                  "key": "hourly",
+                  "value": "wave_height,wave_direction,wave_period,swell_wave_height,swell_wave_direction,swell_wave_period,sea_surface_temperature"
+                },
+                {
+                  "key": "timezone",
+                  "value": "auto"
+                }
+              ]
+            },
+            "description": "Olas + swell + temperatura del mar para surfear."
+          },
+          "response": []
+        },
+        {
+          "name": "Asthma alert — Air quality + pollen",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Tiempo de respuesta < 15s\", () => pm.expect(pm.response.responseTime).to.be.below(15000));",
+                  "pm.test(\"Es JSON valido\", () => {",
+                  "    const j = pm.response.json();",
+                  "    pm.expect(j).to.be.an(\"object\");",
+                  "    pm.expect(j.error, \"API devolvio error: \" + (j.reason || \"\")).to.not.equal(true);",
+                  "});",
+                  "pm.test(\"Tiene latitude/longitude\", () => {",
+                  "    const j = pm.response.json();",
+                  "    pm.expect(j).to.have.property(\"latitude\");",
+                  "    pm.expect(j).to.have.property(\"longitude\");",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{air_quality_url}}/v1/air-quality?latitude={{lat}}&longitude={{lon}}&hourly=european_aqi,pm2_5,pm10,ozone,grass_pollen,birch_pollen,ragweed_pollen&timezone={{timezone}}",
+              "host": ["{{air_quality_url}}"],
+              "path": ["v1", "air-quality"],
+              "query": [
+                {
+                  "key": "latitude",
+                  "value": "{{lat}}"
+                },
+                {
+                  "key": "longitude",
+                  "value": "{{lon}}"
+                },
+                {
+                  "key": "hourly",
+                  "value": "european_aqi,pm2_5,pm10,ozone,grass_pollen,birch_pollen,ragweed_pollen"
+                },
+                {
+                  "key": "timezone",
+                  "value": "{{timezone}}"
+                }
+              ]
+            },
+            "description": "Combinacion para alertas respiratorias."
+          },
+          "response": []
+        },
+        {
+          "name": "Agriculture — frost warning",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Tiempo de respuesta < 15s\", () => pm.expect(pm.response.responseTime).to.be.below(15000));",
+                  "pm.test(\"Es JSON valido\", () => {",
+                  "    const j = pm.response.json();",
+                  "    pm.expect(j).to.be.an(\"object\");",
+                  "    pm.expect(j.error, \"API devolvio error: \" + (j.reason || \"\")).to.not.equal(true);",
+                  "});",
+                  "pm.test(\"Tiene latitude/longitude\", () => {",
+                  "    const j = pm.response.json();",
+                  "    pm.expect(j).to.have.property(\"latitude\");",
+                  "    pm.expect(j).to.have.property(\"longitude\");",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{forecast_url}}/v1/forecast?latitude={{lat}}&longitude={{lon}}&hourly=temperature_2m,dew_point_2m,soil_temperature_0cm,relative_humidity_2m&daily=temperature_2m_min,apparent_temperature_min&timezone={{timezone}}",
+              "host": ["{{forecast_url}}"],
+              "path": ["v1", "forecast"],
+              "query": [
+                {
+                  "key": "latitude",
+                  "value": "{{lat}}"
+                },
+                {
+                  "key": "longitude",
+                  "value": "{{lon}}"
+                },
+                {
+                  "key": "hourly",
+                  "value": "temperature_2m,dew_point_2m,soil_temperature_0cm,relative_humidity_2m"
+                },
+                {
+                  "key": "daily",
+                  "value": "temperature_2m_min,apparent_temperature_min"
+                },
+                {
+                  "key": "timezone",
+                  "value": "{{timezone}}"
+                }
+              ]
+            },
+            "description": "Variables clave para alerta de heladas."
+          },
+          "response": []
+        },
+        {
+          "name": "Heatwave detection — historical",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Tiempo de respuesta < 15s\", () => pm.expect(pm.response.responseTime).to.be.below(15000));",
+                  "pm.test(\"Es JSON valido\", () => {",
+                  "    const j = pm.response.json();",
+                  "    pm.expect(j).to.be.an(\"object\");",
+                  "    pm.expect(j.error, \"API devolvio error: \" + (j.reason || \"\")).to.not.equal(true);",
+                  "});",
+                  "pm.test(\"Tiene latitude/longitude\", () => {",
+                  "    const j = pm.response.json();",
+                  "    pm.expect(j).to.have.property(\"latitude\");",
+                  "    pm.expect(j).to.have.property(\"longitude\");",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{archive_url}}/v1/archive?latitude={{lat}}&longitude={{lon}}&start_date=2020-01-01&end_date=2024-12-31&daily=temperature_2m_max,apparent_temperature_max&timezone={{timezone}}",
+              "host": ["{{archive_url}}"],
+              "path": ["v1", "archive"],
+              "query": [
+                {
+                  "key": "latitude",
+                  "value": "{{lat}}"
+                },
+                {
+                  "key": "longitude",
+                  "value": "{{lon}}"
+                },
+                {
+                  "key": "start_date",
+                  "value": "2020-01-01"
+                },
+                {
+                  "key": "end_date",
+                  "value": "2024-12-31"
+                },
+                {
+                  "key": "daily",
+                  "value": "temperature_2m_max,apparent_temperature_max"
+                },
+                {
+                  "key": "timezone",
+                  "value": "{{timezone}}"
+                }
+              ]
+            },
+            "description": "Datos para detectar olas de calor (maximas + sensacion termica)."
+          },
+          "response": []
+        }
+      ],
+      "description": "Combinaciones utiles para casos especificos."
+    }
+  ],
+  "variable": [
+    {
+      "key": "forecast_url",
+      "value": "https://api.open-meteo.com"
+    },
+    {
+      "key": "air_quality_url",
+      "value": "https://air-quality-api.open-meteo.com"
+    },
+    {
+      "key": "marine_url",
+      "value": "https://marine-api.open-meteo.com"
+    },
+    {
+      "key": "archive_url",
+      "value": "https://archive-api.open-meteo.com"
+    },
+    {
+      "key": "climate_url",
+      "value": "https://climate-api.open-meteo.com"
+    },
+    {
+      "key": "flood_url",
+      "value": "https://flood-api.open-meteo.com"
+    },
+    {
+      "key": "ensemble_url",
+      "value": "https://ensemble-api.open-meteo.com"
+    },
+    {
+      "key": "geocoding_url",
+      "value": "https://geocoding-api.open-meteo.com"
+    },
+    {
+      "key": "lat",
+      "value": "-34.6037"
+    },
+    {
+      "key": "lon",
+      "value": "-58.3816"
+    },
+    {
+      "key": "timezone",
+      "value": "America/Argentina/Buenos_Aires"
+    },
+    {
+      "key": "start_date",
+      "value": "2024-01-01"
+    },
+    {
+      "key": "end_date",
+      "value": "2024-12-31"
+    }
+  ]
+}

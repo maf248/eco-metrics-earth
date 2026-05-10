@@ -59,3 +59,6 @@ apps/web/next-env.d.ts
 /.opencode/package-lock.json
 
 .nx/self-healing
+# Postman — environments with real credentials
+postman/*.environment.json
+!postman/*.environment.template.json
