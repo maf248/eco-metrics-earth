@@ -1,22 +1,33 @@
 import type { ApiResponse } from '../../src/lib/api-response.js';
 
 describe('ApiResponse', () => {
-  it('should allow constructing a valid ApiResponse with data and timestamp', () => {
-    const response: ApiResponse<number> = {
-      data: 42,
-      timestamp: '2026-04-11T00:00:00.000Z',
-    };
-    expect(response.data).toBe(42);
-    expect(response.timestamp).toBe('2026-04-11T00:00:00.000Z');
-    expect(response.error).toBeUndefined();
+  it('should narrow to data when success is true', () => {
+    const response: ApiResponse<number> = { success: true, data: 42, status: 200 };
+    expect(response.success).toBe(true);
+    if (response.success) {
+      expect(response.data).toBe(42);
+    }
   });
 
-  it('should allow constructing a valid ApiResponse with an error field', () => {
-    const response: ApiResponse<null> = {
-      data: null,
-      timestamp: '2026-04-11T00:00:00.000Z',
+  it('should narrow to error when success is false', () => {
+    const response: ApiResponse<never> = {
+      success: false,
       error: 'Something went wrong',
+      status: 500,
     };
-    expect(response.error).toBe('Something went wrong');
+    expect(response.success).toBe(false);
+    if (!response.success) {
+      expect(response.error).toBe('Something went wrong');
+    }
+  });
+
+  it('should have status on the success branch', () => {
+    const response: ApiResponse<string> = { success: true, data: 'ok', status: 200 };
+    expect(response.status).toBe(200);
+  });
+
+  it('should have status on the error branch', () => {
+    const response: ApiResponse<never> = { success: false, error: 'Not found', status: 404 };
+    expect(response.status).toBe(404);
   });
 });

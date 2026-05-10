@@ -5,7 +5,7 @@ import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import * as Joi from 'joi';
 
 import { AppConfigService } from '../config/app-config.service';
-import { HealthController } from '../health/health.controller';
+import { HealthModule } from '../health/health.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
@@ -24,8 +24,9 @@ import { AppService } from './app.service';
       },
     }),
     ThrottlerModule.forRoot([{ ttl: 60_000, limit: 60 }]),
+    HealthModule,
   ],
-  controllers: [AppController, HealthController],
+  controllers: [AppController],
   providers: [AppService, AppConfigService, { provide: APP_GUARD, useClass: ThrottlerGuard }],
 })
 export class AppModule {}

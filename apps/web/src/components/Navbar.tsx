@@ -2,13 +2,11 @@
 
 import Link from 'next/link';
 
-import { SITE_LOGO_ICON } from '@/lib/categoryIcon';
+import { SiteLogoIcon } from '@/lib/categoryIcon';
 import { NAV_ITEMS } from '@/lib/navItems';
 
 import NavLink from './NavLink';
 import NavScrollContainer from './NavScrollContainer';
-
-const SiteLogoIcon = SITE_LOGO_ICON;
 
 /**
  * Main site navigation.

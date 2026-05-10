@@ -1,5 +1,3 @@
-export interface ApiResponse<T> {
-  data: T;
-  timestamp: string;
-  error?: string;
-}
+export type ApiResponse<T> =
+  | { success: true; data: T; status: number }
+  | { success: false; error: string; status: number };

@@ -36,10 +36,15 @@ export const CATEGORY_ICONS: Record<EcoCategory, IconComponent> = {
   'renewable-energy': RenewableEnergyIcon,
 };
 
-export const SITE_LOGO_ICON: IconComponent = SiteLogoIcon;
+export { SiteLogoIcon };
 
-export const NOT_FOUND_ICON: IconComponent = NotFoundIcon;
+export { NotFoundIcon };
 
 export function getCategoryIcon(slug: string): IconComponent {
-  return CATEGORY_ICONS[slug as EcoCategory] ?? SITE_LOGO_ICON;
+  const icon = CATEGORY_ICONS[slug as EcoCategory];
+  if (!icon && process.env.NODE_ENV !== 'production') {
+    // eslint-disable-next-line no-console
+    console.warn(`[categoryIcon] No icon registered for slug: "${slug}". Falling back to default.`);
+  }
+  return icon ?? SiteLogoIcon;
 }

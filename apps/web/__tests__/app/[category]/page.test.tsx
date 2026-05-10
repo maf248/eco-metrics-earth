@@ -173,8 +173,17 @@ describe('generateMetadata', () => {
 });
 
 describe('notFound behavior', () => {
+  let warnSpy: jest.SpyInstance;
+
   beforeEach(() => {
     jest.clearAllMocks();
+    // notFound() is mocked (doesn't throw), so execution continues into getCategoryIcon
+    // for unregistered slugs — silence the expected dev-only warn.
+    warnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
+  });
+
+  afterEach(() => {
+    warnSpy.mockRestore();
   });
 
   it('should call notFound() for an unknown category slug', async () => {
