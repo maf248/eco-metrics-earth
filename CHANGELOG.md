@@ -1,3 +1,9 @@
+## [1.3.0](https://github.com/maf248/eco-metrics-earth/compare/v1.2.0...v1.3.0) (2026-05-10)
+
+### Features
+
+* **seo:** add OG/Twitter metadata, PWA icons, SSG categories, sitemap/robots improvements ([9f73612](https://github.com/maf248/eco-metrics-earth/commit/9f73612320b4590f9c9db40b7c78657ea0da0a4e))
+
 ## [1.2.0](https://github.com/maf248/eco-metrics-earth/compare/v1.1.0...v1.2.0) (2026-05-10)
 
 ### Features
