@@ -1,6 +1,5 @@
-import { MetadataRoute } from 'next';
-
 import { ECO_CATEGORIES } from '@eco-metrics/shared';
+import { MetadataRoute } from 'next';
 
 import { siteUrl } from '@/lib/siteUrl';
 

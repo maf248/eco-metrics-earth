@@ -1,7 +1,6 @@
+import { ECO_CATEGORIES } from '@eco-metrics/shared';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-
-import { ECO_CATEGORIES } from '@eco-metrics/shared';
 
 import { getCategoryIcon } from '@/lib/categoryIcon';
 import { getCategoryTitle } from '@/lib/categoryTitle';
@@ -59,6 +58,8 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
     >
       <div className="flex flex-col items-center gap-6">
         <div className="flex items-center justify-center w-24 h-24 rounded-2xl bg-white/10 p-4">
+          {/* getCategoryIcon returns a stable ref to an existing component — not created during render. */}
+          {/* eslint-disable-next-line react-hooks/static-components */}
           <Icon aria-hidden className="w-16 h-16" />
         </div>
         <div className="text-center">

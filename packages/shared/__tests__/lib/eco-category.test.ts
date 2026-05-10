@@ -1,5 +1,5 @@
-import { ECO_CATEGORIES } from '../../src/lib/eco-category.js';
-import type { EcoCategory } from '../../src/lib/eco-category.js';
+import { ECO_CATEGORIES } from '../../src/lib/eco-category';
+import type { EcoCategory } from '../../src/lib/eco-category';
 
 describe('ECO_CATEGORIES', () => {
   it('should have exactly 11 entries', () => {

@@ -1,4 +1,5 @@
 import { ECO_CATEGORIES } from '@eco-metrics/shared';
+
 import { slugToTitle } from '../../src/lib/slugToTitle';
 
 describe('slugToTitle', () => {

@@ -8,11 +8,6 @@ describe('sitemap', () => {
     expect(result).toHaveLength(1 + Object.keys(ECO_CATEGORIES).length);
   });
 
-  it('should have 12 total entries', () => {
-    const result = sitemap();
-    expect(result).toHaveLength(12);
-  });
-
   it('should have home entry with priority 1.0', () => {
     const result = sitemap();
     const home = result[0];

@@ -3,7 +3,8 @@
   "compilerOptions": {
     "outDir": "./out-tsc/jest",
     "types": ["jest", "node"],
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
+    "moduleResolution": "bundler"
   },
   "include": ["jest.config.ts", "jest.config.cts", "__tests__/**/*.test.ts", "src/**/*.d.ts"],
   "references": [

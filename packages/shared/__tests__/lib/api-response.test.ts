@@ -1,4 +1,4 @@
-import type { ApiResponse } from '../../src/lib/api-response.js';
+import type { ApiResponse } from '../../src/lib/api-response';
 
 describe('ApiResponse', () => {
   it('should narrow to data when success is true', () => {

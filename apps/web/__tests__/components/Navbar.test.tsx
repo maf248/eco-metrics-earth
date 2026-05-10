@@ -1,6 +1,5 @@
-import { render, screen, within } from '@testing-library/react';
-
 import { ECO_CATEGORIES } from '@eco-metrics/shared';
+import { render, screen, within } from '@testing-library/react';
 
 import Navbar from '../../src/components/Navbar';
 import { getCategoryTitle } from '../../src/lib/categoryTitle';

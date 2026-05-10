@@ -63,6 +63,8 @@ export default function NavScrollContainer({ children }: NavScrollContainerProps
         />
       )}
 
+      {/* VoiceOver/Safari strips list semantics from styled lists when CSS removes bullets — explicit role restores them. */}
+      {/* eslint-disable-next-line jsx-a11y/no-redundant-roles */}
       <ul
         ref={scrollRef}
         role="list"

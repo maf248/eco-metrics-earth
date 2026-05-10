@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react';
+
 import HomePage, { metadata } from '../../src/app/page';
 
 describe('HomePage', () => {

@@ -6,6 +6,7 @@ import * as Joi from 'joi';
 
 import { AppConfigService } from '../config/app-config.service';
 import { HealthModule } from '../health/health.module';
+
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 

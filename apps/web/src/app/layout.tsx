@@ -1,8 +1,8 @@
 import type { Metadata, Viewport } from 'next';
 import type { ReactNode } from 'react';
 
-import { siteUrl } from '@/lib/siteUrl';
 import Navbar from '@/components/Navbar';
+import { siteUrl } from '@/lib/siteUrl';
 
 import './globals.css';
 

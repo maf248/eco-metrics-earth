@@ -1,6 +1,5 @@
-import type React from 'react';
-
 import { ECO_CATEGORIES, type EcoCategory } from '@eco-metrics/shared';
+import type React from 'react';
 
 import { getCategoryIcon } from './categoryIcon';
 import { getCategoryTitle } from './categoryTitle';

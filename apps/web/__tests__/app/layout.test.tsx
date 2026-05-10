@@ -69,7 +69,7 @@ describe('metadata', () => {
   });
 
   it('should have a title template', () => {
-    expect((metadata.title as { template: string }).template).toBe('%s — eco-metrics earth');
+    expect((metadata.title as { template: string }).template).toBe('%s \u2014 eco-metrics earth');
   });
 
   it('should have a non-empty description', () => {

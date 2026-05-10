@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 
-import NavLink from '../../src/components/NavLink';
 import { AirQualityIcon } from '../../src/components/icons';
+import NavLink from '../../src/components/NavLink';
 
 const mockUsePathname = jest.fn();
 
