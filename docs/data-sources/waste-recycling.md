@@ -34,7 +34,7 @@ Tracks municipal solid waste generation, recycling rates, landfill usage, and wa
 - **Data:** Waste-related indicators (e.g. `EN.POP.SLUM.UR.ZS`), solid waste management, urbanization.
 - **API key:** Not required.
 - **CORS:** Enabled — can be called from the client.
-- **Validated indicators (May 2026):** Total GHG indicators work (e.g., `EN.GHG.CO2.MT.CE.AR5`, `EN.GHG.ALL.MT.CE.AR5`). Sector-specific GHG indicators (waste, energy, agriculture) return "Invalid value" errors.
+- **Validated indicators (May 2026):** Total GHG indicators work (`EN.GHG.CO2.MT.CE.AR5`, `EN.GHG.ALL.MT.CE.AR5`, `EN.GHG.CH4.MT.CE.AR5`, `EN.GHG.N2O.MT.CE.AR5`). Waste-specific GHG breakdown (`EN.GHG.WAST.*`) does not exist in API. Use OWID CH₄ from waste (ID 1146696) instead.
 
 | Field | Details |
 |---|---|

@@ -115,7 +115,10 @@ Tracks carbon dioxide emissions by country, sector, and source. Includes histori
 - **Data:** Total CO₂ emissions, per-capita, intensity, etc., by country and year.
 - **API key:** Not required.
 - **CORS:** Enabled — can be called from the client.
-- **Validated indicators (May 2026):** Total emissions work (`EN.GHG.CO2.MT.CE.AR5`, `EN.GHG.ALL.MT.CE.AR5`, `EN.GHG.CH4.MT.CE.AR5`, `EN.GHG.N2O.MT.CE.AR5`). Sector-specific GHG breakdowns return "Invalid value" errors.
+- **Validated indicators (May 2026):**
+  - **Total emissions (working):** `EN.GHG.CO2.MT.CE.AR5` (CO2), `EN.GHG.ALL.MT.CE.AR5` (all GHG), `EN.GHG.CH4.MT.CE.AR5` (methane), `EN.GHG.N2O.MT.CE.AR5` (nitrous oxide)
+  - **CO2 sectoral breakdowns (working):** `EN.GHG.CO2.AG.*` (agriculture), `EN.GHG.CO2.BU.*` (buildings), `EN.GHG.CO2.FE.*` (fugitive), `EN.GHG.CO2.IC.*` (industrial combustion), `EN.GHG.CO2.IP.*` (industrial processes)
+  - **Non-existent codes:** Sector breakdowns for all GHG (`EN.GHG.AGRI.*`, `EN.GHG.WAST.*`, etc.) do not exist; only CO2 sectoral data available.
 
 | Field | Details |
 |---|---|

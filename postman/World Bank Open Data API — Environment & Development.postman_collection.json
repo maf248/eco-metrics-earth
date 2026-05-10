@@ -727,7 +727,7 @@
           "response": []
         },
         {
-          "name": "❌ [NO DATA] Metano (CH4) total",
+          "name": "Metano (CH4) total",
           "event": [
             {
               "listen": "test",
@@ -773,7 +773,7 @@
           "response": []
         },
         {
-          "name": "❌ [NO DATA] Oxido nitroso (N2O)",
+          "name": "Óxido nitroso (N2O) total",
           "event": [
             {
               "listen": "test",
@@ -815,236 +815,6 @@
               ]
             },
             "description": "⚠️ VERIFIED BROKEN (May 2026): This indicator returns 'Invalid value' from the World Bank API for all countries including WLD. The sector-level GHG breakdown (energy, agriculture, industry, waste, LULUCF) is not available via the standard v2 API. Use OWID indicator 1146696 (CH4 from waste) as alternative for waste sector. — **Nitrous oxide emissions (Mt CO2e)** (`EN.GHG.N2O.MT.CE.AR5`)\n\nEmisiones de N2O.\n\nReemplaza `country/all` por un codigo ISO (ej: `country/AR`) para un solo pais. Reemplaza `country/all` por agregados como `WLD` (mundo), `LAC` (Latinoamerica y Caribe), `EAP` (Asia Oriental y Pacifico), etc."
-          },
-          "response": []
-        },
-        {
-          "name": "❌ [NO DATA] F-gases (HFCs, PFCs, SF6)",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
-                  "pm.test(\"Tiempo de respuesta < 30s\", () => pm.expect(pm.response.responseTime).to.be.below(30000));",
-                  "pm.test(\"Es JSON valido\", () => pm.response.json());",
-                  "pm.test(\"Estructura WB correcta (array con metadata)\", () => {",
-                  "    const j = pm.response.json();",
-                  "    pm.expect(j).to.be.an(\"array\");",
-                  "    pm.expect(j[0]).to.have.property(\"page\");",
-                  "});"
-                ]
-              }
-            }
-          ],
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{wb_url}}/v2/country/all/indicator/EN.GHG.FGAS.MT.CE.AR5?format=json&date={{start_year}}:{{end_year}}&per_page=500",
-              "host": ["{{wb_url}}"],
-              "path": ["v2", "country", "all", "indicator", "EN.GHG.FGAS.MT.CE.AR5"],
-              "query": [
-                {
-                  "key": "format",
-                  "value": "json"
-                },
-                {
-                  "key": "date",
-                  "value": "{{start_year}}:{{end_year}}"
-                },
-                {
-                  "key": "per_page",
-                  "value": "500"
-                }
-              ]
-            },
-            "description": "⚠️ VERIFIED BROKEN (May 2026): This indicator returns 'Invalid value' from the World Bank API for all countries including WLD. The sector-level GHG breakdown (energy, agriculture, industry, waste, LULUCF) is not available via the standard v2 API. Use OWID indicator 1146696 (CH4 from waste) as alternative for waste sector. — **F-gases emissions (Mt CO2e)** (`EN.GHG.FGAS.MT.CE.AR5`)\n\nGases fluorados (refrigeracion, semiconductores, electronica).\n\nReemplaza `country/all` por un codigo ISO (ej: `country/AR`) para un solo pais. Reemplaza `country/all` por agregados como `WLD` (mundo), `LAC` (Latinoamerica y Caribe), `EAP` (Asia Oriental y Pacifico), etc."
-          },
-          "response": []
-        },
-        {
-          "name": "❌ [NO DATA] GHG por agricultura",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
-                  "pm.test(\"Tiempo de respuesta < 30s\", () => pm.expect(pm.response.responseTime).to.be.below(30000));",
-                  "pm.test(\"Es JSON valido\", () => pm.response.json());",
-                  "pm.test(\"Estructura WB correcta (array con metadata)\", () => {",
-                  "    const j = pm.response.json();",
-                  "    pm.expect(j).to.be.an(\"array\");",
-                  "    pm.expect(j[0]).to.have.property(\"page\");",
-                  "});"
-                ]
-              }
-            }
-          ],
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{wb_url}}/v2/country/all/indicator/EN.GHG.AGRI.MT.CE.AR5?format=json&date={{start_year}}:{{end_year}}&per_page=500",
-              "host": ["{{wb_url}}"],
-              "path": ["v2", "country", "all", "indicator", "EN.GHG.AGRI.MT.CE.AR5"],
-              "query": [
-                {
-                  "key": "format",
-                  "value": "json"
-                },
-                {
-                  "key": "date",
-                  "value": "{{start_year}}:{{end_year}}"
-                },
-                {
-                  "key": "per_page",
-                  "value": "500"
-                }
-              ]
-            },
-            "description": "⚠️ VERIFIED BROKEN (May 2026): This indicator returns 'Invalid value' from the World Bank API for all countries including WLD. The sector-level GHG breakdown (energy, agriculture, industry, waste, LULUCF) is not available via the standard v2 API. Use OWID indicator 1146696 (CH4 from waste) as alternative for waste sector. — **GHG emissions from Agriculture (Mt CO2e)** (`EN.GHG.AGRI.MT.CE.AR5`)\n\nEmisiones del sector agricola.\n\nReemplaza `country/all` por un codigo ISO (ej: `country/AR`) para un solo pais. Reemplaza `country/all` por agregados como `WLD` (mundo), `LAC` (Latinoamerica y Caribe), `EAP` (Asia Oriental y Pacifico), etc."
-          },
-          "response": []
-        },
-        {
-          "name": "❌ [NO DATA] GHG por energia",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
-                  "pm.test(\"Tiempo de respuesta < 30s\", () => pm.expect(pm.response.responseTime).to.be.below(30000));",
-                  "pm.test(\"Es JSON valido\", () => pm.response.json());",
-                  "pm.test(\"Estructura WB correcta (array con metadata)\", () => {",
-                  "    const j = pm.response.json();",
-                  "    pm.expect(j).to.be.an(\"array\");",
-                  "    pm.expect(j[0]).to.have.property(\"page\");",
-                  "});"
-                ]
-              }
-            }
-          ],
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{wb_url}}/v2/country/all/indicator/EN.GHG.ENER.MT.CE.AR5?format=json&date={{start_year}}:{{end_year}}&per_page=500",
-              "host": ["{{wb_url}}"],
-              "path": ["v2", "country", "all", "indicator", "EN.GHG.ENER.MT.CE.AR5"],
-              "query": [
-                {
-                  "key": "format",
-                  "value": "json"
-                },
-                {
-                  "key": "date",
-                  "value": "{{start_year}}:{{end_year}}"
-                },
-                {
-                  "key": "per_page",
-                  "value": "500"
-                }
-              ]
-            },
-            "description": "⚠️ VERIFIED BROKEN (May 2026): This indicator returns 'Invalid value' from the World Bank API for all countries including WLD. The sector-level GHG breakdown (energy, agriculture, industry, waste, LULUCF) is not available via the standard v2 API. Use OWID indicator 1146696 (CH4 from waste) as alternative for waste sector. — **GHG emissions from Energy (Mt CO2e)** (`EN.GHG.ENER.MT.CE.AR5`)\n\nEmisiones del sector energetico.\n\nReemplaza `country/all` por un codigo ISO (ej: `country/AR`) para un solo pais. Reemplaza `country/all` por agregados como `WLD` (mundo), `LAC` (Latinoamerica y Caribe), `EAP` (Asia Oriental y Pacifico), etc."
-          },
-          "response": []
-        },
-        {
-          "name": "❌ [NO DATA] GHG por industria (procesos)",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
-                  "pm.test(\"Tiempo de respuesta < 30s\", () => pm.expect(pm.response.responseTime).to.be.below(30000));",
-                  "pm.test(\"Es JSON valido\", () => pm.response.json());",
-                  "pm.test(\"Estructura WB correcta (array con metadata)\", () => {",
-                  "    const j = pm.response.json();",
-                  "    pm.expect(j).to.be.an(\"array\");",
-                  "    pm.expect(j[0]).to.have.property(\"page\");",
-                  "});"
-                ]
-              }
-            }
-          ],
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{wb_url}}/v2/country/all/indicator/EN.GHG.IPPU.MT.CE.AR5?format=json&date={{start_year}}:{{end_year}}&per_page=500",
-              "host": ["{{wb_url}}"],
-              "path": ["v2", "country", "all", "indicator", "EN.GHG.IPPU.MT.CE.AR5"],
-              "query": [
-                {
-                  "key": "format",
-                  "value": "json"
-                },
-                {
-                  "key": "date",
-                  "value": "{{start_year}}:{{end_year}}"
-                },
-                {
-                  "key": "per_page",
-                  "value": "500"
-                }
-              ]
-            },
-            "description": "⚠️ VERIFIED BROKEN (May 2026): This indicator returns 'Invalid value' from the World Bank API for all countries including WLD. The sector-level GHG breakdown (energy, agriculture, industry, waste, LULUCF) is not available via the standard v2 API. Use OWID indicator 1146696 (CH4 from waste) as alternative for waste sector. — **GHG emissions from IPPU (Mt CO2e)** (`EN.GHG.IPPU.MT.CE.AR5`)\n\nIndustrial Processes and Product Use.\n\nReemplaza `country/all` por un codigo ISO (ej: `country/AR`) para un solo pais. Reemplaza `country/all` por agregados como `WLD` (mundo), `LAC` (Latinoamerica y Caribe), `EAP` (Asia Oriental y Pacifico), etc."
-          },
-          "response": []
-        },
-        {
-          "name": "❌ [NO DATA] GHG por waste",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
-                  "pm.test(\"Tiempo de respuesta < 30s\", () => pm.expect(pm.response.responseTime).to.be.below(30000));",
-                  "pm.test(\"Es JSON valido\", () => pm.response.json());",
-                  "pm.test(\"Estructura WB correcta (array con metadata)\", () => {",
-                  "    const j = pm.response.json();",
-                  "    pm.expect(j).to.be.an(\"array\");",
-                  "    pm.expect(j[0]).to.have.property(\"page\");",
-                  "});"
-                ]
-              }
-            }
-          ],
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{wb_url}}/v2/country/all/indicator/EN.GHG.WAST.MT.CE.AR5?format=json&date={{start_year}}:{{end_year}}&per_page=500",
-              "host": ["{{wb_url}}"],
-              "path": ["v2", "country", "all", "indicator", "EN.GHG.WAST.MT.CE.AR5"],
-              "query": [
-                {
-                  "key": "format",
-                  "value": "json"
-                },
-                {
-                  "key": "date",
-                  "value": "{{start_year}}:{{end_year}}"
-                },
-                {
-                  "key": "per_page",
-                  "value": "500"
-                }
-              ]
-            },
-            "description": "⚠️ VERIFIED BROKEN (May 2026): This indicator returns 'Invalid value' from the World Bank API for all countries including WLD. The sector-level GHG breakdown (energy, agriculture, industry, waste, LULUCF) is not available via the standard v2 API. Use OWID indicator 1146696 (CH4 from waste) as alternative for waste sector. — **GHG emissions from Waste (Mt CO2e)** (`EN.GHG.WAST.MT.CE.AR5`)\n\nEmisiones por gestion de residuos.\n\nReemplaza `country/all` por un codigo ISO (ej: `country/AR`) para un solo pais. Reemplaza `country/all` por agregados como `WLD` (mundo), `LAC` (Latinoamerica y Caribe), `EAP` (Asia Oriental y Pacifico), etc."
           },
           "response": []
         },
@@ -1193,6 +963,236 @@
               ]
             },
             "description": "Ultimo valor disponible para cada pais sin tener que especificar año."
+          },
+          "response": []
+        },
+        {
+          "name": "CO2 por agricultura",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Tiempo de respuesta < 30s\", () => pm.expect(pm.response.responseTime).to.be.below(30000));",
+                  "pm.test(\"Es JSON valido\", () => pm.response.json());",
+                  "pm.test(\"Estructura WB correcta (array con metadata)\", () => {",
+                  "    const j = pm.response.json();",
+                  "    pm.expect(j).to.be.an(\"array\");",
+                  "    pm.expect(j[0]).to.have.property(\"page\");",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{wb_url}}/v2/country/all/indicator/EN.GHG.CO2.AG.MT.CE.AR5?format=json&date={{start_year}}:{{end_year}}&per_page=500",
+              "host": ["{{wb_url}}"],
+              "path": ["v2", "country", "all", "indicator", "EN.GHG.CO2.AG.MT.CE.AR5"],
+              "query": [
+                {
+                  "key": "format",
+                  "value": "json"
+                },
+                {
+                  "key": "date",
+                  "value": "{{start_year}}:{{end_year}}"
+                },
+                {
+                  "key": "per_page",
+                  "value": "500"
+                }
+              ]
+            },
+            "description": "Carbon dioxide emissions from agriculture sector (Mt CO2e)"
+          },
+          "response": []
+        },
+        {
+          "name": "CO2 por edificios (energía)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Tiempo de respuesta < 30s\", () => pm.expect(pm.response.responseTime).to.be.below(30000));",
+                  "pm.test(\"Es JSON valido\", () => pm.response.json());",
+                  "pm.test(\"Estructura WB correcta (array con metadata)\", () => {",
+                  "    const j = pm.response.json();",
+                  "    pm.expect(j).to.be.an(\"array\");",
+                  "    pm.expect(j[0]).to.have.property(\"page\");",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{wb_url}}/v2/country/all/indicator/EN.GHG.CO2.BU.MT.CE.AR5?format=json&date={{start_year}}:{{end_year}}&per_page=500",
+              "host": ["{{wb_url}}"],
+              "path": ["v2", "country", "all", "indicator", "EN.GHG.CO2.BU.MT.CE.AR5"],
+              "query": [
+                {
+                  "key": "format",
+                  "value": "json"
+                },
+                {
+                  "key": "date",
+                  "value": "{{start_year}}:{{end_year}}"
+                },
+                {
+                  "key": "per_page",
+                  "value": "500"
+                }
+              ]
+            },
+            "description": "Carbon dioxide emissions from buildings/energy sector (Mt CO2e)"
+          },
+          "response": []
+        },
+        {
+          "name": "CO2 por emisiones fugitivas",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Tiempo de respuesta < 30s\", () => pm.expect(pm.response.responseTime).to.be.below(30000));",
+                  "pm.test(\"Es JSON valido\", () => pm.response.json());",
+                  "pm.test(\"Estructura WB correcta (array con metadata)\", () => {",
+                  "    const j = pm.response.json();",
+                  "    pm.expect(j).to.be.an(\"array\");",
+                  "    pm.expect(j[0]).to.have.property(\"page\");",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{wb_url}}/v2/country/all/indicator/EN.GHG.CO2.FE.MT.CE.AR5?format=json&date={{start_year}}:{{end_year}}&per_page=500",
+              "host": ["{{wb_url}}"],
+              "path": ["v2", "country", "all", "indicator", "EN.GHG.CO2.FE.MT.CE.AR5"],
+              "query": [
+                {
+                  "key": "format",
+                  "value": "json"
+                },
+                {
+                  "key": "date",
+                  "value": "{{start_year}}:{{end_year}}"
+                },
+                {
+                  "key": "per_page",
+                  "value": "500"
+                }
+              ]
+            },
+            "description": "Carbon dioxide emissions from fugitive emissions (Mt CO2e)"
+          },
+          "response": []
+        },
+        {
+          "name": "CO2 por combustión industrial",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Tiempo de respuesta < 30s\", () => pm.expect(pm.response.responseTime).to.be.below(30000));",
+                  "pm.test(\"Es JSON valido\", () => pm.response.json());",
+                  "pm.test(\"Estructura WB correcta (array con metadata)\", () => {",
+                  "    const j = pm.response.json();",
+                  "    pm.expect(j).to.be.an(\"array\");",
+                  "    pm.expect(j[0]).to.have.property(\"page\");",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{wb_url}}/v2/country/all/indicator/EN.GHG.CO2.IC.MT.CE.AR5?format=json&date={{start_year}}:{{end_year}}&per_page=500",
+              "host": ["{{wb_url}}"],
+              "path": ["v2", "country", "all", "indicator", "EN.GHG.CO2.IC.MT.CE.AR5"],
+              "query": [
+                {
+                  "key": "format",
+                  "value": "json"
+                },
+                {
+                  "key": "date",
+                  "value": "{{start_year}}:{{end_year}}"
+                },
+                {
+                  "key": "per_page",
+                  "value": "500"
+                }
+              ]
+            },
+            "description": "Carbon dioxide emissions from industrial combustion (Mt CO2e)"
+          },
+          "response": []
+        },
+        {
+          "name": "CO2 por procesos industriales",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Tiempo de respuesta < 30s\", () => pm.expect(pm.response.responseTime).to.be.below(30000));",
+                  "pm.test(\"Es JSON valido\", () => pm.response.json());",
+                  "pm.test(\"Estructura WB correcta (array con metadata)\", () => {",
+                  "    const j = pm.response.json();",
+                  "    pm.expect(j).to.be.an(\"array\");",
+                  "    pm.expect(j[0]).to.have.property(\"page\");",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{wb_url}}/v2/country/all/indicator/EN.GHG.CO2.IP.MT.CE.AR5?format=json&date={{start_year}}:{{end_year}}&per_page=500",
+              "host": ["{{wb_url}}"],
+              "path": ["v2", "country", "all", "indicator", "EN.GHG.CO2.IP.MT.CE.AR5"],
+              "query": [
+                {
+                  "key": "format",
+                  "value": "json"
+                },
+                {
+                  "key": "date",
+                  "value": "{{start_year}}:{{end_year}}"
+                },
+                {
+                  "key": "per_page",
+                  "value": "500"
+                }
+              ]
+            },
+            "description": "Carbon dioxide emissions from industrial processes (Mt CO2e)"
           },
           "response": []
         }
