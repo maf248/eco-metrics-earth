@@ -293,11 +293,23 @@ Pre-PR checklist: `npm run lint`, `npm run build`, and `npm run test` must all p
 
 > These notes are for the AI agent running this project, not for human developers.
 
+### Commit & push rules (STRICT)
+
+The user must **explicitly authorize** every `git commit` and every `git push`. These are non-negotiable hard stops:
+
+1. **Never commit without an explicit user request** — completing all tasks and passing all tests is NOT sufficient; always pause and wait.
+2. **Never push without an explicit user request** — not even after a commit. Each is a separate authorization.
+3. **Run `git pull --rebase` before every push** — the remote may have new release tags between local pushes.
+4. When the user says "commitea y pushea" or similar, treat that as authorization for both in sequence — but do not auto-push on future tasks.
+
 ### "This model does not support assistant message prefill"
 
-This error is thrown by the model provider when the assistant's response is cut off mid-generation (e.g. in the middle of a large heredoc or code block) and the runtime tries to resume with a prefill. It happens consistently when a single tool call writes a very large file inline.
+This error is thrown when the model's response is cut off mid-generation and the runtime tries to resume with a prefill. It happens consistently when a single tool call produces too much inline content.
 
-**Mitigation rules for the AI agent:**
-- Never write files longer than ~60 lines via a single `bash` heredoc. Break large writes into multiple smaller `Edit` or `Write` tool calls instead.
-- When updating many files of the same type (e.g. icon components), use a script (`python3`, `node`, `sed`) to apply the transformation programmatically rather than inlining each file as a heredoc.
-- Always end assistant turns with a plain-text sentence after the last tool call block — never end mid-code-block.
+**Hard rules — never break these:**
+- **Never use `cat << 'EOF' ... EOF` (bash heredoc) to write files.** Use the `Write` tool for creating or overwriting files entirely.
+- **Never use `bash` to write more than ~10 lines of file content inline.** Even short heredocs are risky if the total assistant turn is large.
+- **Use the `Edit` tool for modifications** to existing files — targeted replacements, not full rewrites via heredoc.
+- **Use `python3` scripts (via `bash`) for bulk or repetitive transforms** across multiple files — never inline each file as a heredoc.
+- **Cap each assistant turn at ~3–4 tool calls when writing files.** If more writes are needed, split across multiple turns with a status update in between.
+- **Always end every assistant turn with a plain-text sentence** after the last tool call block — never end mid-code-block or with only a tool call result.
