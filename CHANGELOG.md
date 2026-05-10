@@ -1,3 +1,9 @@
+## [1.2.0](https://github.com/maf248/eco-metrics-earth/compare/v1.1.0...v1.2.0) (2026-05-10)
+
+### Features
+
+* **security:** add helmet, cors validation, rate limiting, and security headers ([421c06b](https://github.com/maf248/eco-metrics-earth/commit/421c06b0f56b7148dc9b0e3131201b50796f1a00))
+
 ## [1.1.0](https://github.com/maf248/eco-metrics-earth/compare/v1.0.1...v1.1.0) (2026-05-03)
 
 ### Features
