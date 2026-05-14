@@ -209,3 +209,10 @@ type EcoCategory = (typeof ECO_CATEGORIES)[keyof typeof ECO_CATEGORIES];
 - **TypeScript:** strict mode enabled across all projects
 
 See [`AGENTS.md`](./AGENTS.md) for the full development guide.
+
+---
+
+## Roadmap
+
+See [`ROADMAP.md`](./ROADMAP.md) for planned improvements and features.
+

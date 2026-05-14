@@ -28,6 +28,8 @@ All non-trivial changes — new features, significant refactors, API contracts �
 4. **Validate** — `@tester` writes/updates tests; `@reviewer` does the final quality audit.
 5. **Close** — verify Definition of Done, archive the change, then commit and optionally open a PR.
 
+> **Note:** Improvement ideas and planned features are tracked in [`ROADMAP.md`](./ROADMAP.md). When ready to implement, a formal OpenSpec proposal is created from the roadmap item.
+
 ### What requires a spec (non-trivial)
 
 Always propose before implementing:
