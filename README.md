@@ -6,12 +6,12 @@ An environmental metrics dashboard monorepo — tracking air quality, CO₂ emis
 
 | Layer | Technology | Version | Docs |
 |---|---|---|---|
-| **Monorepo** | [NX](https://nx.dev) | 22.6.5 | [nx.dev/docs](https://nx.dev/getting-started/intro) |
+| **Monorepo** | [NX](https://nx.dev) | 22.7.1 | [nx.dev/docs](https://nx.dev/getting-started/intro) |
 | **Runtime** | [Node.js](https://nodejs.org) LTS | 20.x | [nodejs.org/docs](https://nodejs.org/docs/latest-v20.x/api/) |
-| **Frontend** | [Next.js](https://nextjs.org) (App Router) | 16.1.7 | [nextjs.org/docs](https://nextjs.org/docs) |
+| **Frontend** | [Next.js](https://nextjs.org) (App Router) | 16.2.4 | [nextjs.org/docs](https://nextjs.org/docs) |
 | **UI** | [React](https://react.dev) | 19.2.5 | [react.dev](https://react.dev/reference/react) |
 | **Styling** | [Tailwind CSS](https://tailwindcss.com) | 3.4.19 | [tailwindcss.com/docs](https://tailwindcss.com/docs) |
-| **Backend** | [NestJS](https://nestjs.com) | 11.1.18 | [docs.nestjs.com](https://docs.nestjs.com) |
+| **Backend** | [NestJS](https://nestjs.com) | 11.1.19 | [docs.nestjs.com](https://docs.nestjs.com) |
 | **Language** | [TypeScript](https://www.typescriptlang.org) | 5.9.3 | [typescriptlang.org/docs](https://www.typescriptlang.org/docs/) |
 | **Testing** | [Jest](https://jestjs.io) | 30.3.0 | [jestjs.io/docs](https://jestjs.io/docs/getting-started) |
 | **Testing** | [Testing Library](https://testing-library.com) | 16.3.0 | [testing-library.com/docs](https://testing-library.com/docs/) |
@@ -215,4 +215,3 @@ See [`AGENTS.md`](./AGENTS.md) for the full development guide.
 ## Roadmap
 
 See [`ROADMAP.md`](./ROADMAP.md) for planned improvements and features.
-

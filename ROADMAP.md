@@ -209,27 +209,7 @@ coverageThreshold: {
 
 ---
 
-### P11: Actualizar README.md
-
-**Problema:** Versiones desactualizadas en la tabla de tech stack.
-
-**Propuesta:** Actualizar manualmente o crear script que lea `package.json` automáticamente.
-
-**Dificultad:** 1/10  
-**Requisitos:** Ninguno  
-**Estado:** Pendiente
-
 ---
-
-### P12: Actualizar configuración de AI agents (Nx)
-
-**Problema:** Nx reporta: "Your AI agent configuration is outdated."
-
-**Propuesta:** Ejecutar `npx nx configure-ai-agents` y revisar cambios.
-
-**Dificultad:** 1/10  
-**Requisitos:** Ninguno  
-**Estado:** Pendiente
 
 ---
 

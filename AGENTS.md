@@ -246,6 +246,15 @@ Pre-PR checklist: `npm run lint`, `npm run build`, and `npm run test` must all p
 - **`@types/node` must match the runtime** — the project uses Node 20 LTS, so always use `@types/node@20.x`.
 - To update a package: check `npm outdated`, verify compatibility, install with `--save-exact`, then run `npm run build` and `npm run test` before committing.
 
+
+## Documentation Maintenance
+
+- **Keep README.md tech stack versions up to date** — when upgrading major dependencies (NX, Next.js, NestJS, React, TypeScript, etc.), update the version table in `README.md` immediately.
+- **Update AGENTS.md when conventions change** — if a new architectural pattern, testing rule, or workflow is established, document it here.
+- **Sync changes across related docs** — if you modify environment variables, update both the example files (`.env.example`) and the Environment Variables section in `README.md`.
+
+---
+
 ---
 
 ## Engineering Principles
