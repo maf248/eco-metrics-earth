@@ -1,3 +1,9 @@
+## [1.6.0](https://github.com/maf248/eco-metrics-earth/compare/v1.5.0...v1.6.0) (2026-05-16)
+
+### Features
+
+* **test:** enable Jest coverage reporting with thresholds (P8) ([f8edd5a](https://github.com/maf248/eco-metrics-earth/commit/f8edd5a850f19c8dc8d5462894edf517eedf2e20))
+
 ## [1.5.0](https://github.com/maf248/eco-metrics-earth/compare/v1.4.2...v1.5.0) (2026-05-10)
 
 ### Features
