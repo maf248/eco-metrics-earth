@@ -7,7 +7,7 @@
       "!{projectRoot}/**/?(*.)+(spec|test).[jt]s?(x)?(.snap)",
       "!{projectRoot}/tsconfig.spec.json",
       "!{projectRoot}/jest.config.[jt]s",
-      "!{projectRoot}/jest.config.cts",
+      "!{projectRoot}/jest.config.cjs",
       "!{projectRoot}/.eslintrc.json",
       "!{projectRoot}/eslint.config.[cm]js",
       "!{projectRoot}/src/test-setup.[jt]s",

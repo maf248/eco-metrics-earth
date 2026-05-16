@@ -6,8 +6,8 @@
     "importHelpers": true,
     "isolatedModules": true,
     "lib": ["es2022"],
-    "module": "nodenext",
-    "moduleResolution": "nodenext",
+    "module": "preserve",
+    "moduleResolution": "bundler",
     "noEmitOnError": true,
     "noFallthroughCasesInSwitch": true,
     "noImplicitOverride": true,
@@ -19,6 +19,7 @@
     "target": "es2022",
     "paths": {
       "@eco-metrics/shared": ["./packages/shared/src/index.ts"]
-    }
+    },
+    "types": ["node"]
   }
 }

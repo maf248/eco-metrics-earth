@@ -39,7 +39,7 @@
     "dist",
     "node_modules",
     "jest.config.ts",
-    "jest.config.cts",
+    "jest.config.cjs",
     "src/**/*.spec.ts",
     "src/**/*.test.ts",
     ".next"

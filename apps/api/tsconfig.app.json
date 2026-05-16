@@ -11,14 +11,14 @@
     "strict": true,
     "emitDeclarationOnly": false,
     "module": "commonjs",
-    "moduleResolution": "node"
+    "moduleResolution": "bundler"
   },
   "include": ["src/**/*.ts"],
   "exclude": [
     "out-tsc",
     "dist",
     "jest.config.ts",
-    "jest.config.cts",
+    "jest.config.cjs",
     "src/**/*.spec.ts",
     "src/**/*.test.ts"
   ]

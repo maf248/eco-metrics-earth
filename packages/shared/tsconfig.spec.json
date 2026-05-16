@@ -6,7 +6,7 @@
     "forceConsistentCasingInFileNames": true,
     "moduleResolution": "bundler"
   },
-  "include": ["jest.config.ts", "jest.config.cts", "__tests__/**/*.test.ts", "src/**/*.d.ts"],
+  "include": ["jest.config.ts", "__tests__/**/*.test.ts", "src/**/*.d.ts"],
   "references": [
     {
       "path": "./tsconfig.lib.json"
