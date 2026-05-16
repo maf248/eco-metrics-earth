@@ -13,7 +13,7 @@ Este documento registra todas las propuestas de mejora identificadas para el pro
 | Build | ✅ | Compila correctamente |
 | CI/CD | ⚠️ | Solo release, falta CI en PRs |
 | Dependencias | ⚠️ | 33 desactualizadas |
-| Coverage | ❌ | No medido |
+| Coverage | ✅ | Medido con Jest (ver P8) |
 | E2E | ❌ | No implementado |
 | Docs | 🟡 | Buena base, faltan detalles |
 | Monitoreo | ❌ | No implementado |
@@ -175,7 +175,7 @@ coverageThreshold: {
 
 **Dificultad:** 2/10  
 **Requisitos:** Ninguno  
-**Estado:** Pendiente
+**Estado:** ✅ Completado (16 May 2026) — collectCoverage habilitado en los 3 proyectos. Umbrales: stmts/funcs/lines 80% en todos; branches 80% en shared, 75% en web (iconos con prop title sin cubrir), omitido en api (ramas fantasma de decoradores NestJS/SWC).
 
 ---
 

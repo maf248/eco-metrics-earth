@@ -1,4 +1,3 @@
-/* eslint-disable */
 const { readFileSync } = require('fs');
 
 // Reading the SWC compilation config for the spec files
@@ -16,6 +15,18 @@ module.exports = {
   },
   moduleFileExtensions: ['ts', 'js', 'html'],
   coverageDirectory: 'test-output/jest/coverage',
+  coverageReporters: ['text', 'lcov'],
+  // Branch coverage is intentionally omitted: NestJS class decorators (@Controller,
+  // @Injectable, etc.) generate phantom branches in the SWC-transpiled output that
+  // do not correspond to real source logic and cannot be covered by tests.
+  coverageThreshold: {
+    global: {
+      statements: 80,
+      functions: 80,
+      lines: 80,
+    },
+  },
+  collectCoverage: true,
   testMatch: ['<rootDir>/__tests__/**/*.test.ts'],
   verbose: true,
 };
