@@ -140,6 +140,14 @@ npx nx build api
 - If a test warning or error appears, investigate the cause and apply the cleanest, most idiomatic fix (e.g., use the right render strategy, fix the component structure, use proper async handling). Do **not** suppress or silence output as a workaround.
 - If the correct fix is unclear or multiple approaches exist, **ask before implementing** — prefer the most standard/best-practice solution.
 
+#### Coverage thresholds
+
+- Coverage is measured via `collectCoverage: true` in each project's `jest.config.cts`. Do **not** disable or lower thresholds without discussion.
+- **Global thresholds:** 80% statements / functions / lines for all three projects (`shared`, `api`, `web`).
+- **Branches — `shared`:** 80% (achievable with the current pure-function codebase).
+- **Branches — `web`:** 75% (icon components have an untested `title` prop branch that renders `aria-labelledby` vs `aria-hidden`; actual coverage sits at ~79%).
+- **Branches — `api`:** threshold intentionally **omitted** — NestJS decorators (`@Controller`, `@Injectable`, etc.) compiled with SWC produce phantom branches in the coverage report that cannot be exercised by unit tests.
+
 #### Known jsdom / Next.js testing gotchas
 
 - **`next/link` strips trailing slashes in jsdom** — when `trailingSlash: true` is set in `next.config.ts`, the Next.js router adds trailing slashes at the browser/server level. However, `<Link href="/foo/">` renders `<a href="/foo">` in the jsdom test environment. Assertions on rendered `href` attributes must use the non-trailing-slash form (e.g., `toBe('/air-quality')`). The `isActive` logic in components should still receive and compare trailing-slash hrefs (matching real `usePathname()` output).
