@@ -12,7 +12,7 @@ Este documento registra todas las propuestas de mejora identificadas para el pro
 | Lint | ✅ | Sin warnings |
 | Build | ✅ | Compila correctamente |
 | CI/CD | ⚠️ | Solo release, falta CI en PRs |
-| Dependencias | ⚠️ | 33 desactualizadas |
+| Dependencias | ✅ | Al día (Fase 1 + Fase 2 aplicadas) |
 | Coverage | ✅ | Medido con Jest |
 | E2E | ❌ | No implementado |
 | Docs | 🟡 | Buena base, faltan detalles |
@@ -44,23 +44,7 @@ Este documento registra todas las propuestas de mejora identificadas para el pro
 
 ---
 
-### P2: Actualización de dependencias (patches seguros)
-
-**Problema:** 33 paquetes desactualizados, incluyendo algunos con vulnerabilidades potenciales.
-
-**Impacto:** Vulnerabilidades de seguridad, pérdida de features, incompatibilidades futuras.
-
-**Propuesta:** Actualizar dependencias en fases:
-1. **Fase 1 (patches seguros):** NestJS, Next.js, React, Jest, TypeScript/ESLint plugins, etc. ✅ (aplicada 16 May 2026)
-2. **Fase 2 (breaking changes):** ESLint 10, TypeScript 6, reflect-metadata 0.2.x (evaluación necesaria)
-
-**Dificultad:** 3/10 (Fase 1), 6/10 (Fase 2)  
-**Requisitos:** Tests deben pasar después de cada actualización  
-**Estado:** 🔄 En progreso — Fase 1 aplicada, Fase 2 pendiente
-
----
-
-### P3: Tests End-to-End (E2E)
+### P2: Tests End-to-End (E2E)
 
 **Problema:** Solo tests unitarios. No hay validación de flujos completos (navegación, API → UI).
 
@@ -80,7 +64,7 @@ Este documento registra todas las propuestas de mejora identificadas para el pro
 
 ## 🟡 Importante / Media Prioridad
 
-### P4: Implementar módulos de categorías eco (API)
+### P3: Implementar módulos de categorías eco (API)
 
 **Problema:** `apps/api/src/modules/` solo tiene `.gitkeep`. No hay lógica real para ninguna categoría.
 
@@ -103,7 +87,7 @@ Cada módulo debe incluir:
 
 ---
 
-### P5: Validación de tipos en runtime (DTOs)
+### P4: Validación de tipos en runtime (DTOs)
 
 **Problema:** La API no valida payloads/queries. Requests malformados pueden causar errores inesperados.
 
@@ -120,7 +104,7 @@ Cada módulo debe incluir:
 
 ---
 
-### P6: Documentación de arquitectura interna
+### P5: Documentación de arquitectura interna
 
 **Problema:** `AGENTS.md` es excelente para desarrollo, pero falta:
 - READMEs específicos por app (`apps/web/README.md`, `apps/api/README.md`)
@@ -141,7 +125,7 @@ Cada módulo debe incluir:
 
 ---
 
-### P7: Monitoreo y observabilidad
+### P6: Monitoreo y observabilidad
 
 **Problema:** No hay logs estructurados, métricas ni error tracking.
 
@@ -161,7 +145,7 @@ Cada módulo debe incluir:
 
 ## 🟢 Mejoras / Baja Prioridad
 
-### P8: Análisis de bundle (Next.js)
+### P7: Análisis de bundle (Next.js)
 
 **Problema:** No se mide el tamaño del bundle de Next.js.
 
@@ -176,7 +160,7 @@ Cada módulo debe incluir:
 
 ---
 
-### P9: Storybook para componentes
+### P8: Storybook para componentes
 
 **Problema:** Los 16 componentes React no tienen documentación visual ni tests de interacción aislados.
 
@@ -196,10 +180,9 @@ Cada módulo debe incluir:
 Si no estás seguro por dónde empezar, este es el orden recomendado:
 
 1. **P1: CI/CD workflow** → Protección inmediata (Dificultad: 2/10)
-2. **P2: Actualizar dependencias (Fase 1)** → Seguridad sin breaking changes (Dificultad: 3/10)
-3. **P4: Implementar módulos eco** → Funcionalidad real (Dificultad: 6/10)
-4. **P3: Tests E2E** → Validación de flujos críticos (Dificultad: 5/10)
-5. **P6: Documentación** → Facilita mantenimiento (Dificultad: 4/10)
+2. **P2: Tests E2E** → Validación de flujos críticos (Dificultad: 5/10)
+3. **P3: Implementar módulos eco** → Funcionalidad real (Dificultad: 6/10)
+4. **P5: Documentación** → Facilita mantenimiento (Dificultad: 4/10)
 
 ---
 
