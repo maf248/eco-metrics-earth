@@ -51,12 +51,12 @@ Este documento registra todas las propuestas de mejora identificadas para el pro
 **Impacto:** Vulnerabilidades de seguridad, pérdida de features, incompatibilidades futuras.
 
 **Propuesta:** Actualizar dependencias en fases:
-1. **Fase 1 (patches seguros):** NestJS, Next.js, React, Jest, TypeScript/ESLint plugins, etc.
+1. **Fase 1 (patches seguros):** NestJS, Next.js, React, Jest, TypeScript/ESLint plugins, etc. ✅ (aplicada 16 May 2026)
 2. **Fase 2 (breaking changes):** ESLint 10, TypeScript 6, reflect-metadata 0.2.x (evaluación necesaria)
 
 **Dificultad:** 3/10 (Fase 1), 6/10 (Fase 2)  
 **Requisitos:** Tests deben pasar después de cada actualización  
-**Estado:** Pendiente
+**Estado:** 🔄 En progreso — Fase 1 aplicada, Fase 2 pendiente
 
 ---
 
