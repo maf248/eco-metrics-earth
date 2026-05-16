@@ -4,7 +4,7 @@ Este documento registra todas las propuestas de mejora identificadas para el pro
 
 ---
 
-## Estado del Proyecto (14 May 2026)
+## Estado del Proyecto (16 May 2026)
 
 | Aspecto | Estado | Nota |
 |---------|--------|------|
@@ -13,7 +13,7 @@ Este documento registra todas las propuestas de mejora identificadas para el pro
 | Build | ✅ | Compila correctamente |
 | CI/CD | ⚠️ | Solo release, falta CI en PRs |
 | Dependencias | ⚠️ | 33 desactualizadas |
-| Coverage | ✅ | Medido con Jest (ver P8) |
+| Coverage | ✅ | Medido con Jest |
 | E2E | ❌ | No implementado |
 | Docs | 🟡 | Buena base, faltan detalles |
 | Monitoreo | ❌ | No implementado |
@@ -24,14 +24,19 @@ Este documento registra todas las propuestas de mejora identificadas para el pro
 
 ### P1: CI/CD — Workflow de validación en PRs
 
-**Problema:** Solo existe `release.yml` que corre en `main`. No hay validación automática en Pull Requests.
+**Problema:** Solo existe `release.yml` que corre en `main`. No hay validación automática en Pull Requests ni en branches de feature.
 
 **Impacto:** Los errores pueden llegar a `main` sin ser detectados.
 
-**Propuesta:** Crear `.github/workflows/ci.yml` que ejecute en cada PR y push:
+**Propuesta:** Crear `.github/workflows/ci.yml` que ejecute:
 - `npm run lint`
 - `npm run build`
 - `npm run test`
+
+**Diseño:**
+- **Triggers:** `push` a cualquier branch que no sea `main` + `pull_request` hacia `main` — así el autor ve el fallo antes de abrir el PR
+- **Cache:** `actions/cache` para `node_modules` — los `npm ci` sin cache son lentos; el `release.yml` actual tampoco cachea, buen momento para mejorarlo en paralelo
+- **Matrix de Node versions:** opcional por ahora; considerar si se plantea compatibilidad multi-versión en el futuro
 
 **Dificultad:** 2/10  
 **Requisitos:** Ninguno  
@@ -156,30 +161,7 @@ Cada módulo debe incluir:
 
 ## 🟢 Mejoras / Baja Prioridad
 
-### P8: Medición de cobertura de tests
-
-**Problema:** No se mide coverage de tests.
-
-**Propuesta:** Configurar Jest para reportar coverage:
-```ts
-collectCoverage: true,
-coverageThreshold: {
-  global: {
-    branches: 80,
-    functions: 80,
-    lines: 80,
-    statements: 80,
-  },
-}
-```
-
-**Dificultad:** 2/10  
-**Requisitos:** Ninguno  
-**Estado:** ✅ Completado (16 May 2026) — collectCoverage habilitado en los 3 proyectos. Umbrales: stmts/funcs/lines 80% en todos; branches 80% en shared, 75% en web (iconos con prop title sin cubrir), omitido en api (ramas fantasma de decoradores NestJS/SWC).
-
----
-
-### P9: Análisis de bundle (Next.js)
+### P8: Análisis de bundle (Next.js)
 
 **Problema:** No se mide el tamaño del bundle de Next.js.
 
@@ -194,7 +176,7 @@ coverageThreshold: {
 
 ---
 
-### P10: Storybook para componentes
+### P9: Storybook para componentes
 
 **Problema:** Los 16 componentes React no tienen documentación visual ni tests de interacción aislados.
 
@@ -209,10 +191,6 @@ coverageThreshold: {
 
 ---
 
----
-
----
-
 ## 📋 Plan de Acción Sugerido
 
 Si no estás seguro por dónde empezar, este es el orden recomendado:
@@ -221,8 +199,7 @@ Si no estás seguro por dónde empezar, este es el orden recomendado:
 2. **P2: Actualizar dependencias (Fase 1)** → Seguridad sin breaking changes (Dificultad: 3/10)
 3. **P4: Implementar módulos eco** → Funcionalidad real (Dificultad: 6/10)
 4. **P3: Tests E2E** → Validación de flujos críticos (Dificultad: 5/10)
-5. **P8: Coverage** → Visibilidad de calidad (Dificultad: 2/10)
-6. **P6: Documentación** → Facilita mantenimiento (Dificultad: 4/10)
+5. **P6: Documentación** → Facilita mantenimiento (Dificultad: 4/10)
 
 ---
 
@@ -235,4 +212,4 @@ Si no estás seguro por dónde empezar, este es el orden recomendado:
 
 ---
 
-**Última actualización:** 14 May 2026
+**Última actualización:** 16 May 2026
