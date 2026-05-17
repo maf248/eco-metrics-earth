@@ -193,11 +193,7 @@ Lista de hallazgos del análisis de repositorio. Sin prioridad asignada aún. Ca
 
 ### Código — web
 
-- **I8.** `navItems.tsx` tiene extensión incorrecta — solo exporta una constante TS, no tiene JSX. Debería ser `.ts` según `AGENTS.md`.
-- **I9.** `EcoMetricsEarthIcon.tsx` y `SiteLogoIcon.tsx` son idénticos — uno debería eliminarse.
 - **I10.** `SITE_LOGO_ICON` y `NOT_FOUND_ICON` en `categoryIcon.ts` usan `SCREAMING_SNAKE_CASE` — deberían ser `PascalCase` al ser componentes React exportados.
-- **I11.** `.gitkeep` en `apps/web/src/components/` y `apps/web/src/lib/` están obsoletos — los directorios ya tienen archivos.
-- **I12.** `apps/web/index.d.ts` parece huérfano — no está referenciado en ningún `tsconfig.json` ni importado desde ningún módulo.
 
 ### Código — API
 

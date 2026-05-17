@@ -7,7 +7,6 @@ const EXPECTED_ICONS = [
   'BottleIcon',
   'Co2EmissionsIcon',
   'DeforestationIcon',
-  'EcoMetricsEarthIcon',
   'EndangeredSpeciesIcon',
   'GlacierMeltingIcon',
   'GlobalTemperatureIcon',
@@ -20,7 +19,7 @@ const EXPECTED_ICONS = [
 ] as const;
 
 describe('Icon components barrel export', () => {
-  it('should export all 14 named icon components', () => {
+  it('should export all 13 named icon components', () => {
     EXPECTED_ICONS.forEach((name) => {
       expect(typeof Icons[name]).toBe('function');
     });
