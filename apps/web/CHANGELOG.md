@@ -1,3 +1,9 @@
+## [1.7.1](https://github.com/maf248/eco-metrics-earth/compare/web-v1.7.0...web-v1.7.1) (2026-05-17)
+
+### Bug Fixes
+
+* **api:** correct jest config reference in tsconfig.spec.json ([ee0843e](https://github.com/maf248/eco-metrics-earth/commit/ee0843ec44848c554a2b60cd9413edb0a0074418))
+
 ## [1.7.0](https://github.com/maf248/eco-metrics-earth/compare/web-v1.6.0...web-v1.7.0) (2026-05-16)
 
 ### Features
