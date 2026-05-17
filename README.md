@@ -6,17 +6,17 @@ An environmental metrics dashboard monorepo — tracking air quality, CO₂ emis
 
 | Layer | Technology | Version | Docs |
 |---|---|---|---|
-| **Monorepo** | [NX](https://nx.dev) | 22.7.1 | [nx.dev/docs](https://nx.dev/getting-started/intro) |
+| **Monorepo** | [NX](https://nx.dev) | 22.7.2 | [nx.dev/docs](https://nx.dev/getting-started/intro) |
 | **Runtime** | [Node.js](https://nodejs.org) LTS | 20.x | [nodejs.org/docs](https://nodejs.org/docs/latest-v20.x/api/) |
-| **Frontend** | [Next.js](https://nextjs.org) (App Router) | 16.2.4 | [nextjs.org/docs](https://nextjs.org/docs) |
-| **UI** | [React](https://react.dev) | 19.2.5 | [react.dev](https://react.dev/reference/react) |
-| **Styling** | [Tailwind CSS](https://tailwindcss.com) | 3.4.19 | [tailwindcss.com/docs](https://tailwindcss.com/docs) |
-| **Backend** | [NestJS](https://nestjs.com) | 11.1.19 | [docs.nestjs.com](https://docs.nestjs.com) |
-| **Language** | [TypeScript](https://www.typescriptlang.org) | 5.9.3 | [typescriptlang.org/docs](https://www.typescriptlang.org/docs/) |
-| **Testing** | [Jest](https://jestjs.io) | 30.3.0 | [jestjs.io/docs](https://jestjs.io/docs/getting-started) |
-| **Testing** | [Testing Library](https://testing-library.com) | 16.3.0 | [testing-library.com/docs](https://testing-library.com/docs/) |
-| **Linting** | [ESLint](https://eslint.org) | 10.2.0 | [eslint.org/docs](https://eslint.org/docs/latest/) |
-| **Formatting** | [Prettier](https://prettier.io) | 3.8.2 | [prettier.io/docs](https://prettier.io/docs/en/) |
+| **Frontend** | [Next.js](https://nextjs.org) (App Router) | 16.2.6 | [nextjs.org/docs](https://nextjs.org/docs) |
+| **UI** | [React](https://react.dev) | 19.2.6 | [react.dev](https://react.dev/reference/react) |
+| **Styling** | [Tailwind CSS](https://tailwindcss.com) | 4.3.0 | [tailwindcss.com/docs](https://tailwindcss.com/docs) |
+| **Backend** | [NestJS](https://nestjs.com) | 11.1.21 | [docs.nestjs.com](https://docs.nestjs.com) |
+| **Language** | [TypeScript](https://www.typescriptlang.org) | 6.0.3 | [typescriptlang.org/docs](https://www.typescriptlang.org/docs/) |
+| **Testing** | [Jest](https://jestjs.io) | 30.4.2 | [jestjs.io/docs](https://jestjs.io/docs/getting-started) |
+| **Testing** | [Testing Library](https://testing-library.com) | 16.3.2 | [testing-library.com/docs](https://testing-library.com/docs/) |
+| **Linting** | [ESLint](https://eslint.org) | 10.4.0 | [eslint.org/docs](https://eslint.org/docs/latest/) |
+| **Formatting** | [Prettier](https://prettier.io) | 3.8.3 | [prettier.io/docs](https://prettier.io/docs/en/) |
 | **Config** | [@nestjs/config](https://docs.nestjs.com/techniques/configuration) | 4.0.4 | [docs.nestjs.com/techniques/configuration](https://docs.nestjs.com/techniques/configuration) |
 | **Reactive** | [RxJS](https://rxjs.dev) | 7.8.2 | [rxjs.dev/guide](https://rxjs.dev/guide/overview) |
 
@@ -128,6 +128,7 @@ eco-metrics-earth/
 ├── dev/                         # Local development tooling (Caddy reverse proxy)
 ├── openspec/                    # Spec-Driven Development artifacts
 │   └── changes/                 # Per-change: proposal, design, specs, tasks
+│       └── archive/             # Completed changes moved here via /opsx:archive
 ├── .nvmrc                       # Node.js v20
 ├── nx.json                      # NX workspace config (cache, targets)
 ├── tsconfig.base.json           # Root TS config + path aliases
@@ -161,12 +162,13 @@ cp apps/web/.env.example apps/web/.env.local
 |---|---|---|
 | `PORT` | `3001` | Port the API listens on |
 | `NODE_ENV` | `development` | Node environment |
+| `CORS_ORIGIN` | `http://localhost:3000` | Allowed origin for CORS (set to deployed frontend URL in production) |
 
 ### `apps/web/.env.example`
 
 | Variable | Default | Description |
 |---|---|---|
-| `NEXT_PUBLIC_API_URL` | `http://localhost:3001/api/v1` | BFF base URL |
+| `NEXT_PUBLIC_SITE_URL` | `http://localhost:3000` | Canonical base URL for SEO metadata (Open Graph, canonical links) |
 
 ---
 

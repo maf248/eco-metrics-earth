@@ -26,7 +26,7 @@ All non-trivial changes — new features, significant refactors, API contracts �
 2. **Review** — the user reviews and approves the OpenSpec artifacts in `openspec/changes/`.
 3. **Implement** — code is written strictly based on the approved spec, delegated to `@coder`.
 4. **Validate** — `@tester` writes/updates tests; `@reviewer` does the final quality audit.
-5. **Close** — verify Definition of Done, archive the change, then commit and optionally open a PR.
+5. **Close** — verify Definition of Done, run `/opsx:archive` to move the change folder to `openspec/changes/archive/`, then commit and optionally open a PR.
 
 > **Note:** Improvement ideas and planned features are tracked in [`ROADMAP.md`](./ROADMAP.md). When ready to implement, a formal OpenSpec proposal is created from the roadmap item.
 
