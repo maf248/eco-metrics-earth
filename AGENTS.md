@@ -148,6 +148,21 @@ npx nx build api
 - **Branches — `web`:** 75% (icon components have an untested `title` prop branch that renders `aria-labelledby` vs `aria-hidden`; actual coverage sits at ~79%).
 - **Branches — `api`:** threshold intentionally **omitted** — NestJS decorators (`@Controller`, `@Injectable`, etc.) compiled with SWC produce phantom branches in the coverage report that cannot be exercised by unit tests.
 
+#### Snapshot tests — when and how to update
+
+Snapshots live in `__tests__/__snapshots__/`. They capture rendered output and fail when the output changes unexpectedly.
+
+**When to update:** only when a UI change is intentional — e.g., you modified a component's markup, classes, or structure on purpose.
+
+**How to update:**
+```bash
+npm run update-snapshots          # updates all snapshots across all projects
+npx nx test web -- --updateSnapshot   # updates only web snapshots
+npx nx test api -- --updateSnapshot   # updates only api snapshots
+```
+
+**Before committing updated snapshots:** visually diff the `.snap` files to confirm only the intended components changed. An unexpected snapshot diff is a sign of an unintended side effect — investigate before committing.
+
 #### Known jsdom / Next.js testing gotchas
 
 - **`next/link` strips trailing slashes in jsdom** — when `trailingSlash: true` is set in `next.config.ts`, the Next.js router adds trailing slashes at the browser/server level. However, `<Link href="/foo/">` renders `<a href="/foo">` in the jsdom test environment. Assertions on rendered `href` attributes must use the non-trailing-slash form (e.g., `toBe('/air-quality')`). The `isActive` logic in components should still receive and compare trailing-slash hrefs (matching real `usePathname()` output).
@@ -160,10 +175,22 @@ npx nx build api
   - Types: `feat`, `fix`, `docs`, `style`, `refactor`, `test`, `chore`
 - Examples: `feat(metrics): add new chart widget`, `fix(api): resolve data fetch error`
 
+#### Branch strategy
+
+```
+feature/* ──► develop ──► main (production)
+```
+
+- **`main`** — protected. No direct pushes. All changes enter via PR from `develop`. Requires CI pass + 1 PR review before merge. No force pushes allowed.
+- **`develop`** — integration branch. Work happens here or in short-lived `feature/*` branches off `develop`. Force push allowed for history cleanup before opening a PR.
+- **`feature/*`** — optional, for large or parallel work. Branch off `develop`, PR back into `develop`.
+
+> **Admin override:** as repo owner you can merge a PR on `main` without a reviewer approval via GitHub's "Merge without waiting for requirements" button. Use it when working solo — the protection is a guardrail, not a blocker.
+
 #### Rules — for humans and AI agents alike
 
 1. **Never commit without explicit request** — do not create a commit unless the user explicitly asks for it.
-2. **Never push to `main` directly** — all non-trivial changes (features, refactors, fixes) must go through a Pull Request. Direct pushes to `main` are only acceptable for configuration, tooling, or maintenance tasks, and only with explicit user authorization.
+2. **Never push to `main` directly** — all changes must go through a PR from `develop`. Branch protection enforces this.
 3. **Never push without confirmation** — always ask the user before running `git push`, regardless of the branch.
 4. **Always run tests before pushing** — run `npm run test` before any push. If all tests pass and the push has been authorized, proceed. If any test fails, show a summary of the failing suites and do not push until they are fixed.
 5. **Always use Commitizen format** — every commit message must follow `type(scope): description`. Free-form messages are not allowed.
