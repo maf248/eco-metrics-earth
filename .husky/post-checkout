@@ -1,0 +1,4 @@
+changed=$(git diff-tree -r --name-only --no-commit-id ORIG_HEAD HEAD 2>/dev/null || echo "")
+if echo "$changed" | grep -q "package.json"; then
+  echo "package.json changed — run: npm install"
+fi
