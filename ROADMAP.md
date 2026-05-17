@@ -185,41 +185,40 @@ Lista de hallazgos del análisis de repositorio. Sin prioridad asignada aún. Ca
 
 ### Seguridad
 
-- **I2.** `npm audit` detecta 4 vulnerabilidades activas — `brace-expansion` (DoS moderado), `ip-address` (XSS), `picomatch` (ReDoS alto), `postcss` (XSS). Fixable con `npm audit fix`.
-- **I3.** CSP en `next.config.ts` tiene `unsafe-eval` — necesario en dev, pero hay que confirmar que esté desactivado en builds de producción.
+- **I2.** `npm audit` reporta ~21 vulnerabilidades, todas en dependencias que el proyecto no controla: `brace-expansion`, `ip-address`, `picomatch` están en los `node_modules` internos de npm (no del proyecto); `postcss` está bundleado dentro de `next`. Requieren upgrade de npm o de next para resolverse — no son solucionables con `npm audit fix` desde el proyecto.
 
 ### CI/CD
 
-- **I4.** No hay estrategia de pre-release o staging — todos los deploys van directo a producción.
+- **I3.** No hay estrategia de pre-release o staging — todos los deploys van directo a producción.
 
 ### Código — API
 
-- **I5.** `apps/api/src/common/` está vacío — listado en `AGENTS.md` como "Shared pipes, guards, interceptors, filters" pero sin archivos.
-- **I6.** Solo un origen soportado en CORS — `CORS_ORIGIN` es un string único. Cuando web (Vercel) y API (Railway) estén en producción, esto fallará con múltiples orígenes.
+- **I4.** `apps/api/src/common/` está vacío — listado en `AGENTS.md` como "Shared pipes, guards, interceptors, filters" pero sin archivos.
+- **I5.** Solo un origen soportado en CORS — `CORS_ORIGIN` es un string único. Cuando web (Vercel) y API (Railway) estén en producción, esto fallará con múltiples orígenes.
 
 ### Testing
 
-- **I7.** Sin tests de integración cross-workspace — nada verifica que web pueda llamar correctamente a la API.
-- **I8.** Sin tests de accesibilidad automatizados — `axe-core` o `jest-axe` no están configurados. `AGENTS.md` exige a11y pero no hay auditoría sistemática.
-- **I9.** Proceso de actualización de snapshots no documentado — `update-snapshots` existe como script pero no hay guía de cuándo/cómo usarlo.
+- **I6.** Sin tests de integración cross-workspace — nada verifica que web pueda llamar correctamente a la API.
+- **I7.** Sin tests de accesibilidad automatizados — `axe-core` o `jest-axe` no están configurados. `AGENTS.md` exige a11y pero no hay auditoría sistemática.
+- **I8.** Proceso de actualización de snapshots no documentado — `update-snapshots` existe como script pero no hay guía de cuándo/cómo usarlo.
 
 ### Configuración y build
 
-- **I10.** TypeScript 6.0.3 genera conflictos de peer deps — `@module-federation/*` y `fork-ts-checker-webpack-plugin` declaran `peerDependency: ^4.9 || ^5.0`. Marcados como "invalid" en `npm ls`.
-- **I11.** `legacy-peer-deps=true` en `.npmrc` por `eslint-plugin-jsx-a11y` — temporal, hay que revisarlo cuando el plugin declare soporte para ESLint 10.
+- **I9.** TypeScript 6.0.3 genera conflictos de peer deps — `@module-federation/*` y `fork-ts-checker-webpack-plugin` declaran `peerDependency: ^4.9 || ^5.0`. Marcados como "invalid" en `npm ls`.
+- **I10.** `legacy-peer-deps=true` en `.npmrc` por `eslint-plugin-jsx-a11y` — temporal, hay que revisarlo cuando el plugin declare soporte para ESLint 10.
 
 ### Arquitectura y deuda
 
-- **I12.** OpenSpec `architecture-and-quality` tiene 25 tareas incompletas — refactor de `ApiResponse<T>`, `HealthModule`, íconos duplicados, etc. La implementación no ha comenzado.
-- **I13.** Dependencias en el `package.json` raíz — `@nestjs/*`, `next`, `react` están en el root. Deberían estar solo en los apps individuales para evitar conflictos de versión.
-- **I14.** Versiones de workspace no sincronizadas — root es `v1.6.0`, api y web son `v1.7.0`, shared es `v1.2.0`. El release workflow genera 4 tags que no correlacionan claramente.
-- **I15.** Tres archivos `.releaserc.json` separados — root, api y web. Lógica de release duplicada que hay que actualizar en tres lugares.
-- **I16.** Tres `CHANGELOG.md` separados — fragmentan el historial de releases sin referencia cruzada entre ellos.
+- **I11.** OpenSpec `architecture-and-quality` tiene 25 tareas incompletas — refactor de `ApiResponse<T>`, `HealthModule`, íconos duplicados, etc. La implementación no ha comenzado.
+- **I12.** Dependencias en el `package.json` raíz — `@nestjs/*`, `next`, `react` están en el root. Deberían estar solo en los apps individuales para evitar conflictos de versión.
+- **I13.** Versiones de workspace no sincronizadas — root es `v1.6.0`, api y web son `v1.7.0`, shared es `v1.2.0`. El release workflow genera 4 tags que no correlacionan claramente.
+- **I14.** Tres archivos `.releaserc.json` separados — root, api y web. Lógica de release duplicada que hay que actualizar en tres lugares.
+- **I15.** Tres `CHANGELOG.md` separados — fragmentan el historial de releases sin referencia cruzada entre ellos.
 
 ### Observabilidad y producción
 
-- **I17.** Sin OpenAPI/Swagger — `@nestjs/swagger` no está instalado. La API solo documenta `/health` manualmente en el README.
-- **I18.** Sin capa de datos ni ORM — cuando empiece la integración real (P3), no hay TypeORM, Prisma ni esquema de base de datos.
+- **I16.** Sin OpenAPI/Swagger — `@nestjs/swagger` no está instalado. La API solo documenta `/health` manualmente en el README.
+- **I17.** Sin capa de datos ni ORM — cuando empiece la integración real (P3), no hay TypeORM, Prisma ni esquema de base de datos.
 
 ---
 
