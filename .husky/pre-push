@@ -1,0 +1,1 @@
+npx nx affected --target=test --base=origin/develop
