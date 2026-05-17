@@ -4,7 +4,7 @@ Este documento registra todas las propuestas de mejora identificadas para el pro
 
 ---
 
-## Estado del Proyecto (16 May 2026)
+## Estado del Proyecto (17 May 2026)
 
 | Aspecto | Estado | Nota |
 |---------|--------|------|
@@ -15,7 +15,6 @@ Este documento registra todas las propuestas de mejora identificadas para el pro
 | Dependencias | ✅ | Al día (Fase 1 + Fase 2 aplicadas) |
 | Coverage | ✅ | Medido con Jest |
 | E2E | ❌ | No implementado |
-| Docs | 🟡 | Buena base, faltan detalles |
 | Monitoreo | ❌ | No implementado |
 
 ---
@@ -104,28 +103,7 @@ Cada módulo debe incluir:
 
 ---
 
-### P5: Documentación de arquitectura interna
-
-**Problema:** `AGENTS.md` es excelente para desarrollo, pero falta:
-- READMEs específicos por app (`apps/web/README.md`, `apps/api/README.md`)
-- JSDoc en funciones críticas
-- Comentarios explicando decisiones de arquitectura
-
-**Impacto:** Dificulta onboarding y mantenimiento futuro.
-
-**Propuesta:** Crear:
-- `apps/web/README.md` — arquitectura App Router, componentes, data fetching
-- `apps/api/README.md` — arquitectura NestJS, módulos, configuración
-- JSDoc en utils y helpers
-- Diagrama de arquitectura (opcional, con Mermaid)
-
-**Dificultad:** 4/10  
-**Requisitos:** Ninguno  
-**Estado:** Pendiente
-
----
-
-### P6: Monitoreo y observabilidad
+### P5: Monitoreo y observabilidad
 
 **Problema:** No hay logs estructurados, métricas ni error tracking.
 
@@ -145,7 +123,7 @@ Cada módulo debe incluir:
 
 ## 🟢 Mejoras / Baja Prioridad
 
-### P7: Análisis de bundle (Next.js)
+### P6: Análisis de bundle (Next.js)
 
 **Problema:** No se mide el tamaño del bundle de Next.js.
 
@@ -160,7 +138,7 @@ Cada módulo debe incluir:
 
 ---
 
-### P8: Storybook para componentes
+### P7: Storybook para componentes
 
 **Problema:** Los 16 componentes React no tienen documentación visual ni tests de interacción aislados.
 
@@ -182,7 +160,6 @@ Si no estás seguro por dónde empezar, este es el orden recomendado:
 1. **P1: CI/CD workflow** → Protección inmediata (Dificultad: 2/10)
 2. **P2: Tests E2E** → Validación de flujos críticos (Dificultad: 5/10)
 3. **P3: Implementar módulos eco** → Funcionalidad real (Dificultad: 6/10)
-4. **P5: Documentación** → Facilita mantenimiento (Dificultad: 4/10)
 
 ---
 
@@ -195,4 +172,4 @@ Si no estás seguro por dónde empezar, este es el orden recomendado:
 
 ---
 
-**Última actualización:** 16 May 2026
+**Última actualización:** 17 May 2026
