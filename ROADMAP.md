@@ -180,10 +180,7 @@ Lista de hallazgos del análisis de repositorio. Sin prioridad asignada aún. Ca
 
 ### Documentación
 
-- **I1.** `README.md` tiene versiones desactualizadas — Tailwind 3.4.19 (real: 4.3.0), TypeScript 5.9.3 (real: 6.0.3) y otras 7 dependencias con versión incorrecta.
-- **I2.** `apps/web/.env.example` existe pero está vacío — no documenta ninguna variable como `NEXT_PUBLIC_SITE_URL`.
 - **I3.** No hay reglas de branch protection documentadas — `AGENTS.md` dice "no pushear a main directamente" pero nada lo enforce.
-- **I4.** El directorio `openspec/changes/archive/` no está explicado en `CLAUDE.md` ni `AGENTS.md` — el proceso de archivado es implícito.
 
 ### Seguridad
 
