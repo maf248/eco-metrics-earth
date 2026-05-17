@@ -7,7 +7,7 @@ interface IconProps extends React.SVGProps<SVGSVGElement> {
 export default function GlobalTemperatureIcon({ title, ...props }: IconProps) {
   return (
     <svg
-      viewBox="0 0 512 512"
+      viewBox="-120 0 512 512"
       xmlns="http://www.w3.org/2000/svg"
       {...(title
         ? { 'aria-labelledby': 'global-temperature-icon-title' }
