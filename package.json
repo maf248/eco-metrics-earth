@@ -11,7 +11,7 @@
     "format": "prettier --write \"**/*.{ts,tsx,js,json}\"",
     "format:check": "prettier --check \"**/*.{ts,tsx,js,json}\"",
     "prepare": "husky",
-    "reset": "rm -rf node_modules .nx apps/web/.next packages/shared/dist && npm ci",
+    "reset": "rm -rf node_modules .nx apps/web/.next packages/shared/dist && npm install",
     "typecheck": "nx affected --target=typecheck --base=HEAD",
     "clean:reports": "rm -rf coverage apps/api/test-output packages/shared/test-output",
     "update-snapshots": "nx run-many --target=test --all -- --updateSnapshot"
@@ -43,7 +43,7 @@
     "@testing-library/jest-dom": "6.9.1",
     "@testing-library/react": "16.3.2",
     "@types/jest": "30.0.0",
-    "@types/node": "20.19.39",
+    "@types/node": "24.12.4",
     "@types/react": "19.2.14",
     "@types/react-dom": "19.2.3",
     "@typescript-eslint/eslint-plugin": "8.59.3",
