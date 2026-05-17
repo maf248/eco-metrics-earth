@@ -11,7 +11,7 @@ Este documento registra todas las propuestas de mejora identificadas para el pro
 | Tests | ✅ | 162 tests pasando, 0 errores |
 | Lint | ✅ | Sin warnings |
 | Build | ✅ | Compila correctamente |
-| CI/CD | ⚠️ | Solo release, falta CI en PRs |
+| CI/CD | ✅ | CI en PRs y push a cualquier branch |
 | Dependencias | ✅ | Al día (Fase 1 + Fase 2 aplicadas) |
 | Coverage | ✅ | Medido con Jest |
 | E2E | ❌ | No implementado |
@@ -21,29 +21,7 @@ Este documento registra todas las propuestas de mejora identificadas para el pro
 
 ## 🔴 Crítico / Alta Prioridad
 
-### P1: CI/CD — Workflow de validación en PRs
-
-**Problema:** Solo existe `release.yml` que corre en `main`. No hay validación automática en Pull Requests ni en branches de feature.
-
-**Impacto:** Los errores pueden llegar a `main` sin ser detectados.
-
-**Propuesta:** Crear `.github/workflows/ci.yml` que ejecute:
-- `npm run lint`
-- `npm run build`
-- `npm run test`
-
-**Diseño:**
-- **Triggers:** `push` a cualquier branch que no sea `main` + `pull_request` hacia `main` — así el autor ve el fallo antes de abrir el PR
-- **Cache:** `actions/cache` para `node_modules` — los `npm ci` sin cache son lentos; el `release.yml` actual tampoco cachea, buen momento para mejorarlo en paralelo
-- **Matrix de Node versions:** opcional por ahora; considerar si se plantea compatibilidad multi-versión en el futuro
-
-**Dificultad:** 2/10  
-**Requisitos:** Ninguno  
-**Estado:** Pendiente
-
----
-
-### P2: Tests End-to-End (E2E)
+### P1: Tests End-to-End (E2E)
 
 **Problema:** Solo tests unitarios. No hay validación de flujos completos (navegación, API → UI).
 
@@ -63,7 +41,7 @@ Este documento registra todas las propuestas de mejora identificadas para el pro
 
 ## 🟡 Importante / Media Prioridad
 
-### P3: Implementar módulos de categorías eco (API)
+### P2: Implementar módulos de categorías eco (API)
 
 **Problema:** `apps/api/src/modules/` solo tiene `.gitkeep`. No hay lógica real para ninguna categoría.
 
@@ -86,7 +64,7 @@ Cada módulo debe incluir:
 
 ---
 
-### P4: Validación de tipos en runtime (DTOs)
+### P3: Validación de tipos en runtime (DTOs)
 
 **Problema:** La API no valida payloads/queries. Requests malformados pueden causar errores inesperados.
 
@@ -103,7 +81,7 @@ Cada módulo debe incluir:
 
 ---
 
-### P5: Monitoreo y observabilidad
+### P4: Monitoreo y observabilidad
 
 **Problema:** No hay logs estructurados, métricas ni error tracking.
 
@@ -123,7 +101,7 @@ Cada módulo debe incluir:
 
 ## 🟢 Mejoras / Baja Prioridad
 
-### P6: Análisis de bundle (Next.js)
+### P5: Análisis de bundle (Next.js)
 
 **Problema:** No se mide el tamaño del bundle de Next.js.
 
@@ -138,7 +116,7 @@ Cada módulo debe incluir:
 
 ---
 
-### P7: Storybook para componentes
+### P6: Storybook para componentes
 
 **Problema:** Los 16 componentes React no tienen documentación visual ni tests de interacción aislados.
 
@@ -157,9 +135,9 @@ Cada módulo debe incluir:
 
 Si no estás seguro por dónde empezar, este es el orden recomendado:
 
-1. **P1: CI/CD workflow** → Protección inmediata (Dificultad: 2/10)
-2. **P2: Tests E2E** → Validación de flujos críticos (Dificultad: 5/10)
-3. **P3: Implementar módulos eco** → Funcionalidad real (Dificultad: 6/10)
+1. **P1: Tests E2E** → Validación de flujos críticos (Dificultad: 5/10)
+2. **P2: Implementar módulos eco** → Funcionalidad real (Dificultad: 6/10)
+3. **P3: DTOs + ValidationPipe** → Hardening de la API (Dificultad: 3/10)
 
 ---
 
@@ -218,7 +196,7 @@ Lista de hallazgos del análisis de repositorio. Sin prioridad asignada aún. Ca
 ### Observabilidad y producción
 
 - **I16.** Sin OpenAPI/Swagger — `@nestjs/swagger` no está instalado. La API solo documenta `/health` manualmente en el README.
-- **I17.** Sin capa de datos ni ORM — cuando empiece la integración real (P3), no hay TypeORM, Prisma ni esquema de base de datos.
+- **I17.** Sin capa de datos ni ORM — cuando empiece la integración real (P2), no hay TypeORM, Prisma ni esquema de base de datos.
 
 ---
 
