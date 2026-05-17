@@ -6,7 +6,7 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true
   },
-  "include": ["jest.config.ts", "__tests__/**/*.test.ts", "src/**/*.d.ts"],
+  "include": ["jest.config.cjs", "__tests__/**/*.test.ts", "src/**/*.d.ts"],
   "references": [
     {
       "path": "./tsconfig.app.json"

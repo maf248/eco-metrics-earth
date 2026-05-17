@@ -169,6 +169,7 @@ Si no estás seguro por dónde empezar, este es el orden recomendado:
 - Cada propuesta se trabajará en sesiones independientes
 - Antes de implementar, se creará una propuesta OpenSpec siguiendo el workflow SDD
 - Este documento se actualizará conforme se completen propuestas
+- **Al eliminar un plan o una idea del backlog, renumerar todos los `Ixx` o `Pxx` siguientes** para mantener la secuencia continua sin huecos
 
 ---
 
@@ -180,52 +181,47 @@ Lista de hallazgos del análisis de repositorio. Sin prioridad asignada aún. Ca
 
 ### Documentación
 
-- **I3.** No hay reglas de branch protection documentadas — `AGENTS.md` dice "no pushear a main directamente" pero nada lo enforce.
+- **I1.** No hay reglas de branch protection documentadas — `AGENTS.md` dice "no pushear a main directamente" pero nada lo enforce.
 
 ### Seguridad
 
-- **I5.** `npm audit` detecta 4 vulnerabilidades activas — `brace-expansion` (DoS moderado), `ip-address` (XSS), `picomatch` (ReDoS alto), `postcss` (XSS). Fixable con `npm audit fix`.
-- **I6.** CSP en `next.config.ts` tiene `unsafe-eval` — necesario en dev, pero hay que confirmar que esté desactivado en builds de producción.
+- **I2.** `npm audit` detecta 4 vulnerabilidades activas — `brace-expansion` (DoS moderado), `ip-address` (XSS), `picomatch` (ReDoS alto), `postcss` (XSS). Fixable con `npm audit fix`.
+- **I3.** CSP en `next.config.ts` tiene `unsafe-eval` — necesario en dev, pero hay que confirmar que esté desactivado en builds de producción.
 
 ### CI/CD
 
-- **I7.** No hay estrategia de pre-release o staging — todos los deploys van directo a producción.
-
-### Código — web
-
-- **I10.** `SITE_LOGO_ICON` y `NOT_FOUND_ICON` en `categoryIcon.ts` usan `SCREAMING_SNAKE_CASE` — deberían ser `PascalCase` al ser componentes React exportados.
+- **I4.** No hay estrategia de pre-release o staging — todos los deploys van directo a producción.
 
 ### Código — API
 
-- **I13.** `apps/api/src/common/` está vacío — listado en `AGENTS.md` como "Shared pipes, guards, interceptors, filters" pero sin archivos.
-- **I14.** Solo un origen soportado en CORS — `CORS_ORIGIN` es un string único. Cuando web (Vercel) y API (Railway) estén en producción, esto fallará con múltiples orígenes.
-- **I15.** `apps/api/tsconfig.spec.json` incluye `jest.config.ts` que no existe — el config real es `jest.config.cjs`. Inconsistencia inofensiva pero confusa.
+- **I5.** `apps/api/src/common/` está vacío — listado en `AGENTS.md` como "Shared pipes, guards, interceptors, filters" pero sin archivos.
+- **I6.** Solo un origen soportado en CORS — `CORS_ORIGIN` es un string único. Cuando web (Vercel) y API (Railway) estén en producción, esto fallará con múltiples orígenes.
 
 ### Testing
 
-- **I16.** Sin tests de integración cross-workspace — nada verifica que web pueda llamar correctamente a la API.
-- **I17.** Sin tests de accesibilidad automatizados — `axe-core` o `jest-axe` no están configurados. `AGENTS.md` exige a11y pero no hay auditoría sistemática.
-- **I18.** Proceso de actualización de snapshots no documentado — `update-snapshots` existe como script pero no hay guía de cuándo/cómo usarlo.
+- **I7.** Sin tests de integración cross-workspace — nada verifica que web pueda llamar correctamente a la API.
+- **I8.** Sin tests de accesibilidad automatizados — `axe-core` o `jest-axe` no están configurados. `AGENTS.md` exige a11y pero no hay auditoría sistemática.
+- **I9.** Proceso de actualización de snapshots no documentado — `update-snapshots` existe como script pero no hay guía de cuándo/cómo usarlo.
 
 ### Configuración y build
 
-- **I19.** TypeScript 6.0.3 genera conflictos de peer deps — `@module-federation/*` y `fork-ts-checker-webpack-plugin` declaran `peerDependency: ^4.9 || ^5.0`. Marcados como "invalid" en `npm ls`.
-- **I20.** `legacy-peer-deps=true` en `.npmrc` por `eslint-plugin-jsx-a11y` — temporal, hay que revisarlo cuando el plugin declare soporte para ESLint 10.
-- **I21.** `husky pre-commit` solo corre `lint-staged` — no corre `tsc --noEmit`. Un commit puede romper el build sin que el hook lo detecte.
-- **I22.** No hay script de limpieza de `test-output/` y `coverage/` — el script `reset` borra `node_modules` pero no los reportes de tests.
+- **I10.** TypeScript 6.0.3 genera conflictos de peer deps — `@module-federation/*` y `fork-ts-checker-webpack-plugin` declaran `peerDependency: ^4.9 || ^5.0`. Marcados como "invalid" en `npm ls`.
+- **I11.** `legacy-peer-deps=true` en `.npmrc` por `eslint-plugin-jsx-a11y` — temporal, hay que revisarlo cuando el plugin declare soporte para ESLint 10.
+- **I12.** `husky pre-commit` solo corre `lint-staged` — no corre `tsc --noEmit`. Un commit puede romper el build sin que el hook lo detecte.
+- **I13.** No hay script de limpieza de `test-output/` y `coverage/` — el script `reset` borra `node_modules` pero no los reportes de tests.
 
 ### Arquitectura y deuda
 
-- **I23.** OpenSpec `architecture-and-quality` tiene 25 tareas incompletas — refactor de `ApiResponse<T>`, `HealthModule`, íconos duplicados, etc. La implementación no ha comenzado.
-- **I24.** Dependencias en el `package.json` raíz — `@nestjs/*`, `next`, `react` están en el root. Deberían estar solo en los apps individuales para evitar conflictos de versión.
-- **I25.** Versiones de workspace no sincronizadas — root es `v1.6.0`, api y web son `v1.7.0`, shared es `v1.2.0`. El release workflow genera 4 tags que no correlacionan claramente.
-- **I26.** Tres archivos `.releaserc.json` separados — root, api y web. Lógica de release duplicada que hay que actualizar en tres lugares.
-- **I27.** Tres `CHANGELOG.md` separados — fragmentan el historial de releases sin referencia cruzada entre ellos.
+- **I14.** OpenSpec `architecture-and-quality` tiene 25 tareas incompletas — refactor de `ApiResponse<T>`, `HealthModule`, íconos duplicados, etc. La implementación no ha comenzado.
+- **I15.** Dependencias en el `package.json` raíz — `@nestjs/*`, `next`, `react` están en el root. Deberían estar solo en los apps individuales para evitar conflictos de versión.
+- **I16.** Versiones de workspace no sincronizadas — root es `v1.6.0`, api y web son `v1.7.0`, shared es `v1.2.0`. El release workflow genera 4 tags que no correlacionan claramente.
+- **I17.** Tres archivos `.releaserc.json` separados — root, api y web. Lógica de release duplicada que hay que actualizar en tres lugares.
+- **I18.** Tres `CHANGELOG.md` separados — fragmentan el historial de releases sin referencia cruzada entre ellos.
 
 ### Observabilidad y producción
 
-- **I28.** Sin OpenAPI/Swagger — `@nestjs/swagger` no está instalado. La API solo documenta `/health` manualmente en el README.
-- **I29.** Sin capa de datos ni ORM — cuando empiece la integración real (P3), no hay TypeORM, Prisma ni esquema de base de datos.
+- **I19.** Sin OpenAPI/Swagger — `@nestjs/swagger` no está instalado. La API solo documenta `/health` manualmente en el README.
+- **I20.** Sin capa de datos ni ORM — cuando empiece la integración real (P3), no hay TypeORM, Prisma ni esquema de base de datos.
 
 ---
 
