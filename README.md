@@ -7,7 +7,7 @@ An environmental metrics dashboard monorepo — tracking air quality, CO₂ emis
 | Layer | Technology | Version | Docs |
 |---|---|---|---|
 | **Monorepo** | [NX](https://nx.dev) | 22.7.2 | [nx.dev/docs](https://nx.dev/getting-started/intro) |
-| **Runtime** | [Node.js](https://nodejs.org) LTS | 20.x | [nodejs.org/docs](https://nodejs.org/docs/latest-v20.x/api/) |
+| **Runtime** | [Node.js](https://nodejs.org) LTS | 24.x | [nodejs.org/docs](https://nodejs.org/docs/latest-v24.x/api/) |
 | **Frontend** | [Next.js](https://nextjs.org) (App Router) | 16.2.6 | [nextjs.org/docs](https://nextjs.org/docs) |
 | **UI** | [React](https://react.dev) | 19.2.6 | [react.dev](https://react.dev/reference/react) |
 | **Styling** | [Tailwind CSS](https://tailwindcss.com) | 4.3.0 | [tailwindcss.com/docs](https://tailwindcss.com/docs) |
@@ -37,8 +37,8 @@ An environmental metrics dashboard monorepo — tracking air quality, CO₂ emis
 
 ## Prerequisites
 
-- **Node.js** v20 LTS — install via [nvm](https://github.com/nvm-sh/nvm): `nvm use`
-- **npm** v10+ (bundled with Node 20)
+- **Node.js** v24 LTS — install via [nvm](https://github.com/nvm-sh/nvm): `nvm use`
+- **npm** v11+ (bundled with Node 24)
 - **Caddy** _(optional)_ — only needed for `npm run dev:local` (custom domain). See [`dev/README.md`](./dev/README.md)
 
 ---
@@ -135,7 +135,7 @@ eco-metrics-earth/
 ├── openspec/                    # Spec-Driven Development artifacts
 │   └── changes/                 # Per-change: proposal, design, specs, tasks
 │       └── archive/             # Completed changes moved here via /opsx:archive
-├── .nvmrc                       # Node.js v20
+├── .nvmrc                       # Node.js v24
 ├── nx.json                      # NX workspace config (cache, targets)
 ├── tsconfig.base.json           # Root TS config + path aliases
 └── package.json                 # Root workspace (npm workspaces)
