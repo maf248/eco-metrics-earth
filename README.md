@@ -94,6 +94,12 @@ npx nx test shared
 npx nx build web
 npx nx build api
 
+# Type check (only affected projects)
+npm run typecheck
+
+# Clean test reports and coverage
+npm run clean:reports
+
 # Run only affected projects (useful after partial changes)
 npx nx affected --target=test
 npx nx affected --target=build

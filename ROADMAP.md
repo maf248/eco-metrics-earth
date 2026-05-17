@@ -207,21 +207,19 @@ Lista de hallazgos del análisis de repositorio. Sin prioridad asignada aún. Ca
 
 - **I10.** TypeScript 6.0.3 genera conflictos de peer deps — `@module-federation/*` y `fork-ts-checker-webpack-plugin` declaran `peerDependency: ^4.9 || ^5.0`. Marcados como "invalid" en `npm ls`.
 - **I11.** `legacy-peer-deps=true` en `.npmrc` por `eslint-plugin-jsx-a11y` — temporal, hay que revisarlo cuando el plugin declare soporte para ESLint 10.
-- **I12.** `husky pre-commit` solo corre `lint-staged` — no corre `tsc --noEmit`. Un commit puede romper el build sin que el hook lo detecte.
-- **I13.** No hay script de limpieza de `test-output/` y `coverage/` — el script `reset` borra `node_modules` pero no los reportes de tests.
 
 ### Arquitectura y deuda
 
-- **I14.** OpenSpec `architecture-and-quality` tiene 25 tareas incompletas — refactor de `ApiResponse<T>`, `HealthModule`, íconos duplicados, etc. La implementación no ha comenzado.
-- **I15.** Dependencias en el `package.json` raíz — `@nestjs/*`, `next`, `react` están en el root. Deberían estar solo en los apps individuales para evitar conflictos de versión.
-- **I16.** Versiones de workspace no sincronizadas — root es `v1.6.0`, api y web son `v1.7.0`, shared es `v1.2.0`. El release workflow genera 4 tags que no correlacionan claramente.
-- **I17.** Tres archivos `.releaserc.json` separados — root, api y web. Lógica de release duplicada que hay que actualizar en tres lugares.
-- **I18.** Tres `CHANGELOG.md` separados — fragmentan el historial de releases sin referencia cruzada entre ellos.
+- **I12.** OpenSpec `architecture-and-quality` tiene 25 tareas incompletas — refactor de `ApiResponse<T>`, `HealthModule`, íconos duplicados, etc. La implementación no ha comenzado.
+- **I13.** Dependencias en el `package.json` raíz — `@nestjs/*`, `next`, `react` están en el root. Deberían estar solo en los apps individuales para evitar conflictos de versión.
+- **I14.** Versiones de workspace no sincronizadas — root es `v1.6.0`, api y web son `v1.7.0`, shared es `v1.2.0`. El release workflow genera 4 tags que no correlacionan claramente.
+- **I15.** Tres archivos `.releaserc.json` separados — root, api y web. Lógica de release duplicada que hay que actualizar en tres lugares.
+- **I16.** Tres `CHANGELOG.md` separados — fragmentan el historial de releases sin referencia cruzada entre ellos.
 
 ### Observabilidad y producción
 
-- **I19.** Sin OpenAPI/Swagger — `@nestjs/swagger` no está instalado. La API solo documenta `/health` manualmente en el README.
-- **I20.** Sin capa de datos ni ORM — cuando empiece la integración real (P3), no hay TypeORM, Prisma ni esquema de base de datos.
+- **I17.** Sin OpenAPI/Swagger — `@nestjs/swagger` no está instalado. La API solo documenta `/health` manualmente en el README.
+- **I18.** Sin capa de datos ni ORM — cuando empiece la integración real (P3), no hay TypeORM, Prisma ni esquema de base de datos.
 
 ---
 

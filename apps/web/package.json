@@ -6,5 +6,23 @@
     "next": "16.2.6",
     "react": "19.2.6",
     "react-dom": "19.2.6"
+  },
+  "nx": {
+    "targets": {
+      "typecheck": {
+        "executor": "nx:run-commands",
+        "options": {
+          "command": "tsc -p tsconfig.json --noEmit",
+          "cwd": "apps/web"
+        },
+        "cache": true,
+        "inputs": [
+          "{projectRoot}/tsconfig.json",
+          "{workspaceRoot}/tsconfig.base.json",
+          "{projectRoot}/src/**/*.ts",
+          "{projectRoot}/src/**/*.tsx"
+        ]
+      }
+    }
   }
 }

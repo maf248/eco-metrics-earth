@@ -12,6 +12,8 @@
     "format:check": "prettier --check \"**/*.{ts,tsx,js,json}\"",
     "prepare": "husky",
     "reset": "rm -rf node_modules .nx apps/web/.next packages/shared/dist && npm ci",
+    "typecheck": "nx affected --target=typecheck --base=HEAD",
+    "clean:reports": "rm -rf coverage apps/api/test-output packages/shared/test-output",
     "update-snapshots": "nx run-many --target=test --all -- --updateSnapshot"
   },
   "private": true,
