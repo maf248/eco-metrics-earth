@@ -60,12 +60,12 @@ context: |
     `waste-recycling`, `air-quality`, `endangered-species`, `global-temperature`,
     `deforestation`, `ocean-health`, `co2-emissions`, `reforestation`,
     `glacier-melting`, `plastic-pollution`, `renewable-energy`
-  - **ApiResponse<T>**: generic BFF response wrapper `{ data, timestamp, error? }`
+  - **ApiResponse<T>**: generic BFF response wrapper discriminated union `{ success: true; data: T } | { success: false; error: string }`
   - The API is a BFF — it aggregates external data sources and serves the web app
   - Category pages live at `apps/web/src/app/[category]/page.tsx`
-  - Category icons live at `apps/web/public/icons/` and are mapped in `categoryIcon.ts`
+  - Category icons live at `apps/web/src/components/icons/` and are mapped in `categoryIcon.ts`
   - Category titles are mapped in `categoryTitle.ts` (with override for `waste-recycling` → "Waste & Recycling")
-  - Nav items are defined in `apps/web/src/lib/navItems.tsx`
+  - Nav items are defined in `apps/web/src/lib/navItems.ts`
 
 rules:
   proposal:

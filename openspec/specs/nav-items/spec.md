@@ -4,7 +4,7 @@
 TBD - created by archiving change perf-svg-icons. Update Purpose after archive.
 ## Requirements
 ### Requirement: NavItem icon field holds a React component
-`apps/web/src/lib/navItems.tsx` SHALL define the `NavItem` interface (or type) with an `icon` field of type `React.ComponentType<React.SVGProps<SVGSVGElement>>`, not `string`.
+`apps/web/src/lib/navItems.ts` SHALL define the `NavItem` interface (or type) with an `icon` field of type `React.ComponentType<React.SVGProps<SVGSVGElement>>`, not `string`.
 
 Each entry in the nav items array SHALL reference the corresponding icon component from `@/components/icons`.
 
