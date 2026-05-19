@@ -1,8 +1,7 @@
 ---
 description: Orchestrates tasks and delegates to subagents for spec-driven development
 mode: primary
-model: github-copilot/claude-sonnet-4.6
-# openrouter free alternative: openrouter/deepseek/deepseek-r1:free
+model: opencode-go/kimi-k2.6
 color: '#6366f1'
 tools:
     read: true

@@ -1,8 +1,7 @@
 ---
 description: Writes and updates tests, verifies implementation against specs
 mode: subagent
-model: copilot/gpt-4o-mini
-# openrouter free alternative: openrouter/meta-llama/llama-3.1-8b-instruct:free
+model: opencode-go/deepseek-v4-flash
 temperature: 0.1
 color: '#3b82f6'
 tools:
