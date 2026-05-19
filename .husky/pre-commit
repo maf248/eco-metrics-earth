@@ -1,2 +1,25 @@
 npx lint-staged
 npm run typecheck
+
+# Warn if any OpenSpec changes are completed but not archived
+npx openspec list --json 2>/dev/null | node -e "
+  const data = JSON.parse(require('fs').readFileSync('/dev/stdin','utf8'));
+  const changes = data.changes || [];
+
+  const doneButNotArchived = changes.filter(c => c.tasksDone === c.tasksTotal);
+  if (doneButNotArchived.length > 0) {
+    console.warn('');
+    console.warn('\x1b[33m❗  Specs completed but NOT archived:\x1b[0m');
+    doneButNotArchived.forEach(c => console.warn('   \x1b[1m' + c.name + '\x1b[0m — ' + c.tasksDone + '/' + c.tasksTotal + ' tasks'));
+    console.warn('   \x1b[36mArchive them with: npx openspec archive <name>\x1b[0m');
+    console.warn('');
+  }
+
+  const incomplete = changes.filter(c => c.tasksDone < c.tasksTotal);
+  if (incomplete.length > 0) {
+    console.warn('');
+    console.warn('\x1b[34mℹ️  Open specs with pending tasks:\x1b[0m');
+    incomplete.forEach(c => console.warn('   ' + c.name + ' — ' + c.tasksDone + '/' + c.tasksTotal + ' tasks'));
+    console.warn('');
+  }
+" 2>/dev/null
