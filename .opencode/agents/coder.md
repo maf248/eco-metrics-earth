@@ -1,8 +1,7 @@
 ---
 description: Implements code changes following the spec-writer's tasks.md
 mode: subagent
-model: github-copilot/claude-sonnet-4.6
-# openrouter free alternative: openrouter/meta-llama/llama-3.3-70b-instruct:free
+model: opencode-go/deepseek-v4-pro
 temperature: 0.1
 color: '#10b981'
 tools:

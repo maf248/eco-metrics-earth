@@ -1,8 +1,7 @@
 ---
 description: Reviews completed code changes before PR submission, checks quality, conventions, and spec compliance
 mode: subagent
-model: github-copilot/claude-sonnet-4.6
-# openrouter free alternative: openrouter/deepseek/deepseek-r1:free
+model: opencode-go/glm-5.1
 temperature: 0.1
 color: '#ef4444'
 tools:
