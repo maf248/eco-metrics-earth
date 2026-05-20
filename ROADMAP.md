@@ -151,6 +151,35 @@ Si no estás seguro por dónde empezar, este es el orden recomendado:
 
 ---
 
+### P7: Investigación — Water Footprint by Product
+**Problema:** Ninguna categoría actual del dashboard muestra el consumo de agua asociado a productos de consumo cotidiano. Las fuentes documentadas (World Bank, OWID, NOAA) cubren solo datos macro: extracción por país, estrés hídrico y temperatura oceánica.
+**Impacto:** Los usuarios no pueden visualizar ni comparar la huella hídrica de sus decisiones de consumo (alimentos, textiles, electrónica).
+**Propuesta:**  
+1. **Investigar y compilar un dataset estático** (~30–50 productos) a partir de:
+   - **Our World in Data** (Poore & Nemecek 2018) — alimentos via CSV Grapher API (`/grapher/water-withdrawals-per-kg-poore.csv`).
+   - **Water Footprint Network (WaterPub)** — cultivos, animales y algunos textiles (PDF/Excel dispersos).
+   - **Papers de LCA (Life Cycle Assessment)** — electrónica y productos manufacturados (ej. estudios de Apple, Samsung, y papers académicos sobre acero, cemento, vidrio).
+2. **Cada entrada del dataset debe incluir la cita/fuente original** (paper, reporte o dataset).
+3. **Mostrar los datos en cards/tablas comparativas** en una nueva sección del dashboard, permitiendo filtrar por categoría (Alimentos, Textiles, Manufacturados, Tecnología).
+4. **Evaluar si amerita una categoría eco nueva** (ej. `/water-footprint/`) o si se integra como sub-sección dentro de una existente.
+**Ejemplos de datos objetivo:**
+| Producto | Huella hídrica aprox. | Fuente típica |
+|---|---|---|
+| Smartphone (1 unidad) | ~12,000 L | LCA papers (Apple, Samsung) |
+| Par de jeans (algodón) | ~7,000 – 10,000 L | WFN / Textile LCA |
+| Camiseta de algodón | ~2,700 L | WFN / Textile LCA |
+| Hoja de papel A4 | ~10 L | WFN / Paper LCA |
+| Litro de cerveza | ~300 L | OWID / Poore & Nemecek |
+| Litro de vino | ~800 – 1,000 L | OWID / Poore & Nemecek |
+| Auto compacto | ~400,000 L | Steel & paint LCA |
+| 1 kg de carne de res | ~15,400 L | OWID / Poore & Nemecek |
+| 1 kg de pollo | ~4,300 L | OWID / Poore & Nemecek |
+| 1 kg de almendras | ~16,000 L | OWID / Poore & Nemecek |
+**Nota clave:** No existe una API pública única con datos por producto manufacturado. El enfoque es un **dataset estático embebido en el repo** (JSON/CSV) con atribución explícita por ítem.
+**Dificultad:** 4/10  
+**Requisitos:** Compilación manual de datos, validación de fuentes, decisión de UX (cards vs tabla vs gráfico de barras comparativo)  
+**Estado:** Pendiente
+
 ---
 
 ## 💡 Ideas — Backlog de mejoras identificadas
