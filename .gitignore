@@ -62,3 +62,8 @@ apps/web/next-env.d.ts
 # Postman — environments with real credentials
 postman/*.environment.json
 !postman/*.environment.template.json
+
+# Auto-generated AI agent configs (duplicates of .opencode/skills/)
+.agents/
+.codex/
+.claude/settings.json
