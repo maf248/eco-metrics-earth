@@ -1,7 +1,6 @@
 ---
 description: Generates OpenSpec artifacts (proposal, specs, design, tasks) for SDD
 mode: subagent
-model: opencode-go/deepseek-v4-pro
 temperature: 0.2
 color: '#f59e0b'
 tools:

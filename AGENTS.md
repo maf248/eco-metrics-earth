@@ -335,6 +335,39 @@ Pre-PR checklist: `npm run lint`, `npm run build`, and `npm run test` must all p
 
 ---
 
+## AI Agent Model Configuration
+
+Agent models are centralized in `opencode.json` under the `agent` key. The `.md` files in `.opencode/agents/` define agent behavior (prompts, tools, permissions) but **not** models.
+
+### Overriding models per developer
+
+Each developer can use their own models without modifying tracked files:
+
+**Option A — Global config (recommended)**
+
+Create `~/.config/opencode/opencode.json` with your preferred models:
+
+```json
+{
+  "agent": {
+    "orchestrator": { "model": "anthropic/claude-sonnet-4-20250514" },
+    "coder": { "model": "openrouter/deepseek/deepseek-chat-v3" }
+  }
+}
+```
+
+Global config is deep-merged with the project config. Your overrides take precedence.
+
+**Option B — Environment variable (one-off)**
+
+```bash
+OPENCODE_CONFIG_CONTENT='{"agent":{"coder":{"model":"openrouter/deepseek/deepseek-chat-v3"}}}' opencode
+```
+
+> **Rule:** Never change `opencode.json` model values just because you prefer a different model. Use a personal override instead. Changes to `opencode.json` models should only happen when the team agrees on a new default.
+
+---
+
 ## AI Orchestrator — Known Constraints
 
 > These notes are for the AI agent running this project, not for human developers.

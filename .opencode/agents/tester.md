@@ -1,7 +1,6 @@
 ---
 description: Writes and updates tests, verifies implementation against specs
 mode: subagent
-model: opencode-go/deepseek-v4-flash
 temperature: 0.1
 color: '#3b82f6'
 tools:
