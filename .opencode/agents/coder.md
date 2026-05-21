@@ -1,7 +1,7 @@
 ---
 description: Implements code changes following the spec-writer's tasks.md
 mode: subagent
-model: opencode-go/deepseek-v4-pro
+model: opencode/claude-opus-4-6
 temperature: 0.1
 color: '#10b981'
 tools:

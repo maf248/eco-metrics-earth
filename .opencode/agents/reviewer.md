@@ -1,7 +1,7 @@
 ---
 description: Reviews completed code changes before PR submission, checks quality, conventions, and spec compliance
 mode: subagent
-model: opencode-go/glm-5.1
+model: opencode/claude-opus-4-6
 temperature: 0.1
 color: '#ef4444'
 tools:
