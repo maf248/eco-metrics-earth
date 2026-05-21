@@ -4,6 +4,8 @@ import { APP_GUARD } from '@nestjs/core';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import * as Joi from 'joi';
 
+// MOCK CONTROLLER — remove when real eco modules are implemented in P2
+import { DemoValidationController } from '../common/dto/demo-validation.controller';
 import { AppConfigService } from '../config/app-config.service';
 import { HealthModule } from '../health/health.module';
 
@@ -27,7 +29,7 @@ import { AppService } from './app.service';
     ThrottlerModule.forRoot([{ ttl: 60_000, limit: 60 }]),
     HealthModule,
   ],
-  controllers: [AppController],
+  controllers: [AppController, DemoValidationController],
   providers: [AppService, AppConfigService, { provide: APP_GUARD, useClass: ThrottlerGuard }],
 })
 export class AppModule {}
