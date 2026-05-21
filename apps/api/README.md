@@ -14,10 +14,11 @@ Backend For Frontend for eco-metrics earth. Exposes a REST API under `/api/v1` c
 ### Bootstrap (`src/main.ts`)
 
 1. Creates the NestJS application via `NestFactory.create(AppModule)`
-2. Applies `helmet` (security HTTP headers)
-3. Sets global route prefix `api/v1`
-4. Enables CORS restricted to `CORS_ORIGIN` (read from `AppConfigService`)
-5. Listens on the configured port
+2. Registers a global `ValidationPipe` (`class-validator` + `class-transformer`) — validates, strips unknown fields, and auto-transforms types
+3. Applies `helmet` (security HTTP headers)
+4. Sets global route prefix `api/v1`
+5. Enables CORS restricted to `CORS_ORIGIN` (read from `AppConfigService`)
+6. Listens on the configured port
 
 ### Module structure
 
@@ -33,7 +34,8 @@ src/
 ├── config/
 │   └── app-config.service.ts # Typed wrapper over @nestjs/config
 ├── modules/                  # Future: per-category eco modules (.gitkeep)
-├── common/                   # Future: shared pipes, guards, interceptors, filters (.gitkeep)
+├── common/
+│   └── dto/                  # Shared DTOs with `class-validator` decorators
 └── main.ts
 ```
 
@@ -45,6 +47,7 @@ src/
 | Rate limiting | `@nestjs/throttler` + global `ThrottlerGuard` | 60 requests per 60 s per IP |
 | Security headers | `helmet` (Express middleware) | Applied at bootstrap, before NestJS routing |
 | CORS | NestJS built-in `enableCors` | Restricted to `CORS_ORIGIN` |
+| Request validation | `class-validator` + `class-transformer` + global `ValidationPipe` | `whitelist`, `forbidNonWhitelisted`, `transform` |
 
 ### AppConfigService
 
@@ -63,6 +66,8 @@ appConfig.corsOrigin  // CORS_ORIGIN
 | Method | Path | Description | Response |
 |--------|------|-------------|----------|
 | `GET` | `/api/v1/health` | Liveness check | `{ status: 'ok' }` |
+| `GET` | `/api/v1/demo-validation` | **Mock** — query param validation demo | `{ query: GetMetricsQueryDto }` |
+| `POST` | `/api/v1/demo-validation` | **Mock** — body validation demo | `{ body: CreateMetricDto }` |
 
 ---
 
