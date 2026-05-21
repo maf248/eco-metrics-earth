@@ -1,3 +1,4 @@
+import withBundleAnalyzerInit from '@next/bundle-analyzer';
 import { composePlugins, withNx } from '@nx/next';
 import type { WithNxOptions } from '@nx/next/plugins/with-nx';
 
@@ -10,6 +11,10 @@ import type { WithNxOptions } from '@nx/next/plugins/with-nx';
  * filesystem (/home/...) where inotify works natively.
  */
 const isDev = process.env.NODE_ENV === 'development';
+
+const withBundleAnalyzer = withBundleAnalyzerInit({
+  enabled: process.env.ANALYZE === 'true',
+});
 
 const baseConfig: WithNxOptions = {
   trailingSlash: true,
@@ -56,4 +61,4 @@ const baseConfig: WithNxOptions = {
   },
 };
 
-export default composePlugins(withNx)(baseConfig);
+export default composePlugins(withBundleAnalyzer, withNx)(baseConfig);

@@ -84,22 +84,7 @@ Cada módulo debe incluir:
 
 ## 🟢 Mejoras / Baja Prioridad
 
-### P4: Análisis de bundle (Next.js)
-
-**Problema:** No se mide el tamaño del bundle de Next.js.
-
-**Propuesta:** Integrar `@next/bundle-analyzer`:
-- Detectar bloat
-- Optimizar imports
-- Code splitting strategy
-
-**Dificultad:** 3/10  
-**Requisitos:** Ninguno  
-**Estado:** Pendiente
-
----
-
-### P5: Storybook para componentes
+### P4: Storybook para componentes
 
 **Problema:** Los 16 componentes React no tienen documentación visual ni tests de interacción aislados.
 
@@ -121,9 +106,8 @@ Si no estás seguro por dónde empezar, este es el orden recomendado:
 1. **P1: Tests E2E** → Validación de flujos críticos (Dificultad: 5/10)
 2. **P2: Implementar módulos eco** → Funcionalidad real (Dificultad: 6/10)
 3. **P3: Monitoreo y observabilidad** → Logs, métricas y error tracking (Dificultad: 7/10)
-4. **P4: Análisis de bundle** → Optimización de bundle Next.js (Dificultad: 3/10)
-5. **P5: Storybook** → Documentación visual de componentes (Dificultad: 6/10)
-6. **P6: Water Footprint** → Investigación huella hídrica por producto (Dificultad: 4/10)
+4. **P4: Storybook** → Documentación visual de componentes (Dificultad: 6/10)
+5. **P5: Water Footprint** → Investigación huella hídrica por producto (Dificultad: 4/10)
 
 ---
 
@@ -137,7 +121,7 @@ Si no estás seguro por dónde empezar, este es el orden recomendado:
 
 ---
 
-### P6: Investigación — Water Footprint by Product
+### P5: Investigación — Water Footprint by Product
 **Problema:** Ninguna categoría actual del dashboard muestra el consumo de agua asociado a productos de consumo cotidiano. Las fuentes documentadas (World Bank, OWID, NOAA) cubren solo datos macro: extracción por país, estrés hídrico y temperatura oceánica.
 **Impacto:** Los usuarios no pueden visualizar ni comparar la huella hídrica de sus decisiones de consumo (alimentos, textiles, electrónica).
 **Propuesta:**  
@@ -210,4 +194,4 @@ Lista de hallazgos del análisis de repositorio. Sin prioridad asignada aún. Ca
 
 ---
 
-**Última actualización:** 17 May 2026
+**Última actualización:** 21 May 2026
