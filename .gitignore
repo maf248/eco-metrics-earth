@@ -67,3 +67,6 @@ postman/*.environment.json
 .agents/
 .codex/
 .claude/settings.json
+
+# OpenCode model reference (personal notes)
+OPENCODE_MODELS.md

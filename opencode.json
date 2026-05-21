@@ -8,13 +8,13 @@
   },
   "agent": {
     "orchestrator": {
-      "model": "opencode/claude-opus-4-6"
+      "model": "opencode/claude-sonnet-4-6"
     },
     "coder": {
-      "model": "opencode/claude-opus-4-6"
+      "model": "opencode-go/deepseek-v4-pro"
     },
     "reviewer": {
-      "model": "opencode/claude-opus-4-6"
+      "model": "opencode-go/kimi-k2.5"
     },
     "tester": {
       "model": "opencode-go/deepseek-v4-flash"
