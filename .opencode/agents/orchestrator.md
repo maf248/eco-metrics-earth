@@ -1,7 +1,7 @@
 ---
 description: Orchestrates tasks and delegates to subagents for spec-driven development
 mode: primary
-model: opencode-go/kimi-k2.6
+model: opencode/claude-opus-4-6
 color: '#6366f1'
 tools:
     read: true
