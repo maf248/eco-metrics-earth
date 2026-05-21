@@ -64,24 +64,7 @@ Cada módulo debe incluir:
 
 ---
 
-### P3: Validación de tipos en runtime (DTOs)
-
-**Problema:** La API no valida payloads/queries. Requests malformados pueden causar errores inesperados.
-
-**Impacto:** Errores de runtime difíciles de debuggear.
-
-**Propuesta:** Implementar DTOs con `class-validator` + `class-transformer`:
-- DTOs para query params (ej: fechas, filtros)
-- Global ValidationPipe en `main.ts`
-- Tests para validaciones
-
-**Dificultad:** 3/10  
-**Requisitos:** Ninguno  
-**Estado:** Pendiente
-
----
-
-### P4: Monitoreo y observabilidad
+### P3: Monitoreo y observabilidad
 
 **Problema:** No hay logs estructurados, métricas ni error tracking.
 
@@ -101,7 +84,7 @@ Cada módulo debe incluir:
 
 ## 🟢 Mejoras / Baja Prioridad
 
-### P5: Análisis de bundle (Next.js)
+### P4: Análisis de bundle (Next.js)
 
 **Problema:** No se mide el tamaño del bundle de Next.js.
 
@@ -116,7 +99,7 @@ Cada módulo debe incluir:
 
 ---
 
-### P6: Storybook para componentes
+### P5: Storybook para componentes
 
 **Problema:** Los 16 componentes React no tienen documentación visual ni tests de interacción aislados.
 
@@ -137,7 +120,10 @@ Si no estás seguro por dónde empezar, este es el orden recomendado:
 
 1. **P1: Tests E2E** → Validación de flujos críticos (Dificultad: 5/10)
 2. **P2: Implementar módulos eco** → Funcionalidad real (Dificultad: 6/10)
-3. **P3: DTOs + ValidationPipe** → Hardening de la API (Dificultad: 3/10)
+3. **P3: Monitoreo y observabilidad** → Logs, métricas y error tracking (Dificultad: 7/10)
+4. **P4: Análisis de bundle** → Optimización de bundle Next.js (Dificultad: 3/10)
+5. **P5: Storybook** → Documentación visual de componentes (Dificultad: 6/10)
+6. **P6: Water Footprint** → Investigación huella hídrica por producto (Dificultad: 4/10)
 
 ---
 
@@ -151,7 +137,7 @@ Si no estás seguro por dónde empezar, este es el orden recomendado:
 
 ---
 
-### P7: Investigación — Water Footprint by Product
+### P6: Investigación — Water Footprint by Product
 **Problema:** Ninguna categoría actual del dashboard muestra el consumo de agua asociado a productos de consumo cotidiano. Las fuentes documentadas (World Bank, OWID, NOAA) cubren solo datos macro: extracción por país, estrés hídrico y temperatura oceánica.
 **Impacto:** Los usuarios no pueden visualizar ni comparar la huella hídrica de sus decisiones de consumo (alimentos, textiles, electrónica).
 **Propuesta:**  
