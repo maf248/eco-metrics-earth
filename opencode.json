@@ -1,11 +1,28 @@
 {
   "$schema": "https://opencode.ai/config.json",
   "default_agent": "orchestrator",
+  "model": "opencode/claude-opus-4-6",
   "provider": {
     "copilot": {},
     "openrouter": {}
   },
-  "model": "opencode-go/deepseek-v4-pro",
+  "agent": {
+    "orchestrator": {
+      "model": "opencode/claude-opus-4-6"
+    },
+    "coder": {
+      "model": "opencode/claude-opus-4-6"
+    },
+    "reviewer": {
+      "model": "opencode/claude-opus-4-6"
+    },
+    "tester": {
+      "model": "opencode-go/deepseek-v4-flash"
+    },
+    "spec-writer": {
+      "model": "opencode-go/deepseek-v4-pro"
+    }
+  },
   "mcp": {
     "nx-mcp": {
       "type": "local",
