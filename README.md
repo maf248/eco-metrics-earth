@@ -4,34 +4,34 @@ An environmental metrics dashboard monorepo — tracking air quality, CO₂ emis
 
 ## Tech Stack
 
-| Layer | Technology | Version | Docs |
-|---|---|---|---|
-| **Monorepo** | [NX](https://nx.dev) | 22.7.2 | [nx.dev/docs](https://nx.dev/getting-started/intro) |
-| **Runtime** | [Node.js](https://nodejs.org) LTS | 24.x | [nodejs.org/docs](https://nodejs.org/docs/latest-v24.x/api/) |
-| **Frontend** | [Next.js](https://nextjs.org) (App Router) | 16.2.6 | [nextjs.org/docs](https://nextjs.org/docs) |
-| **UI** | [React](https://react.dev) | 19.2.6 | [react.dev](https://react.dev/reference/react) |
-| **Styling** | [Tailwind CSS](https://tailwindcss.com) | 4.3.0 | [tailwindcss.com/docs](https://tailwindcss.com/docs) |
-| **Backend** | [NestJS](https://nestjs.com) | 11.1.21 | [docs.nestjs.com](https://docs.nestjs.com) |
-| **Language** | [TypeScript](https://www.typescriptlang.org) | 6.0.3 | [typescriptlang.org/docs](https://www.typescriptlang.org/docs/) |
-| **Testing** | [Jest](https://jestjs.io) | 30.4.2 | [jestjs.io/docs](https://jestjs.io/docs/getting-started) |
-| **Testing** | [Testing Library](https://testing-library.com) | 16.3.2 | [testing-library.com/docs](https://testing-library.com/docs/) |
-| **Linting** | [ESLint](https://eslint.org) | 10.4.0 | [eslint.org/docs](https://eslint.org/docs/latest/) |
-| **Formatting** | [Prettier](https://prettier.io) | 3.8.3 | [prettier.io/docs](https://prettier.io/docs/en/) |
-| **Config** | [@nestjs/config](https://docs.nestjs.com/techniques/configuration) | 4.0.4 | [docs.nestjs.com/techniques/configuration](https://docs.nestjs.com/techniques/configuration) |
-| **Reactive** | [RxJS](https://rxjs.dev) | 7.8.2 | [rxjs.dev/guide](https://rxjs.dev/guide/overview) |
+| Layer          | Technology                                                         | Version | Docs                                                                                         |
+| -------------- | ------------------------------------------------------------------ | ------- | -------------------------------------------------------------------------------------------- |
+| **Monorepo**   | [NX](https://nx.dev)                                               | 22.7.2  | [nx.dev/docs](https://nx.dev/getting-started/intro)                                          |
+| **Runtime**    | [Node.js](https://nodejs.org) LTS                                  | 24.x    | [nodejs.org/docs](https://nodejs.org/docs/latest-v24.x/api/)                                 |
+| **Frontend**   | [Next.js](https://nextjs.org) (App Router)                         | 16.2.6  | [nextjs.org/docs](https://nextjs.org/docs)                                                   |
+| **UI**         | [React](https://react.dev)                                         | 19.2.6  | [react.dev](https://react.dev/reference/react)                                               |
+| **Styling**    | [Tailwind CSS](https://tailwindcss.com)                            | 4.3.0   | [tailwindcss.com/docs](https://tailwindcss.com/docs)                                         |
+| **Backend**    | [NestJS](https://nestjs.com)                                       | 11.1.21 | [docs.nestjs.com](https://docs.nestjs.com)                                                   |
+| **Language**   | [TypeScript](https://www.typescriptlang.org)                       | 6.0.3   | [typescriptlang.org/docs](https://www.typescriptlang.org/docs/)                              |
+| **Testing**    | [Jest](https://jestjs.io)                                          | 30.4.2  | [jestjs.io/docs](https://jestjs.io/docs/getting-started)                                     |
+| **Testing**    | [Testing Library](https://testing-library.com)                     | 16.3.2  | [testing-library.com/docs](https://testing-library.com/docs/)                                |
+| **Linting**    | [ESLint](https://eslint.org)                                       | 10.4.0  | [eslint.org/docs](https://eslint.org/docs/latest/)                                           |
+| **Formatting** | [Prettier](https://prettier.io)                                    | 3.8.3   | [prettier.io/docs](https://prettier.io/docs/en/)                                             |
+| **Config**     | [@nestjs/config](https://docs.nestjs.com/techniques/configuration) | 4.0.4   | [docs.nestjs.com/techniques/configuration](https://docs.nestjs.com/techniques/configuration) |
+| **Reactive**   | [RxJS](https://rxjs.dev)                                           | 7.8.2   | [rxjs.dev/guide](https://rxjs.dev/guide/overview)                                            |
 
 ### Packages
 
-| Package | Name | Description |
-|---|---|---|
+| Package           | Name                  | Description                                                                |
+| ----------------- | --------------------- | -------------------------------------------------------------------------- |
 | `packages/shared` | `@eco-metrics/shared` | Shared TypeScript types: `ApiResponse<T>`, `EcoCategory`, `ECO_CATEGORIES` |
 
 ### Deploy Targets
 
-| App | Platform | URL |
-|---|---|---|
-| `apps/web` | [Vercel](https://vercel.com) | — |
-| `apps/api` | [Railway](https://railway.app) | — |
+| App        | Platform                       | URL |
+| ---------- | ------------------------------ | --- |
+| `apps/web` | [Vercel](https://vercel.com)   | —   |
+| `apps/api` | [Railway](https://railway.app) | —   |
 
 ---
 
@@ -103,6 +103,9 @@ npm run clean:reports
 # Run only affected projects (useful after partial changes)
 npx nx affected --target=test
 npx nx affected --target=build
+
+# Bundle analysis (webpack build only — opens HTML report in browser)
+npm run analyze          # equivalent to: ANALYZE=true npx nx build web -- --webpack
 ```
 
 ---
@@ -145,9 +148,9 @@ eco-metrics-earth/
 
 ## API Endpoints
 
-| Method | Path | Description |
-|---|---|---|
-| `GET` | `/api/v1/health` | Health check — returns `{ status: 'ok' }` |
+| Method | Path             | Description                               |
+| ------ | ---------------- | ----------------------------------------- |
+| `GET`  | `/api/v1/health` | Health check — returns `{ status: 'ok' }` |
 
 Base URL (development): `http://localhost:3001`
 
@@ -164,17 +167,18 @@ cp apps/web/.env.example apps/web/.env.local
 
 ### `apps/api/.env.example`
 
-| Variable | Default | Description |
-|---|---|---|
-| `PORT` | `3001` | Port the API listens on |
-| `NODE_ENV` | `development` | Node environment |
+| Variable      | Default                 | Description                                                          |
+| ------------- | ----------------------- | -------------------------------------------------------------------- |
+| `PORT`        | `3001`                  | Port the API listens on                                              |
+| `NODE_ENV`    | `development`           | Node environment                                                     |
 | `CORS_ORIGIN` | `http://localhost:3000` | Allowed origin for CORS (set to deployed frontend URL in production) |
 
 ### `apps/web/.env.example`
 
-| Variable | Default | Description |
-|---|---|---|
-| `NEXT_PUBLIC_SITE_URL` | `http://localhost:3000` | Canonical base URL for SEO metadata (Open Graph, canonical links) |
+| Variable               | Default                 | Description                                                              |
+| ---------------------- | ----------------------- | ------------------------------------------------------------------------ |
+| `NEXT_PUBLIC_SITE_URL` | `http://localhost:3000` | Canonical base URL for SEO metadata (Open Graph, canonical links)        |
+| `ANALYZE`              | `false`                 | Set to `true` to generate bundle analysis report on build (webpack only) |
 
 ---
 
