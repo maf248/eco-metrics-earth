@@ -36,7 +36,7 @@ export default function Navbar() {
         'border-t border-gray-800',
         // Desktop: left sidebar
         'lg:top-0 lg:right-auto lg:bottom-auto',
-        'lg:h-screen lg:w-64',
+        'lg:h-screen lg:w-72',
         'lg:flex-col',
         'lg:border-t-0 lg:border-r lg:border-gray-800',
         // Background
