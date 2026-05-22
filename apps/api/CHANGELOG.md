@@ -1,3 +1,23 @@
+## [1.8.0](https://github.com/maf248/eco-metrics-earth/compare/api-v1.7.1...api-v1.8.0) (2026-05-22)
+
+### Features
+
+* **api:** add global DTO validation with class-validator and class-transformer ([65af91d](https://github.com/maf248/eco-metrics-earth/commit/65af91d2a0647114d420f5e9cfc0cb87af2d81a9))
+* **husky:** add openspec archive warning to pre-commit hook ([9ce4291](https://github.com/maf248/eco-metrics-earth/commit/9ce4291ec32c10541562411951bb67bc2f5ea12c))
+* **web:** add mobile header with terminal typewriter brand animation ([1f2c8b0](https://github.com/maf248/eco-metrics-earth/commit/1f2c8b00e3a73e98a78a0fb7c576bc0603399704))
+* **web:** add mobile header with terminal typewriter brand animation ([e4d536a](https://github.com/maf248/eco-metrics-earth/commit/e4d536a9d058e1b330f396155a8f86de7c596f66))
+* **web:** improve mobile nav layout and page content positioning ([d7399d1](https://github.com/maf248/eco-metrics-earth/commit/d7399d135735a69ac10901426124dab3fe88f5fe))
+* **web:** improve mobile nav layout and page content positioning ([20bcf66](https://github.com/maf248/eco-metrics-earth/commit/20bcf6651f5ff3c5c3962e5a216b237ee9123066))
+
+### Bug Fixes
+
+* **ci:** disable husky hooks in release workflow to allow semantic-release push to main ([a235c72](https://github.com/maf248/eco-metrics-earth/commit/a235c72091d2d9e6cefb0384b3ee5d0c710127e2))
+* **deps:** regenerate package-lock.json with Node 24 ([14f6ade](https://github.com/maf248/eco-metrics-earth/commit/14f6ade94d0d11047ab80590f8032ab389d4d759))
+* **husky:** make openspec pre-commit check resilient to missing CLI ([178efa1](https://github.com/maf248/eco-metrics-earth/commit/178efa115559bb53147756f398f909e63ee07c7d))
+* **icons:** center GlobalTemperatureIcon by adjusting viewBox origin ([a0b9caf](https://github.com/maf248/eco-metrics-earth/commit/a0b9caf54697d2d30906ed7f5c6ff24249ee797d))
+* **web:** widen desktop sidebar from w-64 to w-72 to fit brand text in one line ([4c53b1a](https://github.com/maf248/eco-metrics-earth/commit/4c53b1ad658ccb51af3a4af4b0161c475491930d))
+* **web:** widen desktop sidebar from w-64 to w-72 to fit brand text in one line ([68dd85d](https://github.com/maf248/eco-metrics-earth/commit/68dd85d156d91f74c7e1297e29f3a001d2427446))
+
 ## [1.7.1](https://github.com/maf248/eco-metrics-earth/compare/api-v1.7.0...api-v1.7.1) (2026-05-17)
 
 ### Bug Fixes
