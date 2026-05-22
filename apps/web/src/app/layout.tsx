@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import type { ReactNode } from 'react';
 
+import MobileHeader from '@/components/MobileHeader';
 import Navbar from '@/components/Navbar';
 import { siteUrl } from '@/lib/siteUrl';
 
@@ -56,11 +57,21 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         >
           Skip to main content
         </a>
+        {/*
+         * Mobile-only top header (h-14 / 56px) — site brand + home link.
+         * Hidden on desktop (lg:hidden) where the sidebar brand covers this.
+         * Dependency: <main> elements use pt-14 to clear this fixed header.
+         */}
+        <MobileHeader />
+        {/*
+         * Bottom nav / sidebar (Navbar handles both breakpoints internally).
+         */}
         <Navbar />
         {/*
-         * Content offset:
-         *  - Mobile/tablet: pb-16 to clear the fixed bottom nav
-         *  - Desktop:       lg:pl-64 to clear the fixed left sidebar
+         * Content offset — three fixed UI zones:
+         *  - Mobile top:    pt-14 on each <main> clears the MobileHeader
+         *  - Mobile bottom: pb-20 clears the fixed bottom nav (h-20)
+         *  - Desktop left:  lg:pl-64 clears the fixed left sidebar (w-64)
          */}
         <div className="pb-20 lg:pb-0 lg:pl-64">{children}</div>
       </body>

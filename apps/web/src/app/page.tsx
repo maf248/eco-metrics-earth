@@ -28,9 +28,9 @@ export default function HomePage() {
     <main
       id="main-content"
       tabIndex={-1}
-      className="flex min-h-screen flex-col items-center justify-start pt-20 px-4"
+      className="flex min-h-screen flex-col items-center justify-start pt-14 px-4"
     >
-      <div className="flex flex-col items-center gap-6">
+      <div className="flex flex-col items-center gap-6 mt-14 lg:mt-0">
         <div className="flex items-center justify-center w-48 h-48 rounded-2xl bg-white/10 p-4">
           <SiteLogoIcon aria-hidden className="w-32 h-32" />
         </div>
