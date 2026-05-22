@@ -29,7 +29,7 @@ export default function Navbar() {
       className={[
         'fixed z-50',
         // Mobile / tablet: bottom bar
-        'bottom-0 left-0 right-0 h-16',
+        'bottom-0 left-0 right-0 h-20',
         'flex flex-row',
         'border-t border-gray-800',
         // Desktop: left sidebar
@@ -55,7 +55,10 @@ export default function Navbar() {
       {/* Navigation links — scroll container handles mobile gradients + ul/li semantics */}
       <NavScrollContainer>
         {NAV_ITEMS.map((item) => (
-          <li key={item.slug} className="flex flex-1 lg:flex-none">
+          <li
+            key={item.slug}
+            className="flex flex-none lg:flex-none w-20 lg:w-full h-full lg:h-auto"
+          >
             <NavLink href={item.href} icon={item.icon} label={item.label} />
           </li>
         ))}
