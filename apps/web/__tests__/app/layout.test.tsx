@@ -54,7 +54,7 @@ describe('RootLayout', () => {
       </RootLayout>,
     );
     expect(html).toContain('pb-20');
-    expect(html).toContain('lg:pl-64');
+    expect(html).toContain('lg:pl-72');
   });
 
   it('should render a skip-to-content link with href="#main-content"', () => {
