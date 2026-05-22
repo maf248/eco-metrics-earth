@@ -63,3 +63,18 @@ describe('HomePage snapshots', () => {
     expect(asFragment()).toMatchSnapshot();
   });
 });
+
+describe('HomePage — layout', () => {
+  it('should render the <main> with top-anchored layout (justify-start)', () => {
+    const { container } = render(<HomePage />);
+    const main = container.querySelector('main');
+    expect(main?.className).toContain('justify-start');
+    expect(main?.className).not.toContain('justify-center');
+  });
+
+  it('should render the <main> with pt-20 top padding', () => {
+    const { container } = render(<HomePage />);
+    const main = container.querySelector('main');
+    expect(main?.className).toContain('pt-20');
+  });
+});

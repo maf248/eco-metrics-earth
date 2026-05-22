@@ -38,7 +38,7 @@ describe('RootLayout', () => {
         <div>test content</div>
       </RootLayout>,
     );
-    expect(html).toContain('pb-16');
+    expect(html).toContain('pb-20');
     expect(html).toContain('lg:pl-64');
   });
 
