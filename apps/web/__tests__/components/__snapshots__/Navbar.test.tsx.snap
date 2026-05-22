@@ -7,7 +7,8 @@ exports[`Navbar snapshots should match snapshot with an active route 1`] = `
     class="fixed z-50 bottom-0 left-0 right-0 h-20 flex flex-row border-t border-gray-800 lg:top-0 lg:right-auto lg:bottom-auto lg:h-screen lg:w-64 lg:flex-col lg:border-t-0 lg:border-r lg:border-gray-800 bg-white/10"
   >
     <a
-      class="hidden lg:flex items-center h-16 px-5 gap-2.5 border-b border-gray-800 flex-shrink-0 hover:bg-white/5 transition-colors duration-150"
+      aria-label="eco-metrics earth — go to home"
+      class="hidden lg:flex items-center h-16 px-5 gap-2.5 border-b border-gray-800 flex-shrink-0 hover:bg-white/5 transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-inset"
       href="/"
     >
       <svg
@@ -56,9 +57,20 @@ exports[`Navbar snapshots should match snapshot with an active route 1`] = `
         </g>
       </svg>
       <span
-        class="text-emerald-400 font-semibold tracking-tight text-sm"
+        aria-hidden="true"
+        class="font-mono text-sm font-medium text-emerald-400 tracking-tight"
+      />
+      <span
+        aria-hidden="true"
+        class="animate-cursor-blink font-mono text-sm font-medium text-emerald-400 leading-none select-none -ml-2"
       >
-        eco-metrics earth
+        ▋
+      </span>
+      <span
+        aria-hidden="true"
+        class="font-mono text-sm font-medium text-emerald-400/60 select-none transition-opacity duration-500 opacity-0"
+      >
+        [↵]
       </span>
     </a>
     <div
@@ -969,7 +981,8 @@ exports[`Navbar snapshots should match snapshot with no active route 1`] = `
     class="fixed z-50 bottom-0 left-0 right-0 h-20 flex flex-row border-t border-gray-800 lg:top-0 lg:right-auto lg:bottom-auto lg:h-screen lg:w-64 lg:flex-col lg:border-t-0 lg:border-r lg:border-gray-800 bg-white/10"
   >
     <a
-      class="hidden lg:flex items-center h-16 px-5 gap-2.5 border-b border-gray-800 flex-shrink-0 hover:bg-white/5 transition-colors duration-150"
+      aria-label="eco-metrics earth — go to home"
+      class="hidden lg:flex items-center h-16 px-5 gap-2.5 border-b border-gray-800 flex-shrink-0 hover:bg-white/5 transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-inset"
       href="/"
     >
       <svg
@@ -1018,9 +1031,20 @@ exports[`Navbar snapshots should match snapshot with no active route 1`] = `
         </g>
       </svg>
       <span
-        class="text-emerald-400 font-semibold tracking-tight text-sm"
+        aria-hidden="true"
+        class="font-mono text-sm font-medium text-emerald-400 tracking-tight"
+      />
+      <span
+        aria-hidden="true"
+        class="animate-cursor-blink font-mono text-sm font-medium text-emerald-400 leading-none select-none -ml-2"
       >
-        eco-metrics earth
+        ▋
+      </span>
+      <span
+        aria-hidden="true"
+        class="font-mono text-sm font-medium text-emerald-400/60 select-none transition-opacity duration-500 opacity-0"
+      >
+        [↵]
       </span>
     </a>
     <div
