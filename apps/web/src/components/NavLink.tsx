@@ -25,10 +25,10 @@ export default function NavLink({ href, icon: Icon, label }: NavLinkProps) {
       href={href}
       aria-current={isActive ? 'page' : undefined}
       className={[
-        // Mobile: stacked column, full equal flex share
-        'flex flex-col items-center justify-center flex-1 gap-0.5 py-2 px-1',
+        // Mobile: fixed-width column, equal spacing regardless of label length
+        'flex flex-col items-center justify-start w-20 h-full gap-1 pt-3 pb-1 px-1 lg:h-auto',
         // Desktop: horizontal row, fixed height
-        'lg:flex-none lg:flex-row lg:justify-start lg:gap-3 lg:px-5 lg:py-3 lg:w-full lg:rounded-lg',
+        'lg:w-full lg:flex-row lg:justify-start lg:gap-3 lg:px-5 lg:py-3 lg:rounded-lg',
         // Typography
         'text-[10px] lg:text-sm font-medium leading-tight transition-colors duration-150',
         // Colour + background: active vs inactive
@@ -41,13 +41,15 @@ export default function NavLink({ href, icon: Icon, label }: NavLinkProps) {
       <span
         data-testid="nav-icon"
         className={[
-          'w-7 h-7 flex-shrink-0 flex items-center justify-center rounded-lg p-1',
-          isActive ? 'bg-white/15' : 'bg-white/8',
+          'w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-lg p-1',
+          isActive ? 'bg-white/15' : 'bg-white/10',
         ].join(' ')}
       >
-        <Icon aria-hidden className="w-5 h-5" />
+        <Icon aria-hidden className="w-6 h-6" />
       </span>
-      <span className="truncate max-w-full lg:max-w-none">{label}</span>
+      <span className="w-full text-center whitespace-normal break-words leading-tight lg:truncate lg:max-w-none lg:text-left lg:whitespace-nowrap">
+        {label}
+      </span>
     </Link>
   );
 }
