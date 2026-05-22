@@ -62,7 +62,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
          *  - Mobile/tablet: pb-16 to clear the fixed bottom nav
          *  - Desktop:       lg:pl-64 to clear the fixed left sidebar
          */}
-        <div className="pb-16 lg:pb-0 lg:pl-64">{children}</div>
+        <div className="pb-20 lg:pb-0 lg:pl-64">{children}</div>
       </body>
     </html>
   );
