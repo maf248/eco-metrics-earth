@@ -1,0 +1,47 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`BrandText snapshots should match snapshot after typing completes (normal motion) 1`] = `
+<DocumentFragment>
+  <span
+    aria-hidden="true"
+    class="font-mono text-sm font-medium text-emerald-400 tracking-tight"
+  >
+    ~ eco-metrics.earth
+  </span>
+  <span
+    aria-hidden="true"
+    class="animate-cursor-blink font-mono text-sm font-medium text-emerald-400 leading-none select-none -ml-2"
+  >
+    ▋
+  </span>
+  <span
+    aria-hidden="true"
+    class="font-mono text-sm font-medium text-emerald-400/60 select-none transition-opacity duration-500 opacity-100"
+  >
+    [↵]
+  </span>
+</DocumentFragment>
+`;
+
+exports[`BrandText snapshots should match snapshot with reduced motion 1`] = `
+<DocumentFragment>
+  <span
+    aria-hidden="true"
+    class="font-mono text-sm font-medium text-emerald-400 tracking-tight"
+  >
+    ~ eco-metrics.earth
+  </span>
+  <span
+    aria-hidden="true"
+    class="animate-cursor-blink font-mono text-sm font-medium text-emerald-400 leading-none select-none -ml-2"
+  >
+    ▋
+  </span>
+  <span
+    aria-hidden="true"
+    class="font-mono text-sm font-medium text-emerald-400/60 select-none transition-opacity duration-500 opacity-100"
+  >
+    [↵]
+  </span>
+</DocumentFragment>
+`;
