@@ -10,6 +10,24 @@ jest.mock('next/navigation', () => ({
   usePathname: () => mockUsePathname(),
 }));
 
+// BrandText (used in Navbar's desktop brand link) calls window.matchMedia
+// jsdom does not implement it — provide a mock for all tests in this file
+beforeEach(() => {
+  Object.defineProperty(window, 'matchMedia', {
+    writable: true,
+    value: jest.fn().mockImplementation((query: string) => ({
+      matches: false,
+      media: query,
+      onchange: null,
+      addListener: jest.fn(),
+      removeListener: jest.fn(),
+      addEventListener: jest.fn(),
+      removeEventListener: jest.fn(),
+      dispatchEvent: jest.fn(),
+    })),
+  });
+});
+
 describe('Navbar', () => {
   beforeEach(() => {
     mockUsePathname.mockReturnValue('/');
