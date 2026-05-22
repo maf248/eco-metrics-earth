@@ -85,3 +85,90 @@ describe('NavLink — isActive trailing-slash normalisation', () => {
     expect(screen.getByRole('link').getAttribute('aria-current')).toBeNull();
   });
 });
+
+describe('NavLink — icon background classes', () => {
+  it('should apply active icon background when route matches', () => {
+    mockUsePathname.mockReturnValue('/air-quality/');
+    render(<NavLink href="/air-quality/" icon={AirQualityIcon} label="Air Quality" />);
+    const iconWrapper = screen.getByTestId('nav-icon');
+    expect(iconWrapper.className).toContain('bg-white/15');
+    expect(iconWrapper.className).not.toContain('bg-white/10');
+  });
+
+  it('should apply inactive icon background when route does not match', () => {
+    mockUsePathname.mockReturnValue('/ocean-health/');
+    render(<NavLink href="/air-quality/" icon={AirQualityIcon} label="Air Quality" />);
+    const iconWrapper = screen.getByTestId('nav-icon');
+    expect(iconWrapper.className).toContain('bg-white/10');
+    expect(iconWrapper.className).not.toContain('bg-white/15');
+  });
+});
+
+describe('NavLink — label rendering', () => {
+  it('should render label text that can wrap (no truncation) on mobile', () => {
+    mockUsePathname.mockReturnValue('/');
+    render(<NavLink href="/air-quality/" icon={AirQualityIcon} label="Endangered Species" />);
+    const labelSpan = screen.getByText('Endangered Species');
+    expect(labelSpan.className).toContain('whitespace-normal');
+    expect(labelSpan.className).toContain('break-words');
+    // lg:truncate is correct (desktop only) — verify no bare 'truncate' class
+    expect(labelSpan.className).not.toMatch(/(?<![a-z:])truncate(?!-)/);
+  });
+
+  it('should render the label centered on mobile', () => {
+    mockUsePathname.mockReturnValue('/');
+    render(<NavLink href="/air-quality/" icon={AirQualityIcon} label="Air Quality" />);
+    const labelSpan = screen.getByText('Air Quality');
+    expect(labelSpan.className).toContain('text-center');
+  });
+});
+
+describe('NavLink — layout classes', () => {
+  it('should have h-full on mobile and lg:h-auto on desktop', () => {
+    mockUsePathname.mockReturnValue('/');
+    render(<NavLink href="/air-quality/" icon={AirQualityIcon} label="Air Quality" />);
+    const link = screen.getByRole('link');
+    expect(link.className).toContain('h-full');
+    expect(link.className).toContain('lg:h-auto');
+  });
+
+  it('should have fixed width w-20 on mobile', () => {
+    mockUsePathname.mockReturnValue('/');
+    render(<NavLink href="/air-quality/" icon={AirQualityIcon} label="Air Quality" />);
+    const link = screen.getByRole('link');
+    expect(link.className).toContain('w-20');
+  });
+
+  it('should align items to start (top of nav) on mobile', () => {
+    mockUsePathname.mockReturnValue('/');
+    render(<NavLink href="/air-quality/" icon={AirQualityIcon} label="Air Quality" />);
+    const link = screen.getByRole('link');
+    expect(link.className).toContain('justify-start');
+  });
+});
+
+describe('NavLink snapshots', () => {
+  it('should match snapshot when inactive', () => {
+    mockUsePathname.mockReturnValue('/ocean-health/');
+    const { asFragment } = render(
+      <NavLink href="/air-quality/" icon={AirQualityIcon} label="Air Quality" />,
+    );
+    expect(asFragment()).toMatchSnapshot();
+  });
+
+  it('should match snapshot when active', () => {
+    mockUsePathname.mockReturnValue('/air-quality/');
+    const { asFragment } = render(
+      <NavLink href="/air-quality/" icon={AirQualityIcon} label="Air Quality" />,
+    );
+    expect(asFragment()).toMatchSnapshot();
+  });
+
+  it('should match snapshot with a long wrapping label', () => {
+    mockUsePathname.mockReturnValue('/');
+    const { asFragment } = render(
+      <NavLink href="/endangered-species/" icon={AirQualityIcon} label="Endangered Species" />,
+    );
+    expect(asFragment()).toMatchSnapshot();
+  });
+});

@@ -217,3 +217,36 @@ describe('generateStaticParams', () => {
     expect(params).toHaveLength(Object.keys(ECO_CATEGORIES).length);
   });
 });
+
+describe('CategoryPage — layout', () => {
+  it('should render the <main> with top-anchored layout (justify-start)', async () => {
+    const element = await CategoryPage({ params: Promise.resolve({ category: 'air-quality' }) });
+    const { container } = render(element);
+    const main = container.querySelector('main');
+    expect(main?.className).toContain('justify-start');
+    expect(main?.className).not.toContain('justify-center');
+  });
+
+  it('should render the <main> with pt-20 top padding', async () => {
+    const element = await CategoryPage({ params: Promise.resolve({ category: 'air-quality' }) });
+    const { container } = render(element);
+    const main = container.querySelector('main');
+    expect(main?.className).toContain('pt-20');
+  });
+});
+
+describe('CategoryPage snapshots', () => {
+  it('should match snapshot for air-quality', async () => {
+    const element = await CategoryPage({ params: Promise.resolve({ category: 'air-quality' }) });
+    const { asFragment } = render(element);
+    expect(asFragment()).toMatchSnapshot();
+  });
+
+  it('should match snapshot for endangered-species', async () => {
+    const element = await CategoryPage({
+      params: Promise.resolve({ category: 'endangered-species' }),
+    });
+    const { asFragment } = render(element);
+    expect(asFragment()).toMatchSnapshot();
+  });
+});

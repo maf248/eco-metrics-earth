@@ -80,3 +80,58 @@ describe('NavScrollContainer', () => {
     });
   });
 });
+
+describe('NavScrollContainer — layout classes', () => {
+  it('should render the <ul> with items-stretch so all items fill nav height', () => {
+    render(<NavScrollContainer>{null}</NavScrollContainer>);
+    const ul = screen.getByRole('list');
+    expect(ul.className).toContain('items-stretch');
+  });
+
+  it('should NOT have items-center on the <ul> (would misalign icons)', () => {
+    render(<NavScrollContainer>{null}</NavScrollContainer>);
+    const ul = screen.getByRole('list');
+    expect(ul.className).not.toContain('items-center');
+  });
+});
+
+describe('NavScrollContainer — scroll affordance widths', () => {
+  function setScrollProps(
+    el: Element,
+    opts: { scrollLeft: number; scrollWidth: number; clientWidth: number },
+  ) {
+    Object.defineProperty(el, 'scrollLeft', { value: opts.scrollLeft, configurable: true });
+    Object.defineProperty(el, 'scrollWidth', { value: opts.scrollWidth, configurable: true });
+    Object.defineProperty(el, 'clientWidth', { value: opts.clientWidth, configurable: true });
+  }
+
+  it('should render right affordance with w-12 class', () => {
+    render(<NavScrollContainer>{null}</NavScrollContainer>);
+    const ul = screen.getByRole('list');
+    setScrollProps(ul, { scrollLeft: 0, scrollWidth: 400, clientWidth: 200 });
+    fireEvent.scroll(ul);
+    const affordances = document.querySelectorAll('[aria-hidden="true"]');
+    expect(affordances[0].className).toContain('w-12');
+  });
+
+  it('should render left affordance with w-12 class', () => {
+    render(<NavScrollContainer>{null}</NavScrollContainer>);
+    const ul = screen.getByRole('list');
+    setScrollProps(ul, { scrollLeft: 200, scrollWidth: 400, clientWidth: 200 });
+    fireEvent.scroll(ul);
+    const affordances = document.querySelectorAll('[aria-hidden="true"]');
+    expect(affordances[0].className).toContain('w-12');
+  });
+});
+
+describe('NavScrollContainer snapshots', () => {
+  it('should match snapshot with no scroll affordances', () => {
+    const { asFragment } = render(
+      <NavScrollContainer>
+        <li>Item 1</li>
+        <li>Item 2</li>
+      </NavScrollContainer>,
+    );
+    expect(asFragment()).toMatchSnapshot();
+  });
+});
