@@ -72,9 +72,9 @@ describe('HomePage — layout', () => {
     expect(main?.className).not.toContain('justify-center');
   });
 
-  it('should render the <main> with pt-20 top padding', () => {
+  it('should render the <main> with pt-14 top padding', () => {
     const { container } = render(<HomePage />);
     const main = container.querySelector('main');
-    expect(main?.className).toContain('pt-20');
+    expect(main?.className).toContain('pt-14');
   });
 });

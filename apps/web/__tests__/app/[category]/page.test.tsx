@@ -227,11 +227,11 @@ describe('CategoryPage — layout', () => {
     expect(main?.className).not.toContain('justify-center');
   });
 
-  it('should render the <main> with pt-20 top padding', async () => {
+  it('should render the <main> with pt-14 top padding', async () => {
     const element = await CategoryPage({ params: Promise.resolve({ category: 'air-quality' }) });
     const { container } = render(element);
     const main = container.querySelector('main');
-    expect(main?.className).toContain('pt-20');
+    expect(main?.className).toContain('pt-14');
   });
 });
 

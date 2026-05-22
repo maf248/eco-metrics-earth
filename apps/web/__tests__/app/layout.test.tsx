@@ -7,6 +7,21 @@ jest.mock('next/navigation', () => ({
   usePathname: () => '/',
 }));
 
+// MobileHeader calls window.matchMedia at render time — jsdom does not implement it
+Object.defineProperty(window, 'matchMedia', {
+  writable: true,
+  value: jest.fn().mockImplementation((query: string) => ({
+    matches: false,
+    media: query,
+    onchange: null,
+    addListener: jest.fn(),
+    removeListener: jest.fn(),
+    addEventListener: jest.fn(),
+    removeEventListener: jest.fn(),
+    dispatchEvent: jest.fn(),
+  })),
+});
+
 describe('RootLayout', () => {
   it('should be defined', () => {
     expect(RootLayout).toBeDefined();
@@ -83,5 +98,36 @@ describe('metadata', () => {
 
   it('should have twitter.card set to "summary"', () => {
     expect((metadata.twitter as { card?: string } | null | undefined)?.card).toBe('summary');
+  });
+});
+
+describe('RootLayout — MobileHeader', () => {
+  it('should render the MobileHeader with aria-label="Site header"', () => {
+    const html = renderToString(
+      <RootLayout>
+        <div>test content</div>
+      </RootLayout>,
+    );
+    expect(html).toContain('aria-label="Site header"');
+  });
+
+  it('should render the MobileHeader before the Navbar in the DOM', () => {
+    const html = renderToString(
+      <RootLayout>
+        <div>test content</div>
+      </RootLayout>,
+    );
+    const headerPos = html.indexOf('aria-label="Site header"');
+    const navPos = html.indexOf('aria-label="Main navigation"');
+    expect(headerPos).toBeLessThan(navPos);
+  });
+
+  it('should render a home link inside the MobileHeader', () => {
+    const html = renderToString(
+      <RootLayout>
+        <div>test content</div>
+      </RootLayout>,
+    );
+    expect(html).toContain('eco-metrics earth \u2014 go to home');
   });
 });
