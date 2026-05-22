@@ -8,7 +8,7 @@
   },
   "agent": {
     "orchestrator": {
-      "model": "opencode/claude-sonnet-4-6"
+      "model": "opencode-go/deepseek-v4-pro"
     },
     "coder": {
       "model": "opencode-go/deepseek-v4-pro"
