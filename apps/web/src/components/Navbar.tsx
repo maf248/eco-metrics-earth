@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { SiteLogoIcon } from '@/lib/categoryIcon';
 import { NAV_ITEMS } from '@/lib/navItems';
 
+import BrandText from './BrandText';
 import NavLink from './NavLink';
 import NavScrollContainer from './NavScrollContainer';
 
@@ -21,6 +22,7 @@ import NavScrollContainer from './NavScrollContainer';
  *  - Active link receives aria-current="page" (via NavLink)
  *  - All icons are aria-hidden; labels are always visible text
  *  - Skip-to-content link in layout.tsx bypasses this nav for keyboard users
+ *  - Desktop brand link: aria-label matches MobileHeader for consistency
  */
 export default function Navbar() {
   return (
@@ -44,12 +46,11 @@ export default function Navbar() {
       {/* Brand — desktop sidebar only, links to home */}
       <Link
         href="/"
-        className="hidden lg:flex items-center h-16 px-5 gap-2.5 border-b border-gray-800 flex-shrink-0 hover:bg-white/5 transition-colors duration-150"
+        aria-label="eco-metrics earth — go to home"
+        className="hidden lg:flex items-center h-16 px-5 gap-2.5 border-b border-gray-800 flex-shrink-0 hover:bg-white/5 transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-inset"
       >
         <SiteLogoIcon aria-hidden className="w-7 h-7 flex-shrink-0" />
-        <span className="text-emerald-400 font-semibold tracking-tight text-sm">
-          eco-metrics earth
-        </span>
+        <BrandText />
       </Link>
 
       {/* Navigation links — scroll container handles mobile gradients + ul/li semantics */}
