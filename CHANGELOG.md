@@ -1,3 +1,9 @@
+## [1.9.0](https://github.com/maf248/eco-metrics-earth/compare/v1.8.1...v1.9.0) (2026-05-23)
+
+### Features
+
+* **release:** add scope-filtered changelogs via .releaserc.cjs, document independent versioning ([50d222c](https://github.com/maf248/eco-metrics-earth/commit/50d222c1d0770fcf3d383e6b73be9fd872797667))
+
 ## [1.8.1](https://github.com/maf248/eco-metrics-earth/compare/v1.8.0...v1.8.1) (2026-05-23)
 
 ### Bug Fixes
