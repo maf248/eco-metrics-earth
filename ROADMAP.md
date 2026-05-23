@@ -180,16 +180,15 @@ Lista de hallazgos del análisis de repositorio, ordenados por prioridad (más c
 
 ### 🟢 Arquitectura / Deuda técnica
 
-- **I07.** Dependencias en el `package.json` raíz — `@nestjs/*`, `next`, `react`, `class-validator`, `class-transformer` están en el root. Deberían estar solo en los apps individuales para evitar conflictos de versión y acoplamiento innecesario.
-- **I08.** Versiones de workspace no sincronizadas — root es `v1.6.1`, api y web son `v1.7.1`, shared es `v1.2.0`. El release workflow genera tags que no correlacionan claramente entre los 4 paquetes.
-- **I09.** Tres archivos `.releaserc.json` separados — root, api y web. Lógica de release duplicada que hay que actualizar en tres lugares.
-- **I10.** Tres `CHANGELOG.md` separados — fragmentan el historial de releases sin referencia cruzada entre ellos.
-- **I11.** Sin capa de datos ni ORM — cuando empiece la integración real de datos (P2), no hay TypeORM, Prisma ni esquema de base de datos definido.
+- **I07.** Versiones de workspace no sincronizadas — root es `v1.6.1`, api y web son `v1.7.1`, shared es `v1.2.0`. El release workflow genera tags que no correlacionan claramente entre los 4 paquetes.
+- **I08.** Tres archivos `.releaserc.json` separados — root, api y web. Lógica de release duplicada que hay que actualizar en tres lugares.
+- **I09.** Tres `CHANGELOG.md` separados — fragmentan el historial de releases sin referencia cruzada entre ellos.
+- **I10.** Sin capa de datos ni ORM — cuando empiece la integración real de datos (P2), no hay TypeORM, Prisma ni esquema de base de datos definido.
 
 ### 🟢 Configuración / Build
 
-- **I12.** TypeScript 6.0.3 genera conflictos de peer deps — `@module-federation/*` y `fork-ts-checker-webpack-plugin` declaran `peerDependency: ^4.9 || ^5.0`. Marcados como "invalid" en `npm ls`. Requiere upgrade de NX o downgrade de TS para resolverse.
-- **I13.** `legacy-peer-deps=true` en `.npmrc` — workaround temporal por `eslint-plugin-jsx-a11y` que no declara soporte para ESLint 10. Hay que revisarlo cuando el plugin se actualice.
+- **I11.** TypeScript 6.0.3 genera conflictos de peer deps — `@module-federation/*` y `fork-ts-checker-webpack-plugin` declaran `peerDependency: ^4.9 || ^5.0`. Marcados como "invalid" en `npm ls`. Requiere upgrade de NX o downgrade de TS para resolverse.
+- **I12.** `legacy-peer-deps=true` en `.npmrc` — workaround temporal por `eslint-plugin-jsx-a11y` que no declara soporte para ESLint 10. Hay que revisarlo cuando el plugin se actualice.
 
 ---
 

@@ -22,7 +22,6 @@
     "@commitlint/cli": "20.5.3",
     "@commitlint/config-conventional": "20.5.3",
     "@eslint/js": "10.0.1",
-    "@nestjs/testing": "11.1.21",
     "@next/bundle-analyzer": "16.2.6",
     "@nx/jest": "22.7.2",
     "@nx/js": "22.7.2",
@@ -46,8 +45,6 @@
     "@testing-library/react": "16.3.2",
     "@types/jest": "30.0.0",
     "@types/node": "24.12.4",
-    "@types/react": "19.2.14",
-    "@types/react-dom": "19.2.3",
     "@typescript-eslint/eslint-plugin": "8.59.3",
     "@typescript-eslint/parser": "8.59.3",
     "babel-jest": "30.4.1",
@@ -82,17 +79,7 @@
     "packages/*",
     "apps/*"
   ],
-  "dependencies": {
-    "@nestjs/common": "11.1.21",
-    "@nestjs/config": "4.0.4",
-    "@nestjs/core": "11.1.21",
-    "@nestjs/platform-express": "11.1.21",
-    "next": "16.2.6",
-    "react": "19.2.6",
-    "react-dom": "19.2.6",
-    "reflect-metadata": "0.2.2",
-    "rxjs": "7.8.2"
-  },
+  "dependencies": {},
   "lint-staged": {
     "**/*.{ts,tsx,js}": [
       "eslint --fix",
