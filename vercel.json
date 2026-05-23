@@ -3,7 +3,7 @@
   "installCommand": "npm ci",
   "outputDirectory": "apps/web/.next",
   "framework": "nextjs",
-  "ignoreCommand": "if [ -z \"$VERCEL_GIT_PREVIOUS_SHA\" ]; then exit 1; fi; if ! git cat-file -e \"$VERCEL_GIT_PREVIOUS_SHA\" 2>/dev/null; then exit 1; fi; git diff --quiet $VERCEL_GIT_PREVIOUS_SHA $VERCEL_GIT_COMMIT_SHA -- apps/web/ packages/shared/",
+  "ignoreCommand": "bash scripts/vercel-ignore.sh",
   "github": {
     "silent": true
   }
