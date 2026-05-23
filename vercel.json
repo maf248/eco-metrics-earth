@@ -1,0 +1,10 @@
+{
+  "buildCommand": "npx nx build web --prod",
+  "installCommand": "npm ci",
+  "outputDirectory": "apps/web/.next",
+  "framework": "nextjs",
+  "ignoreCommand": "git diff --quiet HEAD^ HEAD -- apps/web/ packages/shared/",
+  "github": {
+    "silent": true
+  }
+}

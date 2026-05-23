@@ -89,6 +89,45 @@ Si no estás seguro por dónde empezar, este es el orden recomendado:
 1. **P1: Implementar módulos eco** → Funcionalidad real (Dificultad: 6/10)
 2. **P2: Monitoreo y observabilidad** → Logs, métricas y error tracking (Dificultad: 7/10)
 3. **P3: Storybook** → Documentación visual de componentes (Dificultad: 6/10)
+4. **P4: CI/CD con deploy condicional** → Deploy automático Vercel + Railway (Dificultad: 4/10)
+
+---
+
+## 🟡 CI/CD / Deploy
+
+### P4: CI/CD con deploy condicional — Vercel (web) + Railway (api)
+
+**Problema:** Actualmente no hay deploy automático a producción. El CI solo corre lint + typecheck + build + test + e2e, pero no despliega nada.
+
+**Impacto:** Cada cambio en `main` requiere deploy manual. No hay separación entre cambios de frontend y backend.
+
+**Propuesta:** Implementar dos workflows de GitHub Actions con path-based triggers:
+
+| App | Plataforma | Se dispara cuando cambia | Comando de deploy |
+|---|---|---|---|
+| `apps/web` | Vercel | `apps/web/**` o `packages/shared/**` | `npx nx build web --prod` → Vercel auto-deploy (GitHub Integration) |
+| `apps/api` | Railway | `apps/api/**` o `packages/shared/**` | `npx nx build api` → `railway up` o auto-deploy desde GitHub |
+
+**Flujo completo:**
+```
+git push main
+  │
+  ├─► CI (lint → typecheck → build → test → e2e)
+  │
+  ├─► ¿Cambió apps/web/ o packages/shared/?
+  │     SÍ → Vercel deploy automático
+  │     NO → skip (Ignored Build Step)
+  │
+  └─► ¿Cambió apps/api/ o packages/shared/?
+        SÍ → Railway deploy automático
+        NO → skip
+```
+
+**Dependencias:** P1 (APIs deben existir para que Railway tenga algo que servir), `vercel.json` ya está creado en la raíz del repo.
+
+**Dificultad:** 4/10
+**Requisitos:** Cuenta Vercel + Railway vinculadas al repo. La integración de Vercel ya está configurada con `vercel.json`.
+**Estado:** Pendiente
 
 ---
 
