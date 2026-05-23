@@ -13,9 +13,9 @@ export default function NotFound() {
     <main
       id="main-content"
       tabIndex={-1}
-      className="flex min-h-screen flex-col items-center justify-center px-4"
+      className="flex min-h-screen flex-col items-center justify-start pt-14 px-4"
     >
-      <div className="flex flex-col items-center gap-6">
+      <div className="flex flex-col items-center gap-6 mt-14 lg:mt-0">
         <Link href="/" aria-label="Go back to home">
           <div
             data-testid="not-found-icon"
