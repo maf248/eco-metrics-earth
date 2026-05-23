@@ -15,21 +15,26 @@
     "reset": "rm -rf node_modules .nx apps/web/.next packages/shared/dist && npm install",
     "typecheck": "nx affected --target=typecheck --base=HEAD",
     "clean:reports": "rm -rf coverage apps/api/test-output packages/shared/test-output",
-    "update-snapshots": "nx run-many --target=test --all -- --updateSnapshot"
+    "update-snapshots": "nx run-many --target=test --all -- --updateSnapshot",
+    "e2e": "nx e2e web"
   },
   "private": true,
   "devDependencies": {
+    "@axe-core/playwright": "4.10.1",
     "@commitlint/cli": "20.5.3",
     "@commitlint/config-conventional": "20.5.3",
     "@eslint/js": "10.0.1",
     "@next/bundle-analyzer": "16.2.6",
+    "@nx/devkit": "22.7.3",
     "@nx/jest": "22.7.2",
     "@nx/js": "22.7.2",
     "@nx/nest": "22.7.2",
     "@nx/next": "22.7.2",
     "@nx/node": "22.7.2",
+    "@nx/playwright": "22.7.3",
     "@nx/react": "22.7.2",
     "@nx/webpack": "22.7.2",
+    "@playwright/test": "1.60.0",
     "@semantic-release/changelog": "6.0.3",
     "@semantic-release/commit-analyzer": "13.0.1",
     "@semantic-release/git": "10.0.1",
@@ -91,5 +96,6 @@
   "overrides": {
     "chokidar": "5.0.0",
     "readdirp": "5.0.0"
-  }
+  },
+  "dependencies": {}
 }

@@ -1,6 +1,6 @@
 # eco-metrics earth 🌍
 
-An environmental metrics dashboard monorepo — tracking air quality, CO₂ emissions, global temperature, deforestation, ocean health, endangered species, reforestation, glacier melting, plastic pollution, renewable energy, and waste recycling.
+An environmental metrics dashboard monorepo — tracking air quality, CO₂ emissions, global temperature, deforestation, ocean health, endangered species, reforestation, glacier melting, plastic pollution, renewable energy, waste recycling, and water footprint.
 
 ## Tech Stack
 
@@ -12,9 +12,11 @@ An environmental metrics dashboard monorepo — tracking air quality, CO₂ emis
 | **UI**         | [React](https://react.dev)                                         | 19.2.6  | [react.dev](https://react.dev/reference/react)                                               |
 | **Styling**    | [Tailwind CSS](https://tailwindcss.com)                            | 4.3.0   | [tailwindcss.com/docs](https://tailwindcss.com/docs)                                         |
 | **Backend**    | [NestJS](https://nestjs.com)                                       | 11.1.21 | [docs.nestjs.com](https://docs.nestjs.com)                                                   |
-| **Language**   | [TypeScript](https://www.typescriptlang.org)                       | 6.0.3   | [typescriptlang.org/docs](https://www.typescriptlang.org/docs/)                              |
+| **Language**   | [TypeScript](https://www.typescriptlang.org)                       | 5.9.3   | [typescriptlang.org/docs](https://www.typescriptlang.org/docs/)                              |
 | **Testing**    | [Jest](https://jestjs.io)                                          | 30.4.2  | [jestjs.io/docs](https://jestjs.io/docs/getting-started)                                     |
 | **Testing**    | [Testing Library](https://testing-library.com)                     | 16.3.2  | [testing-library.com/docs](https://testing-library.com/docs/)                                |
+| **E2E**        | [Playwright](https://playwright.dev)                               | 1.60.0  | [playwright.dev/docs](https://playwright.dev/docs/intro)                                      |
+| **A11y**       | [axe-core](https://github.com/dequelabs/axe-core-npm) (Playwright) | 4.10.1  | [github.com/dequelabs/axe-core-npm](https://github.com/dequelabs/axe-core-npm)               |
 | **Linting**    | [ESLint](https://eslint.org)                                       | 10.4.0  | [eslint.org/docs](https://eslint.org/docs/latest/)                                           |
 | **Formatting** | [Prettier](https://prettier.io)                                    | 3.8.3   | [prettier.io/docs](https://prettier.io/docs/en/)                                             |
 | **Config**     | [@nestjs/config](https://docs.nestjs.com/techniques/configuration) | 4.0.4   | [docs.nestjs.com/techniques/configuration](https://docs.nestjs.com/techniques/configuration) |
@@ -76,7 +78,8 @@ npm run dev:local        # Start apps + Caddy proxy → https://eco-metrics.loca
 npm run build            # Build all apps and packages
 
 # Test
-npm run test             # Run all tests across all projects
+npm run test             # Run all unit tests across all projects
+npm run e2e              # Run all E2E tests (Chromium, port 3000)
 
 # Lint
 npm run lint             # Lint all projects with ESLint
@@ -91,6 +94,7 @@ npx nx serve api         # http://localhost:3001
 npx nx test web
 npx nx test api
 npx nx test shared
+npx nx e2e web           # Run only web E2E tests (default: chromium-desktop)
 npx nx build web
 npx nx build api
 
@@ -124,6 +128,7 @@ eco-metrics-earth/
 │   │       ├── config/          # AppConfigService (typed env vars)
 │   │       └── main.ts          # Bootstrap — port 3001, prefix /api/v1
 │   └── web/                     # Next.js App Router
+│       ├── e2e/                 # Playwright E2E tests
 │       └── src/
 │           ├── app/             # Routes, layouts, pages
 │           ├── components/      # Reusable UI components
@@ -148,9 +153,11 @@ eco-metrics-earth/
 
 ## API Endpoints
 
-| Method | Path             | Description                               |
-| ------ | ---------------- | ----------------------------------------- |
-| `GET`  | `/api/v1/health` | Health check — returns `{ status: 'ok' }` |
+| Method | Path                      | Description                                                    |
+| ------ | ------------------------- | -------------------------------------------------------------- |
+| `GET`  | `/api/v1/health`          | Health check — returns `{ status: 'ok' }`                      |
+| `GET`  | `/api/v1/demo-validation` | Echo query params (`fromDate`, `toDate`, `category`) — mock    |
+| `POST` | `/api/v1/demo-validation` | Echo body (`name`, `value`, `unit`) with validation — mock     |
 
 Base URL (development): `http://localhost:3001`
 
@@ -185,12 +192,10 @@ cp apps/web/.env.example apps/web/.env.local
 ## Shared Types (`@eco-metrics/shared`)
 
 ```typescript
-// API response wrapper
-interface ApiResponse<T> {
-  data: T;
-  timestamp: string;
-  error?: string;
-}
+// API response wrapper (discriminated union)
+type ApiResponse<T> =
+  | { success: true; data: T; status: number }
+  | { success: false; error: string; status: number };
 
 // Eco categories
 const ECO_CATEGORIES = {
@@ -205,6 +210,7 @@ const ECO_CATEGORIES = {
   GLACIER_MELTING: 'glacier-melting',
   PLASTIC_POLLUTION: 'plastic-pollution',
   RENEWABLE_ENERGY: 'renewable-energy',
+  WATER_FOOTPRINT: 'water-footprint',
 } as const;
 
 type EcoCategory = (typeof ECO_CATEGORIES)[keyof typeof ECO_CATEGORIES];

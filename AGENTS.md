@@ -5,14 +5,14 @@
 eco-metrics earth is an environmental metrics dashboard monorepo built with NX.
 
 - **Package manager:** npm (workspaces)
-- **Runtime:** Node.js v20 LTS (see `.nvmrc`)
+- **Runtime:** Node.js v24 LTS (see `.nvmrc`)
 - **Monorepo tool:** NX v22
 - **Apps:**
   - `apps/web` — Next.js 16+ App Router, TypeScript, Tailwind CSS (port 3000)
   - `apps/api` — NestJS, TypeScript — BFF with global prefix `/api/v1` (port 3001)
 - **Packages:**
   - `packages/shared` — Shared TypeScript types (`@eco-metrics/shared`)
-- **Testing:** Jest + Testing Library (web), Jest (api, shared)
+- **Testing:** Jest + Testing Library (web), Jest (api, shared), Playwright (E2E)
 - **Linting/Format:** ESLint + Prettier
 - **Deploy targets:** Vercel (web), Railway (api)
 

@@ -6,7 +6,7 @@ TBD - created by archiving change seo-discovery. Update Purpose after archive.
 ### Requirement: Sitemap route
 `apps/web/src/app/sitemap.ts` SHALL export a default function returning a `MetadataRoute.Sitemap` array that includes:
 - One entry for the home page (`siteUrl() + "/"`), with `changeFrequency: 'weekly'` and `priority: 1.0`.
-- One entry for each of the 11 `ECO_CATEGORIES` slugs (`siteUrl() + "/" + slug + "/"`), each with `changeFrequency: 'weekly'` and `priority: 0.8`.
+- One entry for each of the 12 `ECO_CATEGORIES` slugs (`siteUrl() + "/" + slug + "/"`), each with `changeFrequency: 'weekly'` and `priority: 0.8`.
 
 All URLs SHALL end with a trailing slash.
 
@@ -16,7 +16,7 @@ All URLs SHALL end with a trailing slash.
 
 #### Scenario: Sitemap includes all category URLs
 - **WHEN** the sitemap function is called
-- **THEN** the result contains exactly 11 category entries, one per slug in `ECO_CATEGORIES`
+- **THEN** the result contains exactly 12 category entries, one per slug in `ECO_CATEGORIES`
 
 #### Scenario: Category entries have correct priority and frequency
 - **WHEN** the sitemap function is called
