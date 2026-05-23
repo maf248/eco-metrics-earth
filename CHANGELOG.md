@@ -1,3 +1,13 @@
+## [1.10.0](https://github.com/maf248/eco-metrics-earth/compare/v1.9.0...v1.10.0) (2026-05-23)
+
+### Features
+
+* **api:** add Swagger/OpenAPI and global exception filter ([2ba0fd3](https://github.com/maf248/eco-metrics-earth/commit/2ba0fd3437fd0a9aeeaead4b4db81ecfc1c4427b))
+
+### Bug Fixes
+
+* **e2e:** update validation error assertion to match new ApiResponse<T> format ([b31401b](https://github.com/maf248/eco-metrics-earth/commit/b31401b9c4a4dc50e45c266ef20779645257206d))
+
 ## [1.9.0](https://github.com/maf248/eco-metrics-earth/compare/v1.8.1...v1.9.0) (2026-05-23)
 
 ### Features
