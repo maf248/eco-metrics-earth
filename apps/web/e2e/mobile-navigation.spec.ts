@@ -53,13 +53,13 @@ test.describe('Bottom navigation bar on mobile', { tag: '@smoke' }, () => {
     await expect(navList).toHaveAttribute('aria-label', 'Navigation items');
   });
 
-  test('should have 11 NavLinks (one per category) in scroll container', async ({ page }) => {
+  test('should have 12 NavLinks (one per category) in scroll container', async ({ page }) => {
     await page.setViewportSize(MOBILE_VIEWPORT);
     await page.goto('/');
 
     // Each NavLink is a <li> inside the <ul> — count the links
     const navLinks = page.locator('ul[aria-label="Navigation items"] li a');
-    await expect(navLinks).toHaveCount(11);
+    await expect(navLinks).toHaveCount(12);
   });
 
   test('should navigate to correct category when mobile NavLink is clicked', async ({ page }) => {
@@ -86,7 +86,7 @@ test.describe('Bottom navigation bar on mobile', { tag: '@smoke' }, () => {
     await page.setViewportSize(MOBILE_VIEWPORT);
     await page.goto('/');
 
-    // With 11 NavLinks at w-20 (80px) each = 880px content width,
+    // With 12 NavLinks at w-20 (80px) each = 880px content width,
     // and a 393px viewport, there is overflow. The right gradient
     // should be visible when scroll is at the start (canScrollRight = true).
     const rightGradient = page

@@ -15,6 +15,7 @@ import {
   RenewableEnergyIcon,
   SiteLogoIcon,
   WasteRecyclingIcon,
+  WaterFootprintIcon,
 } from '@/components/icons';
 
 export type IconComponent = React.ComponentType<React.SVGProps<SVGSVGElement>>;
@@ -34,6 +35,7 @@ export const CATEGORY_ICONS: Record<EcoCategory, IconComponent> = {
   'glacier-melting': GlacierMeltingIcon,
   'plastic-pollution': BottleIcon,
   'renewable-energy': RenewableEnergyIcon,
+  'water-footprint': WaterFootprintIcon,
 };
 
 export { SiteLogoIcon };

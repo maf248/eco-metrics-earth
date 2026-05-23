@@ -10,6 +10,7 @@ export const ECO_CATEGORIES = {
   GLACIER_MELTING: 'glacier-melting',
   PLASTIC_POLLUTION: 'plastic-pollution',
   RENEWABLE_ENERGY: 'renewable-energy',
+  WATER_FOOTPRINT: 'water-footprint',
 } as const;
 
 export type EcoCategory = (typeof ECO_CATEGORIES)[keyof typeof ECO_CATEGORIES];

@@ -56,6 +56,7 @@ describe('slugToTitle', () => {
       [ECO_CATEGORIES.GLACIER_MELTING]: 'Glacier Melting',
       [ECO_CATEGORIES.PLASTIC_POLLUTION]: 'Plastic Pollution',
       [ECO_CATEGORIES.RENEWABLE_ENERGY]: 'Renewable Energy',
+      [ECO_CATEGORIES.WATER_FOOTPRINT]: 'Water Footprint',
     };
 
     Object.entries(expected).forEach(([slug, title]) => {

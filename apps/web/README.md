@@ -25,7 +25,7 @@ src/app/
 ├── globals.css       # Tailwind base + custom global styles
 ├── manifest.ts       # PWA manifest → /manifest.webmanifest
 ├── robots.ts         # robots.txt — allows /, disallows /api/
-└── sitemap.ts        # sitemap.xml — home + all 11 category pages
+└── sitemap.ts        # sitemap.xml — home + all 12 category pages
 ```
 
 Category pages use `generateStaticParams` to enumerate all `ECO_CATEGORIES` slugs and `dynamicParams = false` to reject any slug not in that list at build time. Unknown slugs call `notFound()`.
@@ -51,6 +51,7 @@ src/components/
     ├── ReforestationIcon.tsx
     ├── RenewableEnergyIcon.tsx
     ├── WasteRecyclingIcon.tsx
+    ├── WaterFootprintIcon.tsx
     └── BottleIcon.tsx      # Used for plastic-pollution
 ```
 

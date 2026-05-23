@@ -11,3 +11,4 @@ export { default as ReforestationIcon } from './ReforestationIcon';
 export { default as RenewableEnergyIcon } from './RenewableEnergyIcon';
 export { default as SiteLogoIcon } from './SiteLogoIcon';
 export { default as WasteRecyclingIcon } from './WasteRecyclingIcon';
+export { default as WaterFootprintIcon } from './WaterFootprintIcon';

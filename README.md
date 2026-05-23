@@ -1,6 +1,6 @@
 # eco-metrics earth 🌍
 
-An environmental metrics dashboard monorepo — tracking air quality, CO₂ emissions, global temperature, deforestation, ocean health, endangered species, reforestation, glacier melting, plastic pollution, renewable energy, and waste recycling.
+An environmental metrics dashboard monorepo — tracking air quality, CO₂ emissions, global temperature, deforestation, ocean health, endangered species, reforestation, glacier melting, plastic pollution, renewable energy, waste recycling, and water footprint.
 
 ## Tech Stack
 
@@ -210,6 +210,7 @@ const ECO_CATEGORIES = {
   GLACIER_MELTING: 'glacier-melting',
   PLASTIC_POLLUTION: 'plastic-pollution',
   RENEWABLE_ENERGY: 'renewable-energy',
+  WATER_FOOTPRINT: 'water-footprint',
 } as const;
 
 type EcoCategory = (typeof ECO_CATEGORIES)[keyof typeof ECO_CATEGORIES];

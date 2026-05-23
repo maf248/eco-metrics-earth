@@ -16,6 +16,7 @@ export const CATEGORY_TITLES: Record<EcoCategory, string> = {
   reforestation: 'Reforestation',
   'renewable-energy': 'Renewable Energy',
   'waste-recycling': 'Waste & Recycling',
+  'water-footprint': 'Water Footprint',
 };
 
 export const CATEGORY_SLUGS: EcoCategory[] = Object.values(ECO_CATEGORIES);
