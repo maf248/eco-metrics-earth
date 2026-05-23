@@ -1,3 +1,9 @@
+## [1.10.2](https://github.com/maf248/eco-metrics-earth/compare/v1.10.1...v1.10.2) (2026-05-23)
+
+### Bug Fixes
+
+* **vercel:** move ignoreCommand to script to stay under 256-char limit ([3cb3c4b](https://github.com/maf248/eco-metrics-earth/commit/3cb3c4be2e454dc938cd776efa1a8c1bb509c611))
+
 ## [1.10.1](https://github.com/maf248/eco-metrics-earth/compare/v1.10.0...v1.10.1) (2026-05-23)
 
 ### Bug Fixes
