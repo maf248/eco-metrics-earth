@@ -1,3 +1,10 @@
+## [1.7.1](https://github.com/maf248/eco-metrics-earth/compare/v1.7.0...v1.7.1) (2026-05-23)
+
+### Bug Fixes
+
+* **deps:** downgrade TypeScript 6.0.3 to 5.9.3 to resolve [@module-federation](https://github.com/module-federation) peer dep conflicts ([824c00b](https://github.com/maf248/eco-metrics-earth/commit/824c00b9eaa9836aaf39d2220607b5f632f9461f))
+* **test:** run tests serially to prevent garbled interleaved output ([54c1019](https://github.com/maf248/eco-metrics-earth/commit/54c101934141979df6b94aa3d8264769374afdcb))
+
 ## [1.7.0](https://github.com/maf248/eco-metrics-earth/compare/v1.6.1...v1.7.0) (2026-05-22)
 
 ### Features
