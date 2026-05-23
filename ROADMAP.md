@@ -187,7 +187,7 @@ Lista de hallazgos del análisis de repositorio, ordenados por prioridad (más c
 
 ### 🟢 Configuración / Build
 
-- **I11.** `legacy-peer-deps=true` en `.npmrc` — workaround temporal por `eslint-plugin-jsx-a11y` que no declara soporte para ESLint 10. Hay que revisarlo cuando el plugin se actualice.
+- **I11.** `legacy-peer-deps=true` en `.npmrc` — workaround porque `eslint-plugin-jsx-a11y@6.10.2` no declara ESLint 10 en sus peer deps. PR [#1081](https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/pull/1081) abierto. Eliminar cuando se publique un release con soporte.
 
 ---
 
