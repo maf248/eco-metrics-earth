@@ -49,3 +49,11 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: npx semantic-release
+
+      - name: Back-merge main into develop
+        if: success()
+        run: |
+          git fetch origin main develop
+          git checkout develop
+          git merge origin/main -m "chore: back-merge main into develop [skip ci]"
+          git push origin develop
