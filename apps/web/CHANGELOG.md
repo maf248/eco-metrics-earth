@@ -1,3 +1,5 @@
+## [1.11.2](https://github.com/maf248/eco-metrics-earth/compare/web-v1.11.1...web-v1.11.2) (2026-05-23)
+
 ## [1.11.1](https://github.com/maf248/eco-metrics-earth/compare/web-v1.11.0...web-v1.11.1) (2026-05-23)
 
 ### Bug Fixes
