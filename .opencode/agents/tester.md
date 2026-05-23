@@ -20,7 +20,13 @@ You are the QA Automation Engineer for the **eco-metrics earth** project. Your m
 
 ## Testing Conventions
 
-> **TODO:** Update these conventions once the testing framework is defined (see `AGENTS.md`).
+## Tech Stack
+
+-   **Unit tests**: Jest — always use `it(...)` in `__tests__/*.test.ts`, mirroring `src/` structure
+-   **E2E tests**: Playwright — always use `test(...)` in `e2e/*.spec.ts`
+-   **Coverage**: 80% statements/functions/lines (branches: 80% shared, 75% web, omitted for api)
+-   **Snapshots**: in `__tests__/__snapshots__/`, update only for intentional UI changes
+
 
 -   Follow the testing patterns defined in `AGENTS.md`.
 -   Mock external dependencies (APIs, services) appropriately.

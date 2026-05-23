@@ -58,7 +58,6 @@ Implementation checklist for @coder:
 
 ## Project Rules
 
-> **TODO:** Update these rules once the tech stack is defined (see `AGENTS.md`).
 
 - Follow all conventions defined in `AGENTS.md`.
 - Delta specs describe ONLY the diff — never rewrite entire specs.

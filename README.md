@@ -20,6 +20,7 @@ An environmental metrics dashboard monorepo — tracking air quality, CO₂ emis
 | **Linting**    | [ESLint](https://eslint.org)                                       | 10.4.0  | [eslint.org/docs](https://eslint.org/docs/latest/)                                           |
 | **Formatting** | [Prettier](https://prettier.io)                                    | 3.8.3   | [prettier.io/docs](https://prettier.io/docs/en/)                                             |
 | **Config**     | [@nestjs/config](https://docs.nestjs.com/techniques/configuration) | 4.0.4   | [docs.nestjs.com/techniques/configuration](https://docs.nestjs.com/techniques/configuration) |
+| **API Docs**   | [@nestjs/swagger](https://docs.nestjs.com/openapi/introduction)    | 11.4.4  | [docs.nestjs.com/openapi/introduction](https://docs.nestjs.com/openapi/introduction)          |
 | **Reactive**   | [RxJS](https://rxjs.dev)                                           | 7.8.2   | [rxjs.dev/guide](https://rxjs.dev/guide/overview)                                            |
 
 ### Packages
@@ -161,6 +162,8 @@ eco-metrics-earth/
 
 Base URL (development): `http://localhost:3001`
 
+Swagger UI (when enabled): `http://localhost:3001/api/docs`
+
 ---
 
 ## Versioning & Releases
@@ -211,6 +214,7 @@ cp apps/web/.env.example apps/web/.env.local
 | `PORT`        | `3001`                  | Port the API listens on                                              |
 | `NODE_ENV`    | `development`           | Node environment                                                     |
 | `CORS_ORIGIN` | `http://localhost:3000` | Allowed origin for CORS (set to deployed frontend URL in production) |
+| `SWAGGER_ENABLED` | `false` | Enable OpenAPI/Swagger UI. Set to `true` for local development. |
 
 ### `apps/web/.env.example`
 

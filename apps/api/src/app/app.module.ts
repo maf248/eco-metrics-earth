@@ -4,7 +4,6 @@ import { APP_GUARD } from '@nestjs/core';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import * as Joi from 'joi';
 
-// MOCK CONTROLLER — remove when real eco modules are implemented in P2
 import { DemoValidationController } from '../common/dto/demo-validation.controller';
 import { AppConfigService } from '../config/app-config.service';
 import { HealthModule } from '../health/health.module';
@@ -16,10 +15,12 @@ import { AppService } from './app.service';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
+      envFilePath: 'apps/api/.env',
       validationSchema: Joi.object({
         PORT: Joi.number().port().default(3001),
         NODE_ENV: Joi.string().valid('development', 'test', 'production').default('development'),
         CORS_ORIGIN: Joi.string().uri().default('http://localhost:3000'),
+        SWAGGER_ENABLED: Joi.string().valid('true', 'false').default('false'),
       }),
       validationOptions: {
         allowUnknown: true,

@@ -29,7 +29,6 @@ You are the reviewer agent for the **eco-metrics earth** project. You perform a 
 
 ### Code Quality (from AGENTS.md)
 
-> **TODO:** Update this checklist once the tech stack is defined (see `AGENTS.md`).
 
 -   **TypeScript**: No `any` allowed.
 -   No unused imports.

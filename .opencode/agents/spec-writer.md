@@ -40,7 +40,6 @@ Generate artifacts in `openspec/changes/{change-name}/`:
 
 ## Project Rules
 
-> **TODO:** Update these rules once the tech stack is defined (see `AGENTS.md`).
 
 -   Follow all conventions defined in `AGENTS.md`.
 -   Non-goals section is critical — be explicit about what's out of scope.

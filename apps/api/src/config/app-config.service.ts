@@ -16,4 +16,9 @@ export class AppConfigService {
   get corsOrigin(): string {
     return this.configService.getOrThrow<string>('CORS_ORIGIN');
   }
+
+  /** Whether Swagger/OpenAPI UI is enabled (default: false). Set SWAGGER_ENABLED=true in .env for local dev. */
+  get swaggerEnabled(): boolean {
+    return this.configService.get<string>('SWAGGER_ENABLED') === 'true';
+  }
 }

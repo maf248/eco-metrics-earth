@@ -69,7 +69,7 @@ test.describe('API demo-validation — POST', { tag: '@smoke' }, () => {
     });
     expect(response.status()).toBe(400);
     const body = await response.json();
-    expect(body).toHaveProperty('message');
+    expect(body).toHaveProperty('error');
   });
 
   test('should return CORS headers on POST demo', async ({ request }) => {

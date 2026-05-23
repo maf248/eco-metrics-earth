@@ -5,3 +5,4 @@ if [ "$branch" = "main" ]; then
 fi
 
 npx nx affected --target=test --base=origin/develop
+npx nx e2e web

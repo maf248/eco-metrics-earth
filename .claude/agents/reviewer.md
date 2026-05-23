@@ -23,7 +23,6 @@ You are the code reviewer for the **eco-metrics earth** project. Perform a final
 
 ### Code Quality (from AGENTS.md)
 
-> **TODO:** Update this checklist once the tech stack is defined (see `AGENTS.md`).
 
 - **TypeScript**: No `any` allowed.
 - No unused imports.
