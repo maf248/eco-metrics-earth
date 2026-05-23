@@ -1,3 +1,9 @@
+## [1.9.1](https://github.com/maf248/eco-metrics-earth/compare/api-v1.9.0...api-v1.9.1) (2026-05-23)
+
+### Bug Fixes
+
+* **deploy:** use Vercel env vars for ignoreCommand to handle first deploy ([4611469](https://github.com/maf248/eco-metrics-earth/commit/461146960fcedea942261c8a9ffdd9520698c8a1))
+
 ## [1.9.0](https://github.com/maf248/eco-metrics-earth/compare/api-v1.8.1...api-v1.9.0) (2026-05-23)
 
 ### Features
