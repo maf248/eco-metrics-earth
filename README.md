@@ -163,6 +163,38 @@ Base URL (development): `http://localhost:3001`
 
 ---
 
+## Versioning & Releases
+
+This monorepo uses **independent versioning** via [semantic-release](https://semantic-release.gitbook.io/semantic-release) with [Conventional Commits](https://www.conventionalcommits.org/).
+
+### Strategy
+
+Each package/app has its own version number and Git tag:
+
+| Package | Tag format | Config | Scope filter (commit-analyzer) | Scope filter (changelog) |
+|---------|-----------|--------|-------------------------------|--------------------------|
+| **Root** (`package.json`) | `v1.6.1` | `.releaserc.cjs` | All commits bump version | All commits appear |
+| **Web** (`apps/web`) | `web-v1.7.1` | `apps/web/.releaserc.cjs` | Ignores `api`, `tooling`, `docs`, `postman`, `release` | `web`, `shared`, unscoped |
+| **API** (`apps/api`) | `api-v1.7.1` | `apps/api/.releaserc.cjs` | Ignores `web`, `tooling`, `docs`, `postman`, `release` | `api`, `shared`, unscoped |
+| **Shared** (`@eco-metrics/shared`) | `v1.2.0` | Manual | Not independently released | — |
+
+### How it works
+
+- **Commit-analyzer** decides which packages get a version bump based on commit scope (`feat(api): ...` bumps API, `feat(web): ...` bumps web, `feat(shared): ...` bumps both apps since they depend on it).
+- **Release-notes-generator** filters commits by scope so each `CHANGELOG.md` only shows changes relevant to that package:
+  - Root `CHANGELOG.md` → complete monorepo history
+  - Web `CHANGELOG.md` → only `web` and `shared` changes
+  - API `CHANGELOG.md` → only `api` and `shared` changes
+- **Unscoped commits** (e.g., `feat: add global config`) affect all packages.
+
+### Release workflow
+
+Releases are automated via `.github/workflows/release.yml` on every push to `main`. The workflow runs semantic-release sequentially: root → web → api.
+
+
+
+---
+
 ## Environment Variables
 
 Copy the example files before running locally:
