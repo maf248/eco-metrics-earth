@@ -1,3 +1,16 @@
+## [1.9.0](https://github.com/maf248/eco-metrics-earth/compare/web-v1.8.1...web-v1.9.0) (2026-05-23)
+
+### Features
+
+* **e2e:** add end-to-end test suite (69 tests across 5 browsers) ([c9521d9](https://github.com/maf248/eco-metrics-earth/commit/c9521d9b67d11ebf955079cab1286b435307ccfc))
+* **e2e:** add Playwright project scaffold and configuration ([e8f7bce](https://github.com/maf248/eco-metrics-earth/commit/e8f7bce3a251409cd92ce0dc004768cda686701c))
+* **web:** add Water Footprint section with category page and icon ([c44b51b](https://github.com/maf248/eco-metrics-earth/commit/c44b51b283c2531153c1d7574b70e927acfa2870))
+
+### Bug Fixes
+
+* **ci:** install all Playwright browsers, run full suite ([8406d4e](https://github.com/maf248/eco-metrics-earth/commit/8406d4edf440968ef9dfed3b9a53f4523d83d6d0))
+* **ci:** scope E2E to chromium-desktop only in CI ([892b679](https://github.com/maf248/eco-metrics-earth/commit/892b6795535fca6fa198cbd156e605304b0c7a55))
+
 ## [1.8.1](https://github.com/maf248/eco-metrics-earth/compare/web-v1.8.0...web-v1.8.1) (2026-05-23)
 
 ### Bug Fixes
