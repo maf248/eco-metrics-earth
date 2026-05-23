@@ -187,8 +187,7 @@ Lista de hallazgos del análisis de repositorio, ordenados por prioridad (más c
 
 ### 🟢 Configuración / Build
 
-- **I11.** TypeScript 6.0.3 genera conflictos de peer deps — `@module-federation/*` y `fork-ts-checker-webpack-plugin` declaran `peerDependency: ^4.9 || ^5.0`. Marcados como "invalid" en `npm ls`. Requiere upgrade de NX o downgrade de TS para resolverse.
-- **I12.** `legacy-peer-deps=true` en `.npmrc` — workaround temporal por `eslint-plugin-jsx-a11y` que no declara soporte para ESLint 10. Hay que revisarlo cuando el plugin se actualice.
+- **I11.** `legacy-peer-deps=true` en `.npmrc` — workaround temporal por `eslint-plugin-jsx-a11y` que no declara soporte para ESLint 10. Hay que revisarlo cuando el plugin se actualice.
 
 ---
 

@@ -11,7 +11,7 @@
     "strict": true,
     "emitDeclarationOnly": false,
     "module": "commonjs",
-    "moduleResolution": "bundler"
+    "moduleResolution": "node"
   },
   "include": ["src/**/*.ts"],
   "exclude": [
