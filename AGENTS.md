@@ -80,9 +80,6 @@ npm run build
 npm run test
 # or: npx nx run-many --target=test --all
 
-# Lint all projects
-npm run lint
-# or: npx nx run-many --target=lint --all
 
 # Single app commands
 npx nx serve web        # http://localhost:3000
@@ -128,13 +125,12 @@ npx nx build api
 - React components: `PascalCase.tsx` (e.g., `MetricsCard.tsx`)
 - Utilities/helpers: `camelCase.ts` (e.g., `formatDate.ts`)
 - NestJS: NX/Nest conventions — `kebab-case.controller.ts`, `kebab-case.service.ts`, `kebab-case.module.ts`
-- Test files: `*.test.ts` or `*.test.tsx` inside a `__tests__/` folder at project root, mirroring the `src/` structure without the `src/` prefix (e.g., `src/health/health.controller.ts` → `__tests__/health/health.controller.test.ts`)
 
 ### Testing Conventions
 
-- Always use `it('...')` instead of `test('...')` for individual test cases.
+- Jest tests always use `it('...')`. Playwright E2E tests in `e2e/` always use `test('...')`.
 - Group related tests with `describe('...')` blocks.
-- Test file names must match the source file: `foo.test.ts` for `foo.ts`.
+- Test files use `*.test.ts` or `*.test.tsx` inside `__tests__/`, mirroring `src/` structure (e.g., `src/foo.ts` → `__tests__/foo.test.ts`).
 - Test descriptions must be written in English and describe the expected behavior (e.g., `it('should return 404 when resource is not found')`).
 - **Tests must produce zero errors and zero warnings.** A passing test that emits `console.error` or `console.warn` is not acceptable — the warning is a symptom of a real problem and must be fixed at the root.
 - If a test warning or error appears, investigate the cause and apply the cleanest, most idiomatic fix (e.g., use the right render strategy, fix the component structure, use proper async handling). Do **not** suppress or silence output as a workaround.
@@ -222,7 +218,7 @@ eco-metrics-earth/
 │       └── src/lib/
 │           ├── api-response.ts  # ApiResponse<T> interface
 │           └── eco-category.ts  # EcoCategory type + ECO_CATEGORIES const
-├── .nvmrc                       # Node.js v20
+├── .nvmrc                       # Node.js v24
 ├── nx.json                      # NX workspace config (cache, targets)
 ├── tsconfig.base.json           # Root TS config + path aliases
 └── package.json                 # Root workspace (npm workspaces)
@@ -266,8 +262,6 @@ npx nx run-many --target=build --all
 # Format check
 npx prettier --check "**/*.{ts,tsx,js,json}"
 
-# Format fix
-npx prettier --write "**/*.{ts,tsx,js,json}"
 ```
 
 Pre-PR checklist: `npm run lint`, `npm run build`, and `npm run test` must all pass with zero errors.
@@ -278,7 +272,7 @@ Pre-PR checklist: `npm run lint`, `npm run build`, and `npm run test` must all p
 
 - **Always pin exact versions** — never use `^` or `~` in `package.json`. Use `npm install --save-exact` or manually set the exact version.
 - **Use the latest compatible version** when adding or updating a package — check for peer dependency constraints before upgrading across major versions.
-- **`@types/node` must match the runtime** — the project uses Node 20 LTS, so always use `@types/node@20.x`.
+- **`@types/node` must match the runtime** — the project uses Node 24 LTS, so always use `@types/node@24.x`.
 - **Install dependencies in the correct scope** — never install a dependency at the monorepo root unless it is shared across multiple apps/packages. Check which project actually needs the dependency:
   - `apps/api/`-only deps (e.g., `@nestjs/*`, `swagger-ui-express`) → install in `apps/api/package.json`
   - `apps/web/`-only deps (e.g., `next`, `react`) → install in `apps/web/package.json`
@@ -293,8 +287,6 @@ Pre-PR checklist: `npm run lint`, `npm run build`, and `npm run test` must all p
 - **Keep README.md tech stack versions up to date** — when upgrading major dependencies (NX, Next.js, NestJS, React, TypeScript, etc.), update the version table in `README.md` immediately.
 - **Update AGENTS.md when conventions change** — if a new architectural pattern, testing rule, or workflow is established, document it here.
 - **Sync changes across related docs** — if you modify environment variables, update both the example files (`.env.example`) and the Environment Variables section in `README.md`.
-
----
 
 ---
 
@@ -322,7 +314,7 @@ Pre-PR checklist: `npm run lint`, `npm run build`, and `npm run test` must all p
 
 - For navigating/exploring the workspace, invoke the `nx-workspace` skill first - it has patterns for querying projects, targets, and dependencies
 - When running tasks (for example build, lint, test, e2e, etc.), always prefer running the task through `nx` (i.e. `nx run`, `nx run-many`, `nx affected`) instead of using the underlying tooling directly
-- Prefix nx commands with the workspace's package manager (e.g., `pnpm nx build`, `npm exec nx test`) - avoids using globally installed CLI
+- Prefix nx commands with the workspace's package manager (e.g., `npm exec nx build`, `npm exec nx test`) - avoids using globally installed CLI
 - You have access to the Nx MCP server and its tools, use them to help the user
 - For Nx plugin best practices, check `node_modules/@nx/<plugin>/PLUGIN.md`. Not all plugins have this file - proceed without it if unavailable.
 - NEVER guess CLI flags - always check nx_docs or `--help` first when unsure
