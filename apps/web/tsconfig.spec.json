@@ -5,7 +5,7 @@
     "declarationMap": false,
     "types": ["jest", "node"],
     "module": "commonjs",
-    "moduleResolution": "bundler"
+    "moduleResolution": "node"
   },
   "include": [
     "src/**/*.ts",

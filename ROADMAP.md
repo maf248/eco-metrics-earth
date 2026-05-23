@@ -4,14 +4,15 @@ Este documento registra todas las propuestas de mejora identificadas para el pro
 
 ---
 
-## Estado del Proyecto (17 May 2026)
+## Estado del Proyecto (23 May 2026)
 
 | Aspecto | Estado | Nota |
 |---------|--------|------|
-| Tests | ✅ | 162 tests pasando, 0 errores |
+| Tests | ✅ | 194 tests pasando, 0 errores |
 | Lint | ✅ | Sin warnings |
 | Build | ✅ | Compila correctamente |
-| CI/CD | ✅ | CI en PRs y push a cualquier branch |
+| CI | ✅ | CI en PRs y push a cualquier branch |
+| CD / Deploy | 🟡 | No hay entornos de pre-release/staging (ver I02) |
 | Dependencias | ✅ | Al día (Fase 1 + Fase 2 aplicadas) |
 | Coverage | ✅ | Medido con Jest |
 | E2E | ❌ | No implementado |
@@ -33,8 +34,8 @@ Este documento registra todas las propuestas de mejora identificadas para el pro
 - Validar SEO (trailing slashes, meta tags, Open Graph)
 - Flujo completo: home → categoría → validar contenido
 
-**Dificultad:** 5/10  
-**Requisitos:** Decisión entre Playwright vs Cypress  
+**Dificultad:** 5/10
+**Requisitos:** Decisión entre Playwright vs Cypress
 **Estado:** Pendiente
 
 ---
@@ -58,8 +59,8 @@ Cada módulo debe incluir:
 - DTOs con validación (`class-validator`)
 - Tests unitarios
 
-**Dificultad:** 6/10  
-**Requisitos:** Definir fuentes de datos (mock vs API real)  
+**Dificultad:** 6/10
+**Requisitos:** Definir fuentes de datos (mock vs API real)
 **Estado:** Pendiente
 
 ---
@@ -76,8 +77,8 @@ Cada módulo debe incluir:
 - **Healthcheck robusto:** validar dependencias externas (APIs, DB cuando exista)
 - **Métricas:** considerar OpenTelemetry para el futuro
 
-**Dificultad:** 7/10  
-**Requisitos:** Cuenta Sentry (free tier disponible)  
+**Dificultad:** 7/10
+**Requisitos:** Cuenta Sentry (free tier disponible)
 **Estado:** Pendiente
 
 ---
@@ -93,8 +94,8 @@ Cada módulo debe incluir:
 - Tests de interacción con play functions
 - Accessibility tests
 
-**Dificultad:** 6/10  
-**Requisitos:** Decisión de configuración (Webpack vs Vite)  
+**Dificultad:** 6/10
+**Requisitos:** Decisión de configuración (Webpack vs Vite)
 **Estado:** Pendiente
 
 ---
@@ -124,7 +125,7 @@ Si no estás seguro por dónde empezar, este es el orden recomendado:
 ### P5: Investigación — Water Footprint by Product
 **Problema:** Ninguna categoría actual del dashboard muestra el consumo de agua asociado a productos de consumo cotidiano. Las fuentes documentadas (World Bank, OWID, NOAA) cubren solo datos macro: extracción por país, estrés hídrico y temperatura oceánica.
 **Impacto:** Los usuarios no pueden visualizar ni comparar la huella hídrica de sus decisiones de consumo (alimentos, textiles, electrónica).
-**Propuesta:**  
+**Propuesta:**
 1. **Investigar y compilar un dataset estático** (~30–50 productos) a partir de:
    - **Our World in Data** (Poore & Nemecek 2018) — alimentos via CSV Grapher API (`/grapher/water-withdrawals-per-kg-poore.csv`).
    - **Water Footprint Network (WaterPub)** — cultivos, animales y algunos textiles (PDF/Excel dispersos).
@@ -146,52 +147,48 @@ Si no estás seguro por dónde empezar, este es el orden recomendado:
 | 1 kg de pollo | ~4,300 L | OWID / Poore & Nemecek |
 | 1 kg de almendras | ~16,000 L | OWID / Poore & Nemecek |
 **Nota clave:** No existe una API pública única con datos por producto manufacturado. El enfoque es un **dataset estático embebido en el repo** (JSON/CSV) con atribución explícita por ítem.
-**Dificultad:** 4/10  
-**Requisitos:** Compilación manual de datos, validación de fuentes, decisión de UX (cards vs tabla vs gráfico de barras comparativo)  
+**Dificultad:** 4/10
+**Requisitos:** Compilación manual de datos, validación de fuentes, decisión de UX (cards vs tabla vs gráfico de barras comparativo)
 **Estado:** Pendiente
 
 ---
 
 ## 💡 Ideas — Backlog de mejoras identificadas
 
-Lista de hallazgos del análisis de repositorio. Sin prioridad asignada aún. Cada ítem puede convertirse en una propuesta formal siguiendo el workflow SDD.
+Lista de hallazgos del análisis de repositorio, ordenados por prioridad (más crítico primero). Cada ítem puede convertirse en una propuesta formal siguiendo el workflow SDD.
 
-### Seguridad
+### 🔴 Seguridad
 
-- **I1.** `npm audit` reporta ~21 vulnerabilidades, todas en dependencias que el proyecto no controla: `brace-expansion`, `ip-address`, `picomatch` están en los `node_modules` internos de npm (no del proyecto); `postcss` está bundleado dentro de `next`. Requieren upgrade de npm o de next para resolverse — no son solucionables con `npm audit fix` desde el proyecto.
+- **I01.** `npm audit` reporta 32 vulnerabilidades (31 moderate, 1 high). La mayoría están en dependencias transitivas que el proyecto no controla: `@module-federation/*` (29 vulns, dentro de NX 22) y `yaml` (2 vulns, bundleado en `node_modules/nx/`). No son solucionables con `npm audit fix` desde el proyecto — requieren un upgrade de NX a una versión más reciente, lo cual es un cambio mayor con posibles breaking changes.
 
-### CI/CD
+### 🟡 CI/CD
 
-- **I2.** No hay estrategia de pre-release o staging — todos los deploys van directo a producción.
+- **I02.** No hay estrategia de pre-release o staging — todos los deploys (Vercel, Railway) van directo a producción desde `main`. No hay preview deploys desde `develop` ni entorno de pruebas separado. Solución pragmática: inicialmente solo prod por simplicidad; agregar staging cuando el sitio tenga tráfico mínimo y se justifique el costo/beneficio.
 
-### Código — API
+### 🟡 API / Seguridad
 
-- **I3.** `apps/api/src/common/` está vacío — listado en `AGENTS.md` como "Shared pipes, guards, interceptors, filters" pero sin archivos.
-- **I4.** Solo un origen soportado en CORS — `CORS_ORIGIN` es un string único. Cuando web (Vercel) y API (Railway) estén en producción, esto fallará con múltiples orígenes.
+- **I03.** Solo un origen soportado en CORS — `CORS_ORIGIN` es un string único en `AppConfigService`. Cuando web (Vercel preview + prod) y API (Railway) tengan múltiples entornos, esto fallará con orígenes distintos (localhost, preview URLs, dominio productivo).
 
-### Testing
+### 🟡 Testing
 
-- **I5.** Sin tests de integración cross-workspace — nada verifica que web pueda llamar correctamente a la API.
-- **I6.** Sin tests de accesibilidad automatizados — `axe-core` o `jest-axe` no están configurados. `AGENTS.md` exige a11y pero no hay auditoría sistemática.
+- **I04.** Sin tests de integración cross-workspace — nada verifica que web pueda llamar correctamente a la API (contratos de tipos compartidos, respuestas esperadas, manejo de errores).
+- **I05.** Sin tests de accesibilidad automatizados — `axe-core` o `jest-axe` no están configurados. `AGENTS.md` exige a11y pero no hay auditoría sistemática.
 
-### Configuración y build
+### 🟡 API / Observabilidad
 
-- **I7.** TypeScript 6.0.3 genera conflictos de peer deps — `@module-federation/*` y `fork-ts-checker-webpack-plugin` declaran `peerDependency: ^4.9 || ^5.0`. Marcados como "invalid" en `npm ls`.
-- **I8.** `legacy-peer-deps=true` en `.npmrc` por `eslint-plugin-jsx-a11y` — temporal, hay que revisarlo cuando el plugin declare soporte para ESLint 10.
+- **I06.** Sin OpenAPI/Swagger — `@nestjs/swagger` no está instalado. La API solo documenta `/health` manualmente en el README. Cualquier consumidor (frontend, terceros) no tiene contrato tipado ni documentación interactiva.
 
-### Arquitectura y deuda
+### 🟢 Arquitectura / Deuda técnica
 
-- **I9.** OpenSpec `architecture-and-quality` tiene 25 tareas incompletas — refactor de `ApiResponse<T>`, `HealthModule`, íconos duplicados, etc. La implementación no ha comenzado.
-- **I10.** Dependencias en el `package.json` raíz — `@nestjs/*`, `next`, `react` están en el root. Deberían estar solo en los apps individuales para evitar conflictos de versión.
-- **I11.** Versiones de workspace no sincronizadas — root es `v1.6.0`, api y web son `v1.7.0`, shared es `v1.2.0`. El release workflow genera 4 tags que no correlacionan claramente.
-- **I12.** Tres archivos `.releaserc.json` separados — root, api y web. Lógica de release duplicada que hay que actualizar en tres lugares.
-- **I13.** Tres `CHANGELOG.md` separados — fragmentan el historial de releases sin referencia cruzada entre ellos.
+- **I07.** Versiones de workspace no sincronizadas — root es `v1.6.1`, api y web son `v1.7.1`, shared es `v1.2.0`. El release workflow genera tags que no correlacionan claramente entre los 4 paquetes.
+- **I08.** Tres archivos `.releaserc.json` separados — root, api y web. Lógica de release duplicada que hay que actualizar en tres lugares.
+- **I09.** Tres `CHANGELOG.md` separados — fragmentan el historial de releases sin referencia cruzada entre ellos.
+- **I10.** Sin capa de datos ni ORM — cuando empiece la integración real de datos (P2), no hay TypeORM, Prisma ni esquema de base de datos definido.
 
-### Observabilidad y producción
+### 🟢 Configuración / Build
 
-- **I14.** Sin OpenAPI/Swagger — `@nestjs/swagger` no está instalado. La API solo documenta `/health` manualmente en el README.
-- **I15.** Sin capa de datos ni ORM — cuando empiece la integración real (P2), no hay TypeORM, Prisma ni esquema de base de datos.
+- **I11.** `legacy-peer-deps=true` en `.npmrc` — workaround porque `eslint-plugin-jsx-a11y@6.10.2` no declara ESLint 10 en sus peer deps. PR [#1081](https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/pull/1081) abierto. Eliminar cuando se publique un release con soporte.
 
 ---
 
-**Última actualización:** 21 May 2026
+**Última actualización:** 23 May 2026
