@@ -65,31 +65,12 @@ Cada módulo debe incluir:
 
 ---
 
-## 🟢 Mejoras / Baja Prioridad
-
-### P3: Storybook para componentes
-
-**Problema:** Los 16 componentes React no tienen documentación visual ni tests de interacción aislados.
-
-**Propuesta:** Integrar Storybook:
-- Documentar componentes en aislamiento
-- Tests de interacción con play functions
-- Accessibility tests
-
-**Dificultad:** 6/10
-**Requisitos:** Decisión de configuración (Webpack vs Vite)
-**Estado:** Pendiente
-
----
-
 ## 📋 Plan de Acción Sugerido
 
 Si no estás seguro por dónde empezar, este es el orden recomendado:
 
 1. **P1: Implementar módulos eco** → Funcionalidad real (Dificultad: 6/10)
 2. **P2: Monitoreo y observabilidad** → Logs, métricas y error tracking (Dificultad: 7/10)
-3. **P3: Storybook** → Documentación visual de componentes (Dificultad: 6/10)
-4. **P4: CI/CD con deploy condicional** → Deploy automático Vercel + Railway (Dificultad: 4/10)
 
 ---
 
@@ -127,7 +108,7 @@ git push main
 
 **Dificultad:** 4/10
 **Requisitos:** Cuenta Vercel + Railway vinculadas al repo. La integración de Vercel ya está configurada con `vercel.json`.
-**Estado:** Pendiente
+**Estado:** ✅ Completado — Vercel auto-deploy configurado vía GitHub Integration
 
 ---
 
@@ -151,7 +132,7 @@ Lista de hallazgos del análisis de repositorio, ordenados por prioridad (más c
 
 ### 🟡 CI/CD
 
-- **I02.** No hay estrategia de pre-release o staging — todos los deploys (Vercel, Railway) van directo a producción desde `main`. No hay preview deploys desde `develop` ni entorno de pruebas separado. Solución pragmática: inicialmente solo prod por simplicidad; agregar staging cuando el sitio tenga tráfico mínimo y se justifique el costo/beneficio.
+- **I02.** Staging parcial — Vercel genera preview deploys automáticos desde `develop`, lo que funciona como staging de facto para el frontend. Falta definir el equivalente en Railway para `apps/api` cuando se implemente el deploy del backend (recordatorio).
 
 ### 🟡 API / Seguridad
 
@@ -160,7 +141,7 @@ Lista de hallazgos del análisis de repositorio, ordenados por prioridad (más c
 ### 🟡 Testing
 
 - **I04.** Sin tests de integración web→API con datos reales. Los tests E2E (`api-health.spec.ts`) verifican health + errores + CORS, pero falta integración con datos de categorías eco (depende de P1).
-- **I05.** Sin tests de accesibilidad unitarios con `jest-axe`. Los tests E2E con `@axe-core/playwright` ya auditan todas las páginas (a11y.spec.ts), pero falta integración a nivel componente unitario.
+- **I05.** Sin tests de accesibilidad unitarios con `jest-axe`. Los tests E2E con `@axe-core/playwright` ya auditan todas las páginas (a11y.spec.ts), lo que cubre el 80% del valor. La integración a nivel componente unitario es deseable pero no prioritaria — solo suma valor si crece mucho la cantidad de componentes.
 
 ### 🟢 Arquitectura / Deuda técnica
 
@@ -169,6 +150,7 @@ Lista de hallazgos del análisis de repositorio, ordenados por prioridad (más c
 ### 🟢 Configuración / Build
 
 - **I07.** `legacy-peer-deps=true` en `.npmrc` — workaround porque `eslint-plugin-jsx-a11y@6.10.2` no declara ESLint 10 en sus peer deps. PR [#1081](https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/pull/1081) abierto. Eliminar cuando se publique un release con soporte.
+- **I08.** Sin Storybook ni documentación visual de componentes. Actualmente solo hay 16 componentes, por lo que no se justifica el overhead de configuración y mantenimiento. Reconsiderar cuando la librería de componentes supere ~40 unidades.
 
 ---
 
