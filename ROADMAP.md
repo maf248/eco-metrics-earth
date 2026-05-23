@@ -8,41 +8,21 @@ Este documento registra todas las propuestas de mejora identificadas para el pro
 
 | Aspecto | Estado | Nota |
 |---------|--------|------|
-| Tests | ✅ | 194 tests pasando, 0 errores |
+| Tests | ✅ | 194 unit + 63 E2E = 257 tests pasando, 0 errores |
 | Lint | ✅ | Sin warnings |
 | Build | ✅ | Compila correctamente |
 | CI | ✅ | CI en PRs y push a cualquier branch |
 | CD / Deploy | 🟡 | No hay entornos de pre-release/staging (ver I02) |
 | Dependencias | ✅ | Al día (Fase 1 + Fase 2 aplicadas) |
 | Coverage | ✅ | Medido con Jest |
-| E2E | ❌ | No implementado |
+| E2E | ✅ | Playwright: 63 tests, 5 browsers, CI integrado |
 | Monitoreo | ❌ | No implementado |
 
 ---
 
 ## 🔴 Crítico / Alta Prioridad
 
-### P1: Tests End-to-End (E2E)
-
-**Problema:** Solo tests unitarios. No hay validación de flujos completos (navegación, API → UI).
-
-**Impacto:** Bugs en interacciones reales pueden pasar desapercibidos.
-
-**Propuesta:** Integrar Playwright para:
-- Navegación entre categorías eco
-- Verificar health endpoint responde correctamente
-- Validar SEO (trailing slashes, meta tags, Open Graph)
-- Flujo completo: home → categoría → validar contenido
-
-**Dificultad:** 5/10
-**Requisitos:** Decisión entre Playwright vs Cypress
-**Estado:** Pendiente
-
----
-
-## 🟡 Importante / Media Prioridad
-
-### P2: Implementar módulos de categorías eco (API)
+### P1: Implementar módulos de categorías eco (API)
 
 **Problema:** `apps/api/src/modules/` solo tiene `.gitkeep`. No hay lógica real para ninguna categoría.
 
@@ -65,7 +45,9 @@ Cada módulo debe incluir:
 
 ---
 
-### P3: Monitoreo y observabilidad
+## 🟡 Importante / Media Prioridad
+
+### P2: Monitoreo y observabilidad
 
 **Problema:** No hay logs estructurados, métricas ni error tracking.
 
@@ -85,7 +67,7 @@ Cada módulo debe incluir:
 
 ## 🟢 Mejoras / Baja Prioridad
 
-### P4: Storybook para componentes
+### P3: Storybook para componentes
 
 **Problema:** Los 16 componentes React no tienen documentación visual ni tests de interacción aislados.
 
@@ -104,11 +86,10 @@ Cada módulo debe incluir:
 
 Si no estás seguro por dónde empezar, este es el orden recomendado:
 
-1. **P1: Tests E2E** → Validación de flujos críticos (Dificultad: 5/10)
-2. **P2: Implementar módulos eco** → Funcionalidad real (Dificultad: 6/10)
-3. **P3: Monitoreo y observabilidad** → Logs, métricas y error tracking (Dificultad: 7/10)
-4. **P4: Storybook** → Documentación visual de componentes (Dificultad: 6/10)
-5. **P5: Water Footprint** → Investigación huella hídrica por producto (Dificultad: 4/10)
+1. **P1: Implementar módulos eco** → Funcionalidad real (Dificultad: 6/10)
+2. **P2: Monitoreo y observabilidad** → Logs, métricas y error tracking (Dificultad: 7/10)
+3. **P3: Storybook** → Documentación visual de componentes (Dificultad: 6/10)
+4. **P4: Water Footprint** → Investigación huella hídrica por producto (Dificultad: 4/10)
 
 ---
 
@@ -122,7 +103,7 @@ Si no estás seguro por dónde empezar, este es el orden recomendado:
 
 ---
 
-### P5: Investigación — Water Footprint by Product
+### P4: Investigación — Water Footprint by Product
 **Problema:** Ninguna categoría actual del dashboard muestra el consumo de agua asociado a productos de consumo cotidiano. Las fuentes documentadas (World Bank, OWID, NOAA) cubren solo datos macro: extracción por país, estrés hídrico y temperatura oceánica.
 **Impacto:** Los usuarios no pueden visualizar ni comparar la huella hídrica de sus decisiones de consumo (alimentos, textiles, electrónica).
 **Propuesta:**
@@ -171,8 +152,8 @@ Lista de hallazgos del análisis de repositorio, ordenados por prioridad (más c
 
 ### 🟡 Testing
 
-- **I04.** Sin tests de integración cross-workspace — nada verifica que web pueda llamar correctamente a la API (contratos de tipos compartidos, respuestas esperadas, manejo de errores).
-- **I05.** Sin tests de accesibilidad automatizados — `axe-core` o `jest-axe` no están configurados. `AGENTS.md` exige a11y pero no hay auditoría sistemática.
+- **I04.** Sin tests de integración web→API con datos reales. Los tests E2E (`api-health.spec.ts`) verifican health + errores + CORS, pero falta integración con datos de categorías eco (depende de P1).
+- **I05.** Sin tests de accesibilidad unitarios con `jest-axe`. Los tests E2E con `@axe-core/playwright` ya auditan todas las páginas (a11y.spec.ts), pero falta integración a nivel componente unitario.
 
 ### 🟡 API / Observabilidad
 
