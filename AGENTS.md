@@ -376,8 +376,8 @@ The user must **explicitly authorize** every `git commit` and every `git push`. 
 
 1. **Never commit without an explicit user request** — completing all tasks and passing all tests is NOT sufficient; always pause and wait.
 2. **Never push without an explicit user request** — not even after a commit. Each is a separate authorization.
-3. **Run `git pull --merge` before every push** — the remote may have new release tags between local pushes.
-   Prefer `--merge` over `--rebase` to avoid rewriting commit SHAs, which breaks Vercel deployments and can drop merge-commit content.
+3. **Run `git pull` (default merge) before every push** — the remote may have new release tags between local pushes.
+   Prefer merge over rebase to avoid rewriting commit SHAs, which breaks Vercel deployments and can drop merge-commit content.
 4. When the user says "commitea y pushea" or similar, treat that as authorization for both in sequence — but do not auto-push on future tasks.
 
 ### "This model does not support assistant message prefill"
