@@ -11,7 +11,17 @@
     "strict": true,
     "emitDeclarationOnly": false,
     "module": "commonjs",
-    "moduleResolution": "node"
+    "moduleResolution": "node",
+    "plugins": [
+      {
+        "name": "@nestjs/swagger",
+        "options": {
+          "classValidatorShim": true,
+          "introspectComments": true,
+          "dtoFileNameSuffix": [".dto.ts", ".entity.ts"]
+        }
+      }
+    ]
   },
   "include": ["src/**/*.ts"],
   "exclude": [

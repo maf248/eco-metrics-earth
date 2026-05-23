@@ -1,19 +1,18 @@
+import { ApiPropertyOptional } from '@nestjs/swagger';
 import { IsDateString, IsOptional, IsString } from 'class-validator';
 
-/**
- * DTO for metric listing query parameters.
- *
- * @deprecated MOCK — remove when real eco modules are implemented in P2
- */
 export class GetMetricsQueryDto {
+  @ApiPropertyOptional({ description: 'Start date (ISO 8601)', example: '2025-01-01' })
   @IsOptional()
   @IsDateString()
   fromDate?: string;
 
+  @ApiPropertyOptional({ description: 'End date (ISO 8601)', example: '2025-12-31' })
   @IsOptional()
   @IsDateString()
   toDate?: string;
 
+  @ApiPropertyOptional({ description: 'Eco category slug', example: 'air-quality' })
   @IsOptional()
   @IsString()
   category?: string;

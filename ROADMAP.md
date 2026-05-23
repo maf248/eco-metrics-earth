@@ -155,24 +155,20 @@ Lista de hallazgos del análisis de repositorio, ordenados por prioridad (más c
 
 ### 🟡 API / Seguridad
 
-- **I03.** Solo un origen soportado en CORS — `CORS_ORIGIN` es un string único en `AppConfigService`. Cuando web (Vercel preview + prod) y API (Railway) tengan múltiples entornos, esto fallará con orígenes distintos (localhost, preview URLs, dominio productivo).
+- **I03.** Solo un origen soportado en CORS — `CORS_ORIGIN` es un string único en `AppConfigService`. Cuando web (Vercel preview + prod) y API (Railway) tengan múltiples entornos, esto fallará con orígenes distintos (localhost, preview URLs, dominio productivo). También deberá incluir la URL de Railway (`https://eco-metrics-earth-api.railway.app`) cuando se despliegue el back. Cuando web (Vercel preview + prod) y API (Railway) tengan múltiples entornos, esto fallará con orígenes distintos (localhost, preview URLs, dominio productivo).
 
 ### 🟡 Testing
 
 - **I04.** Sin tests de integración web→API con datos reales. Los tests E2E (`api-health.spec.ts`) verifican health + errores + CORS, pero falta integración con datos de categorías eco (depende de P1).
 - **I05.** Sin tests de accesibilidad unitarios con `jest-axe`. Los tests E2E con `@axe-core/playwright` ya auditan todas las páginas (a11y.spec.ts), pero falta integración a nivel componente unitario.
 
-### 🟡 API / Observabilidad
-
-- **I06.** Sin OpenAPI/Swagger — `@nestjs/swagger` no está instalado. La API solo documenta `/health` manualmente en el README. Cualquier consumidor (frontend, terceros) no tiene contrato tipado ni documentación interactiva.
-
 ### 🟢 Arquitectura / Deuda técnica
 
-- **I07.** Sin capa de datos ni ORM — cuando empiece la integración real de datos (P2), no hay TypeORM, Prisma ni esquema de base de datos definido.
+- **I06.** Sin capa de datos ni ORM — cuando empiece la integración real de datos (P2), no hay TypeORM, Prisma ni esquema de base de datos definido.
 
 ### 🟢 Configuración / Build
 
-- **I08.** `legacy-peer-deps=true` en `.npmrc` — workaround porque `eslint-plugin-jsx-a11y@6.10.2` no declara ESLint 10 en sus peer deps. PR [#1081](https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/pull/1081) abierto. Eliminar cuando se publique un release con soporte.
+- **I07.** `legacy-peer-deps=true` en `.npmrc` — workaround porque `eslint-plugin-jsx-a11y@6.10.2` no declara ESLint 10 en sus peer deps. PR [#1081](https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/pull/1081) abierto. Eliminar cuando se publique un release con soporte.
 
 ---
 
