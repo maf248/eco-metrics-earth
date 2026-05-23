@@ -7,7 +7,7 @@
     "dev:local": "concurrently --names \"apps,proxy\" --prefix-colors \"cyan,yellow\" \"npm run dev\" \"caddy run --config dev/Caddyfile\"",
     "build": "nx run-many --target=build --all",
     "analyze": "nx run web:analyze",
-    "test": "nx run-many --target=test --all --output-style=stream",
+    "test": "nx run-many --target=test --all --output-style=stream --parallel=1",
     "lint": "nx run-many --target=lint --all",
     "format": "prettier --write \"**/*.{ts,tsx,js,json}\"",
     "format:check": "prettier --check \"**/*.{ts,tsx,js,json}\"",
