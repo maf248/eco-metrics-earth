@@ -174,7 +174,8 @@ npx nx test api -- --updateSnapshot   # updates only api snapshots
 #### Branch strategy
 
 ```
-feature/* ──► develop ──► main (production)
+feature/* ──► develop ⇄ main (production)
+#                      ▲        back-merge auto: syncs versions + changelogs (release.yml)
 ```
 
 - **`main`** — protected. No direct pushes. All changes enter via PR from `develop`. Requires CI pass + 1 PR review before merge. No force pushes allowed.
