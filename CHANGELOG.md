@@ -1,3 +1,9 @@
+## [1.10.1](https://github.com/maf248/eco-metrics-earth/compare/v1.10.0...v1.10.1) (2026-05-23)
+
+### Bug Fixes
+
+* **web:** align not-found layout with home page ([28a9260](https://github.com/maf248/eco-metrics-earth/commit/28a9260b17b822cee777944579d07fe0dafcc053))
+
 ## [1.10.0](https://github.com/maf248/eco-metrics-earth/compare/v1.9.0...v1.10.0) (2026-05-23)
 
 ### Features
