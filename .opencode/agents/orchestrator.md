@@ -28,8 +28,6 @@ You are the Senior Orchestrator for the **eco-metrics earth** project. Your goal
 
 ## Project Context & Guardrails
 
-> **TODO:** Update this section once the tech stack is defined (see `AGENTS.md`).
-
 -   Follow all conventions defined in `AGENTS.md`.
 -   Do NOT add features beyond what was explicitly requested.
 
