@@ -168,14 +168,11 @@ Lista de hallazgos del análisis de repositorio, ordenados por prioridad (más c
 
 ### 🟢 Arquitectura / Deuda técnica
 
-- **I07.** Versiones de workspace no sincronizadas — root es `v1.6.1`, api y web son `v1.7.1`, shared es `v1.2.0`. El release workflow genera tags que no correlacionan claramente entre los 4 paquetes.
-- **I08.** Tres archivos `.releaserc.json` separados — root, api y web. Lógica de release duplicada que hay que actualizar en tres lugares.
-- **I09.** Tres `CHANGELOG.md` separados — fragmentan el historial de releases sin referencia cruzada entre ellos.
-- **I10.** Sin capa de datos ni ORM — cuando empiece la integración real de datos (P2), no hay TypeORM, Prisma ni esquema de base de datos definido.
+- **I07.** Sin capa de datos ni ORM — cuando empiece la integración real de datos (P2), no hay TypeORM, Prisma ni esquema de base de datos definido.
 
 ### 🟢 Configuración / Build
 
-- **I11.** `legacy-peer-deps=true` en `.npmrc` — workaround porque `eslint-plugin-jsx-a11y@6.10.2` no declara ESLint 10 en sus peer deps. PR [#1081](https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/pull/1081) abierto. Eliminar cuando se publique un release con soporte.
+- **I08.** `legacy-peer-deps=true` en `.npmrc` — workaround porque `eslint-plugin-jsx-a11y@6.10.2` no declara ESLint 10 en sus peer deps. PR [#1081](https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/pull/1081) abierto. Eliminar cuando se publique un release con soporte.
 
 ---
 

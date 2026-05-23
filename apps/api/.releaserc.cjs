@@ -1,0 +1,64 @@
+const preset = require('conventional-changelog-conventionalcommits').default;
+const { transform: defaultTransform, ...restWriterOpts } = preset().writer;
+
+const ALLOWED_SCOPES = ['api', 'shared'];
+
+module.exports = {
+  branches: ['main'],
+  tagFormat: 'api-v${version}',
+  plugins: [
+    ['@semantic-release/npm', { npmPublish: false }],
+    [
+      '@semantic-release/commit-analyzer',
+      {
+        preset: 'conventionalcommits',
+        releaseRules: [
+          { scope: 'web', release: false },
+          { scope: 'tooling', release: false },
+          { scope: 'docs', release: false },
+          { scope: 'postman', release: false },
+          { scope: 'release', release: false },
+          { breaking: true, release: 'major' },
+          { type: 'feat', release: 'minor' },
+          { type: 'fix', release: 'patch' },
+        ],
+        parserOpts: {
+          noteKeywords: ['BREAKING CHANGE', 'BREAKING CHANGES'],
+        },
+      },
+    ],
+    [
+      '@semantic-release/release-notes-generator',
+      {
+        preset: 'conventionalcommits',
+        writerOpts: {
+          ...restWriterOpts,
+          transform: (commit, context) => {
+            // Include commits without a scope (affects everything) or
+            // commits scoped to api or shared
+            if (commit.scope && !ALLOWED_SCOPES.includes(commit.scope)) {
+              return null;
+            }
+            return defaultTransform(commit, context);
+          },
+        },
+        parserOpts: {
+          noteKeywords: ['BREAKING CHANGE', 'BREAKING CHANGES'],
+        },
+      },
+    ],
+    [
+      '@semantic-release/changelog',
+      {
+        changelogFile: 'CHANGELOG.md',
+      },
+    ],
+    [
+      '@semantic-release/git',
+      {
+        assets: ['CHANGELOG.md', 'package.json'],
+        message: 'chore(release): api-v${nextRelease.version} [skip ci]',
+      },
+    ],
+  ],
+};
