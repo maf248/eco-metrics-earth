@@ -1,3 +1,9 @@
+## [1.13.0](https://github.com/maf248/eco-metrics-earth/compare/web-v1.12.0...web-v1.13.0) (2026-05-27)
+
+### Features
+
+* **web:** add light/dark theme support with settings toggle ([9f999da](https://github.com/maf248/eco-metrics-earth/commit/9f999da9d391adbbfa6fd301128b8b39cde2fd24))
+
 ## [1.12.0](https://github.com/maf248/eco-metrics-earth/compare/web-v1.11.2...web-v1.12.0) (2026-05-27)
 
 ### Features
