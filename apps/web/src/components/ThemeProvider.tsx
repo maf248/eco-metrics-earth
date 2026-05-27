@@ -14,7 +14,7 @@ const ThemeContext = createContext<ThemeContextValue | undefined>(undefined);
 
 function getInitialTheme(): Theme {
   if (typeof window === 'undefined') {
-    return 'light';
+    return 'dark';
   }
   try {
     const stored = localStorage.getItem('eco-metrics-theme');
@@ -24,19 +24,20 @@ function getInitialTheme(): Theme {
   } catch {
     // localStorage unavailable — fall through to system preference
   }
-  if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-    return 'dark';
+  if (window.matchMedia('(prefers-color-scheme: light)').matches) {
+    return 'light';
   }
-  return 'light';
+  return 'dark';
 }
 
 export default function ThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setTheme] = useState<Theme>('light');
+  const [theme, setTheme] = useState<Theme>(getInitialTheme);
 
   useEffect(() => {
+    // A blocking <script> in layout.tsx sets the `dark` class on <html>
+    // before first paint. In the test environment (jsdom) the script is
+    // absent, so we sync both React state AND the DOM class here.
     const initial = getInitialTheme();
-    // Reading from localStorage is inherently a client-side operation
-    // that requires an effect after hydration. This is a one-time sync on mount.
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setTheme(initial);
     if (initial === 'dark') {

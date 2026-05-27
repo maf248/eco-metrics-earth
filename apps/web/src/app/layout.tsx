@@ -47,8 +47,31 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" className="dark" suppressHydrationWarning>
       <body className="bg-white dark:bg-black text-gray-900 dark:text-white">
+        {/*
+         * Blocking script — runs synchronously before paint.
+         * SSR defaults to dark mode; this script only removes the `dark`
+         * class when the user explicitly prefers light mode, so dark-mode
+         * users see zero flash.
+         */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  var theme = localStorage.getItem('eco-metrics-theme');
+                  if (!theme) {
+                    theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+                  }
+                  if (theme === 'light') {
+                    document.documentElement.classList.remove('dark');
+                  }
+                } catch(e) {}
+              })();
+            `,
+          }}
+        />
         <ThemeProvider>
           {/*
            * Skip-to-content link — visually hidden until focused via keyboard.

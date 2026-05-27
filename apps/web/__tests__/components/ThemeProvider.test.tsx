@@ -64,7 +64,7 @@ describe('ThemeProvider', () => {
   });
 
   describe('initial theme detection', () => {
-    it('should default to light theme when no stored preference and system pref is light', () => {
+    it('should default to dark theme when no stored preference and no light system preference', () => {
       Object.defineProperty(window, 'matchMedia', {
         writable: true,
         value: matchMediaMock(false),
@@ -72,7 +72,7 @@ describe('ThemeProvider', () => {
 
       renderWithTheme(<ThemeConsumer />);
 
-      expect(screen.getByTestId('theme-value').textContent).toBe('light');
+      expect(screen.getByTestId('theme-value').textContent).toBe('dark');
     });
 
     it('should use dark theme from localStorage when stored', () => {
@@ -177,7 +177,7 @@ describe('ThemeProvider', () => {
 
       renderWithTheme(<ThemeConsumer />);
 
-      expect(screen.getByTestId('theme-value').textContent).toBe('light');
+      expect(screen.getByTestId('theme-value').textContent).toBe('dark');
       expect(consoleSpy).not.toHaveBeenCalled();
       consoleSpy.mockRestore();
     });
