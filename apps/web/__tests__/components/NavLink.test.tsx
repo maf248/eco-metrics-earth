@@ -91,16 +91,16 @@ describe('NavLink — icon background classes', () => {
     mockUsePathname.mockReturnValue('/air-quality/');
     render(<NavLink href="/air-quality/" icon={AirQualityIcon} label="Air Quality" />);
     const iconWrapper = screen.getByTestId('nav-icon');
-    expect(iconWrapper.className).toContain('bg-white/15');
-    expect(iconWrapper.className).not.toContain('bg-white/10');
+    expect(iconWrapper.className).toContain('bg-gray-400');
+    expect(iconWrapper.className).toContain('dark:bg-white/15');
   });
 
   it('should apply inactive icon background when route does not match', () => {
     mockUsePathname.mockReturnValue('/ocean-health/');
     render(<NavLink href="/air-quality/" icon={AirQualityIcon} label="Air Quality" />);
     const iconWrapper = screen.getByTestId('nav-icon');
-    expect(iconWrapper.className).toContain('bg-white/10');
-    expect(iconWrapper.className).not.toContain('bg-white/15');
+    expect(iconWrapper.className).toContain('bg-gray-300');
+    expect(iconWrapper.className).toContain('dark:bg-white/10');
   });
 });
 

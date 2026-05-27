@@ -33,23 +33,26 @@ export default function Navbar() {
         // Mobile / tablet: bottom bar
         'bottom-0 left-0 right-0 h-20',
         'flex flex-row',
-        'border-t border-gray-800',
+        'border-t border-gray-200 dark:border-gray-800',
         // Desktop: left sidebar
         'lg:top-0 lg:right-auto lg:bottom-auto',
         'lg:h-screen lg:w-68',
         'lg:flex-col',
-        'lg:border-t-0 lg:border-r lg:border-gray-800',
+        'lg:border-t-0 lg:border-r lg:border-gray-200 dark:lg:border-gray-800',
         // Background
-        'bg-white/10',
+        'bg-gray-200/80 dark:bg-white/10',
       ].join(' ')}
     >
       {/* Brand — desktop sidebar only, links to home */}
       <Link
         href="/"
         aria-label="eco-metrics earth — go to home"
-        className="hidden lg:flex items-center h-16 px-5 gap-2.5 border-b border-gray-800 flex-shrink-0 hover:bg-white/5 transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-inset"
+        className="hidden lg:flex items-center h-16 px-5 gap-2.5 border-b border-gray-200 dark:border-gray-800 flex-shrink-0 hover:bg-gray-50 dark:hover:bg-white/5 transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-inset"
       >
-        <SiteLogoIcon aria-hidden className="w-7 h-7 flex-shrink-0" />
+        <SiteLogoIcon
+          aria-hidden
+          className="w-7 h-7 flex-shrink-0 drop-shadow-[0_0_2px_rgba(0,0,0,0.15)] dark:drop-shadow-none"
+        />
         <BrandText />
       </Link>
 
