@@ -4,16 +4,16 @@ exports[`MobileHeader snapshots should match snapshot 1`] = `
 <DocumentFragment>
   <header
     aria-label="Site header"
-    class="lg:hidden fixed top-0 left-0 right-0 z-50 h-14 bg-black/95 backdrop-blur-sm border-b border-gray-800"
+    class="lg:hidden fixed top-0 left-0 right-0 z-50 h-14 bg-white/95 dark:bg-black/95 backdrop-blur-sm border-b border-gray-200 dark:border-gray-800"
   >
     <a
       aria-label="eco-metrics earth — go to home"
-      class="flex items-center h-full gap-3 px-4 hover:bg-white/5 transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+      class="flex items-center h-full gap-3 px-4 hover:bg-gray-100 dark:hover:bg-white/5 transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-black"
       href="/"
     >
       <svg
         aria-hidden="true"
-        class="w-7 h-7 flex-shrink-0"
+        class="w-7 h-7 flex-shrink-0 drop-shadow-[0_0_2px_rgba(0,0,0,0.15)] dark:drop-shadow-none"
         viewBox="0 0 511.874 511.874"
         xmlns="http://www.w3.org/2000/svg"
       >

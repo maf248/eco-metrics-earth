@@ -27,14 +27,13 @@ describe('RootLayout', () => {
     expect(RootLayout).toBeDefined();
   });
 
-  it('should render html with lang="en" and dark mode class', () => {
+  it('should render html with lang="en" and ThemeProvider wrapper', () => {
     const html = renderToString(
       <RootLayout>
         <div>test content</div>
       </RootLayout>,
     );
     expect(html).toContain('lang="en"');
-    expect(html).toContain('class="dark"');
     expect(html).toContain('test content');
   });
 

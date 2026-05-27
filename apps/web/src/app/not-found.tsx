@@ -19,14 +19,16 @@ export default function NotFound() {
         <Link href="/" aria-label="Go back to home">
           <div
             data-testid="not-found-icon"
-            className="flex items-center justify-center w-48 h-48 rounded-2xl bg-white/10 p-4"
+            className="flex items-center justify-center w-48 h-48 rounded-2xl bg-gray-100 dark:bg-white/10 p-4"
           >
             <NotFoundIcon aria-hidden className="w-32 h-32" />
           </div>
         </Link>
         <div className="text-center">
-          <h1 className="text-4xl font-bold text-white">Oops! We couldn&apos;t find that...</h1>
-          <p className="mt-4 text-gray-400">
+          <h1 className="text-4xl font-bold text-gray-900 dark:text-white">
+            Oops! We couldn&apos;t find that...
+          </h1>
+          <p className="mt-4 text-gray-600 dark:text-gray-400">
             The page you&apos;re looking for doesn&apos;t exist or may have moved.
           </p>
         </div>

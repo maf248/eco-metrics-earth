@@ -33,8 +33,8 @@ export default function NavLink({ href, icon: Icon, label }: NavLinkProps) {
         'text-[10px] lg:text-sm font-medium leading-tight transition-colors duration-150',
         // Colour + background: active vs inactive
         isActive
-          ? 'text-emerald-400 lg:bg-white/5'
-          : 'text-gray-400 hover:text-white hover:bg-white/5',
+          ? 'text-emerald-700 lg:bg-gray-100 dark:text-emerald-400 dark:lg:bg-white/5'
+          : 'text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/5',
         'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 ring-offset-white dark:ring-offset-gray-950',
       ].join(' ')}
     >
@@ -42,10 +42,13 @@ export default function NavLink({ href, icon: Icon, label }: NavLinkProps) {
         data-testid="nav-icon"
         className={[
           'w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-lg p-1',
-          isActive ? 'bg-white/15' : 'bg-white/10',
+          isActive ? 'bg-gray-400 dark:bg-white/15' : 'bg-gray-300 dark:bg-white/10',
         ].join(' ')}
       >
-        <Icon aria-hidden className="w-6 h-6" />
+        <Icon
+          aria-hidden
+          className="w-6 h-6 drop-shadow-[0_0_2px_rgba(0,0,0,0.18)] dark:drop-shadow-none"
+        />
       </span>
       <span className="w-full text-center whitespace-normal break-words leading-tight lg:truncate lg:max-w-none lg:text-left lg:whitespace-nowrap">
         {label}
