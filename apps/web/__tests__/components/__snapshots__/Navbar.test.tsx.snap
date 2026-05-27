@@ -4,16 +4,16 @@ exports[`Navbar snapshots should match snapshot with an active route 1`] = `
 <DocumentFragment>
   <nav
     aria-label="Main navigation"
-    class="fixed z-50 bottom-0 left-0 right-0 h-20 flex flex-row border-t border-gray-800 lg:top-0 lg:right-auto lg:bottom-auto lg:h-screen lg:w-68 lg:flex-col lg:border-t-0 lg:border-r lg:border-gray-800 bg-white/10"
+    class="fixed z-50 bottom-0 left-0 right-0 h-20 flex flex-row border-t border-gray-200 dark:border-gray-800 lg:top-0 lg:right-auto lg:bottom-auto lg:h-screen lg:w-68 lg:flex-col lg:border-t-0 lg:border-r lg:border-gray-200 dark:lg:border-gray-800 bg-gray-200/80 dark:bg-white/10"
   >
     <a
       aria-label="eco-metrics earth — go to home"
-      class="hidden lg:flex items-center h-16 px-5 gap-2.5 border-b border-gray-800 flex-shrink-0 hover:bg-white/5 transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-inset"
+      class="hidden lg:flex items-center h-16 px-5 gap-2.5 border-b border-gray-200 dark:border-gray-800 flex-shrink-0 hover:bg-gray-50 dark:hover:bg-white/5 transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-inset"
       href="/"
     >
       <svg
         aria-hidden="true"
-        class="w-7 h-7 flex-shrink-0"
+        class="w-7 h-7 flex-shrink-0 drop-shadow-[0_0_2px_rgba(0,0,0,0.15)] dark:drop-shadow-none"
         viewBox="0 0 511.874 511.874"
         xmlns="http://www.w3.org/2000/svg"
       >
@@ -85,16 +85,16 @@ exports[`Navbar snapshots should match snapshot with an active route 1`] = `
           class="flex flex-none lg:flex-none w-20 lg:w-full h-full lg:h-auto"
         >
           <a
-            class="flex flex-col items-center justify-start w-20 h-full gap-1 pt-3 pb-1 px-1 lg:h-auto lg:w-full lg:flex-row lg:justify-start lg:gap-3 lg:px-5 lg:py-3 lg:rounded-lg text-[10px] lg:text-sm font-medium leading-tight transition-colors duration-150 text-gray-400 hover:text-white hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 ring-offset-white dark:ring-offset-gray-950"
+            class="flex flex-col items-center justify-start w-20 h-full gap-1 pt-3 pb-1 px-1 lg:h-auto lg:w-full lg:flex-row lg:justify-start lg:gap-3 lg:px-5 lg:py-3 lg:rounded-lg text-[10px] lg:text-sm font-medium leading-tight transition-colors duration-150 text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 ring-offset-white dark:ring-offset-gray-950"
             href="/waste-recycling"
           >
             <span
-              class="w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-lg p-1 bg-white/10"
+              class="w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-lg p-1 bg-gray-300 dark:bg-white/10"
               data-testid="nav-icon"
             >
               <svg
                 aria-hidden="true"
-                class="w-6 h-6"
+                class="w-6 h-6 drop-shadow-[0_0_2px_rgba(0,0,0,0.18)] dark:drop-shadow-none"
                 viewBox="0 0 511.999 511.999"
                 xmlns="http://www.w3.org/2000/svg"
               >
@@ -136,16 +136,16 @@ exports[`Navbar snapshots should match snapshot with an active route 1`] = `
         >
           <a
             aria-current="page"
-            class="flex flex-col items-center justify-start w-20 h-full gap-1 pt-3 pb-1 px-1 lg:h-auto lg:w-full lg:flex-row lg:justify-start lg:gap-3 lg:px-5 lg:py-3 lg:rounded-lg text-[10px] lg:text-sm font-medium leading-tight transition-colors duration-150 text-emerald-400 lg:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 ring-offset-white dark:ring-offset-gray-950"
+            class="flex flex-col items-center justify-start w-20 h-full gap-1 pt-3 pb-1 px-1 lg:h-auto lg:w-full lg:flex-row lg:justify-start lg:gap-3 lg:px-5 lg:py-3 lg:rounded-lg text-[10px] lg:text-sm font-medium leading-tight transition-colors duration-150 text-emerald-700 lg:bg-gray-100 dark:text-emerald-400 dark:lg:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 ring-offset-white dark:ring-offset-gray-950"
             href="/air-quality"
           >
             <span
-              class="w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-lg p-1 bg-white/15"
+              class="w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-lg p-1 bg-gray-400 dark:bg-white/15"
               data-testid="nav-icon"
             >
               <svg
                 aria-hidden="true"
-                class="w-6 h-6"
+                class="w-6 h-6 drop-shadow-[0_0_2px_rgba(0,0,0,0.18)] dark:drop-shadow-none"
                 viewBox="0 0 64 64"
                 xmlns="http://www.w3.org/2000/svg"
               >
@@ -231,16 +231,16 @@ exports[`Navbar snapshots should match snapshot with an active route 1`] = `
           class="flex flex-none lg:flex-none w-20 lg:w-full h-full lg:h-auto"
         >
           <a
-            class="flex flex-col items-center justify-start w-20 h-full gap-1 pt-3 pb-1 px-1 lg:h-auto lg:w-full lg:flex-row lg:justify-start lg:gap-3 lg:px-5 lg:py-3 lg:rounded-lg text-[10px] lg:text-sm font-medium leading-tight transition-colors duration-150 text-gray-400 hover:text-white hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 ring-offset-white dark:ring-offset-gray-950"
+            class="flex flex-col items-center justify-start w-20 h-full gap-1 pt-3 pb-1 px-1 lg:h-auto lg:w-full lg:flex-row lg:justify-start lg:gap-3 lg:px-5 lg:py-3 lg:rounded-lg text-[10px] lg:text-sm font-medium leading-tight transition-colors duration-150 text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 ring-offset-white dark:ring-offset-gray-950"
             href="/endangered-species"
           >
             <span
-              class="w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-lg p-1 bg-white/10"
+              class="w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-lg p-1 bg-gray-300 dark:bg-white/10"
               data-testid="nav-icon"
             >
               <svg
                 aria-hidden="true"
-                class="w-6 h-6"
+                class="w-6 h-6 drop-shadow-[0_0_2px_rgba(0,0,0,0.18)] dark:drop-shadow-none"
                 viewBox="0 0 512 512"
                 xmlns="http://www.w3.org/2000/svg"
               >
@@ -307,16 +307,16 @@ exports[`Navbar snapshots should match snapshot with an active route 1`] = `
           class="flex flex-none lg:flex-none w-20 lg:w-full h-full lg:h-auto"
         >
           <a
-            class="flex flex-col items-center justify-start w-20 h-full gap-1 pt-3 pb-1 px-1 lg:h-auto lg:w-full lg:flex-row lg:justify-start lg:gap-3 lg:px-5 lg:py-3 lg:rounded-lg text-[10px] lg:text-sm font-medium leading-tight transition-colors duration-150 text-gray-400 hover:text-white hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 ring-offset-white dark:ring-offset-gray-950"
+            class="flex flex-col items-center justify-start w-20 h-full gap-1 pt-3 pb-1 px-1 lg:h-auto lg:w-full lg:flex-row lg:justify-start lg:gap-3 lg:px-5 lg:py-3 lg:rounded-lg text-[10px] lg:text-sm font-medium leading-tight transition-colors duration-150 text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 ring-offset-white dark:ring-offset-gray-950"
             href="/global-temperature"
           >
             <span
-              class="w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-lg p-1 bg-white/10"
+              class="w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-lg p-1 bg-gray-300 dark:bg-white/10"
               data-testid="nav-icon"
             >
               <svg
                 aria-hidden="true"
-                class="w-6 h-6"
+                class="w-6 h-6 drop-shadow-[0_0_2px_rgba(0,0,0,0.18)] dark:drop-shadow-none"
                 viewBox="-120 0 512 512"
                 xmlns="http://www.w3.org/2000/svg"
               >
@@ -461,16 +461,16 @@ exports[`Navbar snapshots should match snapshot with an active route 1`] = `
           class="flex flex-none lg:flex-none w-20 lg:w-full h-full lg:h-auto"
         >
           <a
-            class="flex flex-col items-center justify-start w-20 h-full gap-1 pt-3 pb-1 px-1 lg:h-auto lg:w-full lg:flex-row lg:justify-start lg:gap-3 lg:px-5 lg:py-3 lg:rounded-lg text-[10px] lg:text-sm font-medium leading-tight transition-colors duration-150 text-gray-400 hover:text-white hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 ring-offset-white dark:ring-offset-gray-950"
+            class="flex flex-col items-center justify-start w-20 h-full gap-1 pt-3 pb-1 px-1 lg:h-auto lg:w-full lg:flex-row lg:justify-start lg:gap-3 lg:px-5 lg:py-3 lg:rounded-lg text-[10px] lg:text-sm font-medium leading-tight transition-colors duration-150 text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 ring-offset-white dark:ring-offset-gray-950"
             href="/deforestation"
           >
             <span
-              class="w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-lg p-1 bg-white/10"
+              class="w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-lg p-1 bg-gray-300 dark:bg-white/10"
               data-testid="nav-icon"
             >
               <svg
                 aria-hidden="true"
-                class="w-6 h-6"
+                class="w-6 h-6 drop-shadow-[0_0_2px_rgba(0,0,0,0.18)] dark:drop-shadow-none"
                 viewBox="0 0 64 64"
                 xmlns="http://www.w3.org/2000/svg"
               >
@@ -601,16 +601,16 @@ exports[`Navbar snapshots should match snapshot with an active route 1`] = `
           class="flex flex-none lg:flex-none w-20 lg:w-full h-full lg:h-auto"
         >
           <a
-            class="flex flex-col items-center justify-start w-20 h-full gap-1 pt-3 pb-1 px-1 lg:h-auto lg:w-full lg:flex-row lg:justify-start lg:gap-3 lg:px-5 lg:py-3 lg:rounded-lg text-[10px] lg:text-sm font-medium leading-tight transition-colors duration-150 text-gray-400 hover:text-white hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 ring-offset-white dark:ring-offset-gray-950"
+            class="flex flex-col items-center justify-start w-20 h-full gap-1 pt-3 pb-1 px-1 lg:h-auto lg:w-full lg:flex-row lg:justify-start lg:gap-3 lg:px-5 lg:py-3 lg:rounded-lg text-[10px] lg:text-sm font-medium leading-tight transition-colors duration-150 text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 ring-offset-white dark:ring-offset-gray-950"
             href="/ocean-health"
           >
             <span
-              class="w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-lg p-1 bg-white/10"
+              class="w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-lg p-1 bg-gray-300 dark:bg-white/10"
               data-testid="nav-icon"
             >
               <svg
                 aria-hidden="true"
-                class="w-6 h-6"
+                class="w-6 h-6 drop-shadow-[0_0_2px_rgba(0,0,0,0.18)] dark:drop-shadow-none"
                 viewBox="0 0 340 340"
                 xmlns="http://www.w3.org/2000/svg"
               >
@@ -659,16 +659,16 @@ exports[`Navbar snapshots should match snapshot with an active route 1`] = `
           class="flex flex-none lg:flex-none w-20 lg:w-full h-full lg:h-auto"
         >
           <a
-            class="flex flex-col items-center justify-start w-20 h-full gap-1 pt-3 pb-1 px-1 lg:h-auto lg:w-full lg:flex-row lg:justify-start lg:gap-3 lg:px-5 lg:py-3 lg:rounded-lg text-[10px] lg:text-sm font-medium leading-tight transition-colors duration-150 text-gray-400 hover:text-white hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 ring-offset-white dark:ring-offset-gray-950"
+            class="flex flex-col items-center justify-start w-20 h-full gap-1 pt-3 pb-1 px-1 lg:h-auto lg:w-full lg:flex-row lg:justify-start lg:gap-3 lg:px-5 lg:py-3 lg:rounded-lg text-[10px] lg:text-sm font-medium leading-tight transition-colors duration-150 text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 ring-offset-white dark:ring-offset-gray-950"
             href="/co2-emissions"
           >
             <span
-              class="w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-lg p-1 bg-white/10"
+              class="w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-lg p-1 bg-gray-300 dark:bg-white/10"
               data-testid="nav-icon"
             >
               <svg
                 aria-hidden="true"
-                class="w-6 h-6"
+                class="w-6 h-6 drop-shadow-[0_0_2px_rgba(0,0,0,0.18)] dark:drop-shadow-none"
                 viewBox="0 0 512 512"
                 xmlns="http://www.w3.org/2000/svg"
               >
@@ -722,16 +722,16 @@ exports[`Navbar snapshots should match snapshot with an active route 1`] = `
           class="flex flex-none lg:flex-none w-20 lg:w-full h-full lg:h-auto"
         >
           <a
-            class="flex flex-col items-center justify-start w-20 h-full gap-1 pt-3 pb-1 px-1 lg:h-auto lg:w-full lg:flex-row lg:justify-start lg:gap-3 lg:px-5 lg:py-3 lg:rounded-lg text-[10px] lg:text-sm font-medium leading-tight transition-colors duration-150 text-gray-400 hover:text-white hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 ring-offset-white dark:ring-offset-gray-950"
+            class="flex flex-col items-center justify-start w-20 h-full gap-1 pt-3 pb-1 px-1 lg:h-auto lg:w-full lg:flex-row lg:justify-start lg:gap-3 lg:px-5 lg:py-3 lg:rounded-lg text-[10px] lg:text-sm font-medium leading-tight transition-colors duration-150 text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 ring-offset-white dark:ring-offset-gray-950"
             href="/reforestation"
           >
             <span
-              class="w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-lg p-1 bg-white/10"
+              class="w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-lg p-1 bg-gray-300 dark:bg-white/10"
               data-testid="nav-icon"
             >
               <svg
                 aria-hidden="true"
-                class="w-6 h-6"
+                class="w-6 h-6 drop-shadow-[0_0_2px_rgba(0,0,0,0.18)] dark:drop-shadow-none"
                 viewBox="0 0 1024 1024"
                 xmlns="http://www.w3.org/2000/svg"
               >
@@ -772,16 +772,16 @@ exports[`Navbar snapshots should match snapshot with an active route 1`] = `
           class="flex flex-none lg:flex-none w-20 lg:w-full h-full lg:h-auto"
         >
           <a
-            class="flex flex-col items-center justify-start w-20 h-full gap-1 pt-3 pb-1 px-1 lg:h-auto lg:w-full lg:flex-row lg:justify-start lg:gap-3 lg:px-5 lg:py-3 lg:rounded-lg text-[10px] lg:text-sm font-medium leading-tight transition-colors duration-150 text-gray-400 hover:text-white hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 ring-offset-white dark:ring-offset-gray-950"
+            class="flex flex-col items-center justify-start w-20 h-full gap-1 pt-3 pb-1 px-1 lg:h-auto lg:w-full lg:flex-row lg:justify-start lg:gap-3 lg:px-5 lg:py-3 lg:rounded-lg text-[10px] lg:text-sm font-medium leading-tight transition-colors duration-150 text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 ring-offset-white dark:ring-offset-gray-950"
             href="/glacier-melting"
           >
             <span
-              class="w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-lg p-1 bg-white/10"
+              class="w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-lg p-1 bg-gray-300 dark:bg-white/10"
               data-testid="nav-icon"
             >
               <svg
                 aria-hidden="true"
-                class="w-6 h-6"
+                class="w-6 h-6 drop-shadow-[0_0_2px_rgba(0,0,0,0.18)] dark:drop-shadow-none"
                 viewBox="0 0 512 512"
                 xmlns="http://www.w3.org/2000/svg"
               >
@@ -810,16 +810,16 @@ exports[`Navbar snapshots should match snapshot with an active route 1`] = `
           class="flex flex-none lg:flex-none w-20 lg:w-full h-full lg:h-auto"
         >
           <a
-            class="flex flex-col items-center justify-start w-20 h-full gap-1 pt-3 pb-1 px-1 lg:h-auto lg:w-full lg:flex-row lg:justify-start lg:gap-3 lg:px-5 lg:py-3 lg:rounded-lg text-[10px] lg:text-sm font-medium leading-tight transition-colors duration-150 text-gray-400 hover:text-white hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 ring-offset-white dark:ring-offset-gray-950"
+            class="flex flex-col items-center justify-start w-20 h-full gap-1 pt-3 pb-1 px-1 lg:h-auto lg:w-full lg:flex-row lg:justify-start lg:gap-3 lg:px-5 lg:py-3 lg:rounded-lg text-[10px] lg:text-sm font-medium leading-tight transition-colors duration-150 text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 ring-offset-white dark:ring-offset-gray-950"
             href="/plastic-pollution"
           >
             <span
-              class="w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-lg p-1 bg-white/10"
+              class="w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-lg p-1 bg-gray-300 dark:bg-white/10"
               data-testid="nav-icon"
             >
               <svg
                 aria-hidden="true"
-                class="w-6 h-6"
+                class="w-6 h-6 drop-shadow-[0_0_2px_rgba(0,0,0,0.18)] dark:drop-shadow-none"
                 viewBox="0 0 512 512"
                 xmlns="http://www.w3.org/2000/svg"
               >
@@ -896,16 +896,16 @@ exports[`Navbar snapshots should match snapshot with an active route 1`] = `
           class="flex flex-none lg:flex-none w-20 lg:w-full h-full lg:h-auto"
         >
           <a
-            class="flex flex-col items-center justify-start w-20 h-full gap-1 pt-3 pb-1 px-1 lg:h-auto lg:w-full lg:flex-row lg:justify-start lg:gap-3 lg:px-5 lg:py-3 lg:rounded-lg text-[10px] lg:text-sm font-medium leading-tight transition-colors duration-150 text-gray-400 hover:text-white hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 ring-offset-white dark:ring-offset-gray-950"
+            class="flex flex-col items-center justify-start w-20 h-full gap-1 pt-3 pb-1 px-1 lg:h-auto lg:w-full lg:flex-row lg:justify-start lg:gap-3 lg:px-5 lg:py-3 lg:rounded-lg text-[10px] lg:text-sm font-medium leading-tight transition-colors duration-150 text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 ring-offset-white dark:ring-offset-gray-950"
             href="/renewable-energy"
           >
             <span
-              class="w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-lg p-1 bg-white/10"
+              class="w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-lg p-1 bg-gray-300 dark:bg-white/10"
               data-testid="nav-icon"
             >
               <svg
                 aria-hidden="true"
-                class="w-6 h-6"
+                class="w-6 h-6 drop-shadow-[0_0_2px_rgba(0,0,0,0.18)] dark:drop-shadow-none"
                 viewBox="0 0 494.4 494.4"
                 xmlns="http://www.w3.org/2000/svg"
               >
@@ -972,16 +972,16 @@ exports[`Navbar snapshots should match snapshot with an active route 1`] = `
           class="flex flex-none lg:flex-none w-20 lg:w-full h-full lg:h-auto"
         >
           <a
-            class="flex flex-col items-center justify-start w-20 h-full gap-1 pt-3 pb-1 px-1 lg:h-auto lg:w-full lg:flex-row lg:justify-start lg:gap-3 lg:px-5 lg:py-3 lg:rounded-lg text-[10px] lg:text-sm font-medium leading-tight transition-colors duration-150 text-gray-400 hover:text-white hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 ring-offset-white dark:ring-offset-gray-950"
+            class="flex flex-col items-center justify-start w-20 h-full gap-1 pt-3 pb-1 px-1 lg:h-auto lg:w-full lg:flex-row lg:justify-start lg:gap-3 lg:px-5 lg:py-3 lg:rounded-lg text-[10px] lg:text-sm font-medium leading-tight transition-colors duration-150 text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 ring-offset-white dark:ring-offset-gray-950"
             href="/water-footprint"
           >
             <span
-              class="w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-lg p-1 bg-white/10"
+              class="w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-lg p-1 bg-gray-300 dark:bg-white/10"
               data-testid="nav-icon"
             >
               <svg
                 aria-hidden="true"
-                class="w-6 h-6"
+                class="w-6 h-6 drop-shadow-[0_0_2px_rgba(0,0,0,0.18)] dark:drop-shadow-none"
                 viewBox="0 0 512 512"
                 xmlns="http://www.w3.org/2000/svg"
               >
@@ -1040,16 +1040,16 @@ exports[`Navbar snapshots should match snapshot with no active route 1`] = `
 <DocumentFragment>
   <nav
     aria-label="Main navigation"
-    class="fixed z-50 bottom-0 left-0 right-0 h-20 flex flex-row border-t border-gray-800 lg:top-0 lg:right-auto lg:bottom-auto lg:h-screen lg:w-68 lg:flex-col lg:border-t-0 lg:border-r lg:border-gray-800 bg-white/10"
+    class="fixed z-50 bottom-0 left-0 right-0 h-20 flex flex-row border-t border-gray-200 dark:border-gray-800 lg:top-0 lg:right-auto lg:bottom-auto lg:h-screen lg:w-68 lg:flex-col lg:border-t-0 lg:border-r lg:border-gray-200 dark:lg:border-gray-800 bg-gray-200/80 dark:bg-white/10"
   >
     <a
       aria-label="eco-metrics earth — go to home"
-      class="hidden lg:flex items-center h-16 px-5 gap-2.5 border-b border-gray-800 flex-shrink-0 hover:bg-white/5 transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-inset"
+      class="hidden lg:flex items-center h-16 px-5 gap-2.5 border-b border-gray-200 dark:border-gray-800 flex-shrink-0 hover:bg-gray-50 dark:hover:bg-white/5 transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-inset"
       href="/"
     >
       <svg
         aria-hidden="true"
-        class="w-7 h-7 flex-shrink-0"
+        class="w-7 h-7 flex-shrink-0 drop-shadow-[0_0_2px_rgba(0,0,0,0.15)] dark:drop-shadow-none"
         viewBox="0 0 511.874 511.874"
         xmlns="http://www.w3.org/2000/svg"
       >
@@ -1121,16 +1121,16 @@ exports[`Navbar snapshots should match snapshot with no active route 1`] = `
           class="flex flex-none lg:flex-none w-20 lg:w-full h-full lg:h-auto"
         >
           <a
-            class="flex flex-col items-center justify-start w-20 h-full gap-1 pt-3 pb-1 px-1 lg:h-auto lg:w-full lg:flex-row lg:justify-start lg:gap-3 lg:px-5 lg:py-3 lg:rounded-lg text-[10px] lg:text-sm font-medium leading-tight transition-colors duration-150 text-gray-400 hover:text-white hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 ring-offset-white dark:ring-offset-gray-950"
+            class="flex flex-col items-center justify-start w-20 h-full gap-1 pt-3 pb-1 px-1 lg:h-auto lg:w-full lg:flex-row lg:justify-start lg:gap-3 lg:px-5 lg:py-3 lg:rounded-lg text-[10px] lg:text-sm font-medium leading-tight transition-colors duration-150 text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 ring-offset-white dark:ring-offset-gray-950"
             href="/waste-recycling"
           >
             <span
-              class="w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-lg p-1 bg-white/10"
+              class="w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-lg p-1 bg-gray-300 dark:bg-white/10"
               data-testid="nav-icon"
             >
               <svg
                 aria-hidden="true"
-                class="w-6 h-6"
+                class="w-6 h-6 drop-shadow-[0_0_2px_rgba(0,0,0,0.18)] dark:drop-shadow-none"
                 viewBox="0 0 511.999 511.999"
                 xmlns="http://www.w3.org/2000/svg"
               >
@@ -1171,16 +1171,16 @@ exports[`Navbar snapshots should match snapshot with no active route 1`] = `
           class="flex flex-none lg:flex-none w-20 lg:w-full h-full lg:h-auto"
         >
           <a
-            class="flex flex-col items-center justify-start w-20 h-full gap-1 pt-3 pb-1 px-1 lg:h-auto lg:w-full lg:flex-row lg:justify-start lg:gap-3 lg:px-5 lg:py-3 lg:rounded-lg text-[10px] lg:text-sm font-medium leading-tight transition-colors duration-150 text-gray-400 hover:text-white hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 ring-offset-white dark:ring-offset-gray-950"
+            class="flex flex-col items-center justify-start w-20 h-full gap-1 pt-3 pb-1 px-1 lg:h-auto lg:w-full lg:flex-row lg:justify-start lg:gap-3 lg:px-5 lg:py-3 lg:rounded-lg text-[10px] lg:text-sm font-medium leading-tight transition-colors duration-150 text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 ring-offset-white dark:ring-offset-gray-950"
             href="/air-quality"
           >
             <span
-              class="w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-lg p-1 bg-white/10"
+              class="w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-lg p-1 bg-gray-300 dark:bg-white/10"
               data-testid="nav-icon"
             >
               <svg
                 aria-hidden="true"
-                class="w-6 h-6"
+                class="w-6 h-6 drop-shadow-[0_0_2px_rgba(0,0,0,0.18)] dark:drop-shadow-none"
                 viewBox="0 0 64 64"
                 xmlns="http://www.w3.org/2000/svg"
               >
@@ -1266,16 +1266,16 @@ exports[`Navbar snapshots should match snapshot with no active route 1`] = `
           class="flex flex-none lg:flex-none w-20 lg:w-full h-full lg:h-auto"
         >
           <a
-            class="flex flex-col items-center justify-start w-20 h-full gap-1 pt-3 pb-1 px-1 lg:h-auto lg:w-full lg:flex-row lg:justify-start lg:gap-3 lg:px-5 lg:py-3 lg:rounded-lg text-[10px] lg:text-sm font-medium leading-tight transition-colors duration-150 text-gray-400 hover:text-white hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 ring-offset-white dark:ring-offset-gray-950"
+            class="flex flex-col items-center justify-start w-20 h-full gap-1 pt-3 pb-1 px-1 lg:h-auto lg:w-full lg:flex-row lg:justify-start lg:gap-3 lg:px-5 lg:py-3 lg:rounded-lg text-[10px] lg:text-sm font-medium leading-tight transition-colors duration-150 text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 ring-offset-white dark:ring-offset-gray-950"
             href="/endangered-species"
           >
             <span
-              class="w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-lg p-1 bg-white/10"
+              class="w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-lg p-1 bg-gray-300 dark:bg-white/10"
               data-testid="nav-icon"
             >
               <svg
                 aria-hidden="true"
-                class="w-6 h-6"
+                class="w-6 h-6 drop-shadow-[0_0_2px_rgba(0,0,0,0.18)] dark:drop-shadow-none"
                 viewBox="0 0 512 512"
                 xmlns="http://www.w3.org/2000/svg"
               >
@@ -1342,16 +1342,16 @@ exports[`Navbar snapshots should match snapshot with no active route 1`] = `
           class="flex flex-none lg:flex-none w-20 lg:w-full h-full lg:h-auto"
         >
           <a
-            class="flex flex-col items-center justify-start w-20 h-full gap-1 pt-3 pb-1 px-1 lg:h-auto lg:w-full lg:flex-row lg:justify-start lg:gap-3 lg:px-5 lg:py-3 lg:rounded-lg text-[10px] lg:text-sm font-medium leading-tight transition-colors duration-150 text-gray-400 hover:text-white hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 ring-offset-white dark:ring-offset-gray-950"
+            class="flex flex-col items-center justify-start w-20 h-full gap-1 pt-3 pb-1 px-1 lg:h-auto lg:w-full lg:flex-row lg:justify-start lg:gap-3 lg:px-5 lg:py-3 lg:rounded-lg text-[10px] lg:text-sm font-medium leading-tight transition-colors duration-150 text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 ring-offset-white dark:ring-offset-gray-950"
             href="/global-temperature"
           >
             <span
-              class="w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-lg p-1 bg-white/10"
+              class="w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-lg p-1 bg-gray-300 dark:bg-white/10"
               data-testid="nav-icon"
             >
               <svg
                 aria-hidden="true"
-                class="w-6 h-6"
+                class="w-6 h-6 drop-shadow-[0_0_2px_rgba(0,0,0,0.18)] dark:drop-shadow-none"
                 viewBox="-120 0 512 512"
                 xmlns="http://www.w3.org/2000/svg"
               >
@@ -1496,16 +1496,16 @@ exports[`Navbar snapshots should match snapshot with no active route 1`] = `
           class="flex flex-none lg:flex-none w-20 lg:w-full h-full lg:h-auto"
         >
           <a
-            class="flex flex-col items-center justify-start w-20 h-full gap-1 pt-3 pb-1 px-1 lg:h-auto lg:w-full lg:flex-row lg:justify-start lg:gap-3 lg:px-5 lg:py-3 lg:rounded-lg text-[10px] lg:text-sm font-medium leading-tight transition-colors duration-150 text-gray-400 hover:text-white hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 ring-offset-white dark:ring-offset-gray-950"
+            class="flex flex-col items-center justify-start w-20 h-full gap-1 pt-3 pb-1 px-1 lg:h-auto lg:w-full lg:flex-row lg:justify-start lg:gap-3 lg:px-5 lg:py-3 lg:rounded-lg text-[10px] lg:text-sm font-medium leading-tight transition-colors duration-150 text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 ring-offset-white dark:ring-offset-gray-950"
             href="/deforestation"
           >
             <span
-              class="w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-lg p-1 bg-white/10"
+              class="w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-lg p-1 bg-gray-300 dark:bg-white/10"
               data-testid="nav-icon"
             >
               <svg
                 aria-hidden="true"
-                class="w-6 h-6"
+                class="w-6 h-6 drop-shadow-[0_0_2px_rgba(0,0,0,0.18)] dark:drop-shadow-none"
                 viewBox="0 0 64 64"
                 xmlns="http://www.w3.org/2000/svg"
               >
@@ -1636,16 +1636,16 @@ exports[`Navbar snapshots should match snapshot with no active route 1`] = `
           class="flex flex-none lg:flex-none w-20 lg:w-full h-full lg:h-auto"
         >
           <a
-            class="flex flex-col items-center justify-start w-20 h-full gap-1 pt-3 pb-1 px-1 lg:h-auto lg:w-full lg:flex-row lg:justify-start lg:gap-3 lg:px-5 lg:py-3 lg:rounded-lg text-[10px] lg:text-sm font-medium leading-tight transition-colors duration-150 text-gray-400 hover:text-white hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 ring-offset-white dark:ring-offset-gray-950"
+            class="flex flex-col items-center justify-start w-20 h-full gap-1 pt-3 pb-1 px-1 lg:h-auto lg:w-full lg:flex-row lg:justify-start lg:gap-3 lg:px-5 lg:py-3 lg:rounded-lg text-[10px] lg:text-sm font-medium leading-tight transition-colors duration-150 text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 ring-offset-white dark:ring-offset-gray-950"
             href="/ocean-health"
           >
             <span
-              class="w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-lg p-1 bg-white/10"
+              class="w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-lg p-1 bg-gray-300 dark:bg-white/10"
               data-testid="nav-icon"
             >
               <svg
                 aria-hidden="true"
-                class="w-6 h-6"
+                class="w-6 h-6 drop-shadow-[0_0_2px_rgba(0,0,0,0.18)] dark:drop-shadow-none"
                 viewBox="0 0 340 340"
                 xmlns="http://www.w3.org/2000/svg"
               >
@@ -1694,16 +1694,16 @@ exports[`Navbar snapshots should match snapshot with no active route 1`] = `
           class="flex flex-none lg:flex-none w-20 lg:w-full h-full lg:h-auto"
         >
           <a
-            class="flex flex-col items-center justify-start w-20 h-full gap-1 pt-3 pb-1 px-1 lg:h-auto lg:w-full lg:flex-row lg:justify-start lg:gap-3 lg:px-5 lg:py-3 lg:rounded-lg text-[10px] lg:text-sm font-medium leading-tight transition-colors duration-150 text-gray-400 hover:text-white hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 ring-offset-white dark:ring-offset-gray-950"
+            class="flex flex-col items-center justify-start w-20 h-full gap-1 pt-3 pb-1 px-1 lg:h-auto lg:w-full lg:flex-row lg:justify-start lg:gap-3 lg:px-5 lg:py-3 lg:rounded-lg text-[10px] lg:text-sm font-medium leading-tight transition-colors duration-150 text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 ring-offset-white dark:ring-offset-gray-950"
             href="/co2-emissions"
           >
             <span
-              class="w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-lg p-1 bg-white/10"
+              class="w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-lg p-1 bg-gray-300 dark:bg-white/10"
               data-testid="nav-icon"
             >
               <svg
                 aria-hidden="true"
-                class="w-6 h-6"
+                class="w-6 h-6 drop-shadow-[0_0_2px_rgba(0,0,0,0.18)] dark:drop-shadow-none"
                 viewBox="0 0 512 512"
                 xmlns="http://www.w3.org/2000/svg"
               >
@@ -1757,16 +1757,16 @@ exports[`Navbar snapshots should match snapshot with no active route 1`] = `
           class="flex flex-none lg:flex-none w-20 lg:w-full h-full lg:h-auto"
         >
           <a
-            class="flex flex-col items-center justify-start w-20 h-full gap-1 pt-3 pb-1 px-1 lg:h-auto lg:w-full lg:flex-row lg:justify-start lg:gap-3 lg:px-5 lg:py-3 lg:rounded-lg text-[10px] lg:text-sm font-medium leading-tight transition-colors duration-150 text-gray-400 hover:text-white hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 ring-offset-white dark:ring-offset-gray-950"
+            class="flex flex-col items-center justify-start w-20 h-full gap-1 pt-3 pb-1 px-1 lg:h-auto lg:w-full lg:flex-row lg:justify-start lg:gap-3 lg:px-5 lg:py-3 lg:rounded-lg text-[10px] lg:text-sm font-medium leading-tight transition-colors duration-150 text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 ring-offset-white dark:ring-offset-gray-950"
             href="/reforestation"
           >
             <span
-              class="w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-lg p-1 bg-white/10"
+              class="w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-lg p-1 bg-gray-300 dark:bg-white/10"
               data-testid="nav-icon"
             >
               <svg
                 aria-hidden="true"
-                class="w-6 h-6"
+                class="w-6 h-6 drop-shadow-[0_0_2px_rgba(0,0,0,0.18)] dark:drop-shadow-none"
                 viewBox="0 0 1024 1024"
                 xmlns="http://www.w3.org/2000/svg"
               >
@@ -1807,16 +1807,16 @@ exports[`Navbar snapshots should match snapshot with no active route 1`] = `
           class="flex flex-none lg:flex-none w-20 lg:w-full h-full lg:h-auto"
         >
           <a
-            class="flex flex-col items-center justify-start w-20 h-full gap-1 pt-3 pb-1 px-1 lg:h-auto lg:w-full lg:flex-row lg:justify-start lg:gap-3 lg:px-5 lg:py-3 lg:rounded-lg text-[10px] lg:text-sm font-medium leading-tight transition-colors duration-150 text-gray-400 hover:text-white hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 ring-offset-white dark:ring-offset-gray-950"
+            class="flex flex-col items-center justify-start w-20 h-full gap-1 pt-3 pb-1 px-1 lg:h-auto lg:w-full lg:flex-row lg:justify-start lg:gap-3 lg:px-5 lg:py-3 lg:rounded-lg text-[10px] lg:text-sm font-medium leading-tight transition-colors duration-150 text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 ring-offset-white dark:ring-offset-gray-950"
             href="/glacier-melting"
           >
             <span
-              class="w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-lg p-1 bg-white/10"
+              class="w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-lg p-1 bg-gray-300 dark:bg-white/10"
               data-testid="nav-icon"
             >
               <svg
                 aria-hidden="true"
-                class="w-6 h-6"
+                class="w-6 h-6 drop-shadow-[0_0_2px_rgba(0,0,0,0.18)] dark:drop-shadow-none"
                 viewBox="0 0 512 512"
                 xmlns="http://www.w3.org/2000/svg"
               >
@@ -1845,16 +1845,16 @@ exports[`Navbar snapshots should match snapshot with no active route 1`] = `
           class="flex flex-none lg:flex-none w-20 lg:w-full h-full lg:h-auto"
         >
           <a
-            class="flex flex-col items-center justify-start w-20 h-full gap-1 pt-3 pb-1 px-1 lg:h-auto lg:w-full lg:flex-row lg:justify-start lg:gap-3 lg:px-5 lg:py-3 lg:rounded-lg text-[10px] lg:text-sm font-medium leading-tight transition-colors duration-150 text-gray-400 hover:text-white hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 ring-offset-white dark:ring-offset-gray-950"
+            class="flex flex-col items-center justify-start w-20 h-full gap-1 pt-3 pb-1 px-1 lg:h-auto lg:w-full lg:flex-row lg:justify-start lg:gap-3 lg:px-5 lg:py-3 lg:rounded-lg text-[10px] lg:text-sm font-medium leading-tight transition-colors duration-150 text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 ring-offset-white dark:ring-offset-gray-950"
             href="/plastic-pollution"
           >
             <span
-              class="w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-lg p-1 bg-white/10"
+              class="w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-lg p-1 bg-gray-300 dark:bg-white/10"
               data-testid="nav-icon"
             >
               <svg
                 aria-hidden="true"
-                class="w-6 h-6"
+                class="w-6 h-6 drop-shadow-[0_0_2px_rgba(0,0,0,0.18)] dark:drop-shadow-none"
                 viewBox="0 0 512 512"
                 xmlns="http://www.w3.org/2000/svg"
               >
@@ -1931,16 +1931,16 @@ exports[`Navbar snapshots should match snapshot with no active route 1`] = `
           class="flex flex-none lg:flex-none w-20 lg:w-full h-full lg:h-auto"
         >
           <a
-            class="flex flex-col items-center justify-start w-20 h-full gap-1 pt-3 pb-1 px-1 lg:h-auto lg:w-full lg:flex-row lg:justify-start lg:gap-3 lg:px-5 lg:py-3 lg:rounded-lg text-[10px] lg:text-sm font-medium leading-tight transition-colors duration-150 text-gray-400 hover:text-white hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 ring-offset-white dark:ring-offset-gray-950"
+            class="flex flex-col items-center justify-start w-20 h-full gap-1 pt-3 pb-1 px-1 lg:h-auto lg:w-full lg:flex-row lg:justify-start lg:gap-3 lg:px-5 lg:py-3 lg:rounded-lg text-[10px] lg:text-sm font-medium leading-tight transition-colors duration-150 text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 ring-offset-white dark:ring-offset-gray-950"
             href="/renewable-energy"
           >
             <span
-              class="w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-lg p-1 bg-white/10"
+              class="w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-lg p-1 bg-gray-300 dark:bg-white/10"
               data-testid="nav-icon"
             >
               <svg
                 aria-hidden="true"
-                class="w-6 h-6"
+                class="w-6 h-6 drop-shadow-[0_0_2px_rgba(0,0,0,0.18)] dark:drop-shadow-none"
                 viewBox="0 0 494.4 494.4"
                 xmlns="http://www.w3.org/2000/svg"
               >
@@ -2007,16 +2007,16 @@ exports[`Navbar snapshots should match snapshot with no active route 1`] = `
           class="flex flex-none lg:flex-none w-20 lg:w-full h-full lg:h-auto"
         >
           <a
-            class="flex flex-col items-center justify-start w-20 h-full gap-1 pt-3 pb-1 px-1 lg:h-auto lg:w-full lg:flex-row lg:justify-start lg:gap-3 lg:px-5 lg:py-3 lg:rounded-lg text-[10px] lg:text-sm font-medium leading-tight transition-colors duration-150 text-gray-400 hover:text-white hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 ring-offset-white dark:ring-offset-gray-950"
+            class="flex flex-col items-center justify-start w-20 h-full gap-1 pt-3 pb-1 px-1 lg:h-auto lg:w-full lg:flex-row lg:justify-start lg:gap-3 lg:px-5 lg:py-3 lg:rounded-lg text-[10px] lg:text-sm font-medium leading-tight transition-colors duration-150 text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 ring-offset-white dark:ring-offset-gray-950"
             href="/water-footprint"
           >
             <span
-              class="w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-lg p-1 bg-white/10"
+              class="w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-lg p-1 bg-gray-300 dark:bg-white/10"
               data-testid="nav-icon"
             >
               <svg
                 aria-hidden="true"
-                class="w-6 h-6"
+                class="w-6 h-6 drop-shadow-[0_0_2px_rgba(0,0,0,0.18)] dark:drop-shadow-none"
                 viewBox="0 0 512 512"
                 xmlns="http://www.w3.org/2000/svg"
               >
