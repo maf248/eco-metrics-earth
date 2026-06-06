@@ -1,3 +1,9 @@
+## [1.14.0](https://github.com/maf248/eco-metrics-earth/compare/web-v1.13.0...web-v1.14.0) (2026-06-06)
+
+### Features
+
+* **web:** optimize navigation UX with React.memo and loading skeleton ([2424ebb](https://github.com/maf248/eco-metrics-earth/commit/2424ebb4ea016ad46ffeab85e1e8b1ab53a2fce2))
+
 ## [1.13.0](https://github.com/maf248/eco-metrics-earth/compare/web-v1.12.0...web-v1.13.0) (2026-05-27)
 
 ### Features
