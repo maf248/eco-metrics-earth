@@ -53,10 +53,10 @@ describe('CategoryPage', () => {
     expect(screen.getByText('Deforestation')).toBeTruthy();
   });
 
-  it('should display the correct title for air-quality', async () => {
-    const element = await CategoryPage({ params: Promise.resolve({ category: 'air-quality' }) });
+  it('should display the correct title for ocean-health', async () => {
+    const element = await CategoryPage({ params: Promise.resolve({ category: 'ocean-health' }) });
     render(element);
-    expect(screen.getByText('Air Quality')).toBeTruthy();
+    expect(screen.getByText('Ocean Health')).toBeTruthy();
   });
 
   it('should display the correct title for waste-recycling', async () => {
@@ -100,7 +100,7 @@ describe('CategoryPage', () => {
   });
 
   it('should render a <main> element with id="main-content" and tabIndex={-1}', async () => {
-    const element = await CategoryPage({ params: Promise.resolve({ category: 'air-quality' }) });
+    const element = await CategoryPage({ params: Promise.resolve({ category: 'ocean-health' }) });
     const { container } = render(element);
     const main = container.querySelector('main');
     expect(main).not.toBeNull();
@@ -220,7 +220,7 @@ describe('generateStaticParams', () => {
 
 describe('CategoryPage — layout', () => {
   it('should render the <main> with top-anchored layout (justify-start)', async () => {
-    const element = await CategoryPage({ params: Promise.resolve({ category: 'air-quality' }) });
+    const element = await CategoryPage({ params: Promise.resolve({ category: 'ocean-health' }) });
     const { container } = render(element);
     const main = container.querySelector('main');
     expect(main?.className).toContain('justify-start');
@@ -228,7 +228,7 @@ describe('CategoryPage — layout', () => {
   });
 
   it('should render the <main> with pt-14 top padding', async () => {
-    const element = await CategoryPage({ params: Promise.resolve({ category: 'air-quality' }) });
+    const element = await CategoryPage({ params: Promise.resolve({ category: 'ocean-health' }) });
     const { container } = render(element);
     const main = container.querySelector('main');
     expect(main?.className).toContain('pt-14');
@@ -236,8 +236,8 @@ describe('CategoryPage — layout', () => {
 });
 
 describe('CategoryPage snapshots', () => {
-  it('should match snapshot for air-quality', async () => {
-    const element = await CategoryPage({ params: Promise.resolve({ category: 'air-quality' }) });
+  it('should match snapshot for ocean-health', async () => {
+    const element = await CategoryPage({ params: Promise.resolve({ category: 'ocean-health' }) });
     const { asFragment } = render(element);
     expect(asFragment()).toMatchSnapshot();
   });

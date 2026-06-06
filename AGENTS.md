@@ -340,9 +340,24 @@ Agent models are centralized in `opencode.json` under the `agent` key. The `.md`
 
 ### Overriding models per developer
 
-Each developer can use their own models without modifying tracked files:
+Each developer can use their own models without modifying tracked files.
 
-**Option A — Global config (recommended)**
+**Option A — Environment variable (recommended)**
+
+Use `OPENCODE_CONFIG_CONTENT` to override models already defined in the project config.
+This has the highest priority and beats all other config sources:
+
+```bash
+OPENCODE_CONFIG_CONTENT='{"agent":{"orchestrator":{"model":"opencode-go/kimi-k2.6"}}}' opencode
+```
+
+Wrap it in a shell alias for convenience:
+
+```bash
+alias opencode='OPENCODE_CONFIG_CONTENT='\''{"agent":{"orchestrator":{"model":"opencode-go/kimi-k2.6"}}}'\'' opencode'
+```
+
+**Option B — Global config (for new defaults only)**
 
 Create `~/.config/opencode/opencode.json` with your preferred models:
 
@@ -355,15 +370,11 @@ Create `~/.config/opencode/opencode.json` with your preferred models:
 }
 ```
 
-Global config is deep-merged with the project config. Your overrides take precedence.
+This is deep-merged with the project config, but **the project config wins for conflicting keys**.
+Useful only for keys the project does not define — does NOT override existing agent models.
 
-**Option B — Environment variable (one-off)**
+> **Rule:** Never change `opencode.json` model values just because you prefer a different model. Use `OPENCODE_CONFIG_CONTENT` instead. Changes to `opencode.json` models should only happen when the team agrees on a new default.
 
-```bash
-OPENCODE_CONFIG_CONTENT='{"agent":{"coder":{"model":"openrouter/deepseek/deepseek-chat-v3"}}}' opencode
-```
-
-> **Rule:** Never change `opencode.json` model values just because you prefer a different model. Use a personal override instead. Changes to `opencode.json` models should only happen when the team agrees on a new default.
 
 ---
 
