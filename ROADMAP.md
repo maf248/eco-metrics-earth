@@ -145,6 +145,7 @@ Lista de hallazgos del análisis de repositorio, ordenados por prioridad (más c
 
 ### 🟢 Arquitectura / Deuda técnica
 
+- **I09.** Sin Suspense boundaries — el App Router de Next.js está diseñado alrededor de Suspense + streaming para manejar estados de carga y errores. Actualmente las páginas renderizan sincrónicamente sin límites de Suspense, lo que bloquea el main thread durante transiciones de ruta. Requisito previo para P1 (data fetching real).
 - **I06.** Sin capa de datos ni ORM — cuando empiece la integración real de datos (P2), no hay TypeORM, Prisma ni esquema de base de datos definido.
 
 ### 🟢 Configuración / Build
@@ -153,5 +154,8 @@ Lista de hallazgos del análisis de repositorio, ordenados por prioridad (más c
 - **I08.** Sin Storybook ni documentación visual de componentes. Actualmente solo hay 16 componentes, por lo que no se justifica el overhead de configuración y mantenimiento. Reconsiderar cuando la librería de componentes supere ~40 unidades.
 
 ---
+### 📝 Recordatorios
 
-**Última actualización:** 23 May 2026
+- **Dynamic Imports (`next/dynamic`)** — No implementar todavía. Los chunks actuales pesan ~1KB por página, y dynamic imports agregarían complejidad (loading states por import, layout shift) sin beneficio real hoy. Reconsiderar cuando se integren librerías pesadas como charting libraries (d3, echarts) o widgets de terceros.
+
+**Última actualización:** 06 Jun 2026
