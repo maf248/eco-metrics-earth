@@ -1,6 +1,6 @@
 {
   "name": "eco-metrics-earth",
-  "version": "1.13.0",
+  "version": "1.14.0",
   "license": "MIT",
   "scripts": {
     "dev": "nx run-many --targets=dev,serve --all --parallel",
