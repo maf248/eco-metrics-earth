@@ -1,3 +1,9 @@
+## [1.15.0](https://github.com/maf248/eco-metrics-earth/compare/web-v1.14.0...web-v1.15.0) (2026-06-06)
+
+### Features
+
+* **web:** add error boundary with alert role, metadata, and reset action ([f92a0cd](https://github.com/maf248/eco-metrics-earth/commit/f92a0cddff31fbaa2c25be19db77dc584781f7c8))
+
 ## [1.14.0](https://github.com/maf248/eco-metrics-earth/compare/web-v1.13.0...web-v1.14.0) (2026-06-06)
 
 ### Features
