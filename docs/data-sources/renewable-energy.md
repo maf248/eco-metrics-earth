@@ -1,8 +1,43 @@
 # Renewable Energy
 
-Tracks renewable energy capacity, generation, and share of total energy mix by country. Covers solar, wind, hydro, geothermal, and other clean energy sources.
+Tracks renewable energy capacity, generation, and share of total energy mix by country. Covers solar, wind, hydro, geothermal, and other clean energy sources. Also tracks the full electricity generation mix (fossil fuels, nuclear, and renewables) to show the origin of electricity by source and country.
 
 > Note: UK Carbon Intensity API also appears in `co2-emissions.md`.
+
+## Electricity Mix (Origen de la electricidad)
+
+This section documents how to obtain the **percentage breakdown of electricity generation by source** — not only renewables, but also fossil fuels (coal, natural gas, oil) and nuclear. This is essential to contextualize renewable growth: a country with 30 % wind+solar but 50 % coal is very different from one with 30 % wind+solar and 70 % hydro.
+
+### What data is available
+
+| Source type | Typical labels in APIs |
+|---|---|
+| Coal | Coal, Brown coal, Hard coal |
+| Natural Gas | Gas, Natural gas, Fossil gas |
+| Oil / Diesel | Oil, Diesel, Fossil oil |
+| Nuclear | Nuclear |
+| Hydro | Hydro, Hydroelectric, Run-of-river, Pumped storage |
+| Wind | Wind, Onshore wind, Offshore wind |
+| Solar | Solar, Solar PV, Solar thermal |
+| Bioenergy | Biomass, Biofuels, Waste |
+| Geothermal | Geothermal |
+| Other / Unknown | Other, Unknown, Marine, Tide |
+
+### Key providers for full mix data
+
+- **Ember** — global, monthly/annual, % and absolute (TWh). Best single source.
+- **EIA** — US-centric, state-level, very granular (down to hourly for grid operators).
+- **ENTSO-E** — Europe only, 15 min / hourly, official TSO data.
+- **Our World in Data (OWID) Energy** — pre-aggregated global annual mix, ideal for quick validation.
+- **UK Carbon Intensity** — UK-only real-time mix + forecast, no key needed.
+
+### Typical visualization
+
+- **Stacked area chart** — share (%) over time per country.
+- **Donut / pie chart** — current mix snapshot.
+- **Fossil vs low-carbon split** — coal+gas+oil vs nuclear+renewables.
+
+---
 
 ## Providers
 
@@ -50,7 +85,7 @@ Tracks renewable energy capacity, generation, and share of total energy mix by c
 - **URL:** https://ember-energy.org/data/ — API: `https://api.ember-energy.org/v1/` — API docs: https://api.ember-energy.org/v1/docs
 - **License:** ✅ Comercial/ads OK — CC BY 4.0.
 - **Model:** Free (CC BY 4.0). CSV downloads (no key) + REST API (free API key required).
-- **Data:** Monthly and annual electricity generation by country and by source (coal, gas, solar, wind, etc.), electricity sector emissions, carbon intensity. 200+ geographies (yearly); 88 areas (monthly). Last updated March 2026.
+- **Data:** Monthly and annual electricity generation by country and by source (coal, gas, nuclear, hydro, solar, wind, biomass, etc.), electricity sector emissions, carbon intensity. 200+ geographies (yearly); 88 areas (monthly). Last updated March 2026. **Ideal for full electricity mix breakdown — both absolute (TWh) and share (%).**
 - **API key:** Not required for CSV downloads. Required for API (free signup at ember-energy.org/data/api).
 
 | Field | Details |
@@ -177,12 +212,17 @@ Tracks renewable energy capacity, generation, and share of total energy mix by c
 | European generation (15 min) | ENTSO-E |
 | Real-time carbon intensity by zone | Electricity Maps, UK Carbon Intensity |
 | UK renewable vs fossil mix | UK Carbon Intensity |
+| **Electricity generation mix by source (%, TWh)** | **Ember, OWID Energy, EIA, ENTSO-E** |
+| **Fossil vs low-carbon share (%)** | **Ember, OWID Energy, UK Carbon Intensity** |
+| **Coal / gas / nuclear / hydro / wind / solar breakdown** | **Ember (global), EIA (US), ENTSO-E (EU)** |
 
 ## Integration Notes
 
 - **Recommended combination:** OWID Energy CSV (annual, commercial-safe) + Ember (monthly, CC BY) for trend charts. UK Carbon Intensity for real-time UK widget.
+- **For full electricity mix (origen de la electricidad):** Ember is the single best global source — it provides share (%) and absolute generation (TWh) for coal, gas, nuclear, hydro, wind, solar, biomass, and other sources across 200+ countries. Start with Ember CSV downloads (no API key) for prototyping; switch to the REST API for automated updates.
 - IRENA PxWeb returns JSON-stat — parse with `jsonstat.js`. Commercial use is ambiguous; prefer OWID/Ember for production.
 - EIA API (key required, public domain) is US-focused; call from a Route Handler to protect the key.
 - ENTSO-E API (token required) returns XML only — JSON is not natively supported. Parse XML server-side or use a wrapper library.
 - Electricity Maps is the richest real-time option globally but commercial use requires a paid plan.
 - UK Carbon Intensity is the only fully free, CORS-enabled, real-time renewable mix API — CC BY 4.0 licensed.
+- **Visual tip:** When showing electricity mix, prefer stacked percentage area charts over absolute TWh when comparing countries of very different sizes (e.g., Germany vs. Iceland).
