@@ -40,27 +40,75 @@ Cada módulo debe incluir:
 - Tests unitarios
 
 **Dificultad:** 6/10
-**Requisitos:** Definir fuentes de datos (mock vs API real)
+**Requisitos:**
+- Definir fuentes de datos (mock vs API real).
+- P2 instala `@nestjs/terminus` pero no refactoriza el healthcheck. **Cada módulo de P1 debe agregar su propio `HttpHealthIndicator` al `HealthModule`** para validar su API externa (NOAA, Open-Meteo, World Bank, OWID). Esto convierte el healthcheck en un agregado real de dependencias externas.
 **Estado:** Pendiente
 
 ---
 
 ## 🟡 Importante / Media Prioridad
 
-### P2: Monitoreo y observabilidad
+### P2: Monitoreo y Observabilidad
 
 **Problema:** No hay logs estructurados, métricas ni error tracking.
 
-**Impacto:** En producción será difícil debuggear problemas.
+**Impacto:** En producción será imposible diagnosticar fallos sin logs JSON ni stack traces legibles (source maps). El healthcheck actual solo confirma que el proceso está vivo, no que sus dependencias externas respondan.
 
-**Propuesta:** Implementar:
-- **Logging estructurado:** Winston o Pino en NestJS
-- **Error tracking:** Sentry (frontend + backend)
-- **Healthcheck robusto:** validar dependencias externas (APIs, DB cuando exista)
-- **Métricas:** considerar OpenTelemetry para el futuro
+**Propuesta:** Implementar un stack de observabilidad completo con alcance claro por plataforma:
 
-**Dificultad:** 7/10
-**Requisitos:** Cuenta Sentry (free tier disponible)
+#### Backend — `apps/api`
+
+- **Logging estructurado:** `nestjs-pino` + `pino-http` como reemplazo del Logger interno de NestJS.
+  - Salida JSON nativa, correlation IDs vía `X-Request-ID` (header propagado desde el frontend).
+  - Redacción de headers sensibles: `Authorization`, `Cookie`, `X-API-Key`.
+  - Niveles por entorno: `debug` en development, `info` en production.
+- **Error tracking:** `@sentry/nestjs` con instrumentación automática de guards, filters e interceptors.
+  - Proyecto Sentry dedicado: `eco-metrics-earth-api`.
+  - Source maps subidos en build de producción (`NODE_ENV=production`).
+  - Release identificado por git SHA (`GITHUB_SHA` en CI/CD).
+- **Healthcheck:** Instalar `@nestjs/terminus` (sin refactorizar el módulo actual — eso se hace en P1 cuando existan las APIs externas).
+
+#### Frontend — `apps/web`
+
+- **Error tracking:** `@sentry/nextjs` con `withSentryConfig()` wrapper en `next.config.ts`.
+  - Proyecto Sentry dedicado: `eco-metrics-earth-web`.
+  - Cobertura: Server Components, Client Components y Edge runtime.
+  - `Sentry.ErrorBoundary` en el layout raíz para captura de errores de renderizado en cliente.
+  - Source maps subidos automáticamente en build de Vercel (`SENTRY_AUTH_TOKEN`).
+  - CSP actualizado: `connect-src` debe incluir `https://*.sentry.io`.
+- **Sin librería de logging:** Vercel captura stdout/stderr del lado servidor; los errores de cliente van a Sentry. No se justifica Pino/Winston en el frontend.
+
+#### CI/CD — ambos
+
+- `SENTRY_DSN` en variables de entorno de Vercel y Railway (uno por proyecto Sentry).
+- `SENTRY_AUTH_TOKEN` en secrets de CI/CD para subir source maps.
+
+#### Alertas — configuración en Sentry (sin código)
+
+- **1 alerta de error rate:** notificar por email cuando errores 5xx superen 3 por minuto.
+- **1 alerta de healthcheck:** notificar cuando `/api/v1/health` falle más de 2 veces en 5 minutos.
+- Canal: email (free tier incluido). Slack queda como opcional futuro.
+
+#### Stack final
+
+| Componente | Tecnología | Dónde |
+|---|---|---|
+| Logging estructurado | `nestjs-pino` + `pino-http` | `apps/api` |
+| Error tracking front | `@sentry/nextjs` | `apps/web` |
+| Error tracking back | `@sentry/nestjs` | `apps/api` |
+| Source maps upload | `withSentryConfig` + `SENTRY_AUTH_TOKEN` | CI/CD (Vercel + Railway) |
+| Healthcheck lib | `@nestjs/terminus` (instalar, sin refactorizar) | `apps/api` |
+| Healthcheck sin throttler | `@SkipThrottle()` en health endpoint | `apps/api` |
+| CSP Sentry | `connect-src` → incluir `*.sentry.io` | `next.config.ts` |
+| Alertas | Email (error rate + healthcheck) | Dashboard Sentry |
+
+**Fuera de P2 → backlog:**
+- OpenTelemetry (I10): relevante cuando escalen los servicios o se quiera cambiar de backend de observabilidad sin tocar código de instrumentación.
+- Axiom (I11): solo si la retención de logs de Railway (7 días) o Vercel resulta insuficiente.
+
+**Dificultad:** 5/10 — mayoritariamente instalación de paquetes, configuración de env vars y wrapping de configs existentes. El punto más técnico es la integración de source maps en los pipelines de build.
+**Requisitos:** Cuenta Sentry (free tier suficiente), `SENTRY_AUTH_TOKEN` en secrets de CI/CD.
 **Estado:** Pendiente
 
 ---
@@ -70,7 +118,7 @@ Cada módulo debe incluir:
 Si no estás seguro por dónde empezar, este es el orden recomendado:
 
 1. **P1: Implementar módulos eco** → Funcionalidad real (Dificultad: 6/10)
-2. **P2: Monitoreo y observabilidad** → Logs, métricas y error tracking (Dificultad: 7/10)
+2. **P2: Monitoreo y observabilidad** → Logs, métricas y error tracking (Dificultad: 5/10)
 
 ---
 
@@ -146,7 +194,7 @@ Lista de hallazgos del análisis de repositorio, ordenados por prioridad (más c
 ### 🟢 Arquitectura / Deuda técnica
 
 - **I09.** Sin Suspense boundaries — el App Router de Next.js está diseñado alrededor de Suspense + streaming para manejar estados de carga y errores. Actualmente las páginas renderizan sincrónicamente sin límites de Suspense, lo que bloquea el main thread durante transiciones de ruta. Requisito previo para P1 (data fetching real).
-- **I06.** Sin capa de datos ni ORM — cuando empiece la integración real de datos (P2), no hay TypeORM, Prisma ni esquema de base de datos definido.
+- **I06.** Sin capa de datos ni ORM — cuando empiece la integración real de datos, no hay TypeORM, Prisma ni esquema de base de datos definido.
 
 ### 🟢 Configuración / Build
 
@@ -157,5 +205,8 @@ Lista de hallazgos del análisis de repositorio, ordenados por prioridad (más c
 ### 📝 Recordatorios
 
 - **Dynamic Imports (`next/dynamic`)** — No implementar todavía. Los chunks actuales pesan ~1KB por página, y dynamic imports agregarían complejidad (loading states por import, layout shift) sin beneficio real hoy. Reconsiderar cuando se integren librerías pesadas como charting libraries (d3, echarts) o widgets de terceros.
+
+- **I10.** OpenTelemetry — considerado para el futuro cuando el sistema escale a múltiples servicios o se quiera cambiar de backend de observabilidad (Sentry → Datadog, Honeycomb, etc.) sin tocar código de instrumentación. Con un solo BFF, Sentry Performance cubre el tracing necesario. No justifica el overhead de configuración actual (collector, exporters, SDK setup).
+- **I11.** Axiom — plataforma de logs como servicio. Solo relevante si la retención de logs de Railway (7 días) o Vercel resulta insuficiente para debugging post-mortem. Por ahora los logs agregados de cada plataforma son suficientes.
 
 **Última actualización:** 06 Jun 2026
