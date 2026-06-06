@@ -1,25 +1,17 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import type React from 'react';
+import React from 'react';
+import type { ComponentType, SVGProps } from 'react';
 
 interface NavLinkProps {
   href: string;
-  icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
+  icon: ComponentType<SVGProps<SVGSVGElement>>;
   label: string;
+  isActive: boolean;
 }
 
-/**
- * Normalise a path by removing trailing slashes.
- * The `|| '/'` guard prevents the root `/` from becoming an empty string.
- */
-const normalise = (p: string): string => p.replace(/\/$/, '') || '/';
-
-export default function NavLink({ href, icon: Icon, label }: NavLinkProps) {
-  const pathname = usePathname();
-  const isActive = normalise(href) === normalise(pathname);
-
+function NavLink({ href, icon: Icon, label, isActive }: NavLinkProps) {
   return (
     <Link
       href={href}
@@ -56,3 +48,5 @@ export default function NavLink({ href, icon: Icon, label }: NavLinkProps) {
     </Link>
   );
 }
+
+export default React.memo(NavLink);

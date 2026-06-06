@@ -1,9 +1,11 @@
 'use client';
 
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 import { SiteLogoIcon } from '@/lib/categoryIcon';
 import { NAV_ITEMS } from '@/lib/navItems';
+import { normalise } from '@/lib/path';
 
 import BrandText from './BrandText';
 import NavLink from './NavLink';
@@ -25,6 +27,8 @@ import NavScrollContainer from './NavScrollContainer';
  *  - Desktop brand link: aria-label matches MobileHeader for consistency
  */
 export default function Navbar() {
+  const pathname = usePathname();
+
   return (
     <nav
       aria-label="Main navigation"
@@ -58,14 +62,17 @@ export default function Navbar() {
 
       {/* Navigation links — scroll container handles mobile gradients + ul/li semantics */}
       <NavScrollContainer>
-        {NAV_ITEMS.map((item) => (
-          <li
-            key={item.slug}
-            className="flex flex-none lg:flex-none w-20 lg:w-full h-full lg:h-auto"
-          >
-            <NavLink href={item.href} icon={item.icon} label={item.label} />
-          </li>
-        ))}
+        {NAV_ITEMS.map((item) => {
+          const isActive = normalise(item.href) === normalise(pathname);
+          return (
+            <li
+              key={item.slug}
+              className="flex flex-none lg:flex-none w-20 lg:w-full h-full lg:h-auto"
+            >
+              <NavLink href={item.href} icon={item.icon} label={item.label} isActive={isActive} />
+            </li>
+          );
+        })}
       </NavScrollContainer>
     </nav>
   );
