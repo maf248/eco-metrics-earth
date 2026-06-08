@@ -1,3 +1,13 @@
+## [2.0.0](https://github.com/maf248/eco-metrics-earth/compare/web-v1.15.0...web-v2.0.0) (2026-06-08)
+
+### ⚠ BREAKING CHANGES
+
+* **web:** rename renewable-energy category to energy-sources
+
+### Features
+
+* **web:** rename renewable-energy category to energy-sources ([7d512a8](https://github.com/maf248/eco-metrics-earth/commit/7d512a8de760f09fc4d33807a9e1ba3eba2e8af3))
+
 ## [1.15.0](https://github.com/maf248/eco-metrics-earth/compare/web-v1.14.0...web-v1.15.0) (2026-06-06)
 
 ### Features
