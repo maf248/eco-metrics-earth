@@ -1,3 +1,9 @@
+## [2.0.1](https://github.com/maf248/eco-metrics-earth/compare/v2.0.0...v2.0.1) (2026-06-08)
+
+### Bug Fixes
+
+* **icons:** restore missing SVG paths and colors for ocean-health and reforestation ([f64fe9b](https://github.com/maf248/eco-metrics-earth/commit/f64fe9bf935849cc7cd66f5013f15488e8d78c0d))
+
 ## [2.0.0](https://github.com/maf248/eco-metrics-earth/compare/v1.14.0...v2.0.0) (2026-06-08)
 
 ### ⚠ BREAKING CHANGES
