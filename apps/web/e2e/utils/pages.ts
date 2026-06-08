@@ -14,7 +14,7 @@ export const CATEGORY_TITLES: Record<EcoCategory, string> = {
   'ocean-health': 'Ocean Health',
   'plastic-pollution': 'Plastic Pollution',
   reforestation: 'Reforestation',
-  'renewable-energy': 'Renewable Energy',
+  'energy-sources': 'Energy Sources',
   'waste-recycling': 'Waste & Recycling',
   'water-footprint': 'Water Footprint',
 };

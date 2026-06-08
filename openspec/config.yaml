@@ -56,10 +56,10 @@ context: |
   - Imports order: external → workspace → relative
 
   ### Key Domain Concepts
-  - **EcoCategory**: one of 11 environmental categories:
+  - **EcoCategory**: one of 12 environmental categories:
     `waste-recycling`, `air-quality`, `endangered-species`, `global-temperature`,
     `deforestation`, `ocean-health`, `co2-emissions`, `reforestation`,
-    `glacier-melting`, `plastic-pollution`, `renewable-energy`
+    `glacier-melting`, `plastic-pollution`, `energy-sources`
   - **ApiResponse<T>**: generic BFF response wrapper discriminated union `{ success: true; data: T } | { success: false; error: string }`
   - The API is a BFF — it aggregates external data sources and serves the web app
   - Category pages live at `apps/web/src/app/[category]/page.tsx`

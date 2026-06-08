@@ -12,7 +12,7 @@ import {
   NotFoundIcon,
   OceanHealthIcon,
   ReforestationIcon,
-  RenewableEnergyIcon,
+  EnergySourcesIcon,
   SiteLogoIcon,
   WasteRecyclingIcon,
   WaterFootprintIcon,
@@ -34,7 +34,7 @@ export const CATEGORY_ICONS: Record<EcoCategory, IconComponent> = {
   reforestation: ReforestationIcon,
   'glacier-melting': GlacierMeltingIcon,
   'plastic-pollution': BottleIcon,
-  'renewable-energy': RenewableEnergyIcon,
+  'energy-sources': EnergySourcesIcon,
   'water-footprint': WaterFootprintIcon,
 };
 

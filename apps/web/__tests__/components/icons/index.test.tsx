@@ -13,7 +13,7 @@ const EXPECTED_ICONS = [
   'NotFoundIcon',
   'OceanHealthIcon',
   'ReforestationIcon',
-  'RenewableEnergyIcon',
+  'EnergySourcesIcon',
   'SiteLogoIcon',
   'WasteRecyclingIcon',
   'WaterFootprintIcon',

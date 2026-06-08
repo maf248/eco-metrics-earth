@@ -22,7 +22,7 @@ describe('ECO_CATEGORIES', () => {
     expect(values).toContain('glacier-melting');
     expect(values).toContain('waste-recycling');
     expect(values).toContain('plastic-pollution');
-    expect(values).toContain('renewable-energy');
+    expect(values).toContain('energy-sources');
     expect(values).toContain('water-footprint');
   });
 });
