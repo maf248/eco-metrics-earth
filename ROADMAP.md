@@ -201,6 +201,20 @@ Lista de hallazgos del análisis de repositorio, ordenados por prioridad (más c
 - **I07.** `legacy-peer-deps=true` en `.npmrc` — workaround porque `eslint-plugin-jsx-a11y@6.10.2` no declara ESLint 10 en sus peer deps. PR [#1081](https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/pull/1081) abierto. Eliminar cuando se publique un release con soporte.
 - **I08.** Sin Storybook ni documentación visual de componentes. Actualmente solo hay 16 componentes, por lo que no se justifica el overhead de configuración y mantenimiento. Reconsiderar cuando la librería de componentes supere ~40 unidades.
 
+
+### 🟢 UI / Diseño
+
+- **I12.** Visibilidad de iconos SVG en modo claro/oscuro — algunos iconos de categoría (especialmente reforestation, ocean-health, plastic-pollution) no contrastan bien con el fondo en modo claro: se pierden detalles o bordes por falta de separación visual. En modo oscuro el problema es menor pero persiste en detalles finos.
+
+**Propuesta:** Evaluar alternativas para mejorar contraste y legibilidad de los iconos en ambos temas:
+- **Drop shadow / glow** sutil alrededor de los paths (ej: filter: drop-shadow() en SVG o un contenedor wrapper).
+- **Border o stroke** exterior en los iconos (ej: contenedor circular o card con borde sutil).
+- **Ajuste de colores del SVG** — verificar si el diseño original de los assets tiene variantes para fondo claro, o si los colores deben invertirse/tintarse dinámicamente según prefers-color-scheme.
+- **Background highlight** — un fondo semi-transparente o gradiente sutil detrás del icono para separarlo del fondo de la página.
+- **Alternativa:** reemplazar los iconos SVG inline por componentes que acepten una prop theme y ajusten fill/stroke en consecuencia.
+
+**Dificultad:** 3/10 — mayoritariamente CSS/Tailwind y ajuste visual.
+**Estado:** Pendiente
 ---
 ### 📝 Recordatorios
 
