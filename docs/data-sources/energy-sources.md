@@ -1,6 +1,12 @@
-# Renewable Energy
+# Energy Sources
 
-Tracks renewable energy capacity, generation, and share of total energy mix by country. Covers solar, wind, hydro, geothermal, and other clean energy sources. Also tracks the full electricity generation mix (fossil fuels, nuclear, and renewables) to show the origin of electricity by source and country.
+Tracks the full electricity generation mix by country, covering BOTH renewable and non-renewable energy sources. This category includes:
+
+- **Fossil fuels** (coal, natural gas, oil)
+- **Nuclear energy**
+- **Renewable sources** (solar, wind, hydro, geothermal, biomass)
+
+The data shows the complete electricity generation profile — not just the renewable share — so visitors can understand the true energy portrait of each country.
 
 > Note: UK Carbon Intensity API also appears in `co2-emissions.md`.
 
@@ -36,6 +42,8 @@ This section documents how to obtain the **percentage breakdown of electricity g
 - **Stacked area chart** — share (%) over time per country.
 - **Donut / pie chart** — current mix snapshot.
 - **Fossil vs low-carbon split** — coal+gas+oil vs nuclear+renewables.
+
+> **Future feature idea:** Consider organizing the data into **"renewable"** vs **"non-renewable"** subsections within this category. A toggle or tabbed view could let users switch between the full mix, renewables-only, and fossil/nuclear-only breakdowns. This would provide both the big-picture context and the focused renewable-energy view that the original category name implied.
 
 ---
 

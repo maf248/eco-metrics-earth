@@ -39,8 +39,8 @@ describe('slugToTitle', () => {
     expect(slugToTitle('plastic-pollution')).toBe('Plastic Pollution');
   });
 
-  it('should return the correct title for renewable-energy', () => {
-    expect(slugToTitle('renewable-energy')).toBe('Renewable Energy');
+  it('should return the correct title for energy-sources', () => {
+    expect(slugToTitle('energy-sources')).toBe('Energy Sources');
   });
 
   it('should return the correct title for every ECO_CATEGORY slug', () => {
@@ -55,7 +55,7 @@ describe('slugToTitle', () => {
       [ECO_CATEGORIES.REFORESTATION]: 'Reforestation',
       [ECO_CATEGORIES.GLACIER_MELTING]: 'Glacier Melting',
       [ECO_CATEGORIES.PLASTIC_POLLUTION]: 'Plastic Pollution',
-      [ECO_CATEGORIES.RENEWABLE_ENERGY]: 'Renewable Energy',
+      [ECO_CATEGORIES.ENERGY_SOURCES]: 'Energy Sources',
       [ECO_CATEGORIES.WATER_FOOTPRINT]: 'Water Footprint',
     };
 

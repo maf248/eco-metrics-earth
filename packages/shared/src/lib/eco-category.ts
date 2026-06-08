@@ -9,7 +9,7 @@ export const ECO_CATEGORIES = {
   REFORESTATION: 'reforestation',
   GLACIER_MELTING: 'glacier-melting',
   PLASTIC_POLLUTION: 'plastic-pollution',
-  RENEWABLE_ENERGY: 'renewable-energy',
+  ENERGY_SOURCES: 'energy-sources',
   WATER_FOOTPRINT: 'water-footprint',
 } as const;
 

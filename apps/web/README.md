@@ -49,7 +49,7 @@ src/components/
     ├── NotFoundIcon.tsx
     ├── OceanHealthIcon.tsx
     ├── ReforestationIcon.tsx
-    ├── RenewableEnergyIcon.tsx
+    ├── EnergySourcesIcon.tsx
     ├── WasteRecyclingIcon.tsx
     ├── WaterFootprintIcon.tsx
     └── BottleIcon.tsx      # Used for plastic-pollution

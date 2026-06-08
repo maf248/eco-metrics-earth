@@ -91,12 +91,12 @@ describe('CategoryPage', () => {
     expect(screen.getByText('Plastic Pollution')).toBeTruthy();
   });
 
-  it('should display the correct title for renewable-energy', async () => {
+  it('should display the correct title for energy-sources', async () => {
     const element = await CategoryPage({
-      params: Promise.resolve({ category: 'renewable-energy' }),
+      params: Promise.resolve({ category: 'energy-sources' }),
     });
     render(element);
-    expect(screen.getByText('Renewable Energy')).toBeTruthy();
+    expect(screen.getByText('Energy Sources')).toBeTruthy();
   });
 
   it('should render a <main> element with id="main-content" and tabIndex={-1}', async () => {
