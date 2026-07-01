@@ -1,6 +1,8 @@
 ---
 name: spec-writer
 description: Generates OpenSpec artifacts (proposal, design, specs, tasks) for spec-driven development. Use before implementation to create the blueprint in openspec/changes/.
+model: sonnet
+tools: [Read, Grep, Glob, Bash, Task, TodoWrite, Write]
 ---
 
 # OpenSpec Writer Agent
@@ -79,3 +81,4 @@ Implementation checklist for @coder:
 5. **Write tasks**: Granular checklist for @coder, each task verifiable.
 
 After creating all artifacts, report back to the orchestrator for user approval checkpoint.
+

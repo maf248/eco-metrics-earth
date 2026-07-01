@@ -63,7 +63,8 @@ apps/web/next-env.d.ts
 postman/*.environment.json
 !postman/*.environment.template.json
 
-# Auto-generated AI agent configs (duplicates of .opencode/skills/)
+# Auto-generated AI agent configs (duplicates of .opencode/)
+.agent/
 .agents/
 .codex/
 
