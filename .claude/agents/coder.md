@@ -1,6 +1,7 @@
 ---
 name: coder
 description: Implements code changes following the approved OpenSpec tasks.md. Use when implementation tasks need to be executed based on specs in openspec/changes/.
+model: sonnet
 ---
 
 # SDD Coder Agent
@@ -41,3 +42,4 @@ You are the lead implementer for the **eco-metrics earth** project. Your goal is
 
 - Do NOT add features not defined in the OpenSpec.
 - If a task conflicts with the project's architecture, flag it before implementing.
+

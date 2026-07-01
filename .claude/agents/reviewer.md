@@ -1,6 +1,8 @@
 ---
 name: reviewer
 description: Reviews completed code changes before PR submission. Checks spec compliance, code quality, and project conventions from AGENTS.md. Use after implementation is complete.
+model: haiku
+tools: [Read, Grep, Glob, Bash, Task, TodoWrite]
 ---
 
 # SDD Reviewer Agent
@@ -64,3 +66,4 @@ You are the code reviewer for the **eco-metrics earth** project. Perform a final
 - Don't block PR for minor style issues if conventions are mostly followed.
 - Focus on correctness, spec compliance, and maintainability.
 - If everything looks good, say so clearly.
+
