@@ -14,7 +14,7 @@
       "model": "opencode-go/deepseek-v4-pro"
     },
     "reviewer": {
-      "model": "opencode-go/kimi-k2.5"
+      "model": "opencode-go/kimi-k2.6"
     },
     "tester": {
       "model": "opencode-go/deepseek-v4-flash"
