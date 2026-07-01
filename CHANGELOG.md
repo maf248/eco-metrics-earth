@@ -1,3 +1,9 @@
+## [2.0.2](https://github.com/maf248/eco-metrics-earth/compare/v2.0.1...v2.0.2) (2026-07-01)
+
+### Bug Fixes
+
+* **config:** update reviewer agent model to kimi-k2.6 (kimi-k2.5 removed from OpenCode Go) ([045fa49](https://github.com/maf248/eco-metrics-earth/commit/045fa492eee01ae57284f2f7b88eac82afa6d6eb))
+
 ## [2.0.1](https://github.com/maf248/eco-metrics-earth/compare/v2.0.0...v2.0.1) (2026-06-08)
 
 ### Bug Fixes
