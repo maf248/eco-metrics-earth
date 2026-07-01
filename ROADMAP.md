@@ -4,18 +4,19 @@ Este documento registra todas las propuestas de mejora identificadas para el pro
 
 ---
 
-## Estado del Proyecto (23 May 2026)
+## Estado del Proyecto (01 Jul 2026)
 
 | Aspecto | Estado | Nota |
 |---------|--------|------|
-| Tests | ✅ | 194 unit + 63 E2E = 257 tests pasando, 0 errores |
+| Tests | ✅ | 257 unit (221 web + 36 api) + 49 E2E specs pasando, 0 errores |
 | Lint | ✅ | Sin warnings |
 | Build | ✅ | Compila correctamente |
 | CI | ✅ | CI en PRs y push a cualquier branch |
 | CD / Deploy | 🟡 | No hay entornos de pre-release/staging (ver I02) |
 | Dependencias | ✅ | Al día (Fase 1 + Fase 2 aplicadas) |
 | Coverage | ✅ | Medido con Jest |
-| E2E | ✅ | Playwright: 63 tests, 5 browsers, CI integrado |
+| E2E | ✅ | Playwright: 49 specs, 5 browsers, CI integrado |
+| Theming | ✅ | Light/dark mode con toggle, persistencia (localStorage) y zero-flash (spec `theme-toggle` + `theme-system`) |
 | Monitoreo | ❌ | No implementado |
 
 ---
@@ -204,14 +205,16 @@ Lista de hallazgos del análisis de repositorio, ordenados por prioridad (más c
 
 ### 🟢 UI / Diseño
 
-- **I12.** Visibilidad de iconos SVG en modo claro/oscuro — algunos iconos de categoría (especialmente reforestation, ocean-health, plastic-pollution) no contrastan bien con el fondo en modo claro: se pierden detalles o bordes por falta de separación visual. En modo oscuro el problema es menor pero persiste en detalles finos.
+- **I12.** Visibilidad de iconos SVG en modo claro/oscuro — algunos iconos de categoría (especialmente reforestation, ocean-health, plastic-pollution) no contrastan bien con el fondo en modo claro: se pierden detalles o bordes por falta de separación visual. En modo oscuro el problema es menor pero persiste en detalles finos. **Ahora accionable**: light/dark mode ya está en producción (spec `light-mode-styling` archivado).
 
-**Propuesta:** Evaluar alternativas para mejorar contraste y legibilidad de los iconos en ambos temas:
+**Restricción de diseño (decisión registrada en el spec `light-mode-styling`):** los iconos de categoría son **intencionalmente multicolor** — sus colores de marca (verdes, azules, rojos) son parte de la identidad visual de cada categoría y no deben recolorearse ni tintarse por tema. Por eso el fix debe mejorar el **contraste/separación** sin tocar los colores del SVG.
+
+**Propuesta:** Evaluar alternativas de contraste que respeten los colores originales:
 - **Drop shadow / glow** sutil alrededor de los paths (ej: filter: drop-shadow() en SVG o un contenedor wrapper).
 - **Border o stroke** exterior en los iconos (ej: contenedor circular o card con borde sutil).
-- **Ajuste de colores del SVG** — verificar si el diseño original de los assets tiene variantes para fondo claro, o si los colores deben invertirse/tintarse dinámicamente según prefers-color-scheme.
 - **Background highlight** — un fondo semi-transparente o gradiente sutil detrás del icono para separarlo del fondo de la página.
-- **Alternativa:** reemplazar los iconos SVG inline por componentes que acepten una prop theme y ajusten fill/stroke en consecuencia.
+
+**Descartado:** invertir/tintar dinámicamente los colores del SVG según `prefers-color-scheme`, o reemplazar los iconos por componentes con prop `theme` que ajusten fill/stroke — contradice la decisión de mantenerlos multicolor.
 
 **Dificultad:** 3/10 — mayoritariamente CSS/Tailwind y ajuste visual.
 **Estado:** Pendiente
@@ -223,4 +226,4 @@ Lista de hallazgos del análisis de repositorio, ordenados por prioridad (más c
 - **I10.** OpenTelemetry — considerado para el futuro cuando el sistema escale a múltiples servicios o se quiera cambiar de backend de observabilidad (Sentry → Datadog, Honeycomb, etc.) sin tocar código de instrumentación. Con un solo BFF, Sentry Performance cubre el tracing necesario. No justifica el overhead de configuración actual (collector, exporters, SDK setup).
 - **I11.** Axiom — plataforma de logs como servicio. Solo relevante si la retención de logs de Railway (7 días) o Vercel resulta insuficiente para debugging post-mortem. Por ahora los logs agregados de cada plataforma son suficientes.
 
-**Última actualización:** 06 Jun 2026
+**Última actualización:** 01 Jul 2026
