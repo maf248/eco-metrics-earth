@@ -11,7 +11,7 @@ An environmental metrics dashboard monorepo — tracking air quality, CO₂ emis
 | **Frontend**   | [Next.js](https://nextjs.org) (App Router)                         | 16.2.6  | [nextjs.org/docs](https://nextjs.org/docs)                                                   |
 | **UI**         | [React](https://react.dev)                                         | 19.2.6  | [react.dev](https://react.dev/reference/react)                                               |
 | **Styling**    | [Tailwind CSS](https://tailwindcss.com)                            | 4.3.0   | [tailwindcss.com/docs](https://tailwindcss.com/docs)                                         |
-| **Theming**    | React Context + localStorage                                      | —       | Light and dark mode support with persistent user preference via settings toggle              |
+| **Theming**    | React Context + localStorage                                      | —       | Light and dark mode support with persistent user preference via a theme toggle              |
 | **Backend**    | [NestJS](https://nestjs.com)                                       | 11.1.21 | [docs.nestjs.com](https://docs.nestjs.com)                                                   |
 | **Language**   | [TypeScript](https://www.typescriptlang.org)                       | 5.9.3   | [typescriptlang.org/docs](https://www.typescriptlang.org/docs/)                              |
 | **Testing**    | [Jest](https://jestjs.io)                                          | 30.4.2  | [jestjs.io/docs](https://jestjs.io/docs/getting-started)                                     |

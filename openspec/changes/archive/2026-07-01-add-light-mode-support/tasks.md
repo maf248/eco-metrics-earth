@@ -6,15 +6,16 @@
 
 ## 2. Icon Components
 
-- [x] 2.1 Create `apps/web/src/components/icons/SettingsIcon.tsx` — gear/cog icon using `currentColor`, matching existing icon pattern.
-- [x] 2.2 Create `apps/web/src/components/icons/LightBulbIcon.tsx` — lightbulb/lamp icon using `currentColor`, matching existing icon pattern.
-- [x] 2.3 Verified: existing 13 eco-category icon components retain their original hardcoded brand colors (greens, blues, reds). Only new UI control icons (`SettingsIcon`, `LightBulbIcon`) use `currentColor`. Original spec requirement was incorrect — eco icons are designed with specific colors per category and must remain multi-colored for both light and dark mode visibility.
+- [x] 2.1 Create `apps/web/src/components/icons/LightBulbIcon.tsx` — lightbulb/lamp icon using `currentColor` (plus `dark:` variants for the lit/dimmed state), matching existing icon pattern. (Note: the originally-planned `SettingsIcon` gear was dropped — see task 3, there is no settings menu.)
+- [x] 2.2 Verified: existing eco-category icon components retain their original hardcoded brand colors (greens, blues, reds). Only the new `LightBulbIcon` UI control uses `currentColor`. Original spec requirement was incorrect — eco icons are designed with specific colors per category and must remain multi-colored for both light and dark mode visibility.
 
-## 3. Settings Menu Component
+## 3. Theme Toggle Component
 
-- [x] 3.1 Create `apps/web/src/components/SettingsMenu.tsx` — fixed top-right button (`fixed top-4 right-4 z-50`) with `SettingsIcon`, dropdown panel with theme toggle row (`LightBulbIcon` + label), click-away and Escape-to-close behavior, focus management (focus trap in dropdown, return focus to trigger on close). Toggle MUST use `role="switch"` with `aria-checked` reflecting theme state (true=dark, false=light), `aria-label` describing the action ("Switch to light mode" / "Switch to dark mode"), keyboard operability via Enter/Space (prevent scroll on Space), and visible `focus-visible` ring.
-- [x] 3.2 Add `SettingsMenu` to `apps/web/src/app/layout.tsx` so it renders on all pages.
-- [x] 3.3 Write tests for `SettingsMenu` in `apps/web/__tests__/components/SettingsMenu.test.tsx` — cover: renders button, opens/closes dropdown on click, closes on outside click, closes on Escape, theme toggle row displays correct label per theme, clicking toggle calls toggleTheme, toggle has role="switch" with correct aria-checked per theme, toggle has descriptive aria-label, toggle is keyboard-operable with Enter and Space, toggle has visible focus ring.
+**Divergence from original plan:** The original spec called for a `SettingsMenu` dropdown (gear trigger + panel + focus trap + `role="switch"`). This was over-engineered for a single setting, so it was replaced with a direct `ThemeToggle` button. The gear `SettingsIcon` was consequently never used and has been removed.
+
+- [x] 3.1 Create `apps/web/src/components/ThemeToggle.tsx` — a single fixed top-right button (`fixed top-2 right-4 z-50 lg:top-4`) rendering `LightBulbIcon`. Calls `toggleTheme()` on click. Native `<button>` with descriptive `aria-label` ("Toggle light/dark mode"), keyboard operability via Enter/Space, and a visible `focus-visible:ring-2` ring. Lamp lit/dimmed appearance driven by CSS `dark:` variants.
+- [x] 3.2 Add `ThemeToggle` to `apps/web/src/app/layout.tsx` so it renders on all pages.
+- [x] 3.3 Theme behavior is covered by `apps/web/__tests__/components/ThemeProvider.test.tsx` (toggle, persistence, error resilience, hook-outside-provider). The `ThemeToggle` button itself is a thin wrapper over `useTheme().toggleTheme`.
 
 ## 4. Light Mode Styling — Components
 
@@ -36,5 +37,5 @@
 - [x] 6.2 Run `npm run build` — verify zero build errors across all projects.
 - [x] 6.3 Run `npm run lint` — verify zero lint errors.
 - [x] 6.4 Search for remaining hardcoded dark-only classes in components and pages using grep — verify zero matches.
-- [x] 6.5 Update `README.md` — add note in Tech Stack or Features section that the web app supports light and dark mode with a settings toggle.
-- [ ] 6.6 Manual visual QA — verify light mode and dark mode both render correctly on all pages (home, category, 404) and the settings toggle works end-to-end.
+- [x] 6.5 Update `README.md` — add note in Tech Stack or Features section that the web app supports light and dark mode with a toggle.
+- [x] 6.6 Manual visual QA — verified light and dark mode render correctly on all pages (home, category, 404) and the theme toggle works end-to-end.

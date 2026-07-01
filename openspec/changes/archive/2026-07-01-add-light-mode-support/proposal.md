@@ -4,18 +4,18 @@ The application is currently hardcoded to dark mode only — every component use
 
 ## What Changes
 
-- **Add a theme system** with `ThemeProvider` context, `localStorage` persistence, and `prefers-color-scheme` detection for default theme.
-- **Add a Settings menu button** positioned in the top-right corner containing a light/dark mode toggle with a lamp icon. The menu is designed to be extensible for future settings additions.
+- **Add a theme system** with `ThemeProvider` context, `localStorage` persistence, `prefers-color-scheme` detection for default theme, and a blocking inline script that applies the theme before first paint (zero flash).
+- **Add a theme toggle button** (lamp icon) positioned fixed in the top-right corner that switches between light and dark mode.
 - **Adapt all existing components and pages** to use Tailwind `dark:` variants so every part of the UI renders correctly in both light and dark modes.
-- **Update tests** to cover both theme modes and the new Settings menu component.
+- **Update tests** to cover both theme modes and the theme system.
 - **Update documentation** (README) to reflect theme support.
 
 ## Capabilities
 
 ### New Capabilities
 <!-- Capabilities being introduced. Replace <name> with kebab-case identifier (e.g., user-auth, data-export, api-rate-limiting). Each creates specs/<name>/spec.md -->
-- **theme-system**: Core theme infrastructure — React context provider, theme state management, `localStorage` persistence, `prefers-color-scheme` detection, and the `dark` class toggling on `<html>`. Exposes `useTheme()` hook returning the current theme and a toggle function.
-- **settings-menu**: A reusable Settings button/menu component positioned fixed top-right. Contains the theme toggle (lamp icon) and supports future settings additions via a dropdown panel. Uses a gear/cog icon as the trigger. Closes on outside click and Escape key.
+- **theme-system**: Core theme infrastructure — React context provider, theme state management, `localStorage` persistence, `prefers-color-scheme` detection, the `dark` class toggling on `<html>`, and a blocking inline script that applies the resolved theme before first paint (zero flash). Exposes `useTheme()` hook returning the current theme and a toggle function.
+- **theme-toggle**: A single fixed top-right toggle button (lamp icon) that calls `toggleTheme()` on click. The lamp appearance reflects the current theme via CSS `dark:` variants. Native `<button>` with descriptive `aria-label`, keyboard operability (Enter/Space) and a visible focus ring.
 - **light-mode-styling**: Visual adaptation of all existing components (`Navbar`, `NavLink`, `MobileHeader`, `NavScrollContainer`, `BrandText`), pages (`/`, `/[category]`, `not-found`), and layout to use themed color classes that respond to both light and dark modes correctly.
 
 ### Modified Capabilities
