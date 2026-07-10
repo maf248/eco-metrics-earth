@@ -33,6 +33,7 @@ All non-trivial changes — new features, significant refactors, API contracts �
 ### What requires a spec (non-trivial)
 
 Always propose before implementing:
+
 - New pages, routes, or HTTP status behavior
 - New or modified API endpoints (NestJS)
 - New or modified shared types in `@eco-metrics/shared`
@@ -47,6 +48,7 @@ Always propose before implementing:
 ### What skips the spec (trivial)
 
 Implement directly without a spec:
+
 - Copy/text changes in any page
 - Swapping or resizing icons (pure visual, no logic)
 - Tailwind class adjustments (spacing, color, size)
@@ -151,6 +153,7 @@ Snapshots live in `__tests__/__snapshots__/`. They capture rendered output and f
 **When to update:** only when a UI change is intentional — e.g., you modified a component's markup, classes, or structure on purpose.
 
 **How to update:**
+
 ```bash
 npm run update-snapshots          # updates all snapshots across all projects
 npx nx test web -- --updateSnapshot   # updates only web snapshots
@@ -282,7 +285,6 @@ Pre-PR checklist: `npm run lint`, `npm run build`, and `npm run test` must all p
   - When in doubt, ask before installing.
 - To update a package: check `npm outdated`, verify compatibility, install with `--save-exact`, then run `npm run build` and `npm run test` before committing.
 
-
 ## Documentation Maintenance
 
 - **Keep README.md tech stack versions up to date** — when upgrading major dependencies (NX, Next.js, NestJS, React, TypeScript, etc.), update the version table in `README.md` immediately.
@@ -375,7 +377,6 @@ Useful only for keys the project does not define — does NOT override existing 
 
 > **Rule:** Never change `opencode.json` model values just because you prefer a different model. Use `OPENCODE_CONFIG_CONTENT` instead. Changes to `opencode.json` models should only happen when the team agrees on a new default.
 
-
 ---
 
 ## AI Orchestrator — Known Constraints
@@ -397,6 +398,7 @@ The user must **explicitly authorize** every `git commit` and every `git push`. 
 This error is thrown when the model's response is cut off mid-generation and the runtime tries to resume with a prefill. It happens consistently when a single tool call produces too much inline content.
 
 **Hard rules — never break these:**
+
 - **Never use `cat << 'EOF' ... EOF` (bash heredoc) to write files.** Use the `Write` tool for creating or overwriting files entirely.
 - **Never use `bash` to write more than ~10 lines of file content inline.** Even short heredocs are risky if the total assistant turn is large.
 - **Use the `Edit` tool for modifications** to existing files — targeted replacements, not full rewrites via heredoc.
