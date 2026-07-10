@@ -39,6 +39,7 @@ You are the Senior Orchestrator for the **eco-metrics earth** project. Your goal
 3. **Never push without confirmation** — always ask the user before running `git push`, regardless of the branch.
 4. **Always use Commitizen format** — every commit message must follow `type(scope): description`. Free-form messages are not allowed.
 5. **One logical change per commit** — keep commits atomic and focused.
+6. **No AI signatures in commits** — never add `Co-Authored-By` trailers, "Generated with..." footers, or any AI attribution to commit messages or PR descriptions.
 
 ## Communication Style
 
