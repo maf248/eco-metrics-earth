@@ -64,7 +64,7 @@ Este documento registra todas las propuestas de mejora identificadas para el pro
 | endangered-species | ✅ threatened species (IUCN counts), Living Planet Index | — | ✅ mamíferos/aves/peces amenazados | Threatened species por país (World Bank u OWID) |
 | ocean-health | ✅ sea level rise | ✅ mareas/nivel del mar, SST (ERDDAP) | 🟡 áreas marinas protegidas | Sea level rise (OWID) |
 | glacier-melting | ✅ mass balance glaciares de referencia | ✅ sea ice index diario (NSIDC) | — | Sea ice extent (NOAA) o mass balance (OWID) |
-| water-footprint | ✅ freshwater withdrawals, water stress | — | ✅ recursos hídricos, extracción | Water stress (OWID) — **falta doc, ver I13** |
+| water-footprint | ✅ freshwater withdrawals, water stress | — | ✅ recursos hídricos, extracción | Water stress (OWID, chart `freshwater-withdrawals-as-a-share-of-internal-resources`) |
 | air-quality | 🟡 PM2.5 exposure anual, muertes por contaminación | — | ✅ PM2.5 exposure anual | PM2.5 exposure anual (World Bank/OWID) |
 
 > ⚠️ **air-quality en tiempo real** es la única sección sin opción comercial-safe sin key: Open-Meteo es no comercial y OpenAQ tiene licencias heterogéneas. Opción viable: **OpenWeatherMap Air Pollution** (ODbL, comercial OK con atribución, key gratuita, 1M req/mes) — postergarlo a una fase posterior y arrancar con datos anuales de exposición PM2.5 (comercial-safe, sin key).
@@ -292,14 +292,13 @@ Lista de hallazgos del análisis de repositorio, ordenados por prioridad (más c
 
 ### 🟡 Datos / Proveedores
 
-- **I13.** Falta `docs/data-sources/water-footprint.md` — `water-footprint` está en `ECO_CATEGORIES` (12 categorías) pero solo existen 11 docs de fuentes. Investigar y documentar: OWID (Water Stress, Freshwater Withdrawals — ambos en la colección Postman, CC BY), World Bank (recursos hídricos per cápita, extracción por sector) y FAO AQUASTAT. Mismo formato que los demás docs (licencia, tabla de campos, métricas).
-- **I14.** Atribución de datos (requisito legal, no opcional) — CC BY exige atribución visible. Antes de publicar la primera sección con datos reales (P1.1): componente de atribución al pie de cada visualización ("Data: Our World in Data — CC BY" con link) + página `/data-sources/` listando proveedores y licencias. Alimentado por el `DataSourceAttribution` de I15. Bonus SEO: contenido indexable con estructura.
-- **I15.** Extender `ApiResponse<T>` con metadata de fuente — el contrato actual no transporta procedencia. Agregar `meta: { source: DataSourceAttribution; fetchedAt: string }` para que el frontend renderice atribución y frescura sin hardcodear nada por página. Diseñarlo en P1.0 para no romper el contrato después.
-- **I16.** Elegir librería de charts — P1.1 necesita el primer gráfico de series temporales. Candidatas: **Recharts** (React-first, liviana, suficiente para líneas/áreas/barras), **ECharts** (más potente, pesada — justifica `next/dynamic`), **visx** (control total, más esfuerzo). Recomendación: empezar con Recharts y reevaluar si aparecen mapas/heatmaps. La decisión activa el recordatorio de Dynamic Imports.
+- **I13.** Atribución de datos (requisito legal, no opcional) — CC BY exige atribución visible. Antes de publicar la primera sección con datos reales (P1.1): componente de atribución al pie de cada visualización ("Data: Our World in Data — CC BY" con link) + página `/data-sources/` listando proveedores y licencias. Alimentado por el `DataSourceAttribution` de I14. Bonus SEO: contenido indexable con estructura.
+- **I14.** Extender `ApiResponse<T>` con metadata de fuente — el contrato actual no transporta procedencia. Agregar `meta: { source: DataSourceAttribution; fetchedAt: string }` para que el frontend renderice atribución y frescura sin hardcodear nada por página. Diseñarlo en P1.0 para no romper el contrato después.
+- **I15.** Elegir librería de charts — P1.1 necesita el primer gráfico de series temporales. Candidatas: **Recharts** (React-first, liviana, suficiente para líneas/áreas/barras), **ECharts** (más potente, pesada — justifica `next/dynamic`), **visx** (control total, más esfuerzo). Recomendación: empezar con Recharts y reevaluar si aparecen mapas/heatmaps. La decisión activa el recordatorio de Dynamic Imports.
 
 ### 🟢 Documentación
 
-- **I17.** `postman/README.md` desactualizado — la tabla de archivos lista nombres kebab-case (`world-bank.collection.json`) que no coinciden con los archivos reales (`World Bank Open Data API — Environment & Development.postman_collection.json`, etc.). Corregir la tabla o renombrar los archivos a kebab-case (preferible: renombrar, evita espacios y em-dashes en paths).
+- **I16.** `postman/README.md` desactualizado — la tabla de archivos lista nombres kebab-case (`world-bank.collection.json`) que no coinciden con los archivos reales (`World Bank Open Data API — Environment & Development.postman_collection.json`, etc.). Corregir la tabla o renombrar los archivos a kebab-case (preferible: renombrar, evita espacios y em-dashes en paths).
 
 ---
 
@@ -310,4 +309,4 @@ Lista de hallazgos del análisis de repositorio, ordenados por prioridad (más c
 - **I10.** OpenTelemetry — considerado para el futuro cuando el sistema escale a múltiples servicios o se quiera cambiar de backend de observabilidad (Sentry → Datadog, Honeycomb, etc.) sin tocar código de instrumentación. Con un solo BFF, Sentry Performance cubre el tracing necesario. No justifica el overhead de configuración actual (collector, exporters, SDK setup).
 - **I11.** Axiom — plataforma de logs como servicio. Solo relevante si la retención de logs de Railway (7 días) o Vercel resulta insuficiente para debugging post-mortem. Por ahora los logs agregados de cada plataforma son suficientes.
 
-**Última actualización:** 10 Jul 2026
+**Última actualización:** 11 Jul 2026

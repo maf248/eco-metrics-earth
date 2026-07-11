@@ -3,6 +3,7 @@
 > **Status:** Section created. Dataset compilation pending.
 > **Category slug:** `water-footprint`
 > **URL:** `/water-footprint/`
+> **Provider docs:** `docs/data-sources/water-footprint.md` (country-level sources: OWID, World Bank, FAO AQUASTAT — licenses and validated endpoints)
 
 ---
 
