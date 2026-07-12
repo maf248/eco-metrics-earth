@@ -84,10 +84,21 @@ describe('WaterFootprintService', () => {
     expect(result).toEqual([]);
   });
 
-  it('should throw when the data file is missing', () => {
+  it('should initialize with an empty dataset when the data file is missing (ENOENT)', () => {
     mockReadFileSync.mockImplementation(() => {
       const error = new Error('ENOENT: no such file or directory') as NodeJS.ErrnoException;
       error.code = 'ENOENT';
+      throw error;
+    });
+
+    const service = new WaterFootprintService();
+    expect(service.getAllProducts()).toEqual([]);
+  });
+
+  it('should throw for non-ENOENT file errors (e.g. permission denied)', () => {
+    mockReadFileSync.mockImplementation(() => {
+      const error = new Error('EACCES: permission denied') as NodeJS.ErrnoException;
+      error.code = 'EACCES';
       throw error;
     });
 
