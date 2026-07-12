@@ -7,6 +7,7 @@ import * as Joi from 'joi';
 import { DemoValidationController } from '../common/dto/demo-validation.controller';
 import { AppConfigService } from '../config/app-config.service';
 import { HealthModule } from '../health/health.module';
+import { WaterFootprintModule } from '../modules/water-footprint/water-footprint.module';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -29,6 +30,7 @@ import { AppService } from './app.service';
     }),
     ThrottlerModule.forRoot([{ ttl: 60_000, limit: 60 }]),
     HealthModule,
+    WaterFootprintModule,
   ],
   controllers: [AppController, DemoValidationController],
   providers: [AppService, AppConfigService, { provide: APP_GUARD, useClass: ThrottlerGuard }],
