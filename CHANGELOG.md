@@ -1,3 +1,13 @@
+## [2.1.0](https://github.com/maf248/eco-metrics-earth/compare/v2.0.2...v2.1.0) (2026-07-13)
+
+### Features
+
+* **water-footprint:** implement Phase 2 — static dataset + BFF endpoint ([b56ca7e](https://github.com/maf248/eco-metrics-earth/commit/b56ca7ec347fb72f93a67cafec961295dc918d15))
+
+### Bug Fixes
+
+* **api:** resolve ESM module resolution failure in shared package ([e8c978b](https://github.com/maf248/eco-metrics-earth/commit/e8c978bb32149752131b049f7288ac7d1af74ae3))
+
 ## [2.0.2](https://github.com/maf248/eco-metrics-earth/compare/v2.0.1...v2.0.2) (2026-07-01)
 
 ### Bug Fixes
