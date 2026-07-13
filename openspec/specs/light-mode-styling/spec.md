@@ -1,5 +1,8 @@
-## ADDED Requirements
+# light-mode-styling Specification
 
+## Purpose
+TBD - created by archiving change add-light-mode-support. Update Purpose after archive.
+## Requirements
 ### Requirement: Layout adapts to theme
 The root layout SHALL remove the static `className="dark"` attribute and instead rely on the `ThemeProvider` to manage the `dark` class dynamically. The `<body>` SHALL respond to both themes with appropriate background and text colors.
 
@@ -48,16 +51,16 @@ All page components (home, category, not-found) SHALL render with appropriate ba
 - **AND** icon container uses light surface colors
 
 ### Requirement: Eco-category icons retain original colors
-Eco-category icon components in `components/icons/` SHALL retain their original hardcoded colors (greens, blues, reds, grays) as they are part of the visual identity for each environmental category. Only new UI control icons (`SettingsIcon`, `LightBulbIcon`) SHALL use `currentColor` for monochrome theming.
+Eco-category icon components in `components/icons/` SHALL retain their original hardcoded colors (greens, blues, reds, grays) as they are part of the visual identity for each environmental category. Only the new UI control icon `LightBulbIcon` SHALL use `currentColor` for theme-driven coloring.
 
 #### Scenario: Eco icons preserve brand colors
 - **WHEN** an eco-category icon (e.g., `WasteRecyclingIcon`, `GlobalTemperatureIcon`) renders
 - **THEN** it displays its original multi-colored design using hardcoded fill values
 - **AND** the colors are visible and distinguishable on both light and dark backgrounds
 
-#### Scenario: UI control icons use currentColor
-- **WHEN** `SettingsIcon` or `LightBulbIcon` renders inside a parent with `text-emerald-400`
-- **THEN** the icon renders in emerald-400 color via `currentColor` inheritance
+#### Scenario: UI control icon uses currentColor
+- **WHEN** `LightBulbIcon` renders inside a parent that sets the text color
+- **THEN** the icon renders in that color via `currentColor` inheritance
 
 ### Requirement: Scroll gradient overlays adapt to theme
 The `NavScrollContainer` component SHALL use scroll gradient overlays that match the background color in each theme.
@@ -76,3 +79,4 @@ After implementation, a search for hardcoded dark-only patterns (`bg-black`, `bg
 #### Scenario: No dark-only classes in components
 - **WHEN** searching `apps/web/src/components/` for `bg-black`, `text-white`, `bg-white/10`, `bg-white/5`
 - **THEN** no matches are found (icon files with hardcoded fill colors are expected and correct)
+

@@ -11,15 +11,21 @@
       "model": "opencode-go/deepseek-v4-pro"
     },
     "coder": {
-      "model": "opencode-go/deepseek-v4-pro"
+      "model": "opencode-go/kimi-k2.7-code"
     },
     "reviewer": {
-      "model": "opencode-go/kimi-k2.6"
+      "model": "opencode-go/kimi-k2.7-code"
     },
     "tester": {
       "model": "opencode-go/deepseek-v4-flash"
     },
     "spec-writer": {
+      "model": "opencode-go/deepseek-v4-pro"
+    },
+    "explore": {
+      "model": "opencode-go/deepseek-v4-flash"
+    },
+    "general": {
       "model": "opencode-go/deepseek-v4-pro"
     }
   },

@@ -50,20 +50,21 @@ Tracks forest cover loss and gain by region and country. Includes primary forest
 
 ### 3. FAO FAOSTAT — Forestry
 
-- **URL:** https://www.fao.org/faostat/en/#data/FO — API: `https://fenixservices.fao.org/faostat/api/v1/`
-- **License:** ✅ Comercial/ads OK — CC BY.
-- **Model:** Free. Annual country-level data (CSV and JSON).
+- **URL:** https://www.fao.org/faostat/en/#data/FO — bulk CSV: `https://bulks-faostat.fao.org/production/`
+- **License:** ✅ Comercial/ads OK — CC BY 4.0 (FAO Statistical Database Terms of Use).
+- **Model:** Free. Annual country-level data (bulk CSV downloads).
 - **Data:** Forest area, net deforestation, timber production, trade in forest products.
 - **API key:** Not required.
+- **Validated (Jul 2026):** The legacy API host `fenixservices.fao.org` is down (HTTP 521), and `faostatservices.fao.org/api/v1` returns 401 to unauthenticated requests. Bulk CSV downloads (e.g. `Forestry_E_All_Data.zip`) confirmed working — prefer them.
 
 | Field | Details |
 |---|---|
-| Base URL | `https://fenixservices.fao.org/faostat/api/v1` |
+| Base URL | `https://bulks-faostat.fao.org/production/` |
 | Auth | None |
 | Free tier | Yes |
 | Rate limit | None specified |
 | Update frequency | Annual |
-| Format | CSV, JSON |
+| Format | CSV (zipped) |
 
 ---
 
@@ -103,6 +104,6 @@ Tracks forest cover loss and gain by region and country. Includes primary forest
 
 - **Recommended primary source:** Global Forest Watch Data API for real-time alerts and Hansen historical data.
 - Hansen GeoTIFF tiles are large raster files — process server-side or pre-aggregate before serving to the frontend.
-- FAOSTAT JSON API is suitable for country-level annual series; no key required.
+- FAOSTAT is best consumed via bulk CSV downloads processed at build time — the old JSON API host (`fenixservices.fao.org`) is dead.
 - OWID grapher CSV is a convenient harmonized layer cacheable with ISR.
 - GFW's CC BY-NC-SA licence means **no commercial use** — verify before launch. Hansen tiles (CC BY) are the commercial-safe alternative for raster data.

@@ -10,7 +10,6 @@ export { default as NotFoundIcon } from './NotFoundIcon';
 export { default as OceanHealthIcon } from './OceanHealthIcon';
 export { default as ReforestationIcon } from './ReforestationIcon';
 export { default as EnergySourcesIcon } from './EnergySourcesIcon';
-export { default as SettingsIcon } from './SettingsIcon';
 export { default as SiteLogoIcon } from './SiteLogoIcon';
 export { default as WasteRecyclingIcon } from './WasteRecyclingIcon';
 export { default as WaterFootprintIcon } from './WaterFootprintIcon';

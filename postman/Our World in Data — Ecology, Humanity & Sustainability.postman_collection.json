@@ -4440,9 +4440,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{grapher_base_url}}/water-stress-indicator.csv?v=1&csvType=full&useColumnShortNames=false",
+                  "raw": "{{grapher_base_url}}/freshwater-withdrawals-as-a-share-of-internal-resources.csv?v=1&csvType=full&useColumnShortNames=false",
                   "host": ["{{grapher_base_url}}"],
-                  "path": ["water-stress-indicator.csv"],
+                  "path": ["freshwater-withdrawals-as-a-share-of-internal-resources.csv"],
                   "query": [
                     {
                       "key": "v",
@@ -4458,7 +4458,7 @@
                     }
                   ]
                 },
-                "description": "Datos en formato CSV del chart `water-stress-indicator`."
+                "description": "Datos en formato CSV del chart `freshwater-withdrawals-as-a-share-of-internal-resources`."
               },
               "response": []
             },
@@ -4486,9 +4486,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{grapher_base_url}}/water-stress-indicator.metadata.json?v=1&csvType=full&useColumnShortNames=false",
+                  "raw": "{{grapher_base_url}}/freshwater-withdrawals-as-a-share-of-internal-resources.metadata.json?v=1&csvType=full&useColumnShortNames=false",
                   "host": ["{{grapher_base_url}}"],
-                  "path": ["water-stress-indicator.metadata.json"],
+                  "path": ["freshwater-withdrawals-as-a-share-of-internal-resources.metadata.json"],
                   "query": [
                     {
                       "key": "v",
@@ -4504,7 +4504,7 @@
                     }
                   ]
                 },
-                "description": "Metadata (titulo, unidades, fuentes, citas) del chart `water-stress-indicator`."
+                "description": "Metadata (titulo, unidades, fuentes, citas) del chart `freshwater-withdrawals-as-a-share-of-internal-resources`."
               },
               "response": []
             },
@@ -4532,9 +4532,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{grapher_base_url}}/water-stress-indicator.zip",
+                  "raw": "{{grapher_base_url}}/freshwater-withdrawals-as-a-share-of-internal-resources.zip",
                   "host": ["{{grapher_base_url}}"],
-                  "path": ["water-stress-indicator.zip"]
+                  "path": ["freshwater-withdrawals-as-a-share-of-internal-resources.zip"]
                 },
                 "description": "ZIP con CSV, metadata.json y README.md."
               },

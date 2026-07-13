@@ -28,20 +28,21 @@ Tracks tree planting initiatives, forest restoration progress, and net forest ga
 
 ### 2. FAO Forest Resources Assessment (FRA) / FAOSTAT
 
-- **URL:** https://www.fao.org/forest-resources-assessment/en/ — FAOSTAT API: `https://fenixservices.fao.org/faostat/api/v1/`
-- **License:** ✅ Comercial/ads OK — CC BY.
-- **Model:** Free. Annual country-level data (CSV and JSON).
+- **URL:** https://www.fao.org/forest-resources-assessment/en/ — FAOSTAT bulk CSV: `https://bulks-faostat.fao.org/production/`
+- **License:** ✅ Comercial/ads OK — CC BY 4.0 (FAO Statistical Database Terms of Use).
+- **Model:** Free. Annual country-level data (bulk CSV downloads).
 - **Data:** Net forest area change, forest plantations, natural regeneration by country (every 5 years — FRA cycle).
 - **API key:** Not required.
+- **Validated (Jul 2026):** The legacy API host `fenixservices.fao.org` is down (HTTP 521) — use the bulk CSV downloads instead (see `deforestation.md`).
 
 | Field | Details |
 |---|---|
-| Base URL | `https://fenixservices.fao.org/faostat/api/v1` |
+| Base URL | `https://bulks-faostat.fao.org/production/` |
 | Auth | None |
 | Free tier | Yes |
 | Rate limit | None specified |
 | Update frequency | Every 5 years (FRA); annually for FAOSTAT indicators |
-| Format | CSV, JSON |
+| Format | CSV (zipped) |
 
 ---
 
@@ -121,7 +122,7 @@ Tracks tree planting initiatives, forest restoration progress, and net forest ga
 
 > **Honest note:** Reforestation is the category with the fewest robust public REST APIs. The most reliable strategy is:
 > 1. Use **Hansen/GFW "tree cover gain"** dataset for gross reforestation proxy.
-> 2. Use **FAO FRA** (via FAOSTAT API) for official net forest area by country.
+> 2. Use **FAO FRA** (via FAOSTAT bulk CSV) for official net forest area by country.
 > 3. Use **OWID forest area grapher CSV** (`https://ourworldindata.org/grapher/forest-area-km.csv`) as a harmonized, cacheable layer.
 
 - Fetch GFW and FAOSTAT data server-side and cache with ISR.

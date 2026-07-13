@@ -1,5 +1,8 @@
-## ADDED Requirements
+# theme-system Specification
 
+## Purpose
+TBD - created by archiving change add-light-mode-support. Update Purpose after archive.
+## Requirements
 ### Requirement: Theme provider manages application theme
 The system SHALL provide a React context provider (`ThemeProvider`) that wraps the application and exposes the current theme (`light` | `dark`) and a `toggleTheme` function via a `useTheme()` hook. The provider SHALL add or remove the `dark` class on `document.documentElement` whenever the theme changes.
 
@@ -55,3 +58,16 @@ The `useTheme()` hook SHALL throw a descriptive error when called outside a `The
 #### Scenario: useTheme called without provider
 - **WHEN** `useTheme()` is called in a component not wrapped by `ThemeProvider`
 - **THEN** an error is thrown with message "useTheme must be used within a ThemeProvider"
+
+### Requirement: No flash of incorrect theme on initial load
+The system SHALL apply the resolved theme before first paint via a blocking inline script in the document `<head>` that reads the stored preference (falling back to `prefers-color-scheme`) and removes the `dark` class from `<html>` when light mode is resolved. This SHALL prevent any flash of the wrong theme, even before React hydrates.
+
+#### Scenario: Light preference applies before paint
+- **WHEN** the stored preference is `"light"` (or no preference exists and `prefers-color-scheme` is light)
+- **THEN** the blocking script removes the `dark` class from `<html>` before first paint
+- **AND** the user sees light mode from the first frame with no flash
+
+#### Scenario: Blocking script is resilient to localStorage failures
+- **WHEN** `localStorage` access throws inside the blocking script
+- **THEN** the script fails silently and the default `dark` class remains
+

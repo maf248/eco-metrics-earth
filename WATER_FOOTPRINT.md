@@ -1,8 +1,10 @@
 # Water Footprint by Product — Research & Implementation Plan 💧
 
-> **Status:** Section created. Dataset compilation pending.
+> **Status:** Phase 2 complete — dataset compiled (52 products) and BFF endpoint live.
 > **Category slug:** `water-footprint`
 > **URL:** `/water-footprint/`
+> **Provider docs:** `docs/data-sources/water-footprint.md` (country-level sources: OWID, World Bank, FAO AQUASTAT — licenses and validated endpoints)
+> **API endpoint:** `GET /api/v1/water-footprint/products?category=` (optional filter: `food-beverages`, `textiles`, `technology`, `manufactured`)
 
 ---
 
@@ -89,7 +91,7 @@ Each entry must include the original citation/source (paper, report, or dataset)
 
 ## Technical Approach
 
-1. **Dataset as static JSON** — embedded in the repo under `apps/web/src/data/water-footprint.json`
+1. **Dataset as static JSON** — embedded in the repo under `apps/api/src/data/water-footprint.json` (52 products, served through the BFF)
 2. **Component rendering** — new client component `WaterFootprintTable` with filtering and sorting
 3. **Page integration** — rendered in the existing `/water-footprint/` category page via `[category]/page.tsx` template
 4. **Source attribution** — each data entry includes a `source`, `sourceUrl`, and `methodology` field
@@ -104,10 +106,12 @@ Each entry must include the original citation/source (paper, report, or dataset)
 - [x] Create `WaterFootprintIcon` component
 - [x] Wire up route, sitemap, nav, metadata
 
-### Phase 2 — Dataset compilation (Pending)
-- [ ] Curate and validate 30–50 product entries
-- [ ] Create `water-footprint.json` with citations
-- [ ] Add type definitions in `@eco-metrics/shared`
+### Phase 2 — Dataset compilation (✅ Complete — 12 Jul 2026)
+- [x] Curate and validate 52 product entries (38 Food & Beverages, 6 Textiles, 3 Technology, 5 Manufactured)
+- [x] Create `apps/api/src/data/water-footprint.json` with citations — all commercial-safe (CC BY / citable)
+- [x] Add type definitions (`WaterFootprintProduct`, `WaterFootprintCategory`) in `@eco-metrics/shared`
+- [x] Build NestJS module (`WaterFootprintModule`) exposing `GET /api/v1/water-footprint/products?category=`
+- [x] Unit tests (49 tests, 100% coverage — service + controller + module)
 
 ### Phase 3 — UI implementation (Pending)
 - [ ] Build `WaterFootprintTable` component
@@ -131,4 +135,4 @@ Each entry must include the original citation/source (paper, report, or dataset)
 
 ---
 
-*Last updated: 23 May 2026*
+*Last updated: 12 Jul 2026*

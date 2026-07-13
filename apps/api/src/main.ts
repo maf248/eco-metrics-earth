@@ -38,6 +38,7 @@ async function bootstrap() {
       .addServer('https://eco-metrics-earth-api.railway.app', 'production (Railway)')
       .addTag('Health', 'Health check endpoint')
       .addTag('Demo', 'Demo validation endpoints (mock)')
+      .addTag('Water Footprint', 'Product water footprint data')
       .build();
 
     const document = SwaggerModule.createDocument(app, config);

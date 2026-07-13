@@ -2,7 +2,7 @@
 
 Tracks carbon dioxide emissions by country, sector, and source. Includes historical trends, per-capita values, and cumulative totals relevant to climate change targets.
 
-> Note: UK Carbon Intensity API also appears in `energy-sources.md`; World Bank API also appears in `waste-recycling.md`.
+> Note: UK Carbon Intensity API also appears in `energy-sources.md`; World Bank API also appears in `waste-recycling.md` and `water-footprint.md`.
 
 ## Providers
 

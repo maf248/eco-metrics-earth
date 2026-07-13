@@ -2,7 +2,7 @@
 
 Tracks municipal solid waste generation, recycling rates, landfill usage, and waste composition by country and region. Includes e-waste and hazardous waste data where available.
 
-> Note: World Bank What a Waste also appears in `plastic-pollution.md`; World Bank API also appears in `co2-emissions.md`.
+> Note: World Bank What a Waste also appears in `plastic-pollution.md`; World Bank API also appears in `co2-emissions.md` and `water-footprint.md`.
 
 ## Providers
 

@@ -1,0 +1,470 @@
+[
+  {
+    "product": "Apples",
+    "category": "Food & Beverages",
+    "waterFootprintLiters": 180.1,
+    "unit": "per kg",
+    "source": "Poore & Nemecek (2018), Science",
+    "sourceUrl": "https://ourworldindata.org/grapher/water-withdrawals-per-kg-poore",
+    "methodology": "Freshwater withdrawals per kg of final product. Based on ~38,700 farms in 119 countries."
+  },
+  {
+    "product": "Bananas",
+    "category": "Food & Beverages",
+    "waterFootprintLiters": 114.5,
+    "unit": "per kg",
+    "source": "Poore & Nemecek (2018), Science",
+    "sourceUrl": "https://ourworldindata.org/grapher/water-withdrawals-per-kg-poore",
+    "methodology": "Freshwater withdrawals per kg of final product. Based on ~38,700 farms in 119 countries."
+  },
+  {
+    "product": "Barley",
+    "category": "Food & Beverages",
+    "waterFootprintLiters": 17.1,
+    "unit": "per kg",
+    "source": "Poore & Nemecek (2018), Science",
+    "sourceUrl": "https://ourworldindata.org/grapher/water-withdrawals-per-kg-poore",
+    "methodology": "Freshwater withdrawals per kg of final product. Based on ~38,700 farms in 119 countries."
+  },
+  {
+    "product": "Beef (beef herd)",
+    "category": "Food & Beverages",
+    "waterFootprintLiters": 1451.2,
+    "unit": "per kg",
+    "source": "Poore & Nemecek (2018), Science",
+    "sourceUrl": "https://ourworldindata.org/grapher/water-withdrawals-per-kg-poore",
+    "methodology": "Freshwater withdrawals per kg of final product. Based on ~38,700 farms in 119 countries."
+  },
+  {
+    "product": "Beef (dairy herd)",
+    "category": "Food & Beverages",
+    "waterFootprintLiters": 2714.3,
+    "unit": "per kg",
+    "source": "Poore & Nemecek (2018), Science",
+    "sourceUrl": "https://ourworldindata.org/grapher/water-withdrawals-per-kg-poore",
+    "methodology": "Freshwater withdrawals per kg of final product. Based on ~38,700 farms in 119 countries."
+  },
+  {
+    "product": "Beet Sugar",
+    "category": "Food & Beverages",
+    "waterFootprintLiters": 217.7,
+    "unit": "per kg",
+    "source": "Poore & Nemecek (2018), Science",
+    "sourceUrl": "https://ourworldindata.org/grapher/water-withdrawals-per-kg-poore",
+    "methodology": "Freshwater withdrawals per kg of final product. Based on ~38,700 farms in 119 countries."
+  },
+  {
+    "product": "Berries & Grapes",
+    "category": "Food & Beverages",
+    "waterFootprintLiters": 419.6,
+    "unit": "per kg",
+    "source": "Poore & Nemecek (2018), Science",
+    "sourceUrl": "https://ourworldindata.org/grapher/water-withdrawals-per-kg-poore",
+    "methodology": "Freshwater withdrawals per kg of final product. Based on ~38,700 farms in 119 countries."
+  },
+  {
+    "product": "Brassicas",
+    "category": "Food & Beverages",
+    "waterFootprintLiters": 119.4,
+    "unit": "per kg",
+    "source": "Poore & Nemecek (2018), Science",
+    "sourceUrl": "https://ourworldindata.org/grapher/water-withdrawals-per-kg-poore",
+    "methodology": "Freshwater withdrawals per kg of final product. Based on ~38,700 farms in 119 countries."
+  },
+  {
+    "product": "Cane Sugar",
+    "category": "Food & Beverages",
+    "waterFootprintLiters": 620.1,
+    "unit": "per kg",
+    "source": "Poore & Nemecek (2018), Science",
+    "sourceUrl": "https://ourworldindata.org/grapher/water-withdrawals-per-kg-poore",
+    "methodology": "Freshwater withdrawals per kg of final product. Based on ~38,700 farms in 119 countries."
+  },
+  {
+    "product": "Cassava",
+    "category": "Food & Beverages",
+    "waterFootprintLiters": null,
+    "unit": "per kg",
+    "source": "Poore & Nemecek (2018), Science",
+    "sourceUrl": "https://ourworldindata.org/grapher/water-withdrawals-per-kg-poore",
+    "methodology": "Freshwater withdrawals per kg of final product. Based on ~38,700 farms in 119 countries."
+  },
+  {
+    "product": "Cheese",
+    "category": "Food & Beverages",
+    "waterFootprintLiters": 5605.2,
+    "unit": "per kg",
+    "source": "Poore & Nemecek (2018), Science",
+    "sourceUrl": "https://ourworldindata.org/grapher/water-withdrawals-per-kg-poore",
+    "methodology": "Freshwater withdrawals per kg of final product. Based on ~38,700 farms in 119 countries."
+  },
+  {
+    "product": "Citrus Fruit",
+    "category": "Food & Beverages",
+    "waterFootprintLiters": 82.7,
+    "unit": "per kg",
+    "source": "Poore & Nemecek (2018), Science",
+    "sourceUrl": "https://ourworldindata.org/grapher/water-withdrawals-per-kg-poore",
+    "methodology": "Freshwater withdrawals per kg of final product. Based on ~38,700 farms in 119 countries."
+  },
+  {
+    "product": "Coffee",
+    "category": "Food & Beverages",
+    "waterFootprintLiters": 25.9,
+    "unit": "per kg",
+    "source": "Poore & Nemecek (2018), Science",
+    "sourceUrl": "https://ourworldindata.org/grapher/water-withdrawals-per-kg-poore",
+    "methodology": "Freshwater withdrawals per kg of final product. Based on ~38,700 farms in 119 countries."
+  },
+  {
+    "product": "Dark Chocolate",
+    "category": "Food & Beverages",
+    "waterFootprintLiters": 540.6,
+    "unit": "per kg",
+    "source": "Poore & Nemecek (2018), Science",
+    "sourceUrl": "https://ourworldindata.org/grapher/water-withdrawals-per-kg-poore",
+    "methodology": "Freshwater withdrawals per kg of final product. Based on ~38,700 farms in 119 countries."
+  },
+  {
+    "product": "Eggs",
+    "category": "Food & Beverages",
+    "waterFootprintLiters": 577.7,
+    "unit": "per kg",
+    "source": "Poore & Nemecek (2018), Science",
+    "sourceUrl": "https://ourworldindata.org/grapher/water-withdrawals-per-kg-poore",
+    "methodology": "Freshwater withdrawals per kg of final product. Based on ~38,700 farms in 119 countries."
+  },
+  {
+    "product": "Fish (farmed)",
+    "category": "Food & Beverages",
+    "waterFootprintLiters": 3691.3,
+    "unit": "per kg",
+    "source": "Poore & Nemecek (2018), Science",
+    "sourceUrl": "https://ourworldindata.org/grapher/water-withdrawals-per-kg-poore",
+    "methodology": "Freshwater withdrawals per kg of final product. Based on ~38,700 farms in 119 countries."
+  },
+  {
+    "product": "Groundnuts",
+    "category": "Food & Beverages",
+    "waterFootprintLiters": 1852.3,
+    "unit": "per kg",
+    "source": "Poore & Nemecek (2018), Science",
+    "sourceUrl": "https://ourworldindata.org/grapher/water-withdrawals-per-kg-poore",
+    "methodology": "Freshwater withdrawals per kg of final product. Based on ~38,700 farms in 119 countries."
+  },
+  {
+    "product": "Lamb & Mutton",
+    "category": "Food & Beverages",
+    "waterFootprintLiters": 1802.8,
+    "unit": "per kg",
+    "source": "Poore & Nemecek (2018), Science",
+    "sourceUrl": "https://ourworldindata.org/grapher/water-withdrawals-per-kg-poore",
+    "methodology": "Freshwater withdrawals per kg of final product. Based on ~38,700 farms in 119 countries."
+  },
+  {
+    "product": "Maize",
+    "category": "Food & Beverages",
+    "waterFootprintLiters": 215.7,
+    "unit": "per kg",
+    "source": "Poore & Nemecek (2018), Science",
+    "sourceUrl": "https://ourworldindata.org/grapher/water-withdrawals-per-kg-poore",
+    "methodology": "Freshwater withdrawals per kg of final product. Based on ~38,700 farms in 119 countries."
+  },
+  {
+    "product": "Milk",
+    "category": "Food & Beverages",
+    "waterFootprintLiters": 628.2,
+    "unit": "per kg",
+    "source": "Poore & Nemecek (2018), Science",
+    "sourceUrl": "https://ourworldindata.org/grapher/water-withdrawals-per-kg-poore",
+    "methodology": "Freshwater withdrawals per kg of final product. Based on ~38,700 farms in 119 countries."
+  },
+  {
+    "product": "Nuts",
+    "category": "Food & Beverages",
+    "waterFootprintLiters": 4133.8,
+    "unit": "per kg",
+    "source": "Poore & Nemecek (2018), Science",
+    "sourceUrl": "https://ourworldindata.org/grapher/water-withdrawals-per-kg-poore",
+    "methodology": "Freshwater withdrawals per kg of final product. Based on ~38,700 farms in 119 countries."
+  },
+  {
+    "product": "Oatmeal",
+    "category": "Food & Beverages",
+    "waterFootprintLiters": 482.4,
+    "unit": "per kg",
+    "source": "Poore & Nemecek (2018), Science",
+    "sourceUrl": "https://ourworldindata.org/grapher/water-withdrawals-per-kg-poore",
+    "methodology": "Freshwater withdrawals per kg of final product. Based on ~38,700 farms in 119 countries."
+  },
+  {
+    "product": "Onions & Leeks",
+    "category": "Food & Beverages",
+    "waterFootprintLiters": 14.3,
+    "unit": "per kg",
+    "source": "Poore & Nemecek (2018), Science",
+    "sourceUrl": "https://ourworldindata.org/grapher/water-withdrawals-per-kg-poore",
+    "methodology": "Freshwater withdrawals per kg of final product. Based on ~38,700 farms in 119 countries."
+  },
+  {
+    "product": "Other Fruit",
+    "category": "Food & Beverages",
+    "waterFootprintLiters": 153.5,
+    "unit": "per kg",
+    "source": "Poore & Nemecek (2018), Science",
+    "sourceUrl": "https://ourworldindata.org/grapher/water-withdrawals-per-kg-poore",
+    "methodology": "Freshwater withdrawals per kg of final product. Based on ~38,700 farms in 119 countries."
+  },
+  {
+    "product": "Other Pulses",
+    "category": "Food & Beverages",
+    "waterFootprintLiters": 435.7,
+    "unit": "per kg",
+    "source": "Poore & Nemecek (2018), Science",
+    "sourceUrl": "https://ourworldindata.org/grapher/water-withdrawals-per-kg-poore",
+    "methodology": "Freshwater withdrawals per kg of final product. Based on ~38,700 farms in 119 countries."
+  },
+  {
+    "product": "Other Vegetables",
+    "category": "Food & Beverages",
+    "waterFootprintLiters": 102.5,
+    "unit": "per kg",
+    "source": "Poore & Nemecek (2018), Science",
+    "sourceUrl": "https://ourworldindata.org/grapher/water-withdrawals-per-kg-poore",
+    "methodology": "Freshwater withdrawals per kg of final product. Based on ~38,700 farms in 119 countries."
+  },
+  {
+    "product": "Peas",
+    "category": "Food & Beverages",
+    "waterFootprintLiters": 396.6,
+    "unit": "per kg",
+    "source": "Poore & Nemecek (2018), Science",
+    "sourceUrl": "https://ourworldindata.org/grapher/water-withdrawals-per-kg-poore",
+    "methodology": "Freshwater withdrawals per kg of final product. Based on ~38,700 farms in 119 countries."
+  },
+  {
+    "product": "Pig Meat",
+    "category": "Food & Beverages",
+    "waterFootprintLiters": 1795.8,
+    "unit": "per kg",
+    "source": "Poore & Nemecek (2018), Science",
+    "sourceUrl": "https://ourworldindata.org/grapher/water-withdrawals-per-kg-poore",
+    "methodology": "Freshwater withdrawals per kg of final product. Based on ~38,700 farms in 119 countries."
+  },
+  {
+    "product": "Potatoes",
+    "category": "Food & Beverages",
+    "waterFootprintLiters": 59.1,
+    "unit": "per kg",
+    "source": "Poore & Nemecek (2018), Science",
+    "sourceUrl": "https://ourworldindata.org/grapher/water-withdrawals-per-kg-poore",
+    "methodology": "Freshwater withdrawals per kg of final product. Based on ~38,700 farms in 119 countries."
+  },
+  {
+    "product": "Poultry Meat",
+    "category": "Food & Beverages",
+    "waterFootprintLiters": 660,
+    "unit": "per kg",
+    "source": "Poore & Nemecek (2018), Science",
+    "sourceUrl": "https://ourworldindata.org/grapher/water-withdrawals-per-kg-poore",
+    "methodology": "Freshwater withdrawals per kg of final product. Based on ~38,700 farms in 119 countries."
+  },
+  {
+    "product": "Prawns (farmed)",
+    "category": "Food & Beverages",
+    "waterFootprintLiters": 3515.4,
+    "unit": "per kg",
+    "source": "Poore & Nemecek (2018), Science",
+    "sourceUrl": "https://ourworldindata.org/grapher/water-withdrawals-per-kg-poore",
+    "methodology": "Freshwater withdrawals per kg of final product. Based on ~38,700 farms in 119 countries."
+  },
+  {
+    "product": "Rice",
+    "category": "Food & Beverages",
+    "waterFootprintLiters": 2248.4,
+    "unit": "per kg",
+    "source": "Poore & Nemecek (2018), Science",
+    "sourceUrl": "https://ourworldindata.org/grapher/water-withdrawals-per-kg-poore",
+    "methodology": "Freshwater withdrawals per kg of final product. Based on ~38,700 farms in 119 countries."
+  },
+  {
+    "product": "Root Vegetables",
+    "category": "Food & Beverages",
+    "waterFootprintLiters": 28.4,
+    "unit": "per kg",
+    "source": "Poore & Nemecek (2018), Science",
+    "sourceUrl": "https://ourworldindata.org/grapher/water-withdrawals-per-kg-poore",
+    "methodology": "Freshwater withdrawals per kg of final product. Based on ~38,700 farms in 119 countries."
+  },
+  {
+    "product": "Soy milk",
+    "category": "Food & Beverages",
+    "waterFootprintLiters": 27.8,
+    "unit": "per kg",
+    "source": "Poore & Nemecek (2018), Science",
+    "sourceUrl": "https://ourworldindata.org/grapher/water-withdrawals-per-kg-poore",
+    "methodology": "Freshwater withdrawals per kg of final product. Based on ~38,700 farms in 119 countries."
+  },
+  {
+    "product": "Tofu",
+    "category": "Food & Beverages",
+    "waterFootprintLiters": 148.6,
+    "unit": "per kg",
+    "source": "Poore & Nemecek (2018), Science",
+    "sourceUrl": "https://ourworldindata.org/grapher/water-withdrawals-per-kg-poore",
+    "methodology": "Freshwater withdrawals per kg of final product. Based on ~38,700 farms in 119 countries."
+  },
+  {
+    "product": "Tomatoes",
+    "category": "Food & Beverages",
+    "waterFootprintLiters": 369.8,
+    "unit": "per kg",
+    "source": "Poore & Nemecek (2018), Science",
+    "sourceUrl": "https://ourworldindata.org/grapher/water-withdrawals-per-kg-poore",
+    "methodology": "Freshwater withdrawals per kg of final product. Based on ~38,700 farms in 119 countries."
+  },
+  {
+    "product": "Wheat & Rye",
+    "category": "Food & Beverages",
+    "waterFootprintLiters": 647.5,
+    "unit": "per kg",
+    "source": "Poore & Nemecek (2018), Science",
+    "sourceUrl": "https://ourworldindata.org/grapher/water-withdrawals-per-kg-poore",
+    "methodology": "Freshwater withdrawals per kg of final product. Based on ~38,700 farms in 119 countries."
+  },
+  {
+    "product": "Wine",
+    "category": "Food & Beverages",
+    "waterFootprintLiters": 78.9,
+    "unit": "per kg",
+    "source": "Poore & Nemecek (2018), Science",
+    "sourceUrl": "https://ourworldindata.org/grapher/water-withdrawals-per-kg-poore",
+    "methodology": "Freshwater withdrawals per kg of final product. Based on ~38,700 farms in 119 countries."
+  },
+  {
+    "product": "Cotton (lint)",
+    "category": "Textiles",
+    "waterFootprintLiters": 4030,
+    "unit": "per kg",
+    "source": "Mekonnen & Hoekstra (2011), Hydrology and Earth System Sciences",
+    "sourceUrl": "https://waterfootprint.org/en/resources/waterstat/",
+    "methodology": "Blue and green water footprint of cotton lint."
+  },
+  {
+    "product": "Cotton t-shirt (250g)",
+    "category": "Textiles",
+    "waterFootprintLiters": 2720,
+    "unit": "per unit",
+    "source": "Mekonnen & Hoekstra (2011), Hydrology and Earth System Sciences",
+    "sourceUrl": "https://waterfootprint.org/en/resources/waterstat/",
+    "methodology": "Estimated from cotton lint water footprint per kg."
+  },
+  {
+    "product": "Pair of jeans (800g cotton)",
+    "category": "Textiles",
+    "waterFootprintLiters": 8000,
+    "unit": "per pair",
+    "source": "Mekonnen & Hoekstra (2011), Hydrology and Earth System Sciences",
+    "sourceUrl": "https://waterfootprint.org/en/resources/waterstat/",
+    "methodology": "Estimated from cotton lint water footprint per kg."
+  },
+  {
+    "product": "Leather (bovine)",
+    "category": "Textiles",
+    "waterFootprintLiters": 17100,
+    "unit": "per kg",
+    "source": "Mekonnen & Hoekstra (2011), Hydrology and Earth System Sciences",
+    "sourceUrl": "https://waterfootprint.org/en/resources/waterstat/",
+    "methodology": "Water footprint of bovine leather."
+  },
+  {
+    "product": "Pair of leather shoes",
+    "category": "Textiles",
+    "waterFootprintLiters": 8000,
+    "unit": "per pair",
+    "source": "Mekonnen & Hoekstra (2011), Hydrology and Earth System Sciences",
+    "sourceUrl": "https://waterfootprint.org/en/resources/waterstat/",
+    "methodology": "Estimated from bovine leather water footprint per kg."
+  },
+  {
+    "product": "A4 sheet of paper",
+    "category": "Textiles",
+    "waterFootprintLiters": 10,
+    "unit": "per unit",
+    "source": "Mekonnen & Hoekstra (2011), Hydrology and Earth System Sciences",
+    "sourceUrl": "https://waterfootprint.org/en/resources/waterstat/",
+    "methodology": "Water footprint of paper (pulp and paper sector)."
+  },
+  {
+    "product": "Microchip (2g)",
+    "category": "Technology",
+    "waterFootprintLiters": 32,
+    "unit": "per unit",
+    "source": "Williams, Ayres & Heller (2002), Environ. Sci. Technol.",
+    "sourceUrl": "https://doi.org/10.1021/es025643o",
+    "methodology": "Water inputs for fabrication of a 2g microchip."
+  },
+  {
+    "product": "Smartphone (1 unit)",
+    "category": "Technology",
+    "waterFootprintLiters": 12760,
+    "unit": "per unit",
+    "source": "Apple Product Environmental Report, iPhone 15",
+    "sourceUrl": "https://www.apple.com/environment/",
+    "methodology": "Manufacturing water use including supply chain."
+  },
+  {
+    "product": "Laptop (1 unit)",
+    "category": "Technology",
+    "waterFootprintLiters": 38000,
+    "unit": "per unit",
+    "source": "Apple Product Environmental Report, MacBook Air",
+    "sourceUrl": "https://www.apple.com/environment/",
+    "methodology": "Manufacturing water use including supply chain."
+  },
+  {
+    "product": "Steel (virgin)",
+    "category": "Manufactured",
+    "waterFootprintLiters": 250,
+    "unit": "per kg",
+    "source": "Water Footprint Network (various)",
+    "sourceUrl": "https://waterfootprint.org/en/resources/waterstat/",
+    "methodology": "Weighted global average. Values may vary by production method and location."
+  },
+  {
+    "product": "Cement",
+    "category": "Manufactured",
+    "waterFootprintLiters": 5,
+    "unit": "per kg",
+    "source": "Water Footprint Network (various)",
+    "sourceUrl": "https://waterfootprint.org/en/resources/waterstat/",
+    "methodology": "Weighted global average. Values may vary by production method and location."
+  },
+  {
+    "product": "Flat glass",
+    "category": "Manufactured",
+    "waterFootprintLiters": 25,
+    "unit": "per kg",
+    "source": "Water Footprint Network (various)",
+    "sourceUrl": "https://waterfootprint.org/en/resources/waterstat/",
+    "methodology": "Weighted global average. Values may vary by production method and location."
+  },
+  {
+    "product": "PET plastic (virgin)",
+    "category": "Manufactured",
+    "waterFootprintLiters": 180,
+    "unit": "per kg",
+    "source": "Water Footprint Network (various)",
+    "sourceUrl": "https://waterfootprint.org/en/resources/waterstat/",
+    "methodology": "Weighted global average. Values may vary by production method and location."
+  },
+  {
+    "product": "Compact car",
+    "category": "Manufactured",
+    "waterFootprintLiters": 400000,
+    "unit": "per unit",
+    "source": "Water Footprint Network (various)",
+    "sourceUrl": "https://waterfootprint.org/en/resources/waterstat/",
+    "methodology": "Weighted global average. Values may vary by production method and location."
+  }
+]

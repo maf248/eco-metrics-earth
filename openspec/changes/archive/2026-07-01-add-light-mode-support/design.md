@@ -2,7 +2,7 @@
 
 The `apps/web` Next.js app is currently hardcoded to dark mode. The `<html>` element has a static `className="dark"` and all components use fixed dark-themed color classes (`bg-black`, `text-white`, `bg-white/10`, etc.). Tailwind CSS v4's `@custom-variant dark` directive is already configured in `globals.css`, which maps the `dark:` prefix to `&:where(.dark, .dark *)`. No theming infrastructure (provider, context, persistence) exists.
 
-The user wants a settings menu (top-right) with a light/dark toggle, and the entire frontend adapted for both modes.
+The user wants a light/dark theme toggle (top-right) and the entire frontend adapted for both modes.
 
 ## Goals / Non-Goals
 
@@ -10,14 +10,15 @@ The user wants a settings menu (top-right) with a light/dark toggle, and the ent
 - Provide a `ThemeProvider` that manages theme state via React Context and toggles the `dark` class on `<html>`.
 - Persist the user's theme choice in `localStorage` so it survives page reloads.
 - Respect `prefers-color-scheme` as the default when no stored preference exists.
-- Create a `SettingsMenu` component (fixed top-right) with a dropdown containing the theme toggle (lamp icon), structured to accept future settings items.
+- Apply the resolved theme before first paint via a blocking inline script to avoid any flash of the wrong theme.
+- Create a `ThemeToggle` component (fixed top-right) — a single lamp-icon button that toggles the theme.
 - Adapt all existing components and pages to render correctly in both light and dark modes using Tailwind `dark:` variant classes.
 - Update tests to cover both theme modes.
 
 **Non-Goals:**
 - No theme transition animations beyond instant toggle.
 - No additional theme variants (high-contrast, sepia, custom colors).
-- No SSR theme detection — a brief client-side flash before theme application is acceptable.
+- No SSR/server theme detection — the theme is resolved client-side, but a blocking inline script in `<head>` applies it before first paint so there is no visible flash.
 - No external theming library (e.g., `next-themes`).
 - No changes to the emerald accent color or brand identity.
 
@@ -50,22 +51,22 @@ The user wants a settings menu (top-right) with a light/dark toggle, and the ent
 - `data-theme` attribute: Would require changing the existing `@custom-variant` directive. No benefit over the current `class` strategy.
 - CSS custom properties (`--color-bg`, etc.): More flexible for future theme variants but overkill for a simple binary toggle.
 
-### 4. Settings menu: fixed top-right button with portal dropdown
+### 4. Theme control: single fixed top-right toggle button
 
-**Choice:** A fixed-position gear icon button at the top-right of the viewport (`fixed top-4 right-4 z-50`). Clicking toggles a dropdown panel containing the theme toggle (lamp icon). The dropdown closes on outside click (via a backdrop `div` or click-away listener) and on Escape key.
+**Choice:** A fixed-position lamp-icon button at the top-right of the viewport (`fixed top-2 right-4 z-50 lg:top-4`). Clicking it calls `toggleTheme()` directly — there is no dropdown or settings menu.
 
-**Rationale:** Fixed positioning ensures the settings are always accessible regardless of scroll position. The dropdown pattern is familiar and extensible — future settings items can be added as additional rows in the dropdown without changing the trigger button.
+**Rationale:** The only setting today is the light/dark toggle, so a dropdown/menu wrapper adds interaction cost (open, click-away, Escape, focus trap) for zero current benefit. A direct one-tap button is simpler, more discoverable, and fully accessible via a native `<button>`. A dropdown-based settings menu can be reintroduced later if and when there is more than one setting to house.
 
 **Alternatives considered:**
-- Navbar item: Would clutter the navigation with non-navigation functionality. Settings belong in a separate UI region.
-- Bottom-right floating action button: Less discoverable on desktop. Top-right is a standard pattern (Google, GitHub, etc.).
-- Dialog/modal: Too heavy for a simple toggle. Dropdown is lighter and faster.
+- Settings dropdown menu (gear trigger + panel): This was the original plan, but it was over-engineered for a single toggle. Deferred until a second setting exists.
+- Navbar item: Would clutter the navigation with non-navigation functionality.
+- Bottom-right floating action button: Less discoverable on desktop. Top-right is a standard pattern.
 
-### 5. Icons: Custom SVG components (following existing pattern)
+### 5. Icons: Custom SVG component (following existing pattern)
 
-**Choice:** New `SettingsIcon` (gear/cog) and `LightBulbIcon` (lamp) as React components in `apps/web/src/components/icons/`.
+**Choice:** A new `LightBulbIcon` (lamp) React component in `apps/web/src/components/icons/`, using `currentColor` plus `dark:` variant classes so its lit/dimmed appearance follows the theme.
 
-**Rationale:** The project already has 14 custom SVG icon components following the same pattern. Consistency over adding an icon library.
+**Rationale:** The project already has custom SVG icon components following the same pattern. Consistency over adding an icon library. No gear/`SettingsIcon` is needed since there is no settings menu — only the single lamp button.
 
 ### 6. Component adaptation approach: `dark:` variant classes
 
@@ -89,13 +90,13 @@ The user wants a settings menu (top-right) with a light/dark toggle, and the ent
 
 ## Risks / Trade-offs
 
-- **[Risk] Brief flash of incorrect theme on first load** → **Mitigation:** Acceptable per Non-Goals. The theme applies on the client side immediately after React hydrates. In practice, this is ~100-200ms and barely noticeable. Can be addressed later with a blocking `<script>` in `<head>` if it becomes a complaint.
+- **[Resolved] Flash of incorrect theme on first load** → A blocking inline `<script>` in `<head>` reads the stored preference (falling back to `prefers-color-scheme`) and removes the `dark` class before first paint, so there is no flash even before React hydrates.
 
 - **[Risk] `localStorage` is not available in all contexts** → **Mitigation:** Wrap `localStorage` access in try/catch. On failure (e.g., private browsing in some older browsers), fall back to `prefers-color-scheme` only, without persistence.
 
 - **[Risk] Snapshot tests will break** → **Mitigation:** Update snapshots intentionally after verifying the new output is correct. Component tests that render without a `ThemeProvider` wrapper will need the provider added to their test wrappers.
 
-- **[Risk] Icon colors in custom SVG components are hardcoded** → **Mitigation:** Update the 14 existing icon components to use `currentColor` for their fill/stroke so they inherit the text color from the parent. This is the idiomatic SVG approach and works with Tailwind's `text-*` classes.
+- **[Decision] Eco-category icon colors stay hardcoded** → The existing eco-category SVG icons use specific brand colors per category (greens, blues, reds) that are part of each category's visual identity and read correctly on both light and dark backgrounds. They are intentionally left multi-colored. Only the new `LightBulbIcon` UI control uses `currentColor` so its lit/dimmed state can follow the theme.
 
 ## Open Questions
 

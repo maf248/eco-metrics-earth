@@ -31,5 +31,10 @@
     "jest.config.cjs",
     "src/**/*.spec.ts",
     "src/**/*.test.ts"
+  ],
+  "references": [
+    {
+      "path": "../../packages/shared/tsconfig.lib.json"
+    }
   ]
 }
