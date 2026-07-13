@@ -1,3 +1,9 @@
+## [2.1.0](https://github.com/maf248/eco-metrics-earth/compare/api-v2.0.2...api-v2.1.0) (2026-07-13)
+
+### Bug Fixes
+
+* **api:** resolve ESM module resolution failure in shared package ([e8c978b](https://github.com/maf248/eco-metrics-earth/commit/e8c978bb32149752131b049f7288ac7d1af74ae3))
+
 ## [2.0.2](https://github.com/maf248/eco-metrics-earth/compare/api-v2.0.1...api-v2.0.2) (2026-07-01)
 
 ## [2.0.1](https://github.com/maf248/eco-metrics-earth/compare/api-v2.0.0...api-v2.0.1) (2026-06-08)
