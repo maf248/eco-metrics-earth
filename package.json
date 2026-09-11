@@ -94,10 +94,11 @@
       "prettier --write"
     ]
   },
+  "dependencies": {},
   "overrides": {
     "chokidar": "5.0.0",
+    "multer": "2.3.0",
     "readdirp": "5.0.0",
     "smol-toml": "1.8.0"
-  },
-  "dependencies": {}
+  }
 }

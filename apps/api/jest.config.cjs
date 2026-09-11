@@ -13,6 +13,9 @@ module.exports = {
   transform: {
     '^.+\\.[tj]s$': ['@swc/jest', swcJestConfig],
   },
+  // NestJS 12 publishes @nestjs/* as ESM; @swc/jest must transform those
+  // packages so the CJS test runner can require() them.
+  transformIgnorePatterns: ['node_modules/(?!(@nestjs)/)'],
   moduleFileExtensions: ['ts', 'js', 'html'],
   coverageDirectory: 'test-output/jest/coverage',
   coverageReporters: ['text', 'lcov'],
