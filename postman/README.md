@@ -6,10 +6,10 @@ API collections for all external data providers used in the project.
 
 | File | Description |
 |------|-------------|
-| `world-bank.collection.json` | World Bank Open Data API |
-| `noaa.collection.json` | NOAA Climate & Weather API |
-| `open-meteo.collection.json` | Open-Meteo Weather API |
-| `our-world-in-data.collection.json` | Our World in Data datasets |
+| `World Bank Open Data API — Environment & Development.postman_collection.json` | World Bank Open Data API |
+| `NOAA — eco-metrics earth.postman_collection.json` | NOAA (GML, Tides & Currents, NSIDC, NCEI) |
+| `Open-Meteo — Weather, Climate, Air Quality, Marine, Flood.postman_collection.json` | Open-Meteo (prototype only — non-commercial license) |
+| `Our World in Data — Ecology, Humanity & Sustainability.postman_collection.json` | Our World in Data (first production provider — see ROADMAP) |
 | `eco-metrics.environment.template.json` | Environment variables template (no real keys) |
 
 ## Sync strategy

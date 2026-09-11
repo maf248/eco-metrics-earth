@@ -3,7 +3,7 @@
 Environmental metrics dashboard — the user-facing app consuming the NestJS BFF.
 
 - **Framework:** Next.js 16 (App Router)
-- **UI:** React 19 + Tailwind CSS 3
+- **UI:** React 19 + Tailwind CSS 4
 - **Port:** 3000 (development)
 - **Deploy target:** Vercel
 
@@ -17,7 +17,7 @@ All routes use the **App Router** convention (`app/` directory). Category pages 
 
 ```
 src/app/
-├── layout.tsx        # Root layout — <html>, Navbar, skip-to-content, global CSS, metadata base
+├── layout.tsx        # Root layout — <html>, Navbar/MobileHeader, skip-to-content, theme script, global CSS, metadata base
 ├── page.tsx          # Home — /
 ├── [category]/
 │   └── page.tsx      # Category page — /[slug]/ — statically generated
@@ -34,9 +34,13 @@ Category pages use `generateStaticParams` to enumerate all `ECO_CATEGORIES` slug
 
 ```
 src/components/
+├── BrandText.tsx          # Terminal-style animated brand text — used in Navbar and MobileHeader
+├── MobileHeader.tsx       # Mobile-only fixed top header (< lg) — site identity + home link
 ├── Navbar.tsx             # Responsive nav: bottom bar (mobile) / left sidebar (≥ lg)
 ├── NavLink.tsx            # Individual nav item — applies aria-current="page" when active
 ├── NavScrollContainer.tsx # Horizontal scroll wrapper with fade-edge gradients (mobile)
+├── ThemeProvider.tsx      # React Context theme provider — light/dark + localStorage persistence
+├── ThemeToggle.tsx        # Lamp-style theme toggle — zero-flash via blocking script in layout
 └── icons/
     ├── index.ts           # Re-exports all icon components
     ├── SiteLogoIcon.tsx
@@ -52,10 +56,11 @@ src/components/
     ├── EnergySourcesIcon.tsx
     ├── WasteRecyclingIcon.tsx
     ├── WaterFootprintIcon.tsx
+    ├── LightBulbIcon.tsx   # Used by ThemeToggle
     └── BottleIcon.tsx      # Used for plastic-pollution
 ```
 
-`Navbar` is a single `<nav>` element — responsive layout is CSS-only (no JS switching). Mobile/tablet renders a fixed bottom bar; desktop (≥ `lg`) renders a fixed 64px-wide left sidebar. The root layout offsets the content area via `pb-16 lg:pb-0 lg:pl-64`.
+`Navbar` is a single `<nav>` element — responsive layout is CSS-only (no JS switching). Mobile/tablet renders a fixed bottom bar; desktop (≥ `lg`) renders a fixed 64px-wide left sidebar. Below `lg`, `MobileHeader` renders a fixed top header — every `<main>` clears it with `pt-14`. `BrandText` (terminal-style typewriter, reduced-motion aware) is shared by the mobile header and the desktop sidebar brand. Theming: `ThemeProvider` (React Context + localStorage persistence) and `ThemeToggle` (lamp-style button, zero-flash via a blocking script in the root layout).
 
 ### Utilities (`src/lib/`)
 
@@ -73,7 +78,7 @@ Every page exports a `metadata` object with `title`, `description`, `alternates.
 
 Additional SEO outputs:
 - `robots.ts` — allows `/`, disallows `/api/`
-- `sitemap.ts` — home (`priority: 1.0`) + all 11 category pages (`priority: 0.8`), `changeFrequency: weekly`
+- `sitemap.ts` — home (`priority: 1.0`) + all 12 category pages (`priority: 0.8`), `changeFrequency: weekly`
 - `manifest.ts` — PWA manifest; `display: standalone`, `theme_color: #10b981`
 
 ### Security headers (`next.config.ts`)
@@ -103,6 +108,7 @@ cp apps/web/.env.example apps/web/.env.local
 | Variable | Default | Description |
 |----------|---------|-------------|
 | `NEXT_PUBLIC_SITE_URL` | `http://localhost:3000` | Canonical base URL for SEO metadata, sitemap, and Open Graph |
+| `ANALYZE` | `false` | Set to `true` to generate a bundle analysis report on build (webpack only) |
 
 ---
 
