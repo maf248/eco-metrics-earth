@@ -279,11 +279,12 @@ Pre-PR checklist: `npm run lint`, `npm run build`, and `npm run test` must all p
 - **Use the latest compatible version** when adding or updating a package — check for peer dependency constraints before upgrading across major versions.
 - **`@types/node` must match the runtime** — the project uses Node 24 LTS, so always use `@types/node@24.x`.
 - **Install dependencies in the correct scope** — never install a dependency at the monorepo root unless it is shared across multiple apps/packages. Check which project actually needs the dependency:
-  - `apps/api/`-only deps (e.g., `@nestjs/*`, `swagger-ui-express`) → install in `apps/api/package.json`
+  - `apps/api/`-only deps (e.g., `@nestjs/*`, `helmet`) → install in `apps/api/package.json`
   - `apps/web/`-only deps (e.g., `next`, `react`) → install in `apps/web/package.json`
   - `packages/shared/`-only deps → install in `packages/shared/package.json`
   - Shared dev tooling (e.g., `eslint`, `prettier`, `nx`, `typescript`) → root `package.json`
   - When in doubt, ask before installing.
+- **Deliberate dependency pin:** `@nestjs/throttler` is intentionally held at `6.5.0`. As of 11 Sep 2026 no throttler release declares NestJS 12 in its peer dependency range (peers reach `^11` only), and `.npmrc` has `legacy-peer-deps=true`. The pin is validated empirically (unit + E2E). Revisit only when a throttler release explicitly adds NestJS 12 peer support — do not "fix" this pin blindly.
 - To update a package: check `npm outdated`, verify compatibility, install with `--save-exact`, then run `npm run build` and `npm run test` before committing.
 
 ## Documentation Maintenance
