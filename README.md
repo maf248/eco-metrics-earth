@@ -6,7 +6,7 @@ An environmental metrics dashboard monorepo — tracking air quality, CO₂ emis
 
 | Layer          | Technology                                                         | Version | Docs                                                                                         |
 | -------------- | ------------------------------------------------------------------ | ------- | -------------------------------------------------------------------------------------------- |
-| **Monorepo**   | [NX](https://nx.dev)                                               | 22.7.2  | [nx.dev/docs](https://nx.dev/getting-started/intro)                                          |
+| **Monorepo**   | [NX](https://nx.dev)                                               | 23.2.1  | [nx.dev/docs](https://nx.dev/getting-started/intro)                                          |
 | **Runtime**    | [Node.js](https://nodejs.org) LTS                                  | 24.x    | [nodejs.org/docs](https://nodejs.org/docs/latest-v24.x/api/)                                 |
 | **Frontend**   | [Next.js](https://nextjs.org) (App Router)                         | 16.2.6  | [nextjs.org/docs](https://nextjs.org/docs)                                                   |
 | **UI**         | [React](https://react.dev)                                         | 19.2.6  | [react.dev](https://react.dev/reference/react)                                               |

@@ -76,3 +76,5 @@ test-output
 # Playwright E2E
 test-results/
 playwright-report/
+
+.nx/migrate-runs

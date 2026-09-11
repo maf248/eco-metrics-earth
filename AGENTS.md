@@ -6,7 +6,7 @@ eco-metrics earth is an environmental metrics dashboard monorepo built with NX.
 
 - **Package manager:** npm (workspaces)
 - **Runtime:** Node.js v24 LTS (see `.nvmrc`)
-- **Monorepo tool:** NX v22
+- **Monorepo tool:** NX v23
 - **Apps:**
   - `apps/web` — Next.js 16+ App Router, TypeScript, Tailwind CSS (port 3000)
   - `apps/api` — NestJS, TypeScript — BFF with global prefix `/api/v1` (port 3001)
@@ -41,6 +41,7 @@ Always propose before implementing:
 - New reusable components with state or side effects
 - New NestJS modules
 - Cross-cutting changes (multiple apps/packages)
+- Major version upgrades of core toolchain/frameworks (NX, Next.js, NestJS, React, TypeScript) — they change behavior, ship breaking changes/migrations, and have repo-wide blast radius
 - Loading states, error boundaries, accessibility overhauls
 - Auth, security, or environment variable changes
 - Significant refactors that change architecture (not just rename/move)
@@ -55,7 +56,7 @@ Implement directly without a spec:
 - Snapshot updates following a trivial visual change
 - Lint fixes, import reordering, formatting
 - Adding `data-testid` attributes
-- Patch/minor dependency updates
+- Patch/minor dependency updates (majors of core toolchain/frameworks do require a spec — see the non-trivial list above)
 - Single-line config tweaks
 
 ### When in doubt
@@ -63,7 +64,7 @@ Implement directly without a spec:
 The AI orchestrator **must ask the user** before deciding: _"This could be trivial or non-trivial — do you want a spec for this?"_  
 Never silently skip a spec for something borderline. The rule: **if it introduces new behavior or changes existing behavior, it needs a spec.**
 
-> **Key test:** Does the change introduce new behavior, modify existing behavior, or establish a new architectural pattern? Yes → spec. No → trivial.
+> **Key test:** Does the change introduce new behavior, modify existing behavior, establish a new architectural pattern — or carry significant technical risk / repo-wide blast radius (e.g., a major toolchain or framework upgrade)? Yes → spec. Is it mechanical, low-risk, and requiring little planning (typo, copy text, styling, formatting, rename)? → trivial, direct implementation.
 
 ---
 

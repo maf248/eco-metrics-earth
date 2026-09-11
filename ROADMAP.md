@@ -13,12 +13,12 @@ Este documento registra todas las propuestas de mejora identificadas para el pro
 | Build | ✅ | Compila correctamente |
 | CI | ✅ | CI en PRs y push a cualquier branch |
 | CD / Deploy | 🟡 | No hay entornos de pre-release/staging (ver I02) |
-| Dependencias | 🟡 | Drift desde Jul 2026 — `npm audit` en 80 vulns (6 critical, 58 high); majors disponibles (NX 23, NestJS 12, TS 7). Ver D1/D3/D4 |
+| Dependencias | 🟡 | Upgrade a NX 23.2.1 aplicado (10 Sep 2026) — `npm audit` bajó de 76 a 32 vulns (4 critical, 21 high, 5 moderate, 2 low), cero advisories del subárbol NX; `postcss` 8.5.28 incluido. Restantes: NestJS (D1) y tooling de release (D3). Ver I01 |
 | Coverage | ✅ | Medido con Jest |
 | E2E | ✅ | Playwright: 49 specs, 5 browsers, CI integrado |
 | Theming | ✅ | Light/dark mode con toggle, persistencia (localStorage) y zero-flash (spec `theme-toggle` + `theme-system`) |
 | Monitoreo | ❌ | No implementado |
-| **Datos reales** | 🟡 | **Ningún proveedor externo conectado** — existe `WaterFootprintModule` (dataset estático, sin UI aún); las 12 páginas siguen como placeholders (ver Estrategia de Proveedores + P1 + D5) |
+| **Datos reales** | 🟡 | **Ningún proveedor externo conectado** — existe `WaterFootprintModule` (dataset estático, sin UI aún); las 12 páginas siguen como placeholders (ver Estrategia de Proveedores + P1 + D2) |
 
 ---
 
@@ -75,7 +75,7 @@ Este documento registra todas las propuestas de mejora identificadas para el pro
 
 ### P1: Conectar primer proveedor (OWID) e implementar módulos de categorías eco
 
-**Problema:** `apps/api/src/modules/` solo contiene `water-footprint` (dataset estático embebido, sin UI — ver D5). Ninguna categoría consume datos de un proveedor externo y las 12 páginas de categoría del frontend son placeholders (icono + título).
+**Problema:** `apps/api/src/modules/` solo contiene `water-footprint` (dataset estático embebido, sin UI — ver D2). Ninguna categoría consume datos de un proveedor externo y las 12 páginas de categoría del frontend son placeholders (icono + título).
 
 **Impacto:** El BFF solo sirve `/health`, no hay datos reales.
 
@@ -185,16 +185,14 @@ La categoría con mejor relación datos/esfuerzo (OWID CO₂ dataset: anual, per
 
 Si no estás seguro por dónde empezar, este es el orden recomendado:
 
-1. **D1: Batch de seguridad** → cortar las 80 vulns de `npm audit` (D6 batcheable aquí) (Dificultad: 3/10)
-2. **D5: Water Footprint Phase 3** → primera categoría con datos + UI real, sin esperar proveedores externos (Dificultad: 4/10)
-3. **D3: NX 23** → elimina las vulns transitivas del toolchain (Dificultad: 6/10)
-4. **D4: NestJS 12** → migrar antes de construir los módulos de P1 encima (Dificultad: 5/10)
-5. **P1.0: Fundación de capa de datos** → Cliente OWID + caching + health indicator (Dificultad: 5/10)
-6. **P1.1: Módulo `co2-emissions` end-to-end** → Primera sección con datos reales + charts (Dificultad: 6/10)
-7. **P1.2 / P1.3: `global-temperature` y `energy-sources`** → Replicar el patrón (Dificultad: 3/10 c/u)
-8. **P2: Monitoreo y observabilidad** → Logs, métricas y error tracking (Dificultad: 5/10)
+1. **D2: Water Footprint Phase 3** → primera categoría con datos + UI real, sin esperar proveedores externos (Dificultad: 4/10)
+2. **D1: NestJS 12** → migrar antes de construir los módulos de P1 encima (Dificultad: 5/10)
+3. **P1.0: Fundación de capa de datos** → Cliente OWID + caching + health indicator (Dificultad: 5/10)
+4. **P1.1: Módulo `co2-emissions` end-to-end** → Primera sección con datos reales + charts (Dificultad: 6/10)
+5. **P1.2 / P1.3: `global-temperature` y `energy-sources`** → Replicar el patrón (Dificultad: 3/10 c/u)
+6. **P2: Monitoreo y observabilidad** → Logs, métricas y error tracking (Dificultad: 5/10)
 
-D7 (TypeScript 7) queda como seguimiento pasivo — sin acción por ahora.
+D1 (NX 23) quedó completado el 10 Sep 2026 (`npm audit` 76 → 32; spec `upgrade-nx-23` archivada). D4 (TypeScript 7) queda como seguimiento pasivo — sin acción por ahora.
 
 ---
 
@@ -242,33 +240,15 @@ git push main
 
 > Hallazgos de la revisión del 10 Sep 2026: drift de dependencias (~2 meses), `npm audit` en 80 vulnerabilidades y docs desincronizados tras el trabajo de water-footprint.
 
-### D1: Batch de seguridad — minors con fixes de CVE
-
-**Problema:** `npm audit` reporta 80 vulnerabilidades (6 critical, 58 high, 13 moderate, 3 low). Fuentes directas: `next` 16.2.6 (9 advisories) y `sharp` 0.34.5 (CVEs de libvips 2026). El resto vive en transitivas del toolchain (ver D3).
-
-**Propuesta:** actualizar minors con fixes de seguridad — Next 16.3.4, sharp 0.35.4, React 19.3.0 (+ `@types/react`), helmet 8.3.0, joi 18.2.8, Playwright 1.63.0, `@axe-core/playwright` 4.13.0, ESLint 10.10.0, Prettier 3.9.6. Verificar con `npm audit` + `npm run build` + `npm run test`.
-
-**Dificultad:** 3/10 · **Estado:** Pendiente
-
-### D2: Sync de documentación — ✅ Completado (10 Sep 2026)
-
-Corregidos: `packages/shared/README.md` (unión discriminada `ApiResponse` + 12 categorías + tipos water-footprint), `apps/web/README.md` (Tailwind 4, 12 páginas, componentes de theming, `ANALYZE`), `apps/api/README.md` (módulo `water-footprint`, endpoint, `SWAGGER_ENABLED`), `postman/README.md` (nombres reales — resuelve I16) y la tabla de estado de este documento. `WATER_FOOTPRINT.md` movido a `docs/planning/water-footprint.md` con sus referencias actualizadas.
-
-### D3: Upgrade NX 22 → 23
-
-**Problema:** la mayoría de las vulnerabilidades restantes de audit viven en dependencias transitivas del toolchain de NX (webpack-dev-server, svgo, js-yaml, brace-expansion, etc.) — continúa el análisis de I01.
-
-**Propuesta:** `npx nx migrate latest` + resolver breaking changes de configs; validar lint/build/test/E2E completos.
-
-**Dificultad:** 6/10 · **Estado:** Pendiente
-
-### D4: Upgrade NestJS 11 → 12
+### D1: Upgrade NestJS 11 → 12
 
 `@nestjs/*` 12.0.1 salió recientemente (incluye `@nestjs/config` 12 y `@nestjs/swagger` 12). Evaluar breaking changes y migrar **antes** de construir los módulos de proveedores de P1 — evita migrar con código nuevo encima.
 
+**Incluye los patch bumps de seguridad diferidos del cambio de NX 23:** `@nestjs/platform-express` 11.2.3 y `@nestjs/swagger` 11.4.7 (si siguen siendo el fix disponible al momento de ejecutar) — limpian la cadena `multer` + `js-yaml` (~8 advisories: 3 high + moderates). Los relacionados `express`/`qs`/`body-parser` no tienen fix disponible y quedan fuera.
+
 **Dificultad:** 5/10 · **Estado:** Pendiente
 
-### D5: Water Footprint Phase 3 — UI de la primera categoría con datos
+### D2: Water Footprint Phase 3 — UI de la primera categoría con datos
 
 **Problema:** la API ya sirve `GET /api/v1/water-footprint/products` (52 productos, 100% coverage en tests) pero la página `/water-footprint/` sigue como placeholder. Plan completo en [`docs/planning/water-footprint.md`](./docs/planning/water-footprint.md) (Phases 3 y 4).
 
@@ -277,13 +257,13 @@ Corregidos: `packages/shared/README.md` (unión discriminada `ApiResponse` + 12 
 **Dificultad:** 4/10 · **Estado:** Pendiente
 **Nota:** primera categoría con datos + UI sin depender de proveedores externos — no requiere P1.0.
 
-### D6: Tooling de release — majors de bajo riesgo
+### D3: Tooling de release — majors de bajo riesgo
 
-semantic-release 25, @commitlint 21, lint-staged 17, concurrently 10, @semantic-release/changelog 7, @semantic-release/git 11, conventional-changelog-conventionalcommits 10. Riesgo acotado a CI. Batcheable con D1.
+semantic-release 25, @commitlint 21, lint-staged 17, concurrently 10, @semantic-release/changelog 7, @semantic-release/git 11, conventional-changelog-conventionalcommits 10. Riesgo acotado a CI. **Quick win dentro de este ítem:** `concurrently` tiene fix **patch** (9.2.4) para sus 2 criticals (`shell-quote`) — se puede aplicar antes del batch completo; semantic-release 25 limpia ~14 advisories del subtree npm/`tar`/`sigstore` (incl. criticals).
 
 **Dificultad:** 3/10 · **Estado:** Pendiente
 
-### D7: Evaluación de TypeScript 7 (tsc nativo en Go)
+### D4: Evaluación de TypeScript 7 (tsc nativo en Go)
 
 Solo seguimiento — el salto 5.9 → 7.0 es un rewrite del compilador. No upgrade hasta validar compatibilidad con NX/Next/SWC y estabilidad del ecosistema.
 
@@ -307,7 +287,7 @@ Lista de hallazgos del análisis de repositorio, ordenados por prioridad (más c
 
 ### 🔴 Seguridad
 
-- **I01.** `npm audit` reporta 80 vulnerabilidades (6 critical, 58 high, 13 moderate, 3 low — al 10 Sep 2026; eran 32 en Jul 2026). Solo una fracción es solucionable con actualizaciones directas del proyecto (`next`, `sharp` — ver D1); la mayoría viven en dependencias transitivas del toolchain de NX (webpack-dev-server, svgo, js-yaml, brace-expansion, `@module-federation/*`) y requieren el upgrade a NX 23 (ver D3).
+- **I01.** `npm audit` reporta 32 vulnerabilidades (4 critical, 21 high, 5 moderate, 2 low — al 10 Sep 2026, tras el upgrade a NX 23.2.1 que redujo de 76 a 32 y eliminó todo el subárbol NX: advisories contra `@nx/*` ≤22.7.6, `@module-federation/*`, `webpack-dev-server`, `svgo`, `undici`, `ws`, `adm-zip` y las transitivas de `nx@22.7.2`; spec `upgrade-nx-23` archivada). `postcss` 8.5.28 aplicado en el mismo cambio; `webpack-dev-server` (peer de `@nx/webpack@23`) fue evaluado y **omitido** — `nx serve api` funciona sin él. Familias restantes: `@nestjs/platform-express`→`multer` + `@nestjs/swagger`→`js-yaml` (~8, fix patch — incluidas en D1/NestJS 12), subtree de `semantic-release` (~14 incl. criticals `tar`/`sigstore`, fix semantic-release 25 — D3), `concurrently`→`shell-quote` (2 critical, fix patch 9.2.4 — D3), y advisories sin fix disponible (`@xhmikosr/decompress` critical, `picomatch`, `fast-uri`, `ip-address`, `piscina`, `brace-expansion`, `qs`/`express`, `body-parser`, `postcss-selector-parser`) que dependen de fixes upstream.
 
 ### 🟡 CI/CD
 
@@ -321,6 +301,7 @@ Lista de hallazgos del análisis de repositorio, ordenados por prioridad (más c
 
 - **I04.** Sin tests de integración web→API con datos reales. Los tests E2E (`api-health.spec.ts`) verifican health + errores + CORS, pero falta integración con datos de categorías eco (depende de P1).
 - **I05.** Sin tests de accesibilidad unitarios con `jest-axe`. Los tests E2E con `@axe-core/playwright` ya auditan todas las páginas (a11y.spec.ts), lo que cubre el 80% del valor. La integración a nivel componente unitario es deseable pero no prioritaria — solo suma valor si crece mucho la cantidad de componentes.
+- **I17.** E2E flaky en corridas locales fresh — la suite Playwright falla intermitentemente (7–50 tests según la corrida) con `ECONNREFUSED :3001`: el `webServer` del config espera solo `:3000` y los tests de API arrancan antes de que `nx serve api` escuche; además Playwright deja procesos huérfanos (`next dev` en :3000) y `reuseExistingServer: !CI` reusa ese web sin la API detrás. **Verificado pre-existente** (10 Sep 2026): el baseline `develop` (NX 22.7.2) también falla fresh (7 failed / 212 passed, mismo patrón) y NX marca `web:e2e` como flaky task. Propuesta: probe de readiness para la API (wrapper que espere ambos puertos antes de ceder control) + evaluar correr E2E contra build de producción.
 
 ### 🟢 Arquitectura / Deuda técnica
 

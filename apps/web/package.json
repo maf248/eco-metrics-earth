@@ -3,38 +3,38 @@
   "version": "2.1.0",
   "private": true,
   "dependencies": {
-    "next": "16.2.6",
-    "react": "19.2.6",
-    "react-dom": "19.2.6"
+    "next": "16.3.4",
+    "react": "19.3.0",
+    "react-dom": "19.3.0"
   },
   "nx": {
     "targets": {
       "typecheck": {
         "executor": "nx:run-commands",
-        "options": {
-          "command": "tsc -p tsconfig.json --noEmit",
-          "cwd": "apps/web"
-        },
         "cache": true,
         "inputs": [
           "{projectRoot}/tsconfig.json",
           "{workspaceRoot}/tsconfig.base.json",
           "{projectRoot}/src/**/*.ts",
           "{projectRoot}/src/**/*.tsx"
-        ]
+        ],
+        "options": {
+          "command": "tsc -p tsconfig.json --noEmit",
+          "cwd": "apps/web"
+        }
       },
       "analyze": {
         "executor": "nx:run-commands",
+        "cache": false,
         "options": {
           "command": "ANALYZE=true npx nx build web -- --webpack",
           "cwd": "."
-        },
-        "cache": false
+        }
       }
     }
   },
   "devDependencies": {
-    "@types/react": "19.2.14",
-    "@types/react-dom": "19.2.3"
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0"
   }
 }

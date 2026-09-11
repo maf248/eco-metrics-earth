@@ -1,11 +1,10 @@
 import withBundleAnalyzerInit from '@next/bundle-analyzer';
-import { composePlugins, withNx } from '@nx/next';
-import type { WithNxOptions } from '@nx/next/plugins/with-nx';
+import type { NextConfig } from 'next';
 
 /**
  * packages/shared uses moduleResolution: "bundler" (no .js extensions in
- * re-exports), so Turbopack can resolve its TypeScript source directly.
- * withNx adds it to transpilePackages automatically, enabling full HMR.
+ * re-exports), so Turbopack needs it listed in transpilePackages to compile
+ * its TypeScript source and enable full HMR.
  *
  * Note: no WATCHPACK_POLLING needed — the repo lives on the WSL2 ext4
  * filesystem (/home/...) where inotify works natively.
@@ -16,9 +15,9 @@ const withBundleAnalyzer = withBundleAnalyzerInit({
   enabled: process.env.ANALYZE === 'true',
 });
 
-const baseConfig: WithNxOptions = {
+const baseConfig: NextConfig = {
   trailingSlash: true,
-  nx: {},
+  transpilePackages: ['@eco-metrics/shared'],
 
   async headers() {
     // NOTE: `unsafe-inline` in script-src is required by Next.js App Router,
@@ -61,4 +60,4 @@ const baseConfig: WithNxOptions = {
   },
 };
 
-export default composePlugins(withBundleAnalyzer, withNx)(baseConfig);
+export default withBundleAnalyzer(baseConfig);
