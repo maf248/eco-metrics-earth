@@ -4,21 +4,21 @@ Este documento registra todas las propuestas de mejora identificadas para el pro
 
 ---
 
-## Estado del Proyecto (10 Jul 2026)
+## Estado del Proyecto (10 Sep 2026)
 
 | Aspecto | Estado | Nota |
 |---------|--------|------|
-| Tests | ✅ | 257 unit (221 web + 36 api) + 49 E2E specs pasando, 0 errores |
+| Tests | ✅ | 279 unit (221 web + 50 api + 8 shared) + 49 E2E specs pasando, 0 errores |
 | Lint | ✅ | Sin warnings |
 | Build | ✅ | Compila correctamente |
 | CI | ✅ | CI en PRs y push a cualquier branch |
 | CD / Deploy | 🟡 | No hay entornos de pre-release/staging (ver I02) |
-| Dependencias | ✅ | Al día (Fase 1 + Fase 2 aplicadas) |
+| Dependencias | 🟡 | Drift desde Jul 2026 — `npm audit` en 80 vulns (6 critical, 58 high); majors disponibles (NX 23, NestJS 12, TS 7). Ver D1/D3/D4 |
 | Coverage | ✅ | Medido con Jest |
 | E2E | ✅ | Playwright: 49 specs, 5 browsers, CI integrado |
 | Theming | ✅ | Light/dark mode con toggle, persistencia (localStorage) y zero-flash (spec `theme-toggle` + `theme-system`) |
 | Monitoreo | ❌ | No implementado |
-| **Datos reales** | ❌ | **Ningún proveedor conectado** — `apps/api/src/modules/` vacío; las 12 páginas de categoría son placeholders (ver Estrategia de Proveedores + P1) |
+| **Datos reales** | 🟡 | **Ningún proveedor externo conectado** — existe `WaterFootprintModule` (dataset estático, sin UI aún); las 12 páginas siguen como placeholders (ver Estrategia de Proveedores + P1 + D5) |
 
 ---
 
@@ -75,7 +75,7 @@ Este documento registra todas las propuestas de mejora identificadas para el pro
 
 ### P1: Conectar primer proveedor (OWID) e implementar módulos de categorías eco
 
-**Problema:** `apps/api/src/modules/` solo tiene `.gitkeep`. No hay lógica real para ninguna categoría y las 12 páginas de categoría del frontend son placeholders (icono + título).
+**Problema:** `apps/api/src/modules/` solo contiene `water-footprint` (dataset estático embebido, sin UI — ver D5). Ninguna categoría consume datos de un proveedor externo y las 12 páginas de categoría del frontend son placeholders (icono + título).
 
 **Impacto:** El BFF solo sirve `/health`, no hay datos reales.
 
@@ -85,7 +85,7 @@ Este documento registra todas las propuestas de mejora identificadas para el pro
 
 #### P1.0 — Fundación de la capa de datos (prerequisito de todo lo demás)
 
-1. **Tipos compartidos** en `packages/shared`: `MetricSeries` (puntos año/valor por entidad), `MetricPoint`, `DataSourceAttribution` (provider, license, sourceUrl, lastUpdated) — la atribución viaja en `ApiResponse<T>.meta` (ver I15).
+1. **Tipos compartidos** en `packages/shared`: `MetricSeries` (puntos año/valor por entidad), `MetricPoint`, `DataSourceAttribution` (provider, license, sourceUrl, lastUpdated) — la atribución viaja en `ApiResponse<T>.meta` (ver I14).
 2. **Cliente HTTP del BFF**: `@nestjs/axios` (o `fetch` nativo de Node 24 envuelto en un service) con timeout, retry acotado y User-Agent identificable.
 3. **Caching**: `@nestjs/cache-manager` en memoria con TTL 24 h para respuestas de OWID (datos anuales — no necesitan frescura mayor). Sin base de datos en esta fase (I06 sigue en backlog).
 4. **`OwidClient` service** (`apps/api/src/modules/providers/owid/`): métodos `getIndicatorData(id)` / `getIndicatorMetadata(id)` (API v1 JSON) y `getGrapherSeries(slug)` (CSV → parseo server-side). Fixtures de test tomados de las respuestas de la colección Postman.
@@ -99,8 +99,8 @@ La categoría con mejor relación datos/esfuerzo (OWID CO₂ dataset: anual, per
 - `Co2EmissionsModule` + controller: `GET /api/v1/co2-emissions/series?country=ARG&from=1990` (DTOs con `class-validator` para ISO-3166, rangos de años).
 - Service que mapea OWID → `MetricSeries` con `DataSourceAttribution`.
 - Swagger tag + tests unitarios con fixtures (sin llamadas de red en tests).
-- **Frontend:** la página `/co2-emissions/` deja de ser placeholder — Server Component con `fetch` al BFF e ISR (`revalidate: 86400`), Suspense boundary (resuelve I09 para esta ruta) y primer gráfico de líneas (requiere decidir librería de charts, ver I16; al integrarla aplica el recordatorio de `next/dynamic`).
-- **Atribución visible** "Data: Our World in Data (CC BY)" (ver I14 — requisito legal de la licencia).
+- **Frontend:** la página `/co2-emissions/` deja de ser placeholder — Server Component con `fetch` al BFF e ISR (`revalidate: 86400`), Suspense boundary (resuelve I09 para esta ruta) y primer gráfico de líneas (requiere decidir librería de charts, ver I15; al integrarla aplica el recordatorio de `next/dynamic`).
+- **Atribución visible** "Data: Our World in Data (CC BY)" (ver I13 — requisito legal de la licencia).
 
 #### P1.2 — `global-temperature` (OWID temperature anomaly) — replica el patrón de P1.1
 #### P1.3 — `energy-sources` (OWID electricity generation by source + % renovables) — ídem
@@ -185,10 +185,16 @@ La categoría con mejor relación datos/esfuerzo (OWID CO₂ dataset: anual, per
 
 Si no estás seguro por dónde empezar, este es el orden recomendado:
 
-1. **P1.0: Fundación de capa de datos** → Cliente OWID + caching + health indicator (Dificultad: 5/10)
-2. **P1.1: Módulo `co2-emissions` end-to-end** → Primera sección con datos reales + charts (Dificultad: 6/10)
-3. **P1.2 / P1.3: `global-temperature` y `energy-sources`** → Replicar el patrón (Dificultad: 3/10 c/u)
-4. **P2: Monitoreo y observabilidad** → Logs, métricas y error tracking (Dificultad: 5/10)
+1. **D1: Batch de seguridad** → cortar las 80 vulns de `npm audit` (D6 batcheable aquí) (Dificultad: 3/10)
+2. **D5: Water Footprint Phase 3** → primera categoría con datos + UI real, sin esperar proveedores externos (Dificultad: 4/10)
+3. **D3: NX 23** → elimina las vulns transitivas del toolchain (Dificultad: 6/10)
+4. **D4: NestJS 12** → migrar antes de construir los módulos de P1 encima (Dificultad: 5/10)
+5. **P1.0: Fundación de capa de datos** → Cliente OWID + caching + health indicator (Dificultad: 5/10)
+6. **P1.1: Módulo `co2-emissions` end-to-end** → Primera sección con datos reales + charts (Dificultad: 6/10)
+7. **P1.2 / P1.3: `global-temperature` y `energy-sources`** → Replicar el patrón (Dificultad: 3/10 c/u)
+8. **P2: Monitoreo y observabilidad** → Logs, métricas y error tracking (Dificultad: 5/10)
+
+D7 (TypeScript 7) queda como seguimiento pasivo — sin acción por ahora.
 
 ---
 
@@ -232,6 +238,59 @@ git push main
 
 ---
 
+## 🟠 Mantenimiento / Dependencias (Sep 2026)
+
+> Hallazgos de la revisión del 10 Sep 2026: drift de dependencias (~2 meses), `npm audit` en 80 vulnerabilidades y docs desincronizados tras el trabajo de water-footprint.
+
+### D1: Batch de seguridad — minors con fixes de CVE
+
+**Problema:** `npm audit` reporta 80 vulnerabilidades (6 critical, 58 high, 13 moderate, 3 low). Fuentes directas: `next` 16.2.6 (9 advisories) y `sharp` 0.34.5 (CVEs de libvips 2026). El resto vive en transitivas del toolchain (ver D3).
+
+**Propuesta:** actualizar minors con fixes de seguridad — Next 16.3.4, sharp 0.35.4, React 19.3.0 (+ `@types/react`), helmet 8.3.0, joi 18.2.8, Playwright 1.63.0, `@axe-core/playwright` 4.13.0, ESLint 10.10.0, Prettier 3.9.6. Verificar con `npm audit` + `npm run build` + `npm run test`.
+
+**Dificultad:** 3/10 · **Estado:** Pendiente
+
+### D2: Sync de documentación — ✅ Completado (10 Sep 2026)
+
+Corregidos: `packages/shared/README.md` (unión discriminada `ApiResponse` + 12 categorías + tipos water-footprint), `apps/web/README.md` (Tailwind 4, 12 páginas, componentes de theming, `ANALYZE`), `apps/api/README.md` (módulo `water-footprint`, endpoint, `SWAGGER_ENABLED`), `postman/README.md` (nombres reales — resuelve I16) y la tabla de estado de este documento. `WATER_FOOTPRINT.md` movido a `docs/planning/water-footprint.md` con sus referencias actualizadas.
+
+### D3: Upgrade NX 22 → 23
+
+**Problema:** la mayoría de las vulnerabilidades restantes de audit viven en dependencias transitivas del toolchain de NX (webpack-dev-server, svgo, js-yaml, brace-expansion, etc.) — continúa el análisis de I01.
+
+**Propuesta:** `npx nx migrate latest` + resolver breaking changes de configs; validar lint/build/test/E2E completos.
+
+**Dificultad:** 6/10 · **Estado:** Pendiente
+
+### D4: Upgrade NestJS 11 → 12
+
+`@nestjs/*` 12.0.1 salió recientemente (incluye `@nestjs/config` 12 y `@nestjs/swagger` 12). Evaluar breaking changes y migrar **antes** de construir los módulos de proveedores de P1 — evita migrar con código nuevo encima.
+
+**Dificultad:** 5/10 · **Estado:** Pendiente
+
+### D5: Water Footprint Phase 3 — UI de la primera categoría con datos
+
+**Problema:** la API ya sirve `GET /api/v1/water-footprint/products` (52 productos, 100% coverage en tests) pero la página `/water-footprint/` sigue como placeholder. Plan completo en [`docs/planning/water-footprint.md`](./docs/planning/water-footprint.md) (Phases 3 y 4).
+
+**Propuesta:** componente `WaterFootprintTable` con filtros por categoría (`food-beverages`, `textiles`, `technology`, `manufactured`), sort por nombre/huella, a11y completa (keyboard, screen reader), tests snapshot + unit + E2E, equivalencias contextuales y layout responsive.
+
+**Dificultad:** 4/10 · **Estado:** Pendiente
+**Nota:** primera categoría con datos + UI sin depender de proveedores externos — no requiere P1.0.
+
+### D6: Tooling de release — majors de bajo riesgo
+
+semantic-release 25, @commitlint 21, lint-staged 17, concurrently 10, @semantic-release/changelog 7, @semantic-release/git 11, conventional-changelog-conventionalcommits 10. Riesgo acotado a CI. Batcheable con D1.
+
+**Dificultad:** 3/10 · **Estado:** Pendiente
+
+### D7: Evaluación de TypeScript 7 (tsc nativo en Go)
+
+Solo seguimiento — el salto 5.9 → 7.0 es un rewrite del compilador. No upgrade hasta validar compatibilidad con NX/Next/SWC y estabilidad del ecosistema.
+
+**Estado:** Solo seguimiento
+
+---
+
 ## Notas
 
 - **Dificultad:** escala 1-10 donde 1 es trivial y 10 es extremadamente complejo
@@ -248,7 +307,7 @@ Lista de hallazgos del análisis de repositorio, ordenados por prioridad (más c
 
 ### 🔴 Seguridad
 
-- **I01.** `npm audit` reporta 32 vulnerabilidades (31 moderate, 1 high). La mayoría están en dependencias transitivas que el proyecto no controla: `@module-federation/*` (29 vulns, dentro de NX 22) y `yaml` (2 vulns, bundleado en `node_modules/nx/`). No son solucionables con `npm audit fix` desde el proyecto — requieren un upgrade de NX a una versión más reciente, lo cual es un cambio mayor con posibles breaking changes.
+- **I01.** `npm audit` reporta 80 vulnerabilidades (6 critical, 58 high, 13 moderate, 3 low — al 10 Sep 2026; eran 32 en Jul 2026). Solo una fracción es solucionable con actualizaciones directas del proyecto (`next`, `sharp` — ver D1); la mayoría viven en dependencias transitivas del toolchain de NX (webpack-dev-server, svgo, js-yaml, brace-expansion, `@module-federation/*`) y requieren el upgrade a NX 23 (ver D3).
 
 ### 🟡 CI/CD
 
@@ -298,7 +357,7 @@ Lista de hallazgos del análisis de repositorio, ordenados por prioridad (más c
 
 ### 🟢 Documentación
 
-- **I16.** `postman/README.md` desactualizado — la tabla de archivos lista nombres kebab-case (`world-bank.collection.json`) que no coinciden con los archivos reales (`World Bank Open Data API — Environment & Development.postman_collection.json`, etc.). Corregir la tabla o renombrar los archivos a kebab-case (preferible: renombrar, evita espacios y em-dashes en paths).
+- **I16.** ✅ Resuelto (10 Sep 2026) — tabla de `postman/README.md` corregida para listar los nombres reales de los archivos. Se mantienen los nombres exportados por Postman para no romper el Git Sync de las colecciones.
 
 ---
 
@@ -309,4 +368,4 @@ Lista de hallazgos del análisis de repositorio, ordenados por prioridad (más c
 - **I10.** OpenTelemetry — considerado para el futuro cuando el sistema escale a múltiples servicios o se quiera cambiar de backend de observabilidad (Sentry → Datadog, Honeycomb, etc.) sin tocar código de instrumentación. Con un solo BFF, Sentry Performance cubre el tracing necesario. No justifica el overhead de configuración actual (collector, exporters, SDK setup).
 - **I11.** Axiom — plataforma de logs como servicio. Solo relevante si la retención de logs de Railway (7 días) o Vercel resulta insuficiente para debugging post-mortem. Por ahora los logs agregados de cada plataforma son suficientes.
 
-**Última actualización:** 11 Jul 2026
+**Última actualización:** 10 Sep 2026

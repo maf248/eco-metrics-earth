@@ -33,7 +33,10 @@ src/
 │   └── health.controller.ts  # GET /api/v1/health
 ├── config/
 │   └── app-config.service.ts # Typed wrapper over @nestjs/config
-├── modules/                  # Future: per-category eco modules (.gitkeep)
+├── modules/
+│   └── water-footprint/      # WaterFootprintModule — module, controller, service
+├── data/
+│   └── water-footprint.json  # Static product dataset (52 products, with citations)
 ├── common/
 │   └── dto/                  # Shared DTOs with `class-validator` decorators
 └── main.ts
@@ -68,6 +71,7 @@ appConfig.corsOrigin  // CORS_ORIGIN
 | `GET` | `/api/v1/health` | Liveness check | `{ status: 'ok' }` |
 | `GET` | `/api/v1/demo-validation` | **Mock** — query param validation demo | `{ query: GetMetricsQueryDto }` |
 | `POST` | `/api/v1/demo-validation` | **Mock** — body validation demo | `{ body: CreateMetricDto }` |
+| `GET` | `/api/v1/water-footprint/products` | Static product dataset — optional `category` query filter (`food-beverages`, `textiles`, `technology`, `manufactured`) | `ApiResponse<WaterFootprintProduct[]>` |
 
 ---
 
@@ -84,6 +88,7 @@ cp apps/api/.env.example apps/api/.env
 | `PORT` | `3001` | Port the server listens on |
 | `NODE_ENV` | `development` | `development` \| `test` \| `production` |
 | `CORS_ORIGIN` | `http://localhost:3000` | Allowed CORS origin — set to the deployed web URL in production |
+| `SWAGGER_ENABLED` | `false` | Enable OpenAPI/Swagger UI at `/api/docs` — set to `true` for local development |
 
 ---
 
