@@ -2,7 +2,7 @@
 
 Tracks the water consumed to produce everyday goods — food, textiles, technology, vehicles, construction materials (product water footprint, in liters per unit or per kg) — which is the core concept of this category. Also covers the macro context: freshwater availability, withdrawals, and water stress by country and sector (agriculture, industry, municipal).
 
-> Note: World Bank API also appears in `co2-emissions.md` and `waste-recycling.md`. The product-level dataset plan (static JSON of ~30–50 products) lives in `WATER_FOOTPRINT.md` at the repo root.
+> Note: World Bank API also appears in `co2-emissions.md` and `waste-recycling.md`. The product-level dataset plan (static JSON of ~30–50 products) lives in `docs/planning/water-footprint.md`.
 
 ## Providers
 
@@ -95,7 +95,7 @@ Tracks the water consumed to produce everyday goods — food, textiles, technolo
 - **Data:** Freshwater withdrawals per kg of food product (L/kg), per 1,000 kcal, per 100 g of protein; scarcity-weighted water use variants. ~40 food products (beef, chicken, rice, almonds, chocolate, wine, etc.).
 - **API key:** Not required.
 - **Validated (Jul 2026):** `water-withdrawals-per-kg-poore` (liters per kilogram). Related charts: `freshwater-withdrawals-per-1000kcal`, `water-per-protein-poore`, `scarcity-water-per-kg-poore`.
-- This is the primary commercial-safe source for the product-level dataset planned in `WATER_FOOTPRINT.md` (root).
+- This is the primary commercial-safe source for the product-level dataset planned in `docs/planning/water-footprint.md`.
 
 | Field            | Details                               |
 | ---------------- | ------------------------------------- |
@@ -170,5 +170,5 @@ Tracks the water consumed to produce everyday goods — food, textiles, technolo
 - OWID and World Bank both republish AQUASTAT — credit **FAO AQUASTAT** as the underlying source in the attribution component (see I14 in `ROADMAP.md`).
 - AQUASTAT country data arrives in ~5-year questionnaire cycles and is carried forward in between, so series look "stepped" (flat segments with identical values). Don't interpret those plateaus as real stability; consider showing only years with actual updates.
 - The water-stress chart was renamed upstream: any saved URL using `water-stress-indicator` must switch to `freshwater-withdrawals-as-a-share-of-internal-resources` (the Postman OWID collection was already updated).
-- Water Footprint Network data is research/education oriented — for the commercial product dataset prefer OWID Poore & Nemecek (CC BY) and cite the primary study per entry, as specified in `WATER_FOOTPRINT.md`.
-- **Product dataset strategy** (per `WATER_FOOTPRINT.md`): ✅ Phase 2 complete. A static JSON dataset of 52 products across 4 categories (Food & Beverages, Textiles, Technology, Manufactured) is compiled in `apps/api/src/data/water-footprint.json` and served through `GET /api/v1/water-footprint/products?category=`. All entries are commercial-safe (CC BY or citable from open-access papers) with `source`, `sourceUrl`, and `methodology` fields. Phase 3 (frontend table/sorting) is pending.
+- Water Footprint Network data is research/education oriented — for the commercial product dataset prefer OWID Poore & Nemecek (CC BY) and cite the primary study per entry, as specified in `docs/planning/water-footprint.md`.
+- **Product dataset strategy** (per `docs/planning/water-footprint.md`): ✅ Phase 2 complete. A static JSON dataset of 52 products across 4 categories (Food & Beverages, Textiles, Technology, Manufactured) is compiled in `apps/api/src/data/water-footprint.json` and served through `GET /api/v1/water-footprint/products?category=`. All entries are commercial-safe (CC BY or citable from open-access papers) with `source`, `sourceUrl`, and `methodology` fields. Phase 3 (frontend table/sorting) is pending.
