@@ -2,10 +2,7 @@
  * Supported water-footprint product categories.
  */
 export type WaterFootprintCategory =
-  | 'Food & Beverages'
-  | 'Textiles'
-  | 'Technology'
-  | 'Manufactured';
+  'Food & Beverages' | 'Textiles' | 'Technology' | 'Manufactured';
 
 /**
  * Maps URL-safe category slugs to their display labels.
