@@ -1,3 +1,9 @@
+## [2.1.1](https://github.com/maf248/eco-metrics-earth/compare/v2.1.0...v2.1.1) (2026-09-11)
+
+### Bug Fixes
+
+* **deps:** apply security batch of minor updates (next 16.3.4, sharp 0.35.4, react 19.3.0) ([6672c93](https://github.com/maf248/eco-metrics-earth/commit/6672c93b73b74ea30a75e82bb6793137f30a97db))
+
 ## [2.1.0](https://github.com/maf248/eco-metrics-earth/compare/v2.0.2...v2.1.0) (2026-07-13)
 
 ### Features
