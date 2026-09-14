@@ -26,10 +26,12 @@ export default defineConfig({
   },
   /* Run your local dev server before starting the tests */
   webServer: {
-    command: 'npm run dev',
+    command: 'node apps/web/e2e/run-dev-servers.ts',
     url: 'http://localhost:3000',
     reuseExistingServer: !process.env.CI,
     cwd: workspaceRoot,
+    timeout: 180_000,
+    gracefulShutdown: { signal: 'SIGTERM', timeout: 15_000 },
   },
   projects: [
     {
