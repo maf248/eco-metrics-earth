@@ -1,6 +1,6 @@
 import { readFileSync } from 'fs';
 
-import { BadRequestException } from '@nestjs/common';
+import { BadRequestException, Logger } from '@nestjs/common';
 
 jest.mock('fs', () => ({
   readFileSync: jest.fn(),
@@ -85,6 +85,8 @@ describe('WaterFootprintService', () => {
   });
 
   it('should initialize with an empty dataset when the data file is missing (ENOENT)', () => {
+    const loggerWarnSpy = jest.spyOn(Logger.prototype, 'warn').mockImplementation();
+
     mockReadFileSync.mockImplementation(() => {
       const error = new Error('ENOENT: no such file or directory') as NodeJS.ErrnoException;
       error.code = 'ENOENT';
@@ -92,7 +94,13 @@ describe('WaterFootprintService', () => {
     });
 
     const service = new WaterFootprintService();
+
     expect(service.getAllProducts()).toEqual([]);
+    expect(loggerWarnSpy).toHaveBeenCalledWith(
+      expect.stringContaining('Water footprint data file not found'),
+    );
+
+    loggerWarnSpy.mockRestore();
   });
 
   it('should throw for non-ENOENT file errors (e.g. permission denied)', () => {
