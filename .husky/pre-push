@@ -4,5 +4,7 @@ if [ "$branch" = "main" ]; then
   exit 1
 fi
 
+# E2E intentionally NOT run here: CI runs the full Playwright suite on every
+# push to every branch (.github/workflows/ci.yml). Run it locally with
+# `npm run e2e` when you want pre-push E2E confidence.
 npx nx affected --target=test --base=origin/develop
-npx nx e2e web

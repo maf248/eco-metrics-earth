@@ -5,6 +5,7 @@ import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import * as Joi from 'joi';
 
 import { DemoValidationController } from '../common/dto/demo-validation.controller';
+import { FallbackModule } from '../common/fallback/fallback.module';
 import { AppConfigService } from '../config/app-config.service';
 import { HealthModule } from '../health/health.module';
 import { WaterFootprintModule } from '../modules/water-footprint/water-footprint.module';
@@ -24,13 +25,16 @@ import { AppService } from './app.service';
         SWAGGER_ENABLED: Joi.string().valid('true', 'false').default('false'),
       }),
       validationOptions: {
-        allowUnknown: true,
-        abortEarly: true,
+        libraryOptions: {
+          allowUnknown: true,
+          abortEarly: true,
+        },
       },
     }),
     ThrottlerModule.forRoot([{ ttl: 60_000, limit: 60 }]),
     HealthModule,
     WaterFootprintModule,
+    FallbackModule,
   ],
   controllers: [AppController, DemoValidationController],
   providers: [AppService, AppConfigService, { provide: APP_GUARD, useClass: ThrottlerGuard }],

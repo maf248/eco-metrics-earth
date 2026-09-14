@@ -2,24 +2,24 @@ schema: spec-driven
 
 context: |
   ## Project: eco-metrics earth
-  Environmental metrics dashboard — NX v22 monorepo with npm workspaces.
+  Environmental metrics dashboard — NX v23 monorepo with npm workspaces.
 
   ### Runtime & Tooling
-  - **Node.js**: v20 LTS (`.nvmrc`)
+  - **Node.js**: v24 LTS (`.nvmrc`)
   - **Package manager**: npm (workspaces, always `--save-exact`, no `^` or `~`)
-  - **Monorepo**: NX v22
+  - **Monorepo**: NX v23
   - **Language**: TypeScript 5.x (strict mode) — all code in English
 
   ### Apps
-  - `apps/web` — Next.js 16+ App Router, React 19, Tailwind CSS v3, port 3000
-  - `apps/api` — NestJS 11, BFF, global prefix `/api/v1`, port 3001
+  - `apps/web` — Next.js 16+ App Router, React 19, Tailwind CSS v4, port 3000
+  - `apps/api` — NestJS 12, BFF, global prefix `/api/v1`, port 3001
 
   ### Shared Package
   - `packages/shared` → `@eco-metrics/shared` — shared TypeScript types only
   - Key types: `ApiResponse<T>`, `EcoCategory`, `ECO_CATEGORIES`
 
   ### Styling
-  - Tailwind CSS v3 with dark mode class strategy (`className="dark"` on `<html>`)
+  - Tailwind CSS v4 with dark mode class strategy (`className="dark"` on `<html>`)
   - Global styles in `apps/web/src/app/globals.css`
 
   ### State Management

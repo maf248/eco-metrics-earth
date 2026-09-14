@@ -4,21 +4,21 @@ Este documento registra todas las propuestas de mejora identificadas para el pro
 
 ---
 
-## Estado del Proyecto (10 Sep 2026)
+## Estado del Proyecto (12 Sep 2026)
 
-| Aspecto | Estado | Nota |
-|---------|--------|------|
-| Tests | ✅ | 279 unit (221 web + 50 api + 8 shared) + 49 E2E specs pasando, 0 errores |
-| Lint | ✅ | Sin warnings |
-| Build | ✅ | Compila correctamente |
-| CI | ✅ | CI en PRs y push a cualquier branch |
-| CD / Deploy | 🟡 | No hay entornos de pre-release/staging (ver I02) |
-| Dependencias | 🟡 | Upgrade a NX 23.2.1 aplicado (10 Sep 2026) — `npm audit` bajó de 76 a 32 vulns (4 critical, 21 high, 5 moderate, 2 low), cero advisories del subárbol NX; `postcss` 8.5.28 incluido. Restantes: NestJS (D1) y tooling de release (D3). Ver I01 |
-| Coverage | ✅ | Medido con Jest |
-| E2E | ✅ | Playwright: 49 specs, 5 browsers, CI integrado |
-| Theming | ✅ | Light/dark mode con toggle, persistencia (localStorage) y zero-flash (spec `theme-toggle` + `theme-system`) |
-| Monitoreo | ❌ | No implementado |
-| **Datos reales** | 🟡 | **Ningún proveedor externo conectado** — existe `WaterFootprintModule` (dataset estático, sin UI aún); las 12 páginas siguen como placeholders (ver Estrategia de Proveedores + P1 + D2) |
+| Aspecto          | Estado | Nota                                                                                                                                                                                                                                                         |
+| ---------------- | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Tests            | ✅     | 289 unit (227 web + 54 api + 8 shared) + 49 E2E specs pasando, 0 errores                                                                                                                                                                                            |
+| Lint             | ✅     | Sin warnings                                                                                                                                                                                                                                                        |
+| Build            | ✅     | Compila correctamente                                                                                                                                                                                                                                               |
+| CI               | ✅     | CI en PRs y push a cualquier branch                                                                                                                                                                                                                                 |
+| CD / Deploy      | 🟡     | No hay entornos de pre-release/staging (ver I02)                                                                                                                                                                                                                    |
+| Dependencias     | 🟡     | Upgrade a NX 23.2.1 aplicado (10 Sep 2026) y NestJS 12 aplicado (11 Sep 2026) — `npm audit` bajó de 76 a 21 vulns (2 critical, 15 high, 3 moderate, 1 low), cero advisories de las familias NestJS (`multer`/`js-yaml`). Restante: tooling de release (D2). Ver I01 |
+| Coverage         | ✅     | Medido con Jest                                                                                                                                                                                                                                                     |
+| E2E              | ✅     | Playwright: 49 specs, 5 browsers, CI integrado, arranque determinista (readiness de ambos puertos)                                                                                                                                                       |
+| Theming          | ✅     | Light/dark mode con toggle, persistencia (localStorage) y zero-flash (spec `theme-toggle` + `theme-system`)                                                                                                                                                         |
+| Monitoreo        | ❌     | No implementado                                                                                                                                                                                                                                                     |
+| **Datos reales** | 🟡     | **Ningún proveedor externo conectado** — existe `WaterFootprintModule` (dataset estático, sin UI aún); las 12 páginas siguen como placeholders (ver Estrategia de Proveedores + P1 + D1)                                                                            |
 
 ---
 
@@ -39,10 +39,10 @@ Este documento registra todas las propuestas de mejora identificadas para el pro
 
 **Complementos posteriores (también comercial-safe, con colección Postman propia):**
 
-| Proveedor | Licencia | Aporta | Cuándo |
-|---|---|---|---|
-| **NOAA** (GML, Tides & Currents, NSIDC, NCEI) | Dominio público | Series casi en tiempo real: CO₂ ppm mensual (Mauna Loa), nivel del mar, sea ice diario, anomalías de temperatura | 2.º proveedor — agrega frescura a co2-emissions, ocean-health, glacier-melting, global-temperature |
-| **World Bank Open Data** | CC BY | REST JSON real por país/indicador (CORS, sin key): CO₂ sectorial, mix energético, área forestal, especies amenazadas, agua, PM2.5 | 3.º proveedor — profundidad por país y comparativas |
+| Proveedor                                     | Licencia        | Aporta                                                                                                                            | Cuándo                                                                                             |
+| --------------------------------------------- | --------------- | --------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| **NOAA** (GML, Tides & Currents, NSIDC, NCEI) | Dominio público | Series casi en tiempo real: CO₂ ppm mensual (Mauna Loa), nivel del mar, sea ice diario, anomalías de temperatura                  | 2.º proveedor — agrega frescura a co2-emissions, ocean-health, glacier-melting, global-temperature |
+| **World Bank Open Data**                      | CC BY           | REST JSON real por país/indicador (CORS, sin key): CO₂ sectorial, mix energético, área forestal, especies amenazadas, agua, PM2.5 | 3.º proveedor — profundidad por país y comparativas                                                |
 
 **Descartados para producción comercial (mantener solo para prototipos):**
 
@@ -52,20 +52,20 @@ Este documento registra todas las propuestas de mejora identificadas para el pro
 
 ### Matriz de cobertura por categoría (solo proveedores comercial-safe)
 
-| Categoría | OWID (1.º) | NOAA (2.º) | World Bank (3.º) | Métrica inicial sugerida |
-|---|---|---|---|---|
-| co2-emissions | ✅ anual, per cápita, sectorial, acumulado | ✅ CO₂ ppm mensual | ✅ CO₂/GHG por país | Emisiones anuales por país (OWID) |
-| global-temperature | ✅ anomalía global | ✅ NCEI series 1880– | 🟡 CCKP | Anomalía de temperatura (OWID) |
-| energy-sources | ✅ mix eléctrico por fuente, % renovables | — | ✅ % renovables, mix | Electricity generation by source (OWID) |
-| plastic-pollution | ✅ producción, mismanaged, fate | 🟡 Marine Debris (estático) | — | Global plastics production (OWID) |
-| waste-recycling | ✅ CH₄ waste 1990–2023, plastic fate | — | ✅ indicadores urbanos | CH₄ from waste (OWID API v1, ID 1146696) |
-| deforestation | ✅ annual deforestation, forest area | — | ✅ área forestal | Forest area (OWID) |
-| reforestation | 🟡 forest area neto (proxy) | — | 🟡 área forestal | Net forest change (OWID/FAOSTAT) |
-| endangered-species | ✅ threatened species (IUCN counts), Living Planet Index | — | ✅ mamíferos/aves/peces amenazados | Threatened species por país (World Bank u OWID) |
-| ocean-health | ✅ sea level rise | ✅ mareas/nivel del mar, SST (ERDDAP) | 🟡 áreas marinas protegidas | Sea level rise (OWID) |
-| glacier-melting | ✅ mass balance glaciares de referencia | ✅ sea ice index diario (NSIDC) | — | Sea ice extent (NOAA) o mass balance (OWID) |
-| water-footprint | ✅ freshwater withdrawals, water stress | — | ✅ recursos hídricos, extracción | Water stress (OWID, chart `freshwater-withdrawals-as-a-share-of-internal-resources`) |
-| air-quality | 🟡 PM2.5 exposure anual, muertes por contaminación | — | ✅ PM2.5 exposure anual | PM2.5 exposure anual (World Bank/OWID) |
+| Categoría          | OWID (1.º)                                               | NOAA (2.º)                            | World Bank (3.º)                   | Métrica inicial sugerida                                                             |
+| ------------------ | -------------------------------------------------------- | ------------------------------------- | ---------------------------------- | ------------------------------------------------------------------------------------ |
+| co2-emissions      | ✅ anual, per cápita, sectorial, acumulado               | ✅ CO₂ ppm mensual                    | ✅ CO₂/GHG por país                | Emisiones anuales por país (OWID)                                                    |
+| global-temperature | ✅ anomalía global                                       | ✅ NCEI series 1880–                  | 🟡 CCKP                            | Anomalía de temperatura (OWID)                                                       |
+| energy-sources     | ✅ mix eléctrico por fuente, % renovables                | —                                     | ✅ % renovables, mix               | Electricity generation by source (OWID)                                              |
+| plastic-pollution  | ✅ producción, mismanaged, fate                          | 🟡 Marine Debris (estático)           | —                                  | Global plastics production (OWID)                                                    |
+| waste-recycling    | ✅ CH₄ waste 1990–2023, plastic fate                     | —                                     | ✅ indicadores urbanos             | CH₄ from waste (OWID API v1, ID 1146696)                                             |
+| deforestation      | ✅ annual deforestation, forest area                     | —                                     | ✅ área forestal                   | Forest area (OWID)                                                                   |
+| reforestation      | 🟡 forest area neto (proxy)                              | —                                     | 🟡 área forestal                   | Net forest change (OWID/FAOSTAT)                                                     |
+| endangered-species | ✅ threatened species (IUCN counts), Living Planet Index | —                                     | ✅ mamíferos/aves/peces amenazados | Threatened species por país (World Bank u OWID)                                      |
+| ocean-health       | ✅ sea level rise                                        | ✅ mareas/nivel del mar, SST (ERDDAP) | 🟡 áreas marinas protegidas        | Sea level rise (OWID)                                                                |
+| glacier-melting    | ✅ mass balance glaciares de referencia                  | ✅ sea ice index diario (NSIDC)       | —                                  | Sea ice extent (NOAA) o mass balance (OWID)                                          |
+| water-footprint    | ✅ freshwater withdrawals, water stress                  | —                                     | ✅ recursos hídricos, extracción   | Water stress (OWID, chart `freshwater-withdrawals-as-a-share-of-internal-resources`) |
+| air-quality        | 🟡 PM2.5 exposure anual, muertes por contaminación       | —                                     | ✅ PM2.5 exposure anual            | PM2.5 exposure anual (World Bank/OWID)                                               |
 
 > ⚠️ **air-quality en tiempo real** es la única sección sin opción comercial-safe sin key: Open-Meteo es no comercial y OpenAQ tiene licencias heterogéneas. Opción viable: **OpenWeatherMap Air Pollution** (ODbL, comercial OK con atribución, key gratuita, 1M req/mes) — postergarlo a una fase posterior y arrancar con datos anuales de exposición PM2.5 (comercial-safe, sin key).
 
@@ -75,11 +75,11 @@ Este documento registra todas las propuestas de mejora identificadas para el pro
 
 ### P1: Conectar primer proveedor (OWID) e implementar módulos de categorías eco
 
-**Problema:** `apps/api/src/modules/` solo contiene `water-footprint` (dataset estático embebido, sin UI — ver D2). Ninguna categoría consume datos de un proveedor externo y las 12 páginas de categoría del frontend son placeholders (icono + título).
+**Problema:** `apps/api/src/modules/` solo contiene `water-footprint` (dataset estático embebido, sin UI — ver D1). Ninguna categoría consume datos de un proveedor externo y las 12 páginas de categoría del frontend son placeholders (icono + título).
 
 **Impacto:** El BFF solo sirve `/health`, no hay datos reales.
 
-**Decisión de fuente:** OWID como primer proveedor (ver *Estrategia de Proveedores*). Corrección respecto a la versión anterior de este plan: se **reemplaza `air-quality` por `energy-sources`** en la primera tanda — air-quality en tiempo real no tiene opción comercial-safe sin key (Open-Meteo es no comercial), mientras que CO₂/temperatura/energía se cubren 100% con OWID.
+**Decisión de fuente:** OWID como primer proveedor (ver _Estrategia de Proveedores_). Corrección respecto a la versión anterior de este plan: se **reemplaza `air-quality` por `energy-sources`** en la primera tanda — air-quality en tiempo real no tiene opción comercial-safe sin key (Open-Meteo es no comercial), mientras que CO₂/temperatura/energía se cubren 100% con OWID.
 
 **Propuesta por fases** (cada fase = una propuesta OpenSpec independiente):
 
@@ -103,15 +103,17 @@ La categoría con mejor relación datos/esfuerzo (OWID CO₂ dataset: anual, per
 - **Atribución visible** "Data: Our World in Data (CC BY)" (ver I13 — requisito legal de la licencia).
 
 #### P1.2 — `global-temperature` (OWID temperature anomaly) — replica el patrón de P1.1
+
 #### P1.3 — `energy-sources` (OWID electricity generation by source + % renovables) — ídem
 
 **Criterio de éxito de P1:** 3 categorías con datos reales comercial-safe en producción, healthcheck agregando dependencias externas, patrón replicable documentado en AGENTS.md para las 9 categorías restantes.
 
 **Dificultad:** P1.0: 5/10 · P1.1: 6/10 (incluye la primera integración frontend + charts) · P1.2/P1.3: 3/10 c/u (patrón ya establecido)
 **Requisitos:**
+
 - P2 instala `@nestjs/terminus` pero no refactoriza el healthcheck. **Cada módulo de P1 debe agregar su propio `HttpHealthIndicator` al `HealthModule`** para validar su API externa (OWID, NOAA, World Bank). Esto convierte el healthcheck en un agregado real de dependencias externas. P1.0 puede instalar `@nestjs/terminus` directamente si se ejecuta antes que P2.
 - I03 (CORS multi-origen) pasa a ser bloqueante cuando el frontend en Vercel consuma el BFF en Railway — resolverlo dentro de P1.1 o antes del deploy del back.
-**Estado:** Pendiente
+  **Estado:** Pendiente
 
 ---
 
@@ -160,18 +162,19 @@ La categoría con mejor relación datos/esfuerzo (OWID CO₂ dataset: anual, per
 
 #### Stack final
 
-| Componente | Tecnología | Dónde |
-|---|---|---|
-| Logging estructurado | `nestjs-pino` + `pino-http` | `apps/api` |
-| Error tracking front | `@sentry/nextjs` | `apps/web` |
-| Error tracking back | `@sentry/nestjs` | `apps/api` |
-| Source maps upload | `withSentryConfig` + `SENTRY_AUTH_TOKEN` | CI/CD (Vercel + Railway) |
-| Healthcheck lib | `@nestjs/terminus` (instalar, sin refactorizar) | `apps/api` |
-| Healthcheck sin throttler | `@SkipThrottle()` en health endpoint | `apps/api` |
-| CSP Sentry | `connect-src` → incluir `*.sentry.io` | `next.config.ts` |
-| Alertas | Email (error rate + healthcheck) | Dashboard Sentry |
+| Componente                | Tecnología                                      | Dónde                    |
+| ------------------------- | ----------------------------------------------- | ------------------------ |
+| Logging estructurado      | `nestjs-pino` + `pino-http`                     | `apps/api`               |
+| Error tracking front      | `@sentry/nextjs`                                | `apps/web`               |
+| Error tracking back       | `@sentry/nestjs`                                | `apps/api`               |
+| Source maps upload        | `withSentryConfig` + `SENTRY_AUTH_TOKEN`        | CI/CD (Vercel + Railway) |
+| Healthcheck lib           | `@nestjs/terminus` (instalar, sin refactorizar) | `apps/api`               |
+| Healthcheck sin throttler | `@SkipThrottle()` en health endpoint            | `apps/api`               |
+| CSP Sentry                | `connect-src` → incluir `*.sentry.io`           | `next.config.ts`         |
+| Alertas                   | Email (error rate + healthcheck)                | Dashboard Sentry         |
 
 **Fuera de P2 → backlog:**
+
 - OpenTelemetry (I10): relevante cuando escalen los servicios o se quiera cambiar de backend de observabilidad sin tocar código de instrumentación.
 - Axiom (I11): solo si la retención de logs de Railway (7 días) o Vercel resulta insuficiente.
 
@@ -185,14 +188,13 @@ La categoría con mejor relación datos/esfuerzo (OWID CO₂ dataset: anual, per
 
 Si no estás seguro por dónde empezar, este es el orden recomendado:
 
-1. **D2: Water Footprint Phase 3** → primera categoría con datos + UI real, sin esperar proveedores externos (Dificultad: 4/10)
-2. **D1: NestJS 12** → migrar antes de construir los módulos de P1 encima (Dificultad: 5/10)
-3. **P1.0: Fundación de capa de datos** → Cliente OWID + caching + health indicator (Dificultad: 5/10)
-4. **P1.1: Módulo `co2-emissions` end-to-end** → Primera sección con datos reales + charts (Dificultad: 6/10)
-5. **P1.2 / P1.3: `global-temperature` y `energy-sources`** → Replicar el patrón (Dificultad: 3/10 c/u)
-6. **P2: Monitoreo y observabilidad** → Logs, métricas y error tracking (Dificultad: 5/10)
+1. **D1: Water Footprint Phase 3** → primera categoría con datos + UI real, sin esperar proveedores externos (Dificultad: 4/10)
+2. **P1.0: Fundación de capa de datos** → Cliente OWID + caching + health indicator (Dificultad: 5/10)
+3. **P1.1: Módulo `co2-emissions` end-to-end** → Primera sección con datos reales + charts (Dificultad: 6/10)
+4. **P1.2 / P1.3: `global-temperature` y `energy-sources`** → Replicar el patrón (Dificultad: 3/10 c/u)
+5. **P2: Monitoreo y observabilidad** → Logs, métricas y error tracking (Dificultad: 5/10)
 
-D1 (NX 23) quedó completado el 10 Sep 2026 (`npm audit` 76 → 32; spec `upgrade-nx-23` archivada). D4 (TypeScript 7) queda como seguimiento pasivo — sin acción por ahora.
+NX 23 quedó completado el 10 Sep 2026 (`npm audit` 76 → 32; spec `upgrade-nx-23` archivada). NestJS 12 quedó completado el 11 Sep 2026 (`npm audit` 32 → 21; spec `upgrade-nestjs-12` archivada). D3 (TypeScript 7) queda como seguimiento pasivo — sin acción por ahora.
 
 ---
 
@@ -208,12 +210,13 @@ D1 (NX 23) quedó completado el 10 Sep 2026 (`npm audit` 76 → 32; spec `upgrad
 
 **Propuesta:** Implementar dos workflows de GitHub Actions con path-based triggers:
 
-| App | Plataforma | Se dispara cuando cambia | Comando de deploy |
-|---|---|---|---|
-| `apps/web` | Vercel | `apps/web/**` o `packages/shared/**` | `npx nx build web --prod` → Vercel auto-deploy (GitHub Integration) |
-| `apps/api` | Railway | `apps/api/**` o `packages/shared/**` | `npx nx build api` → `railway up` o auto-deploy desde GitHub |
+| App        | Plataforma | Se dispara cuando cambia             | Comando de deploy                                                   |
+| ---------- | ---------- | ------------------------------------ | ------------------------------------------------------------------- |
+| `apps/web` | Vercel     | `apps/web/**` o `packages/shared/**` | `npx nx build web --prod` → Vercel auto-deploy (GitHub Integration) |
+| `apps/api` | Railway    | `apps/api/**` o `packages/shared/**` | `npx nx build api` → `railway up` o auto-deploy desde GitHub        |
 
 **Flujo completo:**
+
 ```
 git push main
   │
@@ -240,15 +243,7 @@ git push main
 
 > Hallazgos de la revisión del 10 Sep 2026: drift de dependencias (~2 meses), `npm audit` en 80 vulnerabilidades y docs desincronizados tras el trabajo de water-footprint.
 
-### D1: Upgrade NestJS 11 → 12
-
-`@nestjs/*` 12.0.1 salió recientemente (incluye `@nestjs/config` 12 y `@nestjs/swagger` 12). Evaluar breaking changes y migrar **antes** de construir los módulos de proveedores de P1 — evita migrar con código nuevo encima.
-
-**Incluye los patch bumps de seguridad diferidos del cambio de NX 23:** `@nestjs/platform-express` 11.2.3 y `@nestjs/swagger` 11.4.7 (si siguen siendo el fix disponible al momento de ejecutar) — limpian la cadena `multer` + `js-yaml` (~8 advisories: 3 high + moderates). Los relacionados `express`/`qs`/`body-parser` no tienen fix disponible y quedan fuera.
-
-**Dificultad:** 5/10 · **Estado:** Pendiente
-
-### D2: Water Footprint Phase 3 — UI de la primera categoría con datos
+### D1: Water Footprint Phase 3 — UI de la primera categoría con datos
 
 **Problema:** la API ya sirve `GET /api/v1/water-footprint/products` (52 productos, 100% coverage en tests) pero la página `/water-footprint/` sigue como placeholder. Plan completo en [`docs/planning/water-footprint.md`](./docs/planning/water-footprint.md) (Phases 3 y 4).
 
@@ -257,13 +252,13 @@ git push main
 **Dificultad:** 4/10 · **Estado:** Pendiente
 **Nota:** primera categoría con datos + UI sin depender de proveedores externos — no requiere P1.0.
 
-### D3: Tooling de release — majors de bajo riesgo
+### D2: Tooling de release — majors de bajo riesgo
 
 semantic-release 25, @commitlint 21, lint-staged 17, concurrently 10, @semantic-release/changelog 7, @semantic-release/git 11, conventional-changelog-conventionalcommits 10. Riesgo acotado a CI. **Quick win dentro de este ítem:** `concurrently` tiene fix **patch** (9.2.4) para sus 2 criticals (`shell-quote`) — se puede aplicar antes del batch completo; semantic-release 25 limpia ~14 advisories del subtree npm/`tar`/`sigstore` (incl. criticals).
 
 **Dificultad:** 3/10 · **Estado:** Pendiente
 
-### D4: Evaluación de TypeScript 7 (tsc nativo en Go)
+### D3: Evaluación de TypeScript 7 (tsc nativo en Go)
 
 Solo seguimiento — el salto 5.9 → 7.0 es un rewrite del compilador. No upgrade hasta validar compatibilidad con NX/Next/SWC y estabilidad del ecosistema.
 
@@ -287,7 +282,7 @@ Lista de hallazgos del análisis de repositorio, ordenados por prioridad (más c
 
 ### 🔴 Seguridad
 
-- **I01.** `npm audit` reporta 32 vulnerabilidades (4 critical, 21 high, 5 moderate, 2 low — al 10 Sep 2026, tras el upgrade a NX 23.2.1 que redujo de 76 a 32 y eliminó todo el subárbol NX: advisories contra `@nx/*` ≤22.7.6, `@module-federation/*`, `webpack-dev-server`, `svgo`, `undici`, `ws`, `adm-zip` y las transitivas de `nx@22.7.2`; spec `upgrade-nx-23` archivada). `postcss` 8.5.28 aplicado en el mismo cambio; `webpack-dev-server` (peer de `@nx/webpack@23`) fue evaluado y **omitido** — `nx serve api` funciona sin él. Familias restantes: `@nestjs/platform-express`→`multer` + `@nestjs/swagger`→`js-yaml` (~8, fix patch — incluidas en D1/NestJS 12), subtree de `semantic-release` (~14 incl. criticals `tar`/`sigstore`, fix semantic-release 25 — D3), `concurrently`→`shell-quote` (2 critical, fix patch 9.2.4 — D3), y advisories sin fix disponible (`@xhmikosr/decompress` critical, `picomatch`, `fast-uri`, `ip-address`, `piscina`, `brace-expansion`, `qs`/`express`, `body-parser`, `postcss-selector-parser`) que dependen de fixes upstream.
+- **I01.** `npm audit` reporta 21 vulnerabilidades (2 critical, 15 high, 3 moderate, 1 low — al 11 Sep 2026, tras los upgrades a NX 23.2.1 y NestJS 12: el upgrade a NX redujo de 76 a 32 y eliminó todo el subárbol NX, advisories contra `@nx/*` ≤22.7.6, `@module-federation/*`, `webpack-dev-server`, `svgo`, `undici`, `ws`, `adm-zip` y las transitivas de `nx@22.7.2`; spec `upgrade-nx-23` archivada; el upgrade a NestJS 12 redujo de 32 a 21 y eliminó la familia NestJS). `postcss` 8.5.28 aplicado en el cambio de NX; `webpack-dev-server` (peer de `@nx/webpack@23`) fue evaluado y **omitido** — `nx serve api` funciona sin él. Familia NestJS resuelta: `@nestjs/platform-express` 12.0.1 con `multer` 2.3.0 (top-level override `"multer": "2.3.0"` en root `package.json`; la versión natural que trae platform-express 12.0.1 es `multer` 2.2.0 y tiene 3 advisories high verificados) + `@nestjs/swagger` 12.0.1 con `js-yaml` 5.4.1; los patches `11.2.3`/`11.4.7` quedaron supersedidos por la major. Familias restantes: subtree de `semantic-release` (~14 incl. criticals `tar`/`sigstore`, fix semantic-release 25 — D2), `concurrently`→`shell-quote` (2 critical, fix patch 9.2.4 — D2), y advisories sin fix disponible (`@xhmikosr/decompress` critical, `picomatch`, `fast-uri`, `ip-address`, `piscina`, `brace-expansion`, `qs`/`express`, `body-parser`, `postcss-selector-parser`) que dependen de fixes upstream.
 
 ### 🟡 CI/CD
 
@@ -301,7 +296,7 @@ Lista de hallazgos del análisis de repositorio, ordenados por prioridad (más c
 
 - **I04.** Sin tests de integración web→API con datos reales. Los tests E2E (`api-health.spec.ts`) verifican health + errores + CORS, pero falta integración con datos de categorías eco (depende de P1).
 - **I05.** Sin tests de accesibilidad unitarios con `jest-axe`. Los tests E2E con `@axe-core/playwright` ya auditan todas las páginas (a11y.spec.ts), lo que cubre el 80% del valor. La integración a nivel componente unitario es deseable pero no prioritaria — solo suma valor si crece mucho la cantidad de componentes.
-- **I17.** E2E flaky en corridas locales fresh — la suite Playwright falla intermitentemente (7–50 tests según la corrida) con `ECONNREFUSED :3001`: el `webServer` del config espera solo `:3000` y los tests de API arrancan antes de que `nx serve api` escuche; además Playwright deja procesos huérfanos (`next dev` en :3000) y `reuseExistingServer: !CI` reusa ese web sin la API detrás. **Verificado pre-existente** (10 Sep 2026): el baseline `develop` (NX 22.7.2) también falla fresh (7 failed / 212 passed, mismo patrón) y NX marca `web:e2e` como flaky task. Propuesta: probe de readiness para la API (wrapper que espere ambos puertos antes de ceder control) + evaluar correr E2E contra build de producción.
+- **I17.** `console.warn` pre-existente en tests de API — `WaterFootprintService` emite `"Water footprint data file not found ... initializing with empty dataset"` cuando tests instancian `AppModule` sin mockear el archivo de datos ni el filesystem. Viola la regla de repo "cero warnings en tests", pero es pre-existente al upgrade de NestJS 12. Propuesta: proveer un fixture/mock del data file en los tests afectados (o mockear `fs`/`readFileSync` en `WaterFootprintService`) para eliminar el warning. **Dificultad:** 2/10 · **Estado:** Pendiente
 
 ### 🟢 Arquitectura / Deuda técnica
 
@@ -313,7 +308,6 @@ Lista de hallazgos del análisis de repositorio, ordenados por prioridad (más c
 - **I07.** `legacy-peer-deps=true` en `.npmrc` — workaround porque `eslint-plugin-jsx-a11y@6.10.2` no declara ESLint 10 en sus peer deps. PR [#1081](https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/pull/1081) abierto. Eliminar cuando se publique un release con soporte.
 - **I08.** Sin Storybook ni documentación visual de componentes. Actualmente solo hay 16 componentes, por lo que no se justifica el overhead de configuración y mantenimiento. Reconsiderar cuando la librería de componentes supere ~40 unidades.
 
-
 ### 🟢 UI / Diseño
 
 - **I12.** Visibilidad de iconos SVG en modo claro/oscuro — algunos iconos de categoría (especialmente reforestation, ocean-health, plastic-pollution) no contrastan bien con el fondo en modo claro: se pierden detalles o bordes por falta de separación visual. En modo oscuro el problema es menor pero persiste en detalles finos. **Ahora accionable**: light/dark mode ya está en producción (spec `light-mode-styling` archivado).
@@ -321,6 +315,7 @@ Lista de hallazgos del análisis de repositorio, ordenados por prioridad (más c
 **Restricción de diseño (decisión registrada en el spec `light-mode-styling`):** los iconos de categoría son **intencionalmente multicolor** — sus colores de marca (verdes, azules, rojos) son parte de la identidad visual de cada categoría y no deben recolorearse ni tintarse por tema. Por eso el fix debe mejorar el **contraste/separación** sin tocar los colores del SVG.
 
 **Propuesta:** Evaluar alternativas de contraste que respeten los colores originales:
+
 - **Drop shadow / glow** sutil alrededor de los paths (ej: filter: drop-shadow() en SVG o un contenedor wrapper).
 - **Border o stroke** exterior en los iconos (ej: contenedor circular o card con borde sutil).
 - **Background highlight** — un fondo semi-transparente o gradiente sutil detrás del icono para separarlo del fondo de la página.
@@ -349,4 +344,4 @@ Lista de hallazgos del análisis de repositorio, ordenados por prioridad (más c
 - **I10.** OpenTelemetry — considerado para el futuro cuando el sistema escale a múltiples servicios o se quiera cambiar de backend de observabilidad (Sentry → Datadog, Honeycomb, etc.) sin tocar código de instrumentación. Con un solo BFF, Sentry Performance cubre el tracing necesario. No justifica el overhead de configuración actual (collector, exporters, SDK setup).
 - **I11.** Axiom — plataforma de logs como servicio. Solo relevante si la retención de logs de Railway (7 días) o Vercel resulta insuficiente para debugging post-mortem. Por ahora los logs agregados de cada plataforma son suficientes.
 
-**Última actualización:** 10 Sep 2026
+**Última actualización:** 12 Sep 2026

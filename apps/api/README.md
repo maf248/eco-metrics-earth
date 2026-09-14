@@ -2,7 +2,7 @@
 
 Backend For Frontend for eco-metrics earth. Exposes a REST API under `/api/v1` consumed by the Next.js frontend.
 
-- **Framework:** NestJS 11
+- **Framework:** NestJS 12
 - **Port:** 3001 (development)
 - **Global prefix:** `/api/v1`
 - **Deploy target:** Railway
@@ -44,34 +44,34 @@ src/
 
 ### Cross-cutting concerns (AppModule)
 
-| Concern | Solution | Configuration |
-|---------|----------|---------------|
-| Env validation | `@nestjs/config` + Joi | Validates `PORT`, `NODE_ENV`, `CORS_ORIGIN` on startup; `abortEarly: true` |
-| Rate limiting | `@nestjs/throttler` + global `ThrottlerGuard` | 60 requests per 60 s per IP |
-| Security headers | `helmet` (Express middleware) | Applied at bootstrap, before NestJS routing |
-| CORS | NestJS built-in `enableCors` | Restricted to `CORS_ORIGIN` |
-| Request validation | `class-validator` + `class-transformer` + global `ValidationPipe` | `whitelist`, `forbidNonWhitelisted`, `transform` |
+| Concern            | Solution                                                          | Configuration                                                              |
+| ------------------ | ----------------------------------------------------------------- | -------------------------------------------------------------------------- |
+| Env validation     | `@nestjs/config` + Joi                                            | Validates `PORT`, `NODE_ENV`, `CORS_ORIGIN` on startup; `abortEarly: true` |
+| Rate limiting      | `@nestjs/throttler` + global `ThrottlerGuard`                     | 60 requests per 60 s per IP                                                |
+| Security headers   | `helmet` (Express middleware)                                     | Applied at bootstrap, before NestJS routing                                |
+| CORS               | NestJS built-in `enableCors`                                      | Restricted to `CORS_ORIGIN`                                                |
+| Request validation | `class-validator` + `class-transformer` + global `ValidationPipe` | `whitelist`, `forbidNonWhitelisted`, `transform`                           |
 
 ### AppConfigService
 
 Typed accessor for environment variables. Each getter calls `ConfigService.getOrThrow()` — if the variable is missing or invalid it throws at startup instead of failing silently at runtime.
 
 ```typescript
-appConfig.port        // PORT
-appConfig.nodeEnv     // NODE_ENV
-appConfig.corsOrigin  // CORS_ORIGIN
+appConfig.port; // PORT
+appConfig.nodeEnv; // NODE_ENV
+appConfig.corsOrigin; // CORS_ORIGIN
 ```
 
 ---
 
 ## Endpoints
 
-| Method | Path | Description | Response |
-|--------|------|-------------|----------|
-| `GET` | `/api/v1/health` | Liveness check | `{ status: 'ok' }` |
-| `GET` | `/api/v1/demo-validation` | **Mock** — query param validation demo | `{ query: GetMetricsQueryDto }` |
-| `POST` | `/api/v1/demo-validation` | **Mock** — body validation demo | `{ body: CreateMetricDto }` |
-| `GET` | `/api/v1/water-footprint/products` | Static product dataset — optional `category` query filter (`food-beverages`, `textiles`, `technology`, `manufactured`) | `ApiResponse<WaterFootprintProduct[]>` |
+| Method | Path                               | Description                                                                                                            | Response                               |
+| ------ | ---------------------------------- | ---------------------------------------------------------------------------------------------------------------------- | -------------------------------------- |
+| `GET`  | `/api/v1/health`                   | Liveness check                                                                                                         | `{ status: 'ok' }`                     |
+| `GET`  | `/api/v1/demo-validation`          | **Mock** — query param validation demo                                                                                 | `{ query: GetMetricsQueryDto }`        |
+| `POST` | `/api/v1/demo-validation`          | **Mock** — body validation demo                                                                                        | `{ body: CreateMetricDto }`            |
+| `GET`  | `/api/v1/water-footprint/products` | Static product dataset — optional `category` query filter (`food-beverages`, `textiles`, `technology`, `manufactured`) | `ApiResponse<WaterFootprintProduct[]>` |
 
 ---
 
@@ -83,12 +83,12 @@ Copy `.env.example` before running locally:
 cp apps/api/.env.example apps/api/.env
 ```
 
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `PORT` | `3001` | Port the server listens on |
-| `NODE_ENV` | `development` | `development` \| `test` \| `production` |
-| `CORS_ORIGIN` | `http://localhost:3000` | Allowed CORS origin — set to the deployed web URL in production |
-| `SWAGGER_ENABLED` | `false` | Enable OpenAPI/Swagger UI at `/api/docs` — set to `true` for local development |
+| Variable          | Default                 | Description                                                                    |
+| ----------------- | ----------------------- | ------------------------------------------------------------------------------ |
+| `PORT`            | `3001`                  | Port the server listens on                                                     |
+| `NODE_ENV`        | `development`           | `development` \| `test` \| `production`                                        |
+| `CORS_ORIGIN`     | `http://localhost:3000` | Allowed CORS origin — set to the deployed web URL in production                |
+| `SWAGGER_ENABLED` | `false`                 | Enable OpenAPI/Swagger UI at `/api/docs` — set to `true` for local development |
 
 ---
 

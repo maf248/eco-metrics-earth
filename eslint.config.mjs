@@ -1,10 +1,10 @@
 // @ts-check
-import eslint from "@eslint/js";
-import tseslint from "typescript-eslint";
-import prettierConfig from "eslint-config-prettier";
-import reactHooks from "eslint-plugin-react-hooks";
-import jsxA11y from "eslint-plugin-jsx-a11y";
-import importX from "eslint-plugin-import-x";
+import eslint from '@eslint/js';
+import tseslint from 'typescript-eslint';
+import prettierConfig from 'eslint-config-prettier';
+import reactHooks from 'eslint-plugin-react-hooks';
+import jsxA11y from 'eslint-plugin-jsx-a11y';
+import importX from 'eslint-plugin-import-x';
 
 export default tseslint.config(
   eslint.configs.recommended,
@@ -12,55 +12,62 @@ export default tseslint.config(
   prettierConfig,
   {
     rules: {
-      "@typescript-eslint/no-explicit-any": "error",
-      "@typescript-eslint/no-unused-vars": ["error", { argsIgnorePattern: "^\_" }],
-      "no-console": "warn",
+      '@typescript-eslint/no-explicit-any': 'error',
+      '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^\_' }],
+      'no-console': 'warn',
     },
   },
   // react-hooks: apply to all web TS/TSX files
   {
     ...reactHooks.configs.flat.recommended,
-    files: ["apps/web/**/*.{ts,tsx}"],
+    files: ['apps/web/**/*.{ts,tsx}'],
   },
   // jsx-a11y: apply to web TSX files only
   {
     ...jsxA11y.flatConfigs.recommended,
-    files: ["apps/web/**/*.tsx"],
+    files: ['apps/web/**/*.tsx'],
   },
   // import-x: order and deduplication for all TS/TSX files
   {
     ...importX.flatConfigs.typescript,
-    files: ["**/*.{ts,tsx}"],
+    files: ['**/*.{ts,tsx}'],
     rules: {
-      "import-x/order": [
-        "error",
+      'import-x/order': [
+        'error',
         {
-          groups: ["builtin", "external", "internal", "parent", "sibling", "index"],
-          "newlines-between": "always",
-          alphabetize: { order: "asc", caseInsensitive: true },
+          groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index'],
+          'newlines-between': 'always',
+          alphabetize: { order: 'asc', caseInsensitive: true },
+          pathGroups: [
+            // The @/ path alias (apps/web/tsconfig.json) is not reliably
+            // classified as "internal" by eslint-import-resolver-typescript,
+            // so we explicitly place it in the internal group to keep alias
+            // imports before relative imports as documented in AGENTS.md.
+            { pattern: '@/**', group: 'internal' },
+          ],
         },
       ],
-      "import-x/no-duplicates": "error",
+      'import-x/no-duplicates': 'error',
     },
   },
   {
-    files: ["**/*.js", "**/*.cjs"],
+    files: ['**/*.js', '**/*.cjs'],
     languageOptions: {
-      sourceType: "commonjs",
+      sourceType: 'commonjs',
       globals: {
-        module: "readonly",
-        require: "readonly",
-        exports: "writable",
-        __dirname: "readonly",
-        __filename: "readonly",
-        process: "readonly",
+        module: 'readonly',
+        require: 'readonly',
+        exports: 'writable',
+        __dirname: 'readonly',
+        __filename: 'readonly',
+        process: 'readonly',
       },
     },
     rules: {
-      "@typescript-eslint/no-require-imports": "off",
+      '@typescript-eslint/no-require-imports': 'off',
     },
   },
   {
-    ignores: ["node_modules/**", "**/dist/**", ".nx/**", "coverage/**", "**/.next/**", "**/*.cts"],
+    ignores: ['node_modules/**', '**/dist/**', '.nx/**', 'coverage/**', '**/.next/**', '**/*.cts'],
   },
 );
