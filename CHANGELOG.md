@@ -1,3 +1,9 @@
+## [2.1.2](https://github.com/maf248/eco-metrics-earth/compare/v2.1.1...v2.1.2) (2026-09-14)
+
+### Bug Fixes
+
+* **e2e:** make webServer readiness deterministic with a wrapper ([217c179](https://github.com/maf248/eco-metrics-earth/commit/217c179cf3a168105d62d849be68a5318bf945b0))
+
 ## [2.1.1](https://github.com/maf248/eco-metrics-earth/compare/v2.1.0...v2.1.1) (2026-09-11)
 
 ### Bug Fixes
