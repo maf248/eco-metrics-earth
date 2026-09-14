@@ -194,48 +194,19 @@ Si no estás seguro por dónde empezar, este es el orden recomendado:
 4. **P1.2 / P1.3: `global-temperature` y `energy-sources`** → Replicar el patrón (Dificultad: 3/10 c/u)
 5. **P2: Monitoreo y observabilidad** → Logs, métricas y error tracking (Dificultad: 5/10)
 
-NX 23 quedó completado el 10 Sep 2026 (`npm audit` 76 → 32; spec `upgrade-nx-23` archivada). NestJS 12 quedó completado el 11 Sep 2026 (`npm audit` 32 → 21; spec `upgrade-nestjs-12` archivada). D3 (TypeScript 7) queda como seguimiento pasivo — sin acción por ahora.
+D3 (TypeScript 7) queda como seguimiento pasivo — sin acción por ahora.
 
 ---
 
 ## 🟡 CI/CD / Deploy
 
-### P3: CI/CD con deploy condicional — Vercel (web) + Railway (api)
+### P3: Deploy de Railway (apps/api)
 
-> Renumerado de P4 → P3 (no existía P3; regla de secuencia continua de las Notas).
+**Pendiente:** deploy de `apps/api` a Railway (`railway up` o auto-deploy desde GitHub), disparado por cambios en `apps/api/**` o `packages/shared/**`. El lado web ya está resuelto — Vercel auto-deploy vía GitHub Integration con `vercel.json` (Ignored Build Step por path). Para el staging/preview equivalente, ver I02.
 
-**Problema:** Actualmente no hay deploy automático a producción. El CI solo corre lint + typecheck + build + test + e2e, pero no despliega nada.
+**Dependencias:** P1 (que el BFF sirva datos reales de categorías — hoy solo existe `water-footprint`). **Requisito:** cuenta Railway vinculada al repo.
 
-**Impacto:** Cada cambio en `main` requiere deploy manual. No hay separación entre cambios de frontend y backend.
-
-**Propuesta:** Implementar dos workflows de GitHub Actions con path-based triggers:
-
-| App        | Plataforma | Se dispara cuando cambia             | Comando de deploy                                                   |
-| ---------- | ---------- | ------------------------------------ | ------------------------------------------------------------------- |
-| `apps/web` | Vercel     | `apps/web/**` o `packages/shared/**` | `npx nx build web --prod` → Vercel auto-deploy (GitHub Integration) |
-| `apps/api` | Railway    | `apps/api/**` o `packages/shared/**` | `npx nx build api` → `railway up` o auto-deploy desde GitHub        |
-
-**Flujo completo:**
-
-```
-git push main
-  │
-  ├─► CI (lint → typecheck → build → test → e2e)
-  │
-  ├─► ¿Cambió apps/web/ o packages/shared/?
-  │     SÍ → Vercel deploy automático
-  │     NO → skip (Ignored Build Step)
-  │
-  └─► ¿Cambió apps/api/ o packages/shared/?
-        SÍ → Railway deploy automático
-        NO → skip
-```
-
-**Dependencias:** P1 (APIs deben existir para que Railway tenga algo que servir), `vercel.json` ya está creado en la raíz del repo.
-
-**Dificultad:** 4/10
-**Requisitos:** Cuenta Vercel + Railway vinculadas al repo. La integración de Vercel ya está configurada con `vercel.json`.
-**Estado:** ✅ Completado — Vercel auto-deploy configurado vía GitHub Integration
+**Dificultad:** 3/10 · **Estado:** Pendiente (solo queda Railway)
 
 ---
 
@@ -252,7 +223,7 @@ git push main
 **Dificultad:** 4/10 · **Estado:** Pendiente
 **Nota:** primera categoría con datos + UI sin depender de proveedores externos — no requiere P1.0.
 
-**Limpieza técnica incluida (14 Sep 2026):** el `WaterFootprintService` resuelve el dataset con `join(__dirname, 'data/water-footprint.json')` — bajo ts-jest eso apunta a `src/modules/water-footprint/data/` (no existe; el archivo real vive en `src/data/`), mientras que en el bundle de webpack `__dirname` resuelve a la raíz de `dist/` y sí lo encuentra (copiado por `assets` en `apps/api/webpack.config.js`). Los tests lo workaround-ean con mocks de `fs` (`app.module.test.ts` — agregado al cerrar I17 — y `water-footprint.module.test.ts`, pre-existente). Al implementar D1: mover el dataset a `src/modules/water-footprint/data/water-footprint.json`, ajustar `assets` en `apps/api/webpack.config.js` para copiarlo a la ubicación que el bundle espera, validar con `nx build api` + `nx serve api` + `nx test api` (el service debe cargar los 52 productos tanto en runtime como en tests), y **eliminar los mocks de `fs` de `app.module.test.ts` y `water-footprint.module.test.ts`**. El mock de `water-footprint.service.test.ts` se mantiene — cubre las ramas de error (ENOENT/EACCES/JSON malformado) que no se pueden ejercitar con el archivo real.
+**Limpieza técnica incluida (14 Sep 2026):** el `WaterFootprintService` resuelve el dataset con `join(__dirname, 'data/water-footprint.json')` — bajo ts-jest eso apunta a `src/modules/water-footprint/data/` (no existe; el archivo real vive en `src/data/`), mientras que en el bundle de webpack `__dirname` resuelve a la raíz de `dist/` y sí lo encuentra (copiado por `assets` en `apps/api/webpack.config.js`). Los tests lo workaround-ean con mocks de `fs` (`app.module.test.ts` y `water-footprint.module.test.ts`). Al implementar D1: mover el dataset a `src/modules/water-footprint/data/water-footprint.json`, ajustar `assets` en `apps/api/webpack.config.js` para copiarlo a la ubicación que el bundle espera, validar con `nx build api` + `nx serve api` + `nx test api` (el service debe cargar los 52 productos tanto en runtime como en tests), y **eliminar los mocks de `fs` de `app.module.test.ts` y `water-footprint.module.test.ts`**. El mock de `water-footprint.service.test.ts` se mantiene — cubre las ramas de error (ENOENT/EACCES/JSON malformado) que no se pueden ejercitar con el archivo real.
 
 ### D2: Tooling de release — majors de bajo riesgo
 
@@ -298,7 +269,6 @@ Lista de hallazgos del análisis de repositorio, ordenados por prioridad (más c
 
 - **I04.** Sin tests de integración web→API con datos reales. Los tests E2E (`api-health.spec.ts`) verifican health + errores + CORS, pero falta integración con datos de categorías eco (depende de P1).
 - **I05.** Sin tests de accesibilidad unitarios con `jest-axe`. Los tests E2E con `@axe-core/playwright` ya auditan todas las páginas (a11y.spec.ts), lo que cubre el 80% del valor. La integración a nivel componente unitario es deseable pero no prioritaria — solo suma valor si crece mucho la cantidad de componentes.
-- **I17.** ✅ Resuelto (14 Sep 2026) — `app.module.test.ts` ahora mock-ea `readFileSync` con fallback a la implementación real para otros paths (fixture `'[]'` para el dataset), y el test ENOENT de `water-footprint.service.test.ts` captura y asserta el `Logger.warn` vía spy en `Logger.prototype.warn` en vez de imprimirlo. Suite de API: 54/54 tests, cero warnings en output. Los mocks existen por el path mismatch de `__dirname` (ts-jest vs bundle de webpack) — la limpieza técnica incluida en D1 los elimina al reubicar el dataset junto al service.
 
 ### 🟢 Arquitectura / Deuda técnica
 
@@ -332,10 +302,6 @@ Lista de hallazgos del análisis de repositorio, ordenados por prioridad (más c
 - **I13.** Atribución de datos (requisito legal, no opcional) — CC BY exige atribución visible. Antes de publicar la primera sección con datos reales (P1.1): componente de atribución al pie de cada visualización ("Data: Our World in Data — CC BY" con link) + página `/data-sources/` listando proveedores y licencias. Alimentado por el `DataSourceAttribution` de I14. Bonus SEO: contenido indexable con estructura.
 - **I14.** Extender `ApiResponse<T>` con metadata de fuente — el contrato actual no transporta procedencia. Agregar `meta: { source: DataSourceAttribution; fetchedAt: string }` para que el frontend renderice atribución y frescura sin hardcodear nada por página. Diseñarlo en P1.0 para no romper el contrato después.
 - **I15.** Elegir librería de charts — P1.1 necesita el primer gráfico de series temporales. Candidatas: **Recharts** (React-first, liviana, suficiente para líneas/áreas/barras), **ECharts** (más potente, pesada — justifica `next/dynamic`), **visx** (control total, más esfuerzo). Recomendación: empezar con Recharts y reevaluar si aparecen mapas/heatmaps. La decisión activa el recordatorio de Dynamic Imports.
-
-### 🟢 Documentación
-
-- **I16.** ✅ Resuelto (10 Sep 2026) — tabla de `postman/README.md` corregida para listar los nombres reales de los archivos. Se mantienen los nombres exportados por Postman para no romper el Git Sync de las colecciones.
 
 ---
 
