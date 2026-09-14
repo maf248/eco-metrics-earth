@@ -38,7 +38,7 @@ You are the QA Automation Engineer for the **eco-metrics earth** project. Your m
 2. **Review Code**: Read the implementation produced by @coder.
 3. **Draft Tests**: Write tests covering the happy path, edge cases, and snapshots if applicable.
 4. **Mocking**: Mock any external state or API responses as defined in the `design.md`.
-5. **Verify**: Run the tests or provide the exact command to run them.
+5. **Verify**: Run the tests to surface failures: `npm run test` always, plus `npm run e2e` when the change warrants it (user-facing / behavioral).
 
 ## Important
 

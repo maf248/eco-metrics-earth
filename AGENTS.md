@@ -25,7 +25,7 @@ All non-trivial changes — new features, significant refactors, API contracts �
 1. **Propose** — generate a proposal + specs + design + tasks using `openspec-propose` before writing any code.
 2. **Review** — the user reviews and approves the OpenSpec artifacts in `openspec/changes/`.
 3. **Implement** — code is written strictly based on the approved spec, delegated to `@coder`.
-4. **Validate** — `@tester` writes/updates tests; `@reviewer` does the final quality audit.
+4. **Validate** — `@tester` writes/updates tests and runs the gates (lint + build + unit tests, plus E2E when the change warrants it per the spec); `@reviewer` does the final quality audit.
 5. **Close** — verify Definition of Done, run `/opsx:archive` to move the change folder to `openspec/changes/archive/`, then commit and optionally open a PR.
 
 > **Note:** Improvement ideas and planned features are tracked in [`ROADMAP.md`](./ROADMAP.md). When ready to implement, a formal OpenSpec proposal is created from the roadmap item.
@@ -85,7 +85,7 @@ npm run test
 
 
 # Single app commands
-npx nx serve web        # http://localhost:3000
+npx nx dev web          # http://localhost:3000 (web target is 'dev' — 'nx serve web' does not exist)
 npx nx serve api        # http://localhost:3001
 npx nx test web
 npx nx test api
@@ -269,7 +269,7 @@ npx prettier --check "**/*.{ts,tsx,js,json}"
 
 ```
 
-Pre-PR checklist: `npm run lint`, `npm run build`, and `npm run test` must all pass with zero errors.
+Pre-PR checklist: `npm run lint`, `npm run build`, `npm run test`, and `npm run e2e` must all pass with zero errors.
 
 ---
 
@@ -394,6 +394,12 @@ The user must **explicitly authorize** every `git commit` and every `git push`. 
 3. **Run `git pull` (default merge) before every push** — the remote may have new release tags between local pushes.
    Prefer merge over rebase to avoid rewriting commit SHAs, which breaks Vercel deployments and can drop merge-commit content.
 4. When the user says "commitea y pushea" or similar, treat that as authorization for both in sequence — but do not auto-push on future tasks.
+
+### Push workflow — husky pre-push hook & local E2E
+
+- `.husky/pre-push` blocks direct pushes to `main` and runs `npx nx affected --target=test --base=origin/develop` (fast, NX-cached). E2E is not push-time: CI runs the full suite on every push; locally use `npm run e2e` (deterministic — the webServer wrapper brings up both servers and cleans up their process trees).
+- SSH keep-alive hygiene: set `ServerAliveInterval` for the `github-mafmaggot` host in `~/.ssh/config` so long pushes don't die with `Connection closed by remote host`.
+- If you start dev servers manually: `next dev` spawns a `next-server` worker that survives its parent and holds `:3000` — kill it by PID (`ss -tlnp | grep :3000`), never `pkill -f` with a self-matching pattern.
 
 ### "This model does not support assistant message prefill"
 

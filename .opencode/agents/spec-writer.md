@@ -37,6 +37,7 @@ Generate artifacts in `openspec/changes/{change-name}/`:
 
 -   **Step-by-step checklist**: Granular tasks for @coder.
 -   **Verification**: How to test each step.
+-   **E2E tasks are discretionary by change type**: user-facing / behavioral / significant changes warrant an E2E task; small or no-behavior changes skip it. When in doubt, ask the user.
 
 ## Project Rules
 
