@@ -1,3 +1,9 @@
+## [2.2.1](https://github.com/maf248/eco-metrics-earth/compare/web-v2.2.0...web-v2.2.1) (2026-09-15)
+
+### Bug Fixes
+
+* **web:** make bottom nav opaque so page content does not show through ([d54ebe2](https://github.com/maf248/eco-metrics-earth/commit/d54ebe2b66ce022e95c97af4c8bc260e7fa81b26))
+
 ## [2.2.0](https://github.com/maf248/eco-metrics-earth/compare/web-v2.1.2...web-v2.2.0) (2026-09-15)
 
 ## [2.1.2](https://github.com/maf248/eco-metrics-earth/compare/web-v2.1.1...web-v2.1.2) (2026-09-14)
