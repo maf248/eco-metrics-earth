@@ -52,11 +52,13 @@ gcloud projects add-iam-policy-binding <GCP_PROJECT_ID> \
 
 # Role required for Cloud Run to actAs the Compute Engine default SA
 gcloud iam service-accounts add-iam-policy-binding \
-  <GCP_PROJECT_ID>-compute@developer.gserviceaccount.com \
+  <GCP_PROJECT_NUMBER>-compute@developer.gserviceaccount.com \
   --member="serviceAccount:github-deployer@<GCP_PROJECT_ID>.iam.gserviceaccount.com" \
   --role="roles/iam.serviceAccountUser" \
   --project=<GCP_PROJECT_ID>
 ```
+
+> Replace `<GCP_PROJECT_NUMBER>` with the project number (not the project ID), found via `gcloud projects describe <GCP_PROJECT_ID> --format='value(projectNumber)'`.
 
 ## 5. Create the Workload Identity Federation pool and provider
 
@@ -64,11 +66,13 @@ gcloud iam service-accounts add-iam-policy-binding \
 # Create the workload identity pool
 gcloud iam workload-identity-pools create github \
   --display-name="GitHub Actions" \
+  --location=global \
   --project=<GCP_PROJECT_ID>
 
 # Create the OIDC provider restricted to this repository
 gcloud iam workload-identity-pools providers create-oidc github-provider \
   --workload-identity-pool=github \
+  --location=global \
   --display-name="GitHub Actions provider" \
   --issuer-uri="https://token.actions.githubusercontent.com" \
   --attribute-mapping="google.subject=assertion.sub,attribute.repository=assertion.repository" \
@@ -93,6 +97,7 @@ gcloud iam service-accounts add-iam-policy-binding \
 ```bash
 gcloud iam workload-identity-pools providers describe github-provider \
   --workload-identity-pool=github \
+  --location=global \
   --format='value(name)' \
   --project=<GCP_PROJECT_ID>
 ```

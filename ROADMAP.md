@@ -12,7 +12,7 @@ Este documento registra todas las propuestas de mejora identificadas para el pro
 | Lint             | ✅     | Sin warnings                                                                                                                                                                                                                                                                                                                                                       |
 | Build            | ✅     | Compila correctamente                                                                                                                                                                                                                                                                                                                                              |
 | CI               | ✅     | CI en PRs y push a cualquier branch                                                                                                                                                                                                                                                                                                                                |
-| CD / Deploy      | 🟡     | api: repo-side listo (Cloud Run workflow commiteado) — deploy pendiente de ejecutar el runbook; web: Vercel ✅; staging/preview gap sigue en I02                                                                                                                                                                                                                    |
+| CD / Deploy      | ✅     | web: Vercel (auto-deploy desde GitHub); api: Cloud Run (workflow `deploy-api.yml` desde `develop`, servicio `eco-metrics-api`, `eco-metrics-api-fexi2yqv2q-uc.a.run.app`); gap de staging/preview del api sigue en I02                                                                                                                                             |
 | Dependencias     | 🟡     | Upgrade a NX 23.2.1 aplicado (10 Sep 2026) y NestJS 12 aplicado (11 Sep 2026) — `npm audit` bajó de 76 a 19 vulns (0 critical, 15 high, 3 moderate, 1 low — parche `concurrently` 9.2.4 aplicado el 14 Sep 2026 eliminó los 2 criticals de `shell-quote`), cero advisories de las familias NestJS (`multer`/`js-yaml`). Restante: tooling de release (D1). Ver I01 |
 | Coverage         | ✅     | Medido con Jest                                                                                                                                                                                                                                                                                                                                                    |
 | E2E              | ✅     | Playwright: 55 specs, 5 browsers, CI integrado, arranque determinista (readiness de ambos puertos)                                                                                                                                                                                                                                                                 |
@@ -162,16 +162,16 @@ La categoría con mejor relación datos/esfuerzo (OWID CO₂ dataset: anual, per
 
 #### Stack final
 
-| Componente                | Tecnología                                      | Dónde                    |
-| ------------------------- | ----------------------------------------------- | ------------------------ |
-| Logging estructurado      | `nestjs-pino` + `pino-http`                     | `apps/api`               |
-| Error tracking front      | `@sentry/nextjs`                                | `apps/web`               |
-| Error tracking back       | `@sentry/nestjs`                                | `apps/api`               |
-| Source maps upload        | `withSentryConfig` + `SENTRY_AUTH_TOKEN`        | CI/CD (Vercel + Cloud Run) |
-| Healthcheck lib           | `@nestjs/terminus` (instalar, sin refactorizar) | `apps/api`               |
+| Componente                | Tecnología                                      | Dónde                                            |
+| ------------------------- | ----------------------------------------------- | ------------------------------------------------ |
+| Logging estructurado      | `nestjs-pino` + `pino-http`                     | `apps/api`                                       |
+| Error tracking front      | `@sentry/nextjs`                                | `apps/web`                                       |
+| Error tracking back       | `@sentry/nestjs`                                | `apps/api`                                       |
+| Source maps upload        | `withSentryConfig` + `SENTRY_AUTH_TOKEN`        | CI/CD (Vercel + Cloud Run)                       |
+| Healthcheck lib           | `@nestjs/terminus` (instalar, sin refactorizar) | `apps/api`                                       |
 | Healthcheck sin throttler | `@SkipThrottle()` en health endpoint            | `apps/api` ✅ aplicado en `deploy-api-cloud-run` |
-| CSP Sentry                | `connect-src` → incluir `*.sentry.io`           | `next.config.ts`         |
-| Alertas                   | Email (error rate + healthcheck)                | Dashboard Sentry         |
+| CSP Sentry                | `connect-src` → incluir `*.sentry.io`           | `next.config.ts`                                 |
+| Alertas                   | Email (error rate + healthcheck)                | Dashboard Sentry                                 |
 
 **Fuera de P2 → backlog:**
 
@@ -194,22 +194,6 @@ Si no estás seguro por dónde empezar, este es el orden recomendado:
 4. **P2: Monitoreo y observabilidad** → Logs, métricas y error tracking (Dificultad: 5/10)
 
 D2 (TypeScript 7) queda como seguimiento pasivo — sin acción por ahora.
-
----
-
-## 🟡 CI/CD / Deploy
-
-### P3: Deploy de Cloud Run (apps/api)
-
-**Pendiente:** deploy de `apps/api` a Google Cloud Run desde `develop`, via Dockerfile + GitHub Actions workflow en el repo. El lado web ya está resuelto — Vercel auto-deploy vía GitHub Integration con `vercel.json` (Ignored Build Step por path). Para el staging/preview equivalente, ver I02.
-
-La prueba de la plataforma anterior (plan Hobby de US$5/mes) hizo que resultara poco atractivo para un proyecto portfolio; Cloud Run tiene tier siempre gratuito que cubre el volumen de este proyecto (cientos de requests/mes) a US$0. Requiere cuenta GCP con billing activo (tarjeta en archivo). Límites free tier (Tier 1, ej. `us-central1`): 2M requests/mes, 180k vCPU-seconds, 360k GiB-seconds. La imagen es multi-stage `node:24-alpine`: builder con `HUSKY=0 npm ci` → `nx run api:prune` → install de producción dentro de `apps/api/dist` con los `overrides` de seguridad del root; runtime con `USER node`, sin `HEALTHCHECK`, expone 8080 y arranca `node main.js`. Autenticación WIF/OIDC sin keys JSON; imágenes etiquetadas por SHA a Artifact Registry; servicio `eco-metrics-api` con startup probe en `/api/v1/health`, `min-instances=0` (scale-to-zero, cold start ~1–3 s absorbido por ISR background revalidation) y `CORS_ORIGIN` apuntando a la URL productiva de Vercel.
-
-**Dependencias:** ninguna — el BFF ya sirve `water-footprint` + health. **Requisito:** cuenta GCP con billing + seguir runbook `docs/deploy/cloud-run.md`.
-
-- **Seguimiento post-deploy:** re-agregar la URL de producción de Swagger en `apps/api/src/main.ts` (`.addServer` con la URL real `*.run.app`) una vez conocida — tarea 10.1 del cambio archivado `deploy-api-cloud-run`.
-
-**Dificultad:** 4/10 · **Estado:** En curso — repo-side completo (Dockerfile + workflow + runbook, spec `deploy-api-cloud-run` archivada); falta ejecutar el runbook de deploy (`docs/deploy/cloud-run.md`) — el deploy de Cloud Run se dispara al pushear este cambio y configurar GCP.
 
 ---
 
