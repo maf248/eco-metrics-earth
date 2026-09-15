@@ -14,7 +14,7 @@ eco-metrics earth is an environmental metrics dashboard monorepo built with NX.
   - `packages/shared` — Shared TypeScript types (`@eco-metrics/shared`)
 - **Testing:** Jest + Testing Library (web), Jest (api, shared), Playwright (E2E)
 - **Linting/Format:** ESLint + Prettier
-- **Deploy targets:** Vercel (web), Railway (api)
+- **Deploy targets:** Vercel (web), Cloud Run (api)
 
 ---
 

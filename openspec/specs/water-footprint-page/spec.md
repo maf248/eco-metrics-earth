@@ -43,8 +43,8 @@ A typed helper `apiBaseUrl(): string` in `apps/web/src/lib/apiBaseUrl.ts` SHALL 
 
 #### Scenario: API_BASE_URL set
 
-- **WHEN** `API_BASE_URL` is set to `https://eco-metrics-earth-api.railway.app/api/v1`
-- **THEN** `apiBaseUrl()` returns `https://eco-metrics-earth-api.railway.app/api/v1`
+- **WHEN** `API_BASE_URL` is set to `https://eco-metrics-api-abcdefghij.us-central1.run.app/api/v1`
+- **THEN** `apiBaseUrl()` returns `https://eco-metrics-api-abcdefghij.us-central1.run.app/api/v1`
 
 #### Scenario: API_BASE_URL set with trailing slash
 

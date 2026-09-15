@@ -5,7 +5,7 @@ Backend For Frontend for eco-metrics earth. Exposes a REST API under `/api/v1` c
 - **Framework:** NestJS 12
 - **Port:** 3001 (development)
 - **Global prefix:** `/api/v1`
-- **Deploy target:** Railway
+- **Deploy target:** Cloud Run
 
 ---
 
@@ -120,6 +120,24 @@ npx nx test api
 - **Runner:** Jest with **SWC** compiler (`.spec.swcrc`) for fast TypeScript compilation
 - **Test location:** `__tests__/` mirroring `src/` (e.g. `src/health/health.controller.ts` → `__tests__/health/health.controller.test.ts`)
 - **Coverage thresholds:** 80% statements / functions / lines; branches threshold intentionally omitted — NestJS decorators compiled with SWC produce phantom branches that cannot be exercised by unit tests
+
+---
+
+## Deploy (Cloud Run)
+
+`apps/api` deploys to Google Cloud Run from `develop` via the root `Dockerfile` and `.github/workflows/deploy-api.yml`. The image is multi-stage `node:24-alpine`: the builder runs `HUSKY=0 npm ci`, `npx nx run api:prune`, and a production install inside `apps/api/dist` using the root `overrides` security pins; the runtime stage ships only the self-contained `dist` directory, runs as non-root `USER node`, exposes port `8080`, and starts with `CMD ["node", "main.js"]`.
+
+Authentication uses Workload Identity Federation (OIDC) — no service-account JSON keys. Images are tagged by commit SHA and pushed to Artifact Registry; `google-github-actions/deploy-cloudrun@v3` deploys the `eco-metrics-api` service with a startup probe on `/api/v1/health`, scale-to-zero (`--min-instances=0`), and the env vars `NODE_ENV`, `CORS_ORIGIN`, and `SWAGGER_ENABLED` (Cloud Run injects `PORT`, so it is never set manually).
+
+Required GitHub **variables** (Settings → Secrets and variables → Actions → Variables):
+
+- `GCP_PROJECT_ID`
+- `GCP_REGION`
+- `WIF_PROVIDER`
+- `WIF_SERVICE_ACCOUNT`
+- `CORS_ORIGIN`
+
+See [`docs/deploy/cloud-run.md`](../../docs/deploy/cloud-run.md) for the full GCP/gcloud/GitHub/Vercel runbook.
 
 ---
 

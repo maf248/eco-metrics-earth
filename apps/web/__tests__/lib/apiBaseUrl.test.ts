@@ -12,8 +12,8 @@ describe('apiBaseUrl', () => {
   });
 
   it('should return the env var value when set', () => {
-    process.env.API_BASE_URL = 'https://eco-metrics-earth-api.railway.app/api/v1';
-    expect(apiBaseUrl()).toBe('https://eco-metrics-earth-api.railway.app/api/v1');
+    process.env.API_BASE_URL = 'https://eco-metrics-api-abcdefghij.us-central1.run.app/api/v1';
+    expect(apiBaseUrl()).toBe('https://eco-metrics-api-abcdefghij.us-central1.run.app/api/v1');
   });
 
   it('should strip a trailing slash from the env var value', () => {

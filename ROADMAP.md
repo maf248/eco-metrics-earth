@@ -4,15 +4,15 @@ Este documento registra todas las propuestas de mejora identificadas para el pro
 
 ---
 
-## Estado del Proyecto (14 Sep 2026)
+## Estado del Proyecto (15 Sep 2026)
 
 | Aspecto          | Estado | Nota                                                                                                                                                                                                                                                                                                                                                               |
 | ---------------- | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Tests            | ✅     | 328 unit (265 web + 55 api + 8 shared) + 55 E2E specs pasando, 0 errores                                                                                                                                                                                                                                                                                           |
+| Tests            | ✅     | 329 unit (265 web + 56 api + 8 shared) + 55 E2E specs pasando, 0 errores                                                                                                                                                                                                                                                                                           |
 | Lint             | ✅     | Sin warnings                                                                                                                                                                                                                                                                                                                                                       |
 | Build            | ✅     | Compila correctamente                                                                                                                                                                                                                                                                                                                                              |
 | CI               | ✅     | CI en PRs y push a cualquier branch                                                                                                                                                                                                                                                                                                                                |
-| CD / Deploy      | 🟡     | No hay entornos de pre-release/staging (ver I02)                                                                                                                                                                                                                                                                                                                   |
+| CD / Deploy      | 🟡     | api: repo-side listo (Cloud Run workflow commiteado) — deploy pendiente de ejecutar el runbook; web: Vercel ✅; staging/preview gap sigue en I02                                                                                                                                                                                                                    |
 | Dependencias     | 🟡     | Upgrade a NX 23.2.1 aplicado (10 Sep 2026) y NestJS 12 aplicado (11 Sep 2026) — `npm audit` bajó de 76 a 19 vulns (0 critical, 15 high, 3 moderate, 1 low — parche `concurrently` 9.2.4 aplicado el 14 Sep 2026 eliminó los 2 criticals de `shell-quote`), cero advisories de las familias NestJS (`multer`/`js-yaml`). Restante: tooling de release (D1). Ver I01 |
 | Coverage         | ✅     | Medido con Jest                                                                                                                                                                                                                                                                                                                                                    |
 | E2E              | ✅     | Playwright: 55 specs, 5 browsers, CI integrado, arranque determinista (readiness de ambos puertos)                                                                                                                                                                                                                                                                 |
@@ -112,7 +112,7 @@ La categoría con mejor relación datos/esfuerzo (OWID CO₂ dataset: anual, per
 **Requisitos:**
 
 - P2 instala `@nestjs/terminus` pero no refactoriza el healthcheck. **Cada módulo de P1 debe agregar su propio `HttpHealthIndicator` al `HealthModule`** para validar su API externa (OWID, NOAA, World Bank). Esto convierte el healthcheck en un agregado real de dependencias externas. P1.0 puede instalar `@nestjs/terminus` directamente si se ejecuta antes que P2.
-- I03 (CORS multi-origen) pasa a ser bloqueante cuando el frontend en Vercel consuma el BFF en Railway — resolverlo dentro de P1.1 o antes del deploy del back.
+- I03 (CORS multi-origen) pasa a ser bloqueante cuando el frontend en Vercel consuma el BFF en Cloud Run — resolverlo dentro de P1.1 o antes del deploy del back.
   **Estado:** Pendiente
 
 ---
@@ -151,7 +151,7 @@ La categoría con mejor relación datos/esfuerzo (OWID CO₂ dataset: anual, per
 
 #### CI/CD — ambos
 
-- `SENTRY_DSN` en variables de entorno de Vercel y Railway (uno por proyecto Sentry).
+- `SENTRY_DSN` en variables de entorno de Vercel y Cloud Run (uno por proyecto Sentry).
 - `SENTRY_AUTH_TOKEN` en secrets de CI/CD para subir source maps.
 
 #### Alertas — configuración en Sentry (sin código)
@@ -167,16 +167,16 @@ La categoría con mejor relación datos/esfuerzo (OWID CO₂ dataset: anual, per
 | Logging estructurado      | `nestjs-pino` + `pino-http`                     | `apps/api`               |
 | Error tracking front      | `@sentry/nextjs`                                | `apps/web`               |
 | Error tracking back       | `@sentry/nestjs`                                | `apps/api`               |
-| Source maps upload        | `withSentryConfig` + `SENTRY_AUTH_TOKEN`        | CI/CD (Vercel + Railway) |
+| Source maps upload        | `withSentryConfig` + `SENTRY_AUTH_TOKEN`        | CI/CD (Vercel + Cloud Run) |
 | Healthcheck lib           | `@nestjs/terminus` (instalar, sin refactorizar) | `apps/api`               |
-| Healthcheck sin throttler | `@SkipThrottle()` en health endpoint            | `apps/api`               |
+| Healthcheck sin throttler | `@SkipThrottle()` en health endpoint            | `apps/api` ✅ aplicado en `deploy-api-cloud-run` |
 | CSP Sentry                | `connect-src` → incluir `*.sentry.io`           | `next.config.ts`         |
 | Alertas                   | Email (error rate + healthcheck)                | Dashboard Sentry         |
 
 **Fuera de P2 → backlog:**
 
 - OpenTelemetry (I10): relevante cuando escalen los servicios o se quiera cambiar de backend de observabilidad sin tocar código de instrumentación.
-- Axiom (I11): solo si la retención de logs de Railway (7 días) o Vercel resulta insuficiente.
+- Axiom (I11): solo si la retención de Cloud Logging (30 días en free tier) o Vercel resulta insuficiente.
 
 **Dificultad:** 5/10 — mayoritariamente instalación de paquetes, configuración de env vars y wrapping de configs existentes. El punto más técnico es la integración de source maps en los pipelines de build.
 **Requisitos:** Cuenta Sentry (free tier suficiente), `SENTRY_AUTH_TOKEN` en secrets de CI/CD.
@@ -199,13 +199,17 @@ D2 (TypeScript 7) queda como seguimiento pasivo — sin acción por ahora.
 
 ## 🟡 CI/CD / Deploy
 
-### P3: Deploy de Railway (apps/api)
+### P3: Deploy de Cloud Run (apps/api)
 
-**Pendiente:** deploy de `apps/api` a Railway (`railway up` o auto-deploy desde GitHub), disparado por cambios en `apps/api/**` o `packages/shared/**`. El lado web ya está resuelto — Vercel auto-deploy vía GitHub Integration con `vercel.json` (Ignored Build Step por path). Para el staging/preview equivalente, ver I02.
+**Pendiente:** deploy de `apps/api` a Google Cloud Run desde `develop`, via Dockerfile + GitHub Actions workflow en el repo. El lado web ya está resuelto — Vercel auto-deploy vía GitHub Integration con `vercel.json` (Ignored Build Step por path). Para el staging/preview equivalente, ver I02.
 
-**Dependencias:** P1 (que el BFF sirva datos reales de categorías — hoy solo existe `water-footprint`). **Requisito:** cuenta Railway vinculada al repo.
+La prueba de la plataforma anterior (plan Hobby de US$5/mes) hizo que resultara poco atractivo para un proyecto portfolio; Cloud Run tiene tier siempre gratuito que cubre el volumen de este proyecto (cientos de requests/mes) a US$0. Requiere cuenta GCP con billing activo (tarjeta en archivo). Límites free tier (Tier 1, ej. `us-central1`): 2M requests/mes, 180k vCPU-seconds, 360k GiB-seconds. La imagen es multi-stage `node:24-alpine`: builder con `HUSKY=0 npm ci` → `nx run api:prune` → install de producción dentro de `apps/api/dist` con los `overrides` de seguridad del root; runtime con `USER node`, sin `HEALTHCHECK`, expone 8080 y arranca `node main.js`. Autenticación WIF/OIDC sin keys JSON; imágenes etiquetadas por SHA a Artifact Registry; servicio `eco-metrics-api` con startup probe en `/api/v1/health`, `min-instances=0` (scale-to-zero, cold start ~1–3 s absorbido por ISR background revalidation) y `CORS_ORIGIN` apuntando a la URL productiva de Vercel.
 
-**Dificultad:** 3/10 · **Estado:** Pendiente (solo queda Railway)
+**Dependencias:** ninguna — el BFF ya sirve `water-footprint` + health. **Requisito:** cuenta GCP con billing + seguir runbook `docs/deploy/cloud-run.md`.
+
+- **Seguimiento post-deploy:** re-agregar la URL de producción de Swagger en `apps/api/src/main.ts` (`.addServer` con la URL real `*.run.app`) una vez conocida — tarea 10.1 del cambio archivado `deploy-api-cloud-run`.
+
+**Dificultad:** 4/10 · **Estado:** En curso — repo-side completo (Dockerfile + workflow + runbook, spec `deploy-api-cloud-run` archivada); falta ejecutar el runbook de deploy (`docs/deploy/cloud-run.md`) — el deploy de Cloud Run se dispara al pushear este cambio y configurar GCP.
 
 ---
 
@@ -247,11 +251,11 @@ Lista de hallazgos del análisis de repositorio, ordenados por prioridad (más c
 
 ### 🟡 CI/CD
 
-- **I02.** Staging parcial — Vercel genera preview deploys automáticos desde `develop`, lo que funciona como staging de facto para el frontend. Falta definir el equivalente en Railway para `apps/api` cuando se implemente el deploy del backend (recordatorio).
+- **I02.** Staging parcial — Vercel genera preview deploys automáticos desde `develop`, lo que funciona como staging de facto para el frontend. Cloud Run no tiene equivalente a PR previews; los previews de Vercel consumen el BFF productivo (trade-off staging-is-production aceptado por ahora).
 
 ### 🟡 API / Seguridad
 
-- **I03.** Solo un origen soportado en CORS — `CORS_ORIGIN` es un string único en `AppConfigService`. Cuando web (Vercel preview + prod) y API (Railway) tengan múltiples entornos, esto fallará con orígenes distintos (localhost, preview URLs, dominio productivo). Migrar a lista separada por comas (o regex para previews de Vercel). **Bloqueante para P1.1** cuando el frontend desplegado consuma el BFF.
+- **I03.** Solo un origen soportado en CORS — `CORS_ORIGIN` es un string único en `AppConfigService`. Cuando web (Vercel preview + prod) y API (Cloud Run) tengan múltiples entornos, esto fallará con orígenes distintos (localhost, preview URLs, dominio productivo). Migrar a lista separada por comas (o regex para previews de Vercel). **Bloqueante para P1.1** cuando el frontend desplegado consuma el BFF.
 
 ### 🟡 Testing
 
@@ -298,6 +302,6 @@ Lista de hallazgos del análisis de repositorio, ordenados por prioridad (más c
 - **Dynamic Imports (`next/dynamic`)** — No implementar todavía. Los chunks actuales pesan ~1KB por página, y dynamic imports agregarían complejidad (loading states por import, layout shift) sin beneficio real hoy. Reconsiderar cuando se integren librerías pesadas como charting libraries (d3, echarts) o widgets de terceros.
 
 - **I10.** OpenTelemetry — considerado para el futuro cuando el sistema escale a múltiples servicios o se quiera cambiar de backend de observabilidad (Sentry → Datadog, Honeycomb, etc.) sin tocar código de instrumentación. Con un solo BFF, Sentry Performance cubre el tracing necesario. No justifica el overhead de configuración actual (collector, exporters, SDK setup).
-- **I11.** Axiom — plataforma de logs como servicio. Solo relevante si la retención de logs de Railway (7 días) o Vercel resulta insuficiente para debugging post-mortem. Por ahora los logs agregados de cada plataforma son suficientes.
+- **I11.** Axiom — plataforma de logs como servicio. Solo relevante si la retención de Cloud Logging (30 días en free tier) o Vercel resulta insuficiente para debugging post-mortem. Por ahora los logs agregados de cada plataforma son suficientes.
 
-**Última actualización:** 14 Sep 2026
+**Última actualización:** 15 Sep 2026
