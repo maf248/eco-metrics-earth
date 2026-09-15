@@ -26,7 +26,7 @@ All non-trivial changes — new features, significant refactors, API contracts �
 2. **Review** — the user reviews and approves the OpenSpec artifacts in `openspec/changes/`.
 3. **Implement** — code is written strictly based on the approved spec, delegated to `@coder`.
 4. **Validate** — `@tester` writes/updates tests and runs the gates (lint + build + unit tests, plus E2E when the change warrants it per the spec); `@reviewer` does the final quality audit.
-5. **Close** — verify Definition of Done, run `/opsx:archive` to move the change folder to `openspec/changes/archive/`, then commit and optionally open a PR.
+5. **Close & Final Approval (mandatory checkpoint)** — verify Definition of Done, run `/opsx:archive` to move the change folder to `openspec/changes/archive/`, then **STOP and present the full summary to the user**: green gates (lint + build + unit tests + E2E when applicable), reviewer verdict, archived change folder, and a `git status`/diff overview of everything that will be committed. **No commit and no push until the user explicitly approves at this checkpoint.** This checkpoint is mandatory for every change — SDD or direct implementation — with no exceptions. Only after approval: commit (Commitizen format), and push only if separately authorized.
 
 > **Note:** Improvement ideas and planned features are tracked in [`ROADMAP.md`](./ROADMAP.md). When ready to implement, a formal OpenSpec proposal is created from the roadmap item.
 
@@ -292,6 +292,7 @@ Pre-PR checklist: `npm run lint`, `npm run build`, `npm run test`, and `npm run 
 - **Keep README.md tech stack versions up to date** — when upgrading major dependencies (NX, Next.js, NestJS, React, TypeScript, etc.), update the version table in `README.md` immediately.
 - **Update AGENTS.md when conventions change** — if a new architectural pattern, testing rule, or workflow is established, document it here.
 - **Sync changes across related docs** — if you modify environment variables, update both the example files (`.env.example`) and the Environment Variables section in `README.md`.
+- **Keep ROADMAP.md sequence continuous** — when a roadmap item is completed (or removed), delete its block and renumber all subsequent `Pxx`/`Dxx`/`Ixx` IDs so the sequence has no gaps, updating every cross-reference in the document (status table, Plan de Acción, other items' references). Historical archives under `openspec/changes/archive/` keep their old IDs intentionally — do not rewrite history.
 
 ---
 
