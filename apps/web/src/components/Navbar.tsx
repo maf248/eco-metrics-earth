@@ -43,8 +43,8 @@ export default function Navbar() {
         'lg:h-screen lg:w-68',
         'lg:flex-col',
         'lg:border-t-0 lg:border-r lg:border-gray-200 dark:lg:border-gray-800',
-        // Background
-        'bg-gray-200/80 dark:bg-white/10',
+        // Background — opaque: page content scrolls behind the fixed nav
+        'bg-nav-surface dark:bg-nav-surface-dark',
       ].join(' ')}
     >
       {/* Brand — desktop sidebar only, links to home */}
