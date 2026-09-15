@@ -8,17 +8,17 @@ Este documento registra todas las propuestas de mejora identificadas para el pro
 
 | Aspecto          | Estado | Nota                                                                                                                                                                                                                                                                                                                                                               |
 | ---------------- | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Tests            | ✅     | 289 unit (227 web + 54 api + 8 shared) + 49 E2E specs pasando, 0 errores                                                                                                                                                                                                                                                                                           |
+| Tests            | ✅     | 328 unit (265 web + 55 api + 8 shared) + 55 E2E specs pasando, 0 errores                                                                                                                                                                                                                                                                                           |
 | Lint             | ✅     | Sin warnings                                                                                                                                                                                                                                                                                                                                                       |
 | Build            | ✅     | Compila correctamente                                                                                                                                                                                                                                                                                                                                              |
 | CI               | ✅     | CI en PRs y push a cualquier branch                                                                                                                                                                                                                                                                                                                                |
 | CD / Deploy      | 🟡     | No hay entornos de pre-release/staging (ver I02)                                                                                                                                                                                                                                                                                                                   |
-| Dependencias     | 🟡     | Upgrade a NX 23.2.1 aplicado (10 Sep 2026) y NestJS 12 aplicado (11 Sep 2026) — `npm audit` bajó de 76 a 19 vulns (0 critical, 15 high, 3 moderate, 1 low — parche `concurrently` 9.2.4 aplicado el 14 Sep 2026 eliminó los 2 criticals de `shell-quote`), cero advisories de las familias NestJS (`multer`/`js-yaml`). Restante: tooling de release (D2). Ver I01 |
+| Dependencias     | 🟡     | Upgrade a NX 23.2.1 aplicado (10 Sep 2026) y NestJS 12 aplicado (11 Sep 2026) — `npm audit` bajó de 76 a 19 vulns (0 critical, 15 high, 3 moderate, 1 low — parche `concurrently` 9.2.4 aplicado el 14 Sep 2026 eliminó los 2 criticals de `shell-quote`), cero advisories de las familias NestJS (`multer`/`js-yaml`). Restante: tooling de release (D1). Ver I01 |
 | Coverage         | ✅     | Medido con Jest                                                                                                                                                                                                                                                                                                                                                    |
-| E2E              | ✅     | Playwright: 49 specs, 5 browsers, CI integrado, arranque determinista (readiness de ambos puertos)                                                                                                                                                                                                                                                                 |
+| E2E              | ✅     | Playwright: 55 specs, 5 browsers, CI integrado, arranque determinista (readiness de ambos puertos)                                                                                                                                                                                                                                                                 |
 | Theming          | ✅     | Light/dark mode con toggle, persistencia (localStorage) y zero-flash (spec `theme-toggle` + `theme-system`)                                                                                                                                                                                                                                                        |
 | Monitoreo        | ❌     | No implementado                                                                                                                                                                                                                                                                                                                                                    |
-| **Datos reales** | 🟡     | **Ningún proveedor externo conectado** — existe `WaterFootprintModule` (dataset estático, sin UI aún); las 12 páginas siguen como placeholders (ver Estrategia de Proveedores + P1 + D1)                                                                                                                                                                           |
+| **Datos reales** | 🟡     | **Ningún proveedor externo conectado** — water-footprint completa (dataset estático + UI + tests E2E con datos reales); las 11 páginas restantes siguen como placeholders (ver Estrategia de Proveedores + P1)                                                                                                                                                     |
 
 ---
 
@@ -75,7 +75,7 @@ Este documento registra todas las propuestas de mejora identificadas para el pro
 
 ### P1: Conectar primer proveedor (OWID) e implementar módulos de categorías eco
 
-**Problema:** `apps/api/src/modules/` solo contiene `water-footprint` (dataset estático embebido, sin UI — ver D1). Ninguna categoría consume datos de un proveedor externo y las 12 páginas de categoría del frontend son placeholders (icono + título).
+**Problema:** `apps/api/src/modules/` solo contiene `water-footprint` (dataset estático, ya con UI completa). Ninguna categoría consume datos de un proveedor externo y las 11 páginas de categoría restantes del frontend son placeholders (icono + título).
 
 **Impacto:** El BFF solo sirve `/health`, no hay datos reales.
 
@@ -188,13 +188,12 @@ La categoría con mejor relación datos/esfuerzo (OWID CO₂ dataset: anual, per
 
 Si no estás seguro por dónde empezar, este es el orden recomendado:
 
-1. **D1: Water Footprint Phase 3** → primera categoría con datos + UI real, sin esperar proveedores externos (Dificultad: 4/10)
-2. **P1.0: Fundación de capa de datos** → Cliente OWID + caching + health indicator (Dificultad: 5/10)
-3. **P1.1: Módulo `co2-emissions` end-to-end** → Primera sección con datos reales + charts (Dificultad: 6/10)
-4. **P1.2 / P1.3: `global-temperature` y `energy-sources`** → Replicar el patrón (Dificultad: 3/10 c/u)
-5. **P2: Monitoreo y observabilidad** → Logs, métricas y error tracking (Dificultad: 5/10)
+1. **P1.0: Fundación de capa de datos** → Cliente OWID + caching + health indicator (Dificultad: 5/10)
+2. **P1.1: Módulo `co2-emissions` end-to-end** → Primera sección con datos reales + charts (Dificultad: 6/10)
+3. **P1.2 / P1.3: `global-temperature` y `energy-sources`** → Replicar el patrón (Dificultad: 3/10 c/u)
+4. **P2: Monitoreo y observabilidad** → Logs, métricas y error tracking (Dificultad: 5/10)
 
-D3 (TypeScript 7) queda como seguimiento pasivo — sin acción por ahora.
+D2 (TypeScript 7) queda como seguimiento pasivo — sin acción por ahora.
 
 ---
 
@@ -214,24 +213,13 @@ D3 (TypeScript 7) queda como seguimiento pasivo — sin acción por ahora.
 
 > Hallazgos de la revisión del 10 Sep 2026: drift de dependencias (~2 meses), `npm audit` en 80 vulnerabilidades y docs desincronizados tras el trabajo de water-footprint.
 
-### D1: Water Footprint Phase 3 — UI de la primera categoría con datos
-
-**Problema:** la API ya sirve `GET /api/v1/water-footprint/products` (52 productos, 100% coverage en tests) pero la página `/water-footprint/` sigue como placeholder. Plan completo en [`docs/planning/water-footprint.md`](./docs/planning/water-footprint.md) (Phases 3 y 4).
-
-**Propuesta:** componente `WaterFootprintTable` con filtros por categoría (`food-beverages`, `textiles`, `technology`, `manufactured`), sort por nombre/huella, a11y completa (keyboard, screen reader), tests snapshot + unit + E2E, equivalencias contextuales y layout responsive.
-
-**Dificultad:** 4/10 · **Estado:** Pendiente
-**Nota:** primera categoría con datos + UI sin depender de proveedores externos — no requiere P1.0.
-
-**Limpieza técnica incluida (14 Sep 2026):** el `WaterFootprintService` resuelve el dataset con `join(__dirname, 'data/water-footprint.json')` — bajo ts-jest eso apunta a `src/modules/water-footprint/data/` (no existe; el archivo real vive en `src/data/`), mientras que en el bundle de webpack `__dirname` resuelve a la raíz de `dist/` y sí lo encuentra (copiado por `assets` en `apps/api/webpack.config.js`). Los tests lo workaround-ean con mocks de `fs` (`app.module.test.ts` y `water-footprint.module.test.ts`). Al implementar D1: mover el dataset a `src/modules/water-footprint/data/water-footprint.json`, ajustar `assets` en `apps/api/webpack.config.js` para copiarlo a la ubicación que el bundle espera, validar con `nx build api` + `nx serve api` + `nx test api` (el service debe cargar los 52 productos tanto en runtime como en tests), y **eliminar los mocks de `fs` de `app.module.test.ts` y `water-footprint.module.test.ts`**. El mock de `water-footprint.service.test.ts` se mantiene — cubre las ramas de error (ENOENT/EACCES/JSON malformado) que no se pueden ejercitar con el archivo real.
-
-### D2: Tooling de release — majors de bajo riesgo
+### D1: Tooling de release — majors de bajo riesgo
 
 semantic-release 25, @commitlint 21, lint-staged 17, concurrently 10, @semantic-release/changelog 7, @semantic-release/git 11, conventional-changelog-conventionalcommits 10. Riesgo acotado a CI. **Quick win dentro de este ítem:** `concurrently` tiene fix **patch** (9.2.4) para sus 2 criticals (`shell-quote`) — ✅ aplicado el 14 Sep 2026 (2 criticals eliminados); semantic-release 25 limpia ~14 advisories del subtree npm/`tar`/`sigstore` (incl. criticals).
 
 **Dificultad:** 3/10 · **Estado:** Pendiente
 
-### D3: Evaluación de TypeScript 7 (tsc nativo en Go)
+### D2: Evaluación de TypeScript 7 (tsc nativo en Go)
 
 Solo seguimiento — el salto 5.9 → 7.0 es un rewrite del compilador. No upgrade hasta validar compatibilidad con NX/Next/SWC y estabilidad del ecosistema.
 
@@ -255,7 +243,7 @@ Lista de hallazgos del análisis de repositorio, ordenados por prioridad (más c
 
 ### 🔴 Seguridad
 
-- **I01.** `npm audit` reporta 19 vulnerabilidades (0 critical, 15 high, 3 moderate, 1 low — al 14 Sep 2026, tras parchear `concurrently` 9.2.1 → 9.2.4 (elimina los 2 criticals de `shell-quote`; transitiva `shell-quote` 1.8.3 → 1.9.0); previamente, los upgrades a NX 23.2.1 y NestJS 12: el upgrade a NX redujo de 76 a 32 y eliminó todo el subárbol NX, advisories contra `@nx/*` ≤22.7.6, `@module-federation/*`, `webpack-dev-server`, `svgo`, `undici`, `ws`, `adm-zip` y las transitivas de `nx@22.7.2`; spec `upgrade-nx-23` archivada; el upgrade a NestJS 12 redujo de 32 a 21 y eliminó la familia NestJS). `postcss` 8.5.28 aplicado en el cambio de NX; `webpack-dev-server` (peer de `@nx/webpack@23`) fue evaluado y **omitido** — `nx serve api` funciona sin él. Familia NestJS resuelta: `@nestjs/platform-express` 12.0.1 con `multer` 2.3.0 (top-level override `"multer": "2.3.0"` en root `package.json`; la versión natural que trae platform-express 12.0.1 es `multer` 2.2.0 y tiene 3 advisories high verificados) + `@nestjs/swagger` 12.0.1 con `js-yaml` 5.4.1; los patches `11.2.3`/`11.4.7` quedaron supersedidos por la major. Familias restantes: subtree bundleado `semantic-release` → `@semantic-release/npm` → `npm@10.9.9` — las 19 vulns (`@sigstore/*`, `brace-expansion`, `ip-address`, `picomatch`, `postcss-selector-parser`, `@npmcli/*`/`libnpm*`) viven dentro del tarball bundleado de npm y son inalcanzables para `npm audit fix`; fix = semantic-release 25 (D2). Resuelto: `concurrently`→`shell-quote` (parche 9.2.4 aplicado el 14 Sep 2026). Los advisories previamente listados como sin fix (`@xhmikosr/decompress`, `fast-uri`, `piscina`, `qs`/`express`, `body-parser`) ya no aparecen en el audit.
+- **I01.** `npm audit` reporta 19 vulnerabilidades (0 critical, 15 high, 3 moderate, 1 low — al 14 Sep 2026, tras parchear `concurrently` 9.2.1 → 9.2.4 (elimina los 2 criticals de `shell-quote`; transitiva `shell-quote` 1.8.3 → 1.9.0); previamente, los upgrades a NX 23.2.1 y NestJS 12: el upgrade a NX redujo de 76 a 32 y eliminó todo el subárbol NX, advisories contra `@nx/*` ≤22.7.6, `@module-federation/*`, `webpack-dev-server`, `svgo`, `undici`, `ws`, `adm-zip` y las transitivas de `nx@22.7.2`; spec `upgrade-nx-23` archivada; el upgrade a NestJS 12 redujo de 32 a 21 y eliminó la familia NestJS). `postcss` 8.5.28 aplicado en el cambio de NX; `webpack-dev-server` (peer de `@nx/webpack@23`) fue evaluado y **omitido** — `nx serve api` funciona sin él. Familia NestJS resuelta: `@nestjs/platform-express` 12.0.1 con `multer` 2.3.0 (top-level override `"multer": "2.3.0"` en root `package.json`; la versión natural que trae platform-express 12.0.1 es `multer` 2.2.0 y tiene 3 advisories high verificados) + `@nestjs/swagger` 12.0.1 con `js-yaml` 5.4.1; los patches `11.2.3`/`11.4.7` quedaron supersedidos por la major. Familias restantes: subtree bundleado `semantic-release` → `@semantic-release/npm` → `npm@10.9.9` — las 19 vulns (`@sigstore/*`, `brace-expansion`, `ip-address`, `picomatch`, `postcss-selector-parser`, `@npmcli/*`/`libnpm*`) viven dentro del tarball bundleado de npm y son inalcanzables para `npm audit fix`; fix = semantic-release 25 (D1). Resuelto: `concurrently`→`shell-quote` (parche 9.2.4 aplicado el 14 Sep 2026). Los advisories previamente listados como sin fix (`@xhmikosr/decompress`, `fast-uri`, `piscina`, `qs`/`express`, `body-parser`) ya no aparecen en el audit.
 
 ### 🟡 CI/CD
 
@@ -267,7 +255,7 @@ Lista de hallazgos del análisis de repositorio, ordenados por prioridad (más c
 
 ### 🟡 Testing
 
-- **I04.** Sin tests de integración web→API con datos reales. Los tests E2E (`api-health.spec.ts`) verifican health + errores + CORS, pero falta integración con datos de categorías eco (depende de P1).
+- **I04.** Tests de integración web→API con datos reales — **resuelto para water-footprint**: `water-footprint.spec.ts` arranca ambos servidores (webServer determinista) y valida la página contra los 52 productos reales del BFF. Falta el equivalente para las categorías eco restantes cuando consuman datos de proveedores (depende de P1).
 - **I05.** Sin tests de accesibilidad unitarios con `jest-axe`. Los tests E2E con `@axe-core/playwright` ya auditan todas las páginas (a11y.spec.ts), lo que cubre el 80% del valor. La integración a nivel componente unitario es deseable pero no prioritaria — solo suma valor si crece mucho la cantidad de componentes.
 
 ### 🟢 Arquitectura / Deuda técnica

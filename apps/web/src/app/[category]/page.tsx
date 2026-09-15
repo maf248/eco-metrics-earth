@@ -2,11 +2,14 @@ import { ECO_CATEGORIES } from '@eco-metrics/shared';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
+import { WaterFootprintContent } from '@/components/water-footprint/WaterFootprintContent';
 import { getCategoryIcon } from '@/lib/categoryIcon';
 import { getCategoryTitle } from '@/lib/categoryTitle';
 import { siteUrl } from '@/lib/siteUrl';
+import { getWaterFootprintProducts } from '@/lib/water-footprint';
 
 export const dynamicParams = false;
+export const revalidate = 86400;
 
 interface CategoryPageProps {
   params: Promise<{ category: string }>;
@@ -50,6 +53,11 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
   const title = getCategoryTitle(category);
   const Icon = getCategoryIcon(category);
 
+  const isWaterFootprint = category === ECO_CATEGORIES.WATER_FOOTPRINT;
+  const { products, fetchFailed } = isWaterFootprint
+    ? await getWaterFootprintProducts()
+    : { products: [], fetchFailed: false };
+
   return (
     <main
       id="main-content"
@@ -64,9 +72,16 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
         </div>
         <div className="text-center">
           <h1 className="text-4xl font-bold text-gray-900 dark:text-white">{title}</h1>
-          <p className="mt-4 text-gray-600 dark:text-gray-400">{title} metrics — coming soon.</p>
+          {!isWaterFootprint && (
+            <p className="mt-4 text-gray-600 dark:text-gray-400">{title} metrics — coming soon.</p>
+          )}
         </div>
       </div>
+      {isWaterFootprint && (
+        <div className="mt-8 w-full flex justify-center">
+          <WaterFootprintContent products={products} fetchFailed={fetchFailed} />
+        </div>
+      )}
     </main>
   );
 }
