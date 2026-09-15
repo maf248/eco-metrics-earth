@@ -1,3 +1,10 @@
+## [2.2.1](https://github.com/maf248/eco-metrics-earth/compare/v2.2.0...v2.2.1) (2026-09-15)
+
+### Bug Fixes
+
+* **water-footprint:** correct filter active-state scoping, add focus ring and footnote spacing ([ba794a1](https://github.com/maf248/eco-metrics-earth/commit/ba794a1fb9aaa3293320aec553ce5012cab36b9a))
+* **web:** make bottom nav opaque so page content does not show through ([d54ebe2](https://github.com/maf248/eco-metrics-earth/commit/d54ebe2b66ce022e95c97af4c8bc260e7fa81b26))
+
 ## [2.2.0](https://github.com/maf248/eco-metrics-earth/compare/v2.1.2...v2.2.0) (2026-09-15)
 
 ### Features
