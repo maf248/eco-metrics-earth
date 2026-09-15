@@ -1,3 +1,13 @@
+## [2.2.0](https://github.com/maf248/eco-metrics-earth/compare/v2.1.2...v2.2.0) (2026-09-15)
+
+### Features
+
+* **water-footprint:** add product table UI with filters, sort and a11y ([0ddaceb](https://github.com/maf248/eco-metrics-earth/commit/0ddaceb80f3cbd32c1feef379ca880622169199d))
+
+### Bug Fixes
+
+* **deps:** patch concurrently to 9.2.4 to clear critical shell-quote advisories ([80a60d9](https://github.com/maf248/eco-metrics-earth/commit/80a60d99870e18af540caf2210f55b0729729b73))
+
 ## [2.1.2](https://github.com/maf248/eco-metrics-earth/compare/v2.1.1...v2.1.2) (2026-09-14)
 
 ### Bug Fixes
