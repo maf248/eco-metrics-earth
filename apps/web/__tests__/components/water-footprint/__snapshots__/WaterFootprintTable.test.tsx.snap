@@ -16,72 +16,82 @@ exports[`WaterFootprintTable should match the default render snapshot 1`] = `
       <div
         class="flex flex-wrap gap-2"
       >
-        <input
-          checked=""
-          class="peer sr-only"
-          id="_r_k_-all"
-          name="_r_k_"
-          type="radio"
-          value="all"
-        />
-        <label
-          class="cursor-pointer rounded-full border border-gray-300 bg-white px-3 py-1 text-sm text-gray-700 transition-colors peer-checked:border-emerald-700 peer-checked:bg-emerald-700 peer-checked:text-white hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700"
-          for="_r_k_-all"
-        >
-          All
-        </label>
-        <input
-          class="peer sr-only"
-          id="_r_k_-Food & Beverages"
-          name="_r_k_"
-          type="radio"
-          value="Food & Beverages"
-        />
-        <label
-          class="cursor-pointer rounded-full border border-gray-300 bg-white px-3 py-1 text-sm text-gray-700 transition-colors peer-checked:border-emerald-700 peer-checked:bg-emerald-700 peer-checked:text-white hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700"
-          for="_r_k_-Food & Beverages"
-        >
-          Food & Beverages
-        </label>
-        <input
-          class="peer sr-only"
-          id="_r_k_-Textiles"
-          name="_r_k_"
-          type="radio"
-          value="Textiles"
-        />
-        <label
-          class="cursor-pointer rounded-full border border-gray-300 bg-white px-3 py-1 text-sm text-gray-700 transition-colors peer-checked:border-emerald-700 peer-checked:bg-emerald-700 peer-checked:text-white hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700"
-          for="_r_k_-Textiles"
-        >
-          Textiles
-        </label>
-        <input
-          class="peer sr-only"
-          id="_r_k_-Technology"
-          name="_r_k_"
-          type="radio"
-          value="Technology"
-        />
-        <label
-          class="cursor-pointer rounded-full border border-gray-300 bg-white px-3 py-1 text-sm text-gray-700 transition-colors peer-checked:border-emerald-700 peer-checked:bg-emerald-700 peer-checked:text-white hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700"
-          for="_r_k_-Technology"
-        >
-          Technology
-        </label>
-        <input
-          class="peer sr-only"
-          id="_r_k_-Manufactured"
-          name="_r_k_"
-          type="radio"
-          value="Manufactured"
-        />
-        <label
-          class="cursor-pointer rounded-full border border-gray-300 bg-white px-3 py-1 text-sm text-gray-700 transition-colors peer-checked:border-emerald-700 peer-checked:bg-emerald-700 peer-checked:text-white hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700"
-          for="_r_k_-Manufactured"
-        >
-          Manufactured
-        </label>
+        <div>
+          <input
+            checked=""
+            class="peer sr-only"
+            id="_r_k_-all"
+            name="_r_k_"
+            type="radio"
+            value="all"
+          />
+          <label
+            class="cursor-pointer rounded-full border border-gray-300 bg-white px-3 py-1 text-sm text-gray-700 transition-colors peer-checked:border-emerald-700 peer-checked:bg-emerald-700 peer-checked:text-white hover:bg-gray-50 peer-focus-visible:outline-none peer-focus-visible:ring-2 peer-focus-visible:ring-emerald-700 peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-white dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700 dark:peer-focus-visible:ring-emerald-400 dark:peer-focus-visible:ring-offset-gray-950"
+            for="_r_k_-all"
+          >
+            All
+          </label>
+        </div>
+        <div>
+          <input
+            class="peer sr-only"
+            id="_r_k_-Food & Beverages"
+            name="_r_k_"
+            type="radio"
+            value="Food & Beverages"
+          />
+          <label
+            class="cursor-pointer rounded-full border border-gray-300 bg-white px-3 py-1 text-sm text-gray-700 transition-colors peer-checked:border-emerald-700 peer-checked:bg-emerald-700 peer-checked:text-white hover:bg-gray-50 peer-focus-visible:outline-none peer-focus-visible:ring-2 peer-focus-visible:ring-emerald-700 peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-white dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700 dark:peer-focus-visible:ring-emerald-400 dark:peer-focus-visible:ring-offset-gray-950"
+            for="_r_k_-Food & Beverages"
+          >
+            Food & Beverages
+          </label>
+        </div>
+        <div>
+          <input
+            class="peer sr-only"
+            id="_r_k_-Textiles"
+            name="_r_k_"
+            type="radio"
+            value="Textiles"
+          />
+          <label
+            class="cursor-pointer rounded-full border border-gray-300 bg-white px-3 py-1 text-sm text-gray-700 transition-colors peer-checked:border-emerald-700 peer-checked:bg-emerald-700 peer-checked:text-white hover:bg-gray-50 peer-focus-visible:outline-none peer-focus-visible:ring-2 peer-focus-visible:ring-emerald-700 peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-white dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700 dark:peer-focus-visible:ring-emerald-400 dark:peer-focus-visible:ring-offset-gray-950"
+            for="_r_k_-Textiles"
+          >
+            Textiles
+          </label>
+        </div>
+        <div>
+          <input
+            class="peer sr-only"
+            id="_r_k_-Technology"
+            name="_r_k_"
+            type="radio"
+            value="Technology"
+          />
+          <label
+            class="cursor-pointer rounded-full border border-gray-300 bg-white px-3 py-1 text-sm text-gray-700 transition-colors peer-checked:border-emerald-700 peer-checked:bg-emerald-700 peer-checked:text-white hover:bg-gray-50 peer-focus-visible:outline-none peer-focus-visible:ring-2 peer-focus-visible:ring-emerald-700 peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-white dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700 dark:peer-focus-visible:ring-emerald-400 dark:peer-focus-visible:ring-offset-gray-950"
+            for="_r_k_-Technology"
+          >
+            Technology
+          </label>
+        </div>
+        <div>
+          <input
+            class="peer sr-only"
+            id="_r_k_-Manufactured"
+            name="_r_k_"
+            type="radio"
+            value="Manufactured"
+          />
+          <label
+            class="cursor-pointer rounded-full border border-gray-300 bg-white px-3 py-1 text-sm text-gray-700 transition-colors peer-checked:border-emerald-700 peer-checked:bg-emerald-700 peer-checked:text-white hover:bg-gray-50 peer-focus-visible:outline-none peer-focus-visible:ring-2 peer-focus-visible:ring-emerald-700 peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-white dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700 dark:peer-focus-visible:ring-emerald-400 dark:peer-focus-visible:ring-offset-gray-950"
+            for="_r_k_-Manufactured"
+          >
+            Manufactured
+          </label>
+        </div>
       </div>
     </fieldset>
     <p

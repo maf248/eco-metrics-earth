@@ -33,7 +33,7 @@ export function WaterFootprintContent({ products, fetchFailed }: WaterFootprintC
       {!fetchFailed && products.length > 0 && (
         <>
           <WaterFootprintTable products={products} />
-          <p className="mt-6 text-sm text-gray-500 dark:text-gray-400">
+          <p className="mb-8 mt-6 text-sm text-gray-500 dark:text-gray-400">
             Equivalents are illustrative references: one average shower ≈ 65 L, one full bathtub ≈
             150 L. They are not part of the cited dataset.
           </p>
