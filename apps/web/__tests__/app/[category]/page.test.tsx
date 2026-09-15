@@ -1,10 +1,29 @@
+import '@testing-library/jest-dom';
 import { ECO_CATEGORIES } from '@eco-metrics/shared';
 import { render, screen } from '@testing-library/react';
 
 import CategoryPage, {
   generateMetadata,
   generateStaticParams,
+  revalidate,
 } from '../../../src/app/[category]/page';
+
+jest.mock('@/lib/water-footprint', () => ({
+  getWaterFootprintProducts: jest.fn().mockResolvedValue({
+    products: [
+      {
+        product: 'Apples',
+        category: 'Food & Beverages',
+        waterFootprintLiters: 180.1,
+        unit: 'per kg',
+        source: 'Poore & Nemecek (2018), Science',
+        sourceUrl: 'https://ourworldindata.org/grapher/water-withdrawals-per-kg-poore',
+        methodology: 'Freshwater withdrawals per kg of final product.',
+      },
+    ],
+    fetchFailed: false,
+  }),
+}));
 
 jest.mock('next/navigation', () => ({
   notFound: jest.fn(),
@@ -248,5 +267,30 @@ describe('CategoryPage snapshots', () => {
     });
     const { asFragment } = render(element);
     expect(asFragment()).toMatchSnapshot();
+  });
+});
+
+describe('CategoryPage — water-footprint branch', () => {
+  it('should render water-footprint product content from the mocked helper', async () => {
+    const element = await CategoryPage({
+      params: Promise.resolve({ category: 'water-footprint' }),
+    });
+    render(element);
+
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Water Footprint');
+    expect(screen.getByRole('table')).toBeInTheDocument();
+    expect(screen.getAllByText('Apples').length).toBeGreaterThanOrEqual(1);
+  });
+
+  it('should keep the coming-soon placeholder for non-water-footprint categories', async () => {
+    const element = await CategoryPage({ params: Promise.resolve({ category: 'ocean-health' }) });
+    render(element);
+
+    expect(screen.getByText('Ocean Health metrics — coming soon.')).toBeInTheDocument();
+    expect(screen.queryByRole('table')).not.toBeInTheDocument();
+  });
+
+  it('should export revalidate as 86400', () => {
+    expect(revalidate).toBe(86400);
   });
 });

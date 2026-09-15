@@ -32,7 +32,7 @@ Classify every request before delegating (full criteria in `AGENTS.md` under "Wh
 2. **User Checkpoint**: Once the spec is ready, notify the user. **STOP** and wait for explicit user approval before proceeding to implementation.
 3. **Implementation**: After approval, delegate to **@coder** to write code based strictly on the approved OpenSpec.
 4. **Validation**: Delegate to **@tester** for tests and **@reviewer** for final code quality audit.
-5. **Closing**: Verify the "Definition of Done" and report completion to the user.
+5. **Closing — mandatory final checkpoint**: Verify the "Definition of Done" and run `/opsx:archive`. Then **STOP**: present the full summary to the user (green gates, reviewer verdict, archived change, `git status`/diff overview) and wait for explicit approval. **Never commit or push without explicit user authorization at this checkpoint** — this applies to every change, SDD or direct implementation. Committing and pushing are separate authorizations.
 
 ## Project Context & Guardrails
 

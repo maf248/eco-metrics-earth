@@ -1,0 +1,79 @@
+import { expect, test } from '@playwright/test';
+
+test.describe('Water Footprint page', () => {
+  test.describe('Core render', { tag: '@smoke' }, () => {
+    test('should render the page with heading, product data, and filters', async ({ page }) => {
+      const response = await page.goto('/water-footprint/');
+      expect(response?.status()).toBe(200);
+
+      await expect(page.getByRole('heading', { name: 'Water Footprint', level: 1 })).toBeVisible();
+      await expect(page.locator('body')).toContainText('Beef (beef herd)');
+      await expect(page.getByRole('radio', { name: 'Textiles' })).toBeVisible();
+      await expect(page.getByRole('radio', { name: 'All' })).toBeVisible();
+    });
+
+    test('should include product names in server-rendered HTML', async ({ request }) => {
+      const response = await request.get('/water-footprint/');
+      const html = await response.text();
+
+      expect(html).toContain('Beef (beef herd)');
+      expect(html).toContain('Cotton (lint)');
+    });
+
+    test('should have the correct title and canonical URL', async ({ page }) => {
+      await page.goto('/water-footprint/');
+
+      await expect(page).toHaveTitle('Water Footprint — eco-metrics earth');
+      const canonical = page.locator('link[rel="canonical"]');
+      await expect(canonical).toHaveAttribute('href', /\/water-footprint\/$/);
+    });
+  });
+
+  test.describe('Interaction', () => {
+    test('should filter, sort, and surface attribution on the desktop table', async ({ page }) => {
+      await page.setViewportSize({ width: 1280, height: 720 });
+      await page.goto('/water-footprint/');
+
+      const table = page.getByTestId('water-footprint-table');
+      await expect(table).toBeVisible();
+
+      const bodyRows = table.locator('tbody tr');
+      await expect(bodyRows).toHaveCount(52);
+
+      const waterFootprintHeader = page.getByRole('columnheader', { name: 'Water footprint' });
+      await expect(waterFootprintHeader).toHaveAttribute('aria-sort', 'descending');
+
+      await page.getByRole('button', { name: 'Water footprint' }).click();
+      await expect(waterFootprintHeader).toHaveAttribute('aria-sort', 'ascending');
+      await expect(table.locator('tbody tr:first-child th')).toHaveText('Cement');
+
+      const sourceLink = page.getByRole('link', { name: 'Poore & Nemecek' }).first();
+      await expect(sourceLink).toBeVisible();
+
+      await table.locator('summary').first().click();
+      await expect(page.locator('body')).toContainText('Weighted global average');
+
+      await page.locator('fieldset').getByText('Textiles').click();
+      await expect(bodyRows).toHaveCount(6);
+      await expect(page.getByRole('status')).toContainText('Showing 6 of 52');
+    });
+  });
+
+  test.describe('Responsive layout', () => {
+    test('should show the table on desktop and hide the card list', async ({ page }) => {
+      await page.setViewportSize({ width: 1280, height: 720 });
+      await page.goto('/water-footprint/');
+
+      await expect(page.getByTestId('water-footprint-table')).toBeVisible();
+      await expect(page.getByTestId('water-footprint-cards')).toBeHidden();
+    });
+
+    test('should show the card list on mobile and hide the table', async ({ page }) => {
+      await page.setViewportSize({ width: 375, height: 812 });
+      await page.goto('/water-footprint/');
+
+      await expect(page.getByTestId('water-footprint-cards')).toBeVisible();
+      await expect(page.getByTestId('water-footprint-table')).toBeHidden();
+    });
+  });
+});

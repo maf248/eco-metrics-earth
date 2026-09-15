@@ -1,0 +1,734 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`WaterFootprintTable should match the default render snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="w-full max-w-6xl"
+  >
+    <fieldset
+      class="mb-6"
+    >
+      <legend
+        class="sr-only"
+      >
+        Filter by category
+      </legend>
+      <div
+        class="flex flex-wrap gap-2"
+      >
+        <input
+          checked=""
+          class="peer sr-only"
+          id="_r_k_-all"
+          name="_r_k_"
+          type="radio"
+          value="all"
+        />
+        <label
+          class="cursor-pointer rounded-full border border-gray-300 bg-white px-3 py-1 text-sm text-gray-700 transition-colors peer-checked:border-emerald-700 peer-checked:bg-emerald-700 peer-checked:text-white hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700"
+          for="_r_k_-all"
+        >
+          All
+        </label>
+        <input
+          class="peer sr-only"
+          id="_r_k_-Food & Beverages"
+          name="_r_k_"
+          type="radio"
+          value="Food & Beverages"
+        />
+        <label
+          class="cursor-pointer rounded-full border border-gray-300 bg-white px-3 py-1 text-sm text-gray-700 transition-colors peer-checked:border-emerald-700 peer-checked:bg-emerald-700 peer-checked:text-white hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700"
+          for="_r_k_-Food & Beverages"
+        >
+          Food & Beverages
+        </label>
+        <input
+          class="peer sr-only"
+          id="_r_k_-Textiles"
+          name="_r_k_"
+          type="radio"
+          value="Textiles"
+        />
+        <label
+          class="cursor-pointer rounded-full border border-gray-300 bg-white px-3 py-1 text-sm text-gray-700 transition-colors peer-checked:border-emerald-700 peer-checked:bg-emerald-700 peer-checked:text-white hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700"
+          for="_r_k_-Textiles"
+        >
+          Textiles
+        </label>
+        <input
+          class="peer sr-only"
+          id="_r_k_-Technology"
+          name="_r_k_"
+          type="radio"
+          value="Technology"
+        />
+        <label
+          class="cursor-pointer rounded-full border border-gray-300 bg-white px-3 py-1 text-sm text-gray-700 transition-colors peer-checked:border-emerald-700 peer-checked:bg-emerald-700 peer-checked:text-white hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700"
+          for="_r_k_-Technology"
+        >
+          Technology
+        </label>
+        <input
+          class="peer sr-only"
+          id="_r_k_-Manufactured"
+          name="_r_k_"
+          type="radio"
+          value="Manufactured"
+        />
+        <label
+          class="cursor-pointer rounded-full border border-gray-300 bg-white px-3 py-1 text-sm text-gray-700 transition-colors peer-checked:border-emerald-700 peer-checked:bg-emerald-700 peer-checked:text-white hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700"
+          for="_r_k_-Manufactured"
+        >
+          Manufactured
+        </label>
+      </div>
+    </fieldset>
+    <p
+      aria-live="polite"
+      class="sr-only"
+      id="_r_l_"
+      role="status"
+    >
+      Showing 5 of 5 products — All categories, sorted by water footprint (high to low)
+    </p>
+    <p
+      aria-hidden="true"
+      class="mb-4 text-sm text-gray-600 dark:text-gray-400"
+    >
+      Showing 5 of 5 products — All categories, sorted by water footprint (high to low)
+    </p>
+    <div
+      class="hidden lg:block overflow-x-auto"
+      data-testid="water-footprint-table"
+    >
+      <table
+        class="w-full border-collapse text-left text-sm"
+      >
+        <caption
+          class="sr-only"
+        >
+          Water footprint by product
+        </caption>
+        <thead>
+          <tr
+            class="border-b border-gray-200 dark:border-gray-700"
+          >
+            <th
+              class="py-2 pr-4 font-semibold text-gray-900 dark:text-white"
+              scope="col"
+            >
+              <button
+                class="flex items-center gap-1 underline-offset-2 hover:underline"
+                type="button"
+              >
+                Product
+                <span
+                  aria-hidden="true"
+                />
+              </button>
+            </th>
+            <th
+              class="py-2 pr-4 font-semibold text-gray-900 dark:text-white"
+              scope="col"
+            >
+              Category
+            </th>
+            <th
+              aria-sort="descending"
+              class="py-2 pr-4 font-semibold text-gray-900 dark:text-white"
+              scope="col"
+            >
+              <button
+                class="flex items-center gap-1 underline-offset-2 hover:underline"
+                type="button"
+              >
+                Water footprint
+                <span
+                  aria-hidden="true"
+                >
+                   ▼
+                </span>
+              </button>
+            </th>
+            <th
+              class="py-2 pr-4 font-semibold text-gray-900 dark:text-white"
+              scope="col"
+            >
+              Contextual equivalent
+            </th>
+            <th
+              class="py-2 pr-4 font-semibold text-gray-900 dark:text-white"
+              scope="col"
+            >
+              Source
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            class="border-b border-gray-100 dark:border-gray-800"
+          >
+            <th
+              class="py-2 pr-4 font-medium text-gray-900 dark:text-white"
+              scope="row"
+            >
+              Smartphone (1 unit)
+            </th>
+            <td
+              class="py-2 pr-4 text-gray-700 dark:text-gray-300"
+            >
+              Technology
+            </td>
+            <td
+              class="py-2 pr-4 text-gray-700 dark:text-gray-300"
+            >
+              12,760 L 
+              <span
+                class="text-gray-500 dark:text-gray-400"
+              >
+                per unit
+              </span>
+            </td>
+            <td
+              class="py-2 pr-4 text-gray-700 dark:text-gray-300"
+            >
+              ≈ 196 showers · ≈ 85.1 bathtubs
+            </td>
+            <td
+              class="py-2 pr-4 text-gray-700 dark:text-gray-300"
+            >
+              <a
+                class="text-emerald-700 underline hover:text-emerald-800 dark:text-emerald-400 dark:hover:text-emerald-300"
+                href="https://www.apple.com/environment/"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                Apple Environmental Report
+              </a>
+              <details
+                class="mt-1"
+              >
+                <summary
+                  class="cursor-pointer text-gray-600 dark:text-gray-400"
+                >
+                  Methodology
+                </summary>
+                <p
+                  class="mt-1 text-gray-700 dark:text-gray-300"
+                >
+                  Life-cycle assessment of smartphone manufacturing.
+                </p>
+              </details>
+            </td>
+          </tr>
+          <tr
+            class="border-b border-gray-100 dark:border-gray-800"
+          >
+            <th
+              class="py-2 pr-4 font-medium text-gray-900 dark:text-white"
+              scope="row"
+            >
+              Cotton t-shirt (250g)
+            </th>
+            <td
+              class="py-2 pr-4 text-gray-700 dark:text-gray-300"
+            >
+              Textiles
+            </td>
+            <td
+              class="py-2 pr-4 text-gray-700 dark:text-gray-300"
+            >
+              2,700 L 
+              <span
+                class="text-gray-500 dark:text-gray-400"
+              >
+                per unit
+              </span>
+            </td>
+            <td
+              class="py-2 pr-4 text-gray-700 dark:text-gray-300"
+            >
+              ≈ 41.5 showers · ≈ 18 bathtubs
+            </td>
+            <td
+              class="py-2 pr-4 text-gray-700 dark:text-gray-300"
+            >
+              <a
+                class="text-emerald-700 underline hover:text-emerald-800 dark:text-emerald-400 dark:hover:text-emerald-300"
+                href="https://waterfootprint.org/en/resources/waterstat/"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                Water Footprint Network
+              </a>
+              <details
+                class="mt-1"
+              >
+                <summary
+                  class="cursor-pointer text-gray-600 dark:text-gray-400"
+                >
+                  Methodology
+                </summary>
+                <p
+                  class="mt-1 text-gray-700 dark:text-gray-300"
+                >
+                  Water footprint of cotton textile products.
+                </p>
+              </details>
+            </td>
+          </tr>
+          <tr
+            class="border-b border-gray-100 dark:border-gray-800"
+          >
+            <th
+              class="py-2 pr-4 font-medium text-gray-900 dark:text-white"
+              scope="row"
+            >
+              Apples
+            </th>
+            <td
+              class="py-2 pr-4 text-gray-700 dark:text-gray-300"
+            >
+              Food & Beverages
+            </td>
+            <td
+              class="py-2 pr-4 text-gray-700 dark:text-gray-300"
+            >
+              180.1 L 
+              <span
+                class="text-gray-500 dark:text-gray-400"
+              >
+                per kg
+              </span>
+            </td>
+            <td
+              class="py-2 pr-4 text-gray-700 dark:text-gray-300"
+            >
+              ≈ 2.8 showers · ≈ 1.2 bathtubs
+            </td>
+            <td
+              class="py-2 pr-4 text-gray-700 dark:text-gray-300"
+            >
+              <a
+                class="text-emerald-700 underline hover:text-emerald-800 dark:text-emerald-400 dark:hover:text-emerald-300"
+                href="https://ourworldindata.org/grapher/water-withdrawals-per-kg-poore"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                Poore & Nemecek (2018), Science
+              </a>
+              <details
+                class="mt-1"
+              >
+                <summary
+                  class="cursor-pointer text-gray-600 dark:text-gray-400"
+                >
+                  Methodology
+                </summary>
+                <p
+                  class="mt-1 text-gray-700 dark:text-gray-300"
+                >
+                  Freshwater withdrawals per kg of final product.
+                </p>
+              </details>
+            </td>
+          </tr>
+          <tr
+            class="border-b border-gray-100 dark:border-gray-800"
+          >
+            <th
+              class="py-2 pr-4 font-medium text-gray-900 dark:text-white"
+              scope="row"
+            >
+              Cement
+            </th>
+            <td
+              class="py-2 pr-4 text-gray-700 dark:text-gray-300"
+            >
+              Manufactured
+            </td>
+            <td
+              class="py-2 pr-4 text-gray-700 dark:text-gray-300"
+            >
+              5 L 
+              <span
+                class="text-gray-500 dark:text-gray-400"
+              >
+                per kg
+              </span>
+            </td>
+            <td
+              class="py-2 pr-4 text-gray-700 dark:text-gray-300"
+            >
+              under 1 shower
+            </td>
+            <td
+              class="py-2 pr-4 text-gray-700 dark:text-gray-300"
+            >
+              <a
+                class="text-emerald-700 underline hover:text-emerald-800 dark:text-emerald-400 dark:hover:text-emerald-300"
+                href="https://waterfootprint.org/en/resources/waterstat/"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                Water Footprint Network
+              </a>
+              <details
+                class="mt-1"
+              >
+                <summary
+                  class="cursor-pointer text-gray-600 dark:text-gray-400"
+                >
+                  Methodology
+                </summary>
+                <p
+                  class="mt-1 text-gray-700 dark:text-gray-300"
+                >
+                  Water footprint of cement production.
+                </p>
+              </details>
+            </td>
+          </tr>
+          <tr
+            class="border-b border-gray-100 dark:border-gray-800"
+          >
+            <th
+              class="py-2 pr-4 font-medium text-gray-900 dark:text-white"
+              scope="row"
+            >
+              Cassava
+            </th>
+            <td
+              class="py-2 pr-4 text-gray-700 dark:text-gray-300"
+            >
+              Food & Beverages
+            </td>
+            <td
+              class="py-2 pr-4 text-gray-700 dark:text-gray-300"
+            >
+              No data
+            </td>
+            <td
+              class="py-2 pr-4 text-gray-700 dark:text-gray-300"
+            >
+              —
+            </td>
+            <td
+              class="py-2 pr-4 text-gray-700 dark:text-gray-300"
+            >
+              <a
+                class="text-emerald-700 underline hover:text-emerald-800 dark:text-emerald-400 dark:hover:text-emerald-300"
+                href="https://ourworldindata.org/grapher/water-withdrawals-per-kg-poore"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                Poore & Nemecek (2018), Science
+              </a>
+              <details
+                class="mt-1"
+              >
+                <summary
+                  class="cursor-pointer text-gray-600 dark:text-gray-400"
+                >
+                  Methodology
+                </summary>
+                <p
+                  class="mt-1 text-gray-700 dark:text-gray-300"
+                >
+                  Freshwater withdrawals per kg of final product.
+                </p>
+              </details>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <ul
+      class="lg:hidden space-y-4"
+      data-testid="water-footprint-cards"
+    >
+      <li
+        class="rounded-lg border border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-800"
+      >
+        <p
+          class="font-semibold text-gray-900 dark:text-white"
+        >
+          <strong>
+            Smartphone (1 unit)
+          </strong>
+        </p>
+        <p
+          class="text-sm text-gray-700 dark:text-gray-300"
+        >
+          Technology
+        </p>
+        <p
+          class="text-sm text-gray-700 dark:text-gray-300"
+        >
+          12,760 L 
+          <span
+            class="text-gray-500 dark:text-gray-400"
+          >
+            per unit
+          </span>
+        </p>
+        <p
+          class="text-sm text-gray-700 dark:text-gray-300"
+        >
+          ≈ 196 showers · ≈ 85.1 bathtubs
+        </p>
+        <div
+          class="mt-2 text-sm"
+        >
+          <a
+            class="text-emerald-700 underline hover:text-emerald-800 dark:text-emerald-400 dark:hover:text-emerald-300"
+            href="https://www.apple.com/environment/"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            Apple Environmental Report
+          </a>
+          <details
+            class="mt-1"
+          >
+            <summary
+              class="cursor-pointer text-gray-600 dark:text-gray-400"
+            >
+              Methodology
+            </summary>
+            <p
+              class="mt-1 text-gray-700 dark:text-gray-300"
+            >
+              Life-cycle assessment of smartphone manufacturing.
+            </p>
+          </details>
+        </div>
+      </li>
+      <li
+        class="rounded-lg border border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-800"
+      >
+        <p
+          class="font-semibold text-gray-900 dark:text-white"
+        >
+          <strong>
+            Cotton t-shirt (250g)
+          </strong>
+        </p>
+        <p
+          class="text-sm text-gray-700 dark:text-gray-300"
+        >
+          Textiles
+        </p>
+        <p
+          class="text-sm text-gray-700 dark:text-gray-300"
+        >
+          2,700 L 
+          <span
+            class="text-gray-500 dark:text-gray-400"
+          >
+            per unit
+          </span>
+        </p>
+        <p
+          class="text-sm text-gray-700 dark:text-gray-300"
+        >
+          ≈ 41.5 showers · ≈ 18 bathtubs
+        </p>
+        <div
+          class="mt-2 text-sm"
+        >
+          <a
+            class="text-emerald-700 underline hover:text-emerald-800 dark:text-emerald-400 dark:hover:text-emerald-300"
+            href="https://waterfootprint.org/en/resources/waterstat/"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            Water Footprint Network
+          </a>
+          <details
+            class="mt-1"
+          >
+            <summary
+              class="cursor-pointer text-gray-600 dark:text-gray-400"
+            >
+              Methodology
+            </summary>
+            <p
+              class="mt-1 text-gray-700 dark:text-gray-300"
+            >
+              Water footprint of cotton textile products.
+            </p>
+          </details>
+        </div>
+      </li>
+      <li
+        class="rounded-lg border border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-800"
+      >
+        <p
+          class="font-semibold text-gray-900 dark:text-white"
+        >
+          <strong>
+            Apples
+          </strong>
+        </p>
+        <p
+          class="text-sm text-gray-700 dark:text-gray-300"
+        >
+          Food & Beverages
+        </p>
+        <p
+          class="text-sm text-gray-700 dark:text-gray-300"
+        >
+          180.1 L 
+          <span
+            class="text-gray-500 dark:text-gray-400"
+          >
+            per kg
+          </span>
+        </p>
+        <p
+          class="text-sm text-gray-700 dark:text-gray-300"
+        >
+          ≈ 2.8 showers · ≈ 1.2 bathtubs
+        </p>
+        <div
+          class="mt-2 text-sm"
+        >
+          <a
+            class="text-emerald-700 underline hover:text-emerald-800 dark:text-emerald-400 dark:hover:text-emerald-300"
+            href="https://ourworldindata.org/grapher/water-withdrawals-per-kg-poore"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            Poore & Nemecek (2018), Science
+          </a>
+          <details
+            class="mt-1"
+          >
+            <summary
+              class="cursor-pointer text-gray-600 dark:text-gray-400"
+            >
+              Methodology
+            </summary>
+            <p
+              class="mt-1 text-gray-700 dark:text-gray-300"
+            >
+              Freshwater withdrawals per kg of final product.
+            </p>
+          </details>
+        </div>
+      </li>
+      <li
+        class="rounded-lg border border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-800"
+      >
+        <p
+          class="font-semibold text-gray-900 dark:text-white"
+        >
+          <strong>
+            Cement
+          </strong>
+        </p>
+        <p
+          class="text-sm text-gray-700 dark:text-gray-300"
+        >
+          Manufactured
+        </p>
+        <p
+          class="text-sm text-gray-700 dark:text-gray-300"
+        >
+          5 L 
+          <span
+            class="text-gray-500 dark:text-gray-400"
+          >
+            per kg
+          </span>
+        </p>
+        <p
+          class="text-sm text-gray-700 dark:text-gray-300"
+        >
+          under 1 shower
+        </p>
+        <div
+          class="mt-2 text-sm"
+        >
+          <a
+            class="text-emerald-700 underline hover:text-emerald-800 dark:text-emerald-400 dark:hover:text-emerald-300"
+            href="https://waterfootprint.org/en/resources/waterstat/"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            Water Footprint Network
+          </a>
+          <details
+            class="mt-1"
+          >
+            <summary
+              class="cursor-pointer text-gray-600 dark:text-gray-400"
+            >
+              Methodology
+            </summary>
+            <p
+              class="mt-1 text-gray-700 dark:text-gray-300"
+            >
+              Water footprint of cement production.
+            </p>
+          </details>
+        </div>
+      </li>
+      <li
+        class="rounded-lg border border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-800"
+      >
+        <p
+          class="font-semibold text-gray-900 dark:text-white"
+        >
+          <strong>
+            Cassava
+          </strong>
+        </p>
+        <p
+          class="text-sm text-gray-700 dark:text-gray-300"
+        >
+          Food & Beverages
+        </p>
+        <p
+          class="text-sm text-gray-700 dark:text-gray-300"
+        >
+          No data
+        </p>
+        <p
+          class="text-sm text-gray-700 dark:text-gray-300"
+        >
+          —
+        </p>
+        <div
+          class="mt-2 text-sm"
+        >
+          <a
+            class="text-emerald-700 underline hover:text-emerald-800 dark:text-emerald-400 dark:hover:text-emerald-300"
+            href="https://ourworldindata.org/grapher/water-withdrawals-per-kg-poore"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            Poore & Nemecek (2018), Science
+          </a>
+          <details
+            class="mt-1"
+          >
+            <summary
+              class="cursor-pointer text-gray-600 dark:text-gray-400"
+            >
+              Methodology
+            </summary>
+            <p
+              class="mt-1 text-gray-700 dark:text-gray-300"
+            >
+              Freshwater withdrawals per kg of final product.
+            </p>
+          </details>
+        </div>
+      </li>
+    </ul>
+  </div>
+</DocumentFragment>
+`;

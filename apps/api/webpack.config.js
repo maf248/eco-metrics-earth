@@ -15,7 +15,10 @@ module.exports = {
       compiler: 'tsc',
       main: './src/main.ts',
       tsConfig: './tsconfig.app.json',
-      assets: ['./src/assets', './src/data'],
+      assets: [
+        './src/assets',
+        { input: './src/modules/water-footprint/data', output: 'data', glob: '**/*' },
+      ],
       optimization: false,
       outputHashing: 'none',
       generatePackageJson: true,

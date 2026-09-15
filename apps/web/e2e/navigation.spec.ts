@@ -43,10 +43,10 @@ test.describe('Desktop sidebar navigation', () => {
 
     for (const slug of CATEGORY_SLUGS) {
       const cp = categoryPage(slug);
-      await page.getByRole('link', { name: cp.heading }).click();
+      await page.locator(selectors.nav).getByRole('link', { name: cp.heading }).click();
       await expect(page).toHaveURL(cp.url);
       // Verify aria-current on the active link
-      const activeLink = page.getByRole('link', { name: cp.heading });
+      const activeLink = page.locator(selectors.nav).getByRole('link', { name: cp.heading });
       await expect(activeLink).toHaveAttribute('aria-current', 'page');
     }
   });

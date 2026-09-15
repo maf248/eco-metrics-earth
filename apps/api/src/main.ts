@@ -35,7 +35,6 @@ async function bootstrap() {
       )
       .setVersion('1.0.0')
       .addServer(`http://localhost:${appConfig.port}`, 'local')
-      .addServer('https://eco-metrics-earth-api.railway.app', 'production (Railway)')
       .addTag('Health', 'Health check endpoint')
       .addTag('Demo', 'Demo validation endpoints (mock)')
       .addTag('Water Footprint', 'Product water footprint data')

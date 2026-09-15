@@ -1,6 +1,6 @@
 # Water Footprint by Product — Research & Implementation Plan 💧
 
-> **Status:** Phase 2 complete — dataset compiled (52 products) and BFF endpoint live.
+> **Status:** Phase 3 + 4 complete — UI table, filters, sorting, equivalents, and responsive layout shipped (14 Sep 2026).
 > **Category slug:** `water-footprint`
 > **URL:** `/water-footprint/`
 > **Provider docs:** `docs/data-sources/water-footprint.md` (country-level sources: OWID, World Bank, FAO AQUASTAT — licenses and validated endpoints)
@@ -77,21 +77,21 @@ Each entry must include the original citation/source (paper, report, or dataset)
 
 ---
 
-## UX Decisions (Pending)
+## UX Decisions (Resolved)
 
 | Decision | Options | Status |
 |---|---|---|
-| Display format | Cards, table, or comparative bar chart | To be decided |
-| Category filters | Food & Beverages, Textiles, Manufactured, Technology | Proposed |
-| Search / sort | By product name, by water footprint (asc/desc), by category | Proposed |
+| Display format | Data table on desktop, card list on mobile (Tailwind) | Accepted |
+| Category filters | Food & Beverages, Textiles, Manufactured, Technology | Accepted |
+| Search / sort | Sort by name/footprint accepted; free-text search and category sort dropped | Accepted |
 | Data freshness | Static dataset — versioned in repo, updated periodically | Accepted |
-| Water footprint unit | Liters (L) — with contextual equivalents (e.g., "≈ 450 showers") | Proposed |
+| Water footprint unit | Liters (L) — with contextual equivalents (shower 65 L / bathtub 150 L) | Accepted |
 
 ---
 
 ## Technical Approach
 
-1. **Dataset as static JSON** — embedded in the repo under `apps/api/src/data/water-footprint.json` (52 products, served through the BFF)
+1. **Dataset as static JSON** — embedded in the repo under `apps/api/src/modules/water-footprint/data/water-footprint.json` (52 products, served through the BFF)
 2. **Component rendering** — new client component `WaterFootprintTable` with filtering and sorting
 3. **Page integration** — rendered in the existing `/water-footprint/` category page via `[category]/page.tsx` template
 4. **Source attribution** — each data entry includes a `source`, `sourceUrl`, and `methodology` field
@@ -108,22 +108,22 @@ Each entry must include the original citation/source (paper, report, or dataset)
 
 ### Phase 2 — Dataset compilation (✅ Complete — 12 Jul 2026)
 - [x] Curate and validate 52 product entries (38 Food & Beverages, 6 Textiles, 3 Technology, 5 Manufactured)
-- [x] Create `apps/api/src/data/water-footprint.json` with citations — all commercial-safe (CC BY / citable)
+- [x] Create `apps/api/src/modules/water-footprint/data/water-footprint.json` with citations — all commercial-safe (CC BY / citable)
 - [x] Add type definitions (`WaterFootprintProduct`, `WaterFootprintCategory`) in `@eco-metrics/shared`
 - [x] Build NestJS module (`WaterFootprintModule`) exposing `GET /api/v1/water-footprint/products?category=`
 - [x] Unit tests (49 tests, 100% coverage — service + controller + module)
 
-### Phase 3 — UI implementation (Pending)
-- [ ] Build `WaterFootprintTable` component
-- [ ] Implement category filters (Food & Beverages, Textiles, Manufactured, Technology)
-- [ ] Add sort by name / water footprint
-- [ ] Accessibility audit (axe-core, keyboard navigation, screen reader)
-- [ ] Snapshot + unit tests + E2E tests
+### Phase 3 — UI implementation (✅ Complete — 14 Sep 2026)
+- [x] Build `WaterFootprintTable` component
+- [x] Implement category filters (Food & Beverages, Textiles, Manufactured, Technology)
+- [x] Add sort by name / water footprint
+- [x] Accessibility audit (axe-core, keyboard navigation, screen reader)
+- [x] Snapshot + unit tests + E2E tests
 
-### Phase 4 — Polish (Pending)
-- [ ] Contextual equivalents (e.g., "≈ X showers", "≈ Y bathtubs")
-- [ ] Mobile-responsive table/cards layout
-- [ ] Performance: static generation with `generateStaticParams`
+### Phase 4 — Polish (✅ Complete — 14 Sep 2026)
+- [x] Contextual equivalents (e.g., "≈ X showers", "≈ Y bathtubs")
+- [x] Mobile-responsive table/cards layout
+- [x] Performance: static generation with `generateStaticParams`
 
 ---
 
@@ -135,4 +135,4 @@ Each entry must include the original citation/source (paper, report, or dataset)
 
 ---
 
-*Last updated: 12 Jul 2026*
+*Last updated: 14 Sep 2026*
