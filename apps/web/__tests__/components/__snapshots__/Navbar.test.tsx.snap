@@ -4,7 +4,7 @@ exports[`Navbar snapshots should match snapshot with an active route 1`] = `
 <DocumentFragment>
   <nav
     aria-label="Main navigation"
-    class="fixed z-50 bottom-0 left-0 right-0 h-20 flex flex-row border-t border-gray-200 dark:border-gray-800 lg:top-0 lg:right-auto lg:bottom-auto lg:h-screen lg:w-68 lg:flex-col lg:border-t-0 lg:border-r lg:border-gray-200 dark:lg:border-gray-800 bg-gray-200/80 dark:bg-white/10"
+    class="fixed z-50 bottom-0 left-0 right-0 h-20 flex flex-row border-t border-gray-200 dark:border-gray-800 lg:top-0 lg:right-auto lg:bottom-auto lg:h-screen lg:w-68 lg:flex-col lg:border-t-0 lg:border-r lg:border-gray-200 dark:lg:border-gray-800 bg-nav-surface dark:bg-nav-surface-dark"
   >
     <a
       aria-label="eco-metrics earth — go to home"
@@ -1366,7 +1366,7 @@ exports[`Navbar snapshots should match snapshot with no active route 1`] = `
 <DocumentFragment>
   <nav
     aria-label="Main navigation"
-    class="fixed z-50 bottom-0 left-0 right-0 h-20 flex flex-row border-t border-gray-200 dark:border-gray-800 lg:top-0 lg:right-auto lg:bottom-auto lg:h-screen lg:w-68 lg:flex-col lg:border-t-0 lg:border-r lg:border-gray-200 dark:lg:border-gray-800 bg-gray-200/80 dark:bg-white/10"
+    class="fixed z-50 bottom-0 left-0 right-0 h-20 flex flex-row border-t border-gray-200 dark:border-gray-800 lg:top-0 lg:right-auto lg:bottom-auto lg:h-screen lg:w-68 lg:flex-col lg:border-t-0 lg:border-r lg:border-gray-200 dark:lg:border-gray-800 bg-nav-surface dark:bg-nav-surface-dark"
   >
     <a
       aria-label="eco-metrics earth — go to home"

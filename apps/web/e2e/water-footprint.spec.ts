@@ -57,6 +57,39 @@ test.describe('Water Footprint page', () => {
       await expect(bodyRows).toHaveCount(6);
       await expect(page.getByRole('status')).toContainText('Showing 6 of 52');
     });
+
+    test('should show exactly one active filter label after selecting a category', async ({
+      page,
+    }) => {
+      await page.setViewportSize({ width: 1280, height: 720 });
+      await page.goto('/water-footprint/');
+
+      const labels = page.locator('fieldset label');
+
+      const activeLabelText = () =>
+        labels.evaluateAll((elements) => {
+          const styles = elements.map((element) => ({
+            text: element.textContent,
+            backgroundColor: window.getComputedStyle(element).backgroundColor,
+          }));
+
+          const counts = styles.reduce<Record<string, number>>((acc, { backgroundColor }) => {
+            acc[backgroundColor] = (acc[backgroundColor] ?? 0) + 1;
+            return acc;
+          }, {});
+
+          const activeBackground = Object.keys(counts).find((key) => counts[key] === 1);
+          return (
+            styles.find(({ backgroundColor }) => backgroundColor === activeBackground)?.text ?? null
+          );
+        });
+
+      await expect.poll(activeLabelText).toBe('All');
+
+      await page.locator('fieldset').getByText('Food & Beverages').click();
+
+      await expect.poll(activeLabelText).toBe('Food & Beverages');
+    });
   });
 
   test.describe('Responsive layout', () => {

@@ -2,7 +2,7 @@
 
 import type { WaterFootprintCategory, WaterFootprintProduct } from '@eco-metrics/shared';
 import { waterFootprintCategorySlugMap } from '@eco-metrics/shared';
-import { Fragment, useId, useMemo, useState } from 'react';
+import { useId, useMemo, useState } from 'react';
 
 import { formatLiters, formatWaterFootprintEquivalents } from '@/lib/waterFootprintEquivalents';
 
@@ -83,7 +83,7 @@ export function WaterFootprintTable({ products }: WaterFootprintTableProps) {
             const inputId = `${groupId}-${category}`;
             const label = category === 'all' ? 'All' : category;
             return (
-              <Fragment key={category}>
+              <div key={category}>
                 <input
                   id={inputId}
                   type="radio"
@@ -95,11 +95,11 @@ export function WaterFootprintTable({ products }: WaterFootprintTableProps) {
                 />
                 <label
                   htmlFor={inputId}
-                  className="cursor-pointer rounded-full border border-gray-300 bg-white px-3 py-1 text-sm text-gray-700 transition-colors peer-checked:border-emerald-700 peer-checked:bg-emerald-700 peer-checked:text-white hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700"
+                  className="cursor-pointer rounded-full border border-gray-300 bg-white px-3 py-1 text-sm text-gray-700 transition-colors peer-checked:border-emerald-700 peer-checked:bg-emerald-700 peer-checked:text-white hover:bg-gray-50 peer-focus-visible:outline-none peer-focus-visible:ring-2 peer-focus-visible:ring-emerald-700 peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-white dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700 dark:peer-focus-visible:ring-emerald-400 dark:peer-focus-visible:ring-offset-gray-950"
                 >
                   {label}
                 </label>
-              </Fragment>
+              </div>
             );
           })}
         </div>

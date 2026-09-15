@@ -25,7 +25,7 @@ A `'use client'` component `WaterFootprintTable` in `apps/web/src/components/wat
 
 ### Requirement: Category filter via native radio group
 
-The filter SHALL be a `<fieldset>` with `<legend>` "Filter by category" containing five native `<input type="radio">` options: "All" (default checked), "Food & Beverages", "Textiles", "Technology", "Manufactured" — derived from `waterFootprintCategorySlugMap`. Radios SHALL be keyboard-navigable (native arrow-key behavior) and their labels SHALL visually indicate the checked state (Tailwind `peer`/`peer-checked` styling). No custom ARIA widget roles.
+The filter SHALL be a `<fieldset>` with `<legend>` "Filter by category" containing five native `<input type="radio">` options: "All" (default checked), "Food & Beverages", "Textiles", "Technology", "Manufactured" — derived from `waterFootprintCategorySlugMap`. Radios SHALL be keyboard-navigable (native arrow-key behavior). No custom ARIA widget roles. Each radio+label pair SHALL be isolated in its own wrapper element (a `<div>`) so the Tailwind `peer` sibling relationship is scoped to exactly one input+label pair — `peer-checked:` compiles to `.peer:checked ~ label` (general sibling combinator), which without per-pair isolation reaches every following label in the shared flex container and paints them all as active. Exactly one label SHALL visually indicate the checked state at any time (Tailwind `peer`/`peer-checked` styling scoped per pair).
 
 #### Scenario: Filter by Textiles
 
@@ -43,6 +43,20 @@ The filter SHALL be a `<fieldset>` with `<legend>` "Filter by category" containi
 
 - **WHEN** a keyboard user tabs into the radio group and uses arrow keys
 - **THEN** they can move between filter options and activate them with native radio behavior
+
+#### Scenario: Initial render marks exactly one label as active
+
+- **GIVEN** the page renders with the default "All" filter ("All" is first in DOM order)
+- **WHEN** the filter group paints
+- **THEN** exactly the "All" label carries the checked (active) styling
+- **AND** the other four labels carry the inactive styling
+
+#### Scenario: Activating a category marks only that label as active
+
+- **GIVEN** the page shows all 52 products with "All" checked
+- **WHEN** the user activates the "Food & Beverages" radio
+- **THEN** only the "Food & Beverages" label carries the checked (active) styling
+- **AND** every other label — including "All", which precedes it in DOM order — carries the inactive styling
 
 ### Requirement: Sorting by product name and water footprint
 
@@ -82,13 +96,20 @@ A live region with `role="status"` and `aria-live="polite"` SHALL sit above the 
 
 ### Requirement: Keyboard accessibility and focus preservation
 
-Every interactive control (filter radios, sort buttons, source links, methodology disclosures) SHALL be a natively focusable element reachable via Tab. Focus SHALL NOT be lost, reset, or trapped when the table re-renders after a filter or sort change.
+Every interactive control (filter radios, sort buttons, source links, methodology disclosures) SHALL be a natively focusable element reachable via Tab. Focus SHALL NOT be lost, reset, or trapped when the table re-renders after a filter or sort change. Because the filter radios are visually hidden (`sr-only`), each filter label SHALL present a visible focus indicator when its radio receives keyboard focus — Tailwind `peer-focus-visible:` styling scoped per pair (the same wrapper isolation as the checked-state styling) — so keyboard users can always see which filter option has focus (WCAG 2.4.7 Focus Visible). The indicator SHALL appear on the focused option's label only.
 
 #### Scenario: Focus survives re-render
 
 - **GIVEN** focus is on the "Textiles" radio
 - **WHEN** the user activates it and the table re-renders
 - **THEN** focus remains on the "Textiles" radio
+
+#### Scenario: Visible focus indicator on the filter labels
+
+- **GIVEN** the page is open and the filter group is not focused
+- **WHEN** a keyboard user tabs into the radio group, then arrows between options
+- **THEN** the focused option's label displays a visible focus indicator (focus ring)
+- **AND** no other filter label displays a focus indicator
 
 ### Requirement: Table semantics on desktop
 
@@ -125,7 +146,7 @@ Each product SHALL display a contextual equivalent computed from constants in `a
 - `liters ≥ 150` → `"≈ {n} showers · ≈ {m} bathtubs"` with `n = liters / 65`, `m = liters / 150`
 - Quotients ≥ 100 round to integers; quotients < 100 keep one decimal; exactly 1 uses the singular noun.
 
-A visible footnote SHALL state the reference values and label them as illustrative references that are not part of the cited dataset.
+A visible footnote SHALL state the reference values and label them as illustrative references that are not part of the cited dataset. The footnote SHALL carry bottom spacing (a bottom margin, e.g. Tailwind `mb-8`) so it never sits flush against the viewport bottom on desktop nor against the fixed mobile bottom navigation — the app layout's content padding (`pb-20 lg:pb-0`) exactly offsets the fixed bottom nav (`h-20`) on mobile and is zero on desktop, so without its own bottom margin the page's last content element has no breathing room below it.
 
 #### Scenario: Reference values
 
@@ -141,6 +162,13 @@ A visible footnote SHALL state the reference values and label them as illustrati
 
 - **WHEN** the data renders successfully
 - **THEN** a footnote visible on all breakpoints states the shower/bathtub reference values and that they are illustrative, not part of the cited dataset
+
+#### Scenario: Footnote bottom spacing
+
+- **GIVEN** the "All" filter is active and the page is scrolled to the bottom
+- **WHEN** the footnote is visible
+- **THEN** clear whitespace separates the footnote text from the bottom edge of the viewport on desktop
+- **AND** clear whitespace separates it from the top edge of the fixed bottom navigation on mobile
 
 ### Requirement: Per-product source attribution
 

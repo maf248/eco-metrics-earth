@@ -164,4 +164,34 @@ describe('WaterFootprintTable', () => {
     const { asFragment } = render(<WaterFootprintTable products={fixtures} />);
     expect(asFragment()).toMatchSnapshot();
   });
+
+  it('should isolate each filter radio and label in a wrapper containing only that pair', () => {
+    const { container } = render(<WaterFootprintTable products={fixtures} />);
+    const labels = container.querySelectorAll('fieldset label');
+
+    expect(labels).toHaveLength(5);
+
+    labels.forEach((label) => {
+      const wrapper = label.parentElement;
+      const inputId = label.getAttribute('for');
+      const inputs = wrapper?.querySelectorAll('input[type="radio"]');
+
+      expect(wrapper?.tagName.toLowerCase()).toBe('div');
+      expect(inputs).toHaveLength(1);
+      expect(inputs?.[0].id).toBe(inputId);
+      expect(wrapper?.children.length).toBe(2);
+    });
+  });
+
+  it('should keep exactly one radio checked when activating each filter option', () => {
+    const { container } = render(<WaterFootprintTable products={fixtures} />);
+    const options = ['All', 'Food & Beverages', 'Textiles', 'Technology', 'Manufactured'];
+
+    options.forEach((name) => {
+      fireEvent.click(screen.getByRole('radio', { name }));
+
+      expect(screen.getByRole('radio', { name })).toBeChecked();
+      expect(container.querySelectorAll('input[type="radio"]:checked')).toHaveLength(1);
+    });
+  });
 });

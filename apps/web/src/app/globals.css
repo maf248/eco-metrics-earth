@@ -2,6 +2,13 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+/* Nav surface — shared by the nav and its scroll gradients.
+ * Keep opaque: page content scrolls behind the fixed nav. */
+@theme {
+  --color-nav-surface: #eaecef;
+  --color-nav-surface-dark: #1a1a1a;
+}
+
 /* ─── Terminal cursor blink animation ───────────────────────────────────────
  * Uses step-end (not ease/linear) for a realistic snap — identical to a real
  * terminal cursor. Only runs when the user has not requested reduced motion.

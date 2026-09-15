@@ -35,6 +35,7 @@ async function bootstrap() {
       )
       .setVersion('1.0.0')
       .addServer(`http://localhost:${appConfig.port}`, 'local')
+      .addServer('https://eco-metrics-api-fexi2yqv2q-uc.a.run.app', 'production (Cloud Run)')
       .addTag('Health', 'Health check endpoint')
       .addTag('Demo', 'Demo validation endpoints (mock)')
       .addTag('Water Footprint', 'Product water footprint data')

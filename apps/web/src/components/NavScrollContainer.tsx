@@ -15,6 +15,7 @@ interface NavScrollContainerProps {
  *   ensuring icons are always pinned to the same top edge regardless of label length.
  * - Shows a left gradient affordance (w-12) when there is hidden content to the left.
  * - Shows a right gradient affordance (w-12) when there is hidden content to the right.
+ * - Gradients fade from the nav surface colour so they blend with the bar.
  * - Gradients are aria-hidden and pointer-events-none — purely decorative.
  * - On desktop (lg+) the gradients are hidden via lg:hidden.
  */
@@ -53,7 +54,7 @@ export default function NavScrollContainer({ children }: NavScrollContainerProps
       {canScrollLeft && (
         <div
           aria-hidden="true"
-          className="lg:hidden absolute left-0 top-0 bottom-0 w-12 z-10 pointer-events-none bg-gradient-to-r from-white dark:from-black to-transparent"
+          className="lg:hidden absolute left-0 top-0 bottom-0 w-12 z-10 pointer-events-none bg-gradient-to-r from-nav-surface dark:from-nav-surface-dark to-transparent"
         />
       )}
 
@@ -61,7 +62,7 @@ export default function NavScrollContainer({ children }: NavScrollContainerProps
       {canScrollRight && (
         <div
           aria-hidden="true"
-          className="lg:hidden absolute right-0 top-0 bottom-0 w-12 z-10 pointer-events-none bg-gradient-to-l from-white dark:from-black to-transparent"
+          className="lg:hidden absolute right-0 top-0 bottom-0 w-12 z-10 pointer-events-none bg-gradient-to-l from-nav-surface dark:from-nav-surface-dark to-transparent"
         />
       )}
 
