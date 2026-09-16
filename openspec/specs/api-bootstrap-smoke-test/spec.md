@@ -1,5 +1,8 @@
-## ADDED Requirements
+# api-bootstrap-smoke-test Specification
 
+## Purpose
+TBD - created by archiving change configuration-and-tests. Update Purpose after archive.
+## Requirements
 ### Requirement: API has an HTTP smoke test verifying the health endpoint
 An integration test SHALL exist at `apps/api/__tests__/app/bootstrap.test.ts` that starts the full NestJS application and sends an HTTP request to `GET /api/v1/health`, verifying the app starts correctly and the endpoint responds.
 

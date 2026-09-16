@@ -1,5 +1,8 @@
-## ADDED Requirements
+# tailwind-v4-config Specification
 
+## Purpose
+TBD - created by archiving change tailwind-v4. Update Purpose after archive.
+## Requirements
 ### Requirement: PostCSS uses @tailwindcss/postcss plugin
 The build toolchain SHALL use `@tailwindcss/postcss` as the sole PostCSS plugin for Tailwind processing. The `tailwindcss` and `autoprefixer` packages SHALL be removed from `package.json`. The `postcss` package SHALL remain as an explicit dependency.
 

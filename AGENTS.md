@@ -28,6 +28,35 @@ All non-trivial changes — new features, significant refactors, API contracts �
 4. **Validate** — `@tester` writes/updates tests and runs the gates (lint + build + unit tests, plus E2E when the change warrants it per the spec); `@reviewer` does the final quality audit.
 5. **Close & Final Approval (mandatory checkpoint)** — verify Definition of Done, run `/opsx:archive` to move the change folder to `openspec/changes/archive/`, then **STOP and present the full summary to the user**: green gates (lint + build + unit tests + E2E when applicable), reviewer verdict, archived change folder, and a `git status`/diff overview of everything that will be committed. **No commit and no push until the user explicitly approves at this checkpoint.** This checkpoint is mandatory for every change — SDD or direct implementation — with no exceptions. Only after approval: commit (Commitizen format), and push only if separately authorized.
 
+### OpenSpec spec files: delta vs canonical
+
+OpenSpec uses two kinds of spec file with **different grammars**. Mixing them corrupts the canonical specs.
+
+| | Delta spec | Canonical spec |
+| --- | --- | --- |
+| Path | `openspec/changes/<change>/specs/<capability>/spec.md` | `openspec/specs/<capability>/spec.md` |
+| Describes | an **operation** to apply | the **current state** |
+| Headings | `## ADDED Requirements`, `## MODIFIED Requirements`, `## REMOVED Requirements` | `# <capability> Specification`, `## Purpose`, `## Requirements` |
+| Lifetime | temporary — archived with the change | permanent — accumulative |
+
+**Rule when archiving a change:** *merge* the delta into the canonical spec — never copy the delta file over it. Apply each operation (add / modify / remove the named requirements), then leave the canonical file in its own grammar. A canonical spec MUST NOT contain `## ADDED Requirements` or any other delta heading: it does not "add" anything, it states what is. Requirements the change did not touch MUST be left untouched.
+
+Every canonical spec MUST keep this shape:
+
+```markdown
+# <capability> Specification
+
+## Purpose
+<one line describing what this capability is for>
+## Requirements
+### Requirement: ...
+#### Scenario: ...
+```
+
+Spec content is **English only**, like every other generated artifact.
+
+> The `openspec` CLI is not installed in this repo (`npx openspec` fails), so archiving and delta sync are performed manually. That makes following this rule by hand mandatory — there is no tool validating it.
+
 > **Note:** Improvement ideas and planned features are tracked in [`ROADMAP.md`](./ROADMAP.md). When ready to implement, a formal OpenSpec proposal is created from the roadmap item.
 
 ### What requires a spec (non-trivial)

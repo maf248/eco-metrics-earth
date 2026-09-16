@@ -23,7 +23,7 @@ Classify every request before choosing a workflow (full criteria in `AGENTS.md` 
 3. **User Checkpoint**: Once the spec is ready, notify the user. **STOP** and wait for explicit user approval before proceeding to implementation.
 4. **Implementation**: After approval, use `/opsx:apply` or delegate to **coder** subagent to write code based strictly on the approved OpenSpec.
 5. **Validation**: Delegate to **tester** for tests and **reviewer** for final code quality audit. Gates: lint + build + unit tests, plus E2E when the change warrants it per the spec.
-6. **Closing**: Verify the "Definition of Done" and run `/opsx:archive` to archive.
+6. **Closing**: Verify the "Definition of Done" and run `/opsx:archive` to archive. **Merge, never overwrite**: delta and canonical specs use different grammars — apply the delta's operations to `openspec/specs/<capability>/spec.md` and leave it with canonical headings; never copy the delta file over it. See "OpenSpec spec files: delta vs canonical" in `AGENTS.md`.
 
 ## Subagents Available
 

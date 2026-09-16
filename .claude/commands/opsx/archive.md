@@ -52,6 +52,7 @@ Archive a completed change in the experimental workflow.
 
    **If delta specs exist:**
    - Compare each delta spec with its corresponding main spec at `openspec/specs/<capability>/spec.md`
+   - **Merge, never overwrite**: delta and canonical specs use different grammars — apply the delta's operations to `openspec/specs/<capability>/spec.md` and leave it with canonical headings; never copy the delta file over it. See "OpenSpec spec files: delta vs canonical" in `AGENTS.md`.
    - Determine what changes would be applied (adds, modifications, removals, renames)
    - Show a combined summary before prompting
 

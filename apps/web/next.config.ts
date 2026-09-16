@@ -40,6 +40,13 @@ const baseConfig: NextConfig = {
       "img-src 'self' data: blob:",
       "connect-src 'self'",
       "frame-ancestors 'none'",
+      "base-uri 'self'",
+      "form-action 'self'",
+      "object-src 'none'",
+      "frame-src 'none'",
+      // NOTE: `upgrade-insecure-requests` is production-only. The dev server
+      // runs over http://localhost, where the directive has no value.
+      ...(isDev ? [] : ['upgrade-insecure-requests']),
     ].join('; ');
 
     return [
@@ -51,9 +58,11 @@ const baseConfig: NextConfig = {
           { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
           {
             key: 'Permissions-Policy',
-            value: 'camera=(), microphone=(), geolocation=()',
+            value: 'camera=(), microphone=(), geolocation=(), payment=(), usb=(), midi=()',
           },
           { key: 'Content-Security-Policy', value: csp },
+          { key: 'Cross-Origin-Opener-Policy', value: 'same-origin' },
+          { key: 'Cross-Origin-Resource-Policy', value: 'same-origin' },
         ],
       },
     ];
