@@ -1,5 +1,8 @@
-## ADDED Requirements
+# shared-types Specification
 
+## Purpose
+TBD - created by archiving change monorepo-base-setup. Update Purpose after archive.
+## Requirements
 ### Requirement: Package shared con tipos base del dominio
 El package `shared` SHALL exportar interfaces TypeScript base que representen los contratos de datos entre el BFF y el frontend. SHALL incluir al menos la interfaz base de respuesta de API y los identificadores de categorías ecológicas.
 

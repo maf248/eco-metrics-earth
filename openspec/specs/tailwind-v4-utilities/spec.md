@@ -1,5 +1,8 @@
-## ADDED Requirements
+# tailwind-v4-utilities Specification
 
+## Purpose
+TBD - created by archiving change tailwind-v4. Update Purpose after archive.
+## Requirements
 ### Requirement: All existing utility classes render correctly under v4
 Every Tailwind utility class currently used in `apps/web/src/**` SHALL produce the same visual output under v4 as it did under v3. No class SHALL silently produce no output or incorrect output after the upgrade.
 

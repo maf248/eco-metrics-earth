@@ -1,5 +1,8 @@
-## ADDED Requirements
+# navscroll-scroll-tests Specification
 
+## Purpose
+TBD - created by archiving change configuration-and-tests. Update Purpose after archive.
+## Requirements
 ### Requirement: NavScrollContainer tests cover scroll affordance visibility
 The test file `apps/web/__tests__/components/NavScrollContainer.test.tsx` SHALL include test cases that simulate scroll state changes and assert that the left and right gradient affordances appear and disappear correctly.
 

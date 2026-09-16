@@ -1,5 +1,8 @@
-## ADDED Requirements
+# web-app-scaffold Specification
 
+## Purpose
+TBD - created by archiving change monorepo-base-setup. Update Purpose after archive.
+## Requirements
 ### Requirement: Next.js App Router con layout base
 La app `web` SHALL usar Next.js con App Router. SHALL existir un layout raíz (`app/layout.tsx`) con estructura HTML semántica, metadata base y soporte para dark mode mediante clase CSS en `<html>`.
 

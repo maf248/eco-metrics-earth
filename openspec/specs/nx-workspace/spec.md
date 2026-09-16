@@ -1,5 +1,8 @@
-## ADDED Requirements
+# nx-workspace Specification
 
+## Purpose
+TBD - created by archiving change monorepo-base-setup. Update Purpose after archive.
+## Requirements
 ### Requirement: NX workspace inicializado con apps y packages
 
 El workspace NX SHALL contener las apps `web` y `api` y el package `shared`, todos reconocidos por NX y ejecutables mediante su task runner — sobre **NX 23.2.1** (todas las familias de paquetes `nx` / `@nx/*` fijadas en la versión exacta `23.2.1`, sin `^` ni `~`, en lockstep). Los targets SHALL seguir inferiéndose mediante los plugins de `nx.json` (`@nx/js/typescript`, `@nx/jest/plugin`, `@nx/next/plugin`, `@nx/eslint/plugin`, `@nx/webpack/plugin`, `@nx/playwright/plugin`) y los bloques `nx.targets` en los `package.json` de cada proyecto — sin `project.json` ni executors deprecados.

@@ -1,5 +1,8 @@
-## ADDED Requirements
+# eslint-plugins Specification
 
+## Purpose
+TBD - created by archiving change configuration-and-tests. Update Purpose after archive.
+## Requirements
 ### Requirement: ESLint enforces React hooks rules across the web app
 `eslint-plugin-react-hooks` SHALL be installed and its recommended rules SHALL be active for all TypeScript and TSX files in `apps/web`.
 

@@ -1,5 +1,8 @@
-## ADDED Requirements
+# web-security-headers Specification
 
+## Purpose
+TBD - created by archiving change security-foundations. Update Purpose after archive.
+## Requirements
 ### Requirement: Web app serves HTTP security headers on all routes
 The Next.js web app SHALL serve a set of HTTP security headers on every response via the `headers()` function in `next.config.ts`. These headers MUST be applied to all routes matching `'/(.*)'`.
 
