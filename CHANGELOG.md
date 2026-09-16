@@ -1,3 +1,9 @@
+## [2.3.0](https://github.com/maf248/eco-metrics-earth/compare/v2.2.1...v2.3.0) (2026-09-16)
+
+### Features
+
+* **web:** add COOP, CORP and stricter CSP directives ([e542bc0](https://github.com/maf248/eco-metrics-earth/commit/e542bc00b1cd89f37ee3ba9c9851c4fab7cca8c1))
+
 ## [2.2.1](https://github.com/maf248/eco-metrics-earth/compare/v2.2.0...v2.2.1) (2026-09-15)
 
 ### Bug Fixes
