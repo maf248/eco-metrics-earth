@@ -13,7 +13,7 @@
     "format:check": "prettier --check \"**/*.{ts,tsx,js,json,md,css}\"",
     "prepare": "husky",
     "reset": "rm -rf node_modules .nx apps/web/.next packages/shared/dist && npm install",
-    "typecheck": "nx affected --target=typecheck --base=HEAD",
+    "typecheck": "nx run-many --target=typecheck --all",
     "clean:reports": "rm -rf coverage apps/api/test-output packages/shared/test-output",
     "update-snapshots": "nx run-many --target=test --all -- --updateSnapshot",
     "e2e": "nx e2e web"
