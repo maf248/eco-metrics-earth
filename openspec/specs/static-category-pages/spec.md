@@ -45,4 +45,3 @@ The water-footprint page SHALL pre-render with its server-fetched product data (
 - **WHEN** any non-water-footprint category page is rendered (e.g., `/ocean-health/`)
 - **THEN** it shows the placeholder (icon, `<h1>` title, "{title} metrics — coming soon.")
 - **THEN** their existing unit tests and snapshots pass without modification
-

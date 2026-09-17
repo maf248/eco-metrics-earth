@@ -4,12 +4,12 @@ This folder contains the [Caddy](https://caddyserver.com) reverse proxy config f
 
 ## What it does
 
-| URL | Target |
-|---|---|
-| `http://eco-metrics.localhost` | Next.js — `http://localhost:3000` |
-| `https://eco-metrics.localhost` | Next.js — `http://localhost:3000` (TLS via Caddy local CA) |
-| `http://api.eco-metrics.localhost` | NestJS — `http://localhost:3001` |
-| `https://api.eco-metrics.localhost` | NestJS — `http://localhost:3001` (TLS via Caddy local CA) |
+| URL                                 | Target                                                     |
+| ----------------------------------- | ---------------------------------------------------------- |
+| `http://eco-metrics.localhost`      | Next.js — `http://localhost:3000`                          |
+| `https://eco-metrics.localhost`     | Next.js — `http://localhost:3000` (TLS via Caddy local CA) |
+| `http://api.eco-metrics.localhost`  | NestJS — `http://localhost:3001`                           |
+| `https://api.eco-metrics.localhost` | NestJS — `http://localhost:3001` (TLS via Caddy local CA)  |
 
 The `.localhost` TLD is resolved to `127.0.0.1` automatically by modern browsers (Chrome, Firefox, Edge) — no changes to `/etc/hosts` or Windows `hosts` file required.
 
@@ -79,10 +79,12 @@ Re-run the `setcap` command from step 3.
 
 **Still seeing the Caddy welcome page**
 The system Caddy service is likely still running. Kill it:
+
 ```bash
 sudo pkill caddy
 sudo systemctl stop caddy
 ```
+
 Then re-run `npm run dev:local`.
 
 **Page not loading at `eco-metrics.localhost`**

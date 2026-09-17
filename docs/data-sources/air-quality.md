@@ -16,14 +16,14 @@ Tracks concentrations of atmospheric pollutants (PM2.5, PM10, NO₂, O₃, CO, S
 - **Limitations:** Recommended < 10,000 calls/day, < 5,000/hour, < 600/minute per IP. Commercial use requires a paid plan.
 - **Validated (May 2026):** Real-time air quality endpoints confirmed working.
 
-| Field | Details |
-|---|---|
-| Base URL | `https://air-quality-api.open-meteo.com/v1/air-quality` |
-| Auth | None |
-| Free tier | Yes (non-commercial) |
-| Rate limit | < 10,000 req/day, < 5,000/hour, < 600/min per IP |
-| Update frequency | Hourly real-time + 5-day forecast |
-| Format | JSON |
+| Field            | Details                                                 |
+| ---------------- | ------------------------------------------------------- |
+| Base URL         | `https://air-quality-api.open-meteo.com/v1/air-quality` |
+| Auth             | None                                                    |
+| Free tier        | Yes (non-commercial)                                    |
+| Rate limit       | < 10,000 req/day, < 5,000/hour, < 600/min per IP        |
+| Update frequency | Hourly real-time + 5-day forecast                       |
+| Format           | JSON                                                    |
 
 ---
 
@@ -38,14 +38,14 @@ Tracks concentrations of atmospheric pollutants (PM2.5, PM10, NO₂, O₃, CO, S
 - **CORS:** Not fully enabled — must use server-side calls.
 - **Limitations:** Rate limits: 60 req/min, ~2,000/hour. v1 and v2 were retired January 2025 — use v3 only.
 
-| Field | Details |
-|---|---|
-| Base URL | `https://api.openaq.org/v3` |
-| Auth | API key (free registration at explore.openaq.org) |
-| Free tier | Yes |
-| Rate limit | 60 req/min, ~2,000 req/hour |
-| Update frequency | Near real-time |
-| Format | JSON |
+| Field            | Details                                           |
+| ---------------- | ------------------------------------------------- |
+| Base URL         | `https://api.openaq.org/v3`                       |
+| Auth             | API key (free registration at explore.openaq.org) |
+| Free tier        | Yes                                               |
+| Rate limit       | 60 req/min, ~2,000 req/hour                       |
+| Update frequency | Near real-time                                    |
+| Format           | JSON                                              |
 
 ---
 
@@ -60,14 +60,14 @@ Tracks concentrations of atmospheric pollutants (PM2.5, PM10, NO₂, O₃, CO, S
 - **CORS:** Not specified — use server-side.
 - **Limitations:** 500 req/hour per service per API key. Coverage limited to North America.
 
-| Field | Details |
-|---|---|
-| Base URL | `https://www.airnowapi.org/aq/` |
-| Auth | API key (free registration) |
-| Free tier | Yes |
-| Rate limit | 500 req/hour per service |
-| Update frequency | Hourly |
-| Format | JSON, CSV, RSS, KML |
+| Field            | Details                         |
+| ---------------- | ------------------------------- |
+| Base URL         | `https://www.airnowapi.org/aq/` |
+| Auth             | API key (free registration)     |
+| Free tier        | Yes                             |
+| Rate limit       | 500 req/hour per service        |
+| Update frequency | Hourly                          |
+| Format           | JSON, CSV, RSS, KML             |
 
 ---
 
@@ -82,14 +82,14 @@ Tracks concentrations of atmospheric pollutants (PM2.5, PM10, NO₂, O₃, CO, S
 - **CORS:** Not applicable — designed for batch downloads, not live frontend queries.
 - **Limitations:** Best suited for batch pipelines; not practical for real-time frontend requests.
 
-| Field | Details |
-|---|---|
-| Base URL | `https://ads.atmosphere.copernicus.eu/api/v2` |
-| Auth | CDS API key (free registration) |
-| Free tier | Yes |
-| Rate limit | Queue-based (batch) |
-| Update frequency | Daily forecasts |
-| Format | netCDF, GRIB |
+| Field            | Details                                       |
+| ---------------- | --------------------------------------------- |
+| Base URL         | `https://ads.atmosphere.copernicus.eu/api/v2` |
+| Auth             | CDS API key (free registration)               |
+| Free tier        | Yes                                           |
+| Rate limit       | Queue-based (batch)                           |
+| Update frequency | Daily forecasts                               |
+| Format           | netCDF, GRIB                                  |
 
 ---
 
@@ -104,33 +104,33 @@ Tracks concentrations of atmospheric pollutants (PM2.5, PM10, NO₂, O₃, CO, S
 - **CORS:** Not specified — use server-side to protect key.
 - **Limitations:** Free tier: 60 req/min, 1,000,000 req/month.
 
-| Field | Details |
-|---|---|
-| Base URL | `https://api.openweathermap.org/data/2.5/air_pollution` |
-| Auth | API key (free tier available) |
-| Free tier | Yes |
-| Rate limit | 60 req/min, 1,000,000 req/month (free tier) |
-| Update frequency | Hourly |
-| Format | JSON |
+| Field            | Details                                                 |
+| ---------------- | ------------------------------------------------------- |
+| Base URL         | `https://api.openweathermap.org/data/2.5/air_pollution` |
+| Auth             | API key (free tier available)                           |
+| Free tier        | Yes                                                     |
+| Rate limit       | 60 req/min, 1,000,000 req/month (free tier)             |
+| Update frequency | Hourly                                                  |
+| Format           | JSON                                                    |
 
 ---
 
 ## Available Metrics
 
-| Metric | Providers |
-|---|---|
-| PM2.5 | Open-Meteo, OpenAQ, AirNow, OpenWeatherMap |
-| PM10 | Open-Meteo, OpenAQ, AirNow, OpenWeatherMap |
-| O₃ (Ozone) | Open-Meteo, OpenAQ, AirNow, OpenWeatherMap |
-| NO₂ | Open-Meteo, OpenAQ, AirNow, OpenWeatherMap |
-| SO₂ | Open-Meteo, OpenAQ, AirNow, OpenWeatherMap |
-| CO | Open-Meteo, OpenAQ, AirNow, OpenWeatherMap |
-| NH₃ | Open-Meteo, OpenAQ |
-| AQI (US / EU index) | Open-Meteo, AirNow, OpenWeatherMap |
-| Pollen (alder, birch, grass, ragweed…) | Open-Meteo |
-| Black carbon (BC) | OpenAQ |
-| Station metadata | OpenAQ |
-| Global atmospheric composition | CAMS |
+| Metric                                 | Providers                                  |
+| -------------------------------------- | ------------------------------------------ |
+| PM2.5                                  | Open-Meteo, OpenAQ, AirNow, OpenWeatherMap |
+| PM10                                   | Open-Meteo, OpenAQ, AirNow, OpenWeatherMap |
+| O₃ (Ozone)                             | Open-Meteo, OpenAQ, AirNow, OpenWeatherMap |
+| NO₂                                    | Open-Meteo, OpenAQ, AirNow, OpenWeatherMap |
+| SO₂                                    | Open-Meteo, OpenAQ, AirNow, OpenWeatherMap |
+| CO                                     | Open-Meteo, OpenAQ, AirNow, OpenWeatherMap |
+| NH₃                                    | Open-Meteo, OpenAQ                         |
+| AQI (US / EU index)                    | Open-Meteo, AirNow, OpenWeatherMap         |
+| Pollen (alder, birch, grass, ragweed…) | Open-Meteo                                 |
+| Black carbon (BC)                      | OpenAQ                                     |
+| Station metadata                       | OpenAQ                                     |
+| Global atmospheric composition         | CAMS                                       |
 
 ## Integration Notes
 

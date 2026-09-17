@@ -64,19 +64,20 @@ src/components/
 
 ### Utilities (`src/lib/`)
 
-| File | Purpose |
-|------|---------|
-| `navItems.ts` | Builds `NAV_ITEMS[]` from `ECO_CATEGORIES` — merges slug, label, href, icon into one object |
-| `categoryIcon.ts` | Maps a slug to its SVG icon component; warns in development for unknown slugs, falls back to `SiteLogoIcon` |
+| File               | Purpose                                                                                                                                                                        |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `navItems.ts`      | Builds `NAV_ITEMS[]` from `ECO_CATEGORIES` — merges slug, label, href, icon into one object                                                                                    |
+| `categoryIcon.ts`  | Maps a slug to its SVG icon component; warns in development for unknown slugs, falls back to `SiteLogoIcon`                                                                    |
 | `categoryTitle.ts` | Maps a slug to its display title; handles overrides for titles that can't be derived mechanically (`waste-recycling` → `Waste & Recycling`, `co2-emissions` → `CO2 Emissions`) |
-| `siteUrl.ts` | Returns the canonical base URL from `NEXT_PUBLIC_SITE_URL`, no trailing slash; falls back to `http://localhost:3000` |
-| `slugToTitle.ts` | Generic slug → Title Case conversion (`air-quality` → `Air Quality`) |
+| `siteUrl.ts`       | Returns the canonical base URL from `NEXT_PUBLIC_SITE_URL`, no trailing slash; falls back to `http://localhost:3000`                                                           |
+| `slugToTitle.ts`   | Generic slug → Title Case conversion (`air-quality` → `Air Quality`)                                                                                                           |
 
 ### SEO
 
 Every page exports a `metadata` object with `title`, `description`, `alternates.canonical` (trailing-slash URL), and `openGraph` + `twitter` tags. The root layout sets `metadataBase` from `NEXT_PUBLIC_SITE_URL`.
 
 Additional SEO outputs:
+
 - `robots.ts` — allows `/`, disallows `/api/`
 - `sitemap.ts` — home (`priority: 1.0`) + all 12 category pages (`priority: 0.8`), `changeFrequency: weekly`
 - `manifest.ts` — PWA manifest; `display: standalone`, `theme_color: #10b981`
@@ -85,13 +86,13 @@ Additional SEO outputs:
 
 Applied to all routes via `async headers()`:
 
-| Header | Value |
-|--------|-------|
+| Header                    | Value                                                                         |
+| ------------------------- | ----------------------------------------------------------------------------- |
 | `Content-Security-Policy` | `default-src 'self'`; `unsafe-eval` added in development only (Turbopack HMR) |
-| `X-Frame-Options` | `DENY` |
-| `X-Content-Type-Options` | `nosniff` |
-| `Referrer-Policy` | `strict-origin-when-cross-origin` |
-| `Permissions-Policy` | `camera=(), microphone=(), geolocation=()` |
+| `X-Frame-Options`         | `DENY`                                                                        |
+| `X-Content-Type-Options`  | `nosniff`                                                                     |
+| `Referrer-Policy`         | `strict-origin-when-cross-origin`                                             |
+| `Permissions-Policy`      | `camera=(), microphone=(), geolocation=()`                                    |
 
 `trailingSlash: true` is set in `next.config.ts` — all canonical URLs end with `/`.
 
@@ -105,19 +106,19 @@ Copy `.env.example` before running locally:
 cp apps/web/.env.example apps/web/.env.local
 ```
 
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `NEXT_PUBLIC_SITE_URL` | `http://localhost:3000` | Canonical base URL for SEO metadata, sitemap, and Open Graph |
-| `API_BASE_URL` | `http://localhost:3001/api/v1` | Base URL of the NestJS BFF (server-side only). Set to the deployed API URL in production |
-| `ANALYZE` | `false` | Set to `true` to generate a bundle analysis report on build (webpack only) |
+| Variable               | Default                        | Description                                                                              |
+| ---------------------- | ------------------------------ | ---------------------------------------------------------------------------------------- |
+| `NEXT_PUBLIC_SITE_URL` | `http://localhost:3000`        | Canonical base URL for SEO metadata, sitemap, and Open Graph                             |
+| `API_BASE_URL`         | `http://localhost:3001/api/v1` | Base URL of the NestJS BFF (server-side only). Set to the deployed API URL in production |
+| `ANALYZE`              | `false`                        | Set to `true` to generate a bundle analysis report on build (webpack only)               |
 
 ---
 
 ## Import Aliases
 
-| Alias | Resolves to |
-|-------|-------------|
-| `@/` | `apps/web/src/` |
+| Alias                 | Resolves to                    |
+| --------------------- | ------------------------------ |
+| `@/`                  | `apps/web/src/`                |
 | `@eco-metrics/shared` | `packages/shared/src/index.ts` |
 
 ---

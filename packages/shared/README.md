@@ -10,8 +10,7 @@ Generic wrapper for all BFF responses — a discriminated union on `success`.
 
 ```typescript
 export type ApiResponse<T> =
-  | { success: true; data: T; status: number }
-  | { success: false; error: string; status: number };
+  { success: true; data: T; status: number } | { success: false; error: string; status: number };
 ```
 
 ### `EcoCategory` / `ECO_CATEGORIES`
@@ -59,7 +58,12 @@ interface WaterFootprintProduct {
 ## Usage
 
 ```typescript
-import { ApiResponse, EcoCategory, ECO_CATEGORIES, WaterFootprintProduct } from '@eco-metrics/shared';
+import {
+  ApiResponse,
+  EcoCategory,
+  ECO_CATEGORIES,
+  WaterFootprintProduct,
+} from '@eco-metrics/shared';
 ```
 
 ## Commands

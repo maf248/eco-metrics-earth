@@ -17,14 +17,14 @@ Tracks forest cover loss and gain by region and country. Includes primary forest
 - **CORS:** Yes on public endpoints.
 - **Limitations:** Some on-demand analyses limit maximum area per request.
 
-| Field | Details |
-|---|---|
-| Base URL | `https://data-api.globalforestwatch.org` |
-| Auth | API key (free; required for some endpoints) |
-| Free tier | Yes |
-| Rate limit | Not publicly specified |
-| Update frequency | Weekly (GLAD/RADD alerts); annual (Hansen) |
-| Format | JSON, GeoJSON |
+| Field            | Details                                     |
+| ---------------- | ------------------------------------------- |
+| Base URL         | `https://data-api.globalforestwatch.org`    |
+| Auth             | API key (free; required for some endpoints) |
+| Free tier        | Yes                                         |
+| Rate limit       | Not publicly specified                      |
+| Update frequency | Weekly (GLAD/RADD alerts); annual (Hansen)  |
+| Format           | JSON, GeoJSON                               |
 
 ---
 
@@ -37,14 +37,14 @@ Tracks forest cover loss and gain by region and country. Includes primary forest
 - **Data:** Forest cover 2000, annual gain/loss to the most recent year at 30 m resolution.
 - **API key:** Not required (direct download); Google Earth Engine login for GEE access.
 
-| Field | Details |
-|---|---|
-| Base URL | `https://storage.googleapis.com/earthenginepartners-hansen/` |
-| Auth | None (direct download) |
-| Free tier | Yes |
-| Rate limit | None |
-| Update frequency | Annual |
-| Format | GeoTIFF |
+| Field            | Details                                                      |
+| ---------------- | ------------------------------------------------------------ |
+| Base URL         | `https://storage.googleapis.com/earthenginepartners-hansen/` |
+| Auth             | None (direct download)                                       |
+| Free tier        | Yes                                                          |
+| Rate limit       | None                                                         |
+| Update frequency | Annual                                                       |
+| Format           | GeoTIFF                                                      |
 
 ---
 
@@ -57,14 +57,14 @@ Tracks forest cover loss and gain by region and country. Includes primary forest
 - **API key:** Not required.
 - **Validated (Jul 2026):** The legacy API host `fenixservices.fao.org` is down (HTTP 521), and `faostatservices.fao.org/api/v1` returns 401 to unauthenticated requests. Bulk CSV downloads (e.g. `Forestry_E_All_Data.zip`) confirmed working — prefer them.
 
-| Field | Details |
-|---|---|
-| Base URL | `https://bulks-faostat.fao.org/production/` |
-| Auth | None |
-| Free tier | Yes |
-| Rate limit | None specified |
-| Update frequency | Annual |
-| Format | CSV (zipped) |
+| Field            | Details                                     |
+| ---------------- | ------------------------------------------- |
+| Base URL         | `https://bulks-faostat.fao.org/production/` |
+| Auth             | None                                        |
+| Free tier        | Yes                                         |
+| Rate limit       | None specified                              |
+| Update frequency | Annual                                      |
+| Format           | CSV (zipped)                                |
 
 ---
 
@@ -76,29 +76,29 @@ Tracks forest cover loss and gain by region and country. Includes primary forest
 - **Data:** Annual forest loss and gain series by country (based on Hansen/UMD and FAO FRA).
 - **API key:** Not required.
 
-| Field | Details |
-|---|---|
-| Base URL | `https://ourworldindata.org/grapher/` |
-| Auth | None |
-| Free tier | Yes |
-| Rate limit | None |
-| Update frequency | Annual |
-| Format | CSV, JSON |
+| Field            | Details                               |
+| ---------------- | ------------------------------------- |
+| Base URL         | `https://ourworldindata.org/grapher/` |
+| Auth             | None                                  |
+| Free tier        | Yes                                   |
+| Rate limit       | None                                  |
+| Update frequency | Annual                                |
+| Format           | CSV, JSON                             |
 
 ---
 
 ## Available Metrics
 
-| Metric | Providers |
-|---|---|
-| Tree cover loss (annual, 30 m) | GFW / Hansen |
-| GLAD deforestation alerts (weekly) | Global Forest Watch |
+| Metric                                      | Providers           |
+| ------------------------------------------- | ------------------- |
+| Tree cover loss (annual, 30 m)              | GFW / Hansen        |
+| GLAD deforestation alerts (weekly)          | Global Forest Watch |
 | RADD alerts (Sentinel-1, cloud-penetrating) | Global Forest Watch |
-| Active fires (VIIRS) | Global Forest Watch |
-| Carbon stocks | Global Forest Watch |
-| Forest area by country (annual) | FAOSTAT, OWID |
-| Net deforestation rate | FAOSTAT, OWID |
-| Timber production & trade | FAOSTAT |
+| Active fires (VIIRS)                        | Global Forest Watch |
+| Carbon stocks                               | Global Forest Watch |
+| Forest area by country (annual)             | FAOSTAT, OWID       |
+| Net deforestation rate                      | FAOSTAT, OWID       |
+| Timber production & trade                   | FAOSTAT             |
 
 ## Integration Notes
 

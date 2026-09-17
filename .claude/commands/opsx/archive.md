@@ -1,5 +1,5 @@
 ---
-name: "OPSX: Archive"
+name: 'OPSX: Archive'
 description: Archive a completed change in the experimental workflow
 category: Workflow
 tags: [workflow, archive, experimental]
@@ -65,6 +65,7 @@ Archive a completed change in the experimental workflow.
 5. **Perform the archive**
 
    Create the archive directory if it doesn't exist:
+
    ```bash
    mkdir -p openspec/changes/archive
    ```
@@ -149,6 +150,7 @@ Target archive directory already exists.
 ```
 
 **Guardrails**
+
 - Always prompt for change selection if not provided
 - Use artifact graph (openspec status --json) for completion checking
 - Don't block archive on warnings - just inform and confirm
