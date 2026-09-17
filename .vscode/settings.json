@@ -1,0 +1,19 @@
+{
+  // Format on save with Prettier, limited to the file types covered by the
+  // `format` / `format:check` scripts and lint-staged, so the editor and the
+  // CLI always agree on what gets formatted.
+  "editor.formatOnSave": false,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "prettier.requireConfig": true,
+  "[typescript]": { "editor.formatOnSave": true },
+  "[typescriptreact]": { "editor.formatOnSave": true },
+  "[javascript]": { "editor.formatOnSave": true },
+  "[javascriptreact]": { "editor.formatOnSave": true },
+  "[json]": { "editor.formatOnSave": true },
+  "[jsonc]": { "editor.formatOnSave": true },
+  "[markdown]": { "editor.formatOnSave": true },
+  "[css]": { "editor.formatOnSave": true },
+  "files.eol": "\n",
+  "files.insertFinalNewline": true,
+  "files.trimTrailingWhitespace": true
+}
