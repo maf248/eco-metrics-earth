@@ -14,14 +14,14 @@ Tracks glacier mass balance, retreat rates, and ice volume loss globally. Key in
 - **API key:** Not required for Sea Ice Index; other NASA datasets require free Earthdata Login.
 - **Validated (May 2026):** v4.0 endpoints confirmed working. Daily and monthly data available through present.
 
-| Field | Details |
-|---|---|
-| Base URL | `https://noaadata.apps.nsidc.org/NOAA/G02135/` |
-| Auth | None |
-| Free tier | Yes |
-| Rate limit | None |
-| Update frequency | Daily |
-| Format | CSV, GeoTIFF, Shapefile, PNG |
+| Field            | Details                                        |
+| ---------------- | ---------------------------------------------- |
+| Base URL         | `https://noaadata.apps.nsidc.org/NOAA/G02135/` |
+| Auth             | None                                           |
+| Free tier        | Yes                                            |
+| Rate limit       | None                                           |
+| Update frequency | Daily                                          |
+| Format           | CSV, GeoTIFF, Shapefile, PNG                   |
 
 ---
 
@@ -33,14 +33,14 @@ Tracks glacier mass balance, retreat rates, and ice volume loss globally. Key in
 - **Data:** Sea ice concentration raster/vector layers, freeze/thaw, glacier velocity, Greenland melt.
 - **API key:** Not required.
 
-| Field | Details |
-|---|---|
-| Base URL | `https://nsidc.org/api/mapservices/NSIDC/wms` |
-| Auth | None |
-| Free tier | Yes |
-| Rate limit | None |
-| Update frequency | Daily to weekly |
-| Format | WMS tiles, WFS GeoJSON |
+| Field            | Details                                       |
+| ---------------- | --------------------------------------------- |
+| Base URL         | `https://nsidc.org/api/mapservices/NSIDC/wms` |
+| Auth             | None                                          |
+| Free tier        | Yes                                           |
+| Rate limit       | None                                          |
+| Update frequency | Daily to weekly                               |
+| Format           | WMS tiles, WFS GeoJSON                        |
 
 ---
 
@@ -52,14 +52,14 @@ Tracks glacier mass balance, retreat rates, and ice volume loss globally. Key in
 - **Data:** Mass balance, length, area, thickness of 6,000+ glaciers; Fluctuations of Glaciers (FoG) database, updated annually. Latest version: FoG 2026-02-10.
 - **API key:** None (direct download; cite the database version DOI).
 
-| Field | Details |
-|---|---|
-| Base URL | https://wgms.ch/data_databaseversions/ |
-| Auth | None |
-| Free tier | Yes |
-| Rate limit | N/A (downloads) |
-| Update frequency | Annual |
-| Format | CSV, Access database |
+| Field            | Details                                |
+| ---------------- | -------------------------------------- |
+| Base URL         | https://wgms.ch/data_databaseversions/ |
+| Auth             | None                                   |
+| Free tier        | Yes                                    |
+| Rate limit       | N/A (downloads)                        |
+| Update frequency | Annual                                 |
+| Format           | CSV, Access database                   |
 
 ---
 
@@ -71,14 +71,14 @@ Tracks glacier mass balance, retreat rates, and ice volume loss globally. Key in
 - **Data:** Global glacier inventory with polygons, length, area.
 - **API key:** Not required.
 
-| Field | Details |
-|---|---|
-| Base URL | https://nsidc.org/data/nsidc-0272/ |
-| Auth | None |
-| Free tier | Yes |
-| Rate limit | None |
-| Update frequency | Periodic |
-| Format | Shapefile, GeoJSON |
+| Field            | Details                            |
+| ---------------- | ---------------------------------- |
+| Base URL         | https://nsidc.org/data/nsidc-0272/ |
+| Auth             | None                               |
+| Free tier        | Yes                                |
+| Rate limit       | None                               |
+| Update frequency | Periodic                           |
+| Format           | Shapefile, GeoJSON                 |
 
 ---
 
@@ -90,14 +90,14 @@ Tracks glacier mass balance, retreat rates, and ice volume loss globally. Key in
 - **Data:** Greenland glacier velocity (InSAR), surface elevation (ATL15), ice mass.
 - **API key:** Free NASA Earthdata Login required.
 
-| Field | Details |
-|---|---|
-| Base URL | `https://cmr.earthdata.nasa.gov/search` |
-| Auth | NASA Earthdata Login (free) |
-| Free tier | Yes |
-| Rate limit | None specified |
-| Update frequency | Varies by product |
-| Format | netCDF, HDF5 |
+| Field            | Details                                 |
+| ---------------- | --------------------------------------- |
+| Base URL         | `https://cmr.earthdata.nasa.gov/search` |
+| Auth             | NASA Earthdata Login (free)             |
+| Free tier        | Yes                                     |
+| Rate limit       | None specified                          |
+| Update frequency | Varies by product                       |
+| Format           | netCDF, HDF5                            |
 
 ---
 
@@ -109,14 +109,14 @@ Tracks glacier mass balance, retreat rates, and ice volume loss globally. Key in
 - **Data:** Greenland and Antarctic ice mass loss (Gt/year) from 2002 to present.
 - **API key:** Free NASA Earthdata Login required.
 
-| Field | Details |
-|---|---|
-| Base URL | `https://podaac.jpl.nasa.gov/GRACE` |
-| Auth | NASA Earthdata Login (free) |
-| Free tier | Yes |
-| Rate limit | None specified |
-| Update frequency | Monthly |
-| Format | netCDF |
+| Field            | Details                             |
+| ---------------- | ----------------------------------- |
+| Base URL         | `https://podaac.jpl.nasa.gov/GRACE` |
+| Auth             | NASA Earthdata Login (free)         |
+| Free tier        | Yes                                 |
+| Rate limit       | None specified                      |
+| Update frequency | Monthly                             |
+| Format           | netCDF                              |
 
 ---
 
@@ -128,28 +128,28 @@ Tracks glacier mass balance, retreat rates, and ice volume loss globally. Key in
 - **Data:** Annual mass balance series of reference glaciers.
 - **API key:** Not required.
 
-| Field | Details |
-|---|---|
-| Base URL | `https://ourworldindata.org/grapher/` |
-| Auth | None |
-| Free tier | Yes |
-| Rate limit | None |
-| Update frequency | Annual |
-| Format | CSV, JSON |
+| Field            | Details                               |
+| ---------------- | ------------------------------------- |
+| Base URL         | `https://ourworldindata.org/grapher/` |
+| Auth             | None                                  |
+| Free tier        | Yes                                   |
+| Rate limit       | None                                  |
+| Update frequency | Annual                                |
+| Format           | CSV, JSON                             |
 
 ---
 
 ## Available Metrics
 
-| Metric | Providers |
-|---|---|
-| Sea ice extent (Arctic / Antarctic) | NSIDC Sea Ice Index |
-| Sea ice concentration | NSIDC, NSIDC Map Services |
-| Glacier mass balance | WGMS, NASA GRACE, OWID |
-| Glacier length / area | WGMS, GLIMS |
-| Surface elevation (ICESat-2) | NASA MEaSUREs |
-| Ice sheet mass loss — Greenland / Antarctica | NASA GRACE / GRACE-FO |
-| Glacier velocity | NASA MEaSUREs, NSIDC Map Services |
+| Metric                                       | Providers                         |
+| -------------------------------------------- | --------------------------------- |
+| Sea ice extent (Arctic / Antarctic)          | NSIDC Sea Ice Index               |
+| Sea ice concentration                        | NSIDC, NSIDC Map Services         |
+| Glacier mass balance                         | WGMS, NASA GRACE, OWID            |
+| Glacier length / area                        | WGMS, GLIMS                       |
+| Surface elevation (ICESat-2)                 | NASA MEaSUREs                     |
+| Ice sheet mass loss — Greenland / Antarctica | NASA GRACE / GRACE-FO             |
+| Glacier velocity                             | NASA MEaSUREs, NSIDC Map Services |
 
 ## Integration Notes
 

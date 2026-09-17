@@ -15,14 +15,14 @@ Tracks the conservation status of animal and plant species worldwide. Covers IUC
 - **CORS:** Not specified — use server-side.
 - **Limitations:** Non-commercial only; rate-limited.
 
-| Field | Details |
-|---|---|
-| Base URL | `https://api.iucnredlist.org/api/v4` |
-| Auth | API token (free registration) |
-| Free tier | Yes (non-commercial) |
-| Rate limit | Rate-limited (not publicly specified) |
-| Update frequency | ~2 releases/year |
-| Format | JSON |
+| Field            | Details                               |
+| ---------------- | ------------------------------------- |
+| Base URL         | `https://api.iucnredlist.org/api/v4`  |
+| Auth             | API token (free registration)         |
+| Free tier        | Yes (non-commercial)                  |
+| Rate limit       | Rate-limited (not publicly specified) |
+| Update frequency | ~2 releases/year                      |
+| Format           | JSON                                  |
 
 ---
 
@@ -36,14 +36,14 @@ Tracks the conservation status of animal and plant species worldwide. Covers IUC
 - **API key:** Requires free registration.
 - **Limitations:** Non-commercial use only; bulk downloads only (no live API).
 
-| Field | Details |
-|---|---|
-| Base URL | https://www.iucnredlist.org/resources/spatial-data-download |
-| Auth | Free registration required |
-| Free tier | Yes (non-commercial) |
-| Rate limit | N/A (static download) |
-| Update frequency | Per Red List release (~2×/year) |
-| Format | Shapefile, CSV |
+| Field            | Details                                                     |
+| ---------------- | ----------------------------------------------------------- |
+| Base URL         | https://www.iucnredlist.org/resources/spatial-data-download |
+| Auth             | Free registration required                                  |
+| Free tier        | Yes (non-commercial)                                        |
+| Rate limit       | N/A (static download)                                       |
+| Update frequency | Per Red List release (~2×/year)                             |
+| Format           | Shapefile, CSV                                              |
 
 ---
 
@@ -58,14 +58,14 @@ Tracks the conservation status of animal and plant species worldwide. Covers IUC
 - **CORS:** Enabled — can be called directly from the client.
 - **Limitations:** None strict for reasonable use.
 
-| Field | Details |
-|---|---|
-| Base URL | `https://api.gbif.org/v1` |
-| Auth | None |
-| Free tier | Yes (fully open) |
-| Rate limit | None (reasonable use) |
-| Update frequency | Continuous |
-| Format | JSON |
+| Field            | Details                   |
+| ---------------- | ------------------------- |
+| Base URL         | `https://api.gbif.org/v1` |
+| Auth             | None                      |
+| Free tier        | Yes (fully open)          |
+| Rate limit       | None (reasonable use)     |
+| Update frequency | Continuous                |
+| Format           | JSON                      |
 
 ---
 
@@ -77,29 +77,29 @@ Tracks the conservation status of animal and plant species worldwide. Covers IUC
 - **Data:** World Database on Protected Areas (WDPA) and Key Biodiversity Areas (KBA).
 - **API key:** Required (free registration).
 
-| Field | Details |
-|---|---|
-| Base URL | `https://api.protectedplanet.net/v3` |
-| Auth | API key (free registration) |
-| Free tier | Yes |
-| Rate limit | Not publicly specified |
-| Update frequency | Monthly (WDPA) |
-| Format | JSON |
+| Field            | Details                              |
+| ---------------- | ------------------------------------ |
+| Base URL         | `https://api.protectedplanet.net/v3` |
+| Auth             | API key (free registration)          |
+| Free tier        | Yes                                  |
+| Rate limit       | Not publicly specified               |
+| Update frequency | Monthly (WDPA)                       |
+| Format           | JSON                                 |
 
 ---
 
 ## Available Metrics
 
-| Metric | Providers |
-|---|---|
+| Metric                                  | Providers         |
+| --------------------------------------- | ----------------- |
 | Red List category (CR, EN, VU, NT, LC…) | IUCN Red List API |
-| Population trends | IUCN Red List API |
-| Habitat & threats | IUCN Red List API |
-| Distribution polygons | IUCN Spatial Data |
-| Species occurrences (georeferenced) | GBIF |
-| Taxonomic records | GBIF, IUCN |
-| Protected areas (WDPA) | Protected Planet |
-| Key Biodiversity Areas (KBA) | Protected Planet |
+| Population trends                       | IUCN Red List API |
+| Habitat & threats                       | IUCN Red List API |
+| Distribution polygons                   | IUCN Spatial Data |
+| Species occurrences (georeferenced)     | GBIF              |
+| Taxonomic records                       | GBIF, IUCN        |
+| Protected areas (WDPA)                  | Protected Planet  |
+| Key Biodiversity Areas (KBA)            | Protected Planet  |
 
 ## Integration Notes
 

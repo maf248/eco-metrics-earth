@@ -35,6 +35,7 @@ The system SHALL {behavior}.
 ```
 
 Delta sections (describe ONLY what changes):
+
 - **ADDED**: New behavior
 - **MODIFIED**: Changed existing behavior
 - **REMOVED**: Deprecated behavior
@@ -60,7 +61,6 @@ Implementation checklist for @coder:
 
 ## Project Rules
 
-
 - Follow all conventions defined in `AGENTS.md`.
 - Delta specs describe ONLY the diff — never rewrite entire specs.
 - Non-goals section is critical — be explicit about what's out of scope.
@@ -81,4 +81,3 @@ Implementation checklist for @coder:
 5. **Write tasks**: Granular checklist for @coder, each task verifiable.
 
 After creating all artifacts, report back to the orchestrator for user approval checkpoint.
-

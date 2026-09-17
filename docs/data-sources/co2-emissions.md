@@ -19,14 +19,14 @@ Tracks carbon dioxide emissions by country, sector, and source. Includes histori
 - **API key:** Not required.
 - **CORS:** Enabled on grapher endpoints.
 
-| Field | Details |
-|---|---|
-| Base URL | `https://nyc3.digitaloceanspaces.com/owid-public/data/co2/` |
-| Auth | None |
-| Free tier | Yes |
-| Rate limit | None |
-| Update frequency | Annual (follows GCP release) |
-| Format | CSV, JSON, XLSX |
+| Field            | Details                                                     |
+| ---------------- | ----------------------------------------------------------- |
+| Base URL         | `https://nyc3.digitaloceanspaces.com/owid-public/data/co2/` |
+| Auth             | None                                                        |
+| Free tier        | Yes                                                         |
+| Rate limit       | None                                                        |
+| Update frequency | Annual (follows GCP release)                                |
+| Format           | CSV, JSON, XLSX                                             |
 
 ---
 
@@ -38,14 +38,14 @@ Tracks carbon dioxide emissions by country, sector, and source. Includes histori
 - **Data:** Fossil emissions + land-use change + sinks, annually from 1750.
 - **API key:** Not required.
 
-| Field | Details |
-|---|---|
-| Base URL | https://zenodo.org/ (search "Global Carbon Budget") |
-| Auth | None |
-| Free tier | Yes |
-| Rate limit | None |
-| Update frequency | Annual |
-| Format | CSV, Excel |
+| Field            | Details                                             |
+| ---------------- | --------------------------------------------------- |
+| Base URL         | https://zenodo.org/ (search "Global Carbon Budget") |
+| Auth             | None                                                |
+| Free tier        | Yes                                                 |
+| Rate limit       | None                                                |
+| Update frequency | Annual                                              |
+| Format           | CSV, Excel                                          |
 
 ---
 
@@ -58,14 +58,14 @@ Tracks carbon dioxide emissions by country, sector, and source. Includes histori
 - **API key:** Not required.
 - **Validated (May 2026):** Monthly CO₂ data available through April 2026. CH₄ and N₂O annual data through 2025.
 
-| Field | Details |
-|---|---|
-| Base URL | `https://gml.noaa.gov/webdata/ccgg/trends/co2/` |
-| Auth | None |
-| Free tier | Yes |
-| Rate limit | None |
-| Update frequency | Monthly |
-| Format | TXT, CSV |
+| Field            | Details                                         |
+| ---------------- | ----------------------------------------------- |
+| Base URL         | `https://gml.noaa.gov/webdata/ccgg/trends/co2/` |
+| Auth             | None                                            |
+| Free tier        | Yes                                             |
+| Rate limit       | None                                            |
+| Update frequency | Monthly                                         |
+| Format           | TXT, CSV                                        |
 
 ---
 
@@ -77,14 +77,14 @@ Tracks carbon dioxide emissions by country, sector, and source. Includes histori
 - **Data:** Facility-level emissions inventory derived from satellites + AI, by sector. Covers 2015–2024 (annual) and 2021–2024 (monthly).
 - **API key:** Not required for direct downloads; API v7 available.
 
-| Field | Details |
-|---|---|
-| Base URL | https://climatetrace.org/data |
-| Auth | None (downloads); API v7 available |
-| Free tier | Yes |
-| Rate limit | None (downloads) |
+| Field            | Details                                 |
+| ---------------- | --------------------------------------- |
+| Base URL         | https://climatetrace.org/data           |
+| Auth             | None (downloads); API v7 available      |
+| Free tier        | Yes                                     |
+| Rate limit       | None (downloads)                        |
 | Update frequency | Annual (2015–2024); monthly (2021–2024) |
-| Format | CSV (downloads); JSON (API) |
+| Format           | CSV (downloads); JSON (API)             |
 
 ---
 
@@ -96,14 +96,14 @@ Tracks carbon dioxide emissions by country, sector, and source. Includes histori
 - **Data:** GHG and pollutant emissions by country, sector, and year (1970–present). Excel and netCDF (0.1° grid).
 - **API key:** Not required.
 
-| Field | Details |
-|---|---|
-| Base URL | https://edgar.jrc.ec.europa.eu/ |
-| Auth | None |
-| Free tier | Yes |
-| Rate limit | None |
-| Update frequency | Annual |
-| Format | Excel, netCDF |
+| Field            | Details                         |
+| ---------------- | ------------------------------- |
+| Base URL         | https://edgar.jrc.ec.europa.eu/ |
+| Auth             | None                            |
+| Free tier        | Yes                             |
+| Rate limit       | None                            |
+| Update frequency | Annual                          |
+| Format           | Excel, netCDF                   |
 
 ---
 
@@ -120,14 +120,14 @@ Tracks carbon dioxide emissions by country, sector, and source. Includes histori
   - **CO2 sectoral breakdowns (working):** `EN.GHG.CO2.AG.*` (agriculture), `EN.GHG.CO2.BU.*` (buildings), `EN.GHG.CO2.FE.*` (fugitive), `EN.GHG.CO2.IC.*` (industrial combustion), `EN.GHG.CO2.IP.*` (industrial processes)
   - **Non-existent codes:** Sector breakdowns for all GHG (`EN.GHG.AGRI.*`, `EN.GHG.WAST.*`, etc.) do not exist; only CO2 sectoral data available.
 
-| Field | Details |
-|---|---|
-| Base URL | `https://api.worldbank.org/v2` |
-| Auth | None |
-| Free tier | Yes |
-| Rate limit | None specified |
-| Update frequency | Annual |
-| Format | JSON |
+| Field            | Details                        |
+| ---------------- | ------------------------------ |
+| Base URL         | `https://api.worldbank.org/v2` |
+| Auth             | None                           |
+| Free tier        | Yes                            |
+| Rate limit       | None specified                 |
+| Update frequency | Annual                         |
+| Format           | JSON                           |
 
 ---
 
@@ -140,30 +140,30 @@ Tracks carbon dioxide emissions by country, sector, and source. Includes histori
 - **API key:** Not required.
 - **CORS:** Enabled.
 
-| Field | Details |
-|---|---|
-| Base URL | `https://api.carbonintensity.org.uk` |
-| Auth | None |
-| Free tier | Yes |
-| Rate limit | None specified |
-| Update frequency | Every 30 minutes |
-| Format | JSON |
+| Field            | Details                              |
+| ---------------- | ------------------------------------ |
+| Base URL         | `https://api.carbonintensity.org.uk` |
+| Auth             | None                                 |
+| Free tier        | Yes                                  |
+| Rate limit       | None specified                       |
+| Update frequency | Every 30 minutes                     |
+| Format           | JSON                                 |
 
 ---
 
 ## Available Metrics
 
-| Metric | Providers |
-|---|---|
-| Annual CO₂ emissions by country | OWID, World Bank, EDGAR |
-| Per-capita CO₂ emissions | OWID, World Bank |
-| Cumulative / consumption-based emissions | OWID |
-| Emissions by sector | OWID, Climate TRACE, EDGAR |
-| Facility-level emissions (satellite-derived) | Climate TRACE |
-| GHG budget (fossil + land-use + sinks) | Global Carbon Project |
-| Atmospheric CO₂ concentration (ppm) | NOAA Mauna Loa |
-| CH₄, N₂O, SF₆ concentrations | NOAA Mauna Loa |
-| Real-time grid carbon intensity (UK) | UK Carbon Intensity API |
+| Metric                                       | Providers                  |
+| -------------------------------------------- | -------------------------- |
+| Annual CO₂ emissions by country              | OWID, World Bank, EDGAR    |
+| Per-capita CO₂ emissions                     | OWID, World Bank           |
+| Cumulative / consumption-based emissions     | OWID                       |
+| Emissions by sector                          | OWID, Climate TRACE, EDGAR |
+| Facility-level emissions (satellite-derived) | Climate TRACE              |
+| GHG budget (fossil + land-use + sinks)       | Global Carbon Project      |
+| Atmospheric CO₂ concentration (ppm)          | NOAA Mauna Loa             |
+| CH₄, N₂O, SF₆ concentrations                 | NOAA Mauna Loa             |
+| Real-time grid carbon intensity (UK)         | UK Carbon Intensity API    |
 
 ## Integration Notes
 

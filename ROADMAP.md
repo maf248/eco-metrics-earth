@@ -4,21 +4,21 @@ Este documento registra todas las propuestas de mejora identificadas para el pro
 
 ---
 
-## Estado del Proyecto (15 Sep 2026)
+## Estado del Proyecto (16 Sep 2026)
 
-| Aspecto          | Estado | Nota                                                                                                                                                                                                                                                                                                                                                               |
-| ---------------- | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Tests            | ✅     | 329 unit (265 web + 56 api + 8 shared) + 55 E2E specs pasando, 0 errores                                                                                                                                                                                                                                                                                           |
-| Lint             | ✅     | Sin warnings                                                                                                                                                                                                                                                                                                                                                       |
-| Build            | ✅     | Compila correctamente                                                                                                                                                                                                                                                                                                                                              |
-| CI               | ✅     | CI en PRs y push a cualquier branch                                                                                                                                                                                                                                                                                                                                |
-| CD / Deploy      | ✅     | web: Vercel (auto-deploy desde GitHub); api: Cloud Run (workflow `deploy-api.yml` desde `develop`, servicio `eco-metrics-api`, `eco-metrics-api-fexi2yqv2q-uc.a.run.app`); gap de staging/preview del api sigue en I02                                                                                                                                             |
-| Dependencias     | 🟡     | Upgrade a NX 23.2.1 aplicado (10 Sep 2026) y NestJS 12 aplicado (11 Sep 2026) — `npm audit` bajó de 76 a 19 vulns (0 critical, 15 high, 3 moderate, 1 low — parche `concurrently` 9.2.4 aplicado el 14 Sep 2026 eliminó los 2 criticals de `shell-quote`), cero advisories de las familias NestJS (`multer`/`js-yaml`). Restante: tooling de release (D1). Ver I01 |
-| Coverage         | ✅     | Medido con Jest                                                                                                                                                                                                                                                                                                                                                    |
-| E2E              | ✅     | Playwright: 55 specs, 5 browsers, CI integrado, arranque determinista (readiness de ambos puertos)                                                                                                                                                                                                                                                                 |
-| Theming          | ✅     | Light/dark mode con toggle, persistencia (localStorage) y zero-flash (spec `theme-toggle` + `theme-system`)                                                                                                                                                                                                                                                        |
-| Monitoreo        | ❌     | No implementado                                                                                                                                                                                                                                                                                                                                                    |
-| **Datos reales** | 🟡     | **Ningún proveedor externo conectado** — water-footprint completa (dataset estático + UI + tests E2E con datos reales); las 11 páginas restantes siguen como placeholders (ver Estrategia de Proveedores + P1)                                                                                                                                                     |
+| Aspecto          | Estado | Nota                                                                                                                                                                                                                   |
+| ---------------- | ------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Tests            | ✅     | 331 unit (267 web + 56 api + 8 shared) + 61 E2E pasando, 0 errores                                                                                                                                                     |
+| Lint             | ✅     | Sin warnings                                                                                                                                                                                                           |
+| Build            | ✅     | Compila correctamente                                                                                                                                                                                                  |
+| CI               | ✅     | CI en PRs y push a cualquier branch                                                                                                                                                                                    |
+| CD / Deploy      | ✅     | web: Vercel (auto-deploy desde GitHub); api: Cloud Run (workflow `deploy-api.yml` desde `develop`, servicio `eco-metrics-api`, `eco-metrics-api-fexi2yqv2q-uc.a.run.app`); gap de staging/preview del api sigue en I02 |
+| Dependencias     | 🟡     | `npm audit`: 19 vulns (0 critical, 15 high, 3 moderate, 1 low). Todas viven en el subtree bundleado de `semantic-release`. Restante: tooling de release (D1). Ver I01                                                  |
+| Coverage         | ✅     | Medido con Jest                                                                                                                                                                                                        |
+| E2E              | ✅     | Playwright: 61 tests en 7 specs, 5 browsers, CI integrado, arranque determinista (readiness de ambos puertos)                                                                                                          |
+| Theming          | ✅     | Light/dark mode con toggle, persistencia (localStorage) y zero-flash (spec `theme-toggle` + `theme-system`)                                                                                                            |
+| Monitoreo        | ❌     | No implementado                                                                                                                                                                                                        |
+| **Datos reales** | 🟡     | **Ningún proveedor externo conectado** — water-footprint completa (dataset estático + UI + tests E2E con datos reales); las 11 páginas restantes siguen como placeholders (ver Estrategia de Proveedores + P1)         |
 
 ---
 
@@ -162,16 +162,15 @@ La categoría con mejor relación datos/esfuerzo (OWID CO₂ dataset: anual, per
 
 #### Stack final
 
-| Componente                | Tecnología                                      | Dónde                                            |
-| ------------------------- | ----------------------------------------------- | ------------------------------------------------ |
-| Logging estructurado      | `nestjs-pino` + `pino-http`                     | `apps/api`                                       |
-| Error tracking front      | `@sentry/nextjs`                                | `apps/web`                                       |
-| Error tracking back       | `@sentry/nestjs`                                | `apps/api`                                       |
-| Source maps upload        | `withSentryConfig` + `SENTRY_AUTH_TOKEN`        | CI/CD (Vercel + Cloud Run)                       |
-| Healthcheck lib           | `@nestjs/terminus` (instalar, sin refactorizar) | `apps/api`                                       |
-| Healthcheck sin throttler | `@SkipThrottle()` en health endpoint            | `apps/api` ✅ aplicado en `deploy-api-cloud-run` |
-| CSP Sentry                | `connect-src` → incluir `*.sentry.io`           | `next.config.ts`                                 |
-| Alertas                   | Email (error rate + healthcheck)                | Dashboard Sentry                                 |
+| Componente           | Tecnología                                      | Dónde                      |
+| -------------------- | ----------------------------------------------- | -------------------------- |
+| Logging estructurado | `nestjs-pino` + `pino-http`                     | `apps/api`                 |
+| Error tracking front | `@sentry/nextjs`                                | `apps/web`                 |
+| Error tracking back  | `@sentry/nestjs`                                | `apps/api`                 |
+| Source maps upload   | `withSentryConfig` + `SENTRY_AUTH_TOKEN`        | CI/CD (Vercel + Cloud Run) |
+| Healthcheck lib      | `@nestjs/terminus` (instalar, sin refactorizar) | `apps/api`                 |
+| CSP Sentry           | `connect-src` → incluir `*.sentry.io`           | `next.config.ts`           |
+| Alertas              | Email (error rate + healthcheck)                | Dashboard Sentry           |
 
 **Fuera de P2 → backlog:**
 
@@ -203,7 +202,7 @@ D2 (TypeScript 7) queda como seguimiento pasivo — sin acción por ahora.
 
 ### D1: Tooling de release — majors de bajo riesgo
 
-semantic-release 25, @commitlint 21, lint-staged 17, concurrently 10, @semantic-release/changelog 7, @semantic-release/git 11, conventional-changelog-conventionalcommits 10. Riesgo acotado a CI. **Quick win dentro de este ítem:** `concurrently` tiene fix **patch** (9.2.4) para sus 2 criticals (`shell-quote`) — ✅ aplicado el 14 Sep 2026 (2 criticals eliminados); semantic-release 25 limpia ~14 advisories del subtree npm/`tar`/`sigstore` (incl. criticals).
+semantic-release 25, @commitlint 21, lint-staged 17, concurrently 10, @semantic-release/changelog 7, @semantic-release/git 11, conventional-changelog-conventionalcommits 10. Riesgo acotado a CI. semantic-release 25 limpia los ~19 advisories del subtree bundleado de npm (ver I01).
 
 **Dificultad:** 3/10 · **Estado:** Pendiente
 
@@ -231,7 +230,7 @@ Lista de hallazgos del análisis de repositorio, ordenados por prioridad (más c
 
 ### 🔴 Seguridad
 
-- **I01.** `npm audit` reporta 19 vulnerabilidades (0 critical, 15 high, 3 moderate, 1 low — al 14 Sep 2026, tras parchear `concurrently` 9.2.1 → 9.2.4 (elimina los 2 criticals de `shell-quote`; transitiva `shell-quote` 1.8.3 → 1.9.0); previamente, los upgrades a NX 23.2.1 y NestJS 12: el upgrade a NX redujo de 76 a 32 y eliminó todo el subárbol NX, advisories contra `@nx/*` ≤22.7.6, `@module-federation/*`, `webpack-dev-server`, `svgo`, `undici`, `ws`, `adm-zip` y las transitivas de `nx@22.7.2`; spec `upgrade-nx-23` archivada; el upgrade a NestJS 12 redujo de 32 a 21 y eliminó la familia NestJS). `postcss` 8.5.28 aplicado en el cambio de NX; `webpack-dev-server` (peer de `@nx/webpack@23`) fue evaluado y **omitido** — `nx serve api` funciona sin él. Familia NestJS resuelta: `@nestjs/platform-express` 12.0.1 con `multer` 2.3.0 (top-level override `"multer": "2.3.0"` en root `package.json`; la versión natural que trae platform-express 12.0.1 es `multer` 2.2.0 y tiene 3 advisories high verificados) + `@nestjs/swagger` 12.0.1 con `js-yaml` 5.4.1; los patches `11.2.3`/`11.4.7` quedaron supersedidos por la major. Familias restantes: subtree bundleado `semantic-release` → `@semantic-release/npm` → `npm@10.9.9` — las 19 vulns (`@sigstore/*`, `brace-expansion`, `ip-address`, `picomatch`, `postcss-selector-parser`, `@npmcli/*`/`libnpm*`) viven dentro del tarball bundleado de npm y son inalcanzables para `npm audit fix`; fix = semantic-release 25 (D1). Resuelto: `concurrently`→`shell-quote` (parche 9.2.4 aplicado el 14 Sep 2026). Los advisories previamente listados como sin fix (`@xhmikosr/decompress`, `fast-uri`, `piscina`, `qs`/`express`, `body-parser`) ya no aparecen en el audit.
+- **I01.** `npm audit` reporta 19 vulnerabilidades (0 critical, 15 high, 3 moderate, 1 low — verificado al 16 Sep 2026). **Todas** viven dentro del tarball bundleado de `npm@10.9.9`, que llega por `semantic-release` → `@semantic-release/npm` (`@sigstore/*`, `brace-expansion`, `ip-address`, `picomatch`, `postcss-selector-parser`, `@npmcli/*`/`libnpm*`). Son **inalcanzables para `npm audit fix`** por estar bundleadas. **Fix:** subir a semantic-release 25 — es el D1.
 
 ### 🟡 CI/CD
 
@@ -243,44 +242,35 @@ Lista de hallazgos del análisis de repositorio, ordenados por prioridad (más c
 
 ### 🟡 Testing
 
-- **I04.** Tests de integración web→API con datos reales — **resuelto para water-footprint**: `water-footprint.spec.ts` arranca ambos servidores (webServer determinista) y valida la página contra los 52 productos reales del BFF. Falta el equivalente para las categorías eco restantes cuando consuman datos de proveedores (depende de P1).
+- **I04.** Tests de integración web→API con datos reales para las categorías eco — falta el equivalente a `water-footprint.spec.ts` (que ya arranca ambos servidores y valida contra datos reales del BFF) para el resto de las categorías cuando consuman datos de proveedores. Depende de P1.
 - **I05.** Sin tests de accesibilidad unitarios con `jest-axe`. Los tests E2E con `@axe-core/playwright` ya auditan todas las páginas (a11y.spec.ts), lo que cubre el 80% del valor. La integración a nivel componente unitario es deseable pero no prioritaria — solo suma valor si crece mucho la cantidad de componentes.
 
 ### 🟢 Arquitectura / Deuda técnica
 
 - **I09.** Sin Suspense boundaries — el App Router de Next.js está diseñado alrededor de Suspense + streaming para manejar estados de carga y errores. Actualmente las páginas renderizan sincrónicamente sin límites de Suspense, lo que bloquea el main thread durante transiciones de ruta. Requisito previo para P1 (data fetching real).
-- **I16.** Higiene de los specs canónicos en `openspec/specs/` — **parcialmente resuelto (15 Sep 2026)**: 10 specs arrastraban `## ADDED Requirements`, un encabezado de *delta*, porque al archivar sus changes se copió el archivo del delta encima del canónico en vez de fusionarlo. Se normalizaron a `# <capability> Specification` + `## Purpose` + `## Requirements`, y se documentó la regla en `AGENTS.md` (sección "OpenSpec spec files: delta vs canonical") para que no vuelva a pasar. **Queda pendiente**, todo tarea de criterio y no mecánica: (a) **30 de 41** specs tienen el `## Purpose` en el placeholder autogenerado `TBD - created by archiving change <x>. Update Purpose after archive.` — hay que escribir una línea real por capability; (b) `openspec/specs/ci-node-version/spec.md` usa un esquema propio (`# Spec: ...` + `## Capability`) ajeno a la gramática de OpenSpec y hay que migrarlo; (c) `openspec/specs/api-app-scaffold/spec.md` no tiene título ni `## Purpose`; (d) 3 specs tienen contenido en español (`api-app-scaffold`, `shared-types`, `web-app-scaffold`), violando la regla de inglés de `CLAUDE.md`. Nada de esto afecta al código ni al sitio desplegado: es deuda de documentación. **Causa de fondo, a revisar al encarar este ítem**: el CLI de `openspec` no está instalado (`npx openspec list` / `status` fallan con *"could not determine executable to run"*; tampoco está en `package.json` ni en `node_modules/.bin`). Por eso el archivado y el sync de deltas se hacen **a mano**, sin nada que valide la gramática de los archivos. La regla documentada en `AGENTS.md` mitiga el síntoma pero no la causa: mientras el sync sea manual, el error puede repetirse. **Sugerencia**: evaluar instalar el CLI como devDependency y usar `openspec archive` / `openspec validate` en lugar del `mv` + merge manual, e idealmente sumar la validación al pre-commit junto al resto de los gates. Decidir primero si el CLI soporta el layout actual del repo antes de migrar los 41 specs existentes.
+- **I16.** Higiene de los specs canónicos en `openspec/specs/` — pendiente, todo tarea de criterio y no mecánica (verificado al 16 Sep 2026): (a) **30 de 42** specs tienen el `## Purpose` en el placeholder autogenerado `TBD - created by archiving change <x>` — hay que escribir una línea real por capability; (b) `ci-node-version` usa un esquema propio (`# Spec: ...` + `## Capability`) ajeno a la gramática de OpenSpec; (c) `api-app-scaffold` no tiene título ni `## Purpose`; (d) 3 specs están en español (`api-app-scaffold`, `shared-types`, `web-app-scaffold`), violando la regla de inglés de `CLAUDE.md`. Es deuda de documentación: no afecta al código ni al sitio. **Causa de fondo:** el CLI de `openspec` no está instalado (no está en `package.json` ni en `node_modules/.bin`), así que el archivado y el merge de deltas se hacen a mano, sin nada que valide la gramática. La regla documentada en `AGENTS.md` mitiga el síntoma, no la causa. **Sugerencia:** evaluar instalarlo como devDependency y usar `openspec archive` / `validate` en vez del `mv` + merge manual, sumándolo al pre-commit. Decidir primero si soporta el layout actual antes de migrar los 42 specs.
 - **I06.** Sin capa de datos ni ORM — cuando empiece la integración real de datos, no hay TypeORM, Prisma ni esquema de base de datos definido.
 
 ### 🟢 Configuración / Build
 
 - **I07.** `legacy-peer-deps=true` en `.npmrc` — workaround porque `eslint-plugin-jsx-a11y@6.10.2` no declara ESLint 10 en sus peer deps. PR [#1081](https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/pull/1081) abierto. Eliminar cuando se publique un release con soporte.
-- **I08.** Sin Storybook ni documentación visual de componentes. Actualmente solo hay 16 componentes, por lo que no se justifica el overhead de configuración y mantenimiento. Reconsiderar cuando la librería de componentes supere ~40 unidades.
+- **I08.** Sin Storybook ni documentación visual de componentes. Actualmente hay 24 componentes (verificado al 16 Sep 2026), por lo que no se justifica el overhead de configuración y mantenimiento. Reconsiderar cuando supere ~40.
 
 ### 🟢 UI / Diseño
 
-- **I12.** Visibilidad de iconos SVG en modo claro/oscuro — algunos iconos de categoría (especialmente reforestation, ocean-health, plastic-pollution) no contrastan bien con el fondo en modo claro: se pierden detalles o bordes por falta de separación visual. En modo oscuro el problema es menor pero persiste en detalles finos. **Ahora accionable**: light/dark mode ya está en producción (spec `light-mode-styling` archivado).
+- **I12.** Visibilidad de iconos SVG en modo claro/oscuro — algunos iconos de categoría (sobre todo reforestation, ocean-health, plastic-pollution) no contrastan con el fondo en modo claro: se pierden detalles y bordes. En oscuro el problema es menor pero persiste. Accionable: light/dark ya está en producción.
 
-**Restricción de diseño (decisión registrada en el spec `light-mode-styling`):** los iconos de categoría son **intencionalmente multicolor** — sus colores de marca (verdes, azules, rojos) son parte de la identidad visual de cada categoría y no deben recolorearse ni tintarse por tema. Por eso el fix debe mejorar el **contraste/separación** sin tocar los colores del SVG.
+  **Restricción dura** (decisión registrada en el spec `light-mode-styling`): los iconos son **intencionalmente multicolor** — sus colores son identidad de cada categoría y no se recolorean ni tintan por tema. El fix mejora **separación**, no color: drop-shadow/glow, borde o contenedor, o background highlight detrás del icono.
 
-**Propuesta:** Evaluar alternativas de contraste que respeten los colores originales:
+  **Descartado:** invertir/tintar los colores del SVG según tema, o iconos con prop `theme` que ajusten fill/stroke — contradice la decisión anterior.
 
-- **Drop shadow / glow** sutil alrededor de los paths (ej: filter: drop-shadow() en SVG o un contenedor wrapper).
-- **Border o stroke** exterior en los iconos (ej: contenedor circular o card con borde sutil).
-- **Background highlight** — un fondo semi-transparente o gradiente sutil detrás del icono para separarlo del fondo de la página.
-
-**Descartado:** invertir/tintar dinámicamente los colores del SVG según `prefers-color-scheme`, o reemplazar los iconos por componentes con prop `theme` que ajusten fill/stroke — contradice la decisión de mantenerlos multicolor.
-
-**Dificultad:** 3/10 — mayoritariamente CSS/Tailwind y ajuste visual.
-**Estado:** Pendiente
-
-- **I17.** Agente `designer` + design system presentacional — investigar y definir el stack de visualización **antes** de crear el agente: un agente "designer" sin stack definido no tiene nada que encodear y terminaría improvisando decisiones distintas en cada invocación, que es justo el problema a evitar. **Paso 1 (investigación):** elegir librería de gráficos evaluando compatibilidad con React 19 / RSC en Next 16, tamaño de bundle y tree-shaking, accesibilidad nativa y facilidad de theming (candidatos: Recharts, visx, Observable Plot, ECharts, Chart.js). Hoy el repo **no tiene ninguna librería de charts** instalada (verificado contra los `package.json` de root, `apps/*` y `packages/*`). **Paso 2 (sistema):** documentar tokens de color para paletas categóricas, secuenciales y divergentes, validadas en modo claro **y** oscuro (depende de `theme-system`, ya en producción; relacionado con I12), escala tipográfica, espaciado y heurística de qué gráfico usar según el tipo de dato. La restricción dura es el doble tema: los colores categóricos de gráficos son bastante más difíciles de balancear que los iconos, y I12 ya está abierto justamente por contraste en modo claro. **Paso 3 (agente):** crear `designer` en `.claude/agents/` y `.opencode/agents/` que encodee ese sistema y decida cómo presentar un dataset dado, integrándose al workflow SDD como los demás subagentes. **Timing:** conviene cerrarlo **antes de P1.1** — P1 (OWID) trae series temporales reales, o sea gráficos; si el sistema está definido antes, el primer módulo end-to-end nace con él aplicado en vez de refactorizar gráficos ya hechos. **Fuera de alcance a propósito:** no se fija librería recomendada (es lo que hay que investigar, y depende de si se quiere SSR de los gráficos o solo cliente) ni Storybook (ya es I08, con criterio propio de cuándo reconsiderarlo).
+  **Dificultad:** 3/10 — CSS/Tailwind y ajuste visual. **Estado:** Pendiente
 
 ### 🟡 Datos / Proveedores
 
 - **I13.** Atribución de datos (requisito legal, no opcional) — CC BY exige atribución visible. Antes de publicar la primera sección con datos reales (P1.1): componente de atribución al pie de cada visualización ("Data: Our World in Data — CC BY" con link) + página `/data-sources/` listando proveedores y licencias. Alimentado por el `DataSourceAttribution` de I14. Bonus SEO: contenido indexable con estructura.
 - **I14.** Extender `ApiResponse<T>` con metadata de fuente — el contrato actual no transporta procedencia. Agregar `meta: { source: DataSourceAttribution; fetchedAt: string }` para que el frontend renderice atribución y frescura sin hardcodear nada por página. Diseñarlo en P1.0 para no romper el contrato después.
-- **I15.** Elegir librería de charts — P1.1 necesita el primer gráfico de series temporales. Candidatas: **Recharts** (React-first, liviana, suficiente para líneas/áreas/barras), **ECharts** (más potente, pesada — justifica `next/dynamic`), **visx** (control total, más esfuerzo). Recomendación: empezar con Recharts y reevaluar si aparecen mapas/heatmaps. La decisión activa el recordatorio de Dynamic Imports.
+- **I15.** Elegir librería de charts — pendiente. Cuando toque (antes de P1.1), ver `docs/technical/libraries.md`: tiene candidatas, descartadas con motivo, spikes por candidata y los gates a cumplir. La decisión se registra en `docs/design-system.md` y activa el recordatorio de Dynamic Imports.
 
 ---
 
@@ -291,4 +281,4 @@ Lista de hallazgos del análisis de repositorio, ordenados por prioridad (más c
 - **I10.** OpenTelemetry — considerado para el futuro cuando el sistema escale a múltiples servicios o se quiera cambiar de backend de observabilidad (Sentry → Datadog, Honeycomb, etc.) sin tocar código de instrumentación. Con un solo BFF, Sentry Performance cubre el tracing necesario. No justifica el overhead de configuración actual (collector, exporters, SDK setup).
 - **I11.** Axiom — plataforma de logs como servicio. Solo relevante si la retención de Cloud Logging (30 días en free tier) o Vercel resulta insuficiente para debugging post-mortem. Por ahora los logs agregados de cada plataforma son suficientes.
 
-**Última actualización:** 15 Sep 2026
+**Última actualización:** 16 Sep 2026

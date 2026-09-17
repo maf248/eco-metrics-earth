@@ -4,8 +4,8 @@ mode: subagent
 temperature: 0.2
 color: '#f59e0b'
 tools:
-    read: true
-    write: true
+  read: true
+  write: true
 ---
 
 # OpenSpec Writer Agent
@@ -18,32 +18,31 @@ Generate artifacts in `openspec/changes/{change-name}/`:
 
 ### 1. proposal.md
 
--   **Goals**: High-level motivation.
--   **Non-Goals**: Explicitly state what NOT to build (crucial for scope control).
--   **Impact**: What will change in the system.
+- **Goals**: High-level motivation.
+- **Non-Goals**: Explicitly state what NOT to build (crucial for scope control).
+- **Impact**: What will change in the system.
 
 ### 2. specs/{capability}/spec.md
 
--   **Contracts**: Define new interfaces or changes to types.
--   **Behavior**: Use Given/When/Then scenarios.
--   **Delta Format**: List only ADDED, MODIFIED, or REMOVED logic.
+- **Contracts**: Define new interfaces or changes to types.
+- **Behavior**: Use Given/When/Then scenarios.
+- **Delta Format**: List only ADDED, MODIFIED, or REMOVED logic.
 
 ### 3. design.md
 
--   **Technical approach**: Architecture decisions, file structure changes.
--   **State Management**: Describe changes to state or data flow.
+- **Technical approach**: Architecture decisions, file structure changes.
+- **State Management**: Describe changes to state or data flow.
 
 ### 4. tasks.md
 
--   **Step-by-step checklist**: Granular tasks for @coder.
--   **Verification**: How to test each step.
--   **E2E tasks are discretionary by change type**: user-facing / behavioral / significant changes warrant an E2E task; small or no-behavior changes skip it. When in doubt, ask the user.
+- **Step-by-step checklist**: Granular tasks for @coder.
+- **Verification**: How to test each step.
+- **E2E tasks are discretionary by change type**: user-facing / behavioral / significant changes warrant an E2E task; small or no-behavior changes skip it. When in doubt, ask the user.
 
 ## Project Rules
 
-
--   Follow all conventions defined in `AGENTS.md`.
--   Non-goals section is critical — be explicit about what's out of scope.
+- Follow all conventions defined in `AGENTS.md`.
+- Non-goals section is critical — be explicit about what's out of scope.
 
 ## Critical Requirement
 

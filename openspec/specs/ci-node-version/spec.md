@@ -11,7 +11,7 @@ The CI pipeline runs on Node.js 24 without deprecation warnings, and the local d
 **Given** a push or pull request triggers the `ci.yml` workflow  
 **When** the `Setup Node.js` step runs  
 **Then** the runner environment has Node.js 24 available  
-**And** no "Node.js 20 actions are deprecated" warning appears in the job log  
+**And** no "Node.js 20 actions are deprecated" warning appears in the job log
 
 ---
 
@@ -20,7 +20,7 @@ The CI pipeline runs on Node.js 24 without deprecation warnings, and the local d
 **Given** a push to `main` triggers the `release.yml` workflow  
 **When** the `Setup Node.js` step runs  
 **Then** the runner environment has Node.js 24 available  
-**And** no "Node.js 20 actions are deprecated" warning appears in the job log  
+**And** no "Node.js 20 actions are deprecated" warning appears in the job log
 
 ---
 
@@ -28,7 +28,7 @@ The CI pipeline runs on Node.js 24 without deprecation warnings, and the local d
 
 **Given** a developer runs `nvm use` in the repo root  
 **When** nvm reads `.nvmrc`  
-**Then** it activates Node.js 24  
+**Then** it activates Node.js 24
 
 ---
 
@@ -37,4 +37,4 @@ The CI pipeline runs on Node.js 24 without deprecation warnings, and the local d
 **Given** the project runs on Node.js 24  
 **When** TypeScript resolves `@types/node`  
 **Then** the installed version is `24.12.4`  
-**And** `npm run typecheck` exits with code 0  
+**And** `npm run typecheck` exits with code 0

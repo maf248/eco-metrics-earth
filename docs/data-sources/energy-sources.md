@@ -16,18 +16,18 @@ This section documents how to obtain the **percentage breakdown of electricity g
 
 ### What data is available
 
-| Source type | Typical labels in APIs |
-|---|---|
-| Coal | Coal, Brown coal, Hard coal |
-| Natural Gas | Gas, Natural gas, Fossil gas |
-| Oil / Diesel | Oil, Diesel, Fossil oil |
-| Nuclear | Nuclear |
-| Hydro | Hydro, Hydroelectric, Run-of-river, Pumped storage |
-| Wind | Wind, Onshore wind, Offshore wind |
-| Solar | Solar, Solar PV, Solar thermal |
-| Bioenergy | Biomass, Biofuels, Waste |
-| Geothermal | Geothermal |
-| Other / Unknown | Other, Unknown, Marine, Tide |
+| Source type     | Typical labels in APIs                             |
+| --------------- | -------------------------------------------------- |
+| Coal            | Coal, Brown coal, Hard coal                        |
+| Natural Gas     | Gas, Natural gas, Fossil gas                       |
+| Oil / Diesel    | Oil, Diesel, Fossil oil                            |
+| Nuclear         | Nuclear                                            |
+| Hydro           | Hydro, Hydroelectric, Run-of-river, Pumped storage |
+| Wind            | Wind, Onshore wind, Offshore wind                  |
+| Solar           | Solar, Solar PV, Solar thermal                     |
+| Bioenergy       | Biomass, Biofuels, Waste                           |
+| Geothermal      | Geothermal                                         |
+| Other / Unknown | Other, Unknown, Marine, Tide                       |
 
 ### Key providers for full mix data
 
@@ -58,14 +58,14 @@ This section documents how to obtain the **percentage breakdown of electricity g
 - **API key:** Not required.
 - **PxWeb endpoint:** `https://pxweb.irena.org/api/v1/en/IRENA/...` returns JSON-stat.
 
-| Field | Details |
-|---|---|
-| Base URL | `https://pxweb.irena.org/api/v1/en/IRENA` |
-| Auth | None |
-| Free tier | Yes |
-| Rate limit | None specified |
-| Update frequency | Annual |
-| Format | JSON-stat, CSV, Excel |
+| Field            | Details                                   |
+| ---------------- | ----------------------------------------- |
+| Base URL         | `https://pxweb.irena.org/api/v1/en/IRENA` |
+| Auth             | None                                      |
+| Free tier        | Yes                                       |
+| Rate limit       | None specified                            |
+| Update frequency | Annual                                    |
+| Format           | JSON-stat, CSV, Excel                     |
 
 ---
 
@@ -77,14 +77,14 @@ This section documents how to obtain the **percentage breakdown of electricity g
 - **Data:** Energy mix, renewable share, generation by source, capacity by technology. Based on Energy Institute Statistical Review + EIA + Ember + IRENA.
 - **API key:** Not required.
 
-| Field | Details |
-|---|---|
-| Base URL | `https://nyc3.digitaloceanspaces.com/owid-public/data/energy/` |
-| Auth | None |
-| Free tier | Yes |
-| Rate limit | None |
-| Update frequency | Annual |
-| Format | CSV, JSON |
+| Field            | Details                                                        |
+| ---------------- | -------------------------------------------------------------- |
+| Base URL         | `https://nyc3.digitaloceanspaces.com/owid-public/data/energy/` |
+| Auth             | None                                                           |
+| Free tier        | Yes                                                            |
+| Rate limit       | None                                                           |
+| Update frequency | Annual                                                         |
+| Format           | CSV, JSON                                                      |
 
 ---
 
@@ -96,15 +96,15 @@ This section documents how to obtain the **percentage breakdown of electricity g
 - **Data:** Monthly and annual electricity generation by country and by source (coal, gas, nuclear, hydro, solar, wind, biomass, etc.), electricity sector emissions, carbon intensity. 200+ geographies (yearly); 88 areas (monthly). Last updated March 2026. **Ideal for full electricity mix breakdown — both absolute (TWh) and share (%).**
 - **API key:** Not required for CSV downloads. Required for API (free signup at ember-energy.org/data/api).
 
-| Field | Details |
-|---|---|
-| Base URL (downloads) | https://ember-energy.org/data/ |
-| Base URL (API) | `https://api.ember-energy.org/v1/` |
-| Auth | None (downloads); API key (free signup) for REST API |
-| Free tier | Yes |
-| Rate limit | None (downloads) |
-| Update frequency | Monthly |
-| Format | CSV (downloads); JSON (API) |
+| Field                | Details                                              |
+| -------------------- | ---------------------------------------------------- |
+| Base URL (downloads) | https://ember-energy.org/data/                       |
+| Base URL (API)       | `https://api.ember-energy.org/v1/`                   |
+| Auth                 | None (downloads); API key (free signup) for REST API |
+| Free tier            | Yes                                                  |
+| Rate limit           | None (downloads)                                     |
+| Update frequency     | Monthly                                              |
+| Format               | CSV (downloads); JSON (API)                          |
 
 ---
 
@@ -116,14 +116,14 @@ This section documents how to obtain the **percentage breakdown of electricity g
 - **Data:** Key clean energy indicators, investment, electrification. Detailed energy balances require paid subscription.
 - **Limitations:** Detailed energy balance downloads are paid; highlights and main dashboards are free.
 
-| Field | Details |
-|---|---|
-| Base URL | https://www.iea.org/data-and-statistics/ |
-| Auth | None (free datasets) |
-| Free tier | Partial (key indicators only) |
-| Rate limit | None |
-| Update frequency | Annual / periodic |
-| Format | Excel, CSV |
+| Field            | Details                                  |
+| ---------------- | ---------------------------------------- |
+| Base URL         | https://www.iea.org/data-and-statistics/ |
+| Auth             | None (free datasets)                     |
+| Free tier        | Partial (key indicators only)            |
+| Rate limit       | None                                     |
+| Update frequency | Annual / periodic                        |
+| Format           | Excel, CSV                               |
 
 ---
 
@@ -136,14 +136,14 @@ This section documents how to obtain the **percentage breakdown of electricity g
 - **API key:** Required (free).
 - **CORS:** Enabled.
 
-| Field | Details |
-|---|---|
-| Base URL | `https://api.eia.gov/v2` |
-| Auth | API key (free registration) |
-| Free tier | Yes |
-| Rate limit | None specified |
+| Field            | Details                         |
+| ---------------- | ------------------------------- |
+| Base URL         | `https://api.eia.gov/v2`        |
+| Auth             | API key (free registration)     |
+| Free tier        | Yes                             |
+| Rate limit       | None specified                  |
 | Update frequency | Monthly / near real-time (grid) |
-| Format | JSON |
+| Format           | JSON                            |
 
 ---
 
@@ -155,14 +155,14 @@ This section documents how to obtain the **percentage breakdown of electricity g
 - **Data:** Generation by source every 15 min/hour for all European countries, cross-border flows, prices.
 - **API key:** Required (free token).
 
-| Field | Details |
-|---|---|
-| Base URL | `https://web-api.tp.entsoe.eu/api` |
-| Auth | API token (free registration) |
-| Free tier | Yes |
-| Rate limit | Not publicly specified |
-| Update frequency | 15 min / hourly |
-| Format | XML (only; no native JSON support) |
+| Field            | Details                            |
+| ---------------- | ---------------------------------- |
+| Base URL         | `https://web-api.tp.entsoe.eu/api` |
+| Auth             | API token (free registration)      |
+| Free tier        | Yes                                |
+| Rate limit       | Not publicly specified             |
+| Update frequency | 15 min / hourly                    |
+| Format           | XML (only; no native JSON support) |
 
 ---
 
@@ -176,14 +176,14 @@ This section documents how to obtain the **percentage breakdown of electricity g
 - **CORS:** Not permitted on client in production.
 - **Limitations:** Free plan limits zones and requests. Commercial use is paid.
 
-| Field | Details |
-|---|---|
-| Base URL | `https://api.electricitymap.org/v3` |
-| Auth | API key (free tier limited) |
-| Free tier | Yes (limited) |
-| Rate limit | Varies by plan |
-| Update frequency | Near real-time |
-| Format | JSON |
+| Field            | Details                             |
+| ---------------- | ----------------------------------- |
+| Base URL         | `https://api.electricitymap.org/v3` |
+| Auth             | API key (free tier limited)         |
+| Free tier        | Yes (limited)                       |
+| Rate limit       | Varies by plan                      |
+| Update frequency | Near real-time                      |
+| Format           | JSON                                |
 
 ---
 
@@ -196,33 +196,33 @@ This section documents how to obtain the **percentage breakdown of electricity g
 - **API key:** Not required.
 - **CORS:** Enabled.
 
-| Field | Details |
-|---|---|
-| Base URL | `https://api.carbonintensity.org.uk` |
-| Auth | None |
-| Free tier | Yes |
-| Rate limit | None specified |
-| Update frequency | Every 30 minutes + 48h forecast |
-| Format | JSON |
+| Field            | Details                              |
+| ---------------- | ------------------------------------ |
+| Base URL         | `https://api.carbonintensity.org.uk` |
+| Auth             | None                                 |
+| Free tier        | Yes                                  |
+| Rate limit       | None specified                       |
+| Update frequency | Every 30 minutes + 48h forecast      |
+| Format           | JSON                                 |
 
 ---
 
 ## Available Metrics
 
-| Metric | Providers |
-|---|---|
-| Installed capacity by technology (MW) | IRENA, OWID Energy |
-| Generation by source (GWh, annual) | IRENA, OWID Energy, Ember |
-| Renewable energy share (%) | OWID Energy, Ember |
-| Monthly generation by source | Ember |
-| LCOE by technology | IRENA |
-| Real-time US grid generation | EIA |
-| European generation (15 min) | ENTSO-E |
-| Real-time carbon intensity by zone | Electricity Maps, UK Carbon Intensity |
-| UK renewable vs fossil mix | UK Carbon Intensity |
-| **Electricity generation mix by source (%, TWh)** | **Ember, OWID Energy, EIA, ENTSO-E** |
-| **Fossil vs low-carbon share (%)** | **Ember, OWID Energy, UK Carbon Intensity** |
-| **Coal / gas / nuclear / hydro / wind / solar breakdown** | **Ember (global), EIA (US), ENTSO-E (EU)** |
+| Metric                                                    | Providers                                   |
+| --------------------------------------------------------- | ------------------------------------------- |
+| Installed capacity by technology (MW)                     | IRENA, OWID Energy                          |
+| Generation by source (GWh, annual)                        | IRENA, OWID Energy, Ember                   |
+| Renewable energy share (%)                                | OWID Energy, Ember                          |
+| Monthly generation by source                              | Ember                                       |
+| LCOE by technology                                        | IRENA                                       |
+| Real-time US grid generation                              | EIA                                         |
+| European generation (15 min)                              | ENTSO-E                                     |
+| Real-time carbon intensity by zone                        | Electricity Maps, UK Carbon Intensity       |
+| UK renewable vs fossil mix                                | UK Carbon Intensity                         |
+| **Electricity generation mix by source (%, TWh)**         | **Ember, OWID Energy, EIA, ENTSO-E**        |
+| **Fossil vs low-carbon share (%)**                        | **Ember, OWID Energy, UK Carbon Intensity** |
+| **Coal / gas / nuclear / hydro / wind / solar breakdown** | **Ember (global), EIA (US), ENTSO-E (EU)**  |
 
 ## Integration Notes
 

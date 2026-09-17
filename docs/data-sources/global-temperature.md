@@ -15,14 +15,14 @@ Tracks global and regional surface temperature anomalies over time. Key indicato
 - **CORS:** Yes (static file downloads).
 - **Example URL:** `https://data.giss.nasa.gov/gistemp/tabledata_v4/GLB.Ts+dSST.csv`
 
-| Field | Details |
-|---|---|
-| Base URL | `https://data.giss.nasa.gov/gistemp/tabledata_v4/` |
-| Auth | None |
-| Free tier | Yes (public domain) |
-| Rate limit | None |
-| Update frequency | Monthly |
-| Format | CSV, TXT, netCDF, Zarr |
+| Field            | Details                                            |
+| ---------------- | -------------------------------------------------- |
+| Base URL         | `https://data.giss.nasa.gov/gistemp/tabledata_v4/` |
+| Auth             | None                                               |
+| Free tier        | Yes (public domain)                                |
+| Rate limit       | None                                               |
+| Update frequency | Monthly                                            |
+| Format           | CSV, TXT, netCDF, Zarr                             |
 
 ---
 
@@ -35,14 +35,14 @@ Tracks global and regional surface temperature anomalies over time. Key indicato
 - **Data:** Land+ocean, land-only, ocean-only temperature anomalies by hemisphere and region.
 - **API key:** Not required.
 
-| Field | Details |
-|---|---|
-| Base URL | `https://www.ncei.noaa.gov/access/services/data/v1` |
-| Auth | None |
-| Free tier | Yes |
-| Rate limit | None specified |
-| Update frequency | Monthly |
-| Format | JSON, CSV |
+| Field            | Details                                             |
+| ---------------- | --------------------------------------------------- |
+| Base URL         | `https://www.ncei.noaa.gov/access/services/data/v1` |
+| Auth             | None                                                |
+| Free tier        | Yes                                                 |
+| Rate limit       | None specified                                      |
+| Update frequency | Monthly                                             |
+| Format           | JSON, CSV                                           |
 
 ---
 
@@ -55,14 +55,14 @@ Tracks global and regional surface temperature anomalies over time. Key indicato
 - **Data:** Global, country-level, and city-level temperature series from 1750.
 - **API key:** Not required.
 
-| Field | Details |
-|---|---|
-| Base URL | https://berkeleyearth.org/data/ |
-| Auth | None |
-| Free tier | Yes |
-| Rate limit | None |
-| Update frequency | Annual |
-| Format | TXT, netCDF |
+| Field            | Details                         |
+| ---------------- | ------------------------------- |
+| Base URL         | https://berkeleyearth.org/data/ |
+| Auth             | None                            |
+| Free tier        | Yes                             |
+| Rate limit       | None                            |
+| Update frequency | Annual                          |
+| Format           | TXT, netCDF                     |
 
 ---
 
@@ -76,14 +76,14 @@ Tracks global and regional surface temperature anomalies over time. Key indicato
 - **API key:** Not required.
 - **CORS:** Enabled for direct fetch.
 
-| Field | Details |
-|---|---|
-| Base URL | `https://ourworldindata.org/grapher/temperature-anomaly.csv` |
-| Auth | None |
-| Free tier | Yes |
-| Rate limit | None |
-| Update frequency | Periodic (follows source datasets) |
-| Format | CSV, JSON |
+| Field            | Details                                                      |
+| ---------------- | ------------------------------------------------------------ |
+| Base URL         | `https://ourworldindata.org/grapher/temperature-anomaly.csv` |
+| Auth             | None                                                         |
+| Free tier        | Yes                                                          |
+| Rate limit       | None                                                         |
+| Update frequency | Periodic (follows source datasets)                           |
+| Format           | CSV, JSON                                                    |
 
 ---
 
@@ -96,29 +96,29 @@ Tracks global and regional surface temperature anomalies over time. Key indicato
 - **Data:** Monthly and annual GISTEMP + GCAG combined series (CSV/JSON).
 - **API key:** Not required.
 
-| Field | Details |
-|---|---|
-| Base URL | https://datahub.io/core/global-temp |
-| Annual CSV | `https://datahub.io/core/global-temp/_r/-/data/annual.csv` |
-| Monthly CSV | `https://datahub.io/core/global-temp/_r/-/data/monthly.csv` |
-| Auth | None |
-| Free tier | Yes |
-| Rate limit | None |
-| Update frequency | Follows source datasets |
-| Format | CSV, JSON |
+| Field            | Details                                                     |
+| ---------------- | ----------------------------------------------------------- |
+| Base URL         | https://datahub.io/core/global-temp                         |
+| Annual CSV       | `https://datahub.io/core/global-temp/_r/-/data/annual.csv`  |
+| Monthly CSV      | `https://datahub.io/core/global-temp/_r/-/data/monthly.csv` |
+| Auth             | None                                                        |
+| Free tier        | Yes                                                         |
+| Rate limit       | None                                                        |
+| Update frequency | Follows source datasets                                     |
+| Format           | CSV, JSON                                                   |
 
 ---
 
 ## Available Metrics
 
-| Metric | Providers |
-|---|---|
+| Metric                                        | Providers                                         |
+| --------------------------------------------- | ------------------------------------------------- |
 | Global temperature anomalies (monthly/annual) | NASA GISTEMP, NOAA, Berkeley Earth, OWID, DataHub |
-| Hemispheric anomalies (NH / SH) | NASA GISTEMP, NOAA, OWID |
-| Land+ocean / land-only / ocean-only | NOAA, OWID |
-| Country-level temperature series | Berkeley Earth |
-| City-level temperature series | Berkeley Earth |
-| Uncertainty ensemble | NASA GISTEMP (200-member) |
+| Hemispheric anomalies (NH / SH)               | NASA GISTEMP, NOAA, OWID                          |
+| Land+ocean / land-only / ocean-only           | NOAA, OWID                                        |
+| Country-level temperature series              | Berkeley Earth                                    |
+| City-level temperature series                 | Berkeley Earth                                    |
+| Uncertainty ensemble                          | NASA GISTEMP (200-member)                         |
 
 ## Integration Notes
 

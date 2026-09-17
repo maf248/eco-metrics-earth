@@ -15,14 +15,14 @@ Tracks tree planting initiatives, forest restoration progress, and net forest ga
 - **API key:** Required for some endpoints (free).
 - **CORS:** Yes on public endpoints.
 
-| Field | Details |
-|---|---|
-| Base URL | `https://data-api.globalforestwatch.org` |
-| Auth | API key (free; required for some endpoints) |
-| Free tier | Yes |
-| Rate limit | Not publicly specified |
-| Update frequency | Annual (Hansen) |
-| Format | JSON, GeoJSON |
+| Field            | Details                                     |
+| ---------------- | ------------------------------------------- |
+| Base URL         | `https://data-api.globalforestwatch.org`    |
+| Auth             | API key (free; required for some endpoints) |
+| Free tier        | Yes                                         |
+| Rate limit       | Not publicly specified                      |
+| Update frequency | Annual (Hansen)                             |
+| Format           | JSON, GeoJSON                               |
 
 ---
 
@@ -35,14 +35,14 @@ Tracks tree planting initiatives, forest restoration progress, and net forest ga
 - **API key:** Not required.
 - **Validated (Jul 2026):** The legacy API host `fenixservices.fao.org` is down (HTTP 521) — use the bulk CSV downloads instead (see `deforestation.md`).
 
-| Field | Details |
-|---|---|
-| Base URL | `https://bulks-faostat.fao.org/production/` |
-| Auth | None |
-| Free tier | Yes |
-| Rate limit | None specified |
+| Field            | Details                                              |
+| ---------------- | ---------------------------------------------------- |
+| Base URL         | `https://bulks-faostat.fao.org/production/`          |
+| Auth             | None                                                 |
+| Free tier        | Yes                                                  |
+| Rate limit       | None specified                                       |
 | Update frequency | Every 5 years (FRA); annually for FAOSTAT indicators |
-| Format | CSV (zipped) |
+| Format           | CSV (zipped)                                         |
 
 ---
 
@@ -55,14 +55,14 @@ Tracks tree planting initiatives, forest restoration progress, and net forest ga
 - **API key:** Some integrations require authentication.
 - **Limitations:** No well-documented public REST API — mainly useful for embeds/widgets.
 
-| Field | Details |
-|---|---|
-| Base URL | https://app.plant-for-the-planet.org (embed widgets) |
-| Auth | Varies |
-| Free tier | Yes (non-commercial) |
-| Rate limit | N/A |
-| Update frequency | Continuous |
-| Format | Widget / embed |
+| Field            | Details                                              |
+| ---------------- | ---------------------------------------------------- |
+| Base URL         | https://app.plant-for-the-planet.org (embed widgets) |
+| Auth             | Varies                                               |
+| Free tier        | Yes (non-commercial)                                 |
+| Rate limit       | N/A                                                  |
+| Update frequency | Continuous                                           |
+| Format           | Widget / embed                                       |
 
 ---
 
@@ -75,14 +75,14 @@ Tracks tree planting initiatives, forest restoration progress, and net forest ga
 - **Data type:** Static/periodic (reports and exportable dashboards).
 - **Limitations:** No REST API. Use exported CSV/JSON from dashboards.
 
-| Field | Details |
-|---|---|
-| Base URL | https://infoflr.org/bonn-challenge-barometer |
-| Auth | None |
-| Free tier | Yes |
-| Rate limit | N/A (no API) |
-| Update frequency | Periodic (annual reports) |
-| Format | Dashboard export, PDF |
+| Field            | Details                                      |
+| ---------------- | -------------------------------------------- |
+| Base URL         | https://infoflr.org/bonn-challenge-barometer |
+| Auth             | None                                         |
+| Free tier        | Yes                                          |
+| Rate limit       | N/A (no API)                                 |
+| Update frequency | Periodic (annual reports)                    |
+| Format           | Dashboard export, PDF                        |
 
 ---
 
@@ -95,32 +95,33 @@ Tracks tree planting initiatives, forest restoration progress, and net forest ga
 - **API:** Exists but programmatic use requires contacting the Restor team.
 - **Limitations:** No self-service public REST API documented; contact required.
 
-| Field | Details |
-|---|---|
-| Base URL | https://restor.eco |
-| Auth | Contact team |
-| Free tier | Yes (on request) |
-| Rate limit | Not specified |
-| Update frequency | Continuous |
-| Format | JSON (on request) |
+| Field            | Details            |
+| ---------------- | ------------------ |
+| Base URL         | https://restor.eco |
+| Auth             | Contact team       |
+| Free tier        | Yes (on request)   |
+| Rate limit       | Not specified      |
+| Update frequency | Continuous         |
+| Format           | JSON (on request)  |
 
 ---
 
 ## Available Metrics
 
-| Metric | Providers |
-|---|---|
-| Tree cover gain (annual proxy) | Global Forest Watch |
-| Net forest area change by country | FAO FRA / FAOSTAT |
-| Forest plantations area | FAO FRA |
-| Natural regeneration area | FAO FRA |
-| Global tree-planting counter | Trees.org / Plant-for-the-Planet |
-| National restoration commitments (ha) | Bonn Challenge |
-| Restoration project locations | Restor |
+| Metric                                | Providers                        |
+| ------------------------------------- | -------------------------------- |
+| Tree cover gain (annual proxy)        | Global Forest Watch              |
+| Net forest area change by country     | FAO FRA / FAOSTAT                |
+| Forest plantations area               | FAO FRA                          |
+| Natural regeneration area             | FAO FRA                          |
+| Global tree-planting counter          | Trees.org / Plant-for-the-Planet |
+| National restoration commitments (ha) | Bonn Challenge                   |
+| Restoration project locations         | Restor                           |
 
 ## Integration Notes
 
 > **Honest note:** Reforestation is the category with the fewest robust public REST APIs. The most reliable strategy is:
+>
 > 1. Use **Hansen/GFW "tree cover gain"** dataset for gross reforestation proxy.
 > 2. Use **FAO FRA** (via FAOSTAT bulk CSV) for official net forest area by country.
 > 3. Use **OWID forest area grapher CSV** (`https://ourworldindata.org/grapher/forest-area-km.csv`) as a harmonized, cacheable layer.

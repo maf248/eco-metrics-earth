@@ -1,8 +1,11 @@
 # pre-commit-quality-gate Specification
 
 ## Purpose
+
 TBD - created by archiving change add-husky-lint-staged. Update Purpose after archive.
+
 ## Requirements
+
 ### Requirement: Pre-commit hook blocks lint errors
 
 The system SHALL run ESLint with `--fix` on all staged `.ts`, `.tsx`, and `.js` files before a commit is accepted. If ESLint reports unfixable errors after auto-fix, the commit SHALL be rejected and the error output SHALL be shown to the developer.

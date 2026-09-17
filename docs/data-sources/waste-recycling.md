@@ -15,14 +15,14 @@ Tracks municipal solid waste generation, recycling rates, landfill usage, and wa
 - **Data:** 217 countries and 262 cities. Waste generation, composition, collection, treatment, disposal, recycling, plastics, financing, informal workers.
 - **API key:** Not required.
 
-| Field | Details |
-|---|---|
-| Base URL | https://datacatalog.worldbank.org/search/dataset/0039597/ |
-| Auth | None |
-| Free tier | Yes |
-| Rate limit | None |
-| Update frequency | Every ~8 years (major report editions) |
-| Format | Excel, CSV |
+| Field            | Details                                                   |
+| ---------------- | --------------------------------------------------------- |
+| Base URL         | https://datacatalog.worldbank.org/search/dataset/0039597/ |
+| Auth             | None                                                      |
+| Free tier        | Yes                                                       |
+| Rate limit       | None                                                      |
+| Update frequency | Every ~8 years (major report editions)                    |
+| Format           | Excel, CSV                                                |
 
 ---
 
@@ -36,14 +36,14 @@ Tracks municipal solid waste generation, recycling rates, landfill usage, and wa
 - **CORS:** Enabled — can be called from the client.
 - **Validated indicators (May 2026):** Total GHG indicators work (`EN.GHG.CO2.MT.CE.AR5`, `EN.GHG.ALL.MT.CE.AR5`, `EN.GHG.CH4.MT.CE.AR5`, `EN.GHG.N2O.MT.CE.AR5`). Waste-specific GHG breakdown (`EN.GHG.WAST.*`) does not exist in API. Use OWID CH₄ from waste (ID 1146696) instead.
 
-| Field | Details |
-|---|---|
-| Base URL | `https://api.worldbank.org/v2` |
-| Auth | None |
-| Free tier | Yes |
-| Rate limit | None specified |
-| Update frequency | Annual |
-| Format | JSON |
+| Field            | Details                        |
+| ---------------- | ------------------------------ |
+| Base URL         | `https://api.worldbank.org/v2` |
+| Auth             | None                           |
+| Free tier        | Yes                            |
+| Rate limit       | None specified                 |
+| Update frequency | Annual                         |
+| Format           | JSON                           |
 
 ---
 
@@ -55,14 +55,14 @@ Tracks municipal solid waste generation, recycling rates, landfill usage, and wa
 - **Data:** Waste generation and treatment by European country, by stream (packaging, electronics, etc.); recycling rates.
 - **API key:** Not required.
 
-| Field | Details |
-|---|---|
-| Base URL | `https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/` |
-| Auth | None |
-| Free tier | Yes |
-| Rate limit | None specified |
-| Update frequency | Annual |
-| Format | JSON-stat |
+| Field            | Details                                                                |
+| ---------------- | ---------------------------------------------------------------------- |
+| Base URL         | `https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/` |
+| Auth             | None                                                                   |
+| Free tier        | Yes                                                                    |
+| Rate limit       | None specified                                                         |
+| Update frequency | Annual                                                                 |
+| Format           | JSON-stat                                                              |
 
 ---
 
@@ -74,14 +74,14 @@ Tracks municipal solid waste generation, recycling rates, landfill usage, and wa
 - **Data:** Waste generation, recovery, composting, incineration, landfill in the US.
 - **API key:** Not required.
 
-| Field | Details |
-|---|---|
-| Base URL | https://www.epa.gov/facts-and-figures-about-materials-waste-and-recycling |
-| Auth | None |
-| Free tier | Yes |
-| Rate limit | None |
-| Update frequency | Annual |
-| Format | Excel, PDF |
+| Field            | Details                                                                   |
+| ---------------- | ------------------------------------------------------------------------- |
+| Base URL         | https://www.epa.gov/facts-and-figures-about-materials-waste-and-recycling |
+| Auth             | None                                                                      |
+| Free tier        | Yes                                                                       |
+| Rate limit       | None                                                                      |
+| Update frequency | Annual                                                                    |
+| Format           | Excel, PDF                                                                |
 
 ---
 
@@ -94,30 +94,30 @@ Tracks municipal solid waste generation, recycling rates, landfill usage, and wa
 - **API key:** Not required.
 - **Validated endpoint (May 2026):** CH₄ emissions from waste sector (ID 1146696): 1990–2023 time series, 205 countries. Best longitudinal waste indicator available.
 
-| Field | Details |
-|---|---|
-| Base URL | `https://ourworldindata.org/grapher/` |
-| Auth | None |
-| Free tier | Yes |
-| Rate limit | None |
-| Update frequency | Annual |
-| Format | CSV, JSON |
+| Field            | Details                               |
+| ---------------- | ------------------------------------- |
+| Base URL         | `https://ourworldindata.org/grapher/` |
+| Auth             | None                                  |
+| Free tier        | Yes                                   |
+| Rate limit       | None                                  |
+| Update frequency | Annual                                |
+| Format           | CSV, JSON                             |
 
 ---
 
 ## Available Metrics
 
-| Metric | Providers |
-|---|---|
-| Waste generation (kg/capita/day) | What a Waste, OWID |
-| Waste composition (organic, paper, plastic…) | What a Waste |
-| Recycling rates | What a Waste, Eurostat, OWID |
-| Landfill / incineration rates | What a Waste, EPA, Eurostat |
-| Collection coverage | What a Waste |
-| EU waste streams (packaging, WEEE, etc.) | Eurostat |
-| US waste generation & recovery | EPA |
-| World Bank waste indicators | World Bank API |
-| Mismanaged waste | OWID |
+| Metric                                       | Providers                    |
+| -------------------------------------------- | ---------------------------- |
+| Waste generation (kg/capita/day)             | What a Waste, OWID           |
+| Waste composition (organic, paper, plastic…) | What a Waste                 |
+| Recycling rates                              | What a Waste, Eurostat, OWID |
+| Landfill / incineration rates                | What a Waste, EPA, Eurostat  |
+| Collection coverage                          | What a Waste                 |
+| EU waste streams (packaging, WEEE, etc.)     | Eurostat                     |
+| US waste generation & recovery               | EPA                          |
+| World Bank waste indicators                  | World Bank API               |
+| Mismanaged waste                             | OWID                         |
 
 ## Integration Notes
 

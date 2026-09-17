@@ -14,14 +14,14 @@ Tracks ocean-related indicators including sea surface temperature, acidity (pH),
 - **API key:** Not required (HTTPS/FTP file access).
 - **Limitations:** Data in netCDF — requires server-side processing.
 
-| Field | Details |
-|---|---|
-| Base URL | `https://coastwatch.pfeg.noaa.gov/erddap/griddap/` |
-| Auth | None |
-| Free tier | Yes |
-| Rate limit | None |
-| Update frequency | Daily |
-| Format | netCDF, PNG |
+| Field            | Details                                            |
+| ---------------- | -------------------------------------------------- |
+| Base URL         | `https://coastwatch.pfeg.noaa.gov/erddap/griddap/` |
+| Auth             | None                                               |
+| Free tier        | Yes                                                |
+| Rate limit       | None                                               |
+| Update frequency | Daily                                              |
+| Format           | netCDF, PNG                                        |
 
 ---
 
@@ -34,14 +34,14 @@ Tracks ocean-related indicators including sea surface temperature, acidity (pH),
 - **Data:** Sea surface temperature at 0.25° resolution, from 1981 to present.
 - **API key:** Not required.
 
-| Field | Details |
-|---|---|
-| Base URL | `https://www.ncei.noaa.gov/data/sea-surface-temperature-optimum-interpolation/` |
-| Auth | None |
-| Free tier | Yes |
-| Rate limit | None |
-| Update frequency | Daily |
-| Format | netCDF |
+| Field            | Details                                                                         |
+| ---------------- | ------------------------------------------------------------------------------- |
+| Base URL         | `https://www.ncei.noaa.gov/data/sea-surface-temperature-optimum-interpolation/` |
+| Auth             | None                                                                            |
+| Free tier        | Yes                                                                             |
+| Rate limit       | None                                                                            |
+| Update frequency | Daily                                                                           |
+| Format           | netCDF                                                                          |
 
 ---
 
@@ -55,14 +55,14 @@ Tracks ocean-related indicators including sea surface temperature, acidity (pH),
 - **API key:** Not required.
 - **CORS:** Enabled — ideal for Next.js (can be called server-side or client-side).
 
-| Field | Details |
-|---|---|
-| Base URL | `https://coastwatch.pfeg.noaa.gov/erddap` |
-| Auth | None |
-| Free tier | Yes |
-| Rate limit | None specified |
-| Update frequency | Varies by dataset (hourly to daily) |
-| Format | JSON, CSV, GeoJSON, netCDF |
+| Field            | Details                                   |
+| ---------------- | ----------------------------------------- |
+| Base URL         | `https://coastwatch.pfeg.noaa.gov/erddap` |
+| Auth             | None                                      |
+| Free tier        | Yes                                       |
+| Rate limit       | None specified                            |
+| Update frequency | Varies by dataset (hourly to daily)       |
+| Format           | JSON, CSV, GeoJSON, netCDF                |
 
 ---
 
@@ -76,14 +76,14 @@ Tracks ocean-related indicators including sea surface temperature, acidity (pH),
 - **API key:** Not required.
 - **CORS:** Enabled.
 
-| Field | Details |
-|---|---|
-| Base URL | `https://marine-api.open-meteo.com/v1/marine` |
-| Auth | None |
-| Free tier | Yes (non-commercial) |
-| Rate limit | < 10,000 req/day per IP (recommended) |
-| Update frequency | Hourly forecast |
-| Format | JSON |
+| Field            | Details                                       |
+| ---------------- | --------------------------------------------- |
+| Base URL         | `https://marine-api.open-meteo.com/v1/marine` |
+| Auth             | None                                          |
+| Free tier        | Yes (non-commercial)                          |
+| Rate limit       | < 10,000 req/day per IP (recommended)         |
+| Update frequency | Hourly forecast                               |
+| Format           | JSON                                          |
 
 ---
 
@@ -96,14 +96,14 @@ Tracks ocean-related indicators including sea surface temperature, acidity (pH),
 - **Data:** Annual scores (0–100) per country across 10 goals: food provision, artisanal fishing, natural products, carbon storage, coastal protection, tourism, livelihoods, sense of place, clean waters, biodiversity.
 - **API key:** Not required.
 
-| Field | Details |
-|---|---|
-| Base URL | https://oceanhealthindex.org/global-scores/data-download/ |
-| Auth | None |
-| Free tier | Yes |
-| Rate limit | None |
-| Update frequency | Annual |
-| Format | CSV |
+| Field            | Details                                                   |
+| ---------------- | --------------------------------------------------------- |
+| Base URL         | https://oceanhealthindex.org/global-scores/data-download/ |
+| Auth             | None                                                      |
+| Free tier        | Yes                                                       |
+| Rate limit       | None                                                      |
+| Update frequency | Annual                                                    |
+| Format           | CSV                                                       |
 
 ---
 
@@ -116,33 +116,33 @@ Tracks ocean-related indicators including sea surface temperature, acidity (pH),
 - **API key:** Not required.
 - **Validated (May 2026):** Sea level and tide prediction endpoints confirmed working.
 
-| Field | Details |
-|---|---|
-| Base URL | `https://api.tidesandcurrents.noaa.gov/api/prod/datagetter` |
-| Auth | None |
-| Free tier | Yes |
-| Rate limit | None specified |
-| Update frequency | Near real-time |
-| Format | JSON |
+| Field            | Details                                                     |
+| ---------------- | ----------------------------------------------------------- |
+| Base URL         | `https://api.tidesandcurrents.noaa.gov/api/prod/datagetter` |
+| Auth             | None                                                        |
+| Free tier        | Yes                                                         |
+| Rate limit       | None specified                                              |
+| Update frequency | Near real-time                                              |
+| Format           | JSON                                                        |
 
 ---
 
 ## Available Metrics
 
-| Metric | Providers |
-|---|---|
-| Sea surface temperature (SST) | NOAA CRW / CoralTemp, NOAA OISST, NOAA ERDDAP |
-| SST anomaly | NOAA CRW |
-| Degree Heating Week (DHW) | NOAA CRW |
-| Coral Bleaching Alert Area | NOAA CRW |
-| Chlorophyll concentration | NOAA ERDDAP |
-| Salinity | NOAA ERDDAP, NOAA Tides & Currents |
-| Ocean currents | NOAA ERDDAP |
-| Dissolved oxygen | NOAA ERDDAP |
-| Wave height / period / direction | Open-Meteo Marine |
-| Sea level / tides | NOAA Tides & Currents |
-| Ocean Health Index scores (10 goals) | Ocean Health Index |
-| Marine heatwave | NOAA CRW |
+| Metric                               | Providers                                     |
+| ------------------------------------ | --------------------------------------------- |
+| Sea surface temperature (SST)        | NOAA CRW / CoralTemp, NOAA OISST, NOAA ERDDAP |
+| SST anomaly                          | NOAA CRW                                      |
+| Degree Heating Week (DHW)            | NOAA CRW                                      |
+| Coral Bleaching Alert Area           | NOAA CRW                                      |
+| Chlorophyll concentration            | NOAA ERDDAP                                   |
+| Salinity                             | NOAA ERDDAP, NOAA Tides & Currents            |
+| Ocean currents                       | NOAA ERDDAP                                   |
+| Dissolved oxygen                     | NOAA ERDDAP                                   |
+| Wave height / period / direction     | Open-Meteo Marine                             |
+| Sea level / tides                    | NOAA Tides & Currents                         |
+| Ocean Health Index scores (10 goals) | Ocean Health Index                            |
+| Marine heatwave                      | NOAA CRW                                      |
 
 ## Integration Notes
 

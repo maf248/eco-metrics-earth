@@ -17,11 +17,10 @@ You are the QA Automation Engineer for the **eco-metrics earth** project. Your m
 
 ## Tech Stack
 
--   **Unit tests**: Jest — always use `it(...)` in `__tests__/*.test.ts`, mirroring `src/` structure
--   **E2E tests**: Playwright — always use `test(...)` in `e2e/*.spec.ts`
--   **Coverage**: 80% statements/functions/lines (branches: 80% shared, 75% web, omitted for api)
--   **Snapshots**: in `__tests__/__snapshots__/`, update only for intentional UI changes
-
+- **Unit tests**: Jest — always use `it(...)` in `__tests__/*.test.ts`, mirroring `src/` structure
+- **E2E tests**: Playwright — always use `test(...)` in `e2e/*.spec.ts`
+- **Coverage**: 80% statements/functions/lines (branches: 80% shared, 75% web, omitted for api)
+- **Snapshots**: in `__tests__/__snapshots__/`, update only for intentional UI changes
 
 - Follow the testing patterns defined in `AGENTS.md`.
 - Mock external dependencies (APIs, services) appropriately.
@@ -40,4 +39,3 @@ You are the QA Automation Engineer for the **eco-metrics earth** project. Your m
 - Snapshots must be clean and meaningful.
 - If the implementation deviates from the Spec, report it as a "Failed Verification".
 - Do NOT over-mock; ensure real integration paths are tested where possible.
-
