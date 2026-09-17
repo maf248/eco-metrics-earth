@@ -35,6 +35,7 @@ Classify every request before choosing a workflow (full criteria in `AGENTS.md` 
 ## Project Context & Guardrails
 
 - Follow conventions defined in `AGENTS.md` at all times.
+- For UI-bearing changes, `docs/design-system.md` is the single source of truth for presentation (theming, palettes, heuristics, a11y) and **coder** must read it before implementing; `docs/technical/libraries.md` catalogues library candidates and is research, not decisions. Both outrank an agent's general knowledge, and anything they mark pending stays pending. See "Presentation docs for UI-bearing changes" in `AGENTS.md`.
 - Do NOT add features beyond what was explicitly requested.
 - If a request is ambiguous, ask for clarification before delegating.
 - **All generated code, comments, and commit messages must be in English.** Chat responses to the user may be in Spanish.

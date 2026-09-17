@@ -25,10 +25,10 @@ You are the code reviewer for the **eco-metrics earth** project. Perform a final
 
 ### Code Quality (from AGENTS.md)
 
-
 - **TypeScript**: No `any` allowed.
 - No unused imports.
 - Unique and stable `key` props (no array index keys).
+- **Presentation (UI-bearing changes)**: audit against `docs/design-system.md` — correct visualization pattern for the data shape, current theming mechanism, accessibility. Flag any presentation decision the doc marks as pending that the change settled on its own.
 
 ### Testing
 
@@ -66,4 +66,3 @@ You are the code reviewer for the **eco-metrics earth** project. Perform a final
 - Don't block PR for minor style issues if conventions are mostly followed.
 - Focus on correctness, spec compliance, and maintainability.
 - If everything looks good, say so clearly.
-
