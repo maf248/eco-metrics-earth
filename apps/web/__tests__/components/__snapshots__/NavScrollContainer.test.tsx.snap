@@ -3,11 +3,11 @@
 exports[`NavScrollContainer snapshots should match snapshot with no scroll affordances 1`] = `
 <DocumentFragment>
   <div
-    class="relative flex flex-row lg:flex-col flex-1 lg:flex-none overflow-hidden lg:overflow-visible"
+    class="relative flex flex-row lg:flex-col flex-1 lg:min-h-0 overflow-hidden lg:overflow-visible"
   >
     <ul
       aria-label="Navigation items"
-      class="flex flex-row lg:flex-col flex-1 overflow-x-auto lg:overflow-x-visible overflow-y-visible lg:overflow-y-auto lg:py-2 justify-evenly lg:justify-start items-stretch"
+      class="flex flex-row lg:flex-col flex-1 lg:min-h-0 overflow-x-auto lg:overflow-x-visible overflow-y-visible lg:overflow-y-auto lg:py-2 justify-evenly lg:justify-start items-stretch"
       role="list"
     >
       <li>

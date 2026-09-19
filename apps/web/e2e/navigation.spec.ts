@@ -38,8 +38,16 @@ test.describe('Category pages', () => {
 
 test.describe('Desktop sidebar navigation', () => {
   test('should navigate to each category from sidebar', async ({ page }) => {
-    await page.setViewportSize({ width: 1280, height: 720 });
+    await page.setViewportSize({ width: 1280, height: 700 });
     await page.goto('/');
+
+    // Verify the last nav item (Water Footprint) is reachable within the nav.
+    // toBeInViewport (not toBeVisible): a link clipped off-screen below the
+    // fixed sidebar still has a bounding box and would pass toBeVisible.
+    const navList = page.locator('[aria-label="Navigation items"]');
+    const waterFootprintLink = navList.getByRole('link', { name: 'Water Footprint' });
+    await waterFootprintLink.scrollIntoViewIfNeeded();
+    await expect(waterFootprintLink).toBeInViewport();
 
     for (const slug of CATEGORY_SLUGS) {
       const cp = categoryPage(slug);
@@ -52,7 +60,7 @@ test.describe('Desktop sidebar navigation', () => {
   });
 
   test('should mark home link as active on home page', async ({ page }) => {
-    await page.setViewportSize({ width: 1280, height: 720 });
+    await page.setViewportSize({ width: 1280, height: 700 });
     await page.goto('/');
     // The desktop brand link does NOT use the NavLink component,
     // so it does not carry aria-current. Instead, verify the URL

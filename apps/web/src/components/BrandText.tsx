@@ -60,7 +60,7 @@ export default function BrandText() {
       {/* Brand text — typewriter reveal */}
       <span
         aria-hidden="true"
-        className="font-mono text-sm font-medium text-emerald-700 dark:text-emerald-400 tracking-tight"
+        className="font-mono text-sm font-medium text-emerald-700 dark:text-emerald-400 tracking-tight whitespace-nowrap"
       >
         {displayedText}
       </span>

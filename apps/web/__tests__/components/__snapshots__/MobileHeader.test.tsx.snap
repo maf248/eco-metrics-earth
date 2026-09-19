@@ -82,7 +82,7 @@ exports[`MobileHeader snapshots should match snapshot 1`] = `
       </svg>
       <span
         aria-hidden="true"
-        class="font-mono text-sm font-medium text-emerald-700 dark:text-emerald-400 tracking-tight"
+        class="font-mono text-sm font-medium text-emerald-700 dark:text-emerald-400 tracking-tight whitespace-nowrap"
       />
       <span
         aria-hidden="true"

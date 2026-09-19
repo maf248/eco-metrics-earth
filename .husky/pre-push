@@ -7,4 +7,6 @@ fi
 # E2E intentionally NOT run here: CI runs the full Playwright suite on every
 # push to every branch (.github/workflows/ci.yml). Run it locally with
 # `npm run e2e` when you want pre-push E2E confidence.
-npx nx affected --target=test --base=origin/develop
+# NX_NATIVE_COMMAND_RUNNER=false: Nx runs the last queued task in a pseudo-terminal,
+# which garbles its prefixed output (bare LFs, Jest redraws). See the `test` script.
+NX_NATIVE_COMMAND_RUNNER=false npx nx affected --target=test --base=origin/develop

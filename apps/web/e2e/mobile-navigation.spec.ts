@@ -108,7 +108,7 @@ test.describe('Desktop viewport — bottom bar absent', { tag: '@smoke' }, () =>
     // The nav still exists but as a left sidebar.
     const nav = page.locator(selectors.nav);
     await expect(nav).toBeVisible();
-    // Sidebar has lg:w-68, not h-20
+    // Sidebar has lg:w-76, not h-20
     const navClass = await nav.getAttribute('class');
     expect(navClass).toContain('lg:h-screen');
   });
