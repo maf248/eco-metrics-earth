@@ -7,7 +7,7 @@
     "dev:local": "concurrently --names \"apps,proxy\" --prefix-colors \"cyan,yellow\" \"npm run dev\" \"caddy run --config dev/Caddyfile\"",
     "build": "nx run-many --target=build --all",
     "analyze": "nx run web:analyze",
-    "test": "nx run-many --target=test --all --output-style=stream --parallel=1",
+    "test": "NX_NATIVE_COMMAND_RUNNER=false nx run-many --target=test --all --output-style=stream --parallel=1",
     "lint": "nx run-many --target=lint --all",
     "format": "prettier --write \"**/*.{ts,tsx,js,json,md,css}\"",
     "format:check": "prettier --check \"**/*.{ts,tsx,js,json,md,css}\"",
@@ -15,7 +15,7 @@
     "reset": "rm -rf node_modules .nx apps/web/.next packages/shared/dist && npm install",
     "typecheck": "nx run-many --target=typecheck --all",
     "clean:reports": "rm -rf coverage apps/api/test-output packages/shared/test-output",
-    "update-snapshots": "nx run-many --target=test --all -- --updateSnapshot",
+    "update-snapshots": "NX_NATIVE_COMMAND_RUNNER=false nx run-many --target=test --all -- --updateSnapshot",
     "e2e": "nx e2e web"
   },
   "private": true,
