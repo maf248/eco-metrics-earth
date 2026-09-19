@@ -12,11 +12,18 @@
       "typecheck": {
         "executor": "nx:run-commands",
         "cache": true,
+        "dependsOn": [
+          "^typecheck"
+        ],
         "inputs": [
           "{projectRoot}/tsconfig.json",
           "{workspaceRoot}/tsconfig.base.json",
           "{projectRoot}/src/**/*.ts",
-          "{projectRoot}/src/**/*.tsx"
+          "{projectRoot}/src/**/*.tsx",
+          "{projectRoot}/__tests__/**/*.ts",
+          "{projectRoot}/__tests__/**/*.tsx",
+          "{projectRoot}/e2e/**/*.ts",
+          "^production"
         ],
         "options": {
           "command": "tsc -p tsconfig.json --noEmit",
