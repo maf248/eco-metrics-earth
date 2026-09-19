@@ -25,7 +25,7 @@ export class WaterFootprintController {
     name: 'category',
     required: false,
     description: 'Category slug filter',
-    enum: ['food-beverages', 'textiles', 'technology', 'manufactured'],
+    enum: ['food-beverages', 'textiles', 'technology', 'manufactured', 'digital-computing'],
   })
   @ApiOkResponse({ description: 'Products returned successfully.' })
   @ApiBadRequestResponse({ description: 'Invalid category filter.' })

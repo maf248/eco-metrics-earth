@@ -1,10 +1,10 @@
 # Water Footprint by Product — Research & Implementation Plan 💧
 
-> **Status:** Phase 3 + 4 complete — UI table, filters, sorting, equivalents, and responsive layout shipped (14 Sep 2026).
+> **Status:** Phase 5 complete — water-type discriminator, citation audit, and the Digital & Computing category shipped (18 Sep 2026).
 > **Category slug:** `water-footprint`
 > **URL:** `/water-footprint/`
 > **Provider docs:** `docs/data-sources/water-footprint.md` (country-level sources: OWID, World Bank, FAO AQUASTAT — licenses and validated endpoints)
-> **API endpoint:** `GET /api/v1/water-footprint/products?category=` (optional filter: `food-beverages`, `textiles`, `technology`, `manufactured`)
+> **API endpoint:** `GET /api/v1/water-footprint/products?category=` (optional filter: `food-beverages`, `textiles`, `technology`, `manufactured`, `digital-computing`)
 
 ---
 
@@ -132,6 +132,38 @@ Each entry must include the original citation/source (paper, report, or dataset)
 - [x] Mobile-responsive table/cards layout
 - [x] Performance: static generation with `generateStaticParams`
 
+### Phase 5 — Methodology, citations, and computing (✅ Complete — 18 Sep 2026)
+
+Two defects shipped with Phases 2–4 and are corrected here, plus one new category.
+
+**Water-type discriminator.** `WaterFootprintProduct` had no field declaring what its liter value measured, so the default footprint-descending sort compared blue-water-only values (Poore & Nemecek) against green + blue + grey totals (Mekonnen & Hoekstra). Cotton lint (4,030 L/kg) outranked beef (1,451 L/kg), implying cotton needs ~3× the water of beef — an artifact of scope, not a fact (beef is ~15,400 L/kg on the M&H basis).
+
+- [x] `WaterFootprintWaterType` = `blue` | `green-blue-grey` | `lifecycle-onsite` | `lifecycle-total`, plus `waterFootprintWaterTypeLabels`, in `@eco-metrics/shared`
+- [x] `waterType` added as a **required** field on `WaterFootprintProduct`; all 53 entries tagged
+- [x] "Water type" column on the desktop table and a line on each mobile card (not sortable)
+- [x] Persistent comparability note explaining the bases
+
+**Citation audit.** Seven entries rendered clickable links that did not support their value.
+
+- [x] Steel, cement and glass re-sourced from `"Water Footprint Network (various)"` to Gerbens-Leenes, Hoekstra & Bosman (2018), _Water Resources and Industry_ 19:1–12, and corrected to that paper's blue-water values: steel 250 → 11 L/kg, cement 5 → 2.6 L/kg, flat glass 25 → 5.8 L/kg (renamed to the material grades the study actually measures)
+- [x] Removed `PET plastic (virgin)`, `Compact car`, `Smartphone (1 unit)` and `Laptop (1 unit)` — no primary source supports a per-unit figure; the Apple Product Environmental Reports cited by the last two report water at corporate level, not per device
+
+**Digital & Computing.** New category, five entries, each on-site figure paired with its total-scope counterpart so the discriminator has a worked example:
+
+| Product                         | Value                     | Water type | Source                                       |
+| ------------------------------- | ------------------------- | ---------- | -------------------------------------------- |
+| AI text prompt (Gemini, median) | 0.00026 L                 | on-site    | Google 2025, arXiv:2508.15734                |
+| AI text responses (GPT-3)       | 0.5 L per 10–50 responses | total      | Li et al. 2025, CACM 68:54–63                |
+| GPT-3 training run (on-site)    | 700,000 L                 | on-site    | Li et al. 2025                               |
+| GPT-3 training run (total)      | 5,400,000 L               | total      | Li et al. 2025                               |
+| Bitcoin transaction             | 16,000 L                  | total      | de Vries 2023, _Cell Reports Sustainability_ |
+
+- [x] `'digital-computing'` slug added to `waterFootprintCategorySlugMap` and the Swagger `@ApiQuery` enum
+- [x] `formatLiters` handles sub-litre values — `0.00026` rendered as `"0"` before, so the AI inference row would have shipped as "0 L per prompt"
+- [x] Unit, snapshot and E2E tests updated; dataset 52 → 53 entries
+
+**Deferred to follow-up changes** (researched, catalogued in `docs/data-sources/water-footprint.md` § 9): NREL life-cycle water per MWh by generation source; WRI Aqueduct 4.0 (CC BY 4.0, catchment resolution); lithium extraction in the Atacama and Argentine salt flats; AWARE scarcity weighting.
+
 ---
 
 ## Difficulty: 4/10
@@ -142,4 +174,4 @@ Each entry must include the original citation/source (paper, report, or dataset)
 
 ---
 
-_Last updated: 14 Sep 2026_
+_Last updated: 18 Sep 2026_

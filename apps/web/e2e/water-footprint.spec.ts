@@ -10,6 +10,10 @@ test.describe('Water Footprint page', () => {
       await expect(page.locator('body')).toContainText('Beef (beef herd)');
       await expect(page.getByRole('radio', { name: 'Textiles' })).toBeVisible();
       await expect(page.getByRole('radio', { name: 'All' })).toBeVisible();
+      await expect(page.getByRole('radio', { name: 'Digital & Computing' })).toBeVisible();
+      await expect(page.locator('body')).toContainText(
+        'Values of different water types are not directly comparable',
+      );
     });
 
     test('should include product names in server-rendered HTML', async ({ request }) => {
@@ -38,24 +42,43 @@ test.describe('Water Footprint page', () => {
       await expect(table).toBeVisible();
 
       const bodyRows = table.locator('tbody tr');
-      await expect(bodyRows).toHaveCount(52);
+      await expect(bodyRows).toHaveCount(53);
+
+      await expect(page.getByRole('columnheader', { name: 'Water type' })).toBeVisible();
 
       const waterFootprintHeader = page.getByRole('columnheader', { name: 'Water footprint' });
       await expect(waterFootprintHeader).toHaveAttribute('aria-sort', 'descending');
 
       await page.getByRole('button', { name: 'Water footprint' }).click();
       await expect(waterFootprintHeader).toHaveAttribute('aria-sort', 'ascending');
-      await expect(table.locator('tbody tr:first-child th')).toHaveText('Cement');
+      await expect(table.locator('tbody tr:first-child th')).toHaveText(
+        'AI text prompt (Gemini, median)',
+      );
+      await expect(table.locator('tbody tr:first-child')).toContainText('0.00026 L');
+      await expect(table.locator('tbody tr:first-child')).toContainText('Life cycle (on-site)');
 
       const sourceLink = page.getByRole('link', { name: 'Poore & Nemecek' }).first();
       await expect(sourceLink).toBeVisible();
 
       await table.locator('summary').first().click();
-      await expect(page.locator('body')).toContainText('Weighted global average');
+      await expect(page.locator('body')).toContainText('Median Gemini Apps text prompt');
 
       await page.locator('fieldset').getByText('Textiles').click();
       await expect(bodyRows).toHaveCount(6);
-      await expect(page.getByRole('status')).toContainText('Showing 6 of 52');
+      await expect(page.getByRole('status')).toContainText('Showing 6 of 53');
+    });
+
+    test('should filter to the Digital & Computing category', async ({ page }) => {
+      await page.setViewportSize({ width: 1280, height: 720 });
+      await page.goto('/water-footprint/');
+
+      const table = page.getByTestId('water-footprint-table');
+      await page.locator('fieldset').getByText('Digital & Computing').click();
+
+      await expect(table.locator('tbody tr')).toHaveCount(5);
+      await expect(page.getByRole('status')).toContainText('Showing 5 of 53');
+      await expect(table).toContainText('Bitcoin transaction');
+      await expect(table).toContainText('GPT-3 training run (total)');
     });
 
     test('should show exactly one active filter label after selecting a category', async ({

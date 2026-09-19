@@ -1,7 +1,7 @@
 'use client';
 
 import type { WaterFootprintCategory, WaterFootprintProduct } from '@eco-metrics/shared';
-import { waterFootprintCategorySlugMap } from '@eco-metrics/shared';
+import { waterFootprintCategorySlugMap, waterFootprintWaterTypeLabels } from '@eco-metrics/shared';
 import { useId, useMemo, useState } from 'react';
 
 import { formatLiters, formatWaterFootprintEquivalents } from '@/lib/waterFootprintEquivalents';
@@ -137,6 +137,9 @@ export function WaterFootprintTable({ products }: WaterFootprintTableProps) {
                     onClick={() => handleSort('footprint')}
                   />
                   <th scope="col" className="py-2 pr-4 font-semibold text-gray-900 dark:text-white">
+                    Water type
+                  </th>
+                  <th scope="col" className="py-2 pr-4 font-semibold text-gray-900 dark:text-white">
                     Contextual equivalent
                   </th>
                   <th scope="col" className="py-2 pr-4 font-semibold text-gray-900 dark:text-white">
@@ -165,6 +168,9 @@ export function WaterFootprintTable({ products }: WaterFootprintTableProps) {
                           <span className="text-gray-500 dark:text-gray-400">{product.unit}</span>
                         </>
                       )}
+                    </td>
+                    <td className="py-2 pr-4 text-gray-700 dark:text-gray-300">
+                      {waterFootprintWaterTypeLabels[product.waterType]}
                     </td>
                     <td className="py-2 pr-4 text-gray-700 dark:text-gray-300">
                       {formatWaterFootprintEquivalents(product.waterFootprintLiters)}
@@ -201,6 +207,9 @@ export function WaterFootprintTable({ products }: WaterFootprintTableProps) {
                       <span className="text-gray-500 dark:text-gray-400">{product.unit}</span>
                     </>
                   )}
+                </p>
+                <p className="text-sm text-gray-700 dark:text-gray-300">
+                  {waterFootprintWaterTypeLabels[product.waterType]}
                 </p>
                 <p className="text-sm text-gray-700 dark:text-gray-300">
                   {formatWaterFootprintEquivalents(product.waterFootprintLiters)}

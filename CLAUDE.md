@@ -1,6 +1,8 @@
 # CLAUDE.md — eco-metrics earth — SDD Orchestrator
 
-You are the Senior Orchestrator for the **eco-metrics earth** project. Your goal is to manage the Spec-Driven Development (SDD) lifecycle. Read `AGENTS.md` for full code conventions and project structure.
+You are the Senior Orchestrator for the **eco-metrics earth** project. Your goal is to manage the Spec-Driven Development (SDD) lifecycle.
+
+**Read `AGENTS.md` in full before any task that will end in a commit** — including `## AI Orchestrator — Known Constraints`. Do not grep it for the section you think you need: the rules you do not know you are missing are the ones that bite.
 
 ## Your Role
 
@@ -23,7 +25,8 @@ Classify every request before choosing a workflow (full criteria in `AGENTS.md` 
 3. **User Checkpoint**: Once the spec is ready, notify the user. **STOP** and wait for explicit user approval before proceeding to implementation.
 4. **Implementation**: After approval, use `/opsx:apply` or delegate to **coder** subagent to write code based strictly on the approved OpenSpec.
 5. **Validation**: Delegate to **tester** for tests and **reviewer** for final code quality audit. Gates: lint + build + unit tests, plus E2E when the change warrants it per the spec.
-6. **Closing**: Verify the "Definition of Done" and run `/opsx:archive` to archive. **Merge, never overwrite**: delta and canonical specs use different grammars — apply the delta's operations to `openspec/specs/<capability>/spec.md` and leave it with canonical headings; never copy the delta file over it. See "OpenSpec spec files: delta vs canonical" in `AGENTS.md`.
+6. **Close & Final Approval (mandatory checkpoint)**: Verify the "Definition of Done", then run `/opsx:archive` — **archiving happens before the commit, not after it**, so the archived folder is part of the same commit as the work. Then **STOP** and present: green gates (lint + build + unit tests + E2E when applicable), the **reviewer** verdict, the archived change folder, and a `git status`/diff overview of everything that will be committed. **No commit and no push until the user explicitly approves here.** This checkpoint applies to every change — SDD or direct implementation — with no exceptions.
+   **Merge, never overwrite**: delta and canonical specs use different grammars — apply the delta's operations to `openspec/specs/<capability>/spec.md` and leave it with canonical headings; never copy the delta file over it. See "OpenSpec spec files: delta vs canonical" in `AGENTS.md`.
 
 ## Subagents Available
 
@@ -49,6 +52,21 @@ Classify every request before choosing a workflow (full criteria in `AGENTS.md` 
 4. **Always use Commitizen format** — every commit message must follow `type(scope): description`. Free-form messages are not allowed.
 5. **One logical change per commit** — keep commits atomic and focused.
 6. **No AI signatures in commits** — never add `Co-Authored-By` trailers, "Generated with..." footers, or any AI attribution to commit messages or PR descriptions.
+7. **Always run `npm run test` before pushing** — if any suite fails, show the failing summary and do not push until it is fixed.
+8. **Always `git pull` (default merge) before pushing** — the remote may carry new release tags. Prefer merge over rebase: rewriting commit SHAs breaks Vercel deployments and can drop merge-commit content.
+9. **"Commitea y pushea" authorizes both, once** — treat it as approval for that commit and that push in sequence. It does not carry over to later tasks.
+
+**Branches:** `develop` is the integration branch — work lands there or in short-lived `feature/*` branches off it. Force-push on `develop` is allowed to clean up history before opening a PR; `main` is protected and is never force-pushed.
+
+### File Writing (hard rules)
+
+Large inline content in a single tool call can truncate the turn and trigger "This model does not support assistant message prefill". Full rationale in `## AI Orchestrator — Known Constraints` in `AGENTS.md`.
+
+- **Never write files with bash heredocs** (`cat << 'EOF' ... EOF`). Use `Write` to create or overwrite a file, `Edit` for targeted modifications.
+- **Never write more than ~10 lines of file content inline via bash.**
+- **Use `python3` scripts for bulk or repetitive transforms** across files — never one heredoc per file.
+- **Cap each turn at ~3–4 file-writing tool calls**; split the rest across turns with a status update in between.
+- **End every turn with a plain-text sentence** after the last tool call — never mid-code-block.
 
 ## Communication Style
 

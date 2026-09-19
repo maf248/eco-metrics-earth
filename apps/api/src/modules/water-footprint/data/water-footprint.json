@@ -4,6 +4,7 @@
     "category": "Food & Beverages",
     "waterFootprintLiters": 180.1,
     "unit": "per kg",
+    "waterType": "blue",
     "source": "Poore & Nemecek (2018), Science",
     "sourceUrl": "https://ourworldindata.org/grapher/water-withdrawals-per-kg-poore",
     "methodology": "Freshwater withdrawals per kg of final product. Based on ~38,700 farms in 119 countries."
@@ -13,6 +14,7 @@
     "category": "Food & Beverages",
     "waterFootprintLiters": 114.5,
     "unit": "per kg",
+    "waterType": "blue",
     "source": "Poore & Nemecek (2018), Science",
     "sourceUrl": "https://ourworldindata.org/grapher/water-withdrawals-per-kg-poore",
     "methodology": "Freshwater withdrawals per kg of final product. Based on ~38,700 farms in 119 countries."
@@ -22,6 +24,7 @@
     "category": "Food & Beverages",
     "waterFootprintLiters": 17.1,
     "unit": "per kg",
+    "waterType": "blue",
     "source": "Poore & Nemecek (2018), Science",
     "sourceUrl": "https://ourworldindata.org/grapher/water-withdrawals-per-kg-poore",
     "methodology": "Freshwater withdrawals per kg of final product. Based on ~38,700 farms in 119 countries."
@@ -31,6 +34,7 @@
     "category": "Food & Beverages",
     "waterFootprintLiters": 1451.2,
     "unit": "per kg",
+    "waterType": "blue",
     "source": "Poore & Nemecek (2018), Science",
     "sourceUrl": "https://ourworldindata.org/grapher/water-withdrawals-per-kg-poore",
     "methodology": "Freshwater withdrawals per kg of final product. Based on ~38,700 farms in 119 countries."
@@ -40,6 +44,7 @@
     "category": "Food & Beverages",
     "waterFootprintLiters": 2714.3,
     "unit": "per kg",
+    "waterType": "blue",
     "source": "Poore & Nemecek (2018), Science",
     "sourceUrl": "https://ourworldindata.org/grapher/water-withdrawals-per-kg-poore",
     "methodology": "Freshwater withdrawals per kg of final product. Based on ~38,700 farms in 119 countries."
@@ -49,6 +54,7 @@
     "category": "Food & Beverages",
     "waterFootprintLiters": 217.7,
     "unit": "per kg",
+    "waterType": "blue",
     "source": "Poore & Nemecek (2018), Science",
     "sourceUrl": "https://ourworldindata.org/grapher/water-withdrawals-per-kg-poore",
     "methodology": "Freshwater withdrawals per kg of final product. Based on ~38,700 farms in 119 countries."
@@ -58,6 +64,7 @@
     "category": "Food & Beverages",
     "waterFootprintLiters": 419.6,
     "unit": "per kg",
+    "waterType": "blue",
     "source": "Poore & Nemecek (2018), Science",
     "sourceUrl": "https://ourworldindata.org/grapher/water-withdrawals-per-kg-poore",
     "methodology": "Freshwater withdrawals per kg of final product. Based on ~38,700 farms in 119 countries."
@@ -67,6 +74,7 @@
     "category": "Food & Beverages",
     "waterFootprintLiters": 119.4,
     "unit": "per kg",
+    "waterType": "blue",
     "source": "Poore & Nemecek (2018), Science",
     "sourceUrl": "https://ourworldindata.org/grapher/water-withdrawals-per-kg-poore",
     "methodology": "Freshwater withdrawals per kg of final product. Based on ~38,700 farms in 119 countries."
@@ -76,6 +84,7 @@
     "category": "Food & Beverages",
     "waterFootprintLiters": 620.1,
     "unit": "per kg",
+    "waterType": "blue",
     "source": "Poore & Nemecek (2018), Science",
     "sourceUrl": "https://ourworldindata.org/grapher/water-withdrawals-per-kg-poore",
     "methodology": "Freshwater withdrawals per kg of final product. Based on ~38,700 farms in 119 countries."
@@ -85,6 +94,7 @@
     "category": "Food & Beverages",
     "waterFootprintLiters": null,
     "unit": "per kg",
+    "waterType": "blue",
     "source": "Poore & Nemecek (2018), Science",
     "sourceUrl": "https://ourworldindata.org/grapher/water-withdrawals-per-kg-poore",
     "methodology": "Freshwater withdrawals per kg of final product. Based on ~38,700 farms in 119 countries."
@@ -94,6 +104,7 @@
     "category": "Food & Beverages",
     "waterFootprintLiters": 5605.2,
     "unit": "per kg",
+    "waterType": "blue",
     "source": "Poore & Nemecek (2018), Science",
     "sourceUrl": "https://ourworldindata.org/grapher/water-withdrawals-per-kg-poore",
     "methodology": "Freshwater withdrawals per kg of final product. Based on ~38,700 farms in 119 countries."
@@ -103,6 +114,7 @@
     "category": "Food & Beverages",
     "waterFootprintLiters": 82.7,
     "unit": "per kg",
+    "waterType": "blue",
     "source": "Poore & Nemecek (2018), Science",
     "sourceUrl": "https://ourworldindata.org/grapher/water-withdrawals-per-kg-poore",
     "methodology": "Freshwater withdrawals per kg of final product. Based on ~38,700 farms in 119 countries."
@@ -112,6 +124,7 @@
     "category": "Food & Beverages",
     "waterFootprintLiters": 25.9,
     "unit": "per kg",
+    "waterType": "blue",
     "source": "Poore & Nemecek (2018), Science",
     "sourceUrl": "https://ourworldindata.org/grapher/water-withdrawals-per-kg-poore",
     "methodology": "Freshwater withdrawals per kg of final product. Based on ~38,700 farms in 119 countries."
@@ -121,6 +134,7 @@
     "category": "Food & Beverages",
     "waterFootprintLiters": 540.6,
     "unit": "per kg",
+    "waterType": "blue",
     "source": "Poore & Nemecek (2018), Science",
     "sourceUrl": "https://ourworldindata.org/grapher/water-withdrawals-per-kg-poore",
     "methodology": "Freshwater withdrawals per kg of final product. Based on ~38,700 farms in 119 countries."
@@ -130,6 +144,7 @@
     "category": "Food & Beverages",
     "waterFootprintLiters": 577.7,
     "unit": "per kg",
+    "waterType": "blue",
     "source": "Poore & Nemecek (2018), Science",
     "sourceUrl": "https://ourworldindata.org/grapher/water-withdrawals-per-kg-poore",
     "methodology": "Freshwater withdrawals per kg of final product. Based on ~38,700 farms in 119 countries."
@@ -139,6 +154,7 @@
     "category": "Food & Beverages",
     "waterFootprintLiters": 3691.3,
     "unit": "per kg",
+    "waterType": "blue",
     "source": "Poore & Nemecek (2018), Science",
     "sourceUrl": "https://ourworldindata.org/grapher/water-withdrawals-per-kg-poore",
     "methodology": "Freshwater withdrawals per kg of final product. Based on ~38,700 farms in 119 countries."
@@ -148,6 +164,7 @@
     "category": "Food & Beverages",
     "waterFootprintLiters": 1852.3,
     "unit": "per kg",
+    "waterType": "blue",
     "source": "Poore & Nemecek (2018), Science",
     "sourceUrl": "https://ourworldindata.org/grapher/water-withdrawals-per-kg-poore",
     "methodology": "Freshwater withdrawals per kg of final product. Based on ~38,700 farms in 119 countries."
@@ -157,6 +174,7 @@
     "category": "Food & Beverages",
     "waterFootprintLiters": 1802.8,
     "unit": "per kg",
+    "waterType": "blue",
     "source": "Poore & Nemecek (2018), Science",
     "sourceUrl": "https://ourworldindata.org/grapher/water-withdrawals-per-kg-poore",
     "methodology": "Freshwater withdrawals per kg of final product. Based on ~38,700 farms in 119 countries."
@@ -166,6 +184,7 @@
     "category": "Food & Beverages",
     "waterFootprintLiters": 215.7,
     "unit": "per kg",
+    "waterType": "blue",
     "source": "Poore & Nemecek (2018), Science",
     "sourceUrl": "https://ourworldindata.org/grapher/water-withdrawals-per-kg-poore",
     "methodology": "Freshwater withdrawals per kg of final product. Based on ~38,700 farms in 119 countries."
@@ -175,6 +194,7 @@
     "category": "Food & Beverages",
     "waterFootprintLiters": 628.2,
     "unit": "per kg",
+    "waterType": "blue",
     "source": "Poore & Nemecek (2018), Science",
     "sourceUrl": "https://ourworldindata.org/grapher/water-withdrawals-per-kg-poore",
     "methodology": "Freshwater withdrawals per kg of final product. Based on ~38,700 farms in 119 countries."
@@ -184,6 +204,7 @@
     "category": "Food & Beverages",
     "waterFootprintLiters": 4133.8,
     "unit": "per kg",
+    "waterType": "blue",
     "source": "Poore & Nemecek (2018), Science",
     "sourceUrl": "https://ourworldindata.org/grapher/water-withdrawals-per-kg-poore",
     "methodology": "Freshwater withdrawals per kg of final product. Based on ~38,700 farms in 119 countries."
@@ -193,6 +214,7 @@
     "category": "Food & Beverages",
     "waterFootprintLiters": 482.4,
     "unit": "per kg",
+    "waterType": "blue",
     "source": "Poore & Nemecek (2018), Science",
     "sourceUrl": "https://ourworldindata.org/grapher/water-withdrawals-per-kg-poore",
     "methodology": "Freshwater withdrawals per kg of final product. Based on ~38,700 farms in 119 countries."
@@ -202,6 +224,7 @@
     "category": "Food & Beverages",
     "waterFootprintLiters": 14.3,
     "unit": "per kg",
+    "waterType": "blue",
     "source": "Poore & Nemecek (2018), Science",
     "sourceUrl": "https://ourworldindata.org/grapher/water-withdrawals-per-kg-poore",
     "methodology": "Freshwater withdrawals per kg of final product. Based on ~38,700 farms in 119 countries."
@@ -211,6 +234,7 @@
     "category": "Food & Beverages",
     "waterFootprintLiters": 153.5,
     "unit": "per kg",
+    "waterType": "blue",
     "source": "Poore & Nemecek (2018), Science",
     "sourceUrl": "https://ourworldindata.org/grapher/water-withdrawals-per-kg-poore",
     "methodology": "Freshwater withdrawals per kg of final product. Based on ~38,700 farms in 119 countries."
@@ -220,6 +244,7 @@
     "category": "Food & Beverages",
     "waterFootprintLiters": 435.7,
     "unit": "per kg",
+    "waterType": "blue",
     "source": "Poore & Nemecek (2018), Science",
     "sourceUrl": "https://ourworldindata.org/grapher/water-withdrawals-per-kg-poore",
     "methodology": "Freshwater withdrawals per kg of final product. Based on ~38,700 farms in 119 countries."
@@ -229,6 +254,7 @@
     "category": "Food & Beverages",
     "waterFootprintLiters": 102.5,
     "unit": "per kg",
+    "waterType": "blue",
     "source": "Poore & Nemecek (2018), Science",
     "sourceUrl": "https://ourworldindata.org/grapher/water-withdrawals-per-kg-poore",
     "methodology": "Freshwater withdrawals per kg of final product. Based on ~38,700 farms in 119 countries."
@@ -238,6 +264,7 @@
     "category": "Food & Beverages",
     "waterFootprintLiters": 396.6,
     "unit": "per kg",
+    "waterType": "blue",
     "source": "Poore & Nemecek (2018), Science",
     "sourceUrl": "https://ourworldindata.org/grapher/water-withdrawals-per-kg-poore",
     "methodology": "Freshwater withdrawals per kg of final product. Based on ~38,700 farms in 119 countries."
@@ -247,6 +274,7 @@
     "category": "Food & Beverages",
     "waterFootprintLiters": 1795.8,
     "unit": "per kg",
+    "waterType": "blue",
     "source": "Poore & Nemecek (2018), Science",
     "sourceUrl": "https://ourworldindata.org/grapher/water-withdrawals-per-kg-poore",
     "methodology": "Freshwater withdrawals per kg of final product. Based on ~38,700 farms in 119 countries."
@@ -256,6 +284,7 @@
     "category": "Food & Beverages",
     "waterFootprintLiters": 59.1,
     "unit": "per kg",
+    "waterType": "blue",
     "source": "Poore & Nemecek (2018), Science",
     "sourceUrl": "https://ourworldindata.org/grapher/water-withdrawals-per-kg-poore",
     "methodology": "Freshwater withdrawals per kg of final product. Based on ~38,700 farms in 119 countries."
@@ -265,6 +294,7 @@
     "category": "Food & Beverages",
     "waterFootprintLiters": 660,
     "unit": "per kg",
+    "waterType": "blue",
     "source": "Poore & Nemecek (2018), Science",
     "sourceUrl": "https://ourworldindata.org/grapher/water-withdrawals-per-kg-poore",
     "methodology": "Freshwater withdrawals per kg of final product. Based on ~38,700 farms in 119 countries."
@@ -274,6 +304,7 @@
     "category": "Food & Beverages",
     "waterFootprintLiters": 3515.4,
     "unit": "per kg",
+    "waterType": "blue",
     "source": "Poore & Nemecek (2018), Science",
     "sourceUrl": "https://ourworldindata.org/grapher/water-withdrawals-per-kg-poore",
     "methodology": "Freshwater withdrawals per kg of final product. Based on ~38,700 farms in 119 countries."
@@ -283,6 +314,7 @@
     "category": "Food & Beverages",
     "waterFootprintLiters": 2248.4,
     "unit": "per kg",
+    "waterType": "blue",
     "source": "Poore & Nemecek (2018), Science",
     "sourceUrl": "https://ourworldindata.org/grapher/water-withdrawals-per-kg-poore",
     "methodology": "Freshwater withdrawals per kg of final product. Based on ~38,700 farms in 119 countries."
@@ -292,6 +324,7 @@
     "category": "Food & Beverages",
     "waterFootprintLiters": 28.4,
     "unit": "per kg",
+    "waterType": "blue",
     "source": "Poore & Nemecek (2018), Science",
     "sourceUrl": "https://ourworldindata.org/grapher/water-withdrawals-per-kg-poore",
     "methodology": "Freshwater withdrawals per kg of final product. Based on ~38,700 farms in 119 countries."
@@ -301,6 +334,7 @@
     "category": "Food & Beverages",
     "waterFootprintLiters": 27.8,
     "unit": "per kg",
+    "waterType": "blue",
     "source": "Poore & Nemecek (2018), Science",
     "sourceUrl": "https://ourworldindata.org/grapher/water-withdrawals-per-kg-poore",
     "methodology": "Freshwater withdrawals per kg of final product. Based on ~38,700 farms in 119 countries."
@@ -310,6 +344,7 @@
     "category": "Food & Beverages",
     "waterFootprintLiters": 148.6,
     "unit": "per kg",
+    "waterType": "blue",
     "source": "Poore & Nemecek (2018), Science",
     "sourceUrl": "https://ourworldindata.org/grapher/water-withdrawals-per-kg-poore",
     "methodology": "Freshwater withdrawals per kg of final product. Based on ~38,700 farms in 119 countries."
@@ -319,6 +354,7 @@
     "category": "Food & Beverages",
     "waterFootprintLiters": 369.8,
     "unit": "per kg",
+    "waterType": "blue",
     "source": "Poore & Nemecek (2018), Science",
     "sourceUrl": "https://ourworldindata.org/grapher/water-withdrawals-per-kg-poore",
     "methodology": "Freshwater withdrawals per kg of final product. Based on ~38,700 farms in 119 countries."
@@ -328,6 +364,7 @@
     "category": "Food & Beverages",
     "waterFootprintLiters": 647.5,
     "unit": "per kg",
+    "waterType": "blue",
     "source": "Poore & Nemecek (2018), Science",
     "sourceUrl": "https://ourworldindata.org/grapher/water-withdrawals-per-kg-poore",
     "methodology": "Freshwater withdrawals per kg of final product. Based on ~38,700 farms in 119 countries."
@@ -337,6 +374,7 @@
     "category": "Food & Beverages",
     "waterFootprintLiters": 78.9,
     "unit": "per kg",
+    "waterType": "blue",
     "source": "Poore & Nemecek (2018), Science",
     "sourceUrl": "https://ourworldindata.org/grapher/water-withdrawals-per-kg-poore",
     "methodology": "Freshwater withdrawals per kg of final product. Based on ~38,700 farms in 119 countries."
@@ -346,6 +384,7 @@
     "category": "Textiles",
     "waterFootprintLiters": 4030,
     "unit": "per kg",
+    "waterType": "green-blue-grey",
     "source": "Mekonnen & Hoekstra (2011), Hydrology and Earth System Sciences",
     "sourceUrl": "https://waterfootprint.org/en/resources/waterstat/",
     "methodology": "Blue and green water footprint of cotton lint."
@@ -355,6 +394,7 @@
     "category": "Textiles",
     "waterFootprintLiters": 2720,
     "unit": "per unit",
+    "waterType": "green-blue-grey",
     "source": "Mekonnen & Hoekstra (2011), Hydrology and Earth System Sciences",
     "sourceUrl": "https://waterfootprint.org/en/resources/waterstat/",
     "methodology": "Estimated from cotton lint water footprint per kg."
@@ -364,6 +404,7 @@
     "category": "Textiles",
     "waterFootprintLiters": 8000,
     "unit": "per pair",
+    "waterType": "green-blue-grey",
     "source": "Mekonnen & Hoekstra (2011), Hydrology and Earth System Sciences",
     "sourceUrl": "https://waterfootprint.org/en/resources/waterstat/",
     "methodology": "Estimated from cotton lint water footprint per kg."
@@ -373,6 +414,7 @@
     "category": "Textiles",
     "waterFootprintLiters": 17100,
     "unit": "per kg",
+    "waterType": "green-blue-grey",
     "source": "Mekonnen & Hoekstra (2011), Hydrology and Earth System Sciences",
     "sourceUrl": "https://waterfootprint.org/en/resources/waterstat/",
     "methodology": "Water footprint of bovine leather."
@@ -382,6 +424,7 @@
     "category": "Textiles",
     "waterFootprintLiters": 8000,
     "unit": "per pair",
+    "waterType": "green-blue-grey",
     "source": "Mekonnen & Hoekstra (2011), Hydrology and Earth System Sciences",
     "sourceUrl": "https://waterfootprint.org/en/resources/waterstat/",
     "methodology": "Estimated from bovine leather water footprint per kg."
@@ -391,6 +434,7 @@
     "category": "Textiles",
     "waterFootprintLiters": 10,
     "unit": "per unit",
+    "waterType": "green-blue-grey",
     "source": "Mekonnen & Hoekstra (2011), Hydrology and Earth System Sciences",
     "sourceUrl": "https://waterfootprint.org/en/resources/waterstat/",
     "methodology": "Water footprint of paper (pulp and paper sector)."
@@ -400,71 +444,89 @@
     "category": "Technology",
     "waterFootprintLiters": 32,
     "unit": "per unit",
+    "waterType": "lifecycle-total",
     "source": "Williams, Ayres & Heller (2002), Environ. Sci. Technol.",
     "sourceUrl": "https://doi.org/10.1021/es025643o",
     "methodology": "Water inputs for fabrication of a 2g microchip."
   },
   {
-    "product": "Smartphone (1 unit)",
-    "category": "Technology",
-    "waterFootprintLiters": 12760,
-    "unit": "per unit",
-    "source": "Apple Product Environmental Report, iPhone 15",
-    "sourceUrl": "https://www.apple.com/environment/",
-    "methodology": "Manufacturing water use including supply chain."
-  },
-  {
-    "product": "Laptop (1 unit)",
-    "category": "Technology",
-    "waterFootprintLiters": 38000,
-    "unit": "per unit",
-    "source": "Apple Product Environmental Report, MacBook Air",
-    "sourceUrl": "https://www.apple.com/environment/",
-    "methodology": "Manufacturing water use including supply chain."
-  },
-  {
-    "product": "Steel (virgin)",
+    "product": "Steel (unalloyed)",
     "category": "Manufactured",
-    "waterFootprintLiters": 250,
+    "waterFootprintLiters": 11,
     "unit": "per kg",
-    "source": "Water Footprint Network (various)",
-    "sourceUrl": "https://waterfootprint.org/en/resources/waterstat/",
-    "methodology": "Weighted global average. Values may vary by production method and location."
+    "waterType": "blue",
+    "source": "Gerbens-Leenes, Hoekstra & Bosman (2018), Water Resources and Industry",
+    "sourceUrl": "https://doi.org/10.1016/j.wri.2017.11.002",
+    "methodology": "Blue water footprint (process plus energy-related) of unalloyed steel. The grey water footprint is far larger at 2,300 L/kg, driven by cadmium released during iron-ore beneficiation."
   },
   {
-    "product": "Cement",
+    "product": "Portland cement (CEM I)",
     "category": "Manufactured",
-    "waterFootprintLiters": 5,
+    "waterFootprintLiters": 2.6,
     "unit": "per kg",
-    "source": "Water Footprint Network (various)",
-    "sourceUrl": "https://waterfootprint.org/en/resources/waterstat/",
-    "methodology": "Weighted global average. Values may vary by production method and location."
+    "waterType": "blue",
+    "source": "Gerbens-Leenes, Hoekstra & Bosman (2018), Water Resources and Industry",
+    "sourceUrl": "https://doi.org/10.1016/j.wri.2017.11.002",
+    "methodology": "Blue water footprint of ordinary Portland cement. The study reports a 2.0-2.6 L/kg range depending on the gypsum source; the upper bound is stored here. Grey water footprint is 0.63 L/kg excluding flue-gas-desulphurisation gypsum."
   },
   {
-    "product": "Flat glass",
+    "product": "Soda-lime float glass",
     "category": "Manufactured",
-    "waterFootprintLiters": 25,
+    "waterFootprintLiters": 5.8,
     "unit": "per kg",
-    "source": "Water Footprint Network (various)",
-    "sourceUrl": "https://waterfootprint.org/en/resources/waterstat/",
-    "methodology": "Weighted global average. Values may vary by production method and location."
+    "waterType": "blue",
+    "source": "Gerbens-Leenes, Hoekstra & Bosman (2018), Water Resources and Industry",
+    "sourceUrl": "https://doi.org/10.1016/j.wri.2017.11.002",
+    "methodology": "Blue water footprint of soda-lime float glass: 3.2 L/kg process water plus 2.6 L/kg energy-related, with soda ash from the Solvay process. Grey water footprint is 1,300 L/kg for suspended solids."
   },
   {
-    "product": "PET plastic (virgin)",
-    "category": "Manufactured",
-    "waterFootprintLiters": 180,
-    "unit": "per kg",
-    "source": "Water Footprint Network (various)",
-    "sourceUrl": "https://waterfootprint.org/en/resources/waterstat/",
-    "methodology": "Weighted global average. Values may vary by production method and location."
+    "product": "AI text prompt (Gemini, median)",
+    "category": "Digital & Computing",
+    "waterFootprintLiters": 0.00026,
+    "unit": "per prompt",
+    "waterType": "lifecycle-onsite",
+    "source": "Google (2025), Measuring the environmental impact of delivering AI at Google Scale",
+    "sourceUrl": "https://arxiv.org/abs/2508.15734",
+    "methodology": "Median Gemini Apps text prompt: 0.26 mL of on-site data-centre water consumption, alongside 0.24 Wh of energy and 0.03 gCO2e. Counts cooling water at the data centre only; it excludes the indirect water used to generate the electricity consumed."
   },
   {
-    "product": "Compact car",
-    "category": "Manufactured",
-    "waterFootprintLiters": 400000,
-    "unit": "per unit",
-    "source": "Water Footprint Network (various)",
-    "sourceUrl": "https://waterfootprint.org/en/resources/waterstat/",
-    "methodology": "Weighted global average. Values may vary by production method and location."
+    "product": "AI text responses (GPT-3)",
+    "category": "Digital & Computing",
+    "waterFootprintLiters": 0.5,
+    "unit": "per 10-50 responses",
+    "waterType": "lifecycle-total",
+    "source": "Li, Yang, Islam & Ren (2025), Communications of the ACM 68:54-63",
+    "sourceUrl": "https://doi.org/10.1145/3724499",
+    "methodology": "GPT-3 consumes a 500 mL bottle of water for roughly 10-50 medium-length responses, depending on when and where it is deployed. Includes scope-1 on-site cooling plus the water embodied in electricity generation, which is why it sits orders of magnitude above on-site-only figures for the same unit of work."
+  },
+  {
+    "product": "GPT-3 training run (on-site)",
+    "category": "Digital & Computing",
+    "waterFootprintLiters": 700000,
+    "unit": "per training run",
+    "waterType": "lifecycle-onsite",
+    "source": "Li, Yang, Islam & Ren (2025), Communications of the ACM 68:54-63",
+    "sourceUrl": "https://doi.org/10.1145/3724499",
+    "methodology": "Scope-1 on-site water directly evaporated to cool Microsoft’s U.S. data centres while training the 175-billion-parameter GPT-3 model."
+  },
+  {
+    "product": "GPT-3 training run (total)",
+    "category": "Digital & Computing",
+    "waterFootprintLiters": 5400000,
+    "unit": "per training run",
+    "waterType": "lifecycle-total",
+    "source": "Li, Yang, Islam & Ren (2025), Communications of the ACM 68:54-63",
+    "sourceUrl": "https://doi.org/10.1145/3724499",
+    "methodology": "Total water footprint of training GPT-3: 5.4 million L, including the 700,000 L of scope-1 on-site consumption, with the remainder embodied in electricity generation."
+  },
+  {
+    "product": "Bitcoin transaction",
+    "category": "Digital & Computing",
+    "waterFootprintLiters": 16000,
+    "unit": "per transaction",
+    "waterType": "lifecycle-total",
+    "source": "de Vries (2023), Cell Reports Sustainability",
+    "sourceUrl": "https://doi.org/10.1016/j.crsus.2023.100004",
+    "methodology": "Average water footprint per Bitcoin transaction in 2021, combining data-centre cooling with water consumed by the power plants supplying the mining electricity."
   }
 ]

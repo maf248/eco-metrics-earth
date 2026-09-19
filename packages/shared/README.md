@@ -36,19 +36,29 @@ const ECO_CATEGORIES = {
 type EcoCategory = (typeof ECO_CATEGORIES)[keyof typeof ECO_CATEGORIES];
 ```
 
-### `WaterFootprintCategory` / `WaterFootprintProduct` / `waterFootprintCategorySlugMap`
+### `WaterFootprintCategory` / `WaterFootprintWaterType` / `WaterFootprintProduct` / `waterFootprintCategorySlugMap` / `waterFootprintWaterTypeLabels`
 
-Types and slug map for the static water-footprint product dataset served by the API
-(`GET /api/v1/water-footprint/products`). Dataset plan: `docs/planning/water-footprint.md`.
+Types, slug map and display labels for the static water-footprint product dataset served by
+the API (`GET /api/v1/water-footprint/products`). Dataset plan: `docs/planning/water-footprint.md`.
 
 ```typescript
-type WaterFootprintCategory = 'Food & Beverages' | 'Textiles' | 'Technology' | 'Manufactured';
+type WaterFootprintCategory =
+  'Food & Beverages' | 'Textiles' | 'Technology' | 'Manufactured' | 'Digital & Computing';
+
+// Measurement scope of the value. Entries of different water types are NOT
+// directly comparable — see docs/data-sources/water-footprint.md.
+type WaterFootprintWaterType =
+  | 'blue' // freshwater withdrawals only
+  | 'green-blue-grey' // rainwater + blue + dilution water for pollution
+  | 'lifecycle-onsite' // LCA, direct water at the facility (scope 1)
+  | 'lifecycle-total'; // LCA, on-site + water embodied in inputs and electricity
 
 interface WaterFootprintProduct {
   product: string;
   category: WaterFootprintCategory;
   waterFootprintLiters: number | null; // null when the source reports zero or missing data
   unit: string; // functional unit (e.g. per kg, per unit)
+  waterType: WaterFootprintWaterType; // required: what the value measures
   source: string;
   sourceUrl: string;
   methodology?: string;

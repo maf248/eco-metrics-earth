@@ -24,6 +24,22 @@ describe('formatLiters', () => {
   it('should format 400000 with grouping separators and no decimal', () => {
     expect(formatLiters(400000)).toBe('400,000');
   });
+
+  it('should format 5400000 with grouping separators', () => {
+    expect(formatLiters(5400000)).toBe('5,400,000');
+  });
+
+  it('should keep a sub-litre value readable instead of rounding it to zero', () => {
+    expect(formatLiters(0.00026)).toBe('0.00026');
+  });
+
+  it('should format a half litre unchanged', () => {
+    expect(formatLiters(0.5)).toBe('0.5');
+  });
+
+  it('should format zero as zero', () => {
+    expect(formatLiters(0)).toBe('0');
+  });
 });
 
 describe('formatWaterFootprintEquivalents', () => {
@@ -53,5 +69,9 @@ describe('formatWaterFootprintEquivalents', () => {
 
   it('should round very large values to integers', () => {
     expect(formatWaterFootprintEquivalents(400000)).toBe('≈ 6,154 showers · ≈ 2,667 bathtubs');
+  });
+
+  it('should return "under 1 shower" for a sub-litre value', () => {
+    expect(formatWaterFootprintEquivalents(0.00026)).toBe('under 1 shower');
   });
 });

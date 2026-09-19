@@ -27,7 +27,7 @@ The **runtime stage** SHALL copy only `apps/api/dist` from the builder (as `/app
 - **WHEN** `PORT=8080 NODE_ENV=production CORS_ORIGIN=<url> SWAGGER_ENABLED=false node main.js` runs
 - **THEN** the NestJS app starts and listens on the injected `PORT`
 - **AND** `GET /api/v1/health` returns `200` with `{ "status": "ok" }`
-- **AND** `GET /api/v1/water-footprint/products` returns `200` with `success: true` and 52 products
+- **AND** `GET /api/v1/water-footprint/products` returns `200` with `success: true` and 53 products
 
 #### Scenario: Security pins are preserved in the image
 
@@ -167,7 +167,7 @@ The workflow SHALL read exactly five repository **variables** (Settings → Secr
 
 ### Requirement: Post-deploy verification proves the deployed BFF end-to-end
 
-The runbook SHALL define the user-executed verification (curl + browser — not automated specs): `GET /api/v1/health` on the deployed `*.run.app` URL returns `200` `{ "status": "ok" }`; `GET /api/v1/water-footprint/products` returns `success: true` with 52 products; after setting `API_BASE_URL=https://<run-url>/api/v1` in Vercel (Production AND Preview) and a redeploy (or ISR self-heal within 24 h), the deployed `/water-footprint/` page renders the product table from the deployed BFF.
+The runbook SHALL define the user-executed verification (curl + browser — not automated specs): `GET /api/v1/health` on the deployed `*.run.app` URL returns `200` `{ "status": "ok" }`; `GET /api/v1/water-footprint/products` returns `success: true` with 53 products; after setting `API_BASE_URL=https://<run-url>/api/v1` in Vercel (Production AND Preview) and a redeploy (or ISR self-heal within 24 h), the deployed `/water-footprint/` page renders the product table from the deployed BFF.
 
 #### Scenario: Health on the deployed URL
 
@@ -177,7 +177,7 @@ The runbook SHALL define the user-executed verification (curl + browser — not 
 #### Scenario: Full dataset on the deployed URL
 
 - **WHEN** `curl https://<run-url>/api/v1/water-footprint/products` runs
-- **THEN** the response is `200` with `success: true` and `data` containing 52 products
+- **THEN** the response is `200` with `success: true` and `data` containing 53 products
 
 #### Scenario: The deployed web page renders from the deployed BFF
 

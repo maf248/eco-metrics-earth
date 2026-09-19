@@ -8,9 +8,20 @@ export const BATHTUB_LITERS = 150;
 const formatter = new Intl.NumberFormat('en-US', { maximumFractionDigits: 1 });
 
 /**
- * Formats a number of liters with a single decimal place when needed.
+ * Sub-litre values (e.g. 0.00026 L per AI prompt) round to "0" under the main
+ * formatter's single-decimal rule, so they are formatted by significant digits
+ * instead.
+ */
+const subLiterFormatter = new Intl.NumberFormat('en-US', { maximumSignificantDigits: 2 });
+
+/**
+ * Formats a number of liters with a single decimal place when needed, keeping
+ * values below 1 L readable rather than collapsing them to zero.
  */
 export function formatLiters(liters: number): string {
+  if (liters !== 0 && Math.abs(liters) < 1) {
+    return subLiterFormatter.format(liters);
+  }
   return formatter.format(liters);
 }
 
