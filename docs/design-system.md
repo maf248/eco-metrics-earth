@@ -37,6 +37,12 @@ Pending — see `docs/technical/libraries.md`
 
 - Spacing follows Tailwind CSS v4's default spacing scale (the `4px`-based `space-*`/`p-*`/`m-*`/`gap-*` utilities) as currently used across the codebase. No custom spacing tokens are defined.
 
+## Layout
+
+- Desktop (`lg+`) sidebar (`Navbar.tsx`): fixed width `lg:w-76` (304px), matched by `lg:pl-76` on the page content offset (`layout.tsx`) — the two must move in lockstep.
+- Desktop nav item rows (`NavLink.tsx`): row density `lg:py-2`, chosen so all 12 `NAV_ITEMS` fit within a typical desktop viewport height (~700px+) without scrolling.
+- Vertical scroll affordance (`NavScrollContainer.tsx`): on desktop, top/bottom gradient overlays signal hidden nav items above/below the visible area, mirroring the existing horizontal affordance used by the mobile bottom bar. Both reuse the same `--color-nav-surface`/`--color-nav-surface-dark` tokens as their horizontal counterparts, oriented vertically (`bg-gradient-to-b` / `bg-gradient-to-t`).
+
 ## Visualization Heuristics
 
 | Data shape                     | Pattern                                |

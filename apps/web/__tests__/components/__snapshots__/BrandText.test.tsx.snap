@@ -4,7 +4,7 @@ exports[`BrandText snapshots should match snapshot after typing completes (norma
 <DocumentFragment>
   <span
     aria-hidden="true"
-    class="font-mono text-sm font-medium text-emerald-700 dark:text-emerald-400 tracking-tight"
+    class="font-mono text-sm font-medium text-emerald-700 dark:text-emerald-400 tracking-tight whitespace-nowrap"
   >
     ~ eco-metrics.earth
   </span>
@@ -27,7 +27,7 @@ exports[`BrandText snapshots should match snapshot with reduced motion 1`] = `
 <DocumentFragment>
   <span
     aria-hidden="true"
-    class="font-mono text-sm font-medium text-emerald-700 dark:text-emerald-400 tracking-tight"
+    class="font-mono text-sm font-medium text-emerald-700 dark:text-emerald-400 tracking-tight whitespace-nowrap"
   >
     ~ eco-metrics.earth
   </span>

@@ -124,6 +124,68 @@ describe('NavScrollContainer — scroll affordance widths', () => {
   });
 });
 
+describe('NavScrollContainer — vertical scroll affordances', () => {
+  function setVerticalScrollProps(
+    el: Element,
+    opts: { scrollTop: number; scrollHeight: number; clientHeight: number },
+  ) {
+    Object.defineProperty(el, 'scrollTop', { value: opts.scrollTop, configurable: true });
+    Object.defineProperty(el, 'scrollHeight', { value: opts.scrollHeight, configurable: true });
+    Object.defineProperty(el, 'clientHeight', { value: opts.clientHeight, configurable: true });
+  }
+
+  // Top affordance fades downward (to-b), bottom affordance fades upward (to-t).
+  const topAffordance = () => document.querySelector('[aria-hidden="true"].bg-gradient-to-b');
+  const bottomAffordance = () => document.querySelector('[aria-hidden="true"].bg-gradient-to-t');
+
+  it('should show no vertical affordances when content is not vertically scrollable', () => {
+    render(<NavScrollContainer>{null}</NavScrollContainer>);
+    const ul = screen.getByRole('list');
+    setVerticalScrollProps(ul, { scrollTop: 0, scrollHeight: 300, clientHeight: 300 });
+    fireEvent.scroll(ul);
+    expect(topAffordance()).toBeNull();
+    expect(bottomAffordance()).toBeNull();
+  });
+
+  it('should show only the bottom affordance when scrolled to the top with overflow', () => {
+    render(<NavScrollContainer>{null}</NavScrollContainer>);
+    const ul = screen.getByRole('list');
+    setVerticalScrollProps(ul, { scrollTop: 0, scrollHeight: 600, clientHeight: 300 });
+    fireEvent.scroll(ul);
+    expect(topAffordance()).toBeNull();
+    expect(bottomAffordance()).not.toBeNull();
+  });
+
+  it('should show both vertical affordances when scrolled to the middle', () => {
+    render(<NavScrollContainer>{null}</NavScrollContainer>);
+    const ul = screen.getByRole('list');
+    setVerticalScrollProps(ul, { scrollTop: 150, scrollHeight: 600, clientHeight: 300 });
+    fireEvent.scroll(ul);
+    expect(topAffordance()).not.toBeNull();
+    expect(bottomAffordance()).not.toBeNull();
+  });
+
+  it('should show only the top affordance when scrolled to the bottom', () => {
+    render(<NavScrollContainer>{null}</NavScrollContainer>);
+    const ul = screen.getByRole('list');
+    setVerticalScrollProps(ul, { scrollTop: 300, scrollHeight: 600, clientHeight: 300 });
+    fireEvent.scroll(ul);
+    expect(topAffordance()).not.toBeNull();
+    expect(bottomAffordance()).toBeNull();
+  });
+
+  it('should hide vertical affordances below the lg breakpoint', () => {
+    render(<NavScrollContainer>{null}</NavScrollContainer>);
+    const ul = screen.getByRole('list');
+    setVerticalScrollProps(ul, { scrollTop: 150, scrollHeight: 600, clientHeight: 300 });
+    fireEvent.scroll(ul);
+    for (const el of [topAffordance(), bottomAffordance()]) {
+      expect(el?.className).toContain('hidden');
+      expect(el?.className).toContain('lg:block');
+    }
+  });
+});
+
 describe('NavScrollContainer snapshots', () => {
   it('should match snapshot with no scroll affordances', () => {
     const { asFragment } = render(

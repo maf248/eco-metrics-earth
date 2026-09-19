@@ -101,9 +101,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
            * Content offset — three fixed UI zones:
            *  - Mobile top:    pt-14 on each <main> clears the MobileHeader
            *  - Mobile bottom: pb-20 clears the fixed bottom nav (h-20)
-           *  - Desktop left:  lg:pl-68 clears the fixed left sidebar (w-72)
+           *  - Desktop left:  lg:pl-76 clears the fixed left sidebar (w-76)
            */}
-          <div className="pb-20 lg:pb-0 lg:pl-68">{children}</div>
+          <div className="pb-20 lg:pb-0 lg:pl-76">{children}</div>
         </ThemeProvider>
       </body>
     </html>

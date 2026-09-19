@@ -147,6 +147,12 @@ describe('BrandText — decorative elements', () => {
     expect(brandSpan.className).toContain('font-mono');
     expect(brandSpan.className).toContain('text-emerald-400');
   });
+
+  it('should have whitespace-nowrap on brand text span to prevent wrapping', () => {
+    const { container } = render(<BrandText />);
+    const brandSpan = container.querySelectorAll('span[aria-hidden="true"]')[0];
+    expect(brandSpan.className).toContain('whitespace-nowrap');
+  });
 });
 
 // ─── Snapshots ────────────────────────────────────────────────────────────────

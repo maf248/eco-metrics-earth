@@ -20,7 +20,7 @@ function NavLink({ href, icon: Icon, label, isActive }: NavLinkProps) {
         // Mobile: fixed-width column, equal spacing regardless of label length
         'flex flex-col items-center justify-start w-20 h-full gap-1 pt-3 pb-1 px-1 lg:h-auto',
         // Desktop: horizontal row, fixed height
-        'lg:w-full lg:flex-row lg:justify-start lg:gap-3 lg:px-5 lg:py-3 lg:rounded-lg',
+        'lg:w-full lg:flex-row lg:justify-start lg:gap-3 lg:px-5 lg:py-2 lg:rounded-lg',
         // Typography
         'text-[10px] lg:text-sm font-medium leading-tight transition-colors duration-150',
         // Colour + background: active vs inactive

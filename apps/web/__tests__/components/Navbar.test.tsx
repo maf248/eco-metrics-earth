@@ -112,6 +112,12 @@ describe('Navbar', () => {
     const brandLink = screen.getByRole('link', { name: /eco-metrics earth/i });
     expect(brandLink.getAttribute('href')).toBe('/');
   });
+
+  it('should have desktop sidebar width lg:w-76', () => {
+    render(<Navbar />);
+    const nav = screen.getByRole('navigation');
+    expect(nav.className).toContain('lg:w-76');
+  });
 });
 
 describe('Navbar snapshots', () => {
