@@ -36,7 +36,7 @@ src/
 ├── modules/
 │   └── water-footprint/      # WaterFootprintModule — module, controller, service
 ├── data/
-│   └── water-footprint.json  # Static product dataset (52 products, with citations)
+│   └── water-footprint.json  # Static product dataset (53 products, with citations)
 ├── common/
 │   └── dto/                  # Shared DTOs with `class-validator` decorators
 └── main.ts
@@ -66,12 +66,12 @@ appConfig.corsOrigin; // CORS_ORIGIN
 
 ## Endpoints
 
-| Method | Path                               | Description                                                                                                            | Response                               |
-| ------ | ---------------------------------- | ---------------------------------------------------------------------------------------------------------------------- | -------------------------------------- |
-| `GET`  | `/api/v1/health`                   | Liveness check                                                                                                         | `{ status: 'ok' }`                     |
-| `GET`  | `/api/v1/demo-validation`          | **Mock** — query param validation demo                                                                                 | `{ query: GetMetricsQueryDto }`        |
-| `POST` | `/api/v1/demo-validation`          | **Mock** — body validation demo                                                                                        | `{ body: CreateMetricDto }`            |
-| `GET`  | `/api/v1/water-footprint/products` | Static product dataset — optional `category` query filter (`food-beverages`, `textiles`, `technology`, `manufactured`) | `ApiResponse<WaterFootprintProduct[]>` |
+| Method | Path                               | Description                                                                                                                                 | Response                               |
+| ------ | ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------- |
+| `GET`  | `/api/v1/health`                   | Liveness check                                                                                                                              | `{ status: 'ok' }`                     |
+| `GET`  | `/api/v1/demo-validation`          | **Mock** — query param validation demo                                                                                                      | `{ query: GetMetricsQueryDto }`        |
+| `POST` | `/api/v1/demo-validation`          | **Mock** — body validation demo                                                                                                             | `{ body: CreateMetricDto }`            |
+| `GET`  | `/api/v1/water-footprint/products` | Static product dataset — optional `category` query filter (`food-beverages`, `textiles`, `technology`, `manufactured`, `digital-computing`) | `ApiResponse<WaterFootprintProduct[]>` |
 
 ---
 

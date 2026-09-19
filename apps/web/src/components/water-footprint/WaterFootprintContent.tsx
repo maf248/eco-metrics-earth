@@ -10,9 +10,16 @@ interface WaterFootprintContentProps {
 export function WaterFootprintContent({ products, fetchFailed }: WaterFootprintContentProps) {
   return (
     <div className="w-full max-w-6xl px-4">
-      <p className="mb-6 text-center text-gray-600 dark:text-gray-400">
-        Compare the water footprint of everyday products — from food and textiles to technology and
-        manufactured goods.
+      <p className="mb-3 text-center text-gray-600 dark:text-gray-400">
+        Compare the water footprint of everyday products — from food and textiles to technology,
+        manufactured goods and computing.
+      </p>
+      <p className="mb-6 text-center text-sm text-gray-500 dark:text-gray-400">
+        Entries are measured on different bases — see the &ldquo;Water type&rdquo; column.
+        Blue-water values count freshwater withdrawals only, green + blue + grey values also count
+        rainwater and the water needed to dilute pollution, and life-cycle values differ by whether
+        they include the water embodied in electricity. Values of different water types are not
+        directly comparable.
       </p>
 
       {fetchFailed && (

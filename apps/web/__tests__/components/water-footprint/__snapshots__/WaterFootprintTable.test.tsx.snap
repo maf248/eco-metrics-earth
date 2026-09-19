@@ -20,14 +20,14 @@ exports[`WaterFootprintTable should match the default render snapshot 1`] = `
           <input
             checked=""
             class="peer sr-only"
-            id="_r_k_-all"
-            name="_r_k_"
+            id="_r_u_-all"
+            name="_r_u_"
             type="radio"
             value="all"
           />
           <label
             class="cursor-pointer rounded-full border border-gray-300 bg-white px-3 py-1 text-sm text-gray-700 transition-colors peer-checked:border-emerald-700 peer-checked:bg-emerald-700 peer-checked:text-white hover:bg-gray-50 peer-focus-visible:outline-none peer-focus-visible:ring-2 peer-focus-visible:ring-emerald-700 peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-white dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700 dark:peer-focus-visible:ring-emerald-400 dark:peer-focus-visible:ring-offset-gray-950"
-            for="_r_k_-all"
+            for="_r_u_-all"
           >
             All
           </label>
@@ -35,14 +35,14 @@ exports[`WaterFootprintTable should match the default render snapshot 1`] = `
         <div>
           <input
             class="peer sr-only"
-            id="_r_k_-Food & Beverages"
-            name="_r_k_"
+            id="_r_u_-Food & Beverages"
+            name="_r_u_"
             type="radio"
             value="Food & Beverages"
           />
           <label
             class="cursor-pointer rounded-full border border-gray-300 bg-white px-3 py-1 text-sm text-gray-700 transition-colors peer-checked:border-emerald-700 peer-checked:bg-emerald-700 peer-checked:text-white hover:bg-gray-50 peer-focus-visible:outline-none peer-focus-visible:ring-2 peer-focus-visible:ring-emerald-700 peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-white dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700 dark:peer-focus-visible:ring-emerald-400 dark:peer-focus-visible:ring-offset-gray-950"
-            for="_r_k_-Food & Beverages"
+            for="_r_u_-Food & Beverages"
           >
             Food & Beverages
           </label>
@@ -50,14 +50,14 @@ exports[`WaterFootprintTable should match the default render snapshot 1`] = `
         <div>
           <input
             class="peer sr-only"
-            id="_r_k_-Textiles"
-            name="_r_k_"
+            id="_r_u_-Textiles"
+            name="_r_u_"
             type="radio"
             value="Textiles"
           />
           <label
             class="cursor-pointer rounded-full border border-gray-300 bg-white px-3 py-1 text-sm text-gray-700 transition-colors peer-checked:border-emerald-700 peer-checked:bg-emerald-700 peer-checked:text-white hover:bg-gray-50 peer-focus-visible:outline-none peer-focus-visible:ring-2 peer-focus-visible:ring-emerald-700 peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-white dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700 dark:peer-focus-visible:ring-emerald-400 dark:peer-focus-visible:ring-offset-gray-950"
-            for="_r_k_-Textiles"
+            for="_r_u_-Textiles"
           >
             Textiles
           </label>
@@ -65,14 +65,14 @@ exports[`WaterFootprintTable should match the default render snapshot 1`] = `
         <div>
           <input
             class="peer sr-only"
-            id="_r_k_-Technology"
-            name="_r_k_"
+            id="_r_u_-Technology"
+            name="_r_u_"
             type="radio"
             value="Technology"
           />
           <label
             class="cursor-pointer rounded-full border border-gray-300 bg-white px-3 py-1 text-sm text-gray-700 transition-colors peer-checked:border-emerald-700 peer-checked:bg-emerald-700 peer-checked:text-white hover:bg-gray-50 peer-focus-visible:outline-none peer-focus-visible:ring-2 peer-focus-visible:ring-emerald-700 peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-white dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700 dark:peer-focus-visible:ring-emerald-400 dark:peer-focus-visible:ring-offset-gray-950"
-            for="_r_k_-Technology"
+            for="_r_u_-Technology"
           >
             Technology
           </label>
@@ -80,16 +80,31 @@ exports[`WaterFootprintTable should match the default render snapshot 1`] = `
         <div>
           <input
             class="peer sr-only"
-            id="_r_k_-Manufactured"
-            name="_r_k_"
+            id="_r_u_-Manufactured"
+            name="_r_u_"
             type="radio"
             value="Manufactured"
           />
           <label
             class="cursor-pointer rounded-full border border-gray-300 bg-white px-3 py-1 text-sm text-gray-700 transition-colors peer-checked:border-emerald-700 peer-checked:bg-emerald-700 peer-checked:text-white hover:bg-gray-50 peer-focus-visible:outline-none peer-focus-visible:ring-2 peer-focus-visible:ring-emerald-700 peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-white dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700 dark:peer-focus-visible:ring-emerald-400 dark:peer-focus-visible:ring-offset-gray-950"
-            for="_r_k_-Manufactured"
+            for="_r_u_-Manufactured"
           >
             Manufactured
+          </label>
+        </div>
+        <div>
+          <input
+            class="peer sr-only"
+            id="_r_u_-Digital & Computing"
+            name="_r_u_"
+            type="radio"
+            value="Digital & Computing"
+          />
+          <label
+            class="cursor-pointer rounded-full border border-gray-300 bg-white px-3 py-1 text-sm text-gray-700 transition-colors peer-checked:border-emerald-700 peer-checked:bg-emerald-700 peer-checked:text-white hover:bg-gray-50 peer-focus-visible:outline-none peer-focus-visible:ring-2 peer-focus-visible:ring-emerald-700 peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-white dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700 dark:peer-focus-visible:ring-emerald-400 dark:peer-focus-visible:ring-offset-gray-950"
+            for="_r_u_-Digital & Computing"
+          >
+            Digital & Computing
           </label>
         </div>
       </div>
@@ -97,16 +112,16 @@ exports[`WaterFootprintTable should match the default render snapshot 1`] = `
     <p
       aria-live="polite"
       class="sr-only"
-      id="_r_l_"
+      id="_r_v_"
       role="status"
     >
-      Showing 5 of 5 products — All categories, sorted by water footprint (high to low)
+      Showing 6 of 6 products — All categories, sorted by water footprint (high to low)
     </p>
     <p
       aria-hidden="true"
       class="mb-4 text-sm text-gray-600 dark:text-gray-400"
     >
-      Showing 5 of 5 products — All categories, sorted by water footprint (high to low)
+      Showing 6 of 6 products — All categories, sorted by water footprint (high to low)
     </p>
     <div
       class="hidden lg:block overflow-x-auto"
@@ -165,6 +180,12 @@ exports[`WaterFootprintTable should match the default render snapshot 1`] = `
               class="py-2 pr-4 font-semibold text-gray-900 dark:text-white"
               scope="col"
             >
+              Water type
+            </th>
+            <th
+              class="py-2 pr-4 font-semibold text-gray-900 dark:text-white"
+              scope="col"
+            >
               Contextual equivalent
             </th>
             <th
@@ -176,62 +197,6 @@ exports[`WaterFootprintTable should match the default render snapshot 1`] = `
           </tr>
         </thead>
         <tbody>
-          <tr
-            class="border-b border-gray-100 dark:border-gray-800"
-          >
-            <th
-              class="py-2 pr-4 font-medium text-gray-900 dark:text-white"
-              scope="row"
-            >
-              Smartphone (1 unit)
-            </th>
-            <td
-              class="py-2 pr-4 text-gray-700 dark:text-gray-300"
-            >
-              Technology
-            </td>
-            <td
-              class="py-2 pr-4 text-gray-700 dark:text-gray-300"
-            >
-              12,760 L 
-              <span
-                class="text-gray-500 dark:text-gray-400"
-              >
-                per unit
-              </span>
-            </td>
-            <td
-              class="py-2 pr-4 text-gray-700 dark:text-gray-300"
-            >
-              ≈ 196 showers · ≈ 85.1 bathtubs
-            </td>
-            <td
-              class="py-2 pr-4 text-gray-700 dark:text-gray-300"
-            >
-              <a
-                class="text-emerald-700 underline hover:text-emerald-800 dark:text-emerald-400 dark:hover:text-emerald-300"
-                href="https://www.apple.com/environment/"
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                Apple Environmental Report
-              </a>
-              <details
-                class="mt-1"
-              >
-                <summary
-                  class="cursor-pointer text-gray-600 dark:text-gray-400"
-                >
-                  Methodology
-                </summary>
-                <p
-                  class="mt-1 text-gray-700 dark:text-gray-300"
-                >
-                  Life-cycle assessment of smartphone manufacturing.
-                </p>
-              </details>
-            </td>
-          </tr>
           <tr
             class="border-b border-gray-100 dark:border-gray-800"
           >
@@ -259,6 +224,11 @@ exports[`WaterFootprintTable should match the default render snapshot 1`] = `
             <td
               class="py-2 pr-4 text-gray-700 dark:text-gray-300"
             >
+              Green + blue + grey
+            </td>
+            <td
+              class="py-2 pr-4 text-gray-700 dark:text-gray-300"
+            >
               ≈ 41.5 showers · ≈ 18 bathtubs
             </td>
             <td
@@ -266,11 +236,11 @@ exports[`WaterFootprintTable should match the default render snapshot 1`] = `
             >
               <a
                 class="text-emerald-700 underline hover:text-emerald-800 dark:text-emerald-400 dark:hover:text-emerald-300"
-                href="https://waterfootprint.org/en/resources/waterstat/"
+                href="https://doi.org/10.5194/hess-15-1577-2011"
                 rel="noopener noreferrer"
                 target="_blank"
               >
-                Water Footprint Network
+                Mekonnen & Hoekstra (2011), Hydrology and Earth System Sciences
               </a>
               <details
                 class="mt-1"
@@ -315,6 +285,11 @@ exports[`WaterFootprintTable should match the default render snapshot 1`] = `
             <td
               class="py-2 pr-4 text-gray-700 dark:text-gray-300"
             >
+              Blue water
+            </td>
+            <td
+              class="py-2 pr-4 text-gray-700 dark:text-gray-300"
+            >
               ≈ 2.8 showers · ≈ 1.2 bathtubs
             </td>
             <td
@@ -351,22 +326,27 @@ exports[`WaterFootprintTable should match the default render snapshot 1`] = `
               class="py-2 pr-4 font-medium text-gray-900 dark:text-white"
               scope="row"
             >
-              Cement
+              Microchip (2g)
             </th>
             <td
               class="py-2 pr-4 text-gray-700 dark:text-gray-300"
             >
-              Manufactured
+              Technology
             </td>
             <td
               class="py-2 pr-4 text-gray-700 dark:text-gray-300"
             >
-              5 L 
+              32 L 
               <span
                 class="text-gray-500 dark:text-gray-400"
               >
-                per kg
+                per unit
               </span>
+            </td>
+            <td
+              class="py-2 pr-4 text-gray-700 dark:text-gray-300"
+            >
+              Life cycle (total)
             </td>
             <td
               class="py-2 pr-4 text-gray-700 dark:text-gray-300"
@@ -378,11 +358,11 @@ exports[`WaterFootprintTable should match the default render snapshot 1`] = `
             >
               <a
                 class="text-emerald-700 underline hover:text-emerald-800 dark:text-emerald-400 dark:hover:text-emerald-300"
-                href="https://waterfootprint.org/en/resources/waterstat/"
+                href="https://doi.org/10.1021/es025643o"
                 rel="noopener noreferrer"
                 target="_blank"
               >
-                Water Footprint Network
+                Williams, Ayres & Heller (2002), Environ. Sci. Technol.
               </a>
               <details
                 class="mt-1"
@@ -395,7 +375,129 @@ exports[`WaterFootprintTable should match the default render snapshot 1`] = `
                 <p
                   class="mt-1 text-gray-700 dark:text-gray-300"
                 >
-                  Water footprint of cement production.
+                  Life-cycle water consumption of a 2 g microchip.
+                </p>
+              </details>
+            </td>
+          </tr>
+          <tr
+            class="border-b border-gray-100 dark:border-gray-800"
+          >
+            <th
+              class="py-2 pr-4 font-medium text-gray-900 dark:text-white"
+              scope="row"
+            >
+              Portland cement (CEM I)
+            </th>
+            <td
+              class="py-2 pr-4 text-gray-700 dark:text-gray-300"
+            >
+              Manufactured
+            </td>
+            <td
+              class="py-2 pr-4 text-gray-700 dark:text-gray-300"
+            >
+              2.6 L 
+              <span
+                class="text-gray-500 dark:text-gray-400"
+              >
+                per kg
+              </span>
+            </td>
+            <td
+              class="py-2 pr-4 text-gray-700 dark:text-gray-300"
+            >
+              Blue water
+            </td>
+            <td
+              class="py-2 pr-4 text-gray-700 dark:text-gray-300"
+            >
+              under 1 shower
+            </td>
+            <td
+              class="py-2 pr-4 text-gray-700 dark:text-gray-300"
+            >
+              <a
+                class="text-emerald-700 underline hover:text-emerald-800 dark:text-emerald-400 dark:hover:text-emerald-300"
+                href="https://doi.org/10.1016/j.wri.2017.11.002"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                Gerbens-Leenes, Hoekstra & Bosman (2018), Water Resources and Industry
+              </a>
+              <details
+                class="mt-1"
+              >
+                <summary
+                  class="cursor-pointer text-gray-600 dark:text-gray-400"
+                >
+                  Methodology
+                </summary>
+                <p
+                  class="mt-1 text-gray-700 dark:text-gray-300"
+                >
+                  Blue water footprint of ordinary Portland cement.
+                </p>
+              </details>
+            </td>
+          </tr>
+          <tr
+            class="border-b border-gray-100 dark:border-gray-800"
+          >
+            <th
+              class="py-2 pr-4 font-medium text-gray-900 dark:text-white"
+              scope="row"
+            >
+              AI text prompt (Gemini, median)
+            </th>
+            <td
+              class="py-2 pr-4 text-gray-700 dark:text-gray-300"
+            >
+              Digital & Computing
+            </td>
+            <td
+              class="py-2 pr-4 text-gray-700 dark:text-gray-300"
+            >
+              0.00026 L 
+              <span
+                class="text-gray-500 dark:text-gray-400"
+              >
+                per prompt
+              </span>
+            </td>
+            <td
+              class="py-2 pr-4 text-gray-700 dark:text-gray-300"
+            >
+              Life cycle (on-site)
+            </td>
+            <td
+              class="py-2 pr-4 text-gray-700 dark:text-gray-300"
+            >
+              under 1 shower
+            </td>
+            <td
+              class="py-2 pr-4 text-gray-700 dark:text-gray-300"
+            >
+              <a
+                class="text-emerald-700 underline hover:text-emerald-800 dark:text-emerald-400 dark:hover:text-emerald-300"
+                href="https://arxiv.org/abs/2508.15734"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                Google (2025), Measuring the environmental impact of delivering AI at Google Scale
+              </a>
+              <details
+                class="mt-1"
+              >
+                <summary
+                  class="cursor-pointer text-gray-600 dark:text-gray-400"
+                >
+                  Methodology
+                </summary>
+                <p
+                  class="mt-1 text-gray-700 dark:text-gray-300"
+                >
+                  On-site data-centre water consumption per median text prompt.
                 </p>
               </details>
             </td>
@@ -418,6 +520,11 @@ exports[`WaterFootprintTable should match the default render snapshot 1`] = `
               class="py-2 pr-4 text-gray-700 dark:text-gray-300"
             >
               No data
+            </td>
+            <td
+              class="py-2 pr-4 text-gray-700 dark:text-gray-300"
+            >
+              Blue water
             </td>
             <td
               class="py-2 pr-4 text-gray-700 dark:text-gray-300"
@@ -465,63 +572,6 @@ exports[`WaterFootprintTable should match the default render snapshot 1`] = `
           class="font-semibold text-gray-900 dark:text-white"
         >
           <strong>
-            Smartphone (1 unit)
-          </strong>
-        </p>
-        <p
-          class="text-sm text-gray-700 dark:text-gray-300"
-        >
-          Technology
-        </p>
-        <p
-          class="text-sm text-gray-700 dark:text-gray-300"
-        >
-          12,760 L 
-          <span
-            class="text-gray-500 dark:text-gray-400"
-          >
-            per unit
-          </span>
-        </p>
-        <p
-          class="text-sm text-gray-700 dark:text-gray-300"
-        >
-          ≈ 196 showers · ≈ 85.1 bathtubs
-        </p>
-        <div
-          class="mt-2 text-sm"
-        >
-          <a
-            class="text-emerald-700 underline hover:text-emerald-800 dark:text-emerald-400 dark:hover:text-emerald-300"
-            href="https://www.apple.com/environment/"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            Apple Environmental Report
-          </a>
-          <details
-            class="mt-1"
-          >
-            <summary
-              class="cursor-pointer text-gray-600 dark:text-gray-400"
-            >
-              Methodology
-            </summary>
-            <p
-              class="mt-1 text-gray-700 dark:text-gray-300"
-            >
-              Life-cycle assessment of smartphone manufacturing.
-            </p>
-          </details>
-        </div>
-      </li>
-      <li
-        class="rounded-lg border border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-800"
-      >
-        <p
-          class="font-semibold text-gray-900 dark:text-white"
-        >
-          <strong>
             Cotton t-shirt (250g)
           </strong>
         </p>
@@ -543,6 +593,11 @@ exports[`WaterFootprintTable should match the default render snapshot 1`] = `
         <p
           class="text-sm text-gray-700 dark:text-gray-300"
         >
+          Green + blue + grey
+        </p>
+        <p
+          class="text-sm text-gray-700 dark:text-gray-300"
+        >
           ≈ 41.5 showers · ≈ 18 bathtubs
         </p>
         <div
@@ -550,11 +605,11 @@ exports[`WaterFootprintTable should match the default render snapshot 1`] = `
         >
           <a
             class="text-emerald-700 underline hover:text-emerald-800 dark:text-emerald-400 dark:hover:text-emerald-300"
-            href="https://waterfootprint.org/en/resources/waterstat/"
+            href="https://doi.org/10.5194/hess-15-1577-2011"
             rel="noopener noreferrer"
             target="_blank"
           >
-            Water Footprint Network
+            Mekonnen & Hoekstra (2011), Hydrology and Earth System Sciences
           </a>
           <details
             class="mt-1"
@@ -600,6 +655,11 @@ exports[`WaterFootprintTable should match the default render snapshot 1`] = `
         <p
           class="text-sm text-gray-700 dark:text-gray-300"
         >
+          Blue water
+        </p>
+        <p
+          class="text-sm text-gray-700 dark:text-gray-300"
+        >
           ≈ 2.8 showers · ≈ 1.2 bathtubs
         </p>
         <div
@@ -636,23 +696,28 @@ exports[`WaterFootprintTable should match the default render snapshot 1`] = `
           class="font-semibold text-gray-900 dark:text-white"
         >
           <strong>
-            Cement
+            Microchip (2g)
           </strong>
         </p>
         <p
           class="text-sm text-gray-700 dark:text-gray-300"
         >
-          Manufactured
+          Technology
         </p>
         <p
           class="text-sm text-gray-700 dark:text-gray-300"
         >
-          5 L 
+          32 L 
           <span
             class="text-gray-500 dark:text-gray-400"
           >
-            per kg
+            per unit
           </span>
+        </p>
+        <p
+          class="text-sm text-gray-700 dark:text-gray-300"
+        >
+          Life cycle (total)
         </p>
         <p
           class="text-sm text-gray-700 dark:text-gray-300"
@@ -664,11 +729,11 @@ exports[`WaterFootprintTable should match the default render snapshot 1`] = `
         >
           <a
             class="text-emerald-700 underline hover:text-emerald-800 dark:text-emerald-400 dark:hover:text-emerald-300"
-            href="https://waterfootprint.org/en/resources/waterstat/"
+            href="https://doi.org/10.1021/es025643o"
             rel="noopener noreferrer"
             target="_blank"
           >
-            Water Footprint Network
+            Williams, Ayres & Heller (2002), Environ. Sci. Technol.
           </a>
           <details
             class="mt-1"
@@ -681,7 +746,131 @@ exports[`WaterFootprintTable should match the default render snapshot 1`] = `
             <p
               class="mt-1 text-gray-700 dark:text-gray-300"
             >
-              Water footprint of cement production.
+              Life-cycle water consumption of a 2 g microchip.
+            </p>
+          </details>
+        </div>
+      </li>
+      <li
+        class="rounded-lg border border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-800"
+      >
+        <p
+          class="font-semibold text-gray-900 dark:text-white"
+        >
+          <strong>
+            Portland cement (CEM I)
+          </strong>
+        </p>
+        <p
+          class="text-sm text-gray-700 dark:text-gray-300"
+        >
+          Manufactured
+        </p>
+        <p
+          class="text-sm text-gray-700 dark:text-gray-300"
+        >
+          2.6 L 
+          <span
+            class="text-gray-500 dark:text-gray-400"
+          >
+            per kg
+          </span>
+        </p>
+        <p
+          class="text-sm text-gray-700 dark:text-gray-300"
+        >
+          Blue water
+        </p>
+        <p
+          class="text-sm text-gray-700 dark:text-gray-300"
+        >
+          under 1 shower
+        </p>
+        <div
+          class="mt-2 text-sm"
+        >
+          <a
+            class="text-emerald-700 underline hover:text-emerald-800 dark:text-emerald-400 dark:hover:text-emerald-300"
+            href="https://doi.org/10.1016/j.wri.2017.11.002"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            Gerbens-Leenes, Hoekstra & Bosman (2018), Water Resources and Industry
+          </a>
+          <details
+            class="mt-1"
+          >
+            <summary
+              class="cursor-pointer text-gray-600 dark:text-gray-400"
+            >
+              Methodology
+            </summary>
+            <p
+              class="mt-1 text-gray-700 dark:text-gray-300"
+            >
+              Blue water footprint of ordinary Portland cement.
+            </p>
+          </details>
+        </div>
+      </li>
+      <li
+        class="rounded-lg border border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-800"
+      >
+        <p
+          class="font-semibold text-gray-900 dark:text-white"
+        >
+          <strong>
+            AI text prompt (Gemini, median)
+          </strong>
+        </p>
+        <p
+          class="text-sm text-gray-700 dark:text-gray-300"
+        >
+          Digital & Computing
+        </p>
+        <p
+          class="text-sm text-gray-700 dark:text-gray-300"
+        >
+          0.00026 L 
+          <span
+            class="text-gray-500 dark:text-gray-400"
+          >
+            per prompt
+          </span>
+        </p>
+        <p
+          class="text-sm text-gray-700 dark:text-gray-300"
+        >
+          Life cycle (on-site)
+        </p>
+        <p
+          class="text-sm text-gray-700 dark:text-gray-300"
+        >
+          under 1 shower
+        </p>
+        <div
+          class="mt-2 text-sm"
+        >
+          <a
+            class="text-emerald-700 underline hover:text-emerald-800 dark:text-emerald-400 dark:hover:text-emerald-300"
+            href="https://arxiv.org/abs/2508.15734"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            Google (2025), Measuring the environmental impact of delivering AI at Google Scale
+          </a>
+          <details
+            class="mt-1"
+          >
+            <summary
+              class="cursor-pointer text-gray-600 dark:text-gray-400"
+            >
+              Methodology
+            </summary>
+            <p
+              class="mt-1 text-gray-700 dark:text-gray-300"
+            >
+              On-site data-centre water consumption per median text prompt.
             </p>
           </details>
         </div>
@@ -705,6 +894,11 @@ exports[`WaterFootprintTable should match the default render snapshot 1`] = `
           class="text-sm text-gray-700 dark:text-gray-300"
         >
           No data
+        </p>
+        <p
+          class="text-sm text-gray-700 dark:text-gray-300"
+        >
+          Blue water
         </p>
         <p
           class="text-sm text-gray-700 dark:text-gray-300"

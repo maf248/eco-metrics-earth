@@ -21,6 +21,7 @@ describe('WaterFootprintService', () => {
       category: 'Food & Beverages',
       waterFootprintLiters: 180.1,
       unit: 'per kg',
+      waterType: 'blue',
       source: 'Poore & Nemecek (2018), Science',
       sourceUrl: 'https://ourworldindata.org/grapher/water-withdrawals-per-kg-poore',
       methodology:
@@ -31,9 +32,20 @@ describe('WaterFootprintService', () => {
       category: 'Textiles',
       waterFootprintLiters: 4030,
       unit: 'per kg',
+      waterType: 'green-blue-grey',
       source: 'Mekonnen & Hoekstra (2011), Hydrology and Earth System Sciences',
       sourceUrl: 'https://waterfootprint.org/en/resources/waterstat/',
       methodology: 'Blue and green water footprint of cotton lint.',
+    },
+    {
+      product: 'Bitcoin transaction',
+      category: 'Digital & Computing',
+      waterFootprintLiters: 16000,
+      unit: 'per transaction',
+      waterType: 'lifecycle-total',
+      source: 'de Vries (2023), Cell Reports Sustainability',
+      sourceUrl: 'https://doi.org/10.1016/j.crsus.2023.100004',
+      methodology: 'Average water footprint per Bitcoin transaction in 2021.',
     },
   ];
 

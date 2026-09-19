@@ -10,6 +10,7 @@ const fixtures: WaterFootprintProduct[] = [
     category: 'Food & Beverages',
     waterFootprintLiters: 180.1,
     unit: 'per kg',
+    waterType: 'blue',
     source: 'Poore & Nemecek (2018), Science',
     sourceUrl: 'https://ourworldindata.org/grapher/water-withdrawals-per-kg-poore',
     methodology: 'Freshwater withdrawals per kg of final product.',
@@ -19,6 +20,7 @@ const fixtures: WaterFootprintProduct[] = [
     category: 'Food & Beverages',
     waterFootprintLiters: null,
     unit: 'per kg',
+    waterType: 'blue',
     source: 'Poore & Nemecek (2018), Science',
     sourceUrl: 'https://ourworldindata.org/grapher/water-withdrawals-per-kg-poore',
     methodology: 'Freshwater withdrawals per kg of final product.',
@@ -28,28 +30,50 @@ const fixtures: WaterFootprintProduct[] = [
     category: 'Textiles',
     waterFootprintLiters: 2700,
     unit: 'per unit',
-    source: 'Water Footprint Network',
-    sourceUrl: 'https://waterfootprint.org/en/resources/waterstat/',
+    waterType: 'green-blue-grey',
+    source: 'Mekonnen & Hoekstra (2011), Hydrology and Earth System Sciences',
+    sourceUrl: 'https://doi.org/10.5194/hess-15-1577-2011',
     methodology: 'Water footprint of cotton textile products.',
   },
   {
-    product: 'Smartphone (1 unit)',
+    product: 'Microchip (2g)',
     category: 'Technology',
-    waterFootprintLiters: 12760,
+    waterFootprintLiters: 32,
     unit: 'per unit',
-    source: 'Apple Environmental Report',
-    sourceUrl: 'https://www.apple.com/environment/',
-    methodology: 'Life-cycle assessment of smartphone manufacturing.',
+    waterType: 'lifecycle-total',
+    source: 'Williams, Ayres & Heller (2002), Environ. Sci. Technol.',
+    sourceUrl: 'https://doi.org/10.1021/es025643o',
+    methodology: 'Life-cycle water consumption of a 2 g microchip.',
   },
   {
-    product: 'Cement',
+    product: 'Portland cement (CEM I)',
     category: 'Manufactured',
-    waterFootprintLiters: 5,
+    waterFootprintLiters: 2.6,
     unit: 'per kg',
-    source: 'Water Footprint Network',
-    sourceUrl: 'https://waterfootprint.org/en/resources/waterstat/',
-    methodology: 'Water footprint of cement production.',
+    waterType: 'blue',
+    source: 'Gerbens-Leenes, Hoekstra & Bosman (2018), Water Resources and Industry',
+    sourceUrl: 'https://doi.org/10.1016/j.wri.2017.11.002',
+    methodology: 'Blue water footprint of ordinary Portland cement.',
   },
+  {
+    product: 'AI text prompt (Gemini, median)',
+    category: 'Digital & Computing',
+    waterFootprintLiters: 0.00026,
+    unit: 'per prompt',
+    waterType: 'lifecycle-onsite',
+    source: 'Google (2025), Measuring the environmental impact of delivering AI at Google Scale',
+    sourceUrl: 'https://arxiv.org/abs/2508.15734',
+    methodology: 'On-site data-centre water consumption per median text prompt.',
+  },
+];
+
+const FILTER_OPTIONS = [
+  'All',
+  'Food & Beverages',
+  'Textiles',
+  'Technology',
+  'Manufactured',
+  'Digital & Computing',
 ];
 
 describe('WaterFootprintTable', () => {
@@ -57,11 +81,12 @@ describe('WaterFootprintTable', () => {
     const { container } = render(<WaterFootprintTable products={fixtures} />);
     const rows = within(container.querySelector('tbody')!).getAllByRole('rowheader');
 
-    expect(rows[0]).toHaveTextContent('Smartphone (1 unit)');
-    expect(rows[1]).toHaveTextContent('Cotton t-shirt (250g)');
-    expect(rows[2]).toHaveTextContent('Apples');
-    expect(rows[3]).toHaveTextContent('Cement');
-    expect(rows[4]).toHaveTextContent('Cassava');
+    expect(rows[0]).toHaveTextContent('Cotton t-shirt (250g)');
+    expect(rows[1]).toHaveTextContent('Apples');
+    expect(rows[2]).toHaveTextContent('Microchip (2g)');
+    expect(rows[3]).toHaveTextContent('Portland cement (CEM I)');
+    expect(rows[4]).toHaveTextContent('AI text prompt (Gemini, median)');
+    expect(rows[5]).toHaveTextContent('Cassava');
   });
 
   it('should place null-footprint products last and show "No data"', () => {
@@ -74,16 +99,54 @@ describe('WaterFootprintTable', () => {
     expect(lastRow).toHaveTextContent('—');
   });
 
+  it('should render a readable sub-litre footprint instead of collapsing it to zero', () => {
+    const { container } = render(<WaterFootprintTable products={fixtures} />);
+    const row = within(container.querySelector('tbody')!)
+      .getAllByRole('row')
+      .find((candidate) => candidate.textContent?.includes('AI text prompt'));
+
+    expect(row).toHaveTextContent('0.00026 L');
+    expect(row).not.toHaveTextContent('0 L per prompt');
+  });
+
+  it('should render the water type label for every product', () => {
+    const { container } = render(<WaterFootprintTable products={fixtures} />);
+    const body = within(container.querySelector('tbody')!);
+
+    expect(body.getAllByRole('row')).toHaveLength(fixtures.length);
+    expect(container.querySelector('tbody')).toHaveTextContent('Blue water');
+    expect(container.querySelector('tbody')).toHaveTextContent('Green + blue + grey');
+    expect(container.querySelector('tbody')).toHaveTextContent('Life cycle (on-site)');
+    expect(container.querySelector('tbody')).toHaveTextContent('Life cycle (total)');
+  });
+
+  it('should not expose a sort control on the water type column', () => {
+    render(<WaterFootprintTable products={fixtures} />);
+
+    expect(screen.getByRole('button', { name: 'Product' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Water footprint' })).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Water type' })).not.toBeInTheDocument();
+  });
+
   it('should filter by category and restore All', async () => {
     render(<WaterFootprintTable products={fixtures} />);
     fireEvent.click(screen.getByRole('radio', { name: 'Textiles' }));
-    expect(screen.getByRole('status')).toHaveTextContent('Showing 1 of 5');
+    expect(screen.getByRole('status')).toHaveTextContent('Showing 1 of 6');
     expect(screen.getByRole('table')).toHaveTextContent('Cotton t-shirt (250g)');
     expect(screen.getByRole('table')).not.toHaveTextContent('Apples');
 
     fireEvent.click(screen.getByRole('radio', { name: 'All' }));
-    expect(screen.getByRole('status')).toHaveTextContent('Showing 5 of 5');
+    expect(screen.getByRole('status')).toHaveTextContent('Showing 6 of 6');
     expect(screen.getByRole('table')).toHaveTextContent('Apples');
+  });
+
+  it('should filter by the Digital & Computing category', () => {
+    render(<WaterFootprintTable products={fixtures} />);
+    fireEvent.click(screen.getByRole('radio', { name: 'Digital & Computing' }));
+
+    expect(screen.getByRole('status')).toHaveTextContent('Showing 1 of 6');
+    expect(screen.getByRole('table')).toHaveTextContent('AI text prompt (Gemini, median)');
+    expect(screen.getByRole('table')).not.toHaveTextContent('Apples');
   });
 
   it('should sort by product name ascending when the Product header is activated', async () => {
@@ -91,8 +154,8 @@ describe('WaterFootprintTable', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Product' }));
 
     const rows = within(container.querySelector('tbody')!).getAllByRole('rowheader');
-    expect(rows[0]).toHaveTextContent('Apples');
-    expect(rows[rows.length - 1]).toHaveTextContent('Smartphone (1 unit)');
+    expect(rows[0]).toHaveTextContent('AI text prompt (Gemini, median)');
+    expect(rows[rows.length - 1]).toHaveTextContent('Portland cement (CEM I)');
   });
 
   it('should flip the water footprint sort direction when the active header is clicked', async () => {
@@ -100,7 +163,7 @@ describe('WaterFootprintTable', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Water footprint' }));
 
     const rows = within(container.querySelector('tbody')!).getAllByRole('rowheader');
-    expect(rows[0]).toHaveTextContent('Cement');
+    expect(rows[0]).toHaveTextContent('AI text prompt (Gemini, median)');
     expect(rows[rows.length - 1]).toHaveTextContent('Cassava');
   });
 
@@ -115,6 +178,9 @@ describe('WaterFootprintTable', () => {
 
     const productHeader = Array.from(headers).find((th) => th.textContent?.includes('Product'));
     expect(productHeader).not.toHaveAttribute('aria-sort');
+
+    const typeHeader = Array.from(headers).find((th) => th.textContent === 'Water type');
+    expect(typeHeader).not.toHaveAttribute('aria-sort');
   });
 
   it('should update the live region when filter or sort changes', async () => {
@@ -122,12 +188,12 @@ describe('WaterFootprintTable', () => {
     const status = screen.getByRole('status');
 
     expect(status).toHaveTextContent(
-      'Showing 5 of 5 products — All categories, sorted by water footprint (high to low)',
+      'Showing 6 of 6 products — All categories, sorted by water footprint (high to low)',
     );
 
     fireEvent.click(screen.getByRole('radio', { name: 'Technology' }));
     expect(status).toHaveTextContent(
-      'Showing 1 of 5 products — Technology, sorted by water footprint (high to low)',
+      'Showing 1 of 6 products — Technology, sorted by water footprint (high to low)',
     );
 
     fireEvent.click(screen.getByRole('button', { name: 'Product' }));
@@ -139,7 +205,7 @@ describe('WaterFootprintTable', () => {
 
     expect(screen.getByRole('table')).toBeInTheDocument();
     expect(screen.getByRole('caption')).toHaveTextContent('Water footprint by product');
-    expect(container.querySelectorAll('th[scope="col"]')).toHaveLength(5);
+    expect(container.querySelectorAll('th[scope="col"]')).toHaveLength(6);
     expect(container.querySelectorAll('th[scope="row"]')).toHaveLength(fixtures.length);
   });
 
@@ -149,6 +215,15 @@ describe('WaterFootprintTable', () => {
 
     expect(list).toBeInTheDocument();
     expect(list?.querySelectorAll('li')).toHaveLength(fixtures.length);
+  });
+
+  it('should render the water type on every card', () => {
+    const { container } = render(<WaterFootprintTable products={fixtures} />);
+    const cards = Array.from(container.querySelectorAll('ul li'));
+    const aiCard = cards.find((card) => card.textContent?.includes('AI text prompt'));
+
+    expect(cards).toHaveLength(fixtures.length);
+    expect(aiCard).toHaveTextContent('Life cycle (on-site)');
   });
 
   it('should show the empty-filter message when the selected filter matches nothing', async () => {
@@ -169,7 +244,7 @@ describe('WaterFootprintTable', () => {
     const { container } = render(<WaterFootprintTable products={fixtures} />);
     const labels = container.querySelectorAll('fieldset label');
 
-    expect(labels).toHaveLength(5);
+    expect(labels).toHaveLength(FILTER_OPTIONS.length);
 
     labels.forEach((label) => {
       const wrapper = label.parentElement;
@@ -185,9 +260,8 @@ describe('WaterFootprintTable', () => {
 
   it('should keep exactly one radio checked when activating each filter option', () => {
     const { container } = render(<WaterFootprintTable products={fixtures} />);
-    const options = ['All', 'Food & Beverages', 'Textiles', 'Technology', 'Manufactured'];
 
-    options.forEach((name) => {
+    FILTER_OPTIONS.forEach((name) => {
       fireEvent.click(screen.getByRole('radio', { name }));
 
       expect(screen.getByRole('radio', { name })).toBeChecked();

@@ -9,6 +9,7 @@ const product: WaterFootprintProduct = {
   category: 'Food & Beverages',
   waterFootprintLiters: 180.1,
   unit: 'per kg',
+  waterType: 'blue',
   source: 'Poore & Nemecek (2018), Science',
   sourceUrl: 'https://ourworldindata.org/grapher/water-withdrawals-per-kg-poore',
   methodology: 'Freshwater withdrawals per kg of final product.',
