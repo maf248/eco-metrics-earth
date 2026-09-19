@@ -1,3 +1,9 @@
+## [2.4.0](https://github.com/maf248/eco-metrics-earth/compare/v2.3.0...v2.4.0) (2026-09-19)
+
+### Features
+
+* **water-footprint:** add water type discriminator and computing category ([f5f6d37](https://github.com/maf248/eco-metrics-earth/commit/f5f6d3717737593547c21b179fb5254c82676432))
+
 ## [2.3.0](https://github.com/maf248/eco-metrics-earth/compare/v2.2.1...v2.3.0) (2026-09-16)
 
 ### Features
