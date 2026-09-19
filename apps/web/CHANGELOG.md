@@ -1,3 +1,9 @@
+## [2.4.1](https://github.com/maf248/eco-metrics-earth/compare/web-v2.4.0...web-v2.4.1) (2026-09-19)
+
+### Bug Fixes
+
+* **web:** keep sidebar brand on one line and make desktop nav scrollable ([53efe08](https://github.com/maf248/eco-metrics-earth/commit/53efe082446cdfb001abf845cc17260680ad1a6b))
+
 ## [2.4.0](https://github.com/maf248/eco-metrics-earth/compare/web-v2.3.0...web-v2.4.0) (2026-09-19)
 
 ## [2.3.0](https://github.com/maf248/eco-metrics-earth/compare/web-v2.2.1...web-v2.3.0) (2026-09-16)
