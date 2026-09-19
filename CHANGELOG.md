@@ -1,3 +1,9 @@
+## [2.4.2](https://github.com/maf248/eco-metrics-earth/compare/v2.4.1...v2.4.2) (2026-09-19)
+
+### Bug Fixes
+
+* **tooling:** make web typecheck wait for shared build ([8fdd7a5](https://github.com/maf248/eco-metrics-earth/commit/8fdd7a55583ba422d68ede06e405671cd25a3fb9))
+
 ## [2.4.1](https://github.com/maf248/eco-metrics-earth/compare/v2.4.0...v2.4.1) (2026-09-19)
 
 ### Bug Fixes
