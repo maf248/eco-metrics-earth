@@ -1,5 +1,6 @@
 import { spawn, execSync, type ChildProcess } from 'node:child_process';
-import { readFileSync, existsSync } from 'node:fs';
+import { readFileSync, existsSync, rmSync } from 'node:fs';
+import { join } from 'node:path';
 import type { Readable } from 'node:stream';
 import { pathToFileURL } from 'node:url';
 
@@ -334,7 +335,29 @@ async function startApi(manager: ServerManager): Promise<void> {
   }
 }
 
+function clearNextFetchCache(): void {
+  // The Next.js dev server persists fetch() results across restarts in
+  // .next/{dev,cache}/fetch-cache. Stale cache can make E2E see an older
+  // dataset than the API currently serves, so clear it before each run.
+  const caches = [
+    join(process.cwd(), 'apps/web/.next/cache/fetch-cache'),
+    join(process.cwd(), 'apps/web/.next/dev/cache/fetch-cache'),
+  ];
+  for (const cachePath of caches) {
+    if (existsSync(cachePath)) {
+      try {
+        rmSync(cachePath, { recursive: true, force: true });
+        log(`cleared stale fetch cache: ${cachePath}`);
+      } catch (error) {
+        const message = error instanceof Error ? error.message : String(error);
+        logError(`failed to clear fetch cache ${cachePath}: ${message}`);
+      }
+    }
+  }
+}
+
 async function startWeb(manager: ServerManager): Promise<void> {
+  clearNextFetchCache();
   log('starting web server...');
   const web = spawnServer(WEB_COMMAND, WEB_ARGS, manager);
   manager.register(web);

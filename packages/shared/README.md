@@ -43,7 +43,13 @@ the API (`GET /api/v1/water-footprint/products`). Dataset plan: `docs/planning/w
 
 ```typescript
 type WaterFootprintCategory =
-  'Food & Beverages' | 'Textiles' | 'Technology' | 'Manufactured' | 'Digital & Computing';
+  | 'Food & Beverages'
+  | 'Textiles'
+  | 'Technology'
+  | 'Manufactured'
+  | 'Digital & Computing'
+  | 'Vehicles'
+  | 'Energy & Extractives';
 
 // Measurement scope of the value. Entries of different water types are NOT
 // directly comparable — see docs/data-sources/water-footprint.md.

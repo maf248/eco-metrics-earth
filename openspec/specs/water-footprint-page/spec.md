@@ -12,9 +12,9 @@ The `/water-footprint/` page (rendered through the `[category]` route segment) S
 
 #### Scenario: Healthy BFF
 
-- **GIVEN** the BFF serves the 52-product dataset
+- **GIVEN** the BFF serves the 60-product dataset
 - **WHEN** the page is built or ISR-revalidated
-- **THEN** the helper resolves with `fetchFailed: false` and `products` containing 52 entries
+- **THEN** the helper resolves with `fetchFailed: false` and `products` containing 60 entries
 - **THEN** the rendered HTML contains the product data (no client JavaScript required to see it)
 
 #### Scenario: Full dataset fetched once

@@ -111,7 +111,7 @@ Tracks the water consumed to produce everyday goods — food, textiles, technolo
 ### 5. Water Footprint Network — WaterStat
 
 - **URL:** https://www.waterfootprint.org/resources-explained/ — publications & datasets: https://www.waterfootprint.org/publications/
-- **License:** ⚠️ Solo no comercial (verificar) — datasets are free for research and education; WFN collates externally published sources and does not own all copyrights. Review per-dataset terms before commercial use.
+- **License:** ⚠️ Non-commercial only (to verify) — datasets are free for research and education; WFN collates externally published sources and does not own all copyrights. Review per-dataset terms before commercial use.
 - **Model:** Free downloads (Excel, PDF). No API.
 - **Data type:** Static datasets (Mekonnen & Hoekstra studies, 1996–2005 baseline).
 - **Data:** WaterStat: green/blue/grey water footprint of crops and derived products, animal products, national water footprints, international virtual water flows, water scarcity and pollution levels. Covers non-food products (cotton, leather, paper) absent from Poore & Nemecek.
@@ -136,7 +136,7 @@ Tracks the water consumed to produce everyday goods — food, textiles, technolo
 - **Data type:** One value (or range) per product, from published life-cycle assessments.
 - **Data:** Lifecycle water consumption of manufactured products: microchips (~32 L per 2 g chip — Williams et al. 2002), smartphones and laptops, cars, steel, cement, glass, PET. This is the only source category covering **technology and manufactured goods** — Poore & Nemecek covers food only, and WFN covers crops/textiles/paper.
 - **Caveat:** Corporate environmental reports (Apple, Samsung) focus on carbon and usually report water at corporate/supply-chain level, not per device — use them for context and validation; per-product figures come mainly from academic LCA studies.
-- **⚠️ Retired citations (Sep 2026):** the dataset previously carried two entries (Smartphone, Laptop) citing Apple Product Environmental Reports for per-device water, and five entries citing `"Water Footprint Network (various)"`. Neither citation supports its figure — the Apple PERs do not publish per-device water (see the caveat above), and an organisation name without a publication is not retrievable. The three construction materials were re-sourced to Gerbens-Leenes et al. 2018 (provider 7); the other four entries were removed rather than carry an unverifiable number. They may return when a citable per-unit value is found.
+- **⚠️ Retired citations (Sep 2026):** the dataset previously carried two entries (Smartphone, Laptop) citing Apple Product Environmental Reports for per-device water, and five entries citing `"Water Footprint Network (various)"`. Neither citation supports its figure — the Apple PERs do not publish per-device water (see the caveat above), and an organisation name without a publication is not retrievable. The three construction materials were re-sourced to Gerbens-Leenes et al. 2018 (provider 7); the other four entries were removed rather than carry an unverifiable number. The Smartphone returned in this curation via Friends of the Earth / Trucost 2015 (provider 9). The Cotton t-shirt and Pair of jeans citations were also corrected from `"Water Footprint Network (various)"` to Chapagain et al. (2006) (provider 10).
 
 | Field            | Details                                       |
 | ---------------- | --------------------------------------------- |
@@ -152,7 +152,7 @@ Tracks the water consumed to produce everyday goods — food, textiles, technolo
 ### 7. Gerbens-Leenes, Hoekstra & Bosman (2018) — Construction Materials
 
 - **URL:** https://doi.org/10.1016/j.wri.2017.11.002 — _Water Resources and Industry_ 19:1–12. Underlying thesis (free full text): https://essay.utwente.nl/69751/
-- **License:** ⚠️ Cita por dato — the article is CC BY-NC-ND 4.0 on the University of Groningen portal; individual values can be cited with attribution, the document cannot be redistributed.
+- **License:** ⚠️ Citation per data point — the article is CC BY-NC-ND 4.0 on the University of Groningen portal; individual values can be cited with attribution, the document cannot be redistributed.
 - **Model:** Static, manually curated. No API.
 - **Data type:** One blue and one grey value per material.
 - **Data:** Blue and grey water footprints of unalloyed steel (11 / 2,300 L/kg), chromium-nickel alloyed steel (77 / 1,500 L/kg), ordinary Portland cement CEM I (2.0–2.6 / 0.63 L/kg), Portland composite cement CEM II/B (1.7–2.1 / 0.45 L/kg), soda-lime float glass (5.8 / 1,300 L/kg).
@@ -176,14 +176,14 @@ Tracks the water consumed to produce everyday goods — food, textiles, technolo
 Three sources, each reporting water per unit of computing work. They disagree by orders of magnitude **because they draw the system boundary differently** — that disagreement is the reason the dataset carries a `waterType` discriminator.
 
 - **Google (2025), _Measuring the environmental impact of delivering AI at Google Scale_** — https://arxiv.org/abs/2508.15734
-  - **License:** ⚠️ Cita por dato — arXiv preprint, citable with attribution.
+  - **License:** ⚠️ Citation per data point — arXiv preprint, citable with attribution.
   - **Data:** Median Gemini Apps text prompt = 0.26 mL water, 0.24 Wh, 0.03 gCO2e. **Scope:** on-site data-centre cooling only; excludes the indirect water of electricity generation. Mapped to `lifecycle-onsite`.
 - **Li, Yang, Islam & Ren (2025), _Making AI Less "Thirsty"_, Communications of the ACM 68:54–63** — https://doi.org/10.1145/3724499 (preprint: https://arxiv.org/abs/2304.03271)
-  - **License:** ⚠️ Cita por dato — peer-reviewed article, citable with attribution.
+  - **License:** ⚠️ Citation per data point — peer-reviewed article, citable with attribution.
   - **Data:** Training GPT-3 in Microsoft's U.S. data centres consumes 5.4 million L total, including 700,000 L scope-1 on-site. GPT-3 consumes a 500 mL bottle per ~10–50 medium-length responses. Also projects global AI water withdrawal at 4.2–6.6 billion m³ in 2027 (macro — not in the product dataset).
   - **Scope:** on-site (scope 1) figures map to `lifecycle-onsite`; totals including electricity-embodied water map to `lifecycle-total`.
 - **de Vries (2023), _Bitcoin's growing water footprint_, Cell Reports Sustainability** — https://doi.org/10.1016/j.crsus.2023.100004
-  - **License:** ⚠️ Cita por dato — peer-reviewed commentary, citable with attribution.
+  - **License:** ⚠️ Citation per data point — peer-reviewed commentary, citable with attribution.
   - **Data:** ~16,000 L per Bitcoin transaction (2021 average); annual Bitcoin water footprint 1,573.7 GL in 2021. Mapped to `lifecycle-total`.
 
 - **⚠️ Reading these together:** the Google per-prompt figure (0.26 mL) and the Li et al. per-response figure (~10–50 mL) are **not** a contradiction and must not be presented as competing estimates of the same quantity. The IEA estimates ~60 % of data-centre water consumption is indirect, which accounts for most of the gap. Always show the `waterType` alongside the value.
@@ -199,34 +199,142 @@ Three sources, each reporting water per unit of computing work. They disagree by
 
 ---
 
-### 9. Candidates not yet integrated
+### 9. Friends of the Earth / Trucost (2015) — Consumer product footprints
+
+- **URL:** https://www.twosides.info/wp-content/uploads/2018/05/mind-your-step-report-76803.pdf — mirror of _Mind Your Step: The land and water footprints of everyday products_ by Helen Burley, with footprint modelling by Trucost (Friends of the Earth England, 2015).
+- **License:** ⚠️ Citation per data point — report is freely downloadable; individual data points can be cited with attribution.
+- **Model:** Static PDF. No API.
+- **Data type:** One supply-chain water footprint per consumer product.
+- **Data:** Generic smartphone (~12,760 L, ~29% blue / ~11% green / ~60% grey); 100 g milk chocolate bar (1,430 L: 50 blue + 1,350 green + 30 grey). Both entries declare `green-blue-grey` and disclose cocoa/sugar/milk-powder contributions for chocolate.
+- **Caveat:** The report is a campaign document, but the Trucost modelling methodology is documented and the figures are citable per-unit values where no better primary source exists.
+
+| Field            | Details                    |
+| ---------------- | -------------------------- |
+| Base URL         | https://www.twosides.info/ |
+| Auth             | None                       |
+| Free tier        | Yes                        |
+| Rate limit       | N/A                        |
+| Update frequency | Static (2015 report)       |
+| Format           | PDF                        |
+
+---
+
+### 10. Chapagain, Hoekstra, Savenije & Gautam (2006) — Cotton garments
+
+- **URL:** https://www.waterfootprint.org/Reports/Report18.pdf — _The water footprint of cotton consumption_, Value of Water Research Report 18, UNESCO-IHE.
+- **License:** ⚠️ Research/education — Water Footprint Network publications are free for research and education; review per-dataset terms before commercial use.
+- **Model:** Static PDF report. No API.
+- **Data type:** One green + blue + grey water footprint per garment.
+- **Data:** 250 g cotton t-shirt = 2,720 L (1,230 blue + 1,110 green + 380 grey dilution); one pair of jeans at the study's standard 1,000 g weight = 10,850 L (4,900 blue + 4,450 green + 1,500 grey dilution). The peer-reviewed version is _Ecological Economics_ 60(1):186-203 (DOI `10.1016/j.ecolecon.2005.11.027`), but the per-garment figures live in Table 4.4 of the open report.
+- **Note:** this corrected the earlier t-shirt/jeans citations that pointed to Mekonnen & Hoekstra (2011) cotton lint, which does not report the garment-level figures.
+
+| Field            | Details                                      |
+| ---------------- | -------------------------------------------- |
+| Base URL         | https://www.waterfootprint.org/publications/ |
+| Auth             | None                                         |
+| Free tier        | Yes (research/education)                     |
+| Rate limit       | N/A                                          |
+| Update frequency | Static (published study)                     |
+| Format           | PDF                                          |
+
+---
+
+### 11. Chapagain & Hoekstra (2007) — Coffee
+
+- **URL:** https://doi.org/10.1016/j.ecolecon.2007.02.022 — _The water footprint of coffee and tea consumption in the Netherlands_, _Ecological Economics_ 64(1):109-118.
+- **License:** ⚠️ Citation per data point — journal article; individual data points can be cited with attribution.
+- **Model:** Static, peer-reviewed article. No API.
+- **Data type:** Virtual-water content per unit of roasted coffee.
+- **Data:** Standard 125 ml cup from 7 g roasted coffee = 140 L, almost entirely green water at the farm. This coexists with the Poore & Nemecek `Coffee` entry (25.9 L/kg, blue water) to illustrate why the `waterType` discriminator exists.
+
+| Field            | Details                                        |
+| ---------------- | ---------------------------------------------- |
+| Base URL         | https://doi.org/10.1016/j.ecolecon.2007.02.022 |
+| Auth             | None                                           |
+| Free tier        | Partial (article may be paywalled)             |
+| Rate limit       | N/A                                            |
+| Update frequency | Static (published study)                       |
+| Format           | PDF                                            |
+
+---
+
+### 12. Vehicles life-cycle water footprint
+
+Three sources, each reporting water for a different vehicle scope. They disagree by more than an order of magnitude **because they draw the system boundary differently** — that disagreement is the reason the dataset carries a `waterType` discriminator.
+
+- **Bras, Tejada, Yen & Zullo (2012), SAE Technical Paper 2012-01-0646** — https://doi.org/10.4271/2012-01-0646
+  - **License:** ⚠️ Citation per data point — SAE paper, citable with attribution.
+  - **Data:** Cradle-to-grave water consumption of a typical US light-duty gasoline vehicle = 59,600 L (`lifecycle-total`). The stage breakdown is reproduced in Ford Motor Company, Sustainability Report 2011/12.
+- **Semmens, Bras & Guldberg (2014), _The International Journal of Life Cycle Assessment_ 19(1):246-256** — https://doi.org/10.1007/s11367-013-0612-2
+  - **License:** ⚠️ Citation per data point — peer-reviewed article, citable with attribution.
+  - **Data:** Average direct water withdrawal per vehicle assembled = 5,200 L (`lifecycle-onsite`), derived from 12 automotive OEM sustainability reports (2006-2010). Direct consumption is lower (~1,250 L/vehicle); electricity-related indirect consumption adds ~2,210 L/vehicle.
+- **Wang, Shen, Kim, Wallington, Zhang & Han (2020), _Resources, Conservation and Recycling_ 154:104628** — https://doi.org/10.1016/j.resconrec.2019.104628
+  - **License:** ⚠️ Citation per data point — peer-reviewed article, citable with attribution.
+  - **Data:** Life-cycle water consumption of a battery-electric Ford Focus produced and operated in China on the national average grid = 262,000 L (`lifecycle-total`), vs 137,000 L for the gasoline equivalent. Electrification shifts water use from fuel production to electricity generation; the figure is highly grid-dependent (47,000 L on solar, 43,000 L on wind).
+
+| Field            | Details                            |
+| ---------------- | ---------------------------------- |
+| Base URL         | N/A — journal articles / SAE paper |
+| Auth             | None                               |
+| Free tier        | Partial (open access varies)       |
+| Rate limit       | N/A                                |
+| Update frequency | Static (published studies)         |
+| Format           | PDF                                |
+
+---
+
+### 13. Energy & Extractives water footprint
+
+- **U.S. EPA (2016), _Hydraulic Fracturing for Oil and Gas: Impacts from the Hydraulic Fracturing Water Cycle on Drinking Water Resources in the United States_ (Final Report)** — https://cfpub.epa.gov/ncea/hfstudy/recordisplay.cfm?deid=332990
+  - **License:** ✅ U.S. government work — public domain.
+  - **Data:** Median fresh water used per hydraulically fractured well = 5.7 million L (`blue`, withdrawal). Based on FracFocus 1.0 disclosures (Jan 2011-Feb 2013); 10th-90th percentiles 280,000-23,000,000 L. Most injected fluid remains in the subsurface, so this is withdrawal, not consumption.
+- **Flexer, Baspineiro & Galli (2018), _Science of the Total Environment_ 639:1188-1204** — https://doi.org/10.1016/j.scitotenv.2018.05.223
+  - **License:** ⚠️ Citation per data point — peer-reviewed article, citable with attribution.
+  - **Data:** Average brine water lost to evaporation per tonne of lithium carbonate from continental brines = 500,000 L (`lifecycle-onsite`). Freshwater consumption at Salar de Atacama is far lower (~22.5 m³/t per Vera et al. 2023, _Nature Reviews Earth & Environment_ 4:149-165). Whether brine counts as water is methodologically contested (Link et al. 2025, _Water_ 17:1670).
+
+| Field            | Details                             |
+| ---------------- | ----------------------------------- |
+| Base URL         | N/A — EPA report / journal article  |
+| Auth             | None                                |
+| Free tier        | Yes (EPA report); partial (article) |
+| Rate limit       | N/A                                 |
+| Update frequency | Static (published studies)          |
+| Format           | PDF                                 |
+
+---
+
+### 14. Candidates not yet integrated
 
 Researched Sep 2026, deferred to follow-up changes — recorded here so the work is not repeated:
 
 - **NREL / life-cycle water per MWh** — Macknick et al. (2012) _Environ. Res. Lett._ 7:045802 and Meldrum et al. (2013) ERL 8:015031. Litres per MWh by generation technology (coal, gas, nuclear, PV, wind, CSP, geothermal). Open access. This is what makes the _indirect_ water of computing computable, and the natural bridge to the `energy-sources` category.
 - **WRI Aqueduct 4.0** — https://www.wri.org/data/aqueduct-global-maps-40-data, repo https://github.com/wri/Aqueduct40. ✅ **CC BY 4.0** — commercial-safe. 13 baseline water-risk indicators at catchment resolution plus CMIP6 projections for 2030/2050/2080. CSV + geospatial download, no API. The only researched source offering sub-national resolution.
-- **Lithium extraction water footprint** — Nature Reviews Earth & Environment (2022) on direct lithium extraction; a 2024 cradle-to-gate study of Salar de Atacama (442 m³ world-eq per tonne under AWARE); and a study of Argentina's salt flats. Regionally relevant; methodologies vary widely, so each entry needs its accounting basis stated.
 - **AWARE / scarcity weighting (WULCA)** — not a new dataset but a multiplier: 1,000 L in Iceland is not 1,000 L in Atacama. OWID already publishes `scarcity-water-per-kg-poore`.
+- ~~Lithium extraction water footprint~~ — **integrated** via Flexer et al. (2018) in provider 13. What remains deferred is any AWARE-scarcity-weighted or direct-extraction figure (e.g. Vera et al. 2023; Marinova et al. 2024 442 m³ world-eq/t), because those are not physical liters and must not be mixed into a liters column.
 
 ---
 
 ## Available Metrics
 
-| Metric                                                                    | Providers                                  |
-| ------------------------------------------------------------------------- | ------------------------------------------ |
-| Annual freshwater withdrawals (billion m³)                                | OWID, World Bank, AQUASTAT                 |
-| Water stress — SDG 6.4.2 (%)                                              | OWID, World Bank, AQUASTAT                 |
-| Renewable freshwater resources (total / per capita)                       | OWID, World Bank, AQUASTAT                 |
-| Withdrawals by sector (agriculture / industry / municipal)                | OWID, World Bank, AQUASTAT                 |
-| Per-capita water withdrawals                                              | OWID                                       |
-| Global long-run freshwater use (since 1900)                               | OWID                                       |
-| Safely managed drinking water access (%)                                  | World Bank, OWID                           |
-| Wastewater treatment / reuse                                              | AQUASTAT                                   |
-| Product water footprint — food (L/kg, L/kcal, L/protein)                  | OWID Poore & Nemecek                       |
-| Product water footprint — crops, cotton, leather, paper (green/blue/grey) | Water Footprint Network                    |
-| Product water footprint — electronics (L/unit)                            | Academic LCA                               |
-| Product water footprint — steel, cement, glass (blue, L/kg)               | Gerbens-Leenes et al. 2018                 |
-| Water per unit of computing — AI prompt, AI training, Bitcoin tx (L)      | Google 2025, Li et al. 2025, de Vries 2023 |
+| Metric                                                                    | Providers                                               |
+| ------------------------------------------------------------------------- | ------------------------------------------------------- |
+| Annual freshwater withdrawals (billion m³)                                | OWID, World Bank, AQUASTAT                              |
+| Water stress — SDG 6.4.2 (%)                                              | OWID, World Bank, AQUASTAT                              |
+| Renewable freshwater resources (total / per capita)                       | OWID, World Bank, AQUASTAT                              |
+| Withdrawals by sector (agriculture / industry / municipal)                | OWID, World Bank, AQUASTAT                              |
+| Per-capita water withdrawals                                              | OWID                                                    |
+| Global long-run freshwater use (since 1900)                               | OWID                                                    |
+| Safely managed drinking water access (%)                                  | World Bank, OWID                                        |
+| Wastewater treatment / reuse                                              | AQUASTAT                                                |
+| Product water footprint — food (L/kg, L/kcal, L/protein)                  | OWID Poore & Nemecek                                    |
+| Product water footprint — crops, cotton, leather, paper (green/blue/grey) | Water Footprint Network                                 |
+| Product water footprint — cotton garments (t-shirt, jeans)                | Chapagain et al. 2006                                   |
+| Product water footprint — chocolate bar, cup of coffee                    | FoE/Trucost 2015, Chapagain & Hoekstra 2007             |
+| Product water footprint — electronics (L/unit)                            | Academic LCA, FoE/Trucost 2015                          |
+| Product water footprint — steel, cement, glass (blue, L/kg)               | Gerbens-Leenes et al. 2018                              |
+| Product water footprint — passenger cars, battery electric vehicles (L)   | Bras et al. 2012, Semmens et al. 2014, Wang et al. 2020 |
+| Product water footprint — hydraulic fracturing, lithium carbonate         | U.S. EPA 2016, Flexer et al. 2018                       |
+| Water per unit of computing — AI prompt, AI training, Bitcoin tx (L)      | Google 2025, Li et al. 2025, de Vries 2023              |
 
 ## Integration Notes
 
@@ -237,4 +345,4 @@ Researched Sep 2026, deferred to follow-up changes — recorded here so the work
 - Water Footprint Network data is research/education oriented — for the commercial product dataset prefer OWID Poore & Nemecek (CC BY) and cite the primary study per entry, as specified in `docs/planning/water-footprint.md`.
 - **Water type is part of the contract.** Every dataset entry declares a `waterType` (`blue`, `green-blue-grey`, `lifecycle-onsite`, `lifecycle-total`). A value without its measurement scope is not usable: Poore & Nemecek publishes blue water only, Mekonnen & Hoekstra publishes green + blue + grey, and LCA sources differ on whether electricity-embodied water is counted. Beef is ~1,451 L/kg on the P&N basis and ~15,400 L/kg on the M&H basis — the same product, a 10× difference, entirely from scope. Never sort or compare across water types without surfacing the type.
 - **Citation rule.** A `source` must name a retrievable publication, and a `sourceUrl` must resolve to it. An organisation name alone (`"Water Footprint Network (various)"`) is not a citation. A source must not be cited for a figure it does not report. Where no primary source supports a per-unit figure, drop the entry rather than publish an unverifiable number.
-- **Product dataset strategy** (per `docs/planning/water-footprint.md`): ✅ Phases 1–5 complete. A static JSON dataset of 53 products across 5 categories (Food & Beverages 38, Textiles 6, Technology 1, Manufactured 3, Digital & Computing 5) is compiled in `apps/api/src/modules/water-footprint/data/water-footprint.json` and served through `GET /api/v1/water-footprint/products?category=`. All entries are commercial-safe (CC BY or citable from open-access papers), declare a `waterType`, and carry `source`, `sourceUrl` and `methodology` fields.
+- **Product dataset strategy** (per `docs/planning/water-footprint.md`): ✅ Phases 1–6 complete. A static JSON dataset of 60 products across 7 categories (Food & Beverages 39, Textiles 5, Technology 2, Manufactured 4, Digital & Computing 5, Vehicles 3, Energy & Extractives 2) is compiled in `apps/api/src/modules/water-footprint/data/water-footprint.json` and served through `GET /api/v1/water-footprint/products?category=`. Valid category slugs: `food-beverages`, `textiles`, `technology`, `manufactured`, `digital-computing`, `vehicles`, `energy-extractives`. All entries are commercial-safe (CC BY or citable from open-access papers), declare a `waterType`, and carry `source`, `sourceUrl` and `methodology` fields.

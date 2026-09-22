@@ -107,6 +107,36 @@ exports[`WaterFootprintTable should match the default render snapshot 1`] = `
             Digital & Computing
           </label>
         </div>
+        <div>
+          <input
+            class="peer sr-only"
+            id="_r_u_-Vehicles"
+            name="_r_u_"
+            type="radio"
+            value="Vehicles"
+          />
+          <label
+            class="cursor-pointer rounded-full border border-gray-300 bg-white px-3 py-1 text-sm text-gray-700 transition-colors peer-checked:border-emerald-700 peer-checked:bg-emerald-700 peer-checked:text-white hover:bg-gray-50 peer-focus-visible:outline-none peer-focus-visible:ring-2 peer-focus-visible:ring-emerald-700 peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-white dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700 dark:peer-focus-visible:ring-emerald-400 dark:peer-focus-visible:ring-offset-gray-950"
+            for="_r_u_-Vehicles"
+          >
+            Vehicles
+          </label>
+        </div>
+        <div>
+          <input
+            class="peer sr-only"
+            id="_r_u_-Energy & Extractives"
+            name="_r_u_"
+            type="radio"
+            value="Energy & Extractives"
+          />
+          <label
+            class="cursor-pointer rounded-full border border-gray-300 bg-white px-3 py-1 text-sm text-gray-700 transition-colors peer-checked:border-emerald-700 peer-checked:bg-emerald-700 peer-checked:text-white hover:bg-gray-50 peer-focus-visible:outline-none peer-focus-visible:ring-2 peer-focus-visible:ring-emerald-700 peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-white dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700 dark:peer-focus-visible:ring-emerald-400 dark:peer-focus-visible:ring-offset-gray-950"
+            for="_r_u_-Energy & Extractives"
+          >
+            Energy & Extractives
+          </label>
+        </div>
       </div>
     </fieldset>
     <p
@@ -214,7 +244,7 @@ exports[`WaterFootprintTable should match the default render snapshot 1`] = `
             <td
               class="py-2 pr-4 text-gray-700 dark:text-gray-300"
             >
-              2,700 L 
+              2,720 L 
               <span
                 class="text-gray-500 dark:text-gray-400"
               >
@@ -229,7 +259,7 @@ exports[`WaterFootprintTable should match the default render snapshot 1`] = `
             <td
               class="py-2 pr-4 text-gray-700 dark:text-gray-300"
             >
-              ≈ 41.5 showers · ≈ 18 bathtubs
+              ≈ 41.8 showers · ≈ 18.1 bathtubs
             </td>
             <td
               class="py-2 pr-4 text-gray-700 dark:text-gray-300"
@@ -509,7 +539,7 @@ exports[`WaterFootprintTable should match the default render snapshot 1`] = `
               class="py-2 pr-4 font-medium text-gray-900 dark:text-white"
               scope="row"
             >
-              Cassava
+              Unmeasured crop (fixture)
             </th>
             <td
               class="py-2 pr-4 text-gray-700 dark:text-gray-300"
@@ -583,7 +613,7 @@ exports[`WaterFootprintTable should match the default render snapshot 1`] = `
         <p
           class="text-sm text-gray-700 dark:text-gray-300"
         >
-          2,700 L 
+          2,720 L 
           <span
             class="text-gray-500 dark:text-gray-400"
           >
@@ -598,7 +628,7 @@ exports[`WaterFootprintTable should match the default render snapshot 1`] = `
         <p
           class="text-sm text-gray-700 dark:text-gray-300"
         >
-          ≈ 41.5 showers · ≈ 18 bathtubs
+          ≈ 41.8 showers · ≈ 18.1 bathtubs
         </p>
         <div
           class="mt-2 text-sm"
@@ -882,7 +912,7 @@ exports[`WaterFootprintTable should match the default render snapshot 1`] = `
           class="font-semibold text-gray-900 dark:text-white"
         >
           <strong>
-            Cassava
+            Unmeasured crop (fixture)
           </strong>
         </p>
         <p
