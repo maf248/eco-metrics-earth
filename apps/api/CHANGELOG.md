@@ -1,3 +1,5 @@
+## [2.5.0](https://github.com/maf248/eco-metrics-earth/compare/api-v2.4.2...api-v2.5.0) (2026-09-22)
+
 ## [2.4.2](https://github.com/maf248/eco-metrics-earth/compare/api-v2.4.1...api-v2.4.2) (2026-09-19)
 
 ## [2.4.1](https://github.com/maf248/eco-metrics-earth/compare/api-v2.4.0...api-v2.4.1) (2026-09-19)
