@@ -16,8 +16,8 @@ describe('WaterFootprintModule', () => {
     expect(module).toBeDefined();
   });
 
-  it('should load the real 53-product dataset', () => {
+  it('should load the real 60-product dataset', () => {
     const service = module.get(WaterFootprintService);
-    expect(service.getAllProducts()).toHaveLength(53);
+    expect(service.getAllProducts()).toHaveLength(60);
   });
 });

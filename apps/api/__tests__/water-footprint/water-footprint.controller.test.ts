@@ -95,7 +95,7 @@ describe('WaterFootprintController', () => {
   it('should throw BadRequestException for an invalid category slug', () => {
     service.getByCategory.mockImplementation(() => {
       throw new BadRequestException(
-        'Invalid category filter. Valid values: food-beverages, textiles, technology, manufactured',
+        'Invalid category filter. Valid values: food-beverages, textiles, technology, manufactured, digital-computing, vehicles, energy-extractives',
       );
     });
 

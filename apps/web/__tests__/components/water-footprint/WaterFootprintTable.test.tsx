@@ -16,7 +16,7 @@ const fixtures: WaterFootprintProduct[] = [
     methodology: 'Freshwater withdrawals per kg of final product.',
   },
   {
-    product: 'Cassava',
+    product: 'Unmeasured crop (fixture)',
     category: 'Food & Beverages',
     waterFootprintLiters: null,
     unit: 'per kg',
@@ -28,7 +28,7 @@ const fixtures: WaterFootprintProduct[] = [
   {
     product: 'Cotton t-shirt (250g)',
     category: 'Textiles',
-    waterFootprintLiters: 2700,
+    waterFootprintLiters: 2720,
     unit: 'per unit',
     waterType: 'green-blue-grey',
     source: 'Mekonnen & Hoekstra (2011), Hydrology and Earth System Sciences',
@@ -74,6 +74,8 @@ const FILTER_OPTIONS = [
   'Technology',
   'Manufactured',
   'Digital & Computing',
+  'Vehicles',
+  'Energy & Extractives',
 ];
 
 describe('WaterFootprintTable', () => {
@@ -86,7 +88,7 @@ describe('WaterFootprintTable', () => {
     expect(rows[2]).toHaveTextContent('Microchip (2g)');
     expect(rows[3]).toHaveTextContent('Portland cement (CEM I)');
     expect(rows[4]).toHaveTextContent('AI text prompt (Gemini, median)');
-    expect(rows[5]).toHaveTextContent('Cassava');
+    expect(rows[5]).toHaveTextContent('Unmeasured crop (fixture)');
   });
 
   it('should place null-footprint products last and show "No data"', () => {
@@ -94,7 +96,7 @@ describe('WaterFootprintTable', () => {
     const rows = within(container.querySelector('tbody')!).getAllByRole('row');
     const lastRow = rows[rows.length - 1];
 
-    expect(lastRow).toHaveTextContent('Cassava');
+    expect(lastRow).toHaveTextContent('Unmeasured crop (fixture)');
     expect(lastRow).toHaveTextContent('No data');
     expect(lastRow).toHaveTextContent('—');
   });
@@ -155,7 +157,7 @@ describe('WaterFootprintTable', () => {
 
     const rows = within(container.querySelector('tbody')!).getAllByRole('rowheader');
     expect(rows[0]).toHaveTextContent('AI text prompt (Gemini, median)');
-    expect(rows[rows.length - 1]).toHaveTextContent('Portland cement (CEM I)');
+    expect(rows[rows.length - 1]).toHaveTextContent('Unmeasured crop (fixture)');
   });
 
   it('should flip the water footprint sort direction when the active header is clicked', async () => {
@@ -164,7 +166,7 @@ describe('WaterFootprintTable', () => {
 
     const rows = within(container.querySelector('tbody')!).getAllByRole('rowheader');
     expect(rows[0]).toHaveTextContent('AI text prompt (Gemini, median)');
-    expect(rows[rows.length - 1]).toHaveTextContent('Cassava');
+    expect(rows[rows.length - 1]).toHaveTextContent('Unmeasured crop (fixture)');
   });
 
   it('should set aria-sort on the active column only', async () => {

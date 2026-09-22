@@ -90,16 +90,6 @@
     "methodology": "Freshwater withdrawals per kg of final product. Based on ~38,700 farms in 119 countries."
   },
   {
-    "product": "Cassava",
-    "category": "Food & Beverages",
-    "waterFootprintLiters": null,
-    "unit": "per kg",
-    "waterType": "blue",
-    "source": "Poore & Nemecek (2018), Science",
-    "sourceUrl": "https://ourworldindata.org/grapher/water-withdrawals-per-kg-poore",
-    "methodology": "Freshwater withdrawals per kg of final product. Based on ~38,700 farms in 119 countries."
-  },
-  {
     "product": "Cheese",
     "category": "Food & Beverages",
     "waterFootprintLiters": 5605.2,
@@ -128,6 +118,16 @@
     "source": "Poore & Nemecek (2018), Science",
     "sourceUrl": "https://ourworldindata.org/grapher/water-withdrawals-per-kg-poore",
     "methodology": "Freshwater withdrawals per kg of final product. Based on ~38,700 farms in 119 countries."
+  },
+  {
+    "product": "Cup of coffee (125 ml)",
+    "category": "Food & Beverages",
+    "waterFootprintLiters": 140,
+    "unit": "per cup",
+    "waterType": "green-blue-grey",
+    "source": "Chapagain & Hoekstra (2007), Ecological Economics 64(1):109-118",
+    "sourceUrl": "https://doi.org/10.1016/j.ecolecon.2007.02.022",
+    "methodology": "Standard 125 ml cup from 7 g of roasted coffee at an average virtual-water content of 20.4 m3/kg roasted coffee; almost entirely green water at the farm. Coexists with the Coffee entry (25.9 L/kg, blue water, Poore & Nemecek) - the pair illustrates why the waterType discriminator exists."
   },
   {
     "product": "Dark Chocolate",
@@ -198,6 +198,16 @@
     "source": "Poore & Nemecek (2018), Science",
     "sourceUrl": "https://ourworldindata.org/grapher/water-withdrawals-per-kg-poore",
     "methodology": "Freshwater withdrawals per kg of final product. Based on ~38,700 farms in 119 countries."
+  },
+  {
+    "product": "Milk chocolate bar (100g)",
+    "category": "Food & Beverages",
+    "waterFootprintLiters": 1430,
+    "unit": "per bar",
+    "waterType": "green-blue-grey",
+    "source": "Friends of the Earth / Trucost (2015), Mind Your Step: The land and water footprints of everyday products",
+    "sourceUrl": "https://www.twosides.info/wp-content/uploads/2018/05/mind-your-step-report-76803.pdf",
+    "methodology": "Supply-chain water footprint of a 100 g bar of milk chocolate: 50 L blue + 1,350 L green + 30 L grey. Cocoa is the largest contributor, followed by sugar and milk powder. Coexists with the Dark Chocolate entry (540.6 L/kg, blue water, Poore & Nemecek) - different product, different scope."
   },
   {
     "product": "Nuts",
@@ -395,19 +405,19 @@
     "waterFootprintLiters": 2720,
     "unit": "per unit",
     "waterType": "green-blue-grey",
-    "source": "Mekonnen & Hoekstra (2011), Hydrology and Earth System Sciences",
-    "sourceUrl": "https://waterfootprint.org/en/resources/waterstat/",
-    "methodology": "Estimated from cotton lint water footprint per kg."
+    "source": "Chapagain, Hoekstra, Savenije & Gautam (2006), The water footprint of cotton consumption, Value of Water Research Report 18, UNESCO-IHE",
+    "sourceUrl": "https://www.waterfootprint.org/Reports/Report18.pdf",
+    "methodology": "Water footprint of a 250 g cotton t-shirt (Table 4.4): 1,230 L blue + 1,110 L green + 380 L grey dilution water. Peer-reviewed version: Ecological Economics 60(1):186-203."
   },
   {
-    "product": "Pair of jeans (800g cotton)",
+    "product": "Pair of jeans (1 kg cotton)",
     "category": "Textiles",
-    "waterFootprintLiters": 8000,
+    "waterFootprintLiters": 10850,
     "unit": "per pair",
     "waterType": "green-blue-grey",
-    "source": "Mekonnen & Hoekstra (2011), Hydrology and Earth System Sciences",
-    "sourceUrl": "https://waterfootprint.org/en/resources/waterstat/",
-    "methodology": "Estimated from cotton lint water footprint per kg."
+    "source": "Chapagain, Hoekstra, Savenije & Gautam (2006), The water footprint of cotton consumption, Value of Water Research Report 18, UNESCO-IHE",
+    "sourceUrl": "https://www.waterfootprint.org/Reports/Report18.pdf",
+    "methodology": "Water footprint of one pair of jeans at the study's standard weight of 1,000 g (Table 4.4): 4,900 L blue + 4,450 L green + 1,500 L grey dilution water. Replaces an earlier 8,000 L figure that no cited source reported."
   },
   {
     "product": "Leather (bovine)",
@@ -430,16 +440,6 @@
     "methodology": "Estimated from bovine leather water footprint per kg."
   },
   {
-    "product": "A4 sheet of paper",
-    "category": "Textiles",
-    "waterFootprintLiters": 10,
-    "unit": "per unit",
-    "waterType": "green-blue-grey",
-    "source": "Mekonnen & Hoekstra (2011), Hydrology and Earth System Sciences",
-    "sourceUrl": "https://waterfootprint.org/en/resources/waterstat/",
-    "methodology": "Water footprint of paper (pulp and paper sector)."
-  },
-  {
     "product": "Microchip (2g)",
     "category": "Technology",
     "waterFootprintLiters": 32,
@@ -448,6 +448,16 @@
     "source": "Williams, Ayres & Heller (2002), Environ. Sci. Technol.",
     "sourceUrl": "https://doi.org/10.1021/es025643o",
     "methodology": "Water inputs for fabrication of a 2g microchip."
+  },
+  {
+    "product": "Smartphone (generic)",
+    "category": "Technology",
+    "waterFootprintLiters": 12760,
+    "unit": "per unit",
+    "waterType": "green-blue-grey",
+    "source": "Friends of the Earth / Trucost (2015), Mind Your Step: The land and water footprints of everyday products",
+    "sourceUrl": "https://www.twosides.info/wp-content/uploads/2018/05/mind-your-step-report-76803.pdf",
+    "methodology": "Supply-chain water footprint of a generic smartphone: ~29% blue, ~11% green, ~60% grey (grey dominated by chemicals in glues and lubricants). Report by Helen Burley, footprint modelling by Trucost."
   },
   {
     "product": "Steel (unalloyed)",
@@ -480,6 +490,16 @@
     "methodology": "Blue water footprint of soda-lime float glass: 3.2 L/kg process water plus 2.6 L/kg energy-related, with soda ash from the Solvay process. Grey water footprint is 1,300 L/kg for suspended solids."
   },
   {
+    "product": "A4 sheet of paper",
+    "category": "Manufactured",
+    "waterFootprintLiters": 10,
+    "unit": "per unit",
+    "waterType": "green-blue-grey",
+    "source": "Mekonnen & Hoekstra (2011), Hydrology and Earth System Sciences",
+    "sourceUrl": "https://waterfootprint.org/en/resources/waterstat/",
+    "methodology": "Water footprint of paper (pulp and paper sector)."
+  },
+  {
     "product": "AI text prompt (Gemini, median)",
     "category": "Digital & Computing",
     "waterFootprintLiters": 0.00026,
@@ -507,7 +527,7 @@
     "waterType": "lifecycle-onsite",
     "source": "Li, Yang, Islam & Ren (2025), Communications of the ACM 68:54-63",
     "sourceUrl": "https://doi.org/10.1145/3724499",
-    "methodology": "Scope-1 on-site water directly evaporated to cool Microsoft’s U.S. data centres while training the 175-billion-parameter GPT-3 model."
+    "methodology": "Scope-1 on-site water directly evaporated to cool Microsoft's U.S. data centres while training the 175-billion-parameter GPT-3 model."
   },
   {
     "product": "GPT-3 training run (total)",
@@ -528,5 +548,55 @@
     "source": "de Vries (2023), Cell Reports Sustainability",
     "sourceUrl": "https://doi.org/10.1016/j.crsus.2023.100004",
     "methodology": "Average water footprint per Bitcoin transaction in 2021, combining data-centre cooling with water consumed by the power plants supplying the mining electricity."
+  },
+  {
+    "product": "Passenger car (ICE, lifetime)",
+    "category": "Vehicles",
+    "waterFootprintLiters": 59600,
+    "unit": "per vehicle (lifetime)",
+    "waterType": "lifecycle-total",
+    "source": "Bras, Tejada, Yen & Zullo (2012), Quantifying the Life Cycle Water Consumption of a Passenger Vehicle, SAE Technical Paper 2012-01-0646",
+    "sourceUrl": "https://doi.org/10.4271/2012-01-0646",
+    "methodology": "Cradle-to-grave water consumption of a typical US light-duty gasoline vehicle: 5,600 L material production + 900 L parts + 800 L assembly + 52,000 L use phase (mostly fuel production) + 300 L end-of-life. The stage breakdown is reproduced in Ford Motor Company, Sustainability Report 2011/12."
+  },
+  {
+    "product": "Passenger car (manufacturing only)",
+    "category": "Vehicles",
+    "waterFootprintLiters": 5200,
+    "unit": "per vehicle",
+    "waterType": "lifecycle-onsite",
+    "source": "Semmens, Bras & Guldberg (2014), The International Journal of Life Cycle Assessment 19(1):246-256",
+    "sourceUrl": "https://doi.org/10.1007/s11367-013-0612-2",
+    "methodology": "Average direct water withdrawal per vehicle assembled (5.20 m3), derived from 12 automotive OEM sustainability reports (2006-2010). Direct consumption is lower (1.25 m3/vehicle); electricity-related indirect consumption adds ~2.21 m3/vehicle."
+  },
+  {
+    "product": "Battery electric vehicle (lifetime, China grid)",
+    "category": "Vehicles",
+    "waterFootprintLiters": 262000,
+    "unit": "per vehicle (lifetime)",
+    "waterType": "lifecycle-total",
+    "source": "Wang, Shen, Kim, Wallington, Zhang & Han (2020), Resources, Conservation and Recycling 154:104628",
+    "sourceUrl": "https://doi.org/10.1016/j.resconrec.2019.104628",
+    "methodology": "Life-cycle water consumption of a battery-electric Ford Focus produced and operated in China on the national average grid: 262 m3, vs 137 m3 for the gasoline equivalent. Electrification shifts water use from fuel production to electricity generation; the figure is highly grid-dependent (47 m3 on solar, 43 m3 on wind)."
+  },
+  {
+    "product": "Hydraulic fracturing (frack job)",
+    "category": "Energy & Extractives",
+    "waterFootprintLiters": 5700000,
+    "unit": "per well",
+    "waterType": "blue",
+    "source": "U.S. EPA (2016), Hydraulic Fracturing for Oil and Gas: Impacts from the Hydraulic Fracturing Water Cycle on Drinking Water Resources in the United States (Final Report)",
+    "sourceUrl": "https://cfpub.epa.gov/ncea/hfstudy/recordisplay.cfm?deid=332990",
+    "methodology": "Median fresh water used per hydraulically fractured well (FracFocus 1.0 disclosures, Jan 2011-Feb 2013): 1.5 million gallons, about 5.7 ML; 10th-90th percentiles 280,000-23,000,000 L. This is withdrawal, not consumption - most injected fluid remains in the subsurface."
+  },
+  {
+    "product": "Lithium carbonate (Salar de Atacama, brine evaporation)",
+    "category": "Energy & Extractives",
+    "waterFootprintLiters": 500000,
+    "unit": "per tonne of Li₂CO₃",
+    "waterType": "lifecycle-onsite",
+    "source": "Flexer, Baspineiro & Galli (2018), Science of the Total Environment 639:1188-1204",
+    "sourceUrl": "https://doi.org/10.1016/j.scitotenv.2018.05.223",
+    "methodology": "Average brine water lost to evaporation per tonne of lithium carbonate from continental brines. Freshwater consumption is far lower (22.5 m3/t at Salar de Atacama per Vera et al. 2023, Nature Reviews Earth & Environment 4:149-165, which reports 100-800 m3 brine water/t depending on deposit). Whether brine counts as water is methodologically contested (Link et al. 2025, Water 17:1670)."
   }
 ]

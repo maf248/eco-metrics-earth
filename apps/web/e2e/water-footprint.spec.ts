@@ -11,6 +11,7 @@ test.describe('Water Footprint page', () => {
       await expect(page.getByRole('radio', { name: 'Textiles' })).toBeVisible();
       await expect(page.getByRole('radio', { name: 'All' })).toBeVisible();
       await expect(page.getByRole('radio', { name: 'Digital & Computing' })).toBeVisible();
+      await expect(page.getByRole('radio', { name: 'Vehicles' })).toBeVisible();
       await expect(page.locator('body')).toContainText(
         'Values of different water types are not directly comparable',
       );
@@ -42,7 +43,7 @@ test.describe('Water Footprint page', () => {
       await expect(table).toBeVisible();
 
       const bodyRows = table.locator('tbody tr');
-      await expect(bodyRows).toHaveCount(53);
+      await expect(bodyRows).toHaveCount(60);
 
       await expect(page.getByRole('columnheader', { name: 'Water type' })).toBeVisible();
 
@@ -64,8 +65,8 @@ test.describe('Water Footprint page', () => {
       await expect(page.locator('body')).toContainText('Median Gemini Apps text prompt');
 
       await page.locator('fieldset').getByText('Textiles').click();
-      await expect(bodyRows).toHaveCount(6);
-      await expect(page.getByRole('status')).toContainText('Showing 6 of 53');
+      await expect(bodyRows).toHaveCount(5);
+      await expect(page.getByRole('status')).toContainText('Showing 5 of 60');
     });
 
     test('should filter to the Digital & Computing category', async ({ page }) => {
@@ -76,7 +77,7 @@ test.describe('Water Footprint page', () => {
       await page.locator('fieldset').getByText('Digital & Computing').click();
 
       await expect(table.locator('tbody tr')).toHaveCount(5);
-      await expect(page.getByRole('status')).toContainText('Showing 5 of 53');
+      await expect(page.getByRole('status')).toContainText('Showing 5 of 60');
       await expect(table).toContainText('Bitcoin transaction');
       await expect(table).toContainText('GPT-3 training run (total)');
     });
