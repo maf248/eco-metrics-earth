@@ -1,10 +1,10 @@
 # Water Footprint by Product — Research & Implementation Plan 💧
 
-> **Status:** Phase 5 complete — water-type discriminator, citation audit, and the Digital & Computing category shipped (18 Sep 2026).
+> **Status:** Phase 6 complete — dataset curation & expansion: Cassava removed, t-shirt/jeans citations corrected, Vehicles and Energy & Extractives categories added (21 Sep 2026).
 > **Category slug:** `water-footprint`
 > **URL:** `/water-footprint/`
 > **Provider docs:** `docs/data-sources/water-footprint.md` (country-level sources: OWID, World Bank, FAO AQUASTAT — licenses and validated endpoints)
-> **API endpoint:** `GET /api/v1/water-footprint/products?category=` (optional filter: `food-beverages`, `textiles`, `technology`, `manufactured`, `digital-computing`)
+> **API endpoint:** `GET /api/v1/water-footprint/products?category=` (optional filter: `food-beverages`, `textiles`, `technology`, `manufactured`, `digital-computing`, `vehicles`, `energy-extractives`)
 
 ---
 
@@ -94,7 +94,7 @@ Each entry must include the original citation/source (paper, report, or dataset)
 
 ## Technical Approach
 
-1. **Dataset as static JSON** — embedded in the repo under `apps/api/src/modules/water-footprint/data/water-footprint.json` (52 products, served through the BFF)
+1. **Dataset as static JSON** — embedded in the repo under `apps/api/src/modules/water-footprint/data/water-footprint.json` (60 products, served through the BFF)
 2. **Component rendering** — new client component `WaterFootprintTable` with filtering and sorting
 3. **Page integration** — rendered in the existing `/water-footprint/` category page via `[category]/page.tsx` template
 4. **Source attribution** — each data entry includes a `source`, `sourceUrl`, and `methodology` field
@@ -162,7 +162,32 @@ Two defects shipped with Phases 2–4 and are corrected here, plus one new categ
 - [x] `formatLiters` handles sub-litre values — `0.00026` rendered as `"0"` before, so the AI inference row would have shipped as "0 L per prompt"
 - [x] Unit, snapshot and E2E tests updated; dataset 52 → 53 entries
 
-**Deferred to follow-up changes** (researched, catalogued in `docs/data-sources/water-footprint.md` § 9): NREL life-cycle water per MWh by generation source; WRI Aqueduct 4.0 (CC BY 4.0, catchment resolution); lithium extraction in the Atacama and Argentine salt flats; AWARE scarcity weighting.
+**Deferred to follow-up changes** (researched, catalogued in `docs/data-sources/water-footprint.md` § 14): NREL life-cycle water per MWh by generation source; WRI Aqueduct 4.0 (CC BY 4.0, catchment resolution); AWARE scarcity weighting. Lithium was integrated in Phase 6.
+
+### Phase 6 — Dataset curation & expansion (✅ Complete — 21 Sep 2026)
+
+Three defects in the live dataset were corrected and the category axis was widened.
+
+**Cassava removal.** The live dataset carried `Cassava` with `waterFootprintLiters: null` as a de facto fixture for null handling. The `WaterFootprintProduct` contract still allows `null`, and the UI still renders "No data" / "—" and sorts nulls last; null handling is now exercised by test fixtures rather than a production row.
+
+**Textile citation corrections.** The t-shirt and jeans entries cited Mekonnen & Hoekstra (2011) cotton lint, which does not report the garment-level figures.
+
+- [x] Cotton t-shirt (250g) — kept 2,720 L, re-sourced to Chapagain et al. (2006), _The water footprint of cotton consumption_, Value of Water Research Report 18, UNESCO-IHE.
+- [x] Pair of jeans — corrected from 8,000 L (800g, unsupported) to 10,850 L (1 kg cotton, Chapagain et al. 2006 Table 4.4); renamed accordingly.
+
+**Category expansion.** Two new categories bring vehicles and energy/extraction into the dataset:
+
+| Category             | Products | Source highlights                                                                                             |
+| -------------------- | -------- | ------------------------------------------------------------------------------------------------------------- |
+| Vehicles             | 3        | Bras et al. 2012 (ICE lifetime); Semmens et al. 2014 (manufacturing only); Wang et al. 2020 (BEV, China grid) |
+| Energy & Extractives | 2        | U.S. EPA 2016 (hydraulic fracturing); Flexer et al. 2018 (lithium carbonate brine evaporation)                |
+
+- [x] Added `Vehicles` and `Energy & Extractives` to `WaterFootprintCategory` and `waterFootprintCategorySlugMap`
+- [x] Added the two new slugs to the controller's Swagger `@ApiQuery` enum
+- [x] Re-categorized A4 sheet of paper from Textiles to Manufactured
+- [x] Added Smartphone (generic) via FoE/Trucost 2015; Milk chocolate bar (100g) via FoE/Trucost 2015; Cup of coffee (125 ml) via Chapagain & Hoekstra 2007
+- [x] Updated module test (53 → 60), controller test fixture (seven slugs), web snapshot, and E2E count anchors
+- [x] Updated provider docs and planning doc counts
 
 ---
 
@@ -174,4 +199,4 @@ Two defects shipped with Phases 2–4 and are corrected here, plus one new categ
 
 ---
 
-_Last updated: 18 Sep 2026_
+_Last updated: 21 Sep 2026_

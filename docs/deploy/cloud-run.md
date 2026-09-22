@@ -150,7 +150,7 @@ export RUN_URL=https://eco-metrics-api-abcdefghij-klm.<GCP_REGION>.run.app
 # Health check (should return {"status":"ok"})
 curl -s "$RUN_URL/api/v1/health"
 
-# Product dataset (should return success:true with 52 products)
+# Product dataset (should return success:true with 60 products)
 curl -s "$RUN_URL/api/v1/water-footprint/products" | head -c 300
 ```
 
