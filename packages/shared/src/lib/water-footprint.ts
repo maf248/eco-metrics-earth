@@ -2,7 +2,13 @@
  * Supported water-footprint product categories.
  */
 export type WaterFootprintCategory =
-  'Food & Beverages' | 'Textiles' | 'Technology' | 'Manufactured' | 'Digital & Computing';
+  | 'Food & Beverages'
+  | 'Textiles'
+  | 'Technology'
+  | 'Manufactured'
+  | 'Digital & Computing'
+  | 'Vehicles'
+  | 'Energy & Extractives';
 
 /**
  * Measurement scope of a water-footprint value.
@@ -41,6 +47,8 @@ export const waterFootprintCategorySlugMap: Record<string, WaterFootprintCategor
   technology: 'Technology',
   manufactured: 'Manufactured',
   'digital-computing': 'Digital & Computing',
+  vehicles: 'Vehicles',
+  'energy-extractives': 'Energy & Extractives',
 };
 
 /**
