@@ -1,3 +1,10 @@
+## [2.5.0](https://github.com/maf248/eco-metrics-earth/compare/v2.4.2...v2.5.0) (2026-09-22)
+
+### Features
+
+* **water-footprint:** add vehicles and energy-extractives category types ([531b99a](https://github.com/maf248/eco-metrics-earth/commit/531b99af4cc88de1fbca94e1fa60887f3229227b))
+* **water-footprint:** curate dataset and expand to 60 products ([1e056c0](https://github.com/maf248/eco-metrics-earth/commit/1e056c0f0ab4237db7e43349c933965dc41f2db6))
+
 ## [2.4.2](https://github.com/maf248/eco-metrics-earth/compare/v2.4.1...v2.4.2) (2026-09-19)
 
 ### Bug Fixes
