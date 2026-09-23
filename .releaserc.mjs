@@ -1,7 +1,8 @@
-const preset = require('conventional-changelog-conventionalcommits').default;
+import preset from 'conventional-changelog-conventionalcommits';
+
 const writerOpts = preset().writer;
 
-module.exports = {
+export default {
   branches: ['main'],
   tagFormat: 'v${version}',
   plugins: [
@@ -10,11 +11,7 @@ module.exports = {
       '@semantic-release/commit-analyzer',
       {
         preset: 'conventionalcommits',
-        releaseRules: [
-          { breaking: true, release: 'major' },
-          { type: 'feat', release: 'minor' },
-          { type: 'fix', release: 'patch' },
-        ],
+        releaseRules: [{ breaking: true, release: 'major' }],
         parserOpts: {
           noteKeywords: ['BREAKING CHANGE', 'BREAKING CHANGES'],
         },
@@ -30,12 +27,7 @@ module.exports = {
         },
       },
     ],
-    [
-      '@semantic-release/changelog',
-      {
-        changelogFile: 'CHANGELOG.md',
-      },
-    ],
+    ['@semantic-release/changelog', { changelogFile: 'CHANGELOG.md' }],
     [
       '@semantic-release/git',
       {
