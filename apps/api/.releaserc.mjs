@@ -1,9 +1,10 @@
-const preset = require('conventional-changelog-conventionalcommits').default;
+import preset from 'conventional-changelog-conventionalcommits';
+
 const { transform: defaultTransform, ...restWriterOpts } = preset().writer;
 
 const ALLOWED_SCOPES = ['api', 'shared'];
 
-module.exports = {
+export default {
   branches: ['main'],
   tagFormat: 'api-v${version}',
   plugins: [
@@ -19,8 +20,6 @@ module.exports = {
           { scope: 'postman', release: false },
           { scope: 'release', release: false },
           { breaking: true, release: 'major' },
-          { type: 'feat', release: 'minor' },
-          { type: 'fix', release: 'patch' },
         ],
         parserOpts: {
           noteKeywords: ['BREAKING CHANGE', 'BREAKING CHANGES'],
@@ -47,12 +46,7 @@ module.exports = {
         },
       },
     ],
-    [
-      '@semantic-release/changelog',
-      {
-        changelogFile: 'CHANGELOG.md',
-      },
-    ],
+    ['@semantic-release/changelog', { changelogFile: 'CHANGELOG.md' }],
     [
       '@semantic-release/git',
       {
