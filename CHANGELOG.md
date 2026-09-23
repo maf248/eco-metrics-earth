@@ -1,3 +1,10 @@
+## [2.5.1](https://github.com/maf248/eco-metrics-earth/compare/v2.5.0...v2.5.1) (2026-09-23)
+
+### Bug Fixes
+
+* **release:** migrate release configs to ESM and fix scope-filtered triggering ([d8475ab](https://github.com/maf248/eco-metrics-earth/commit/d8475aba2d1b697440480f20dd5849ec2c9a1255))
+* **release:** pin conventionalcommits preset to v9 for writer compatibility ([2de58dc](https://github.com/maf248/eco-metrics-earth/commit/2de58dc74de66df5809dcda54570ef2da6abdd69))
+
 ## [2.5.0](https://github.com/maf248/eco-metrics-earth/compare/v2.4.2...v2.5.0) (2026-09-22)
 
 ### Features
