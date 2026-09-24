@@ -47,7 +47,7 @@ The facts recorded in `docs/design-system.md` SHALL include:
 - `apps/web` uses Next.js 16 (App Router), React 19, and Tailwind CSS v4.
 - Dark mode is class-based: `apps/web/src/app/globals.css` declares `@custom-variant dark (&:where(.dark, .dark *))`, and `ThemeProvider`/a blocking inline script toggle the `dark` class on `<html>`.
 - Theming today is expressed primarily through paired Tailwind utility classes rather than a full CSS custom-property token system; the one existing exception is the `@theme` block in `globals.css` defining `--color-nav-surface` / `--color-nav-surface-dark`. A broader token system is aspirational, not an existing fact.
-- Eco-category icon components in `apps/web/src/components/icons/` are intentionally multicolor with hardcoded fills; per the `light-mode-styling` capability and `ROADMAP.md` I12, they MUST NOT be recolored or tinted per theme. Contrast fixes must add separation without altering the SVG's own colors.
+- Eco-category icon components in `apps/web/src/components/icons/` are intentionally multicolor with hardcoded fills; per the `light-mode-styling` capability, they MUST NOT be recolored or tinted per theme. Contrast fixes must add separation without altering the SVG's own colors.
 - The project's SEO/accessibility baseline: semantic HTML, descriptive titles/meta descriptions, trailing-slash canonical URLs, and accessible markup verified via `@axe-core/playwright` E2E coverage.
 
 #### Scenario: Design system doc records the current theming mechanism

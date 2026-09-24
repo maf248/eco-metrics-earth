@@ -32,9 +32,12 @@ export default function ErrorPage({ error, reset }: ErrorPageProps) {
         <div
           data-testid="error-icon"
           aria-label="Error"
-          className="flex items-center justify-center w-48 h-48 rounded-2xl bg-gray-100 dark:bg-white/10 p-4"
+          className="flex items-center justify-center w-48 h-48 rounded-2xl bg-gray-300 dark:bg-white/10 p-4"
         >
-          <NotFoundIcon aria-hidden className="w-32 h-32" />
+          <NotFoundIcon
+            aria-hidden
+            className="w-32 h-32 drop-shadow-xl dark:drop-shadow-[0_0_10px_rgba(255,255,255,0.25)]"
+          />
         </div>
         <div className="text-center" role="alert">
           <h1 className="text-4xl font-bold text-gray-900 dark:text-white">

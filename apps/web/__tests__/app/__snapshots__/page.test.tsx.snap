@@ -11,7 +11,7 @@ exports[`HomePage snapshots should match the full page snapshot 1`] = `
       class="flex flex-col items-center gap-6 mt-14 lg:mt-0"
     >
       <div
-        class="flex items-center justify-center w-48 h-48 rounded-2xl bg-gray-100 dark:bg-white/10 p-4"
+        class="flex items-center justify-center w-48 h-48 rounded-2xl bg-gray-300 dark:bg-white/10 p-4"
       >
         <svg
           aria-hidden="true"

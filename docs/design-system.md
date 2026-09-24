@@ -12,7 +12,8 @@ This document is the single source of truth for presentation decisions in **eco-
 - `apps/web` uses Tailwind CSS v4. Theming today is expressed primarily through paired Tailwind utility classes (e.g. `bg-white dark:bg-black`, `text-gray-900 dark:text-white`), not a full CSS custom-property token system.
 - The one existing exception is the `@theme` block in `globals.css`, which defines `--color-nav-surface` and `--color-nav-surface-dark` for the nav surface.
 - A broader design-token system does not exist yet. It is aspirational, pending the presentation-stack decision (candidates and open questions: `docs/technical/libraries.md`), which will populate the Color Palettes and Presentation Stack sections below.
-- Eco-category icon components in `apps/web/src/components/icons/` are intentionally multicolor and use hardcoded fill values as part of each category's visual identity; per the `light-mode-styling` capability and `ROADMAP.md` I12, they MUST NOT be recolored or tinted per theme. Any contrast fix must add separation (e.g. drop-shadow, border, background highlight) without altering the SVG's own colors.
+- Eco-category icon components in `apps/web/src/components/icons/` are intentionally multicolor and use hardcoded fill values as part of each category's visual identity; per the `light-mode-styling` capability, they MUST NOT be recolored or tinted per theme. Any contrast fix must add separation (e.g. drop-shadow, border, background highlight) without altering the SVG's own colors.
+- Category icons render with a subtle drop-shadow in light mode and a faint white glow in dark mode; large icons also sit inside a rounded container with a neutral background highlight that matches the inactive nav pills (`bg-gray-300 dark:bg-white/10`). SVG fills remain unchanged.
 
 ## Color Palettes
 
@@ -61,7 +62,7 @@ Pending — see `docs/technical/libraries.md`
 
 ## Presentation Stack
 
-Pending — the charting/mapping/table library (or libraries) is not yet chosen. Candidates, discarded options, and the gates to clear before deciding are catalogued in `docs/technical/libraries.md`. See `ROADMAP.md` I17/I15 for the screening that will inform that decision.
+Pending — the charting/mapping/table library (or libraries) is not yet chosen. Candidates, discarded options, and the gates to clear before deciding are catalogued in `docs/technical/libraries.md`. See `ROADMAP.md` I13 for the screening that will inform that decision.
 
 ## Tooling note
 
