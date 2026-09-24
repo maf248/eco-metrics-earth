@@ -55,7 +55,7 @@ export default function Navbar() {
       >
         <SiteLogoIcon
           aria-hidden
-          className="w-7 h-7 flex-shrink-0 drop-shadow-[0_0_2px_rgba(0,0,0,0.15)] dark:drop-shadow-none"
+          className="w-7 h-7 flex-shrink-0 drop-shadow-sm dark:drop-shadow-[0_0_3px_rgba(255,255,255,0.25)]"
         />
         <BrandText />
       </Link>

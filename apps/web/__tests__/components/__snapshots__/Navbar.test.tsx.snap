@@ -13,7 +13,7 @@ exports[`Navbar snapshots should match snapshot with an active route 1`] = `
     >
       <svg
         aria-hidden="true"
-        class="w-7 h-7 flex-shrink-0 drop-shadow-[0_0_2px_rgba(0,0,0,0.15)] dark:drop-shadow-none"
+        class="w-7 h-7 flex-shrink-0 drop-shadow-sm dark:drop-shadow-[0_0_3px_rgba(255,255,255,0.25)]"
         viewBox="0 0 511.874 511.874"
         xmlns="http://www.w3.org/2000/svg"
       >
@@ -118,7 +118,7 @@ exports[`Navbar snapshots should match snapshot with an active route 1`] = `
             >
               <svg
                 aria-hidden="true"
-                class="w-6 h-6 drop-shadow-[0_0_2px_rgba(0,0,0,0.18)] dark:drop-shadow-none"
+                class="w-6 h-6 drop-shadow-sm dark:drop-shadow-[0_0_3px_rgba(255,255,255,0.25)]"
                 viewBox="0 0 511.999 511.999"
                 xmlns="http://www.w3.org/2000/svg"
               >
@@ -190,7 +190,7 @@ exports[`Navbar snapshots should match snapshot with an active route 1`] = `
             >
               <svg
                 aria-hidden="true"
-                class="w-6 h-6 drop-shadow-[0_0_2px_rgba(0,0,0,0.18)] dark:drop-shadow-none"
+                class="w-6 h-6 drop-shadow-sm dark:drop-shadow-[0_0_3px_rgba(255,255,255,0.25)]"
                 viewBox="0 0 64 64"
                 xmlns="http://www.w3.org/2000/svg"
               >
@@ -285,7 +285,7 @@ exports[`Navbar snapshots should match snapshot with an active route 1`] = `
             >
               <svg
                 aria-hidden="true"
-                class="w-6 h-6 drop-shadow-[0_0_2px_rgba(0,0,0,0.18)] dark:drop-shadow-none"
+                class="w-6 h-6 drop-shadow-sm dark:drop-shadow-[0_0_3px_rgba(255,255,255,0.25)]"
                 viewBox="0 0 512 512"
                 xmlns="http://www.w3.org/2000/svg"
               >
@@ -369,7 +369,7 @@ exports[`Navbar snapshots should match snapshot with an active route 1`] = `
             >
               <svg
                 aria-hidden="true"
-                class="w-6 h-6 drop-shadow-[0_0_2px_rgba(0,0,0,0.18)] dark:drop-shadow-none"
+                class="w-6 h-6 drop-shadow-sm dark:drop-shadow-[0_0_3px_rgba(255,255,255,0.25)]"
                 viewBox="-120 0 512 512"
                 xmlns="http://www.w3.org/2000/svg"
               >
@@ -529,7 +529,7 @@ exports[`Navbar snapshots should match snapshot with an active route 1`] = `
             >
               <svg
                 aria-hidden="true"
-                class="w-6 h-6 drop-shadow-[0_0_2px_rgba(0,0,0,0.18)] dark:drop-shadow-none"
+                class="w-6 h-6 drop-shadow-sm dark:drop-shadow-[0_0_3px_rgba(255,255,255,0.25)]"
                 viewBox="0 0 64 64"
                 xmlns="http://www.w3.org/2000/svg"
               >
@@ -669,7 +669,7 @@ exports[`Navbar snapshots should match snapshot with an active route 1`] = `
             >
               <svg
                 aria-hidden="true"
-                class="w-6 h-6 drop-shadow-[0_0_2px_rgba(0,0,0,0.18)] dark:drop-shadow-none"
+                class="w-6 h-6 drop-shadow-sm dark:drop-shadow-[0_0_3px_rgba(255,255,255,0.25)]"
                 viewBox="0 0 340 340"
                 xmlns="http://www.w3.org/2000/svg"
               >
@@ -783,7 +783,7 @@ exports[`Navbar snapshots should match snapshot with an active route 1`] = `
             >
               <svg
                 aria-hidden="true"
-                class="w-6 h-6 drop-shadow-[0_0_2px_rgba(0,0,0,0.18)] dark:drop-shadow-none"
+                class="w-6 h-6 drop-shadow-sm dark:drop-shadow-[0_0_3px_rgba(255,255,255,0.25)]"
                 viewBox="0 0 512 512"
                 xmlns="http://www.w3.org/2000/svg"
               >
@@ -868,7 +868,7 @@ exports[`Navbar snapshots should match snapshot with an active route 1`] = `
             >
               <svg
                 aria-hidden="true"
-                class="w-6 h-6 drop-shadow-[0_0_2px_rgba(0,0,0,0.18)] dark:drop-shadow-none"
+                class="w-6 h-6 drop-shadow-sm dark:drop-shadow-[0_0_3px_rgba(255,255,255,0.25)]"
                 viewBox="0 0 1024 1024"
                 xmlns="http://www.w3.org/2000/svg"
               >
@@ -1046,7 +1046,7 @@ exports[`Navbar snapshots should match snapshot with an active route 1`] = `
             >
               <svg
                 aria-hidden="true"
-                class="w-6 h-6 drop-shadow-[0_0_2px_rgba(0,0,0,0.18)] dark:drop-shadow-none"
+                class="w-6 h-6 drop-shadow-sm dark:drop-shadow-[0_0_3px_rgba(255,255,255,0.25)]"
                 viewBox="0 0 512 512"
                 xmlns="http://www.w3.org/2000/svg"
               >
@@ -1106,7 +1106,7 @@ exports[`Navbar snapshots should match snapshot with an active route 1`] = `
             >
               <svg
                 aria-hidden="true"
-                class="w-6 h-6 drop-shadow-[0_0_2px_rgba(0,0,0,0.18)] dark:drop-shadow-none"
+                class="w-6 h-6 drop-shadow-sm dark:drop-shadow-[0_0_3px_rgba(255,255,255,0.25)]"
                 viewBox="0 0 512 512"
                 xmlns="http://www.w3.org/2000/svg"
               >
@@ -1220,7 +1220,7 @@ exports[`Navbar snapshots should match snapshot with an active route 1`] = `
             >
               <svg
                 aria-hidden="true"
-                class="w-6 h-6 drop-shadow-[0_0_2px_rgba(0,0,0,0.18)] dark:drop-shadow-none"
+                class="w-6 h-6 drop-shadow-sm dark:drop-shadow-[0_0_3px_rgba(255,255,255,0.25)]"
                 viewBox="0 0 512 512"
                 xmlns="http://www.w3.org/2000/svg"
               >
@@ -1287,7 +1287,7 @@ exports[`Navbar snapshots should match snapshot with an active route 1`] = `
             >
               <svg
                 aria-hidden="true"
-                class="w-6 h-6 drop-shadow-[0_0_2px_rgba(0,0,0,0.18)] dark:drop-shadow-none"
+                class="w-6 h-6 drop-shadow-sm dark:drop-shadow-[0_0_3px_rgba(255,255,255,0.25)]"
                 viewBox="0 0 512 512"
                 xmlns="http://www.w3.org/2000/svg"
               >
@@ -1375,7 +1375,7 @@ exports[`Navbar snapshots should match snapshot with no active route 1`] = `
     >
       <svg
         aria-hidden="true"
-        class="w-7 h-7 flex-shrink-0 drop-shadow-[0_0_2px_rgba(0,0,0,0.15)] dark:drop-shadow-none"
+        class="w-7 h-7 flex-shrink-0 drop-shadow-sm dark:drop-shadow-[0_0_3px_rgba(255,255,255,0.25)]"
         viewBox="0 0 511.874 511.874"
         xmlns="http://www.w3.org/2000/svg"
       >
@@ -1480,7 +1480,7 @@ exports[`Navbar snapshots should match snapshot with no active route 1`] = `
             >
               <svg
                 aria-hidden="true"
-                class="w-6 h-6 drop-shadow-[0_0_2px_rgba(0,0,0,0.18)] dark:drop-shadow-none"
+                class="w-6 h-6 drop-shadow-sm dark:drop-shadow-[0_0_3px_rgba(255,255,255,0.25)]"
                 viewBox="0 0 511.999 511.999"
                 xmlns="http://www.w3.org/2000/svg"
               >
@@ -1551,7 +1551,7 @@ exports[`Navbar snapshots should match snapshot with no active route 1`] = `
             >
               <svg
                 aria-hidden="true"
-                class="w-6 h-6 drop-shadow-[0_0_2px_rgba(0,0,0,0.18)] dark:drop-shadow-none"
+                class="w-6 h-6 drop-shadow-sm dark:drop-shadow-[0_0_3px_rgba(255,255,255,0.25)]"
                 viewBox="0 0 64 64"
                 xmlns="http://www.w3.org/2000/svg"
               >
@@ -1646,7 +1646,7 @@ exports[`Navbar snapshots should match snapshot with no active route 1`] = `
             >
               <svg
                 aria-hidden="true"
-                class="w-6 h-6 drop-shadow-[0_0_2px_rgba(0,0,0,0.18)] dark:drop-shadow-none"
+                class="w-6 h-6 drop-shadow-sm dark:drop-shadow-[0_0_3px_rgba(255,255,255,0.25)]"
                 viewBox="0 0 512 512"
                 xmlns="http://www.w3.org/2000/svg"
               >
@@ -1730,7 +1730,7 @@ exports[`Navbar snapshots should match snapshot with no active route 1`] = `
             >
               <svg
                 aria-hidden="true"
-                class="w-6 h-6 drop-shadow-[0_0_2px_rgba(0,0,0,0.18)] dark:drop-shadow-none"
+                class="w-6 h-6 drop-shadow-sm dark:drop-shadow-[0_0_3px_rgba(255,255,255,0.25)]"
                 viewBox="-120 0 512 512"
                 xmlns="http://www.w3.org/2000/svg"
               >
@@ -1890,7 +1890,7 @@ exports[`Navbar snapshots should match snapshot with no active route 1`] = `
             >
               <svg
                 aria-hidden="true"
-                class="w-6 h-6 drop-shadow-[0_0_2px_rgba(0,0,0,0.18)] dark:drop-shadow-none"
+                class="w-6 h-6 drop-shadow-sm dark:drop-shadow-[0_0_3px_rgba(255,255,255,0.25)]"
                 viewBox="0 0 64 64"
                 xmlns="http://www.w3.org/2000/svg"
               >
@@ -2030,7 +2030,7 @@ exports[`Navbar snapshots should match snapshot with no active route 1`] = `
             >
               <svg
                 aria-hidden="true"
-                class="w-6 h-6 drop-shadow-[0_0_2px_rgba(0,0,0,0.18)] dark:drop-shadow-none"
+                class="w-6 h-6 drop-shadow-sm dark:drop-shadow-[0_0_3px_rgba(255,255,255,0.25)]"
                 viewBox="0 0 340 340"
                 xmlns="http://www.w3.org/2000/svg"
               >
@@ -2144,7 +2144,7 @@ exports[`Navbar snapshots should match snapshot with no active route 1`] = `
             >
               <svg
                 aria-hidden="true"
-                class="w-6 h-6 drop-shadow-[0_0_2px_rgba(0,0,0,0.18)] dark:drop-shadow-none"
+                class="w-6 h-6 drop-shadow-sm dark:drop-shadow-[0_0_3px_rgba(255,255,255,0.25)]"
                 viewBox="0 0 512 512"
                 xmlns="http://www.w3.org/2000/svg"
               >
@@ -2229,7 +2229,7 @@ exports[`Navbar snapshots should match snapshot with no active route 1`] = `
             >
               <svg
                 aria-hidden="true"
-                class="w-6 h-6 drop-shadow-[0_0_2px_rgba(0,0,0,0.18)] dark:drop-shadow-none"
+                class="w-6 h-6 drop-shadow-sm dark:drop-shadow-[0_0_3px_rgba(255,255,255,0.25)]"
                 viewBox="0 0 1024 1024"
                 xmlns="http://www.w3.org/2000/svg"
               >
@@ -2407,7 +2407,7 @@ exports[`Navbar snapshots should match snapshot with no active route 1`] = `
             >
               <svg
                 aria-hidden="true"
-                class="w-6 h-6 drop-shadow-[0_0_2px_rgba(0,0,0,0.18)] dark:drop-shadow-none"
+                class="w-6 h-6 drop-shadow-sm dark:drop-shadow-[0_0_3px_rgba(255,255,255,0.25)]"
                 viewBox="0 0 512 512"
                 xmlns="http://www.w3.org/2000/svg"
               >
@@ -2467,7 +2467,7 @@ exports[`Navbar snapshots should match snapshot with no active route 1`] = `
             >
               <svg
                 aria-hidden="true"
-                class="w-6 h-6 drop-shadow-[0_0_2px_rgba(0,0,0,0.18)] dark:drop-shadow-none"
+                class="w-6 h-6 drop-shadow-sm dark:drop-shadow-[0_0_3px_rgba(255,255,255,0.25)]"
                 viewBox="0 0 512 512"
                 xmlns="http://www.w3.org/2000/svg"
               >
@@ -2581,7 +2581,7 @@ exports[`Navbar snapshots should match snapshot with no active route 1`] = `
             >
               <svg
                 aria-hidden="true"
-                class="w-6 h-6 drop-shadow-[0_0_2px_rgba(0,0,0,0.18)] dark:drop-shadow-none"
+                class="w-6 h-6 drop-shadow-sm dark:drop-shadow-[0_0_3px_rgba(255,255,255,0.25)]"
                 viewBox="0 0 512 512"
                 xmlns="http://www.w3.org/2000/svg"
               >
@@ -2648,7 +2648,7 @@ exports[`Navbar snapshots should match snapshot with no active route 1`] = `
             >
               <svg
                 aria-hidden="true"
-                class="w-6 h-6 drop-shadow-[0_0_2px_rgba(0,0,0,0.18)] dark:drop-shadow-none"
+                class="w-6 h-6 drop-shadow-sm dark:drop-shadow-[0_0_3px_rgba(255,255,255,0.25)]"
                 viewBox="0 0 512 512"
                 xmlns="http://www.w3.org/2000/svg"
               >

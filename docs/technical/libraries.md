@@ -2,7 +2,7 @@
 
 Reference notes for choosing the chart, map, and table libraries for `apps/web`.
 
-**Status: research only. Nothing here is decided, and no library below is installed.** This document records what was screened, what was ruled out and why, and what must be verified before committing to anything. The decision itself is tracked as `ROADMAP.md` items I15 and I17.
+**Status: research only. Nothing here is decided, and no library below is installed.** This document records what was screened, what was ruled out and why, and what must be verified before committing to anything. The decision itself is tracked as `ROADMAP.md` item I13.
 
 _Screening date: 16 Sep 2026._ Version numbers and project-health claims below were accurate then and should be re-checked before acting on them.
 
@@ -87,4 +87,4 @@ Each finalist has its own open question. These are the checks to run when the de
 - **Map data** — 110m vs 50m, bundled vs fetched as a static asset, and the ISO numeric ↔ alpha-3 crosswalk with a disputed or former territory as a test case.
 - **Playwright** — interaction determinism over SVG across all five browser projects.
 
-Palettes will need categorical, sequential, and divergent ramps, each contrast-validated in **both** themes — see `ROADMAP.md` I12 for why light mode is the harder of the two. Record the values in `docs/design-system.md`.
+Palettes will need categorical, sequential, and divergent ramps, each contrast-validated in **both** themes — see `docs/design-system.md` and the `light-mode-styling` capability for why light mode is the harder of the two. Record the values in `docs/design-system.md`.

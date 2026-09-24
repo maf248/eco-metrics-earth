@@ -39,7 +39,7 @@ function NavLink({ href, icon: Icon, label, isActive }: NavLinkProps) {
       >
         <Icon
           aria-hidden
-          className="w-6 h-6 drop-shadow-[0_0_2px_rgba(0,0,0,0.18)] dark:drop-shadow-none"
+          className="w-6 h-6 drop-shadow-sm dark:drop-shadow-[0_0_3px_rgba(255,255,255,0.25)]"
         />
       </span>
       <span className="w-full text-center whitespace-normal break-words leading-tight lg:truncate lg:max-w-none lg:text-left lg:whitespace-nowrap">

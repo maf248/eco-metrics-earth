@@ -65,10 +65,13 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
       className="flex min-h-screen flex-col items-center justify-start pt-14 px-4"
     >
       <div className="flex flex-col items-center gap-6 mt-14 lg:mt-0">
-        <div className="flex items-center justify-center w-24 h-24 rounded-2xl bg-gray-100 dark:bg-white/10 p-4">
+        <div className="flex items-center justify-center w-24 h-24 rounded-2xl bg-gray-300 dark:bg-white/10 p-4">
           {/* getCategoryIcon returns a stable ref to an existing component — not created during render. */}
           {/* eslint-disable-next-line react-hooks/static-components */}
-          <Icon aria-hidden className="w-16 h-16" />
+          <Icon
+            aria-hidden
+            className="w-16 h-16 drop-shadow-lg dark:drop-shadow-[0_0_8px_rgba(255,255,255,0.25)]"
+          />
         </div>
         <div className="text-center">
           <h1 className="text-4xl font-bold text-gray-900 dark:text-white">{title}</h1>

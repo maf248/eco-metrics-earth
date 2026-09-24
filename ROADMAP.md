@@ -4,11 +4,11 @@ Este documento registra todas las propuestas de mejora identificadas para el pro
 
 ---
 
-## Estado del Proyecto (22 Sep 2026)
+## Estado del Proyecto (23 Sep 2026)
 
 | Aspecto          | Estado | Nota                                                                                                                                                                                                                   |
 | ---------------- | ------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Tests            | ✅     | 331 unit (267 web + 56 api + 8 shared) + 61 E2E pasando, 0 errores                                                                                                                                                     |
+| Tests            | ✅     | 348 unit (284 web + 56 api + 8 shared) + 61 E2E pasando, 0 errores                                                                                                                                                     |
 | Lint             | ✅     | Sin warnings                                                                                                                                                                                                           |
 | Build            | ✅     | Compila correctamente                                                                                                                                                                                                  |
 | CI               | ✅     | CI en PRs y push a cualquier branch                                                                                                                                                                                    |
@@ -30,7 +30,7 @@ Este documento registra todas las propuestas de mejora identificadas para el pro
 
 **Our World in Data (OWID)** es el primer proveedor a conectar. Justificación:
 
-- **Licencia CC BY** — uso comercial y con publicidad permitido, solo requiere atribución (ver I12).
+- **Licencia CC BY** — uso comercial y con publicidad permitido, solo requiere atribución (ver I11).
 - **Sin API key, sin rate limits, CORS habilitado** — cero fricción operativa, sin secrets que gestionar.
 - **Dos modos de consumo, ambos ya validados en la colección Postman** (`Our World in Data — Ecology, Humanity & Sustainability`):
   - **Grapher CSV/JSON:** `https://ourworldindata.org/grapher/{slug}.csv?csvType=full` (+ `.metadata.json`) — series país-año armonizadas.
@@ -85,7 +85,7 @@ Este documento registra todas las propuestas de mejora identificadas para el pro
 
 #### P1.0 — Fundación de la capa de datos (prerequisito de todo lo demás)
 
-1. **Tipos compartidos** en `packages/shared`: `MetricSeries` (puntos año/valor por entidad), `MetricPoint`, `DataSourceAttribution` (provider, license, sourceUrl, lastUpdated) — la atribución viaja en `ApiResponse<T>.meta` (ver I13).
+1. **Tipos compartidos** en `packages/shared`: `MetricSeries` (puntos año/valor por entidad), `MetricPoint`, `DataSourceAttribution` (provider, license, sourceUrl, lastUpdated) — la atribución viaja en `ApiResponse<T>.meta` (ver I12).
 2. **Cliente HTTP del BFF**: `@nestjs/axios` (o `fetch` nativo de Node 24 envuelto en un service) con timeout, retry acotado y User-Agent identificable.
 3. **Caching**: `@nestjs/cache-manager` en memoria con TTL 24 h para respuestas de OWID (datos anuales — no necesitan frescura mayor). Sin base de datos en esta fase (I05 sigue en backlog).
 4. **`OwidClient` service** (`apps/api/src/modules/providers/owid/`): métodos `getIndicatorData(id)` / `getIndicatorMetadata(id)` (API v1 JSON) y `getGrapherSeries(slug)` (CSV → parseo server-side). Fixtures de test tomados de las respuestas de la colección Postman.
@@ -99,8 +99,8 @@ La categoría con mejor relación datos/esfuerzo (OWID CO₂ dataset: anual, per
 - `Co2EmissionsModule` + controller: `GET /api/v1/co2-emissions/series?country=ARG&from=1990` (DTOs con `class-validator` para ISO-3166, rangos de años).
 - Service que mapea OWID → `MetricSeries` con `DataSourceAttribution`.
 - Swagger tag + tests unitarios con fixtures (sin llamadas de red en tests).
-- **Frontend:** la página `/co2-emissions/` deja de ser placeholder — Server Component con `fetch` al BFF e ISR (`revalidate: 86400`), Suspense boundary (resuelve I08 para esta ruta) y primer gráfico de líneas (requiere decidir librería de charts, ver I14; al integrarla aplica el recordatorio de `next/dynamic`).
-- **Atribución visible** "Data: Our World in Data (CC BY)" (ver I12 — requisito legal de la licencia).
+- **Frontend:** la página `/co2-emissions/` deja de ser placeholder — Server Component con `fetch` al BFF e ISR (`revalidate: 86400`), Suspense boundary (resuelve I08 para esta ruta) y primer gráfico de líneas (requiere decidir librería de charts, ver I13; al integrarla aplica el recordatorio de `next/dynamic`).
+- **Atribución visible** "Data: Our World in Data (CC BY)" (ver I11 — requisito legal de la licencia).
 
 #### P1.2 — `global-temperature` (OWID temperature anomaly) — replica el patrón de P1.1
 
@@ -238,7 +238,7 @@ Lista de hallazgos del análisis de repositorio, ordenados por prioridad (más c
 ### 🟢 Arquitectura / Deuda técnica
 
 - **I08.** Sin Suspense boundaries — el App Router de Next.js está diseñado alrededor de Suspense + streaming para manejar estados de carga y errores. Actualmente las páginas renderizan sincrónicamente sin límites de Suspense, lo que bloquea el main thread durante transiciones de ruta. Requisito previo para P1 (data fetching real).
-- **I15.** Higiene de los specs canónicos en `openspec/specs/` — pendiente, todo tarea de criterio y no mecánica (verificado al 16 Sep 2026): (a) **30 de 42** specs tienen el `## Purpose` en el placeholder autogenerado `TBD - created by archiving change <x>` — hay que escribir una línea real por capability; (b) `ci-node-version` usa un esquema propio (`# Spec: ...` + `## Capability`) ajeno a la gramática de OpenSpec; (c) `api-app-scaffold` no tiene título ni `## Purpose`; (d) 3 specs están en español (`api-app-scaffold`, `shared-types`, `web-app-scaffold`), violando la regla de inglés de `CLAUDE.md`. Es deuda de documentación: no afecta al código ni al sitio. **Causa de fondo:** el CLI de `openspec` no está instalado (no está en `package.json` ni en `node_modules/.bin`), así que el archivado y el merge de deltas se hacen a mano, sin nada que valide la gramática. La regla documentada en `AGENTS.md` mitiga el síntoma, no la causa. **Sugerencia:** evaluar instalarlo como devDependency y usar `openspec archive` / `validate` en vez del `mv` + merge manual, sumándolo al pre-commit. Decidir primero si soporta el layout actual antes de migrar los 42 specs.
+- **I14.** Higiene de los specs canónicos en `openspec/specs/` — pendiente, todo tarea de criterio y no mecánica (verificado al 16 Sep 2026): (a) **30 de 42** specs tienen el `## Purpose` en el placeholder autogenerado `TBD - created by archiving change <x>` — hay que escribir una línea real por capability; (b) `ci-node-version` usa un esquema propio (`# Spec: ...` + `## Capability`) ajeno a la gramática de OpenSpec; (c) `api-app-scaffold` no tiene título ni `## Purpose`; (d) 3 specs están en español (`api-app-scaffold`, `shared-types`, `web-app-scaffold`), violando la regla de inglés de `CLAUDE.md`. Es deuda de documentación: no afecta al código ni al sitio. **Causa de fondo:** el CLI de `openspec` no está instalado (no está en `package.json` ni en `node_modules/.bin`), así que el archivado y el merge de deltas se hacen a mano, sin nada que valide la gramática. La regla documentada en `AGENTS.md` mitiga el síntoma, no la causa. **Sugerencia:** evaluar instalarlo como devDependency y usar `openspec archive` / `validate` en vez del `mv` + merge manual, sumándolo al pre-commit. Decidir primero si soporta el layout actual antes de migrar los 42 specs.
 - **I05.** Sin capa de datos ni ORM — cuando empiece la integración real de datos, no hay TypeORM, Prisma ni esquema de base de datos definido.
 
 ### 🟢 Configuración / Build
@@ -246,21 +246,11 @@ Lista de hallazgos del análisis de repositorio, ordenados por prioridad (más c
 - **I06.** `legacy-peer-deps=true` en `.npmrc` — workaround porque `eslint-plugin-jsx-a11y@6.10.2` no declara ESLint 10 en sus peer deps. PR [#1081](https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/pull/1081) abierto. Eliminar cuando se publique un release con soporte.
 - **I07.** Sin Storybook ni documentación visual de componentes. Actualmente hay 24 componentes (verificado al 16 Sep 2026), por lo que no se justifica el overhead de configuración y mantenimiento. Reconsiderar cuando supere ~40.
 
-### 🟢 UI / Diseño
-
-- **I11.** Visibilidad de iconos SVG en modo claro/oscuro — algunos iconos de categoría (sobre todo reforestation, ocean-health, plastic-pollution) no contrastan con el fondo en modo claro: se pierden detalles y bordes. En oscuro el problema es menor pero persiste. Accionable: light/dark ya está en producción.
-
-  **Restricción dura** (decisión registrada en el spec `light-mode-styling`): los iconos son **intencionalmente multicolor** — sus colores son identidad de cada categoría y no se recolorean ni tintan por tema. El fix mejora **separación**, no color: drop-shadow/glow, borde o contenedor, o background highlight detrás del icono.
-
-  **Descartado:** invertir/tintar los colores del SVG según tema, o iconos con prop `theme` que ajusten fill/stroke — contradice la decisión anterior.
-
-  **Dificultad:** 3/10 — CSS/Tailwind y ajuste visual. **Estado:** Pendiente
-
 ### 🟡 Datos / Proveedores
 
-- **I12.** Atribución de datos (requisito legal, no opcional) — CC BY exige atribución visible. Antes de publicar la primera sección con datos reales (P1.1): componente de atribución al pie de cada visualización ("Data: Our World in Data — CC BY" con link) + página `/data-sources/` listando proveedores y licencias. Alimentado por el `DataSourceAttribution` de I13. Bonus SEO: contenido indexable con estructura.
-- **I13.** Extender `ApiResponse<T>` con metadata de fuente — el contrato actual no transporta procedencia. Agregar `meta: { source: DataSourceAttribution; fetchedAt: string }` para que el frontend renderice atribución y frescura sin hardcodear nada por página. Diseñarlo en P1.0 para no romper el contrato después.
-- **I14.** Elegir librería de charts — pendiente. Cuando toque (antes de P1.1), ver `docs/technical/libraries.md`: tiene candidatas, descartadas con motivo, spikes por candidata y los gates a cumplir. La decisión se registra en `docs/design-system.md` y activa el recordatorio de Dynamic Imports.
+- **I11.** Atribución de datos (requisito legal, no opcional) — CC BY exige atribución visible. Antes de publicar la primera sección con datos reales (P1.1): componente de atribución al pie de cada visualización ("Data: Our World in Data — CC BY" con link) + página `/data-sources/` listando proveedores y licencias. Alimentado por el `DataSourceAttribution` de I12. Bonus SEO: contenido indexable con estructura.
+- **I12.** Extender `ApiResponse<T>` con metadata de fuente — el contrato actual no transporta procedencia. Agregar `meta: { source: DataSourceAttribution; fetchedAt: string }` para que el frontend renderice atribución y frescura sin hardcodear nada por página. Diseñarlo en P1.0 para no romper el contrato después.
+- **I13.** Elegir librería de charts — pendiente. Cuando toque (antes de P1.1), ver `docs/technical/libraries.md`: tiene candidatas, descartadas con motivo, spikes por candidata y los gates a cumplir. La decisión se registra en `docs/design-system.md` y activa el recordatorio de Dynamic Imports.
 
 ---
 
@@ -271,4 +261,4 @@ Lista de hallazgos del análisis de repositorio, ordenados por prioridad (más c
 - **I09.** OpenTelemetry — considerado para el futuro cuando el sistema escale a múltiples servicios o se quiera cambiar de backend de observabilidad (Sentry → Datadog, Honeycomb, etc.) sin tocar código de instrumentación. Con un solo BFF, Sentry Performance cubre el tracing necesario. No justifica el overhead de configuración actual (collector, exporters, SDK setup).
 - **I10.** Axiom — plataforma de logs como servicio. Solo relevante si la retención de Cloud Logging (30 días en free tier) o Vercel resulta insuficiente para debugging post-mortem. Por ahora los logs agregados de cada plataforma son suficientes.
 
-**Última actualización:** 22 Sep 2026
+**Última actualización:** 23 Sep 2026
