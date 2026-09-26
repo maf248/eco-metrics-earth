@@ -2,7 +2,7 @@
 
 ## Purpose
 
-TBD - created by archiving change architecture-and-quality. Update Purpose after archive.
+Defines the NestJS HealthModule that encapsulates the health endpoint.
 
 ## Requirements
 

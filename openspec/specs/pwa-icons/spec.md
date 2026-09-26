@@ -2,7 +2,7 @@
 
 ## Purpose
 
-TBD - created by archiving change seo-and-performance. Update Purpose after archive.
+Defines the PWA manifest icon entries and the script that generates PNG icons from the SVG logo.
 
 ## Requirements
 

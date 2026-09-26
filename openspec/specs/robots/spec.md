@@ -2,7 +2,7 @@
 
 ## Purpose
 
-TBD - created by archiving change seo-discovery. Update Purpose after archive.
+Defines the robots.txt route and its crawler allow rules and sitemap declaration.
 
 ## Requirements
 

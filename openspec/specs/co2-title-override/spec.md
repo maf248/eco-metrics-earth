@@ -2,7 +2,7 @@
 
 ## Purpose
 
-TBD - created by archiving change accessibility-and-bugs. Update Purpose after archive.
+Defines the title override that renders the CO2 chemical formula in uppercase.
 
 ## Requirements
 

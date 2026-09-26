@@ -2,89 +2,89 @@
 
 ## Purpose
 
-TBD - created by archiving change monorepo-base-setup. Update Purpose after archive.
+Defines the NX monorepo workspace structure, project layout, and toolchain configuration.
 
 ## Requirements
 
-### Requirement: NX workspace inicializado con apps y packages
+### Requirement: NX workspace initialized with apps and packages
 
-El workspace NX SHALL contener las apps `web` y `api` y el package `shared`, todos reconocidos por NX y ejecutables mediante su task runner — sobre **NX 23.2.1** (todas las familias de paquetes `nx` / `@nx/*` fijadas en la versión exacta `23.2.1`, sin `^` ni `~`, en lockstep). Los targets SHALL seguir inferiéndose mediante los plugins de `nx.json` (`@nx/js/typescript`, `@nx/jest/plugin`, `@nx/next/plugin`, `@nx/eslint/plugin`, `@nx/webpack/plugin`, `@nx/playwright/plugin`) y los bloques `nx.targets` en los `package.json` de cada proyecto — sin `project.json` ni executors deprecados.
+The NX workspace SHALL contain the `web` and `api` apps and the `shared` package, all recognized by NX and runnable through its task runner — on **NX 23.2.1** (all `nx` / `@nx/*` package families pinned to the exact version `23.2.1`, no `^` or `~`, in lockstep). Targets SHALL continue to be inferred via the `nx.json` plugins (`@nx/js/typescript`, `@nx/jest/plugin`, `@nx/next/plugin`, `@nx/eslint/plugin`, `@nx/webpack/plugin`, `@nx/playwright/plugin`) and the `nx.targets` blocks in each project's `package.json` — without `project.json` or deprecated executors.
 
-#### Scenario: Levantar todas las apps en desarrollo
+#### Scenario: Start all apps in development
 
-- **GIVEN** el workspace migrado a NX 23.2.1 con la caché reseteada (`npx nx reset`)
-- **WHEN** se ejecuta `nx run-many --targets=dev,serve --all`
-- **THEN** las apps `web` y `api` levantan en paralelo sin errores ni warnings de deprecación
-- **AND** el HMR de `@eco-metrics/shared` funciona en `web` (vía `transpilePackages` explícito en `next.config.ts`)
+- **GIVEN** the workspace migrated to NX 23.2.1 with the cache reset (`npx nx reset`)
+- **WHEN** `nx run-many --targets=dev,serve --all` is executed
+- **THEN** the `web` and `api` apps start in parallel without errors or deprecation warnings
+- **AND** HMR for `@eco-metrics/shared` works in `web` (via explicit `transpilePackages` in `next.config.ts`)
 
-#### Scenario: Ejecutar todos los tests del monorepo
+#### Scenario: Run all monorepo tests
 
-- **WHEN** se ejecuta `nx run-many --target=test --all`
-- **THEN** Jest corre en las tres proyectos (279 tests) y retorna resultados sin errores ni warnings de configuración
+- **WHEN** `nx run-many --target=test --all` is executed
+- **THEN** Jest runs in the three projects (279 tests) and returns results without errors or configuration warnings
 
-#### Scenario: Build de todas las apps
+#### Scenario: Build all apps
 
-- **WHEN** se ejecuta `nx run-many --target=build --all`
-- **THEN** `shared` (tsc), `api` (webpack vía `NxAppWebpackPlugin`) y `web` (Next) compilan sin errores de TypeScript
-- **AND** el log de build no contiene warnings de deprecación de NX 23
+- **WHEN** `nx run-many --target=build --all` is executed
+- **THEN** `shared` (tsc), `api` (webpack via `NxAppWebpackPlugin`), and `web` (Next) compile without TypeScript errors
+- **AND** the build log contains no NX 23 deprecation warnings
 
-### Requirement: TypeScript strict habilitado en todo el workspace
+### Requirement: TypeScript strict enabled across the workspace
 
-Todas las apps y packages SHALL tener `strict: true` en su `tsconfig.json`. El compilador SHALL rechazar código con tipos implícitos `any` o asignaciones inseguras.
+All apps and packages SHALL have `strict: true` in their `tsconfig.json`. The compiler SHALL reject code with implicit `any` types or unsafe assignments.
 
-#### Scenario: Código con tipo implícito any falla compilación
+#### Scenario: Code with implicit any type fails compilation
 
-- **WHEN** se escribe una función sin tipar sus parámetros
-- **THEN** `tsc` reporta error y el build falla
+- **WHEN** a function is written without typing its parameters
+- **THEN** `tsc` reports an error and the build fails
 
-### Requirement: ESLint y Prettier configurados de forma unificada
+### Requirement: ESLint and Prettier configured in a unified way
 
-El workspace SHALL tener configuración compartida de ESLint y Prettier. Ambas apps SHALL heredar las mismas reglas base.
+The workspace SHALL have shared ESLint and Prettier configuration. Both apps SHALL inherit the same base rules.
 
-#### Scenario: Código mal formateado es detectado
+#### Scenario: Poorly formatted code is detected
 
-- **WHEN** se ejecuta `nx run-many --target=lint --all`
-- **THEN** ESLint reporta violaciones de estilo sin errores de configuración
+- **WHEN** `nx run-many --target=lint --all` is executed
+- **THEN** ESLint reports style violations without configuration errors
 
-### Requirement: Variables de entorno documentadas
+### Requirement: Environment variables documented
 
-Cada app SHALL tener un archivo `.env.example` con todas las variables de entorno necesarias documentadas con comentarios.
+Each app SHALL have a `.env.example` file with all required environment variables documented with comments.
 
-#### Scenario: Developer nuevo puede iniciar el proyecto
+#### Scenario: New developer can start the project
 
-- **WHEN** un developer copia `.env.example` a `.env.local`
-- **THEN** puede levantar las apps en desarrollo sin configuración adicional
+- **WHEN** a developer copies `.env.example` to `.env.local`
+- **THEN** they can start the apps in development without additional configuration
 
-### Requirement: NX toolchain sin vulnerabilidades auditables conocidas
+### Requirement: NX toolchain free of known auditable vulnerabilities
 
-El árbol de dependencias del workspace SHALL estar libre de advisories de `npm audit` cuya ruta de fix pase por `nx`, cualquier paquete `@nx/*` o `@module-federation/*`. Los conteos de audit antes y después de la migración SHALL quedar documentados; los advisories restantes fuera del subárbol de NX (NestJS, tooling de release, y advisories sin fix disponible upstream) quedan explícitamente fuera de alcance.
+The workspace dependency tree SHALL be free of `npm audit` advisories whose fix path goes through `nx`, any `@nx/*` package, or `@module-federation/*`. Audit counts before and after the migration SHALL be documented; remaining advisories outside the NX subtree (NestJS, release tooling, and advisories with no upstream fix available) remain explicitly out of scope.
 
-#### Scenario: Audit sin advisories del subárbol NX
+#### Scenario: Audit without NX subtree advisories
 
-- **GIVEN** el workspace en NX 23.2.1 con `package-lock.json` regenerado
-- **WHEN** se ejecuta `npm audit --json`
-- **THEN** ningún advisory listado tiene como fix un paquete de la familia `nx` / `@nx/*` / `@module-federation/*`
-- **AND** el bloque de baseline del subárbol NX (advisories contra `@nx/*` ≤22.7.6, `@module-federation/*`, `webpack-dev-server`, `svgo`, `undici`, `ws`, `adm-zip`, `axios`/`tmp`/`yaml`/`form-data`/`brace-expansion` de `nx@22.7.2`) ha desaparecido del reporte
+- **GIVEN** the workspace on NX 23.2.1 with `package-lock.json` regenerated
+- **WHEN** `npm audit --json` is executed
+- **THEN** no listed advisory has a fix path through the `nx` / `@nx/*` / `@module-federation/*` family
+- **AND** the NX subtree baseline block (advisories against `@nx/*` ≤22.7.6, `@module-federation/*`, `webpack-dev-server`, `svgo`, `undici`, `ws`, `adm-zip`, `axios`/`tmp`/`yaml`/`form-data`/`brace-expansion` from `nx@22.7.2`) has disappeared from the report
 
-#### Scenario: Conteos de audit registrados
+#### Scenario: Audit counts recorded
 
-- **WHEN** la migración se completa
-- **THEN** los conteos exactos antes/después (por severidad) quedan registrados en ROADMAP.md (I01)
-- **AND** las familias restantes quedan documentadas con su owner en el ROADMAP
+- **WHEN** the migration completes
+- **THEN** the exact before/after counts (by severity) are recorded in ROADMAP.md (I01)
+- **AND** the remaining families are documented with their owner in ROADMAP
 
-### Requirement: Operación del toolchain sin warnings en NX 23
+### Requirement: Toolchain operation without warnings on NX 23
 
-El workspace SHALL operar en NX 23 sin warnings de deprecación en build, test ni lint. La configuración de Next.js SHALL usar únicamente APIs soportadas (sin los helpers deprecados `withNx` / `composePlugins` de `@nx/next`), con `transpilePackages: ['@eco-metrics/shared']` declarado explícitamente.
+The workspace SHALL operate on NX 23 without deprecation warnings in build, test, or lint. The Next.js configuration SHALL use only supported APIs (without the deprecated `withNx` / `composePlugins` helpers from `@nx/next`), with `transpilePackages: ['@eco-metrics/shared']` declared explicitly.
 
-#### Scenario: next.config.ts sin helpers deprecados
+#### Scenario: next.config.ts without deprecated helpers
 
-- **GIVEN** `apps/web/next.config.ts` migrado (sin `withNx`/`composePlugins`, con `transpilePackages` explícito)
-- **WHEN** se ejecuta `npx nx build web` y `npx nx dev web`
-- **THEN** ambos comandos completan sin warnings de deprecación de NX
-- **AND** el resto de la configuración (trailing slash, security headers/CSP, bundle analyzer) permanece sin cambios de comportamiento
+- **GIVEN** `apps/web/next.config.ts` migrated (without `withNx`/`composePlugins`, with explicit `transpilePackages`)
+- **WHEN** `npx nx build web` and `npx nx dev web` are executed
+- **THEN** both commands complete without NX deprecation warnings
+- **AND** the rest of the configuration (trailing slash, security headers/CSP, bundle analyzer) remains unchanged in behavior
 
-#### Scenario: Versiones NX en lockstep con pin exacto
+#### Scenario: NX versions in lockstep with exact pin
 
-- **WHEN** se inspecciona el `package.json` raíz tras la migración
-- **THEN** los diez paquetes de la familia NX (`nx`, `@nx/devkit`, `@nx/jest`, `@nx/js`, `@nx/nest`, `@nx/next`, `@nx/node`, `@nx/playwright`, `@nx/react`, `@nx/webpack`) están fijados en `"23.2.1"` exacto
-- **AND** `npm ls` no muestra copias anidadas de la familia NX en versiones 22.x
+- **WHEN** the root `package.json` is inspected after the migration
+- **THEN** the ten NX family packages (`nx`, `@nx/devkit`, `@nx/jest`, `@nx/js`, `@nx/nest`, `@nx/next`, `@nx/node`, `@nx/playwright`, `@nx/react`, `@nx/webpack`) are pinned to the exact `"23.2.1"`
+- **AND** `npm ls` shows no nested NX family copies in 22.x versions

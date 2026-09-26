@@ -16,6 +16,10 @@ test.describe('Accessibility audit — home page', { tag: '@smoke' }, () => {
 });
 
 test.describe('Accessibility audit — category pages', () => {
+  // Cold dev-server runs compile routes on first hit, and axe analysis on the
+  // heaviest page (water-footprint's 60-row table) can exceed the 30s default.
+  test.setTimeout(60_000);
+
   for (const slug of CATEGORY_SLUGS) {
     const cp = categoryPage(slug);
     test(`should have zero critical and serious violations on ${slug} page`, async ({ page }) => {

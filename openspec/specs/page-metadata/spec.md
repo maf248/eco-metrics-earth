@@ -2,7 +2,7 @@
 
 ## Purpose
 
-TBD - created by archiving change seo-metadata-og. Update Purpose after archive.
+Defines the page-level metadata, canonical URLs, and Open Graph fields for home and category pages.
 
 ## Requirements
 

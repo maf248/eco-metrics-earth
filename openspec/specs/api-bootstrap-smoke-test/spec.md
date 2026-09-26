@@ -2,7 +2,7 @@
 
 ## Purpose
 
-TBD - created by archiving change configuration-and-tests. Update Purpose after archive.
+Defines the smoke test that verifies the NestJS app boots and the health endpoint responds.
 
 ## Requirements
 

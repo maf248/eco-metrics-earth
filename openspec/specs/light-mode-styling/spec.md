@@ -2,7 +2,7 @@
 
 ## Purpose
 
-TBD - created by archiving change add-light-mode-support. Update Purpose after archive.
+Defines how the application layout, navigation, pages, icons, and scroll gradients adapt to light and dark themes.
 
 ## Requirements
 

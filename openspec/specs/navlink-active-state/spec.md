@@ -2,7 +2,7 @@
 
 ## Purpose
 
-TBD - created by archiving change accessibility-and-bugs. Update Purpose after archive.
+Defines the trailing-slash invariant active state logic for navigation links.
 
 ## Requirements
 

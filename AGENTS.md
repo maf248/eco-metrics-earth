@@ -65,7 +65,7 @@ Every canonical spec MUST keep this shape:
 
 Spec content is **English only**, like every other generated artifact.
 
-> The `openspec` CLI is not installed in this repo (`npx openspec` fails), so archiving and delta sync are performed manually. That makes following this rule by hand mandatory — there is no tool validating it.
+> The OpenSpec CLI (`@fission-ai/openspec`, pinned root devDependency) is installed. Archive changes with `npx openspec archive <change> --yes` — it validates the change, merges the delta specs into the canonical specs (merge semantics enforced by the tool), and moves the folder to `openspec/changes/archive/YYYY-MM-DD-<name>/`. The delta↔canonical grammar rules are enforced automatically. The pre-push gate runs `npx openspec validate` twice (`--specs` and `--archived`, as separate fail-fast commands — the CLI cannot combine the scopes).
 
 > **Note:** Improvement ideas and planned features are tracked in [`ROADMAP.md`](./ROADMAP.md). When ready to implement, a formal OpenSpec proposal is created from the roadmap item.
 
@@ -323,7 +323,7 @@ Pre-PR checklist: `npm run lint`, `npm run build`, `npm run test`, and `npm run 
   - `packages/shared/`-only deps → install in `packages/shared/package.json`
   - Shared dev tooling (e.g., `eslint`, `prettier`, `nx`, `typescript`) → root `package.json`
   - When in doubt, ask before installing.
-- **Deliberate dependency pin:** `@nestjs/throttler` is intentionally held at `6.5.0`. As of 11 Sep 2026 no throttler release declares NestJS 12 in its peer dependency range (peers reach `^11` only), and `.npmrc` has `legacy-peer-deps=true`. The pin is validated empirically (unit + E2E). Revisit only when a throttler release explicitly adds NestJS 12 peer support — do not "fix" this pin blindly.
+- **`legacy-peer-deps=true` in `.npmrc` is required** because `eslint-plugin-jsx-a11y@6.10.2` does not declare ESLint 10 in its peer dependencies. Remove it only when a jsx-a11y release adds ESLint 10 support (tracked as I06 in ROADMAP.md).
 - To update a package: check `npm outdated`, verify compatibility, install with `--save-exact`, then run `npm run build` and `npm run test` before committing.
 
 ## Documentation Maintenance

@@ -2,43 +2,43 @@
 
 ## Purpose
 
-TBD - created by archiving change monorepo-base-setup. Update Purpose after archive.
+Defines the shared TypeScript types for API responses and ecological categories used across apps.
 
 ## Requirements
 
-### Requirement: Package shared con tipos base del dominio
+### Requirement: Package shared with base domain types
 
-El package `shared` SHALL exportar interfaces TypeScript base que representen los contratos de datos entre el BFF y el frontend. SHALL incluir al menos la interfaz base de respuesta de API y los identificadores de categorías ecológicas.
+The `shared` package SHALL export base TypeScript interfaces that represent the data contracts between the BFF and the frontend. It SHALL include at least the base API response interface and the ecological category identifiers.
 
-#### Scenario: Frontend importa tipos desde shared
+#### Scenario: Frontend imports types from shared
 
-- **WHEN** un archivo en `apps/web` importa desde `@eco-metrics/shared`
-- **THEN** TypeScript resuelve los tipos correctamente sin errores
+- **WHEN** a file in `apps/web` imports from `@eco-metrics/shared`
+- **THEN** TypeScript resolves the types correctly without errors
 
-#### Scenario: BFF importa tipos desde shared
+#### Scenario: BFF imports types from shared
 
-- **WHEN** un archivo en `apps/api` importa desde `@eco-metrics/shared`
-- **THEN** TypeScript resuelve los tipos correctamente sin errores
+- **WHEN** a file in `apps/api` imports from `@eco-metrics/shared`
+- **THEN** TypeScript resolves the types correctly without errors
 
-### Requirement: Interfaz base de respuesta de API
+### Requirement: Base API response interface
 
-SHALL existir una interfaz genérica `ApiResponse<T>` que envuelva todas las respuestas del BFF con estructura consistente: `data`, `timestamp` y opcionalmente `error`.
+A generic `ApiResponse<T>` interface SHALL exist that wraps all BFF responses with a consistent structure: `data`, `timestamp`, and optionally `error`.
 
-#### Scenario: Respuesta exitosa tipada correctamente
+#### Scenario: Successful response is typed correctly
 
-- **WHEN** el BFF retorna datos de una categoría
-- **THEN** la respuesta cumple con la interfaz `ApiResponse<T>` con `data` poblado y sin `error`
+- **WHEN** the BFF returns category data
+- **THEN** the response matches the `ApiResponse<T>` interface with `data` populated and no `error`
 
-#### Scenario: Respuesta de error tipada correctamente
+#### Scenario: Error response is typed correctly
 
-- **WHEN** el BFF retorna un error
-- **THEN** la respuesta cumple con `ApiResponse<T>` con `error` poblado
+- **WHEN** the BFF returns an error
+- **THEN** the response matches `ApiResponse<T>` with `error` populated
 
-### Requirement: Enum de categorías ecológicas
+### Requirement: Enum of ecological categories
 
-SHALL existir un enum o tipo union `EcoCategory` con los identificadores de las categorías iniciales del MVP: `air-quality`, `endangered-species`, `global-temperature`, `deforestation`, `ocean-health`, `co2-emissions`.
+An enum or union type `EcoCategory` SHALL exist with the identifiers of the MVP's initial categories: `air-quality`, `endangered-species`, `global-temperature`, `deforestation`, `ocean-health`, `co2-emissions`.
 
-#### Scenario: Categorías disponibles en frontend y backend
+#### Scenario: Categories available in frontend and backend
 
-- **WHEN** se importa `EcoCategory` desde `@eco-metrics/shared`
-- **THEN** están disponibles los seis identificadores de categorías del MVP
+- **WHEN** `EcoCategory` is imported from `@eco-metrics/shared`
+- **THEN** the six MVP category identifiers are available

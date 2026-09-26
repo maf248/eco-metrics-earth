@@ -2,7 +2,7 @@
 
 ## Purpose
 
-TBD - created by archiving change perf-svg-icons. Update Purpose after archive.
+Defines the mapping of category slugs and special keys to inline SVG icon components.
 
 ## Requirements
 

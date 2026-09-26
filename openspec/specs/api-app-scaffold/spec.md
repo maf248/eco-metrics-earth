@@ -1,16 +1,22 @@
+# api-app-scaffold Specification
+
+## Purpose
+
+Defines the NestJS BFF scaffold with per-category modules, global `/api/v1` prefix, typed config, and smoke test.
+
 ## Requirements
 
-### Requirement: NestJS app con estructura modular por categoría
+### Requirement: NestJS app with modular per-category structure
 
-The original requirement stands: the `api` app SHALL have a root module (`AppModule`) and a `modules/` folder prepared to host per-eco-category modules, each following `modules/<category>/<category>.module.ts`, `<category>.controller.ts`, `<category>.service.ts`. Updated: the app SHALL run on **NestJS 12** — `@nestjs/common`, `@nestjs/core`, `@nestjs/platform-express`, `@nestjs/swagger`, and `@nestjs/testing` pinned at exactly `12.0.1`, `@nestjs/config` at exactly `12.0.0` (no `^`/`~`), with `@nestjs/throttler` deliberately kept at `6.5.0` (documented exception — no Nest 12 peer support published). The app SHALL remain CommonJS; the ESM-published `@nestjs/*` 12 packages are consumed via Node's native `require(esm)`.
+The original requirement stands: the `api` app SHALL have a root module (`AppModule`) and a `modules/` folder prepared to host per-eco-category modules, each following `modules/<category>/<category>.module.ts`, `<category>.controller.ts`, `<category>.service.ts`. Updated: the app SHALL run on **NestJS 12** — `@nestjs/common`, `@nestjs/core`, `@nestjs/platform-express`, `@nestjs/swagger`, and `@nestjs/testing` pinned at exactly `12.1.0`, `@nestjs/config` at exactly `12.0.1` (no `^`/`~`), with `@nestjs/throttler` at `6.7.1` (peer range declares NestJS 12 since 6.7.1 — pin retired). The app SHALL remain CommonJS; the ESM-published `@nestjs/*` 12 packages are consumed via Node's native `require(esm)`.
 
-#### Scenario: API responde en el puerto correcto _(unchanged behavior, new framework major)_
+#### Scenario: API responds on the correct port _(unchanged behavior, new framework major)_
 
 - **GIVEN** the workspace with the `@nestjs/*` 12.x exact pins installed and the lockfile in sync
 - **WHEN** `nx serve api` is executed
 - **THEN** NestJS 12 starts on `http://localhost:3001` without errors or warnings
 
-#### Scenario: Health check endpoint disponible _(unchanged)_
+#### Scenario: Health check endpoint available _(unchanged)_
 
 - **WHEN** a GET is sent to `http://localhost:3001/api/v1/health`
 - **THEN** the server responds with status 200 and body `{ "status": "ok" }`
@@ -18,44 +24,44 @@ The original requirement stands: the `api` app SHALL have a root module (`AppMod
 #### Scenario: NestJS versions pinned exactly with no nested 11.x copies
 
 - **WHEN** `apps/api/package.json` and the installed tree are inspected after the upgrade
-- **THEN** `@nestjs/common`, `@nestjs/core`, `@nestjs/platform-express`, `@nestjs/swagger` are pinned at `"12.0.1"` and `@nestjs/config` at `"12.0.0"` — exact, no `^`/`~`
+- **THEN** `@nestjs/common`, `@nestjs/core`, `@nestjs/platform-express`, `@nestjs/swagger` are pinned at `"12.1.0"` and `@nestjs/config` at `"12.0.1"` — exact, no `^`/`~`
 - **AND** `npm ls @nestjs/common @nestjs/core @nestjs/platform-express @nestjs/swagger @nestjs/config @nestjs/testing` resolves a single 12.x version each, with no nested 11.x copies
 
-### Requirement: Prefijo global de rutas configurado
+### Requirement: Global route prefix configured
 
-Todos los endpoints del BFF SHALL estar bajo el prefijo `/api/v1`. El prefijo SHALL configurarse globalmente en el bootstrap de la aplicación.
+All BFF endpoints SHALL be under the `/api/v1` prefix. The prefix SHALL be configured globally in the application bootstrap.
 
-#### Scenario: Rutas sin prefijo retornan 404
+#### Scenario: Routes without prefix return 404
 
-- **WHEN** se hace GET a `http://localhost:3001/health` (sin prefijo)
-- **THEN** el servidor retorna status 404
+- **WHEN** a GET is made to `http://localhost:3001/health` (without prefix)
+- **THEN** the server returns status 404
 
-#### Scenario: Rutas con prefijo correcto responden
+#### Scenario: Routes with correct prefix respond
 
-- **WHEN** se hace GET a `http://localhost:3001/api/v1/health`
-- **THEN** el servidor retorna status 200
+- **WHEN** a GET is made to `http://localhost:3001/api/v1/health`
+- **THEN** the server returns status 200
 
-### Requirement: Estructura de carpetas base del BFF
+### Requirement: BFF base folder structure
 
-La app `api` SHALL tener la siguiente estructura dentro de `src/`:
+The `api` app SHALL have the following structure inside `src/`:
 
-- `modules/` — módulos NestJS por categoría ecológica
-- `common/` — pipes, interceptors, guards y filtros compartidos
-- `config/` — configuración de la aplicación (env vars tipadas)
+- `modules/` — NestJS modules per ecological category
+- `common/` — shared pipes, interceptors, guards, and filters
+- `config/` — application configuration (typed env vars)
 
-#### Scenario: Módulo de configuración carga variables de entorno
+#### Scenario: Config module loads environment variables
 
-- **WHEN** la app levanta con un `.env` válido
-- **THEN** las variables de entorno están disponibles tipadas a través del ConfigService de NestJS
+- **WHEN** the app starts with a valid `.env`
+- **THEN** the environment variables are available typed through the NestJS ConfigService
 
-### Requirement: Test de smoke del BFF
+### Requirement: BFF smoke test
 
-SHALL existir al menos un test de smoke que verifique que el `AppModule` compila y el health check responde correctamente.
+At least one smoke test SHALL exist that verifies `AppModule` compiles and the health check responds correctly.
 
-#### Scenario: Test de smoke del BFF pasa
+#### Scenario: BFF smoke test passes
 
-- **WHEN** se ejecuta `nx test api`
-- **THEN** el test de smoke pasa y Jest retorna exit code 0
+- **WHEN** `nx test api` is run
+- **THEN** the smoke test passes and Jest returns exit code 0
 
 ### Requirement: NestJS dependency manifest without dead weight
 
@@ -75,7 +81,7 @@ The `apps/api` dependency manifest SHALL contain only `@nestjs/*` packages that 
 
 ### Requirement: Environment validation behavior preserved under @nestjs/config 12
 
-`AppModule` SHALL validate environment variables at startup via `ConfigModule.forRoot` with the existing Joi schema (Joi 18.2.8, unchanged). Joi-specific options (`allowUnknown: true`, `abortEarly: true`) SHALL be passed under `validationOptions.libraryOptions` — the `@nestjs/config` 12 Standard Schema validation contract. The observable validation behavior SHALL remain identical to NestJS 11: unknown env vars are tolerated, the first invalid variable aborts startup with a clear error, and absent variables fall back to the schema defaults.
+`AppModule` SHALL validate environment variables at startup via `ConfigModule.forRoot` with the existing Joi schema (Joi 18.2.9, unchanged). Joi-specific options (`allowUnknown: true`, `abortEarly: true`) SHALL be passed under `validationOptions.libraryOptions` — the `@nestjs/config` 12 Standard Schema validation contract. The observable validation behavior SHALL remain identical to NestJS 11: unknown env vars are tolerated, the first invalid variable aborts startup with a clear error, and absent variables fall back to the schema defaults.
 
 #### Scenario: Invalid env var fails fast
 
@@ -106,15 +112,15 @@ The API SHALL exhibit identical observable behavior on NestJS 12 as on NestJS 11
 - **WHEN** any API response is received (success or error)
 - **THEN** `Access-Control-Allow-Origin` reflects `CORS_ORIGIN` and the helmet security headers are present — same as NestJS 11
 
-#### Scenario: Rate-limiting guard remains active under the held-back throttler pin
+#### Scenario: Rate-limiting guard remains active with the updated throttler
 
-- **GIVEN** the global `ThrottlerGuard` registered as `APP_GUARD` with `@nestjs/throttler` 6.5.0 (deliberate pin — no Nest 12 peer support published yet)
+- **GIVEN** the global `ThrottlerGuard` registered as `APP_GUARD` with `@nestjs/throttler` 6.7.1 (peer range declares NestJS 12 since 6.7.1 — pin retired)
 - **WHEN** requests flow through the API (every bootstrap-test request and every E2E API request passes through the global guard)
 - **THEN** requests within the 60/60s window receive normal responses and the guard produces no errors — the `api-security-hardening` rate-limit requirement keeps holding without code changes
 
 #### Scenario: Rate limiting returns 429 after exceeding the request budget
 
-- **GIVEN** the API running on NestJS 12 with the global `ThrottlerGuard` active (`@nestjs/throttler` 6.5.0 — deliberate pin, 60 requests / 60 s TTL per tracker)
+- **GIVEN** the API running on NestJS 12 with the global `ThrottlerGuard` active (`@nestjs/throttler` 6.7.1 — pin retired, 60 requests / 60 s TTL per tracker)
 - **WHEN** more than the configured request budget is sent to a single endpoint within the TTL window (direct rate-limit test — task 3.10: E2E hammering or unit test with a small-limit `ThrottlerModule`)
 - **THEN** the API responds **429** for the excess requests, with the throttler payload (`statusCode: 429`, `message: "ThrottlerException: Too Many Requests"` — exact shape re-verified empirically at implementation) and a `Retry-After` header
 - **AND** rate limiting remains active after the NestJS 12 upgrade — the 429 path is proven directly, not only inferred from pass-through traffic

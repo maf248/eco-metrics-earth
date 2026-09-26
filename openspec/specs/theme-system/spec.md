@@ -2,7 +2,7 @@
 
 ## Purpose
 
-TBD - created by archiving change add-light-mode-support. Update Purpose after archive.
+Defines the light/dark theme state management, persistence, and zero-flash initialization.
 
 ## Requirements
 

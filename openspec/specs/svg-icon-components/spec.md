@@ -2,7 +2,7 @@
 
 ## Purpose
 
-TBD - created by archiving change perf-svg-icons. Update Purpose after archive.
+Defines the inline SVG icon component library for the web app.
 
 ## Requirements
 

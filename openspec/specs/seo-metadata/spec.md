@@ -2,7 +2,7 @@
 
 ## Purpose
 
-TBD - created by archiving change seo-and-performance. Update Purpose after archive.
+Defines the Open Graph, Twitter Card, icon, theme-color, and 404 metadata for the root layout.
 
 ## Requirements
 
