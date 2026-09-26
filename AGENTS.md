@@ -323,7 +323,7 @@ Pre-PR checklist: `npm run lint`, `npm run build`, `npm run test`, and `npm run 
   - `packages/shared/`-only deps → install in `packages/shared/package.json`
   - Shared dev tooling (e.g., `eslint`, `prettier`, `nx`, `typescript`) → root `package.json`
   - When in doubt, ask before installing.
-- **Deliberate dependency pin:** `@nestjs/throttler` is intentionally held at `6.5.0`. As of 11 Sep 2026 no throttler release declares NestJS 12 in its peer dependency range (peers reach `^11` only), and `.npmrc` has `legacy-peer-deps=true`. The pin is validated empirically (unit + E2E). Revisit only when a throttler release explicitly adds NestJS 12 peer support — do not "fix" this pin blindly.
+- **`legacy-peer-deps=true` in `.npmrc` is required** because `eslint-plugin-jsx-a11y@6.10.2` does not declare ESLint 10 in its peer dependencies. Remove it only when a jsx-a11y release adds ESLint 10 support (tracked as I06 in ROADMAP.md).
 - To update a package: check `npm outdated`, verify compatibility, install with `--save-exact`, then run `npm run build` and `npm run test` before committing.
 
 ## Documentation Maintenance

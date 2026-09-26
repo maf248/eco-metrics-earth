@@ -4,7 +4,7 @@ Este documento registra todas las propuestas de mejora identificadas para el pro
 
 ---
 
-## Estado del Proyecto (23 Sep 2026)
+## Estado del Proyecto (26 Sep 2026)
 
 | Aspecto          | Estado | Nota                                                                                                                                                                                                                   |
 | ---------------- | ------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |

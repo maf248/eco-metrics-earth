@@ -8,7 +8,7 @@ Defines the NestJS BFF scaffold with per-category modules, global `/api/v1` pref
 
 ### Requirement: NestJS app with modular per-category structure
 
-The original requirement stands: the `api` app SHALL have a root module (`AppModule`) and a `modules/` folder prepared to host per-eco-category modules, each following `modules/<category>/<category>.module.ts`, `<category>.controller.ts`, `<category>.service.ts`. Updated: the app SHALL run on **NestJS 12** — `@nestjs/common`, `@nestjs/core`, `@nestjs/platform-express`, `@nestjs/swagger`, and `@nestjs/testing` pinned at exactly `12.0.1`, `@nestjs/config` at exactly `12.0.0` (no `^`/`~`), with `@nestjs/throttler` deliberately kept at `6.5.0` (documented exception — no Nest 12 peer support published). The app SHALL remain CommonJS; the ESM-published `@nestjs/*` 12 packages are consumed via Node's native `require(esm)`.
+The original requirement stands: the `api` app SHALL have a root module (`AppModule`) and a `modules/` folder prepared to host per-eco-category modules, each following `modules/<category>/<category>.module.ts`, `<category>.controller.ts`, `<category>.service.ts`. Updated: the app SHALL run on **NestJS 12** — `@nestjs/common`, `@nestjs/core`, `@nestjs/platform-express`, `@nestjs/swagger`, and `@nestjs/testing` pinned at exactly `12.1.0`, `@nestjs/config` at exactly `12.0.1` (no `^`/`~`), with `@nestjs/throttler` at `6.7.1` (peer range declares NestJS 12 since 6.7.1 — pin retired). The app SHALL remain CommonJS; the ESM-published `@nestjs/*` 12 packages are consumed via Node's native `require(esm)`.
 
 #### Scenario: API responds on the correct port _(unchanged behavior, new framework major)_
 
@@ -24,7 +24,7 @@ The original requirement stands: the `api` app SHALL have a root module (`AppMod
 #### Scenario: NestJS versions pinned exactly with no nested 11.x copies
 
 - **WHEN** `apps/api/package.json` and the installed tree are inspected after the upgrade
-- **THEN** `@nestjs/common`, `@nestjs/core`, `@nestjs/platform-express`, `@nestjs/swagger` are pinned at `"12.0.1"` and `@nestjs/config` at `"12.0.0"` — exact, no `^`/`~`
+- **THEN** `@nestjs/common`, `@nestjs/core`, `@nestjs/platform-express`, `@nestjs/swagger` are pinned at `"12.1.0"` and `@nestjs/config` at `"12.0.1"` — exact, no `^`/`~`
 - **AND** `npm ls @nestjs/common @nestjs/core @nestjs/platform-express @nestjs/swagger @nestjs/config @nestjs/testing` resolves a single 12.x version each, with no nested 11.x copies
 
 ### Requirement: Global route prefix configured
@@ -81,7 +81,7 @@ The `apps/api` dependency manifest SHALL contain only `@nestjs/*` packages that 
 
 ### Requirement: Environment validation behavior preserved under @nestjs/config 12
 
-`AppModule` SHALL validate environment variables at startup via `ConfigModule.forRoot` with the existing Joi schema (Joi 18.2.8, unchanged). Joi-specific options (`allowUnknown: true`, `abortEarly: true`) SHALL be passed under `validationOptions.libraryOptions` — the `@nestjs/config` 12 Standard Schema validation contract. The observable validation behavior SHALL remain identical to NestJS 11: unknown env vars are tolerated, the first invalid variable aborts startup with a clear error, and absent variables fall back to the schema defaults.
+`AppModule` SHALL validate environment variables at startup via `ConfigModule.forRoot` with the existing Joi schema (Joi 18.2.9, unchanged). Joi-specific options (`allowUnknown: true`, `abortEarly: true`) SHALL be passed under `validationOptions.libraryOptions` — the `@nestjs/config` 12 Standard Schema validation contract. The observable validation behavior SHALL remain identical to NestJS 11: unknown env vars are tolerated, the first invalid variable aborts startup with a clear error, and absent variables fall back to the schema defaults.
 
 #### Scenario: Invalid env var fails fast
 
@@ -112,15 +112,15 @@ The API SHALL exhibit identical observable behavior on NestJS 12 as on NestJS 11
 - **WHEN** any API response is received (success or error)
 - **THEN** `Access-Control-Allow-Origin` reflects `CORS_ORIGIN` and the helmet security headers are present — same as NestJS 11
 
-#### Scenario: Rate-limiting guard remains active under the held-back throttler pin
+#### Scenario: Rate-limiting guard remains active with the updated throttler
 
-- **GIVEN** the global `ThrottlerGuard` registered as `APP_GUARD` with `@nestjs/throttler` 6.5.0 (deliberate pin — no Nest 12 peer support published yet)
+- **GIVEN** the global `ThrottlerGuard` registered as `APP_GUARD` with `@nestjs/throttler` 6.7.1 (peer range declares NestJS 12 since 6.7.1 — pin retired)
 - **WHEN** requests flow through the API (every bootstrap-test request and every E2E API request passes through the global guard)
 - **THEN** requests within the 60/60s window receive normal responses and the guard produces no errors — the `api-security-hardening` rate-limit requirement keeps holding without code changes
 
 #### Scenario: Rate limiting returns 429 after exceeding the request budget
 
-- **GIVEN** the API running on NestJS 12 with the global `ThrottlerGuard` active (`@nestjs/throttler` 6.5.0 — deliberate pin, 60 requests / 60 s TTL per tracker)
+- **GIVEN** the API running on NestJS 12 with the global `ThrottlerGuard` active (`@nestjs/throttler` 6.7.1 — pin retired, 60 requests / 60 s TTL per tracker)
 - **WHEN** more than the configured request budget is sent to a single endpoint within the TTL window (direct rate-limit test — task 3.10: E2E hammering or unit test with a small-limit `ThrottlerModule`)
 - **THEN** the API responds **429** for the excess requests, with the throttler payload (`statusCode: 429`, `message: "ThrottlerException: Too Many Requests"` — exact shape re-verified empirically at implementation) and a `Retry-After` header
 - **AND** rate limiting remains active after the NestJS 12 upgrade — the 429 path is proven directly, not only inferred from pass-through traffic

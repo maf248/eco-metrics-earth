@@ -36,5 +36,5 @@ The CI pipeline runs on Node.js 24 without deprecation warnings, and the local d
 
 - **GIVEN** the project runs on Node.js 24
 - **WHEN** TypeScript resolves `@types/node`
-- **THEN** the installed version is `24.12.4`
+- **THEN** the installed version is `24.19.0`
 - **AND** `npm run typecheck` exits with code 0
