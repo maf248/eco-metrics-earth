@@ -238,7 +238,6 @@ Lista de hallazgos del análisis de repositorio, ordenados por prioridad (más c
 ### 🟢 Arquitectura / Deuda técnica
 
 - **I08.** Sin Suspense boundaries — el App Router de Next.js está diseñado alrededor de Suspense + streaming para manejar estados de carga y errores. Actualmente las páginas renderizan sincrónicamente sin límites de Suspense, lo que bloquea el main thread durante transiciones de ruta. Requisito previo para P1 (data fetching real).
-- **I14.** Evaluar instalar el CLI de `openspec` como devDependency y reemplazar el archivado manual (`mv` + merge a mano) por `openspec archive` / `validate` (gramática delta↔canonical validada automáticamente), sumándolo al pre-commit. Decidir primero si soporta el layout actual (44 specs) antes de migrar.
 - **I05.** Sin capa de datos ni ORM — cuando empiece la integración real de datos, no hay TypeORM, Prisma ni esquema de base de datos definido.
 
 ### 🟢 Configuración / Build

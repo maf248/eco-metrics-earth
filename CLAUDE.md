@@ -26,7 +26,7 @@ Classify every request before choosing a workflow (full criteria in `AGENTS.md` 
 4. **Implementation**: After approval, use `/opsx:apply` or delegate to **coder** subagent to write code based strictly on the approved OpenSpec.
 5. **Validation**: Delegate to **tester** for tests and **reviewer** for final code quality audit. Gates: lint + build + unit tests, plus E2E when the change warrants it per the spec.
 6. **Close & Final Approval (mandatory checkpoint)**: Verify the "Definition of Done", then run `/opsx:archive` — **archiving happens before the commit, not after it**, so the archived folder is part of the same commit as the work. Then **STOP** and present: green gates (lint + build + unit tests + E2E when applicable), the **reviewer** verdict, the archived change folder, and a `git status`/diff overview of everything that will be committed. **No commit and no push until the user explicitly approves here.** This checkpoint applies to every change — SDD or direct implementation — with no exceptions.
-   **Merge, never overwrite**: delta and canonical specs use different grammars — apply the delta's operations to `openspec/specs/<capability>/spec.md` and leave it with canonical headings; never copy the delta file over it. See "OpenSpec spec files: delta vs canonical" in `AGENTS.md`.
+   **Merge, never overwrite**: run `npx openspec archive <change> --yes` — the CLI applies the delta's operations to `openspec/specs/<capability>/spec.md`, leaves it with canonical headings, and refuses MODIFIED deltas that drop scenarios. Never copy the delta file over the canonical spec. See "OpenSpec spec files: delta vs canonical" in `AGENTS.md`.
 
 ## Subagents Available
 

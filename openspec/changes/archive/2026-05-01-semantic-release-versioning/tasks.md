@@ -55,4 +55,6 @@
 - [x] 5.3 Run `npm run lint` — verify no lint errors introduced
 - [x] 5.4 Dry-run semantic-release locally for web: `cd apps/web && npx semantic-release --dry-run --no-ci` — verify it analyzes commits and reports the expected `v1.0.0` release without pushing anything
 - [x] 5.5 Dry-run semantic-release locally for api: `cd apps/api && npx semantic-release --dry-run --no-ci` — verify same for api
-- [ ] 5.6 Commit all changes and push to `main` — verify GitHub Actions workflow runs, produces `web-v1.0.0` and `api-v1.0.0` tags, and commits `CHANGELOG.md` files back to the repo
+- [x] 5.6 Commit all changes and push to `main` — verify GitHub Actions workflow runs, produces `web-v1.0.0` and `api-v1.0.0` tags, and commits `CHANGELOG.md` files back to the repo
+
+> Box 5.6 ticked retroactively on 2026-09-26 when the OpenSpec CLI's `validate --archived` pre-push gate was adopted: the work is evidenced by the existing git tags `web-v1.0.0`, `api-v1.0.0`, and `v1.0.0` — the release workflow produced the tags this task set out to verify. No content other than the checkbox and this footnote changed.

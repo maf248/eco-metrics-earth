@@ -8,6 +8,8 @@ The CI pipeline runs on Node.js 24 without deprecation warnings, and the local d
 
 ### Requirement: CI and release workflows use Node.js 24
 
+The CI and release workflows (`.github/workflows/ci.yml` and `.github/workflows/release.yml`) SHALL use Node.js 24 in their `Setup Node.js` steps.
+
 #### Scenario: CI workflow uses Node 24
 
 - **GIVEN** a push or pull request triggers the `ci.yml` workflow
@@ -22,7 +24,11 @@ The CI pipeline runs on Node.js 24 without deprecation warnings, and the local d
 - **THEN** the runner environment has Node.js 24 available
 - **AND** no "Node.js 20 actions are deprecated" warning appears in the job log
 
+---
+
 ### Requirement: Local development pins to Node.js 24
+
+The repository SHALL pin local development to Node.js 24 via `.nvmrc`.
 
 #### Scenario: Local dev pins to Node 24
 
@@ -30,7 +36,11 @@ The CI pipeline runs on Node.js 24 without deprecation warnings, and the local d
 - **WHEN** nvm reads `.nvmrc`
 - **THEN** it activates Node.js 24
 
+---
+
 ### Requirement: TypeScript types match the runtime
+
+The installed `@types/node` version SHALL match the Node.js 24 runtime major version.
 
 #### Scenario: TypeScript types match the runtime
 

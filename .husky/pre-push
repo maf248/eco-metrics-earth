@@ -4,6 +4,13 @@ if [ "$branch" = "main" ]; then
   exit 1
 fi
 
+# OpenSpec integrity gate: canonical specs + archived changes must validate.
+# The CLI cannot combine --specs and --archived in one run (it silently skips
+# specs), so each scope is its own fail-fast command. Active/in-progress
+# changes are deliberately NOT validated here so mid-spec pushes stay allowed.
+npx openspec validate --specs --no-interactive || exit 1
+npx openspec validate --archived --no-interactive || exit 1
+
 # E2E intentionally NOT run here: CI runs the full Playwright suite on every
 # push to every branch (.github/workflows/ci.yml). Run it locally with
 # `npm run e2e` when you want pre-push E2E confidence.
