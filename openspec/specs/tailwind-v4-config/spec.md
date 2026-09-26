@@ -2,7 +2,7 @@
 
 ## Purpose
 
-TBD - created by archiving change tailwind-v4. Update Purpose after archive.
+Defines the Tailwind CSS v4 PostCSS plugin and CSS-based configuration migration.
 
 ## Requirements
 

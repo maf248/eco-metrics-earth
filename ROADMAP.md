@@ -238,7 +238,6 @@ Lista de hallazgos del análisis de repositorio, ordenados por prioridad (más c
 ### 🟢 Arquitectura / Deuda técnica
 
 - **I08.** Sin Suspense boundaries — el App Router de Next.js está diseñado alrededor de Suspense + streaming para manejar estados de carga y errores. Actualmente las páginas renderizan sincrónicamente sin límites de Suspense, lo que bloquea el main thread durante transiciones de ruta. Requisito previo para P1 (data fetching real).
-- **I14.** Higiene de los specs canónicos en `openspec/specs/` — pendiente, todo tarea de criterio y no mecánica (verificado al 16 Sep 2026): (a) **30 de 42** specs tienen el `## Purpose` en el placeholder autogenerado `TBD - created by archiving change <x>` — hay que escribir una línea real por capability; (b) `ci-node-version` usa un esquema propio (`# Spec: ...` + `## Capability`) ajeno a la gramática de OpenSpec; (c) `api-app-scaffold` no tiene título ni `## Purpose`; (d) 3 specs están en español (`api-app-scaffold`, `shared-types`, `web-app-scaffold`), violando la regla de inglés de `CLAUDE.md`. Es deuda de documentación: no afecta al código ni al sitio. **Causa de fondo:** el CLI de `openspec` no está instalado (no está en `package.json` ni en `node_modules/.bin`), así que el archivado y el merge de deltas se hacen a mano, sin nada que valide la gramática. La regla documentada en `AGENTS.md` mitiga el síntoma, no la causa. **Sugerencia:** evaluar instalarlo como devDependency y usar `openspec archive` / `validate` en vez del `mv` + merge manual, sumándolo al pre-commit. Decidir primero si soporta el layout actual antes de migrar los 42 specs.
 - **I05.** Sin capa de datos ni ORM — cuando empiece la integración real de datos, no hay TypeORM, Prisma ni esquema de base de datos definido.
 
 ### 🟢 Configuración / Build
@@ -261,4 +260,4 @@ Lista de hallazgos del análisis de repositorio, ordenados por prioridad (más c
 - **I09.** OpenTelemetry — considerado para el futuro cuando el sistema escale a múltiples servicios o se quiera cambiar de backend de observabilidad (Sentry → Datadog, Honeycomb, etc.) sin tocar código de instrumentación. Con un solo BFF, Sentry Performance cubre el tracing necesario. No justifica el overhead de configuración actual (collector, exporters, SDK setup).
 - **I10.** Axiom — plataforma de logs como servicio. Solo relevante si la retención de Cloud Logging (30 días en free tier) o Vercel resulta insuficiente para debugging post-mortem. Por ahora los logs agregados de cada plataforma son suficientes.
 
-**Última actualización:** 23 Sep 2026
+**Última actualización:** 26 Sep 2026

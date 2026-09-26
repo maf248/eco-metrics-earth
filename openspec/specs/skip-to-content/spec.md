@@ -2,7 +2,7 @@
 
 ## Purpose
 
-TBD - created by archiving change a11y-layout-landmark. Update Purpose after archive.
+Defines the skip-to-content link and its main landmark targets across pages.
 
 ## Requirements
 

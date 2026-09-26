@@ -2,7 +2,7 @@
 
 ## Purpose
 
-TBD - created by archiving change add-light-mode-support. Update Purpose after archive.
+Defines the fixed theme toggle button and its keyboard accessible behavior.
 
 ## Requirements
 

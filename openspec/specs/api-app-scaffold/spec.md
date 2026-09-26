@@ -1,16 +1,22 @@
+# api-app-scaffold Specification
+
+## Purpose
+
+Defines the NestJS BFF scaffold with per-category modules, global `/api/v1` prefix, typed config, and smoke test.
+
 ## Requirements
 
-### Requirement: NestJS app con estructura modular por categoría
+### Requirement: NestJS app with modular per-category structure
 
 The original requirement stands: the `api` app SHALL have a root module (`AppModule`) and a `modules/` folder prepared to host per-eco-category modules, each following `modules/<category>/<category>.module.ts`, `<category>.controller.ts`, `<category>.service.ts`. Updated: the app SHALL run on **NestJS 12** — `@nestjs/common`, `@nestjs/core`, `@nestjs/platform-express`, `@nestjs/swagger`, and `@nestjs/testing` pinned at exactly `12.0.1`, `@nestjs/config` at exactly `12.0.0` (no `^`/`~`), with `@nestjs/throttler` deliberately kept at `6.5.0` (documented exception — no Nest 12 peer support published). The app SHALL remain CommonJS; the ESM-published `@nestjs/*` 12 packages are consumed via Node's native `require(esm)`.
 
-#### Scenario: API responde en el puerto correcto _(unchanged behavior, new framework major)_
+#### Scenario: API responds on the correct port _(unchanged behavior, new framework major)_
 
 - **GIVEN** the workspace with the `@nestjs/*` 12.x exact pins installed and the lockfile in sync
 - **WHEN** `nx serve api` is executed
 - **THEN** NestJS 12 starts on `http://localhost:3001` without errors or warnings
 
-#### Scenario: Health check endpoint disponible _(unchanged)_
+#### Scenario: Health check endpoint available _(unchanged)_
 
 - **WHEN** a GET is sent to `http://localhost:3001/api/v1/health`
 - **THEN** the server responds with status 200 and body `{ "status": "ok" }`
@@ -21,41 +27,41 @@ The original requirement stands: the `api` app SHALL have a root module (`AppMod
 - **THEN** `@nestjs/common`, `@nestjs/core`, `@nestjs/platform-express`, `@nestjs/swagger` are pinned at `"12.0.1"` and `@nestjs/config` at `"12.0.0"` — exact, no `^`/`~`
 - **AND** `npm ls @nestjs/common @nestjs/core @nestjs/platform-express @nestjs/swagger @nestjs/config @nestjs/testing` resolves a single 12.x version each, with no nested 11.x copies
 
-### Requirement: Prefijo global de rutas configurado
+### Requirement: Global route prefix configured
 
-Todos los endpoints del BFF SHALL estar bajo el prefijo `/api/v1`. El prefijo SHALL configurarse globalmente en el bootstrap de la aplicación.
+All BFF endpoints SHALL be under the `/api/v1` prefix. The prefix SHALL be configured globally in the application bootstrap.
 
-#### Scenario: Rutas sin prefijo retornan 404
+#### Scenario: Routes without prefix return 404
 
-- **WHEN** se hace GET a `http://localhost:3001/health` (sin prefijo)
-- **THEN** el servidor retorna status 404
+- **WHEN** a GET is made to `http://localhost:3001/health` (without prefix)
+- **THEN** the server returns status 404
 
-#### Scenario: Rutas con prefijo correcto responden
+#### Scenario: Routes with correct prefix respond
 
-- **WHEN** se hace GET a `http://localhost:3001/api/v1/health`
-- **THEN** el servidor retorna status 200
+- **WHEN** a GET is made to `http://localhost:3001/api/v1/health`
+- **THEN** the server returns status 200
 
-### Requirement: Estructura de carpetas base del BFF
+### Requirement: BFF base folder structure
 
-La app `api` SHALL tener la siguiente estructura dentro de `src/`:
+The `api` app SHALL have the following structure inside `src/`:
 
-- `modules/` — módulos NestJS por categoría ecológica
-- `common/` — pipes, interceptors, guards y filtros compartidos
-- `config/` — configuración de la aplicación (env vars tipadas)
+- `modules/` — NestJS modules per ecological category
+- `common/` — shared pipes, interceptors, guards, and filters
+- `config/` — application configuration (typed env vars)
 
-#### Scenario: Módulo de configuración carga variables de entorno
+#### Scenario: Config module loads environment variables
 
-- **WHEN** la app levanta con un `.env` válido
-- **THEN** las variables de entorno están disponibles tipadas a través del ConfigService de NestJS
+- **WHEN** the app starts with a valid `.env`
+- **THEN** the environment variables are available typed through the NestJS ConfigService
 
-### Requirement: Test de smoke del BFF
+### Requirement: BFF smoke test
 
-SHALL existir al menos un test de smoke que verifique que el `AppModule` compila y el health check responde correctamente.
+At least one smoke test SHALL exist that verifies `AppModule` compiles and the health check responds correctly.
 
-#### Scenario: Test de smoke del BFF pasa
+#### Scenario: BFF smoke test passes
 
-- **WHEN** se ejecuta `nx test api`
-- **THEN** el test de smoke pasa y Jest retorna exit code 0
+- **WHEN** `nx test api` is run
+- **THEN** the smoke test passes and Jest returns exit code 0
 
 ### Requirement: NestJS dependency manifest without dead weight
 

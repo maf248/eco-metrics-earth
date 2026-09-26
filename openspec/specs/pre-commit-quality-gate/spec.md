@@ -2,7 +2,7 @@
 
 ## Purpose
 
-TBD - created by archiving change add-husky-lint-staged. Update Purpose after archive.
+Defines the pre-commit hooks that enforce linting and formatting on staged files.
 
 ## Requirements
 

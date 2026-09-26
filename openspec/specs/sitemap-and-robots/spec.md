@@ -2,7 +2,7 @@
 
 ## Purpose
 
-TBD - created by archiving change seo-and-performance. Update Purpose after archive.
+Defines the sitemap lastModified field and the robots.txt API disallow rule.
 
 ## Requirements
 

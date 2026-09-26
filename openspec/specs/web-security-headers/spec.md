@@ -2,7 +2,7 @@
 
 ## Purpose
 
-TBD - created by archiving change security-foundations. Update Purpose after archive.
+Defines the HTTP security headers and content security policy served by the Next.js web app.
 
 ## Requirements
 

@@ -2,52 +2,52 @@
 
 ## Purpose
 
-TBD - created by archiving change monorepo-base-setup. Update Purpose after archive.
+Defines the initial Next.js App Router scaffold with layout, Tailwind dark mode, folder structure, and smoke test.
 
 ## Requirements
 
-### Requirement: Next.js App Router con layout base
+### Requirement: Next.js App Router with base layout
 
-La app `web` SHALL usar Next.js con App Router. SHALL existir un layout raíz (`app/layout.tsx`) con estructura HTML semántica, metadata base y soporte para dark mode mediante clase CSS en `<html>`.
+The `web` app SHALL use Next.js with App Router. A root layout (`app/layout.tsx`) SHALL exist with semantic HTML structure, base metadata, and dark mode support via a CSS class on `<html>`.
 
-#### Scenario: Página de inicio responde con HTML
+#### Scenario: Home page responds with HTML
 
-- **WHEN** se accede a `http://localhost:3000`
-- **THEN** el servidor retorna HTML con status 200 y metadata básica del sitio
+- **WHEN** accessing `http://localhost:3000`
+- **THEN** the server returns HTML with status 200 and basic site metadata
 
-#### Scenario: Dark mode habilitado por defecto
+#### Scenario: Dark mode enabled by default
 
-- **WHEN** se renderiza cualquier página
-- **THEN** el elemento `<html>` tiene la clase `dark` aplicada por defecto
+- **WHEN** any page renders
+- **THEN** the `<html>` element has the `dark` class applied by default
 
-### Requirement: Tailwind CSS configurado con dark mode
+### Requirement: Tailwind CSS configured with dark mode
 
-Tailwind CSS SHALL estar configurado con la estrategia `class` para dark mode. El archivo `tailwind.config.ts` SHALL incluir los paths de todos los archivos de la app `web`.
+Tailwind CSS SHALL be configured with the `class` strategy for dark mode. The `tailwind.config.ts` file SHALL include the paths of all `web` app files.
 
-#### Scenario: Clase dark mode funciona en componentes
+#### Scenario: Dark mode class works in components
 
-- **WHEN** el elemento `<html>` tiene la clase `dark`
-- **THEN** las clases `dark:` de Tailwind aplican sus estilos correctamente
+- **WHEN** the `<html>` element has the `dark` class
+- **THEN** Tailwind `dark:` classes apply their styles correctly
 
-### Requirement: Estructura de carpetas base del frontend
+### Requirement: Frontend base folder structure
 
-La app `web` SHALL tener la siguiente estructura de carpetas dentro de `src/`:
+The `web` app SHALL have the following folder structure inside `src/`:
 
-- `app/` — rutas y layouts (App Router)
-- `components/` — componentes reutilizables
-- `lib/` — utilidades y helpers
-- `types/` — tipos TypeScript locales del frontend
+- `app/` — routes and layouts (App Router)
+- `components/` — reusable components
+- `lib/` — utilities and helpers
+- `types/` — frontend-local TypeScript types
 
-#### Scenario: Importaciones entre carpetas funcionan
+#### Scenario: Imports between folders work
 
-- **WHEN** un componente importa desde `@/lib/utils`
-- **THEN** el alias de path resuelve correctamente sin errores
+- **WHEN** a component imports from `@/lib/utils`
+- **THEN** the path alias resolves correctly without errors
 
-### Requirement: Test de smoke del frontend
+### Requirement: Frontend smoke test
 
-SHALL existir al menos un test de smoke que verifique que el componente de layout raíz renderiza sin errores.
+At least one smoke test SHALL exist that verifies the root layout component renders without errors.
 
-#### Scenario: Test de smoke pasa
+#### Scenario: Smoke test passes
 
-- **WHEN** se ejecuta `nx test web`
-- **THEN** el test de smoke pasa y Jest retorna exit code 0
+- **WHEN** `nx test web` is run
+- **THEN** the smoke test passes and Jest returns exit code 0

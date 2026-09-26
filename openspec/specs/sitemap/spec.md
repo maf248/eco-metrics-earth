@@ -2,7 +2,7 @@
 
 ## Purpose
 
-TBD - created by archiving change seo-discovery. Update Purpose after archive.
+Defines the sitemap route and its home and category URL entries.
 
 ## Requirements
 

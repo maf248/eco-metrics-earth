@@ -2,7 +2,7 @@
 
 ## Purpose
 
-TBD - created by archiving change configuration-and-tests. Update Purpose after archive.
+Defines the ESLint plugins and rules for React hooks, JSX accessibility, and import ordering.
 
 ## Requirements
 

@@ -2,7 +2,7 @@
 
 ## Purpose
 
-TBD - created by archiving change seo-metadata-og. Update Purpose after archive.
+Defines the canonical base URL helper and its environment-driven fallback for SEO metadata.
 
 ## Requirements
 

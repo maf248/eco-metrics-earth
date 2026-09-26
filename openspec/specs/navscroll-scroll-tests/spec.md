@@ -2,7 +2,7 @@
 
 ## Purpose
 
-TBD - created by archiving change configuration-and-tests. Update Purpose after archive.
+Defines the horizontal and vertical scroll affordance behavior and tests for the navigation scroll container.
 
 ## Requirements
 

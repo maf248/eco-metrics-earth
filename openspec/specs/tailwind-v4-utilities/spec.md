@@ -2,7 +2,7 @@
 
 ## Purpose
 
-TBD - created by archiving change tailwind-v4. Update Purpose after archive.
+Defines the Tailwind v4 utility class compatibility and deprecation cleanup.
 
 ## Requirements
 

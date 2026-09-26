@@ -2,7 +2,7 @@
 
 ## Purpose
 
-TBD - created by archiving change seo-discovery. Update Purpose after archive.
+Defines the PWA web app manifest served by the Next.js app.
 
 ## Requirements
 

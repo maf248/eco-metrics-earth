@@ -1,40 +1,40 @@
-# Spec: CI Node Version
+# ci-node-version Specification
 
-## Capability
+## Purpose
 
 The CI pipeline runs on Node.js 24 without deprecation warnings, and the local dev environment pins to the same version.
 
----
+## Requirements
 
-## Scenario 1 — CI workflow uses Node 24
+### Requirement: CI and release workflows use Node.js 24
 
-**Given** a push or pull request triggers the `ci.yml` workflow  
-**When** the `Setup Node.js` step runs  
-**Then** the runner environment has Node.js 24 available  
-**And** no "Node.js 20 actions are deprecated" warning appears in the job log
+#### Scenario: CI workflow uses Node 24
 
----
+- **GIVEN** a push or pull request triggers the `ci.yml` workflow
+- **WHEN** the `Setup Node.js` step runs
+- **THEN** the runner environment has Node.js 24 available
+- **AND** no "Node.js 20 actions are deprecated" warning appears in the job log
 
-## Scenario 2 — Release workflow uses Node 24
+#### Scenario: Release workflow uses Node 24
 
-**Given** a push to `main` triggers the `release.yml` workflow  
-**When** the `Setup Node.js` step runs  
-**Then** the runner environment has Node.js 24 available  
-**And** no "Node.js 20 actions are deprecated" warning appears in the job log
+- **GIVEN** a push to `main` triggers the `release.yml` workflow
+- **WHEN** the `Setup Node.js` step runs
+- **THEN** the runner environment has Node.js 24 available
+- **AND** no "Node.js 20 actions are deprecated" warning appears in the job log
 
----
+### Requirement: Local development pins to Node.js 24
 
-## Scenario 3 — Local dev pins to Node 24
+#### Scenario: Local dev pins to Node 24
 
-**Given** a developer runs `nvm use` in the repo root  
-**When** nvm reads `.nvmrc`  
-**Then** it activates Node.js 24
+- **GIVEN** a developer runs `nvm use` in the repo root
+- **WHEN** nvm reads `.nvmrc`
+- **THEN** it activates Node.js 24
 
----
+### Requirement: TypeScript types match the runtime
 
-## Scenario 4 — TypeScript types match the runtime
+#### Scenario: TypeScript types match the runtime
 
-**Given** the project runs on Node.js 24  
-**When** TypeScript resolves `@types/node`  
-**Then** the installed version is `24.12.4`  
-**And** `npm run typecheck` exits with code 0
+- **GIVEN** the project runs on Node.js 24
+- **WHEN** TypeScript resolves `@types/node`
+- **THEN** the installed version is `24.12.4`
+- **AND** `npm run typecheck` exits with code 0

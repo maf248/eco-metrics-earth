@@ -2,7 +2,7 @@
 
 ## Purpose
 
-TBD - created by archiving change perf-svg-icons. Update Purpose after archive.
+Defines the nav item data structure with inline SVG icons and the mobile layout content offset.
 
 ## Requirements
 
