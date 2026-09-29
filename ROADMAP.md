@@ -4,7 +4,7 @@ Este documento registra todas las propuestas de mejora identificadas para el pro
 
 ---
 
-## Estado del Proyecto (26 Sep 2026)
+## Estado del Proyecto (29 Sep 2026)
 
 | Aspecto          | Estado | Nota                                                                                                                                                                                                                   |
 | ---------------- | ------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -30,7 +30,7 @@ Este documento registra todas las propuestas de mejora identificadas para el pro
 
 **Our World in Data (OWID)** es el primer proveedor a conectar. Justificación:
 
-- **Licencia CC BY** — uso comercial y con publicidad permitido, solo requiere atribución (ver I11).
+- **Licencia CC BY** — uso comercial y con publicidad permitido, solo requiere atribución (ver I10).
 - **Sin API key, sin rate limits, CORS habilitado** — cero fricción operativa, sin secrets que gestionar.
 - **Dos modos de consumo, ambos ya validados en la colección Postman** (`Our World in Data — Ecology, Humanity & Sustainability`):
   - **Grapher CSV/JSON:** `https://ourworldindata.org/grapher/{slug}.csv?csvType=full` (+ `.metadata.json`) — series país-año armonizadas.
@@ -85,9 +85,9 @@ Este documento registra todas las propuestas de mejora identificadas para el pro
 
 #### P1.0 — Fundación de la capa de datos (prerequisito de todo lo demás)
 
-1. **Tipos compartidos** en `packages/shared`: `MetricSeries` (puntos año/valor por entidad), `MetricPoint`, `DataSourceAttribution` (provider, license, sourceUrl, lastUpdated) — la atribución viaja en `ApiResponse<T>.meta` (ver I12).
+1. **Tipos compartidos** en `packages/shared`: `MetricSeries` (puntos año/valor por entidad), `MetricPoint`, `DataSourceAttribution` (provider, license, sourceUrl, lastUpdated) — la atribución viaja en `ApiResponse<T>.meta` (ver I11).
 2. **Cliente HTTP del BFF**: `@nestjs/axios` (o `fetch` nativo de Node 24 envuelto en un service) con timeout, retry acotado y User-Agent identificable.
-3. **Caching**: `@nestjs/cache-manager` en memoria con TTL 24 h para respuestas de OWID (datos anuales — no necesitan frescura mayor). Sin base de datos en esta fase (I05 sigue en backlog).
+3. **Caching**: `@nestjs/cache-manager` en memoria con TTL 24 h para respuestas de OWID (datos anuales — no necesitan frescura mayor). Sin base de datos en esta fase (I04 sigue en backlog).
 4. **`OwidClient` service** (`apps/api/src/modules/providers/owid/`): métodos `getIndicatorData(id)` / `getIndicatorMetadata(id)` (API v1 JSON) y `getGrapherSeries(slug)` (CSV → parseo server-side). Fixtures de test tomados de las respuestas de la colección Postman.
 5. **Health indicator**: `HttpHealthIndicator` de `@nestjs/terminus` contra un endpoint liviano de OWID, registrado en `HealthModule` (requisito ya acordado con P2).
 6. **Config**: TTLs y base URLs como env vars tipadas en `AppConfigService` (+ `.env.example` + README).
@@ -99,8 +99,8 @@ La categoría con mejor relación datos/esfuerzo (OWID CO₂ dataset: anual, per
 - `Co2EmissionsModule` + controller: `GET /api/v1/co2-emissions/series?country=ARG&from=1990` (DTOs con `class-validator` para ISO-3166, rangos de años).
 - Service que mapea OWID → `MetricSeries` con `DataSourceAttribution`.
 - Swagger tag + tests unitarios con fixtures (sin llamadas de red en tests).
-- **Frontend:** la página `/co2-emissions/` deja de ser placeholder — Server Component con `fetch` al BFF e ISR (`revalidate: 86400`), Suspense boundary (resuelve I08 para esta ruta) y primer gráfico de líneas (requiere decidir librería de charts, ver I13; al integrarla aplica el recordatorio de `next/dynamic`).
-- **Atribución visible** "Data: Our World in Data (CC BY)" (ver I11 — requisito legal de la licencia).
+- **Frontend:** la página `/co2-emissions/` deja de ser placeholder — Server Component con `fetch` al BFF e ISR (`revalidate: 86400`), Suspense boundary (resuelve I07 para esta ruta) y primer gráfico de líneas (requiere decidir librería de charts, ver I12; al integrarla aplica el recordatorio de `next/dynamic`).
+- **Atribución visible** "Data: Our World in Data (CC BY)" (ver I10 — requisito legal de la licencia).
 
 #### P1.2 — `global-temperature` (OWID temperature anomaly) — replica el patrón de P1.1
 
@@ -112,7 +112,6 @@ La categoría con mejor relación datos/esfuerzo (OWID CO₂ dataset: anual, per
 **Requisitos:**
 
 - P2 instala `@nestjs/terminus` pero no refactoriza el healthcheck. **Cada módulo de P1 debe agregar su propio `HttpHealthIndicator` al `HealthModule`** para validar su API externa (OWID, NOAA, World Bank). Esto convierte el healthcheck en un agregado real de dependencias externas. P1.0 puede instalar `@nestjs/terminus` directamente si se ejecuta antes que P2.
-- I02 (CORS multi-origen) pasa a ser bloqueante cuando el frontend en Vercel consuma el BFF en Cloud Run — resolverlo dentro de P1.1 o antes del deploy del back.
   **Estado:** Pendiente
 
 ---
@@ -174,8 +173,8 @@ La categoría con mejor relación datos/esfuerzo (OWID CO₂ dataset: anual, per
 
 **Fuera de P2 → backlog:**
 
-- OpenTelemetry (I09): relevante cuando escalen los servicios o se quiera cambiar de backend de observabilidad sin tocar código de instrumentación.
-- Axiom (I10): solo si la retención de Cloud Logging (30 días en free tier) o Vercel resulta insuficiente.
+- OpenTelemetry (I08): relevante cuando escalen los servicios o se quiera cambiar de backend de observabilidad sin tocar código de instrumentación.
+- Axiom (I09): solo si la retención de Cloud Logging (30 días en free tier) o Vercel resulta insuficiente.
 
 **Dificultad:** 5/10 — mayoritariamente instalación de paquetes, configuración de env vars y wrapping de configs existentes. El punto más técnico es la integración de source maps en los pipelines de build.
 **Requisitos:** Cuenta Sentry (free tier suficiente), `SENTRY_AUTH_TOKEN` en secrets de CI/CD.
@@ -224,32 +223,30 @@ Lista de hallazgos del análisis de repositorio, ordenados por prioridad (más c
 
 ### 🟡 CI/CD
 
-- **I01.** Staging parcial — Vercel genera preview deploys automáticos desde `develop`, lo que funciona como staging de facto para el frontend. Cloud Run no tiene equivalente a PR previews; los previews de Vercel consumen el BFF productivo (trade-off staging-is-production aceptado por ahora).
+- **I01.** Staging parcial — Vercel genera preview deploys automáticos desde `develop`, lo que funciona como staging de facto para el frontend. Cloud Run no tiene equivalente a PR previews; los previews de Vercel consumen el BFF productivo (trade-off staging-is-production aceptado por ahora; solución planificada en I13).
 
-### 🟡 API / Seguridad
-
-- **I02.** Solo un origen soportado en CORS — `CORS_ORIGIN` es un string único en `AppConfigService`. Cuando web (Vercel preview + prod) y API (Cloud Run) tengan múltiples entornos, esto fallará con orígenes distintos (localhost, preview URLs, dominio productivo). Migrar a lista separada por comas (o regex para previews de Vercel). **Bloqueante para P1.1** cuando el frontend desplegado consuma el BFF.
+- **I13.** Backend de desarrollo en Cloud Run — segundo servicio `eco-metrics-api-dev` deployado desde `develop` (el productivo `eco-metrics-api` pasa a deployar desde `main`), consumido por el entorno Preview de Vercel (`API_BASE_URL` de Preview → URL del servicio dev). Resuelve el trade-off staging-is-production del back (I01) sin costo extra: el always-free tier de Cloud Run (2M req/mes, 180k vCPU-s, 360k GiB-s) se comparte por cuenta de billing y ambos servicios escalan a cero. Reutiliza WIF + `github-deployer` existentes (`roles/run.admin` ya cubre deployar un segundo servicio en el mismo proyecto). Requiere: propuesta OpenSpec sobre `api-cloud-run-deploy` (el workflow `deploy-api.yml` pasa a dos entornos con triggers distintos), variables GitHub nuevas para el servicio dev (URL/origins CORS) y cleanup policy de Artifact Registry para el churn extra de imágenes.
 
 ### 🟡 Testing
 
-- **I03.** Tests de integración web→API con datos reales para las categorías eco — falta el equivalente a `water-footprint.spec.ts` (que ya arranca ambos servidores y valida contra datos reales del BFF) para el resto de las categorías cuando consuman datos de proveedores. Depende de P1.
-- **I04.** Sin tests de accesibilidad unitarios con `jest-axe`. Los tests E2E con `@axe-core/playwright` ya auditan todas las páginas (a11y.spec.ts), lo que cubre el 80% del valor. La integración a nivel componente unitario es deseable pero no prioritaria — solo suma valor si crece mucho la cantidad de componentes.
+- **I02.** Tests de integración web→API con datos reales para las categorías eco — falta el equivalente a `water-footprint.spec.ts` (que ya arranca ambos servidores y valida contra datos reales del BFF) para el resto de las categorías cuando consuman datos de proveedores. Depende de P1.
+- **I03.** Sin tests de accesibilidad unitarios con `jest-axe`. Los tests E2E con `@axe-core/playwright` ya auditan todas las páginas (a11y.spec.ts), lo que cubre el 80% del valor. La integración a nivel componente unitario es deseable pero no prioritaria — solo suma valor si crece mucho la cantidad de componentes.
 
 ### 🟢 Arquitectura / Deuda técnica
 
-- **I08.** Sin Suspense boundaries — el App Router de Next.js está diseñado alrededor de Suspense + streaming para manejar estados de carga y errores. Actualmente las páginas renderizan sincrónicamente sin límites de Suspense, lo que bloquea el main thread durante transiciones de ruta. Requisito previo para P1 (data fetching real).
-- **I05.** Sin capa de datos ni ORM — cuando empiece la integración real de datos, no hay TypeORM, Prisma ni esquema de base de datos definido.
+- **I07.** Sin Suspense boundaries — el App Router de Next.js está diseñado alrededor de Suspense + streaming para manejar estados de carga y errores. Actualmente las páginas renderizan sincrónicamente sin límites de Suspense, lo que bloquea el main thread durante transiciones de ruta. Requisito previo para P1 (data fetching real).
+- **I04.** Sin capa de datos ni ORM — cuando empiece la integración real de datos, no hay TypeORM, Prisma ni esquema de base de datos definido.
 
 ### 🟢 Configuración / Build
 
-- **I06.** `legacy-peer-deps=true` en `.npmrc` — workaround porque `eslint-plugin-jsx-a11y@6.10.2` no declara ESLint 10 en sus peer deps. PR [#1081](https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/pull/1081) abierto. Eliminar cuando se publique un release con soporte.
-- **I07.** Sin Storybook ni documentación visual de componentes. Actualmente hay 24 componentes (verificado al 16 Sep 2026), por lo que no se justifica el overhead de configuración y mantenimiento. Reconsiderar cuando supere ~40.
+- **I05.** `legacy-peer-deps=true` en `.npmrc` — workaround porque `eslint-plugin-jsx-a11y@6.10.2` no declara ESLint 10 en sus peer deps. PR [#1081](https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/pull/1081) abierto. Eliminar cuando se publique un release con soporte.
+- **I06.** Sin Storybook ni documentación visual de componentes. Actualmente hay 24 componentes (verificado al 16 Sep 2026), por lo que no se justifica el overhead de configuración y mantenimiento. Reconsiderar cuando supere ~40.
 
 ### 🟡 Datos / Proveedores
 
-- **I11.** Atribución de datos (requisito legal, no opcional) — CC BY exige atribución visible. Antes de publicar la primera sección con datos reales (P1.1): componente de atribución al pie de cada visualización ("Data: Our World in Data — CC BY" con link) + página `/data-sources/` listando proveedores y licencias. Alimentado por el `DataSourceAttribution` de I12. Bonus SEO: contenido indexable con estructura.
-- **I12.** Extender `ApiResponse<T>` con metadata de fuente — el contrato actual no transporta procedencia. Agregar `meta: { source: DataSourceAttribution; fetchedAt: string }` para que el frontend renderice atribución y frescura sin hardcodear nada por página. Diseñarlo en P1.0 para no romper el contrato después.
-- **I13.** Elegir librería de charts — pendiente. Cuando toque (antes de P1.1), ver `docs/technical/libraries.md`: tiene candidatas, descartadas con motivo, spikes por candidata y los gates a cumplir. La decisión se registra en `docs/design-system.md` y activa el recordatorio de Dynamic Imports.
+- **I10.** Atribución de datos (requisito legal, no opcional) — CC BY exige atribución visible. Antes de publicar la primera sección con datos reales (P1.1): componente de atribución al pie de cada visualización ("Data: Our World in Data — CC BY" con link) + página `/data-sources/` listando proveedores y licencias. Alimentado por el `DataSourceAttribution` de I11. Bonus SEO: contenido indexable con estructura.
+- **I11.** Extender `ApiResponse<T>` con metadata de fuente — el contrato actual no transporta procedencia. Agregar `meta: { source: DataSourceAttribution; fetchedAt: string }` para que el frontend renderice atribución y frescura sin hardcodear nada por página. Diseñarlo en P1.0 para no romper el contrato después.
+- **I12.** Elegir librería de charts — pendiente. Cuando toque (antes de P1.1), ver `docs/technical/libraries.md`: tiene candidatas, descartadas con motivo, spikes por candidata y los gates a cumplir. La decisión se registra en `docs/design-system.md` y activa el recordatorio de Dynamic Imports.
 
 ---
 
@@ -257,7 +254,7 @@ Lista de hallazgos del análisis de repositorio, ordenados por prioridad (más c
 
 - **Dynamic Imports (`next/dynamic`)** — No implementar todavía. Los chunks actuales pesan ~1KB por página, y dynamic imports agregarían complejidad (loading states por import, layout shift) sin beneficio real hoy. Reconsiderar cuando se integren librerías pesadas como charting libraries (d3, echarts) o widgets de terceros.
 
-- **I09.** OpenTelemetry — considerado para el futuro cuando el sistema escale a múltiples servicios o se quiera cambiar de backend de observabilidad (Sentry → Datadog, Honeycomb, etc.) sin tocar código de instrumentación. Con un solo BFF, Sentry Performance cubre el tracing necesario. No justifica el overhead de configuración actual (collector, exporters, SDK setup).
-- **I10.** Axiom — plataforma de logs como servicio. Solo relevante si la retención de Cloud Logging (30 días en free tier) o Vercel resulta insuficiente para debugging post-mortem. Por ahora los logs agregados de cada plataforma son suficientes.
+- **I08.** OpenTelemetry — considerado para el futuro cuando el sistema escale a múltiples servicios o se quiera cambiar de backend de observabilidad (Sentry → Datadog, Honeycomb, etc.) sin tocar código de instrumentación. Con un solo BFF, Sentry Performance cubre el tracing necesario. No justifica el overhead de configuración actual (collector, exporters, SDK setup).
+- **I09.** Axiom — plataforma de logs como servicio. Solo relevante si la retención de Cloud Logging (30 días en free tier) o Vercel resulta insuficiente para debugging post-mortem. Por ahora los logs agregados de cada plataforma son suficientes.
 
-**Última actualización:** 26 Sep 2026
+**Última actualización:** 29 Sep 2026
