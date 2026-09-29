@@ -73,6 +73,25 @@ jobs:
           docker build -t "$IMAGE" .
           docker push "$IMAGE"
 
+      - name: Prepare CORS env values for deploy-cloudrun
+        id: cors
+        env:
+          CORS_ORIGIN: ${{ vars.CORS_ORIGIN }}
+          CORS_ORIGIN_PATTERN: ${{ vars.CORS_ORIGIN_PATTERN }}
+        run: |
+          escape() {
+            local value="$1"
+            value="${value//\\/\\\\}"
+            value="${value//,/\\,}"
+            printf '%s' "$value"
+          }
+          {
+            echo "origin=$(escape "$CORS_ORIGIN")"
+            if [ -n "$CORS_ORIGIN_PATTERN" ]; then
+              echo "pattern=CORS_ORIGIN_PATTERN=$(escape "$CORS_ORIGIN_PATTERN")"
+            fi
+          } >> "$GITHUB_OUTPUT"
+
       - name: Deploy to Cloud Run
         id: deploy
         uses: google-github-actions/deploy-cloudrun@v3
@@ -83,8 +102,9 @@ jobs:
           project_id: ${{ vars.GCP_PROJECT_ID }}
           env_vars: |
             NODE_ENV=production
-            CORS_ORIGIN=${{ vars.CORS_ORIGIN }}
+            CORS_ORIGIN=${{ steps.cors.outputs.origin }}
             SWAGGER_ENABLED=false
+            ${{ steps.cors.outputs.pattern }}
           flags: >-
             --allow-unauthenticated
             --min-instances=0

@@ -237,12 +237,13 @@ cp apps/web/.env.example apps/web/.env.local
 
 ### `apps/api/.env.example`
 
-| Variable          | Default                 | Description                                                                                 |
-| ----------------- | ----------------------- | ------------------------------------------------------------------------------------------- |
-| `PORT`            | `3001`                  | Port the API listens on (injected by Cloud Run in production — never set it manually there) |
-| `NODE_ENV`        | `development`           | Node environment                                                                            |
-| `CORS_ORIGIN`     | `http://localhost:3000` | Allowed origin for CORS (set to the Vercel production URL in production)                    |
-| `SWAGGER_ENABLED` | `false`                 | Enable OpenAPI/Swagger UI. Set to `true` for local development, `false` in production.      |
+| Variable              | Default                 | Description                                                                                                        |
+| --------------------- | ----------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| `PORT`                | `3001`                  | Port the API listens on (injected by Cloud Run in production — never set it manually there)                        |
+| `NODE_ENV`            | `development`           | Node environment                                                                                                   |
+| `CORS_ORIGIN`         | `http://localhost:3000` | Comma-separated list of exact allowed CORS origins (single origin is valid; no wildcards)                          |
+| `CORS_ORIGIN_PATTERN` | —                       | Optional anchored regex (`^...$`) for pattern-based origins such as Vercel preview URLs (empty/unset = no pattern) |
+| `SWAGGER_ENABLED`     | `false`                 | Enable OpenAPI/Swagger UI. Set to `true` for local development, `false` in production.                             |
 
 ### `apps/web/.env.example`
 

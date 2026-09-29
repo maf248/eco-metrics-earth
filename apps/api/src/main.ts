@@ -24,7 +24,7 @@ async function bootstrap() {
   app.setGlobalPrefix('api/v1');
 
   const appConfig = app.get(AppConfigService);
-  app.enableCors({ origin: appConfig.corsOrigin });
+  app.enableCors({ origin: appConfig.corsOrigins });
 
   // Swagger / OpenAPI
   if (appConfig.swaggerEnabled) {

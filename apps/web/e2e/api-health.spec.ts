@@ -11,8 +11,22 @@ test.describe('API health endpoint', { tag: '@smoke' }, () => {
   });
 
   test('should return CORS headers on health response', async ({ request }) => {
-    const response = await request.get(`${API_BASE_URL}/health`);
+    const response = await request.get(`${API_BASE_URL}/health`, {
+      headers: { Origin: 'http://localhost:3000' },
+    });
     expect(response.headers()['access-control-allow-origin']).toBe('http://localhost:3000');
+  });
+
+  test('should omit CORS headers for an unknown origin on health response', async ({ request }) => {
+    const response = await request.get(`${API_BASE_URL}/health`, {
+      headers: { Origin: 'https://evil.example' },
+    });
+    expect(response.headers()['access-control-allow-origin']).toBeUndefined();
+  });
+
+  test('should omit CORS headers when no Origin header is sent', async ({ request }) => {
+    const response = await request.get(`${API_BASE_URL}/health`);
+    expect(response.headers()['access-control-allow-origin']).toBeUndefined();
   });
 });
 
@@ -25,7 +39,9 @@ test.describe('API error handling', { tag: '@smoke' }, () => {
   });
 
   test('should return CORS headers on error responses', async ({ request }) => {
-    const response = await request.get(`${API_BASE_URL}/nonexistent`);
+    const response = await request.get(`${API_BASE_URL}/nonexistent`, {
+      headers: { Origin: 'http://localhost:3000' },
+    });
     expect(response.headers()['access-control-allow-origin']).toBe('http://localhost:3000');
   });
 });
@@ -47,7 +63,9 @@ test.describe('API demo-validation — GET', { tag: '@smoke' }, () => {
   });
 
   test('should return CORS headers on GET demo', async ({ request }) => {
-    const response = await request.get(`${API_BASE_URL}/demo-validation`);
+    const response = await request.get(`${API_BASE_URL}/demo-validation`, {
+      headers: { Origin: 'http://localhost:3000' },
+    });
     expect(response.headers()['access-control-allow-origin']).toBe('http://localhost:3000');
   });
 });
@@ -75,6 +93,7 @@ test.describe('API demo-validation — POST', { tag: '@smoke' }, () => {
   test('should return CORS headers on POST demo', async ({ request }) => {
     const response = await request.post(`${API_BASE_URL}/demo-validation`, {
       data: { name: 'Test', value: 1, unit: 'test' },
+      headers: { Origin: 'http://localhost:3000' },
     });
     expect(response.headers()['access-control-allow-origin']).toBe('http://localhost:3000');
   });
