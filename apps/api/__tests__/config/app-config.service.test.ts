@@ -12,6 +12,7 @@ describe('AppConfigService', () => {
         }
         return value;
       }),
+      get: jest.fn((key: string) => env[key]),
     } as unknown as ConfigService;
     return new AppConfigService(configService);
   }
@@ -40,17 +41,53 @@ describe('AppConfigService', () => {
     });
   });
 
-  describe('corsOrigin', () => {
-    it('should return the configured URI when CORS_ORIGIN is set', () => {
+  describe('corsOrigins', () => {
+    it('should return a single origin as a one-entry array when CORS_ORIGIN is set', () => {
       const service = buildService({
         CORS_ORIGIN: 'https://eco-metrics.earth',
       });
-      expect(service.corsOrigin).toBe('https://eco-metrics.earth');
+      expect(service.corsOrigins).toEqual(['https://eco-metrics.earth']);
+    });
+
+    it('should return multiple trimmed origins when CORS_ORIGIN is a comma-separated list', () => {
+      const service = buildService({
+        CORS_ORIGIN: 'http://localhost:3000, https://eco-metrics.earth',
+      });
+      expect(service.corsOrigins).toEqual(['http://localhost:3000', 'https://eco-metrics.earth']);
+    });
+
+    it('should append the compiled RegExp as the last element when CORS_ORIGIN_PATTERN is set', () => {
+      const service = buildService({
+        CORS_ORIGIN: 'https://eco-metrics.earth',
+        CORS_ORIGIN_PATTERN: '^https://eco-metrics-earth-[a-z0-9-]+\\.vercel\\.app$',
+      });
+      const origins = service.corsOrigins;
+      expect(origins).toHaveLength(2);
+      expect(origins[0]).toBe('https://eco-metrics.earth');
+      expect(origins[1]).toBeInstanceOf(RegExp);
+      expect(
+        (origins[1] as RegExp).test('https://eco-metrics-earth-abc123-some-scope.vercel.app'),
+      ).toBe(true);
+    });
+
+    it('should return only string origins when CORS_ORIGIN_PATTERN is absent', () => {
+      const service = buildService({
+        CORS_ORIGIN: 'http://localhost:3000',
+      });
+      expect(service.corsOrigins).toEqual(['http://localhost:3000']);
+    });
+
+    it('should return only string origins when CORS_ORIGIN_PATTERN is empty', () => {
+      const service = buildService({
+        CORS_ORIGIN: 'http://localhost:3000',
+        CORS_ORIGIN_PATTERN: '',
+      });
+      expect(service.corsOrigins).toEqual(['http://localhost:3000']);
     });
 
     it('should throw when CORS_ORIGIN is not in config', () => {
       const service = buildService({});
-      expect(() => service.corsOrigin).toThrow('CORS_ORIGIN');
+      expect(() => service.corsOrigins).toThrow('CORS_ORIGIN');
     });
   });
 });

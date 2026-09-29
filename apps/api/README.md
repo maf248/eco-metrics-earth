@@ -17,7 +17,7 @@ Backend For Frontend for eco-metrics earth. Exposes a REST API under `/api/v1` c
 2. Registers a global `ValidationPipe` (`class-validator` + `class-transformer`) — validates, strips unknown fields, and auto-transforms types
 3. Applies `helmet` (security HTTP headers)
 4. Sets global route prefix `api/v1`
-5. Enables CORS restricted to `CORS_ORIGIN` (read from `AppConfigService`)
+5. Enables CORS restricted to the configured origins (`AppConfigService.corsOrigins`) — exact origins from `CORS_ORIGIN` plus the optional anchored regex in `CORS_ORIGIN_PATTERN`
 6. Listens on the configured port
 
 ### Module structure
@@ -44,13 +44,13 @@ src/
 
 ### Cross-cutting concerns (AppModule)
 
-| Concern            | Solution                                                          | Configuration                                                              |
-| ------------------ | ----------------------------------------------------------------- | -------------------------------------------------------------------------- |
-| Env validation     | `@nestjs/config` + Joi                                            | Validates `PORT`, `NODE_ENV`, `CORS_ORIGIN` on startup; `abortEarly: true` |
-| Rate limiting      | `@nestjs/throttler` + global `ThrottlerGuard`                     | 60 requests per 60 s per IP                                                |
-| Security headers   | `helmet` (Express middleware)                                     | Applied at bootstrap, before NestJS routing                                |
-| CORS               | NestJS built-in `enableCors`                                      | Restricted to `CORS_ORIGIN`                                                |
-| Request validation | `class-validator` + `class-transformer` + global `ValidationPipe` | `whitelist`, `forbidNonWhitelisted`, `transform`                           |
+| Concern            | Solution                                                          | Configuration                                                                                     |
+| ------------------ | ----------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| Env validation     | `@nestjs/config` + Joi                                            | Validates `PORT`, `NODE_ENV`, `CORS_ORIGIN`, `CORS_ORIGIN_PATTERN` on startup; `abortEarly: true` |
+| Rate limiting      | `@nestjs/throttler` + global `ThrottlerGuard`                     | 60 requests per 60 s per IP                                                                       |
+| Security headers   | `helmet` (Express middleware)                                     | Applied at bootstrap, before NestJS routing                                                       |
+| CORS               | NestJS built-in `enableCors`                                      | Restricted to `CORS_ORIGIN` (exact list) plus optional `CORS_ORIGIN_PATTERN` regex                |
+| Request validation | `class-validator` + `class-transformer` + global `ValidationPipe` | `whitelist`, `forbidNonWhitelisted`, `transform`                                                  |
 
 ### AppConfigService
 
@@ -59,7 +59,7 @@ Typed accessor for environment variables. Each getter calls `ConfigService.getOr
 ```typescript
 appConfig.port; // PORT
 appConfig.nodeEnv; // NODE_ENV
-appConfig.corsOrigin; // CORS_ORIGIN
+appConfig.corsOrigins; // CORS_ORIGIN (+ optional CORS_ORIGIN_PATTERN as a RegExp)
 ```
 
 ---
@@ -83,12 +83,13 @@ Copy `.env.example` before running locally:
 cp apps/api/.env.example apps/api/.env
 ```
 
-| Variable          | Default                 | Description                                                                    |
-| ----------------- | ----------------------- | ------------------------------------------------------------------------------ |
-| `PORT`            | `3001`                  | Port the server listens on                                                     |
-| `NODE_ENV`        | `development`           | `development` \| `test` \| `production`                                        |
-| `CORS_ORIGIN`     | `http://localhost:3000` | Allowed CORS origin — set to the deployed web URL in production                |
-| `SWAGGER_ENABLED` | `false`                 | Enable OpenAPI/Swagger UI at `/api/docs` — set to `true` for local development |
+| Variable              | Default                 | Description                                                                                                        |
+| --------------------- | ----------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| `PORT`                | `3001`                  | Port the server listens on                                                                                         |
+| `NODE_ENV`            | `development`           | `development` \| `test` \| `production`                                                                            |
+| `CORS_ORIGIN`         | `http://localhost:3000` | Comma-separated list of exact allowed CORS origins — single origin is valid; no wildcards                          |
+| `CORS_ORIGIN_PATTERN` | —                       | Optional anchored regex (`^...$`) for pattern-based origins such as Vercel previews — empty/unset means no pattern |
+| `SWAGGER_ENABLED`     | `false`                 | Enable OpenAPI/Swagger UI at `/api/docs` — set to `true` for local development                                     |
 
 ---
 
@@ -127,7 +128,7 @@ npx nx test api
 
 `apps/api` deploys to Google Cloud Run from `develop` via the root `Dockerfile` and `.github/workflows/deploy-api.yml`. The image is multi-stage `node:24-alpine`: the builder runs `HUSKY=0 npm ci`, `npx nx run api:prune`, and a production install inside `apps/api/dist` using the root `overrides` security pins; the runtime stage ships only the self-contained `dist` directory, runs as non-root `USER node`, exposes port `8080`, and starts with `CMD ["node", "main.js"]`.
 
-Authentication uses Workload Identity Federation (OIDC) — no service-account JSON keys. Images are tagged by commit SHA and pushed to Artifact Registry; `google-github-actions/deploy-cloudrun@v3` deploys the `eco-metrics-api` service with a startup probe on `/api/v1/health`, scale-to-zero (`--min-instances=0`), and the env vars `NODE_ENV`, `CORS_ORIGIN`, and `SWAGGER_ENABLED` (Cloud Run injects `PORT`, so it is never set manually).
+Authentication uses Workload Identity Federation (OIDC) — no service-account JSON keys. Images are tagged by commit SHA and pushed to Artifact Registry; `google-github-actions/deploy-cloudrun@v3` deploys the `eco-metrics-api` service with a startup probe on `/api/v1/health`, scale-to-zero (`--min-instances=0`), and the env vars `NODE_ENV`, `CORS_ORIGIN`, `CORS_ORIGIN_PATTERN` (optional), and `SWAGGER_ENABLED` (Cloud Run injects `PORT`, so it is never set manually).
 
 Required GitHub **variables** (Settings → Secrets and variables → Actions → Variables):
 
@@ -136,6 +137,10 @@ Required GitHub **variables** (Settings → Secrets and variables → Actions �
 - `WIF_PROVIDER`
 - `WIF_SERVICE_ACCOUNT`
 - `CORS_ORIGIN`
+
+Optional GitHub **variable**:
+
+- `CORS_ORIGIN_PATTERN` — anchored regex for Vercel preview origins (e.g. `^https://eco-metrics-earth-[a-z0-9-]+\.vercel\.app$`); unset or empty means no pattern is passed to the service
 
 See [`docs/deploy/cloud-run.md`](../../docs/deploy/cloud-run.md) for the full GCP/gcloud/GitHub/Vercel runbook.
 

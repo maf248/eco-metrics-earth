@@ -114,13 +114,16 @@ Save this value as `WIF_PROVIDER`.
 
 In the GitHub repo, go to **Settings → Secrets and variables → Actions → Variables** and create these **variables** (not secrets):
 
-| Variable              | Value / example                                                            |
-| --------------------- | -------------------------------------------------------------------------- |
-| `GCP_PROJECT_ID`      | `<GCP_PROJECT_ID>`                                                         |
-| `GCP_REGION`          | `us-central1` (or another Tier 1 region for the free-tier numbers above)   |
-| `WIF_PROVIDER`        | `projects/<GCP_PROJECT_NUMBER>/locations/global/workloadIdentityPools/...` |
-| `WIF_SERVICE_ACCOUNT` | `github-deployer@<GCP_PROJECT_ID>.iam.gserviceaccount.com`                 |
-| `CORS_ORIGIN`         | The Vercel production URL, e.g. `https://eco-metrics-earth.vercel.app`     |
+| Variable              | Value / example                                                                                                                                    |
+| --------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `GCP_PROJECT_ID`      | `<GCP_PROJECT_ID>`                                                                                                                                 |
+| `GCP_REGION`          | `us-central1` (or another Tier 1 region for the free-tier numbers above)                                                                           |
+| `WIF_PROVIDER`        | `projects/<GCP_PROJECT_NUMBER>/locations/global/workloadIdentityPools/...`                                                                         |
+| `WIF_SERVICE_ACCOUNT` | `github-deployer@<GCP_PROJECT_ID>.iam.gserviceaccount.com`                                                                                         |
+| `CORS_ORIGIN`         | Comma-separated list of exact origins, e.g. `https://eco-metrics-earth.vercel.app` or `http://localhost:3000,https://eco-metrics-earth.vercel.app` |
+| `CORS_ORIGIN_PATTERN` | Optional anchored regex for Vercel previews, e.g. `^https://eco-metrics-earth-[a-z0-9-]+\.vercel\.app$` — leave empty/unset by default             |
+
+> The workflow escapes commas and backslashes in these values automatically before passing them to `deploy-cloudrun`, so store the raw value in the GitHub variable (no manual escaping).
 
 ## 9. Wait for IAM propagation
 
@@ -221,7 +224,17 @@ This is tracked as task 10.1 in the OpenSpec change and is cosmetic only (Swagge
 gcloud run services logs read eco-metrics-api --region=<GCP_REGION> --project=<GCP_PROJECT_ID>
 ```
 
-Common causes: missing env var, bad image entrypoint, or `PORT` not being read from the environment.
+Common causes: missing env var, bad image entrypoint, `PORT` not being read from the environment, or an invalid `CORS_ORIGIN`/`CORS_ORIGIN_PATTERN` value that fails Joi validation at boot. The validation error is printed to the logs before the process exits, and the startup probe never passes, so the previous healthy revision keeps serving traffic.
+
+### Stale CORS_ORIGIN_PATTERN after unsetting the GitHub variable
+
+**Symptom:** you removed or emptied the `CORS_ORIGIN_PATTERN` GitHub variable, but the Cloud Run service still allows origins matching the previous pattern.
+
+**Fix:** `deploy-cloudrun` merges env vars by default, so a previously deployed value persists until it is explicitly cleared. Remove it from the service:
+
+```bash
+gcloud run services update eco-metrics-api --remove-env-vars CORS_ORIGIN_PATTERN --region=<GCP_REGION> --project=<GCP_PROJECT_ID>
+```
 
 ### Cold-start first request
 

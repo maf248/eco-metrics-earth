@@ -2,11 +2,11 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
-import * as Joi from 'joi';
 
 import { DemoValidationController } from '../common/dto/demo-validation.controller';
 import { FallbackModule } from '../common/fallback/fallback.module';
 import { AppConfigService } from '../config/app-config.service';
+import { envValidationSchema } from '../config/env-validation.schema';
 import { HealthModule } from '../health/health.module';
 import { WaterFootprintModule } from '../modules/water-footprint/water-footprint.module';
 
@@ -18,12 +18,7 @@ import { AppService } from './app.service';
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: 'apps/api/.env',
-      validationSchema: Joi.object({
-        PORT: Joi.number().port().default(3001),
-        NODE_ENV: Joi.string().valid('development', 'test', 'production').default('development'),
-        CORS_ORIGIN: Joi.string().uri().default('http://localhost:3000'),
-        SWAGGER_ENABLED: Joi.string().valid('true', 'false').default('false'),
-      }),
+      validationSchema: envValidationSchema,
       validationOptions: {
         libraryOptions: {
           allowUnknown: true,
