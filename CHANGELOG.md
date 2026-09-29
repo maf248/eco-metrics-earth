@@ -1,3 +1,9 @@
+## [2.6.0](https://github.com/maf248/eco-metrics-earth/compare/v2.5.1...v2.6.0) (2026-09-29)
+
+### Features
+
+* **api:** support multiple CORS origins with optional pattern for Vercel previews ([1d49466](https://github.com/maf248/eco-metrics-earth/commit/1d494666a42dc365f142f05c74ba0fe564f8b70f))
+
 ## [2.5.1](https://github.com/maf248/eco-metrics-earth/compare/v2.5.0...v2.5.1) (2026-09-23)
 
 ### Bug Fixes
