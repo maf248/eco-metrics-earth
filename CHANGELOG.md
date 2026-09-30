@@ -1,3 +1,9 @@
+## [2.6.1](https://github.com/maf248/eco-metrics-earth/compare/v2.6.0...v2.6.1) (2026-09-30)
+
+### Bug Fixes
+
+* **deps:** bump multer security override to 2.4.0 ([54dcd89](https://github.com/maf248/eco-metrics-earth/commit/54dcd89add2459c401f8458eb8a93a8228fc9a98))
+
 ## [2.6.0](https://github.com/maf248/eco-metrics-earth/compare/v2.5.1...v2.6.0) (2026-09-29)
 
 ### Features
