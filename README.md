@@ -161,7 +161,7 @@ eco-metrics-earth/
 │   ├── specs/                   # Canonical specs per capability
 │   └── changes/                 # Per-change: proposal, design, specs, tasks
 │       └── archive/             # Completed changes moved here via /opsx:archive
-├── postman/                     # Postman collections for data provider APIs
+├── postman/                     # Postman collections (collections/, environments/) for data provider APIs
 ├── scripts/                     # Helper scripts (Vercel ignore step, PWA icons)
 ├── Dockerfile                   # Multi-stage image for apps/api (Cloud Run)
 ├── vercel.json                  # Vercel build config for apps/web

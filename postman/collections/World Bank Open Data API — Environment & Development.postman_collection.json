@@ -3493,52 +3493,6 @@
           "response": []
         },
         {
-          "name": "DALYs por contaminacion",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
-                  "pm.test(\"Tiempo de respuesta < 30s\", () => pm.expect(pm.response.responseTime).to.be.below(30000));",
-                  "pm.test(\"Es JSON valido\", () => pm.response.json());",
-                  "pm.test(\"Estructura WB correcta (array con metadata)\", () => {",
-                  "    const j = pm.response.json();",
-                  "    pm.expect(j).to.be.an(\"array\");",
-                  "    pm.expect(j[0]).to.have.property(\"page\");",
-                  "});"
-                ]
-              }
-            }
-          ],
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{wb_url}}/v2/country/all/indicator/SH.HIV.INCD.YG?format=json&date={{start_year}}:{{end_year}}&per_page=500",
-              "host": ["{{wb_url}}"],
-              "path": ["v2", "country", "all", "indicator", "SH.HIV.INCD.YG"],
-              "query": [
-                {
-                  "key": "format",
-                  "value": "json"
-                },
-                {
-                  "key": "date",
-                  "value": "{{start_year}}:{{end_year}}"
-                },
-                {
-                  "key": "per_page",
-                  "value": "500"
-                }
-              ]
-            },
-            "description": "**Mortality attributable to environmental factors** (`SH.HIV.INCD.YG`)\n\n**Nota**: el codigo arriba es placeholder, los DALYs ambientales no estan en WDI directamente — estan en el dataset de WHO Global Health Observatory.\n\nReemplaza `country/all` por un codigo ISO (ej: `country/AR`) para un solo pais. Reemplaza `country/all` por agregados como `WLD` (mundo), `LAC` (Latinoamerica y Caribe), `EAP` (Asia Oriental y Pacifico), etc."
-          },
-          "response": []
-        },
-        {
           "name": "Adjusted savings: particulate emission damage",
           "event": [
             {
@@ -4295,9 +4249,9 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{cckp_url}}/../../",
+              "raw": "{{cckp_url}}/documentation",
               "host": ["{{cckp_url}}"],
-              "path": ["..", "..", ""]
+              "path": ["documentation"]
             },
             "description": "Pagina principal de la API. Ver tambien: https://climateknowledgeportal.worldbank.org/api-docs"
           },

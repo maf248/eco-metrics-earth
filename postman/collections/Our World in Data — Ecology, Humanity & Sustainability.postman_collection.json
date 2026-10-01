@@ -215,48 +215,10 @@
           "description": "Consumo de energia (primaria, per capita), mix energetico, mix electrico, renovables. Basado en Energy Institute + EIA + Ember.\n\nRepo: https://github.com/owid/energy-data"
         },
         {
-          "name": "Population (long-run)",
-          "item": [
-            {
-              "name": "CSV",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "type": "text/javascript",
-                    "exec": [
-                      "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
-                      "pm.test(\"Tiempo de respuesta < 30s\", () => pm.expect(pm.response.responseTime).to.be.below(30000));",
-                      "pm.test(\"Tiene contenido CSV\", () => pm.expect(pm.response.text()).to.include(\",\"));"
-                    ]
-                  }
-                }
-              ],
-              "request": {
-                "method": "GET",
-                "header": [
-                  {
-                    "key": "User-Agent",
-                    "value": "Postman OWID Collection/1.0"
-                  }
-                ],
-                "url": {
-                  "raw": "{{bulk_base_url}}/population/population.csv",
-                  "host": ["{{bulk_base_url}}"],
-                  "path": ["population", "population.csv"]
-                },
-                "description": "Dataset completo en formato CSV."
-              },
-              "response": []
-            }
-          ],
-          "description": "Poblacion mundial historica por pais (HYDE + UN WPP + Maddison)."
-        },
-        {
           "name": "COVID-19",
           "item": [
             {
-              "name": "CSV",
+              "name": "CSV (archivo congelado) — GitHub owid/covid-19-data",
               "event": [
                 {
                   "listen": "test",
@@ -272,87 +234,26 @@
               ],
               "request": {
                 "method": "GET",
-                "header": [
-                  {
-                    "key": "User-Agent",
-                    "value": "Postman OWID Collection/1.0"
-                  }
-                ],
+                "header": [],
                 "url": {
-                  "raw": "{{bulk_base_url}}/covid-19/owid-covid-data.csv",
-                  "host": ["{{bulk_base_url}}"],
-                  "path": ["covid-19", "owid-covid-data.csv"]
+                  "raw": "https://raw.githubusercontent.com/owid/covid-19-data/master/public/data/owid-covid-data.csv",
+                  "protocol": "https",
+                  "host": ["raw", "githubusercontent", "com"],
+                  "path": [
+                    "owid",
+                    "covid-19-data",
+                    "master",
+                    "public",
+                    "data",
+                    "owid-covid-data.csv"
+                  ]
                 },
-                "description": "Dataset completo en formato CSV."
-              },
-              "response": []
-            },
-            {
-              "name": "JSON",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "type": "text/javascript",
-                    "exec": [
-                      "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
-                      "pm.test(\"Tiempo de respuesta < 30s\", () => pm.expect(pm.response.responseTime).to.be.below(30000));",
-                      "pm.test(\"Es JSON valido\", () => { pm.response.to.have.header(\"Content-Type\"); pm.response.json(); });"
-                    ]
-                  }
-                }
-              ],
-              "request": {
-                "method": "GET",
-                "header": [
-                  {
-                    "key": "User-Agent",
-                    "value": "Postman OWID Collection/1.0"
-                  }
-                ],
-                "url": {
-                  "raw": "{{bulk_base_url}}/covid-19/owid-covid-data.json",
-                  "host": ["{{bulk_base_url}}"],
-                  "path": ["covid-19", "owid-covid-data.json"]
-                },
-                "description": "Dataset completo en formato JSON."
-              },
-              "response": []
-            },
-            {
-              "name": "XLSX (Excel)",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "type": "text/javascript",
-                    "exec": [
-                      "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
-                      "pm.test(\"Tiempo de respuesta < 30s\", () => pm.expect(pm.response.responseTime).to.be.below(30000));",
-                      "pm.test(\"Body no vacio\", () => pm.expect(pm.response.text().length).to.be.above(0));"
-                    ]
-                  }
-                }
-              ],
-              "request": {
-                "method": "GET",
-                "header": [
-                  {
-                    "key": "User-Agent",
-                    "value": "Postman OWID Collection/1.0"
-                  }
-                ],
-                "url": {
-                  "raw": "{{bulk_base_url}}/covid-19/owid-covid-data.xlsx",
-                  "host": ["{{bulk_base_url}}"],
-                  "path": ["covid-19", "owid-covid-data.xlsx"]
-                },
-                "description": "Dataset completo en formato XLSX."
+                "description": "OWID dejó de actualizar los datos de COVID-19 en junio de 2022; las copias bulk (covid.ourworldindata.org y las de DigitalOcean Spaces) fueron retiradas (403/conexión fallida); el dataset congelado queda archivado en el repositorio GitHub owid/covid-19-data."
               },
               "response": []
             }
           ],
-          "description": "Casos confirmados, muertes, hospitalizaciones, tests y vacunacion por pais. Actualizado diariamente.\n\nRepo: https://github.com/owid/covid-19-data"
+          "description": "Casos confirmados, muertes, hospitalizaciones, tests y vacunación por país. OWID dejó de actualizar los datos de COVID-19 en junio de 2022; el dataset congelado queda archivado en el repositorio GitHub owid/covid-19-data.\n\nRepo: https://github.com/owid/covid-19-data"
         },
         {
           "name": "GitHub — co2-data repo metadata",
@@ -489,23 +390,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{grapher_base_url}}/annual-co2-emissions-per-country.metadata.json?v=1&csvType=full&useColumnShortNames=false",
+                  "raw": "{{grapher_base_url}}/annual-co2-emissions-per-country.metadata.json",
                   "host": ["{{grapher_base_url}}"],
-                  "path": ["annual-co2-emissions-per-country.metadata.json"],
-                  "query": [
-                    {
-                      "key": "v",
-                      "value": "1"
-                    },
-                    {
-                      "key": "csvType",
-                      "value": "full"
-                    },
-                    {
-                      "key": "useColumnShortNames",
-                      "value": "false"
-                    }
-                  ]
+                  "path": ["annual-co2-emissions-per-country.metadata.json"]
                 },
                 "description": "Metadata (titulo, unidades, fuentes, citas) del chart `annual-co2-emissions-per-country`."
               },
@@ -619,23 +506,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{grapher_base_url}}/co-emissions-per-capita.metadata.json?v=1&csvType=full&useColumnShortNames=false",
+                  "raw": "{{grapher_base_url}}/co-emissions-per-capita.metadata.json",
                   "host": ["{{grapher_base_url}}"],
-                  "path": ["co-emissions-per-capita.metadata.json"],
-                  "query": [
-                    {
-                      "key": "v",
-                      "value": "1"
-                    },
-                    {
-                      "key": "csvType",
-                      "value": "full"
-                    },
-                    {
-                      "key": "useColumnShortNames",
-                      "value": "false"
-                    }
-                  ]
+                  "path": ["co-emissions-per-capita.metadata.json"]
                 },
                 "description": "Metadata (titulo, unidades, fuentes, citas) del chart `co-emissions-per-capita`."
               },
@@ -749,23 +622,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{grapher_base_url}}/cumulative-co2-emissions.metadata.json?v=1&csvType=full&useColumnShortNames=false",
+                  "raw": "{{grapher_base_url}}/cumulative-co2-emissions.metadata.json",
                   "host": ["{{grapher_base_url}}"],
-                  "path": ["cumulative-co2-emissions.metadata.json"],
-                  "query": [
-                    {
-                      "key": "v",
-                      "value": "1"
-                    },
-                    {
-                      "key": "csvType",
-                      "value": "full"
-                    },
-                    {
-                      "key": "useColumnShortNames",
-                      "value": "false"
-                    }
-                  ]
+                  "path": ["cumulative-co2-emissions.metadata.json"]
                 },
                 "description": "Metadata (titulo, unidades, fuentes, citas) del chart `cumulative-co2-emissions`."
               },
@@ -879,23 +738,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{grapher_base_url}}/consumption-co2-per-capita.metadata.json?v=1&csvType=full&useColumnShortNames=false",
+                  "raw": "{{grapher_base_url}}/consumption-co2-per-capita.metadata.json",
                   "host": ["{{grapher_base_url}}"],
-                  "path": ["consumption-co2-per-capita.metadata.json"],
-                  "query": [
-                    {
-                      "key": "v",
-                      "value": "1"
-                    },
-                    {
-                      "key": "csvType",
-                      "value": "full"
-                    },
-                    {
-                      "key": "useColumnShortNames",
-                      "value": "false"
-                    }
-                  ]
+                  "path": ["consumption-co2-per-capita.metadata.json"]
                 },
                 "description": "Metadata (titulo, unidades, fuentes, citas) del chart `consumption-co2-per-capita`."
               },
@@ -1009,23 +854,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{grapher_base_url}}/total-ghg-emissions.metadata.json?v=1&csvType=full&useColumnShortNames=false",
+                  "raw": "{{grapher_base_url}}/total-ghg-emissions.metadata.json",
                   "host": ["{{grapher_base_url}}"],
-                  "path": ["total-ghg-emissions.metadata.json"],
-                  "query": [
-                    {
-                      "key": "v",
-                      "value": "1"
-                    },
-                    {
-                      "key": "csvType",
-                      "value": "full"
-                    },
-                    {
-                      "key": "useColumnShortNames",
-                      "value": "false"
-                    }
-                  ]
+                  "path": ["total-ghg-emissions.metadata.json"]
                 },
                 "description": "Metadata (titulo, unidades, fuentes, citas) del chart `total-ghg-emissions`."
               },
@@ -1139,23 +970,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{grapher_base_url}}/methane-emissions.metadata.json?v=1&csvType=full&useColumnShortNames=false",
+                  "raw": "{{grapher_base_url}}/methane-emissions.metadata.json",
                   "host": ["{{grapher_base_url}}"],
-                  "path": ["methane-emissions.metadata.json"],
-                  "query": [
-                    {
-                      "key": "v",
-                      "value": "1"
-                    },
-                    {
-                      "key": "csvType",
-                      "value": "full"
-                    },
-                    {
-                      "key": "useColumnShortNames",
-                      "value": "false"
-                    }
-                  ]
+                  "path": ["methane-emissions.metadata.json"]
                 },
                 "description": "Metadata (titulo, unidades, fuentes, citas) del chart `methane-emissions`."
               },
@@ -1269,23 +1086,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{grapher_base_url}}/nitrous-oxide-emissions.metadata.json?v=1&csvType=full&useColumnShortNames=false",
+                  "raw": "{{grapher_base_url}}/nitrous-oxide-emissions.metadata.json",
                   "host": ["{{grapher_base_url}}"],
-                  "path": ["nitrous-oxide-emissions.metadata.json"],
-                  "query": [
-                    {
-                      "key": "v",
-                      "value": "1"
-                    },
-                    {
-                      "key": "csvType",
-                      "value": "full"
-                    },
-                    {
-                      "key": "useColumnShortNames",
-                      "value": "false"
-                    }
-                  ]
+                  "path": ["nitrous-oxide-emissions.metadata.json"]
                 },
                 "description": "Metadata (titulo, unidades, fuentes, citas) del chart `nitrous-oxide-emissions`."
               },
@@ -1399,23 +1202,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{grapher_base_url}}/average-monthly-surface-temperature.metadata.json?v=1&csvType=full&useColumnShortNames=false",
+                  "raw": "{{grapher_base_url}}/average-monthly-surface-temperature.metadata.json",
                   "host": ["{{grapher_base_url}}"],
-                  "path": ["average-monthly-surface-temperature.metadata.json"],
-                  "query": [
-                    {
-                      "key": "v",
-                      "value": "1"
-                    },
-                    {
-                      "key": "csvType",
-                      "value": "full"
-                    },
-                    {
-                      "key": "useColumnShortNames",
-                      "value": "false"
-                    }
-                  ]
+                  "path": ["average-monthly-surface-temperature.metadata.json"]
                 },
                 "description": "Metadata (titulo, unidades, fuentes, citas) del chart `average-monthly-surface-temperature`."
               },
@@ -1529,23 +1318,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{grapher_base_url}}/temperature-anomaly.metadata.json?v=1&csvType=full&useColumnShortNames=false",
+                  "raw": "{{grapher_base_url}}/temperature-anomaly.metadata.json",
                   "host": ["{{grapher_base_url}}"],
-                  "path": ["temperature-anomaly.metadata.json"],
-                  "query": [
-                    {
-                      "key": "v",
-                      "value": "1"
-                    },
-                    {
-                      "key": "csvType",
-                      "value": "full"
-                    },
-                    {
-                      "key": "useColumnShortNames",
-                      "value": "false"
-                    }
-                  ]
+                  "path": ["temperature-anomaly.metadata.json"]
                 },
                 "description": "Metadata (titulo, unidades, fuentes, citas) del chart `temperature-anomaly`."
               },
@@ -1659,23 +1434,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{grapher_base_url}}/sea-level.metadata.json?v=1&csvType=full&useColumnShortNames=false",
+                  "raw": "{{grapher_base_url}}/sea-level.metadata.json",
                   "host": ["{{grapher_base_url}}"],
-                  "path": ["sea-level.metadata.json"],
-                  "query": [
-                    {
-                      "key": "v",
-                      "value": "1"
-                    },
-                    {
-                      "key": "csvType",
-                      "value": "full"
-                    },
-                    {
-                      "key": "useColumnShortNames",
-                      "value": "false"
-                    }
-                  ]
+                  "path": ["sea-level.metadata.json"]
                 },
                 "description": "Metadata (titulo, unidades, fuentes, citas) del chart `sea-level`."
               },
@@ -1720,131 +1481,40 @@
           "name": "Atmospheric CO2 Concentration",
           "item": [
             {
-              "name": "Data (CSV)",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "type": "text/javascript",
-                    "exec": [
-                      "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
-                      "pm.test(\"Tiempo de respuesta < 30s\", () => pm.expect(pm.response.responseTime).to.be.below(30000));",
-                      "pm.test(\"Tiene contenido CSV\", () => pm.expect(pm.response.text()).to.include(\",\"));"
-                    ]
-                  }
-                }
-              ],
+              "name": "Climate Change Explorer — concentraciones de CO₂ (serie larga)",
               "request": {
                 "method": "GET",
-                "header": [
-                  {
-                    "key": "User-Agent",
-                    "value": "Postman OWID Collection/1.0"
-                  }
-                ],
+                "header": [],
                 "url": {
-                  "raw": "{{grapher_base_url}}/co2-concentration-long-term.csv?v=1&csvType=full&useColumnShortNames=false",
-                  "host": ["{{grapher_base_url}}"],
-                  "path": ["co2-concentration-long-term.csv"],
+                  "raw": "https://ourworldindata.org/explorers/climate-change?facet=none&country=%7EOWID_WRL&Metric=CO%E2%82%82+concentrations&Long-run+series%3F=true",
+                  "protocol": "https",
+                  "host": ["ourworldindata", "org"],
+                  "path": ["explorers", "climate-change"],
                   "query": [
                     {
-                      "key": "v",
-                      "value": "1"
+                      "key": "facet",
+                      "value": "none"
                     },
                     {
-                      "key": "csvType",
-                      "value": "full"
+                      "key": "country",
+                      "value": "%7EOWID_WRL"
                     },
                     {
-                      "key": "useColumnShortNames",
-                      "value": "false"
+                      "key": "Metric",
+                      "value": "CO%E2%82%82+concentrations"
+                    },
+                    {
+                      "key": "Long-run+series%3F",
+                      "value": "true"
                     }
                   ]
                 },
-                "description": "Datos en formato CSV del chart `co2-concentration-long-term`."
-              },
-              "response": []
-            },
-            {
-              "name": "Metadata (JSON)",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "type": "text/javascript",
-                    "exec": [
-                      "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
-                      "pm.test(\"Tiempo de respuesta < 30s\", () => pm.expect(pm.response.responseTime).to.be.below(30000));",
-                      "pm.test(\"Es JSON valido\", () => { pm.response.to.have.header(\"Content-Type\"); pm.response.json(); });"
-                    ]
-                  }
-                }
-              ],
-              "request": {
-                "method": "GET",
-                "header": [
-                  {
-                    "key": "User-Agent",
-                    "value": "Postman OWID Collection/1.0"
-                  }
-                ],
-                "url": {
-                  "raw": "{{grapher_base_url}}/co2-concentration-long-term.metadata.json?v=1&csvType=full&useColumnShortNames=false",
-                  "host": ["{{grapher_base_url}}"],
-                  "path": ["co2-concentration-long-term.metadata.json"],
-                  "query": [
-                    {
-                      "key": "v",
-                      "value": "1"
-                    },
-                    {
-                      "key": "csvType",
-                      "value": "full"
-                    },
-                    {
-                      "key": "useColumnShortNames",
-                      "value": "false"
-                    }
-                  ]
-                },
-                "description": "Metadata (titulo, unidades, fuentes, citas) del chart `co2-concentration-long-term`."
-              },
-              "response": []
-            },
-            {
-              "name": "ZIP completo (data + metadata + readme)",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "type": "text/javascript",
-                    "exec": [
-                      "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
-                      "pm.test(\"Tiempo de respuesta < 30s\", () => pm.expect(pm.response.responseTime).to.be.below(30000));",
-                      "pm.test(\"Body no vacio\", () => pm.expect(pm.response.text().length).to.be.above(0));"
-                    ]
-                  }
-                }
-              ],
-              "request": {
-                "method": "GET",
-                "header": [
-                  {
-                    "key": "User-Agent",
-                    "value": "Postman OWID Collection/1.0"
-                  }
-                ],
-                "url": {
-                  "raw": "{{grapher_base_url}}/co2-concentration-long-term.zip",
-                  "host": ["{{grapher_base_url}}"],
-                  "path": ["co2-concentration-long-term.zip"]
-                },
-                "description": "ZIP con CSV, metadata.json y README.md."
+                "description": "Pagina HTML del Climate Change Explorer con la serie larga de concentraciones de CO₂. Reemplaza al chart `co2-concentration-long-term`, que ya no existe (grapher CSV/JSON/ZIP → 404). El explorer no expone descarga CSV via grapher; para el dato en ppm usar NOAA GML Mauna Loa (coleccion NOAA, carpeta \"CO₂ & Greenhouse Gases — NOAA GML\")."
               },
               "response": []
             }
           ],
-          "description": "Concentracion de CO2 atmosferico."
+          "description": "Concentracion de CO2 atmosferico. El chart `co2-concentration-long-term` fue migrado por OWID al Climate Change Explorer (sus endpoints CSV/JSON/ZIP de grapher devuelven 404). Para datos descargables en ppm usar NOAA GML Mauna Loa (coleccion NOAA, carpeta \"CO₂ & Greenhouse Gases — NOAA GML\")."
         },
         {
           "name": "CO2 Emissions by Sector",
@@ -1919,23 +1589,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{grapher_base_url}}/ghg-emissions-by-sector.metadata.json?v=1&csvType=full&useColumnShortNames=false",
+                  "raw": "{{grapher_base_url}}/ghg-emissions-by-sector.metadata.json",
                   "host": ["{{grapher_base_url}}"],
-                  "path": ["ghg-emissions-by-sector.metadata.json"],
-                  "query": [
-                    {
-                      "key": "v",
-                      "value": "1"
-                    },
-                    {
-                      "key": "csvType",
-                      "value": "full"
-                    },
-                    {
-                      "key": "useColumnShortNames",
-                      "value": "false"
-                    }
-                  ]
+                  "path": ["ghg-emissions-by-sector.metadata.json"]
                 },
                 "description": "Metadata (titulo, unidades, fuentes, citas) del chart `ghg-emissions-by-sector`."
               },
@@ -1983,116 +1639,468 @@
       "name": "♻️ Waste & Plastic Pollution",
       "item": [
         {
-          "name": "Plastic Waste Generation — per capita by country",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{grapher_base_url}}/plastic-waste-per-capita.csv?v=1&csvType=full&useColumnShortNames=false",
-              "host": ["{{grapher_base_url}}"],
-              "path": ["plastic-waste-per-capita.csv"],
-              "query": [
+          "name": "Plastic Waste Generation — per capita",
+          "item": [
+            {
+              "name": "Data (CSV)",
+              "event": [
                 {
-                  "key": "v",
-                  "value": "1"
-                },
-                {
-                  "key": "csvType",
-                  "value": "full"
-                },
-                {
-                  "key": "useColumnShortNames",
-                  "value": "false"
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                      "pm.test(\"Tiempo de respuesta < 30s\", () => pm.expect(pm.response.responseTime).to.be.below(30000));",
+                      "pm.test(\"Tiene contenido CSV\", () => pm.expect(pm.response.text()).to.include(\",\"));"
+                    ]
+                  }
                 }
-              ]
+              ],
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "User-Agent",
+                    "value": "Postman OWID Collection/1.0"
+                  }
+                ],
+                "url": {
+                  "raw": "{{grapher_base_url}}/plastic-waste-per-capita.csv?v=1&csvType=full&useColumnShortNames=false",
+                  "host": ["{{grapher_base_url}}"],
+                  "path": ["plastic-waste-per-capita.csv"],
+                  "query": [
+                    {
+                      "key": "v",
+                      "value": "1"
+                    },
+                    {
+                      "key": "csvType",
+                      "value": "full"
+                    },
+                    {
+                      "key": "useColumnShortNames",
+                      "value": "false"
+                    }
+                  ]
+                },
+                "description": "Datos en formato CSV del chart `plastic-waste-per-capita`."
+              },
+              "response": []
             },
-            "description": "Per capita plastic waste generation (kg/person/day) by country. variableId: 1206211. Coverage: 186 countries. Year: 2010 (single snapshot). Source: Jambeck et al. (2015)."
-          },
-          "response": []
+            {
+              "name": "Metadata (JSON)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                      "pm.test(\"Tiempo de respuesta < 30s\", () => pm.expect(pm.response.responseTime).to.be.below(30000));",
+                      "pm.test(\"Es JSON valido\", () => { pm.response.to.have.header(\"Content-Type\"); pm.response.json(); });"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "User-Agent",
+                    "value": "Postman OWID Collection/1.0"
+                  }
+                ],
+                "url": {
+                  "raw": "{{grapher_base_url}}/plastic-waste-per-capita.metadata.json",
+                  "host": ["{{grapher_base_url}}"],
+                  "path": ["plastic-waste-per-capita.metadata.json"]
+                },
+                "description": "Metadata (titulo, unidades, fuentes, citas) del chart `plastic-waste-per-capita`."
+              },
+              "response": []
+            },
+            {
+              "name": "ZIP completo (data + metadata + readme)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                      "pm.test(\"Tiempo de respuesta < 30s\", () => pm.expect(pm.response.responseTime).to.be.below(30000));",
+                      "pm.test(\"Body no vacio\", () => pm.expect(pm.response.text().length).to.be.above(0));"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "User-Agent",
+                    "value": "Postman OWID Collection/1.0"
+                  }
+                ],
+                "url": {
+                  "raw": "{{grapher_base_url}}/plastic-waste-per-capita.zip",
+                  "host": ["{{grapher_base_url}}"],
+                  "path": ["plastic-waste-per-capita.zip"]
+                },
+                "description": "ZIP con CSV, metadata.json y README.md."
+              },
+              "response": []
+            }
+          ],
+          "description": "Generacion de residuos plasticos per capita por pais."
         },
         {
-          "name": "Plastic Waste Generation — total by country",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{grapher_base_url}}/plastic-waste-generation-total.csv?v=1&csvType=full&useColumnShortNames=false",
-              "host": ["{{grapher_base_url}}"],
-              "path": ["plastic-waste-generation-total.csv"],
-              "query": [
+          "name": "Plastic Waste Generation — total",
+          "item": [
+            {
+              "name": "Data (CSV)",
+              "event": [
                 {
-                  "key": "v",
-                  "value": "1"
-                },
-                {
-                  "key": "csvType",
-                  "value": "full"
-                },
-                {
-                  "key": "useColumnShortNames",
-                  "value": "false"
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                      "pm.test(\"Tiempo de respuesta < 30s\", () => pm.expect(pm.response.responseTime).to.be.below(30000));",
+                      "pm.test(\"Tiene contenido CSV\", () => pm.expect(pm.response.text()).to.include(\",\"));"
+                    ]
+                  }
                 }
-              ]
+              ],
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "User-Agent",
+                    "value": "Postman OWID Collection/1.0"
+                  }
+                ],
+                "url": {
+                  "raw": "{{grapher_base_url}}/plastic-waste-generation-total.csv?v=1&csvType=full&useColumnShortNames=false",
+                  "host": ["{{grapher_base_url}}"],
+                  "path": ["plastic-waste-generation-total.csv"],
+                  "query": [
+                    {
+                      "key": "v",
+                      "value": "1"
+                    },
+                    {
+                      "key": "csvType",
+                      "value": "full"
+                    },
+                    {
+                      "key": "useColumnShortNames",
+                      "value": "false"
+                    }
+                  ]
+                },
+                "description": "Datos en formato CSV del chart `plastic-waste-generation-total`."
+              },
+              "response": []
             },
-            "description": "Total plastic waste generation (tonnes) by country. variableId: 1207243. Coverage: 168 countries. Year: 2010 (single snapshot). Source: Jambeck et al. (2015)."
-          },
-          "response": []
+            {
+              "name": "Metadata (JSON)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                      "pm.test(\"Tiempo de respuesta < 30s\", () => pm.expect(pm.response.responseTime).to.be.below(30000));",
+                      "pm.test(\"Es JSON valido\", () => { pm.response.to.have.header(\"Content-Type\"); pm.response.json(); });"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "User-Agent",
+                    "value": "Postman OWID Collection/1.0"
+                  }
+                ],
+                "url": {
+                  "raw": "{{grapher_base_url}}/plastic-waste-generation-total.metadata.json",
+                  "host": ["{{grapher_base_url}}"],
+                  "path": ["plastic-waste-generation-total.metadata.json"]
+                },
+                "description": "Metadata (titulo, unidades, fuentes, citas) del chart `plastic-waste-generation-total`."
+              },
+              "response": []
+            },
+            {
+              "name": "ZIP completo (data + metadata + readme)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                      "pm.test(\"Tiempo de respuesta < 30s\", () => pm.expect(pm.response.responseTime).to.be.below(30000));",
+                      "pm.test(\"Body no vacio\", () => pm.expect(pm.response.text().length).to.be.above(0));"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "User-Agent",
+                    "value": "Postman OWID Collection/1.0"
+                  }
+                ],
+                "url": {
+                  "raw": "{{grapher_base_url}}/plastic-waste-generation-total.zip",
+                  "host": ["{{grapher_base_url}}"],
+                  "path": ["plastic-waste-generation-total.zip"]
+                },
+                "description": "ZIP con CSV, metadata.json y README.md."
+              },
+              "response": []
+            }
+          ],
+          "description": "Generacion total de residuos plasticos por pais."
         },
         {
-          "name": "Mismanaged Plastic Waste — by country",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{grapher_base_url}}/plastic-waste-mismanaged.csv?v=1&csvType=full&useColumnShortNames=false",
-              "host": ["{{grapher_base_url}}"],
-              "path": ["plastic-waste-mismanaged.csv"],
-              "query": [
+          "name": "Mismanaged Plastic Waste",
+          "item": [
+            {
+              "name": "Data (CSV)",
+              "event": [
                 {
-                  "key": "v",
-                  "value": "1"
-                },
-                {
-                  "key": "csvType",
-                  "value": "full"
-                },
-                {
-                  "key": "useColumnShortNames",
-                  "value": "false"
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                      "pm.test(\"Tiempo de respuesta < 30s\", () => pm.expect(pm.response.responseTime).to.be.below(30000));",
+                      "pm.test(\"Tiene contenido CSV\", () => pm.expect(pm.response.text()).to.include(\",\"));"
+                    ]
+                  }
                 }
-              ]
+              ],
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "User-Agent",
+                    "value": "Postman OWID Collection/1.0"
+                  }
+                ],
+                "url": {
+                  "raw": "{{grapher_base_url}}/plastic-waste-mismanaged.csv?v=1&csvType=full&useColumnShortNames=false",
+                  "host": ["{{grapher_base_url}}"],
+                  "path": ["plastic-waste-mismanaged.csv"],
+                  "query": [
+                    {
+                      "key": "v",
+                      "value": "1"
+                    },
+                    {
+                      "key": "csvType",
+                      "value": "full"
+                    },
+                    {
+                      "key": "useColumnShortNames",
+                      "value": "false"
+                    }
+                  ]
+                },
+                "description": "Datos en formato CSV del chart `plastic-waste-mismanaged`."
+              },
+              "response": []
             },
-            "description": "Mismanaged plastic waste (tonnes) by country — waste not recycled, incinerated, or in sealed landfills. variableId: 1206159. Coverage: 171 countries. Year: 2019 (single snapshot)."
-          },
-          "response": []
+            {
+              "name": "Metadata (JSON)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                      "pm.test(\"Tiempo de respuesta < 30s\", () => pm.expect(pm.response.responseTime).to.be.below(30000));",
+                      "pm.test(\"Es JSON valido\", () => { pm.response.to.have.header(\"Content-Type\"); pm.response.json(); });"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "User-Agent",
+                    "value": "Postman OWID Collection/1.0"
+                  }
+                ],
+                "url": {
+                  "raw": "{{grapher_base_url}}/plastic-waste-mismanaged.metadata.json",
+                  "host": ["{{grapher_base_url}}"],
+                  "path": ["plastic-waste-mismanaged.metadata.json"]
+                },
+                "description": "Metadata (titulo, unidades, fuentes, citas) del chart `plastic-waste-mismanaged`."
+              },
+              "response": []
+            },
+            {
+              "name": "ZIP completo (data + metadata + readme)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                      "pm.test(\"Tiempo de respuesta < 30s\", () => pm.expect(pm.response.responseTime).to.be.below(30000));",
+                      "pm.test(\"Body no vacio\", () => pm.expect(pm.response.text().length).to.be.above(0));"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "User-Agent",
+                    "value": "Postman OWID Collection/1.0"
+                  }
+                ],
+                "url": {
+                  "raw": "{{grapher_base_url}}/plastic-waste-mismanaged.zip",
+                  "host": ["{{grapher_base_url}}"],
+                  "path": ["plastic-waste-mismanaged.zip"]
+                },
+                "description": "ZIP con CSV, metadata.json y README.md."
+              },
+              "response": []
+            }
+          ],
+          "description": "Residuos plasticos mal gestionados por pais."
         },
         {
-          "name": "Share of Global Plastic Emitted to Ocean — by country",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{grapher_base_url}}/share-of-global-mismanaged-plastic-waste.csv?v=1&csvType=full&useColumnShortNames=false",
-              "host": ["{{grapher_base_url}}"],
-              "path": ["share-of-global-mismanaged-plastic-waste.csv"],
-              "query": [
+          "name": "Ocean Plastic by Country",
+          "item": [
+            {
+              "name": "Data (CSV)",
+              "event": [
                 {
-                  "key": "v",
-                  "value": "1"
-                },
-                {
-                  "key": "csvType",
-                  "value": "full"
-                },
-                {
-                  "key": "useColumnShortNames",
-                  "value": "false"
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                      "pm.test(\"Tiempo de respuesta < 30s\", () => pm.expect(pm.response.responseTime).to.be.below(30000));",
+                      "pm.test(\"Tiene contenido CSV\", () => pm.expect(pm.response.text()).to.include(\",\"));"
+                    ]
+                  }
                 }
-              ]
+              ],
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "User-Agent",
+                    "value": "Postman OWID Collection/1.0"
+                  }
+                ],
+                "url": {
+                  "raw": "{{grapher_base_url}}/share-of-global-mismanaged-plastic-waste.csv?v=1&csvType=full&useColumnShortNames=false",
+                  "host": ["{{grapher_base_url}}"],
+                  "path": ["share-of-global-mismanaged-plastic-waste.csv"],
+                  "query": [
+                    {
+                      "key": "v",
+                      "value": "1"
+                    },
+                    {
+                      "key": "csvType",
+                      "value": "full"
+                    },
+                    {
+                      "key": "useColumnShortNames",
+                      "value": "false"
+                    }
+                  ]
+                },
+                "description": "Datos en formato CSV del chart `share-of-global-mismanaged-plastic-waste`."
+              },
+              "response": []
             },
-            "description": "Each country's share (%) of global plastics emitted to ocean. variableId: 1206165. Coverage: 170 countries. Year: 2019. Good for choropleth maps."
-          },
-          "response": []
+            {
+              "name": "Metadata (JSON)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                      "pm.test(\"Tiempo de respuesta < 30s\", () => pm.expect(pm.response.responseTime).to.be.below(30000));",
+                      "pm.test(\"Es JSON valido\", () => { pm.response.to.have.header(\"Content-Type\"); pm.response.json(); });"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "User-Agent",
+                    "value": "Postman OWID Collection/1.0"
+                  }
+                ],
+                "url": {
+                  "raw": "{{grapher_base_url}}/share-of-global-mismanaged-plastic-waste.metadata.json",
+                  "host": ["{{grapher_base_url}}"],
+                  "path": ["share-of-global-mismanaged-plastic-waste.metadata.json"]
+                },
+                "description": "Metadata (titulo, unidades, fuentes, citas) del chart `share-of-global-mismanaged-plastic-waste`."
+              },
+              "response": []
+            },
+            {
+              "name": "ZIP completo (data + metadata + readme)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                      "pm.test(\"Tiempo de respuesta < 30s\", () => pm.expect(pm.response.responseTime).to.be.below(30000));",
+                      "pm.test(\"Body no vacio\", () => pm.expect(pm.response.text().length).to.be.above(0));"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "User-Agent",
+                    "value": "Postman OWID Collection/1.0"
+                  }
+                ],
+                "url": {
+                  "raw": "{{grapher_base_url}}/share-of-global-mismanaged-plastic-waste.zip",
+                  "host": ["{{grapher_base_url}}"],
+                  "path": ["share-of-global-mismanaged-plastic-waste.zip"]
+                },
+                "description": "ZIP con CSV, metadata.json y README.md."
+              },
+              "response": []
+            }
+          ],
+          "description": "Participacion de cada pais en los residuos plasticos mal gestionados a nivel global (proxy de plastico emitido al oceano)."
         },
         {
           "name": "API v1 — Plastic Fate: Recycled (ID 814671) ⭐ time series",
@@ -2100,8 +2108,8 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{api_v1_base_url}}/indicators/814671.data.json",
-              "host": ["{{api_v1_base_url}}"],
+              "raw": "{{api_base_url}}/indicators/814671.data.json",
+              "host": ["{{api_base_url}}"],
               "path": ["indicators", "814671.data.json"]
             },
             "description": "Recycled plastic waste (tonnes). variableId: 814671. Time series: 2000-2019 (20 years). Entities: 10 regional aggregates (World, China, USA, India, Europe, Africa, etc.). Source: Geyer et al. (2017). Use World entity (id=355) for global trends."
@@ -2114,8 +2122,8 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{api_v1_base_url}}/indicators/814667.data.json",
-              "host": ["{{api_v1_base_url}}"],
+              "raw": "{{api_base_url}}/indicators/814667.data.json",
+              "host": ["{{api_base_url}}"],
               "path": ["indicators", "814667.data.json"]
             },
             "description": "Incinerated plastic waste (tonnes). variableId: 814667. Time series: 2000-2019. Entities: 10 regional aggregates. Source: Geyer et al. (2017)."
@@ -2128,8 +2136,8 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{api_v1_base_url}}/indicators/814668.data.json",
-              "host": ["{{api_v1_base_url}}"],
+              "raw": "{{api_base_url}}/indicators/814668.data.json",
+              "host": ["{{api_base_url}}"],
               "path": ["indicators", "814668.data.json"]
             },
             "description": "Landfilled plastic waste (tonnes). variableId: 814668. Time series: 2000-2019. Entities: 10 regional aggregates. Source: Geyer et al. (2017)."
@@ -2142,8 +2150,8 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{api_v1_base_url}}/indicators/815663.data.json",
-              "host": ["{{api_v1_base_url}}"],
+              "raw": "{{api_base_url}}/indicators/815663.data.json",
+              "host": ["{{api_base_url}}"],
               "path": ["indicators", "815663.data.json"]
             },
             "description": "Littered and mismanaged plastic waste (tonnes). variableId: 815663. Time series: 2000-2019. Entities: 10 regional aggregates. Use with IDs 814671, 814667, 814668 to show full plastic fate breakdown (stacked area chart)."
@@ -2156,8 +2164,8 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{api_v1_base_url}}/indicators/814682.data.json",
-              "host": ["{{api_v1_base_url}}"],
+              "raw": "{{api_base_url}}/indicators/814682.data.json",
+              "host": ["{{api_base_url}}"],
               "path": ["indicators", "814682.data.json"]
             },
             "description": "Share of plastic waste recycled (%) from total regional waste. variableId: 814682. Time series: 2000-2019. Entities: 10 regional aggregates (World, China, USA, India, Europe, etc.). Source: Geyer et al. (2017). Note: no country-level recycling rates available in free APIs."
@@ -2170,8 +2178,8 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{api_v1_base_url}}/indicators/1146696.data.json",
-              "host": ["{{api_v1_base_url}}"],
+              "raw": "{{api_base_url}}/indicators/1146696.data.json",
+              "host": ["{{api_base_url}}"],
               "path": ["indicators", "1146696.data.json"]
             },
             "description": "Methane emissions from waste sector (tonnes). variableId: 1146696. Time series: 1990-2023 (34 years). Coverage: 205 countries + regions. Source: Climate Analysis Indicators Tool (CAIT). BEST waste indicator for country-level trends — landfills are main CH4 source."
@@ -2184,8 +2192,8 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{api_v1_base_url}}/indicators/1146696.metadata.json",
-              "host": ["{{api_v1_base_url}}"],
+              "raw": "{{api_base_url}}/indicators/1146696.metadata.json",
+              "host": ["{{api_base_url}}"],
               "path": ["indicators", "1146696.metadata.json"]
             },
             "description": "Metadata for CH4 from waste indicator: entity list (with ISO codes), year range, source info."
@@ -2270,23 +2278,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{grapher_base_url}}/primary-energy-cons.metadata.json?v=1&csvType=full&useColumnShortNames=false",
+                  "raw": "{{grapher_base_url}}/primary-energy-cons.metadata.json",
                   "host": ["{{grapher_base_url}}"],
-                  "path": ["primary-energy-cons.metadata.json"],
-                  "query": [
-                    {
-                      "key": "v",
-                      "value": "1"
-                    },
-                    {
-                      "key": "csvType",
-                      "value": "full"
-                    },
-                    {
-                      "key": "useColumnShortNames",
-                      "value": "false"
-                    }
-                  ]
+                  "path": ["primary-energy-cons.metadata.json"]
                 },
                 "description": "Metadata (titulo, unidades, fuentes, citas) del chart `primary-energy-cons`."
               },
@@ -2400,23 +2394,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{grapher_base_url}}/per-capita-energy-use.metadata.json?v=1&csvType=full&useColumnShortNames=false",
+                  "raw": "{{grapher_base_url}}/per-capita-energy-use.metadata.json",
                   "host": ["{{grapher_base_url}}"],
-                  "path": ["per-capita-energy-use.metadata.json"],
-                  "query": [
-                    {
-                      "key": "v",
-                      "value": "1"
-                    },
-                    {
-                      "key": "csvType",
-                      "value": "full"
-                    },
-                    {
-                      "key": "useColumnShortNames",
-                      "value": "false"
-                    }
-                  ]
+                  "path": ["per-capita-energy-use.metadata.json"]
                 },
                 "description": "Metadata (titulo, unidades, fuentes, citas) del chart `per-capita-energy-use`."
               },
@@ -2530,23 +2510,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{grapher_base_url}}/renewable-share-energy.metadata.json?v=1&csvType=full&useColumnShortNames=false",
+                  "raw": "{{grapher_base_url}}/renewable-share-energy.metadata.json",
                   "host": ["{{grapher_base_url}}"],
-                  "path": ["renewable-share-energy.metadata.json"],
-                  "query": [
-                    {
-                      "key": "v",
-                      "value": "1"
-                    },
-                    {
-                      "key": "csvType",
-                      "value": "full"
-                    },
-                    {
-                      "key": "useColumnShortNames",
-                      "value": "false"
-                    }
-                  ]
+                  "path": ["renewable-share-energy.metadata.json"]
                 },
                 "description": "Metadata (titulo, unidades, fuentes, citas) del chart `renewable-share-energy`."
               },
@@ -2660,23 +2626,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{grapher_base_url}}/electricity-prod-source-stacked.metadata.json?v=1&csvType=full&useColumnShortNames=false",
+                  "raw": "{{grapher_base_url}}/electricity-prod-source-stacked.metadata.json",
                   "host": ["{{grapher_base_url}}"],
-                  "path": ["electricity-prod-source-stacked.metadata.json"],
-                  "query": [
-                    {
-                      "key": "v",
-                      "value": "1"
-                    },
-                    {
-                      "key": "csvType",
-                      "value": "full"
-                    },
-                    {
-                      "key": "useColumnShortNames",
-                      "value": "false"
-                    }
-                  ]
+                  "path": ["electricity-prod-source-stacked.metadata.json"]
                 },
                 "description": "Metadata (titulo, unidades, fuentes, citas) del chart `electricity-prod-source-stacked`."
               },
@@ -2790,23 +2742,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{grapher_base_url}}/solar-energy-consumption.metadata.json?v=1&csvType=full&useColumnShortNames=false",
+                  "raw": "{{grapher_base_url}}/solar-energy-consumption.metadata.json",
                   "host": ["{{grapher_base_url}}"],
-                  "path": ["solar-energy-consumption.metadata.json"],
-                  "query": [
-                    {
-                      "key": "v",
-                      "value": "1"
-                    },
-                    {
-                      "key": "csvType",
-                      "value": "full"
-                    },
-                    {
-                      "key": "useColumnShortNames",
-                      "value": "false"
-                    }
-                  ]
+                  "path": ["solar-energy-consumption.metadata.json"]
                 },
                 "description": "Metadata (titulo, unidades, fuentes, citas) del chart `solar-energy-consumption`."
               },
@@ -2920,23 +2858,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{grapher_base_url}}/wind-generation.metadata.json?v=1&csvType=full&useColumnShortNames=false",
+                  "raw": "{{grapher_base_url}}/wind-generation.metadata.json",
                   "host": ["{{grapher_base_url}}"],
-                  "path": ["wind-generation.metadata.json"],
-                  "query": [
-                    {
-                      "key": "v",
-                      "value": "1"
-                    },
-                    {
-                      "key": "csvType",
-                      "value": "full"
-                    },
-                    {
-                      "key": "useColumnShortNames",
-                      "value": "false"
-                    }
-                  ]
+                  "path": ["wind-generation.metadata.json"]
                 },
                 "description": "Metadata (titulo, unidades, fuentes, citas) del chart `wind-generation`."
               },
@@ -3050,23 +2974,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{grapher_base_url}}/nuclear-energy-generation.metadata.json?v=1&csvType=full&useColumnShortNames=false",
+                  "raw": "{{grapher_base_url}}/nuclear-energy-generation.metadata.json",
                   "host": ["{{grapher_base_url}}"],
-                  "path": ["nuclear-energy-generation.metadata.json"],
-                  "query": [
-                    {
-                      "key": "v",
-                      "value": "1"
-                    },
-                    {
-                      "key": "csvType",
-                      "value": "full"
-                    },
-                    {
-                      "key": "useColumnShortNames",
-                      "value": "false"
-                    }
-                  ]
+                  "path": ["nuclear-energy-generation.metadata.json"]
                 },
                 "description": "Metadata (titulo, unidades, fuentes, citas) del chart `nuclear-energy-generation`."
               },
@@ -3180,23 +3090,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{grapher_base_url}}/fossil-fuel-primary-energy.metadata.json?v=1&csvType=full&useColumnShortNames=false",
+                  "raw": "{{grapher_base_url}}/fossil-fuel-primary-energy.metadata.json",
                   "host": ["{{grapher_base_url}}"],
-                  "path": ["fossil-fuel-primary-energy.metadata.json"],
-                  "query": [
-                    {
-                      "key": "v",
-                      "value": "1"
-                    },
-                    {
-                      "key": "csvType",
-                      "value": "full"
-                    },
-                    {
-                      "key": "useColumnShortNames",
-                      "value": "false"
-                    }
-                  ]
+                  "path": ["fossil-fuel-primary-energy.metadata.json"]
                 },
                 "description": "Metadata (titulo, unidades, fuentes, citas) del chart `fossil-fuel-primary-energy`."
               },
@@ -3310,23 +3206,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{grapher_base_url}}/carbon-intensity-electricity.metadata.json?v=1&csvType=full&useColumnShortNames=false",
+                  "raw": "{{grapher_base_url}}/carbon-intensity-electricity.metadata.json",
                   "host": ["{{grapher_base_url}}"],
-                  "path": ["carbon-intensity-electricity.metadata.json"],
-                  "query": [
-                    {
-                      "key": "v",
-                      "value": "1"
-                    },
-                    {
-                      "key": "csvType",
-                      "value": "full"
-                    },
-                    {
-                      "key": "useColumnShortNames",
-                      "value": "false"
-                    }
-                  ]
+                  "path": ["carbon-intensity-electricity.metadata.json"]
                 },
                 "description": "Metadata (titulo, unidades, fuentes, citas) del chart `carbon-intensity-electricity`."
               },
@@ -3440,23 +3322,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{grapher_base_url}}/share-of-the-population-with-access-to-electricity.metadata.json?v=1&csvType=full&useColumnShortNames=false",
+                  "raw": "{{grapher_base_url}}/share-of-the-population-with-access-to-electricity.metadata.json",
                   "host": ["{{grapher_base_url}}"],
-                  "path": ["share-of-the-population-with-access-to-electricity.metadata.json"],
-                  "query": [
-                    {
-                      "key": "v",
-                      "value": "1"
-                    },
-                    {
-                      "key": "csvType",
-                      "value": "full"
-                    },
-                    {
-                      "key": "useColumnShortNames",
-                      "value": "false"
-                    }
-                  ]
+                  "path": ["share-of-the-population-with-access-to-electricity.metadata.json"]
                 },
                 "description": "Metadata (titulo, unidades, fuentes, citas) del chart `share-of-the-population-with-access-to-electricity`."
               },
@@ -3576,23 +3444,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{grapher_base_url}}/annual-deforestation.metadata.json?v=1&csvType=full&useColumnShortNames=false",
+                  "raw": "{{grapher_base_url}}/annual-deforestation.metadata.json",
                   "host": ["{{grapher_base_url}}"],
-                  "path": ["annual-deforestation.metadata.json"],
-                  "query": [
-                    {
-                      "key": "v",
-                      "value": "1"
-                    },
-                    {
-                      "key": "csvType",
-                      "value": "full"
-                    },
-                    {
-                      "key": "useColumnShortNames",
-                      "value": "false"
-                    }
-                  ]
+                  "path": ["annual-deforestation.metadata.json"]
                 },
                 "description": "Metadata (titulo, unidades, fuentes, citas) del chart `annual-deforestation`."
               },
@@ -3706,23 +3560,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{grapher_base_url}}/forest-area-km.metadata.json?v=1&csvType=full&useColumnShortNames=false",
+                  "raw": "{{grapher_base_url}}/forest-area-km.metadata.json",
                   "host": ["{{grapher_base_url}}"],
-                  "path": ["forest-area-km.metadata.json"],
-                  "query": [
-                    {
-                      "key": "v",
-                      "value": "1"
-                    },
-                    {
-                      "key": "csvType",
-                      "value": "full"
-                    },
-                    {
-                      "key": "useColumnShortNames",
-                      "value": "false"
-                    }
-                  ]
+                  "path": ["forest-area-km.metadata.json"]
                 },
                 "description": "Metadata (titulo, unidades, fuentes, citas) del chart `forest-area-km`."
               },
@@ -3790,9 +3630,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{grapher_base_url}}/living-planet-index.csv?v=1&csvType=full&useColumnShortNames=false",
+                  "raw": "{{grapher_base_url}}/global-living-planet-index.csv?v=1&csvType=full&useColumnShortNames=false",
                   "host": ["{{grapher_base_url}}"],
-                  "path": ["living-planet-index.csv"],
+                  "path": ["global-living-planet-index.csv"],
                   "query": [
                     {
                       "key": "v",
@@ -3808,7 +3648,7 @@
                     }
                   ]
                 },
-                "description": "Datos en formato CSV del chart `living-planet-index`."
+                "description": "Datos en formato CSV del chart `global-living-planet-index`."
               },
               "response": []
             },
@@ -3836,25 +3676,11 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{grapher_base_url}}/living-planet-index.metadata.json?v=1&csvType=full&useColumnShortNames=false",
+                  "raw": "{{grapher_base_url}}/global-living-planet-index.metadata.json",
                   "host": ["{{grapher_base_url}}"],
-                  "path": ["living-planet-index.metadata.json"],
-                  "query": [
-                    {
-                      "key": "v",
-                      "value": "1"
-                    },
-                    {
-                      "key": "csvType",
-                      "value": "full"
-                    },
-                    {
-                      "key": "useColumnShortNames",
-                      "value": "false"
-                    }
-                  ]
+                  "path": ["global-living-planet-index.metadata.json"]
                 },
-                "description": "Metadata (titulo, unidades, fuentes, citas) del chart `living-planet-index`."
+                "description": "Metadata (titulo, unidades, fuentes, citas) del chart `global-living-planet-index`."
               },
               "response": []
             },
@@ -3882,9 +3708,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{grapher_base_url}}/living-planet-index.zip",
+                  "raw": "{{grapher_base_url}}/global-living-planet-index.zip",
                   "host": ["{{grapher_base_url}}"],
-                  "path": ["living-planet-index.zip"]
+                  "path": ["global-living-planet-index.zip"]
                 },
                 "description": "ZIP con CSV, metadata.json y README.md."
               },
@@ -3966,23 +3792,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{grapher_base_url}}/number-species-threatened.metadata.json?v=1&csvType=full&useColumnShortNames=false",
+                  "raw": "{{grapher_base_url}}/number-species-threatened.metadata.json",
                   "host": ["{{grapher_base_url}}"],
-                  "path": ["number-species-threatened.metadata.json"],
-                  "query": [
-                    {
-                      "key": "v",
-                      "value": "1"
-                    },
-                    {
-                      "key": "csvType",
-                      "value": "full"
-                    },
-                    {
-                      "key": "useColumnShortNames",
-                      "value": "false"
-                    }
-                  ]
+                  "path": ["number-species-threatened.metadata.json"]
                 },
                 "description": "Metadata (titulo, unidades, fuentes, citas) del chart `number-species-threatened`."
               },
@@ -4096,23 +3908,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{grapher_base_url}}/land-use-over-the-long-term.metadata.json?v=1&csvType=full&useColumnShortNames=false",
+                  "raw": "{{grapher_base_url}}/land-use-over-the-long-term.metadata.json",
                   "host": ["{{grapher_base_url}}"],
-                  "path": ["land-use-over-the-long-term.metadata.json"],
-                  "query": [
-                    {
-                      "key": "v",
-                      "value": "1"
-                    },
-                    {
-                      "key": "csvType",
-                      "value": "full"
-                    },
-                    {
-                      "key": "useColumnShortNames",
-                      "value": "false"
-                    }
-                  ]
+                  "path": ["land-use-over-the-long-term.metadata.json"]
                 },
                 "description": "Metadata (titulo, unidades, fuentes, citas) del chart `land-use-over-the-long-term`."
               },
@@ -4226,23 +4024,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{grapher_base_url}}/agricultural-land.metadata.json?v=1&csvType=full&useColumnShortNames=false",
+                  "raw": "{{grapher_base_url}}/agricultural-land.metadata.json",
                   "host": ["{{grapher_base_url}}"],
-                  "path": ["agricultural-land.metadata.json"],
-                  "query": [
-                    {
-                      "key": "v",
-                      "value": "1"
-                    },
-                    {
-                      "key": "csvType",
-                      "value": "full"
-                    },
-                    {
-                      "key": "useColumnShortNames",
-                      "value": "false"
-                    }
-                  ]
+                  "path": ["agricultural-land.metadata.json"]
                 },
                 "description": "Metadata (titulo, unidades, fuentes, citas) del chart `agricultural-land`."
               },
@@ -4356,23 +4140,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{grapher_base_url}}/annual-freshwater-withdrawals.metadata.json?v=1&csvType=full&useColumnShortNames=false",
+                  "raw": "{{grapher_base_url}}/annual-freshwater-withdrawals.metadata.json",
                   "host": ["{{grapher_base_url}}"],
-                  "path": ["annual-freshwater-withdrawals.metadata.json"],
-                  "query": [
-                    {
-                      "key": "v",
-                      "value": "1"
-                    },
-                    {
-                      "key": "csvType",
-                      "value": "full"
-                    },
-                    {
-                      "key": "useColumnShortNames",
-                      "value": "false"
-                    }
-                  ]
+                  "path": ["annual-freshwater-withdrawals.metadata.json"]
                 },
                 "description": "Metadata (titulo, unidades, fuentes, citas) del chart `annual-freshwater-withdrawals`."
               },
@@ -4486,23 +4256,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{grapher_base_url}}/freshwater-withdrawals-as-a-share-of-internal-resources.metadata.json?v=1&csvType=full&useColumnShortNames=false",
+                  "raw": "{{grapher_base_url}}/freshwater-withdrawals-as-a-share-of-internal-resources.metadata.json",
                   "host": ["{{grapher_base_url}}"],
-                  "path": ["freshwater-withdrawals-as-a-share-of-internal-resources.metadata.json"],
-                  "query": [
-                    {
-                      "key": "v",
-                      "value": "1"
-                    },
-                    {
-                      "key": "csvType",
-                      "value": "full"
-                    },
-                    {
-                      "key": "useColumnShortNames",
-                      "value": "false"
-                    }
-                  ]
+                  "path": ["freshwater-withdrawals-as-a-share-of-internal-resources.metadata.json"]
                 },
                 "description": "Metadata (titulo, unidades, fuentes, citas) del chart `freshwater-withdrawals-as-a-share-of-internal-resources`."
               },
@@ -4542,396 +4298,6 @@
             }
           ],
           "description": "Indicador de estres hidrico."
-        },
-        {
-          "name": "Plastic Waste Generation",
-          "item": [
-            {
-              "name": "Data (CSV)",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "type": "text/javascript",
-                    "exec": [
-                      "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
-                      "pm.test(\"Tiempo de respuesta < 30s\", () => pm.expect(pm.response.responseTime).to.be.below(30000));",
-                      "pm.test(\"Tiene contenido CSV\", () => pm.expect(pm.response.text()).to.include(\",\"));"
-                    ]
-                  }
-                }
-              ],
-              "request": {
-                "method": "GET",
-                "header": [
-                  {
-                    "key": "User-Agent",
-                    "value": "Postman OWID Collection/1.0"
-                  }
-                ],
-                "url": {
-                  "raw": "{{grapher_base_url}}/plastic-waste-generation-total.csv?v=1&csvType=full&useColumnShortNames=false",
-                  "host": ["{{grapher_base_url}}"],
-                  "path": ["plastic-waste-generation-total.csv"],
-                  "query": [
-                    {
-                      "key": "v",
-                      "value": "1"
-                    },
-                    {
-                      "key": "csvType",
-                      "value": "full"
-                    },
-                    {
-                      "key": "useColumnShortNames",
-                      "value": "false"
-                    }
-                  ]
-                },
-                "description": "Datos en formato CSV del chart `plastic-waste-generation-total`."
-              },
-              "response": []
-            },
-            {
-              "name": "Metadata (JSON)",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "type": "text/javascript",
-                    "exec": [
-                      "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
-                      "pm.test(\"Tiempo de respuesta < 30s\", () => pm.expect(pm.response.responseTime).to.be.below(30000));",
-                      "pm.test(\"Es JSON valido\", () => { pm.response.to.have.header(\"Content-Type\"); pm.response.json(); });"
-                    ]
-                  }
-                }
-              ],
-              "request": {
-                "method": "GET",
-                "header": [
-                  {
-                    "key": "User-Agent",
-                    "value": "Postman OWID Collection/1.0"
-                  }
-                ],
-                "url": {
-                  "raw": "{{grapher_base_url}}/plastic-waste-generation-total.metadata.json?v=1&csvType=full&useColumnShortNames=false",
-                  "host": ["{{grapher_base_url}}"],
-                  "path": ["plastic-waste-generation-total.metadata.json"],
-                  "query": [
-                    {
-                      "key": "v",
-                      "value": "1"
-                    },
-                    {
-                      "key": "csvType",
-                      "value": "full"
-                    },
-                    {
-                      "key": "useColumnShortNames",
-                      "value": "false"
-                    }
-                  ]
-                },
-                "description": "Metadata (titulo, unidades, fuentes, citas) del chart `plastic-waste-generation-total`."
-              },
-              "response": []
-            },
-            {
-              "name": "ZIP completo (data + metadata + readme)",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "type": "text/javascript",
-                    "exec": [
-                      "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
-                      "pm.test(\"Tiempo de respuesta < 30s\", () => pm.expect(pm.response.responseTime).to.be.below(30000));",
-                      "pm.test(\"Body no vacio\", () => pm.expect(pm.response.text().length).to.be.above(0));"
-                    ]
-                  }
-                }
-              ],
-              "request": {
-                "method": "GET",
-                "header": [
-                  {
-                    "key": "User-Agent",
-                    "value": "Postman OWID Collection/1.0"
-                  }
-                ],
-                "url": {
-                  "raw": "{{grapher_base_url}}/plastic-waste-generation-total.zip",
-                  "host": ["{{grapher_base_url}}"],
-                  "path": ["plastic-waste-generation-total.zip"]
-                },
-                "description": "ZIP con CSV, metadata.json y README.md."
-              },
-              "response": []
-            }
-          ],
-          "description": "Generacion total de residuos plasticos."
-        },
-        {
-          "name": "Mismanaged Plastic Waste",
-          "item": [
-            {
-              "name": "Data (CSV)",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "type": "text/javascript",
-                    "exec": [
-                      "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
-                      "pm.test(\"Tiempo de respuesta < 30s\", () => pm.expect(pm.response.responseTime).to.be.below(30000));",
-                      "pm.test(\"Tiene contenido CSV\", () => pm.expect(pm.response.text()).to.include(\",\"));"
-                    ]
-                  }
-                }
-              ],
-              "request": {
-                "method": "GET",
-                "header": [
-                  {
-                    "key": "User-Agent",
-                    "value": "Postman OWID Collection/1.0"
-                  }
-                ],
-                "url": {
-                  "raw": "{{grapher_base_url}}/plastic-waste-mismanaged.csv?v=1&csvType=full&useColumnShortNames=false",
-                  "host": ["{{grapher_base_url}}"],
-                  "path": ["plastic-waste-mismanaged.csv"],
-                  "query": [
-                    {
-                      "key": "v",
-                      "value": "1"
-                    },
-                    {
-                      "key": "csvType",
-                      "value": "full"
-                    },
-                    {
-                      "key": "useColumnShortNames",
-                      "value": "false"
-                    }
-                  ]
-                },
-                "description": "Datos en formato CSV del chart `mismanaged-plastic-waste`."
-              },
-              "response": []
-            },
-            {
-              "name": "Metadata (JSON)",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "type": "text/javascript",
-                    "exec": [
-                      "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
-                      "pm.test(\"Tiempo de respuesta < 30s\", () => pm.expect(pm.response.responseTime).to.be.below(30000));",
-                      "pm.test(\"Es JSON valido\", () => { pm.response.to.have.header(\"Content-Type\"); pm.response.json(); });"
-                    ]
-                  }
-                }
-              ],
-              "request": {
-                "method": "GET",
-                "header": [
-                  {
-                    "key": "User-Agent",
-                    "value": "Postman OWID Collection/1.0"
-                  }
-                ],
-                "url": {
-                  "raw": "{{grapher_base_url}}/mismanaged-plastic-waste.metadata.json?v=1&csvType=full&useColumnShortNames=false",
-                  "host": ["{{grapher_base_url}}"],
-                  "path": ["mismanaged-plastic-waste.metadata.json"],
-                  "query": [
-                    {
-                      "key": "v",
-                      "value": "1"
-                    },
-                    {
-                      "key": "csvType",
-                      "value": "full"
-                    },
-                    {
-                      "key": "useColumnShortNames",
-                      "value": "false"
-                    }
-                  ]
-                },
-                "description": "Metadata (titulo, unidades, fuentes, citas) del chart `mismanaged-plastic-waste`."
-              },
-              "response": []
-            },
-            {
-              "name": "ZIP completo (data + metadata + readme)",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "type": "text/javascript",
-                    "exec": [
-                      "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
-                      "pm.test(\"Tiempo de respuesta < 30s\", () => pm.expect(pm.response.responseTime).to.be.below(30000));",
-                      "pm.test(\"Body no vacio\", () => pm.expect(pm.response.text().length).to.be.above(0));"
-                    ]
-                  }
-                }
-              ],
-              "request": {
-                "method": "GET",
-                "header": [
-                  {
-                    "key": "User-Agent",
-                    "value": "Postman OWID Collection/1.0"
-                  }
-                ],
-                "url": {
-                  "raw": "{{grapher_base_url}}/mismanaged-plastic-waste.zip",
-                  "host": ["{{grapher_base_url}}"],
-                  "path": ["mismanaged-plastic-waste.zip"]
-                },
-                "description": "ZIP con CSV, metadata.json y README.md."
-              },
-              "response": []
-            }
-          ],
-          "description": "Residuos plasticos mal gestionados."
-        },
-        {
-          "name": "Ocean Plastic by Country",
-          "item": [
-            {
-              "name": "Data (CSV)",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "type": "text/javascript",
-                    "exec": [
-                      "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
-                      "pm.test(\"Tiempo de respuesta < 30s\", () => pm.expect(pm.response.responseTime).to.be.below(30000));",
-                      "pm.test(\"Tiene contenido CSV\", () => pm.expect(pm.response.text()).to.include(\",\"));"
-                    ]
-                  }
-                }
-              ],
-              "request": {
-                "method": "GET",
-                "header": [
-                  {
-                    "key": "User-Agent",
-                    "value": "Postman OWID Collection/1.0"
-                  }
-                ],
-                "url": {
-                  "raw": "{{grapher_base_url}}/share-of-global-plastic-waste-mismanaged.csv?v=1&csvType=full&useColumnShortNames=false",
-                  "host": ["{{grapher_base_url}}"],
-                  "path": ["share-of-global-plastic-waste-mismanaged.csv"],
-                  "query": [
-                    {
-                      "key": "v",
-                      "value": "1"
-                    },
-                    {
-                      "key": "csvType",
-                      "value": "full"
-                    },
-                    {
-                      "key": "useColumnShortNames",
-                      "value": "false"
-                    }
-                  ]
-                },
-                "description": "Datos en formato CSV del chart `share-of-global-mismanaged-plastic-waste`."
-              },
-              "response": []
-            },
-            {
-              "name": "Metadata (JSON)",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "type": "text/javascript",
-                    "exec": [
-                      "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
-                      "pm.test(\"Tiempo de respuesta < 30s\", () => pm.expect(pm.response.responseTime).to.be.below(30000));",
-                      "pm.test(\"Es JSON valido\", () => { pm.response.to.have.header(\"Content-Type\"); pm.response.json(); });"
-                    ]
-                  }
-                }
-              ],
-              "request": {
-                "method": "GET",
-                "header": [
-                  {
-                    "key": "User-Agent",
-                    "value": "Postman OWID Collection/1.0"
-                  }
-                ],
-                "url": {
-                  "raw": "{{grapher_base_url}}/share-of-global-mismanaged-plastic-waste.metadata.json?v=1&csvType=full&useColumnShortNames=false",
-                  "host": ["{{grapher_base_url}}"],
-                  "path": ["share-of-global-mismanaged-plastic-waste.metadata.json"],
-                  "query": [
-                    {
-                      "key": "v",
-                      "value": "1"
-                    },
-                    {
-                      "key": "csvType",
-                      "value": "full"
-                    },
-                    {
-                      "key": "useColumnShortNames",
-                      "value": "false"
-                    }
-                  ]
-                },
-                "description": "Metadata (titulo, unidades, fuentes, citas) del chart `share-of-global-mismanaged-plastic-waste`."
-              },
-              "response": []
-            },
-            {
-              "name": "ZIP completo (data + metadata + readme)",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "type": "text/javascript",
-                    "exec": [
-                      "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
-                      "pm.test(\"Tiempo de respuesta < 30s\", () => pm.expect(pm.response.responseTime).to.be.below(30000));",
-                      "pm.test(\"Body no vacio\", () => pm.expect(pm.response.text().length).to.be.above(0));"
-                    ]
-                  }
-                }
-              ],
-              "request": {
-                "method": "GET",
-                "header": [
-                  {
-                    "key": "User-Agent",
-                    "value": "Postman OWID Collection/1.0"
-                  }
-                ],
-                "url": {
-                  "raw": "{{grapher_base_url}}/share-of-global-mismanaged-plastic-waste.zip",
-                  "host": ["{{grapher_base_url}}"],
-                  "path": ["share-of-global-mismanaged-plastic-waste.zip"]
-                },
-                "description": "ZIP con CSV, metadata.json y README.md."
-              },
-              "response": []
-            }
-          ],
-          "description": "% global de plastico mal gestionado por pais."
         }
       ],
       "description": "Deforestacion, biodiversidad, uso de suelo, agua dulce."
@@ -5012,23 +4378,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{grapher_base_url}}/global-hunger-index.metadata.json?v=1&csvType=full&useColumnShortNames=false",
+                  "raw": "{{grapher_base_url}}/global-hunger-index.metadata.json",
                   "host": ["{{grapher_base_url}}"],
-                  "path": ["global-hunger-index.metadata.json"],
-                  "query": [
-                    {
-                      "key": "v",
-                      "value": "1"
-                    },
-                    {
-                      "key": "csvType",
-                      "value": "full"
-                    },
-                    {
-                      "key": "useColumnShortNames",
-                      "value": "false"
-                    }
-                  ]
+                  "path": ["global-hunger-index.metadata.json"]
                 },
                 "description": "Metadata (titulo, unidades, fuentes, citas) del chart `global-hunger-index`."
               },
@@ -5142,23 +4494,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{grapher_base_url}}/prevalence-of-undernourishment.metadata.json?v=1&csvType=full&useColumnShortNames=false",
+                  "raw": "{{grapher_base_url}}/prevalence-of-undernourishment.metadata.json",
                   "host": ["{{grapher_base_url}}"],
-                  "path": ["prevalence-of-undernourishment.metadata.json"],
-                  "query": [
-                    {
-                      "key": "v",
-                      "value": "1"
-                    },
-                    {
-                      "key": "csvType",
-                      "value": "full"
-                    },
-                    {
-                      "key": "useColumnShortNames",
-                      "value": "false"
-                    }
-                  ]
+                  "path": ["prevalence-of-undernourishment.metadata.json"]
                 },
                 "description": "Metadata (titulo, unidades, fuentes, citas) del chart `prevalence-of-undernourishment`."
               },
@@ -5272,23 +4610,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{grapher_base_url}}/daily-per-capita-caloric-supply.metadata.json?v=1&csvType=full&useColumnShortNames=false",
+                  "raw": "{{grapher_base_url}}/daily-per-capita-caloric-supply.metadata.json",
                   "host": ["{{grapher_base_url}}"],
-                  "path": ["daily-per-capita-caloric-supply.metadata.json"],
-                  "query": [
-                    {
-                      "key": "v",
-                      "value": "1"
-                    },
-                    {
-                      "key": "csvType",
-                      "value": "full"
-                    },
-                    {
-                      "key": "useColumnShortNames",
-                      "value": "false"
-                    }
-                  ]
+                  "path": ["daily-per-capita-caloric-supply.metadata.json"]
                 },
                 "description": "Metadata (titulo, unidades, fuentes, citas) del chart `daily-per-capita-caloric-supply`."
               },
@@ -5402,23 +4726,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{grapher_base_url}}/key-crop-yields.metadata.json?v=1&csvType=full&useColumnShortNames=false",
+                  "raw": "{{grapher_base_url}}/key-crop-yields.metadata.json",
                   "host": ["{{grapher_base_url}}"],
-                  "path": ["key-crop-yields.metadata.json"],
-                  "query": [
-                    {
-                      "key": "v",
-                      "value": "1"
-                    },
-                    {
-                      "key": "csvType",
-                      "value": "full"
-                    },
-                    {
-                      "key": "useColumnShortNames",
-                      "value": "false"
-                    }
-                  ]
+                  "path": ["key-crop-yields.metadata.json"]
                 },
                 "description": "Metadata (titulo, unidades, fuentes, citas) del chart `key-crop-yields`."
               },
@@ -5532,23 +4842,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{grapher_base_url}}/global-meat-production.metadata.json?v=1&csvType=full&useColumnShortNames=false",
+                  "raw": "{{grapher_base_url}}/global-meat-production.metadata.json",
                   "host": ["{{grapher_base_url}}"],
-                  "path": ["global-meat-production.metadata.json"],
-                  "query": [
-                    {
-                      "key": "v",
-                      "value": "1"
-                    },
-                    {
-                      "key": "csvType",
-                      "value": "full"
-                    },
-                    {
-                      "key": "useColumnShortNames",
-                      "value": "false"
-                    }
-                  ]
+                  "path": ["global-meat-production.metadata.json"]
                 },
                 "description": "Metadata (titulo, unidades, fuentes, citas) del chart `global-meat-production`."
               },
@@ -5662,23 +4958,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{grapher_base_url}}/livestock-counts.metadata.json?v=1&csvType=full&useColumnShortNames=false",
+                  "raw": "{{grapher_base_url}}/livestock-counts.metadata.json",
                   "host": ["{{grapher_base_url}}"],
-                  "path": ["livestock-counts.metadata.json"],
-                  "query": [
-                    {
-                      "key": "v",
-                      "value": "1"
-                    },
-                    {
-                      "key": "csvType",
-                      "value": "full"
-                    },
-                    {
-                      "key": "useColumnShortNames",
-                      "value": "false"
-                    }
-                  ]
+                  "path": ["livestock-counts.metadata.json"]
                 },
                 "description": "Metadata (titulo, unidades, fuentes, citas) del chart `livestock-counts`."
               },
@@ -5746,9 +5028,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{grapher_base_url}}/fertilizer-consumption-per-hectare-of-arable-land.csv?v=1&csvType=full&useColumnShortNames=false",
+                  "raw": "{{grapher_base_url}}/fertilizer-use-in-kg-per-hectare-of-arable-land.csv?v=1&csvType=full&useColumnShortNames=false",
                   "host": ["{{grapher_base_url}}"],
-                  "path": ["fertilizer-consumption-per-hectare-of-arable-land.csv"],
+                  "path": ["fertilizer-use-in-kg-per-hectare-of-arable-land.csv"],
                   "query": [
                     {
                       "key": "v",
@@ -5764,7 +5046,7 @@
                     }
                   ]
                 },
-                "description": "Datos en formato CSV del chart `fertilizer-consumption-per-hectare-of-arable-land`."
+                "description": "Datos en formato CSV del chart `fertilizer-use-in-kg-per-hectare-of-arable-land`."
               },
               "response": []
             },
@@ -5792,25 +5074,11 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{grapher_base_url}}/fertilizer-consumption-per-hectare-of-arable-land.metadata.json?v=1&csvType=full&useColumnShortNames=false",
+                  "raw": "{{grapher_base_url}}/fertilizer-use-in-kg-per-hectare-of-arable-land.metadata.json",
                   "host": ["{{grapher_base_url}}"],
-                  "path": ["fertilizer-consumption-per-hectare-of-arable-land.metadata.json"],
-                  "query": [
-                    {
-                      "key": "v",
-                      "value": "1"
-                    },
-                    {
-                      "key": "csvType",
-                      "value": "full"
-                    },
-                    {
-                      "key": "useColumnShortNames",
-                      "value": "false"
-                    }
-                  ]
+                  "path": ["fertilizer-use-in-kg-per-hectare-of-arable-land.metadata.json"]
                 },
-                "description": "Metadata (titulo, unidades, fuentes, citas) del chart `fertilizer-consumption-per-hectare-of-arable-land`."
+                "description": "Metadata (titulo, unidades, fuentes, citas) del chart `fertilizer-use-in-kg-per-hectare-of-arable-land`."
               },
               "response": []
             },
@@ -5838,9 +5106,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{grapher_base_url}}/fertilizer-consumption-per-hectare-of-arable-land.zip",
+                  "raw": "{{grapher_base_url}}/fertilizer-use-in-kg-per-hectare-of-arable-land.zip",
                   "host": ["{{grapher_base_url}}"],
-                  "path": ["fertilizer-consumption-per-hectare-of-arable-land.zip"]
+                  "path": ["fertilizer-use-in-kg-per-hectare-of-arable-land.zip"]
                 },
                 "description": "ZIP con CSV, metadata.json y README.md."
               },
@@ -5922,23 +5190,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{grapher_base_url}}/pesticide-use-per-hectare-of-cropland.metadata.json?v=1&csvType=full&useColumnShortNames=false",
+                  "raw": "{{grapher_base_url}}/pesticide-use-per-hectare-of-cropland.metadata.json",
                   "host": ["{{grapher_base_url}}"],
-                  "path": ["pesticide-use-per-hectare-of-cropland.metadata.json"],
-                  "query": [
-                    {
-                      "key": "v",
-                      "value": "1"
-                    },
-                    {
-                      "key": "csvType",
-                      "value": "full"
-                    },
-                    {
-                      "key": "useColumnShortNames",
-                      "value": "false"
-                    }
-                  ]
+                  "path": ["pesticide-use-per-hectare-of-cropland.metadata.json"]
                 },
                 "description": "Metadata (titulo, unidades, fuentes, citas) del chart `pesticide-use-per-hectare-of-cropland`."
               },
@@ -6016,7 +5270,7 @@
                 "method": "GET",
                 "header": [],
                 "url": {
-                  "raw": "{{grapher_base_url}}/food-waste-per-capita.metadata.json?v=1&csvType=full&useColumnShortNames=false",
+                  "raw": "{{grapher_base_url}}/food-waste-per-capita.metadata.json",
                   "host": ["{{grapher_base_url}}"],
                   "path": ["food-waste-per-capita.metadata.json"]
                 }
@@ -6029,8 +5283,8 @@
                 "method": "GET",
                 "header": [],
                 "url": {
-                  "raw": "{{api_v1_base_url}}/indicators/1123161.data.json",
-                  "host": ["{{api_v1_base_url}}"],
+                  "raw": "{{api_base_url}}/indicators/1123161.data.json",
+                  "host": ["{{api_base_url}}"],
                   "path": ["indicators", "1123161.data.json"]
                 },
                 "description": "Food waste per capita (kg) — Households sector. variableId: 1123161. 249 countries, years 2018-2022."
@@ -6043,8 +5297,8 @@
                 "method": "GET",
                 "header": [],
                 "url": {
-                  "raw": "{{api_v1_base_url}}/indicators/1123163.data.json",
-                  "host": ["{{api_v1_base_url}}"],
+                  "raw": "{{api_base_url}}/indicators/1123163.data.json",
+                  "host": ["{{api_base_url}}"],
                   "path": ["indicators", "1123163.data.json"]
                 },
                 "description": "Food waste per capita (kg) — Retail sector. variableId: 1123163. 249 countries, years 2018-2022."
@@ -6057,8 +5311,8 @@
                 "method": "GET",
                 "header": [],
                 "url": {
-                  "raw": "{{api_v1_base_url}}/indicators/1123162.data.json",
-                  "host": ["{{api_v1_base_url}}"],
+                  "raw": "{{api_base_url}}/indicators/1123162.data.json",
+                  "host": ["{{api_base_url}}"],
                   "path": ["indicators", "1123162.data.json"]
                 },
                 "description": "Food waste per capita (kg) — Out-of-home consumption sector. variableId: 1123162. 250 countries, years 2018-2022."
@@ -6095,9 +5349,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{grapher_base_url}}/ghg-emissions-from-food.csv?v=1&csvType=full&useColumnShortNames=false",
+                  "raw": "{{grapher_base_url}}/emissions-from-food.csv?v=1&csvType=full&useColumnShortNames=false",
                   "host": ["{{grapher_base_url}}"],
-                  "path": ["ghg-emissions-from-food.csv"],
+                  "path": ["emissions-from-food.csv"],
                   "query": [
                     {
                       "key": "v",
@@ -6113,7 +5367,7 @@
                     }
                   ]
                 },
-                "description": "Datos en formato CSV del chart `ghg-emissions-from-food`."
+                "description": "Datos en formato CSV del chart `emissions-from-food`."
               },
               "response": []
             },
@@ -6141,25 +5395,11 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{grapher_base_url}}/ghg-emissions-from-food.metadata.json?v=1&csvType=full&useColumnShortNames=false",
+                  "raw": "{{grapher_base_url}}/emissions-from-food.metadata.json",
                   "host": ["{{grapher_base_url}}"],
-                  "path": ["ghg-emissions-from-food.metadata.json"],
-                  "query": [
-                    {
-                      "key": "v",
-                      "value": "1"
-                    },
-                    {
-                      "key": "csvType",
-                      "value": "full"
-                    },
-                    {
-                      "key": "useColumnShortNames",
-                      "value": "false"
-                    }
-                  ]
+                  "path": ["emissions-from-food.metadata.json"]
                 },
-                "description": "Metadata (titulo, unidades, fuentes, citas) del chart `ghg-emissions-from-food`."
+                "description": "Metadata (titulo, unidades, fuentes, citas) del chart `emissions-from-food`."
               },
               "response": []
             },
@@ -6187,9 +5427,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{grapher_base_url}}/ghg-emissions-from-food.zip",
+                  "raw": "{{grapher_base_url}}/emissions-from-food.zip",
                   "host": ["{{grapher_base_url}}"],
-                  "path": ["ghg-emissions-from-food.zip"]
+                  "path": ["emissions-from-food.zip"]
                 },
                 "description": "ZIP con CSV, metadata.json y README.md."
               },
@@ -6277,23 +5517,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{grapher_base_url}}/population.metadata.json?v=1&csvType=full&useColumnShortNames=false",
+                  "raw": "{{grapher_base_url}}/population.metadata.json",
                   "host": ["{{grapher_base_url}}"],
-                  "path": ["population.metadata.json"],
-                  "query": [
-                    {
-                      "key": "v",
-                      "value": "1"
-                    },
-                    {
-                      "key": "csvType",
-                      "value": "full"
-                    },
-                    {
-                      "key": "useColumnShortNames",
-                      "value": "false"
-                    }
-                  ]
+                  "path": ["population.metadata.json"]
                 },
                 "description": "Metadata (titulo, unidades, fuentes, citas) del chart `population`."
               },
@@ -6407,23 +5633,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{grapher_base_url}}/population-growth-rates.metadata.json?v=1&csvType=full&useColumnShortNames=false",
+                  "raw": "{{grapher_base_url}}/population-growth-rates.metadata.json",
                   "host": ["{{grapher_base_url}}"],
-                  "path": ["population-growth-rates.metadata.json"],
-                  "query": [
-                    {
-                      "key": "v",
-                      "value": "1"
-                    },
-                    {
-                      "key": "csvType",
-                      "value": "full"
-                    },
-                    {
-                      "key": "useColumnShortNames",
-                      "value": "false"
-                    }
-                  ]
+                  "path": ["population-growth-rates.metadata.json"]
                 },
                 "description": "Metadata (titulo, unidades, fuentes, citas) del chart `population-growth-rates`."
               },
@@ -6537,23 +5749,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{grapher_base_url}}/children-per-woman.metadata.json?v=1&csvType=full&useColumnShortNames=false",
+                  "raw": "{{grapher_base_url}}/children-per-woman.metadata.json",
                   "host": ["{{grapher_base_url}}"],
-                  "path": ["children-per-woman.metadata.json"],
-                  "query": [
-                    {
-                      "key": "v",
-                      "value": "1"
-                    },
-                    {
-                      "key": "csvType",
-                      "value": "full"
-                    },
-                    {
-                      "key": "useColumnShortNames",
-                      "value": "false"
-                    }
-                  ]
+                  "path": ["children-per-woman.metadata.json"]
                 },
                 "description": "Metadata (titulo, unidades, fuentes, citas) del chart `children-per-woman`."
               },
@@ -6667,23 +5865,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{grapher_base_url}}/median-age.metadata.json?v=1&csvType=full&useColumnShortNames=false",
+                  "raw": "{{grapher_base_url}}/median-age.metadata.json",
                   "host": ["{{grapher_base_url}}"],
-                  "path": ["median-age.metadata.json"],
-                  "query": [
-                    {
-                      "key": "v",
-                      "value": "1"
-                    },
-                    {
-                      "key": "csvType",
-                      "value": "full"
-                    },
-                    {
-                      "key": "useColumnShortNames",
-                      "value": "false"
-                    }
-                  ]
+                  "path": ["median-age.metadata.json"]
                 },
                 "description": "Metadata (titulo, unidades, fuentes, citas) del chart `median-age`."
               },
@@ -6797,23 +5981,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{grapher_base_url}}/urban-population-share-2050.metadata.json?v=1&csvType=full&useColumnShortNames=false",
+                  "raw": "{{grapher_base_url}}/urban-population-share-2050.metadata.json",
                   "host": ["{{grapher_base_url}}"],
-                  "path": ["urban-population-share-2050.metadata.json"],
-                  "query": [
-                    {
-                      "key": "v",
-                      "value": "1"
-                    },
-                    {
-                      "key": "csvType",
-                      "value": "full"
-                    },
-                    {
-                      "key": "useColumnShortNames",
-                      "value": "false"
-                    }
-                  ]
+                  "path": ["urban-population-share-2050.metadata.json"]
                 },
                 "description": "Metadata (titulo, unidades, fuentes, citas) del chart `urban-population-share-2050`."
               },
@@ -6881,9 +6051,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{grapher_base_url}}/net-migration-rate.csv?v=1&csvType=full&useColumnShortNames=false",
+                  "raw": "{{grapher_base_url}}/net-migration-metrics.csv?v=1&csvType=full&useColumnShortNames=false",
                   "host": ["{{grapher_base_url}}"],
-                  "path": ["net-migration-rate.csv"],
+                  "path": ["net-migration-metrics.csv"],
                   "query": [
                     {
                       "key": "v",
@@ -6899,7 +6069,7 @@
                     }
                   ]
                 },
-                "description": "Datos en formato CSV del chart `net-migration-rate`."
+                "description": "Datos en formato CSV del chart `net-migration-metrics`."
               },
               "response": []
             },
@@ -6927,25 +6097,11 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{grapher_base_url}}/net-migration-rate.metadata.json?v=1&csvType=full&useColumnShortNames=false",
+                  "raw": "{{grapher_base_url}}/net-migration-metrics.metadata.json",
                   "host": ["{{grapher_base_url}}"],
-                  "path": ["net-migration-rate.metadata.json"],
-                  "query": [
-                    {
-                      "key": "v",
-                      "value": "1"
-                    },
-                    {
-                      "key": "csvType",
-                      "value": "full"
-                    },
-                    {
-                      "key": "useColumnShortNames",
-                      "value": "false"
-                    }
-                  ]
+                  "path": ["net-migration-metrics.metadata.json"]
                 },
-                "description": "Metadata (titulo, unidades, fuentes, citas) del chart `net-migration-rate`."
+                "description": "Metadata (titulo, unidades, fuentes, citas) del chart `net-migration-metrics`."
               },
               "response": []
             },
@@ -6973,9 +6129,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{grapher_base_url}}/net-migration-rate.zip",
+                  "raw": "{{grapher_base_url}}/net-migration-metrics.zip",
                   "host": ["{{grapher_base_url}}"],
-                  "path": ["net-migration-rate.zip"]
+                  "path": ["net-migration-metrics.zip"]
                 },
                 "description": "ZIP con CSV, metadata.json y README.md."
               },
@@ -7057,23 +6213,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{grapher_base_url}}/refugee-population-by-country-or-territory-of-origin.metadata.json?v=1&csvType=full&useColumnShortNames=false",
+                  "raw": "{{grapher_base_url}}/refugee-population-by-country-or-territory-of-origin.metadata.json",
                   "host": ["{{grapher_base_url}}"],
-                  "path": ["refugee-population-by-country-or-territory-of-origin.metadata.json"],
-                  "query": [
-                    {
-                      "key": "v",
-                      "value": "1"
-                    },
-                    {
-                      "key": "csvType",
-                      "value": "full"
-                    },
-                    {
-                      "key": "useColumnShortNames",
-                      "value": "false"
-                    }
-                  ]
+                  "path": ["refugee-population-by-country-or-territory-of-origin.metadata.json"]
                 },
                 "description": "Metadata (titulo, unidades, fuentes, citas) del chart `refugee-population-by-country-or-territory-of-origin`."
               },
@@ -7187,23 +6329,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{grapher_base_url}}/population-density.metadata.json?v=1&csvType=full&useColumnShortNames=false",
+                  "raw": "{{grapher_base_url}}/population-density.metadata.json",
                   "host": ["{{grapher_base_url}}"],
-                  "path": ["population-density.metadata.json"],
-                  "query": [
-                    {
-                      "key": "v",
-                      "value": "1"
-                    },
-                    {
-                      "key": "csvType",
-                      "value": "full"
-                    },
-                    {
-                      "key": "useColumnShortNames",
-                      "value": "false"
-                    }
-                  ]
+                  "path": ["population-density.metadata.json"]
                 },
                 "description": "Metadata (titulo, unidades, fuentes, citas) del chart `population-density`."
               },
@@ -7317,23 +6445,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{grapher_base_url}}/population-by-broad-age-group.metadata.json?v=1&csvType=full&useColumnShortNames=false",
+                  "raw": "{{grapher_base_url}}/population-by-broad-age-group.metadata.json",
                   "host": ["{{grapher_base_url}}"],
-                  "path": ["population-by-broad-age-group.metadata.json"],
-                  "query": [
-                    {
-                      "key": "v",
-                      "value": "1"
-                    },
-                    {
-                      "key": "csvType",
-                      "value": "full"
-                    },
-                    {
-                      "key": "useColumnShortNames",
-                      "value": "false"
-                    }
-                  ]
+                  "path": ["population-by-broad-age-group.metadata.json"]
                 },
                 "description": "Metadata (titulo, unidades, fuentes, citas) del chart `population-by-broad-age-group`."
               },
@@ -7447,23 +6561,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{grapher_base_url}}/births-and-deaths-projected-to-2100.metadata.json?v=1&csvType=full&useColumnShortNames=false",
+                  "raw": "{{grapher_base_url}}/births-and-deaths-projected-to-2100.metadata.json",
                   "host": ["{{grapher_base_url}}"],
-                  "path": ["births-and-deaths-projected-to-2100.metadata.json"],
-                  "query": [
-                    {
-                      "key": "v",
-                      "value": "1"
-                    },
-                    {
-                      "key": "csvType",
-                      "value": "full"
-                    },
-                    {
-                      "key": "useColumnShortNames",
-                      "value": "false"
-                    }
-                  ]
+                  "path": ["births-and-deaths-projected-to-2100.metadata.json"]
                 },
                 "description": "Metadata (titulo, unidades, fuentes, citas) del chart `births-and-deaths-projected-to-2100`."
               },
@@ -7583,23 +6683,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{grapher_base_url}}/life-expectancy.metadata.json?v=1&csvType=full&useColumnShortNames=false",
+                  "raw": "{{grapher_base_url}}/life-expectancy.metadata.json",
                   "host": ["{{grapher_base_url}}"],
-                  "path": ["life-expectancy.metadata.json"],
-                  "query": [
-                    {
-                      "key": "v",
-                      "value": "1"
-                    },
-                    {
-                      "key": "csvType",
-                      "value": "full"
-                    },
-                    {
-                      "key": "useColumnShortNames",
-                      "value": "false"
-                    }
-                  ]
+                  "path": ["life-expectancy.metadata.json"]
                 },
                 "description": "Metadata (titulo, unidades, fuentes, citas) del chart `life-expectancy`."
               },
@@ -7713,23 +6799,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{grapher_base_url}}/child-mortality.metadata.json?v=1&csvType=full&useColumnShortNames=false",
+                  "raw": "{{grapher_base_url}}/child-mortality.metadata.json",
                   "host": ["{{grapher_base_url}}"],
-                  "path": ["child-mortality.metadata.json"],
-                  "query": [
-                    {
-                      "key": "v",
-                      "value": "1"
-                    },
-                    {
-                      "key": "csvType",
-                      "value": "full"
-                    },
-                    {
-                      "key": "useColumnShortNames",
-                      "value": "false"
-                    }
-                  ]
+                  "path": ["child-mortality.metadata.json"]
                 },
                 "description": "Metadata (titulo, unidades, fuentes, citas) del chart `child-mortality`."
               },
@@ -7843,23 +6915,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{grapher_base_url}}/maternal-mortality.metadata.json?v=1&csvType=full&useColumnShortNames=false",
+                  "raw": "{{grapher_base_url}}/maternal-mortality.metadata.json",
                   "host": ["{{grapher_base_url}}"],
-                  "path": ["maternal-mortality.metadata.json"],
-                  "query": [
-                    {
-                      "key": "v",
-                      "value": "1"
-                    },
-                    {
-                      "key": "csvType",
-                      "value": "full"
-                    },
-                    {
-                      "key": "useColumnShortNames",
-                      "value": "false"
-                    }
-                  ]
+                  "path": ["maternal-mortality.metadata.json"]
                 },
                 "description": "Metadata (titulo, unidades, fuentes, citas) del chart `maternal-mortality`."
               },
@@ -7904,52 +6962,6 @@
           "name": "Causes of Death",
           "item": [
             {
-              "name": "Data (CSV)",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "type": "text/javascript",
-                    "exec": [
-                      "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
-                      "pm.test(\"Tiempo de respuesta < 30s\", () => pm.expect(pm.response.responseTime).to.be.below(30000));",
-                      "pm.test(\"Tiene contenido CSV\", () => pm.expect(pm.response.text()).to.include(\",\"));"
-                    ]
-                  }
-                }
-              ],
-              "request": {
-                "method": "GET",
-                "header": [
-                  {
-                    "key": "User-Agent",
-                    "value": "Postman OWID Collection/1.0"
-                  }
-                ],
-                "url": {
-                  "raw": "{{grapher_base_url}}/share-of-deaths-by-cause.csv?v=1&csvType=full&useColumnShortNames=false",
-                  "host": ["{{grapher_base_url}}"],
-                  "path": ["share-of-deaths-by-cause.csv"],
-                  "query": [
-                    {
-                      "key": "v",
-                      "value": "1"
-                    },
-                    {
-                      "key": "csvType",
-                      "value": "full"
-                    },
-                    {
-                      "key": "useColumnShortNames",
-                      "value": "false"
-                    }
-                  ]
-                },
-                "description": "Datos en formato CSV del chart `share-of-deaths-by-cause`."
-              },
-              "response": []
-            },
-            {
               "name": "Metadata (JSON)",
               "event": [
                 {
@@ -7973,112 +6985,35 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{grapher_base_url}}/share-of-deaths-by-cause.metadata.json?v=1&csvType=full&useColumnShortNames=false",
+                  "raw": "{{grapher_base_url}}/share-of-deaths-by-cause.metadata.json",
                   "host": ["{{grapher_base_url}}"],
-                  "path": ["share-of-deaths-by-cause.metadata.json"],
-                  "query": [
-                    {
-                      "key": "v",
-                      "value": "1"
-                    },
-                    {
-                      "key": "csvType",
-                      "value": "full"
-                    },
-                    {
-                      "key": "useColumnShortNames",
-                      "value": "false"
-                    }
-                  ]
+                  "path": ["share-of-deaths-by-cause.metadata.json"]
                 },
                 "description": "Metadata (titulo, unidades, fuentes, citas) del chart `share-of-deaths-by-cause`."
               },
               "response": []
             },
             {
-              "name": "ZIP completo (data + metadata + readme)",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "type": "text/javascript",
-                    "exec": [
-                      "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
-                      "pm.test(\"Tiempo de respuesta < 30s\", () => pm.expect(pm.response.responseTime).to.be.below(30000));",
-                      "pm.test(\"Body no vacio\", () => pm.expect(pm.response.text().length).to.be.above(0));"
-                    ]
-                  }
-                }
-              ],
+              "name": "Chart page (CSV/ZIP bloqueado — datos IHME no redistribuibles)",
               "request": {
                 "method": "GET",
-                "header": [
-                  {
-                    "key": "User-Agent",
-                    "value": "Postman OWID Collection/1.0"
-                  }
-                ],
+                "header": [],
                 "url": {
-                  "raw": "{{grapher_base_url}}/share-of-deaths-by-cause.zip",
-                  "host": ["{{grapher_base_url}}"],
-                  "path": ["share-of-deaths-by-cause.zip"]
+                  "raw": "https://ourworldindata.org/grapher/share-of-deaths-by-cause",
+                  "protocol": "https",
+                  "host": ["ourworldindata", "org"],
+                  "path": ["grapher", "share-of-deaths-by-cause"]
                 },
-                "description": "ZIP con CSV, metadata.json y README.md."
+                "description": "El chart existe (título \"Share of deaths by cause\") pero OWID bloquea la descarga de CSV/ZIP porque cita datos IHME GBD 2025 + START data no redistribuibles (HTTP 403: \"This chart contains non-redistributable data that we are not allowed to re-share and it therefore cannot be downloaded as a CSV\"); solo el endpoint de metadata funciona."
               },
               "response": []
             }
           ],
-          "description": "% de muertes por causa."
+          "description": "El chart existe (título \"Share of deaths by cause\") pero OWID bloquea la descarga de CSV/ZIP porque cita datos IHME GBD 2025 + START data no redistribuibles (HTTP 403: \"This chart contains non-redistributable data that we are not allowed to re-share and it therefore cannot be downloaded as a CSV\"); solo el endpoint de metadata funciona."
         },
         {
           "name": "Air Pollution Deaths",
           "item": [
-            {
-              "name": "Data (CSV)",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "type": "text/javascript",
-                    "exec": [
-                      "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
-                      "pm.test(\"Tiempo de respuesta < 30s\", () => pm.expect(pm.response.responseTime).to.be.below(30000));",
-                      "pm.test(\"Tiene contenido CSV\", () => pm.expect(pm.response.text()).to.include(\",\"));"
-                    ]
-                  }
-                }
-              ],
-              "request": {
-                "method": "GET",
-                "header": [
-                  {
-                    "key": "User-Agent",
-                    "value": "Postman OWID Collection/1.0"
-                  }
-                ],
-                "url": {
-                  "raw": "{{grapher_base_url}}/outdoor-pollution-deaths-rate.csv?v=1&csvType=full&useColumnShortNames=false",
-                  "host": ["{{grapher_base_url}}"],
-                  "path": ["outdoor-pollution-deaths-rate.csv"],
-                  "query": [
-                    {
-                      "key": "v",
-                      "value": "1"
-                    },
-                    {
-                      "key": "csvType",
-                      "value": "full"
-                    },
-                    {
-                      "key": "useColumnShortNames",
-                      "value": "false"
-                    }
-                  ]
-                },
-                "description": "Datos en formato CSV del chart `outdoor-pollution-deaths-rate`."
-              },
-              "response": []
-            },
             {
               "name": "Metadata (JSON)",
               "event": [
@@ -8103,62 +7038,31 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{grapher_base_url}}/outdoor-pollution-deaths-rate.metadata.json?v=1&csvType=full&useColumnShortNames=false",
+                  "raw": "{{grapher_base_url}}/outdoor-pollution-death-rate.metadata.json",
                   "host": ["{{grapher_base_url}}"],
-                  "path": ["outdoor-pollution-deaths-rate.metadata.json"],
-                  "query": [
-                    {
-                      "key": "v",
-                      "value": "1"
-                    },
-                    {
-                      "key": "csvType",
-                      "value": "full"
-                    },
-                    {
-                      "key": "useColumnShortNames",
-                      "value": "false"
-                    }
-                  ]
+                  "path": ["outdoor-pollution-death-rate.metadata.json"]
                 },
-                "description": "Metadata (titulo, unidades, fuentes, citas) del chart `outdoor-pollution-deaths-rate`."
+                "description": "Metadata (titulo, unidades, fuentes, citas) del chart `outdoor-pollution-death-rate`."
               },
               "response": []
             },
             {
-              "name": "ZIP completo (data + metadata + readme)",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "type": "text/javascript",
-                    "exec": [
-                      "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
-                      "pm.test(\"Tiempo de respuesta < 30s\", () => pm.expect(pm.response.responseTime).to.be.below(30000));",
-                      "pm.test(\"Body no vacio\", () => pm.expect(pm.response.text().length).to.be.above(0));"
-                    ]
-                  }
-                }
-              ],
+              "name": "Chart page (CSV/ZIP bloqueado — datos IHME no redistribuibles)",
               "request": {
                 "method": "GET",
-                "header": [
-                  {
-                    "key": "User-Agent",
-                    "value": "Postman OWID Collection/1.0"
-                  }
-                ],
+                "header": [],
                 "url": {
-                  "raw": "{{grapher_base_url}}/outdoor-pollution-deaths-rate.zip",
-                  "host": ["{{grapher_base_url}}"],
-                  "path": ["outdoor-pollution-deaths-rate.zip"]
+                  "raw": "https://ourworldindata.org/grapher/outdoor-pollution-death-rate",
+                  "protocol": "https",
+                  "host": ["ourworldindata", "org"],
+                  "path": ["grapher", "outdoor-pollution-death-rate"]
                 },
-                "description": "ZIP con CSV, metadata.json y README.md."
+                "description": "El chart existe (título \"Outdoor air pollution death rate\") pero OWID bloquea la descarga de CSV/ZIP porque cita datos IHME GBD no redistribuibles (HTTP 403: \"This chart contains non-redistributable data that we are not allowed to re-share and it therefore cannot be downloaded as a CSV\"); la alternativa descargable en esta colección es la exposición a PM2.5 (`pm25-air-pollution`, carpeta \"PM2.5 Air Pollution Exposure\")."
               },
               "response": []
             }
           ],
-          "description": "Tasa de muertes por polucion del aire exterior."
+          "description": "El chart existe (título \"Outdoor air pollution death rate\") pero OWID bloquea la descarga de CSV/ZIP porque cita datos IHME GBD no redistribuibles (HTTP 403: \"This chart contains non-redistributable data that we are not allowed to re-share and it therefore cannot be downloaded as a CSV\"); la alternativa descargable en esta colección es la exposición a PM2.5 (`pm25-air-pollution`, carpeta \"PM2.5 Air Pollution Exposure\")."
         },
         {
           "name": "PM2.5 Air Pollution Exposure",
@@ -8233,23 +7137,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{grapher_base_url}}/pm25-air-pollution.metadata.json?v=1&csvType=full&useColumnShortNames=false",
+                  "raw": "{{grapher_base_url}}/pm25-air-pollution.metadata.json",
                   "host": ["{{grapher_base_url}}"],
-                  "path": ["pm25-air-pollution.metadata.json"],
-                  "query": [
-                    {
-                      "key": "v",
-                      "value": "1"
-                    },
-                    {
-                      "key": "csvType",
-                      "value": "full"
-                    },
-                    {
-                      "key": "useColumnShortNames",
-                      "value": "false"
-                    }
-                  ]
+                  "path": ["pm25-air-pollution.metadata.json"]
                 },
                 "description": "Metadata (titulo, unidades, fuentes, citas) del chart `pm25-air-pollution`."
               },
@@ -8291,7 +7181,7 @@
           "description": "Exposicion a PM2.5."
         },
         {
-          "name": "Indoor Air Pollution Deaths",
+          "name": "Household (Indoor) Air Pollution Deaths",
           "item": [
             {
               "name": "Data (CSV)",
@@ -8317,9 +7207,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{grapher_base_url}}/death-rates-from-indoor-air-pollution.csv?v=1&csvType=full&useColumnShortNames=false",
+                  "raw": "{{grapher_base_url}}/death-rate-household-air-pollution.csv?v=1&csvType=full&useColumnShortNames=false",
                   "host": ["{{grapher_base_url}}"],
-                  "path": ["death-rates-from-indoor-air-pollution.csv"],
+                  "path": ["death-rate-household-air-pollution.csv"],
                   "query": [
                     {
                       "key": "v",
@@ -8335,7 +7225,7 @@
                     }
                   ]
                 },
-                "description": "Datos en formato CSV del chart `death-rates-from-indoor-air-pollution`."
+                "description": "Datos en formato CSV del chart `death-rate-household-air-pollution`."
               },
               "response": []
             },
@@ -8363,25 +7253,11 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{grapher_base_url}}/death-rates-from-indoor-air-pollution.metadata.json?v=1&csvType=full&useColumnShortNames=false",
+                  "raw": "{{grapher_base_url}}/death-rate-household-air-pollution.metadata.json",
                   "host": ["{{grapher_base_url}}"],
-                  "path": ["death-rates-from-indoor-air-pollution.metadata.json"],
-                  "query": [
-                    {
-                      "key": "v",
-                      "value": "1"
-                    },
-                    {
-                      "key": "csvType",
-                      "value": "full"
-                    },
-                    {
-                      "key": "useColumnShortNames",
-                      "value": "false"
-                    }
-                  ]
+                  "path": ["death-rate-household-air-pollution.metadata.json"]
                 },
-                "description": "Metadata (titulo, unidades, fuentes, citas) del chart `death-rates-from-indoor-air-pollution`."
+                "description": "Metadata (titulo, unidades, fuentes, citas) del chart `death-rate-household-air-pollution`."
               },
               "response": []
             },
@@ -8409,9 +7285,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{grapher_base_url}}/death-rates-from-indoor-air-pollution.zip",
+                  "raw": "{{grapher_base_url}}/death-rate-household-air-pollution.zip",
                   "host": ["{{grapher_base_url}}"],
-                  "path": ["death-rates-from-indoor-air-pollution.zip"]
+                  "path": ["death-rate-household-air-pollution.zip"]
                 },
                 "description": "ZIP con CSV, metadata.json y README.md."
               },
@@ -8493,23 +7369,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{grapher_base_url}}/proportion-using-safely-managed-drinking-water.metadata.json?v=1&csvType=full&useColumnShortNames=false",
+                  "raw": "{{grapher_base_url}}/proportion-using-safely-managed-drinking-water.metadata.json",
                   "host": ["{{grapher_base_url}}"],
-                  "path": ["proportion-using-safely-managed-drinking-water.metadata.json"],
-                  "query": [
-                    {
-                      "key": "v",
-                      "value": "1"
-                    },
-                    {
-                      "key": "csvType",
-                      "value": "full"
-                    },
-                    {
-                      "key": "useColumnShortNames",
-                      "value": "false"
-                    }
-                  ]
+                  "path": ["proportion-using-safely-managed-drinking-water.metadata.json"]
                 },
                 "description": "Metadata (titulo, unidades, fuentes, citas) del chart `proportion-using-safely-managed-drinking-water`."
               },
@@ -8623,23 +7485,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{grapher_base_url}}/share-using-safely-managed-sanitation.metadata.json?v=1&csvType=full&useColumnShortNames=false",
+                  "raw": "{{grapher_base_url}}/share-using-safely-managed-sanitation.metadata.json",
                   "host": ["{{grapher_base_url}}"],
-                  "path": ["share-using-safely-managed-sanitation.metadata.json"],
-                  "query": [
-                    {
-                      "key": "v",
-                      "value": "1"
-                    },
-                    {
-                      "key": "csvType",
-                      "value": "full"
-                    },
-                    {
-                      "key": "useColumnShortNames",
-                      "value": "false"
-                    }
-                  ]
+                  "path": ["share-using-safely-managed-sanitation.metadata.json"]
                 },
                 "description": "Metadata (titulo, unidades, fuentes, citas) del chart `share-using-safely-managed-sanitation`."
               },
@@ -8753,23 +7601,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{grapher_base_url}}/global-vaccination-coverage.metadata.json?v=1&csvType=full&useColumnShortNames=false",
+                  "raw": "{{grapher_base_url}}/global-vaccination-coverage.metadata.json",
                   "host": ["{{grapher_base_url}}"],
-                  "path": ["global-vaccination-coverage.metadata.json"],
-                  "query": [
-                    {
-                      "key": "v",
-                      "value": "1"
-                    },
-                    {
-                      "key": "csvType",
-                      "value": "full"
-                    },
-                    {
-                      "key": "useColumnShortNames",
-                      "value": "false"
-                    }
-                  ]
+                  "path": ["global-vaccination-coverage.metadata.json"]
                 },
                 "description": "Metadata (titulo, unidades, fuentes, citas) del chart `global-vaccination-coverage`."
               },
@@ -8889,23 +7723,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{grapher_base_url}}/literate-and-illiterate-world-population.metadata.json?v=1&csvType=full&useColumnShortNames=false",
+                  "raw": "{{grapher_base_url}}/literate-and-illiterate-world-population.metadata.json",
                   "host": ["{{grapher_base_url}}"],
-                  "path": ["literate-and-illiterate-world-population.metadata.json"],
-                  "query": [
-                    {
-                      "key": "v",
-                      "value": "1"
-                    },
-                    {
-                      "key": "csvType",
-                      "value": "full"
-                    },
-                    {
-                      "key": "useColumnShortNames",
-                      "value": "false"
-                    }
-                  ]
+                  "path": ["literate-and-illiterate-world-population.metadata.json"]
                 },
                 "description": "Metadata (titulo, unidades, fuentes, citas) del chart `literate-and-illiterate-world-population`."
               },
@@ -9019,23 +7839,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{grapher_base_url}}/school-completion.metadata.json?v=1&csvType=full&useColumnShortNames=false",
+                  "raw": "{{grapher_base_url}}/school-completion.metadata.json",
                   "host": ["{{grapher_base_url}}"],
-                  "path": ["school-completion.metadata.json"],
-                  "query": [
-                    {
-                      "key": "v",
-                      "value": "1"
-                    },
-                    {
-                      "key": "csvType",
-                      "value": "full"
-                    },
-                    {
-                      "key": "useColumnShortNames",
-                      "value": "false"
-                    }
-                  ]
+                  "path": ["school-completion.metadata.json"]
                 },
                 "description": "Metadata (titulo, unidades, fuentes, citas) del chart `school-completion`."
               },
@@ -9149,23 +7955,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{grapher_base_url}}/mean-years-of-schooling-long-run.metadata.json?v=1&csvType=full&useColumnShortNames=false",
+                  "raw": "{{grapher_base_url}}/mean-years-of-schooling-long-run.metadata.json",
                   "host": ["{{grapher_base_url}}"],
-                  "path": ["mean-years-of-schooling-long-run.metadata.json"],
-                  "query": [
-                    {
-                      "key": "v",
-                      "value": "1"
-                    },
-                    {
-                      "key": "csvType",
-                      "value": "full"
-                    },
-                    {
-                      "key": "useColumnShortNames",
-                      "value": "false"
-                    }
-                  ]
+                  "path": ["mean-years-of-schooling-long-run.metadata.json"]
                 },
                 "description": "Metadata (titulo, unidades, fuentes, citas) del chart `mean-years-of-schooling-long-run`."
               },
@@ -9279,23 +8071,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{grapher_base_url}}/human-development-index.metadata.json?v=1&csvType=full&useColumnShortNames=false",
+                  "raw": "{{grapher_base_url}}/human-development-index.metadata.json",
                   "host": ["{{grapher_base_url}}"],
-                  "path": ["human-development-index.metadata.json"],
-                  "query": [
-                    {
-                      "key": "v",
-                      "value": "1"
-                    },
-                    {
-                      "key": "csvType",
-                      "value": "full"
-                    },
-                    {
-                      "key": "useColumnShortNames",
-                      "value": "false"
-                    }
-                  ]
+                  "path": ["human-development-index.metadata.json"]
                 },
                 "description": "Metadata (titulo, unidades, fuentes, citas) del chart `human-development-index`."
               },
@@ -9409,23 +8187,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{grapher_base_url}}/gdp-per-capita-worldbank.metadata.json?v=1&csvType=full&useColumnShortNames=false",
+                  "raw": "{{grapher_base_url}}/gdp-per-capita-worldbank.metadata.json",
                   "host": ["{{grapher_base_url}}"],
-                  "path": ["gdp-per-capita-worldbank.metadata.json"],
-                  "query": [
-                    {
-                      "key": "v",
-                      "value": "1"
-                    },
-                    {
-                      "key": "csvType",
-                      "value": "full"
-                    },
-                    {
-                      "key": "useColumnShortNames",
-                      "value": "false"
-                    }
-                  ]
+                  "path": ["gdp-per-capita-worldbank.metadata.json"]
                 },
                 "description": "Metadata (titulo, unidades, fuentes, citas) del chart `gdp-per-capita-worldbank`."
               },
@@ -9539,23 +8303,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{grapher_base_url}}/share-of-population-in-extreme-poverty.metadata.json?v=1&csvType=full&useColumnShortNames=false",
+                  "raw": "{{grapher_base_url}}/share-of-population-in-extreme-poverty.metadata.json",
                   "host": ["{{grapher_base_url}}"],
-                  "path": ["share-of-population-in-extreme-poverty.metadata.json"],
-                  "query": [
-                    {
-                      "key": "v",
-                      "value": "1"
-                    },
-                    {
-                      "key": "csvType",
-                      "value": "full"
-                    },
-                    {
-                      "key": "useColumnShortNames",
-                      "value": "false"
-                    }
-                  ]
+                  "path": ["share-of-population-in-extreme-poverty.metadata.json"]
                 },
                 "description": "Metadata (titulo, unidades, fuentes, citas) del chart `share-of-population-in-extreme-poverty`."
               },
@@ -9669,23 +8419,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{grapher_base_url}}/economic-inequality-gini-index.metadata.json?v=1&csvType=full&useColumnShortNames=false",
+                  "raw": "{{grapher_base_url}}/economic-inequality-gini-index.metadata.json",
                   "host": ["{{grapher_base_url}}"],
-                  "path": ["economic-inequality-gini-index.metadata.json"],
-                  "query": [
-                    {
-                      "key": "v",
-                      "value": "1"
-                    },
-                    {
-                      "key": "csvType",
-                      "value": "full"
-                    },
-                    {
-                      "key": "useColumnShortNames",
-                      "value": "false"
-                    }
-                  ]
+                  "path": ["economic-inequality-gini-index.metadata.json"]
                 },
                 "description": "Metadata (titulo, unidades, fuentes, citas) del chart `economic-inequality-gini-index`."
               },
@@ -9799,23 +8535,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{grapher_base_url}}/share-of-individuals-using-the-internet.metadata.json?v=1&csvType=full&useColumnShortNames=false",
+                  "raw": "{{grapher_base_url}}/share-of-individuals-using-the-internet.metadata.json",
                   "host": ["{{grapher_base_url}}"],
-                  "path": ["share-of-individuals-using-the-internet.metadata.json"],
-                  "query": [
-                    {
-                      "key": "v",
-                      "value": "1"
-                    },
-                    {
-                      "key": "csvType",
-                      "value": "full"
-                    },
-                    {
-                      "key": "useColumnShortNames",
-                      "value": "false"
-                    }
-                  ]
+                  "path": ["share-of-individuals-using-the-internet.metadata.json"]
                 },
                 "description": "Metadata (titulo, unidades, fuentes, citas) del chart `share-of-individuals-using-the-internet`."
               },
@@ -9862,266 +8584,6 @@
     {
       "name": "🦠 COVID-19",
       "item": [
-        {
-          "name": "Total COVID-19 Cases",
-          "item": [
-            {
-              "name": "Data (CSV)",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "type": "text/javascript",
-                    "exec": [
-                      "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
-                      "pm.test(\"Tiempo de respuesta < 30s\", () => pm.expect(pm.response.responseTime).to.be.below(30000));",
-                      "pm.test(\"Tiene contenido CSV\", () => pm.expect(pm.response.text()).to.include(\",\"));"
-                    ]
-                  }
-                }
-              ],
-              "request": {
-                "method": "GET",
-                "header": [
-                  {
-                    "key": "User-Agent",
-                    "value": "Postman OWID Collection/1.0"
-                  }
-                ],
-                "url": {
-                  "raw": "{{grapher_base_url}}/total-cases-covid-19.csv?v=1&csvType=full&useColumnShortNames=false",
-                  "host": ["{{grapher_base_url}}"],
-                  "path": ["total-cases-covid-19.csv"],
-                  "query": [
-                    {
-                      "key": "v",
-                      "value": "1"
-                    },
-                    {
-                      "key": "csvType",
-                      "value": "full"
-                    },
-                    {
-                      "key": "useColumnShortNames",
-                      "value": "false"
-                    }
-                  ]
-                },
-                "description": "Datos en formato CSV del chart `total-cases-covid-19`."
-              },
-              "response": []
-            },
-            {
-              "name": "Metadata (JSON)",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "type": "text/javascript",
-                    "exec": [
-                      "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
-                      "pm.test(\"Tiempo de respuesta < 30s\", () => pm.expect(pm.response.responseTime).to.be.below(30000));",
-                      "pm.test(\"Es JSON valido\", () => { pm.response.to.have.header(\"Content-Type\"); pm.response.json(); });"
-                    ]
-                  }
-                }
-              ],
-              "request": {
-                "method": "GET",
-                "header": [
-                  {
-                    "key": "User-Agent",
-                    "value": "Postman OWID Collection/1.0"
-                  }
-                ],
-                "url": {
-                  "raw": "{{grapher_base_url}}/total-cases-covid-19.metadata.json?v=1&csvType=full&useColumnShortNames=false",
-                  "host": ["{{grapher_base_url}}"],
-                  "path": ["total-cases-covid-19.metadata.json"],
-                  "query": [
-                    {
-                      "key": "v",
-                      "value": "1"
-                    },
-                    {
-                      "key": "csvType",
-                      "value": "full"
-                    },
-                    {
-                      "key": "useColumnShortNames",
-                      "value": "false"
-                    }
-                  ]
-                },
-                "description": "Metadata (titulo, unidades, fuentes, citas) del chart `total-cases-covid-19`."
-              },
-              "response": []
-            },
-            {
-              "name": "ZIP completo (data + metadata + readme)",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "type": "text/javascript",
-                    "exec": [
-                      "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
-                      "pm.test(\"Tiempo de respuesta < 30s\", () => pm.expect(pm.response.responseTime).to.be.below(30000));",
-                      "pm.test(\"Body no vacio\", () => pm.expect(pm.response.text().length).to.be.above(0));"
-                    ]
-                  }
-                }
-              ],
-              "request": {
-                "method": "GET",
-                "header": [
-                  {
-                    "key": "User-Agent",
-                    "value": "Postman OWID Collection/1.0"
-                  }
-                ],
-                "url": {
-                  "raw": "{{grapher_base_url}}/total-cases-covid-19.zip",
-                  "host": ["{{grapher_base_url}}"],
-                  "path": ["total-cases-covid-19.zip"]
-                },
-                "description": "ZIP con CSV, metadata.json y README.md."
-              },
-              "response": []
-            }
-          ],
-          "description": "Casos totales confirmados."
-        },
-        {
-          "name": "COVID-19 Deaths",
-          "item": [
-            {
-              "name": "Data (CSV)",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "type": "text/javascript",
-                    "exec": [
-                      "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
-                      "pm.test(\"Tiempo de respuesta < 30s\", () => pm.expect(pm.response.responseTime).to.be.below(30000));",
-                      "pm.test(\"Tiene contenido CSV\", () => pm.expect(pm.response.text()).to.include(\",\"));"
-                    ]
-                  }
-                }
-              ],
-              "request": {
-                "method": "GET",
-                "header": [
-                  {
-                    "key": "User-Agent",
-                    "value": "Postman OWID Collection/1.0"
-                  }
-                ],
-                "url": {
-                  "raw": "{{grapher_base_url}}/total-deaths-covid-19.csv?v=1&csvType=full&useColumnShortNames=false",
-                  "host": ["{{grapher_base_url}}"],
-                  "path": ["total-deaths-covid-19.csv"],
-                  "query": [
-                    {
-                      "key": "v",
-                      "value": "1"
-                    },
-                    {
-                      "key": "csvType",
-                      "value": "full"
-                    },
-                    {
-                      "key": "useColumnShortNames",
-                      "value": "false"
-                    }
-                  ]
-                },
-                "description": "Datos en formato CSV del chart `total-deaths-covid-19`."
-              },
-              "response": []
-            },
-            {
-              "name": "Metadata (JSON)",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "type": "text/javascript",
-                    "exec": [
-                      "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
-                      "pm.test(\"Tiempo de respuesta < 30s\", () => pm.expect(pm.response.responseTime).to.be.below(30000));",
-                      "pm.test(\"Es JSON valido\", () => { pm.response.to.have.header(\"Content-Type\"); pm.response.json(); });"
-                    ]
-                  }
-                }
-              ],
-              "request": {
-                "method": "GET",
-                "header": [
-                  {
-                    "key": "User-Agent",
-                    "value": "Postman OWID Collection/1.0"
-                  }
-                ],
-                "url": {
-                  "raw": "{{grapher_base_url}}/total-deaths-covid-19.metadata.json?v=1&csvType=full&useColumnShortNames=false",
-                  "host": ["{{grapher_base_url}}"],
-                  "path": ["total-deaths-covid-19.metadata.json"],
-                  "query": [
-                    {
-                      "key": "v",
-                      "value": "1"
-                    },
-                    {
-                      "key": "csvType",
-                      "value": "full"
-                    },
-                    {
-                      "key": "useColumnShortNames",
-                      "value": "false"
-                    }
-                  ]
-                },
-                "description": "Metadata (titulo, unidades, fuentes, citas) del chart `total-deaths-covid-19`."
-              },
-              "response": []
-            },
-            {
-              "name": "ZIP completo (data + metadata + readme)",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "type": "text/javascript",
-                    "exec": [
-                      "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
-                      "pm.test(\"Tiempo de respuesta < 30s\", () => pm.expect(pm.response.responseTime).to.be.below(30000));",
-                      "pm.test(\"Body no vacio\", () => pm.expect(pm.response.text().length).to.be.above(0));"
-                    ]
-                  }
-                }
-              ],
-              "request": {
-                "method": "GET",
-                "header": [
-                  {
-                    "key": "User-Agent",
-                    "value": "Postman OWID Collection/1.0"
-                  }
-                ],
-                "url": {
-                  "raw": "{{grapher_base_url}}/total-deaths-covid-19.zip",
-                  "host": ["{{grapher_base_url}}"],
-                  "path": ["total-deaths-covid-19.zip"]
-                },
-                "description": "ZIP con CSV, metadata.json y README.md."
-              },
-              "response": []
-            }
-          ],
-          "description": "Muertes totales."
-        },
         {
           "name": "COVID-19 Vaccinations",
           "item": [
@@ -10195,23 +8657,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{grapher_base_url}}/covid-vaccination-doses-per-capita.metadata.json?v=1&csvType=full&useColumnShortNames=false",
+                  "raw": "{{grapher_base_url}}/covid-vaccination-doses-per-capita.metadata.json",
                   "host": ["{{grapher_base_url}}"],
-                  "path": ["covid-vaccination-doses-per-capita.metadata.json"],
-                  "query": [
-                    {
-                      "key": "v",
-                      "value": "1"
-                    },
-                    {
-                      "key": "csvType",
-                      "value": "full"
-                    },
-                    {
-                      "key": "useColumnShortNames",
-                      "value": "false"
-                    }
-                  ]
+                  "path": ["covid-vaccination-doses-per-capita.metadata.json"]
                 },
                 "description": "Metadata (titulo, unidades, fuentes, citas) del chart `covid-vaccination-doses-per-capita`."
               },
@@ -10325,23 +8773,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{grapher_base_url}}/excess-mortality-raw-death-count.metadata.json?v=1&csvType=full&useColumnShortNames=false",
+                  "raw": "{{grapher_base_url}}/excess-mortality-raw-death-count.metadata.json",
                   "host": ["{{grapher_base_url}}"],
-                  "path": ["excess-mortality-raw-death-count.metadata.json"],
-                  "query": [
-                    {
-                      "key": "v",
-                      "value": "1"
-                    },
-                    {
-                      "key": "csvType",
-                      "value": "full"
-                    },
-                    {
-                      "key": "useColumnShortNames",
-                      "value": "false"
-                    }
-                  ]
+                  "path": ["excess-mortality-raw-death-count.metadata.json"]
                 },
                 "description": "Metadata (titulo, unidades, fuentes, citas) del chart `excess-mortality-raw-death-count`."
               },
@@ -10690,11 +9124,6 @@
     {
       "key": "time_range",
       "value": "1990..2024"
-    },
-    {
-      "key": "api_v1_base_url",
-      "value": "https://api.ourworldindata.org/v1",
-      "type": "string"
     }
   ]
 }

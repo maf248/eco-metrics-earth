@@ -62,8 +62,8 @@ apps/web/next-env.d.ts
 
 .nx/self-healing
 # Postman — environments with real credentials
-postman/*.environment.json
-!postman/*.environment.template.json
+postman/environments/*.environment.json
+!postman/environments/*.environment.template.json
 
 # Auto-generated AI agent configs (duplicates of .opencode/)
 .agent/

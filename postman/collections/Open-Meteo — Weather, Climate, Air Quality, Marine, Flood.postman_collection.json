@@ -1112,7 +1112,7 @@
                 }
               ]
             },
-            "description": "Polen (alergenos). Disponible solo en Europa con el modelo CAMS European."
+            "description": "Polen (alergenos). Disponible solo en Europa con el modelo CAMS European. Fuera de Europa las variables de polen devuelven null."
           },
           "response": []
         },
@@ -1229,7 +1229,7 @@
           "response": []
         },
         {
-          "name": "Force CAMS European model",
+          "name": "Force CAMS European model (Berlin)",
           "event": [
             {
               "listen": "test",
@@ -1256,17 +1256,17 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{air_quality_url}}/v1/air-quality?latitude={{lat}}&longitude={{lon}}&hourly=pm2_5,pm10,european_aqi&domains=cams_europe&timezone={{timezone}}",
+              "raw": "{{air_quality_url}}/v1/air-quality?latitude=52.52&longitude=13.41&hourly=pm2_5,pm10,european_aqi&domains=cams_europe&timezone=Europe/Berlin",
               "host": ["{{air_quality_url}}"],
               "path": ["v1", "air-quality"],
               "query": [
                 {
                   "key": "latitude",
-                  "value": "{{lat}}"
+                  "value": "52.52"
                 },
                 {
                   "key": "longitude",
-                  "value": "{{lon}}"
+                  "value": "13.41"
                 },
                 {
                   "key": "hourly",
@@ -1278,11 +1278,11 @@
                 },
                 {
                   "key": "timezone",
-                  "value": "{{timezone}}"
+                  "value": "Europe/Berlin"
                 }
               ]
             },
-            "description": "Forzar el modelo europeo (mayor resolucion 11km). Solo aplica en Europa."
+            "description": "Nota: domains=cams_europe solo tiene cobertura europea; con coordenadas fuera de Europa la API devuelve 400 \"No data is available for this location\" (verificado con Buenos Aires)."
           },
           "response": []
         }
@@ -1515,23 +1515,22 @@
       "name": "🌡️ Climate Projections (IPCC CMIP6)",
       "item": [
         {
-          "name": "✅ Working — multi-model daily projection (2025-2050)",
+          "name": "Multi-model daily projection (2025-2050)",
           "request": {
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "https://climate-api.open-meteo.com/v1/climate?latitude=40.71&longitude=-74.01&start_date=2025-01-01&end_date=2050-12-31&models=CMCC_CM2_VHR4,EC_Earth3P_HR&daily=temperature_2m_max,temperature_2m_min,precipitation_sum",
-              "protocol": "https",
-              "host": ["climate-api", "open-meteo", "com"],
+              "raw": "{{climate_url}}/v1/climate?latitude={{lat}}&longitude={{lon}}&start_date=2025-01-01&end_date=2050-12-31&models=CMCC_CM2_VHR4,EC_Earth3P_HR&daily=temperature_2m_max,temperature_2m_min,precipitation_sum",
+              "host": ["{{climate_url}}"],
               "path": ["v1", "climate"],
               "query": [
                 {
                   "key": "latitude",
-                  "value": "40.71"
+                  "value": "{{lat}}"
                 },
                 {
                   "key": "longitude",
-                  "value": "-74.01"
+                  "value": "{{lon}}"
                 },
                 {
                   "key": "start_date",
