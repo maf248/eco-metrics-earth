@@ -56,13 +56,14 @@ Pending — see `docs/technical/libraries.md`
 
 ## Accessibility
 
-- Semantic HTML and descriptive titles/meta descriptions are required on every page. - All navigable URLs use trailing-slash canonical URLs.
+- Semantic HTML and descriptive titles/meta descriptions are required on every page.
+- All navigable URLs use trailing-slash canonical URLs.
 - Accessible markup is verified via `@axe-core/playwright` E2E coverage.
 - Eco-category icons keep their hardcoded multicolor fills; contrast/separation fixes must not recolor them (see Theme Rules above).
 
 ## Presentation Stack
 
-Pending — the charting/mapping/table library (or libraries) is not yet chosen. Candidates, discarded options, and the gates to clear before deciding are catalogued in `docs/technical/libraries.md`. See `ROADMAP.md` I12 for the screening that will inform that decision.
+Pending — the charting/mapping/table library (or libraries) is not yet chosen. Candidates, discarded options, and the gates to clear before deciding are catalogued in `docs/technical/libraries.md`. See `ROADMAP.md` I11 for the screening that will inform that decision.
 
 ## Tooling note
 

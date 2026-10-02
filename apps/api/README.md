@@ -26,8 +26,8 @@ Backend For Frontend for eco-metrics earth. Exposes a REST API under `/api/v1` c
 src/
 ├── app/
 │   ├── app.module.ts       # Root module — wires all imports and global providers
-│   ├── app.controller.ts   # Root controller (no active routes — placeholder)
-│   └── app.service.ts      # Root service (no-op)
+│   ├── app.controller.ts   # Root controller — GET /api/v1/ welcome message
+│   └── app.service.ts      # Root service — returns the welcome message
 ├── health/
 │   ├── health.module.ts
 │   └── health.controller.ts  # GET /api/v1/health
@@ -35,8 +35,8 @@ src/
 │   └── app-config.service.ts # Typed wrapper over @nestjs/config
 ├── modules/
 │   └── water-footprint/      # WaterFootprintModule — module, controller, service
-├── data/
-│   └── water-footprint.json  # Static product dataset (60 products, with citations)
+│       └── data/
+│           └── water-footprint.json  # Static product dataset (60 products, with citations)
 ├── common/
 │   └── dto/                  # Shared DTOs with `class-validator` decorators
 └── main.ts
@@ -68,6 +68,7 @@ appConfig.corsOrigins; // CORS_ORIGIN (+ optional CORS_ORIGIN_PATTERN as a RegEx
 
 | Method | Path                               | Description                                                                                                                                                                   | Response                               |
 | ------ | ---------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------- |
+| `GET`  | `/api/v1/`                         | Welcome message                                                                                                                                                               | `{ message: 'Hello API' }`             |
 | `GET`  | `/api/v1/health`                   | Liveness check                                                                                                                                                                | `{ status: 'ok' }`                     |
 | `GET`  | `/api/v1/demo-validation`          | **Mock** — query param validation demo                                                                                                                                        | `{ query: GetMetricsQueryDto }`        |
 | `POST` | `/api/v1/demo-validation`          | **Mock** — body validation demo                                                                                                                                               | `{ body: CreateMetricDto }`            |
