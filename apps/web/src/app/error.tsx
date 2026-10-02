@@ -3,17 +3,12 @@
 import Link from 'next/link';
 import { useEffect } from 'react';
 
-import { NotFoundIcon } from '@/lib/categoryIcon';
+import { NotFoundIcon } from '@/components/icons';
 
 interface ErrorPageProps {
   error: Error & { digest?: string };
   reset: () => void;
 }
-
-export const metadata = {
-  title: 'Something went wrong',
-  description: 'An unexpected error occurred. Please try again or return to the home page.',
-};
 
 export default function ErrorPage({ error, reset }: ErrorPageProps) {
   useEffect(() => {

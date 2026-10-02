@@ -1,6 +1,6 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 
-import ErrorPage, { metadata } from '../../src/app/error';
+import ErrorPage from '../../src/app/error';
 
 describe('ErrorPage', () => {
   const mockReset = jest.fn();
@@ -66,13 +66,6 @@ describe('ErrorPage', () => {
     render(<ErrorPage error={testError} reset={mockReset} />);
     expect(consoleSpy).toHaveBeenCalledWith('Uncaught error:', testError);
     consoleSpy.mockRestore();
-  });
-
-  it('should export metadata with title and description', () => {
-    expect(metadata).toBeDefined();
-    expect(metadata.title).toBe('Something went wrong');
-    expect(metadata.description).toBeDefined();
-    expect(metadata.description.length).toBeGreaterThan(0);
   });
 
   it('should match snapshot', () => {

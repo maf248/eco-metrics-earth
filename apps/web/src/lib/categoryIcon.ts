@@ -9,7 +9,6 @@ import {
   EndangeredSpeciesIcon,
   GlacierMeltingIcon,
   GlobalTemperatureIcon,
-  NotFoundIcon,
   OceanHealthIcon,
   ReforestationIcon,
   EnergySourcesIcon,
@@ -37,10 +36,6 @@ export const CATEGORY_ICONS: Record<EcoCategory, IconComponent> = {
   'energy-sources': EnergySourcesIcon,
   'water-footprint': WaterFootprintIcon,
 };
-
-export { SiteLogoIcon };
-
-export { NotFoundIcon };
 
 export function getCategoryIcon(slug: string): IconComponent {
   const icon = CATEGORY_ICONS[slug as EcoCategory];

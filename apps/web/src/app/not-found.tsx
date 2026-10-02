@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 
-import { NotFoundIcon } from '@/lib/categoryIcon';
+import { NotFoundIcon } from '@/components/icons';
 
 export const metadata: Metadata = {
   title: 'Page Not Found',
