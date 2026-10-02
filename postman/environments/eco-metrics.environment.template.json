@@ -1,0 +1,12 @@
+{
+  "id": "eco-metrics-environment-template",
+  "name": "eco-metrics — template",
+  "values": [
+    {
+      "key": "CDO_TOKEN",
+      "value": "REPLACE_WITH_YOUR_TOKEN",
+      "enabled": true
+    }
+  ],
+  "_postman_variable_scope": "environment"
+}

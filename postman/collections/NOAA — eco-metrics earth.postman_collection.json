@@ -340,7 +340,7 @@
           "response": []
         },
         {
-          "name": "Temperatura del agua — Enero 2024 (New York Battery)",
+          "name": "Temperatura del agua — Junio 2024 (New York Battery)",
           "request": {
             "method": "GET",
             "header": [],
@@ -892,7 +892,7 @@
             "header": [
               {
                 "key": "User-Agent",
-                "value": "(eco-metrics.earth, contact@eco-metrics.earth)",
+                "value": "(eco-metrics.earth, mafmaggot@gmail.com)",
                 "description": "Obligatorio — NWS rechaza requests sin User-Agent descriptivo"
               }
             ],
@@ -913,7 +913,7 @@
             "header": [
               {
                 "key": "User-Agent",
-                "value": "(eco-metrics.earth, contact@eco-metrics.earth)"
+                "value": "(eco-metrics.earth, mafmaggot@gmail.com)"
               }
             ],
             "url": {
@@ -933,7 +933,7 @@
             "header": [
               {
                 "key": "User-Agent",
-                "value": "(eco-metrics.earth, contact@eco-metrics.earth)"
+                "value": "(eco-metrics.earth, mafmaggot@gmail.com)"
               }
             ],
             "url": {
@@ -960,7 +960,7 @@
             "header": [
               {
                 "key": "User-Agent",
-                "value": "(eco-metrics.earth, contact@eco-metrics.earth)"
+                "value": "(eco-metrics.earth, mafmaggot@gmail.com)"
               }
             ],
             "url": {
@@ -991,7 +991,7 @@
             "header": [
               {
                 "key": "User-Agent",
-                "value": "(eco-metrics.earth, contact@eco-metrics.earth)"
+                "value": "(eco-metrics.earth, mafmaggot@gmail.com)"
               }
             ],
             "url": {
@@ -1022,7 +1022,7 @@
             "header": [
               {
                 "key": "User-Agent",
-                "value": "(eco-metrics.earth, contact@eco-metrics.earth)"
+                "value": "(eco-metrics.earth, mafmaggot@gmail.com)"
               }
             ],
             "url": {
@@ -1049,7 +1049,7 @@
             "header": [
               {
                 "key": "User-Agent",
-                "value": "(eco-metrics.earth, contact@eco-metrics.earth)"
+                "value": "(eco-metrics.earth, mafmaggot@gmail.com)"
               }
             ],
             "url": {

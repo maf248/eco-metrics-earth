@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
-import { SiteLogoIcon } from '@/lib/categoryIcon';
+import { SiteLogoIcon } from '@/components/icons';
 import { NAV_ITEMS } from '@/lib/navItems';
 import { normalise } from '@/lib/path';
 

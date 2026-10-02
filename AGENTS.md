@@ -247,21 +247,21 @@ eco-metrics-earth/
 │   │   └── src/
 │   │       ├── app/             # AppModule, AppController, AppService
 │   │       ├── health/          # HealthController (GET /api/v1/health)
-│   │       ├── modules/         # Future: per-category eco modules
-│   │       ├── common/          # Shared pipes, guards, interceptors, filters
+│   │       ├── modules/         # Per-category eco modules (currently `water-footprint`)
+│   │       ├── common/          # DTOs, catch-all 404 fallback, global exception filter
 │   │       ├── config/          # AppConfigService (typed env vars)
 │   │       └── main.ts          # Bootstrap — port 3001, prefix /api/v1
 │   └── web/                     # Next.js App Router
 │       └── src/
 │           ├── app/             # Routes, layouts, pages (App Router)
 │           ├── components/      # Reusable UI components
-│           ├── lib/             # Utilities and helpers
-│           └── types/           # Frontend-local TypeScript types
+│           └── lib/             # Utilities and helpers
 ├── packages/
 │   └── shared/                  # @eco-metrics/shared
 │       └── src/lib/
 │           ├── api-response.ts  # ApiResponse<T> interface
-│           └── eco-category.ts  # EcoCategory type + ECO_CATEGORIES const
+│           ├── eco-category.ts  # EcoCategory type + ECO_CATEGORIES const
+│           └── water-footprint.ts  # Water-footprint product, category and water-type types
 ├── .nvmrc                       # Node.js v24
 ├── nx.json                      # NX workspace config (cache, targets)
 ├── tsconfig.base.json           # Root TS config + path aliases
