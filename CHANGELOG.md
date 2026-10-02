@@ -1,3 +1,9 @@
+## [2.6.2](https://github.com/maf248/eco-metrics-earth/compare/v2.6.1...v2.6.2) (2026-10-02)
+
+### Bug Fixes
+
+* **postman:** fix broken slugs and dead charts, reorganize into collections/ and environments/ ([91421d9](https://github.com/maf248/eco-metrics-earth/commit/91421d90a827a5034bfab7a51201e056ba05d3a0))
+
 ## [2.6.1](https://github.com/maf248/eco-metrics-earth/compare/v2.6.0...v2.6.1) (2026-09-30)
 
 ### Bug Fixes
