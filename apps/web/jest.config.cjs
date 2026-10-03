@@ -14,15 +14,15 @@ const config = {
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
   coverageDirectory: '../../coverage/apps/web',
   coverageReporters: ['text', 'lcov'],
-  // Branch threshold set to 75% (below the current ~79%) because several icon
-  // components have untested prop branches (title vs aria-hidden pattern).
-  // Raise to 80% once those branches are covered.
+  // Branch threshold at 80% — the icon components' `title` prop branches
+  // (aria-labelledby vs aria-hidden) are covered by the barrel icon tests
+  // in __tests__/components/icons/.
   coverageThreshold: {
     global: {
       statements: 80,
       functions: 80,
       lines: 80,
-      branches: 75,
+      branches: 80,
     },
   },
   collectCoverage: true,

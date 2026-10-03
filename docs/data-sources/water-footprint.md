@@ -2,7 +2,7 @@
 
 Tracks the water consumed to produce everyday goods — food, textiles, technology, vehicles, construction materials (product water footprint, in liters per unit or per kg) — which is the core concept of this category. Also covers the macro context: freshwater availability, withdrawals, and water stress by country and sector (agriculture, industry, municipal).
 
-> Note: World Bank API also appears in `co2-emissions.md` and `waste-recycling.md`. The product-level dataset plan (static JSON of ~30–50 products) lives in `docs/planning/water-footprint.md`.
+> Note: World Bank API also appears in `co2-emissions.md` and `waste-recycling.md`. The product-level dataset plan (static JSON of 60 products) lives in `docs/planning/water-footprint.md`.
 
 ## Providers
 

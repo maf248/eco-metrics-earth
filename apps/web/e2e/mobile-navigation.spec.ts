@@ -58,7 +58,7 @@ test.describe('Bottom navigation bar on mobile', { tag: '@smoke' }, () => {
     await page.goto('/');
 
     // Each NavLink is a <li> inside the <ul> — count the links
-    const navLinks = page.locator('ul[aria-label="Navigation items"] li a');
+    const navLinks = page.locator(selectors.navList).locator('li a');
     await expect(navLinks).toHaveCount(12);
   });
 
@@ -90,7 +90,7 @@ test.describe('Bottom navigation bar on mobile', { tag: '@smoke' }, () => {
     // and a 393px viewport, there is overflow. The right gradient
     // should be visible when scroll is at the start (canScrollRight = true).
     const rightGradient = page
-      .locator('ul[aria-label="Navigation items"]')
+      .locator(selectors.navList)
       .locator('..')
       .locator('[aria-hidden="true"].bg-gradient-to-l');
     await expect(rightGradient).toBeVisible();

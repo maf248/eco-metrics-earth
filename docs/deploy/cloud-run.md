@@ -167,7 +167,7 @@ curl -s "$RUN_URL/api/v1/water-footprint/products" | head -c 300
 ## 14. Optional path-filter verification pushes
 
 - Push a change that touches only `apps/web/**` → the **Deploy API** workflow should **not** run, and Vercel should build as usual.
-- Push a change that touches only `apps/api/**`, `packages/shared/**`, `Dockerfile`, `.dockerignore`, or `.github/workflows/deploy-api.yml` → the **Deploy API** workflow should run, and Vercel should skip the build.
+- Push a change that touches only `apps/api/**`, `packages/shared/**`, `Dockerfile`, `.dockerignore`, `.github/workflows/deploy-api.yml`, or any root build manifest (`package.json`, `package-lock.json`, `.npmrc`, `.nvmrc`, `nx.json`, `tsconfig.base.json`, `tsconfig.json`) → the **Deploy API** workflow should run, and Vercel should skip the build.
 
 ## 15. Cost controls and free tier
 
@@ -185,15 +185,15 @@ Recommended safeguards:
 - Artifact Registry: the first 0.5 GB-month is free. Each image is ~100–120 MB compressed, so several SHA tags fit. Add an occasional cleanup policy or manual cleanup to keep storage trivial.
 - Cloud Logging: 30-day retention on the free tier, with 50 GB/month ingestion free.
 
-## 16. Post-deploy follow-up
+## 16. Post-deploy follow-up (done)
 
-After the first deploy, a small follow-up change adds the production Swagger server entry:
+The production Swagger server entry is already in place in `apps/api/src/main.ts`:
 
 ```typescript
-.addServer('https://<run-url>', 'production (Cloud Run)')
+.addServer('https://eco-metrics-api-fexi2yqv2q-uc.a.run.app', 'production (Cloud Run)')
 ```
 
-This is tracked as task 10.1 in the OpenSpec change and is cosmetic only (Swagger is disabled in production by `SWAGGER_ENABLED=false`).
+It was task 10.1 of the original OpenSpec change and is cosmetic only (Swagger is disabled in production by `SWAGGER_ENABLED=false`).
 
 ## Troubleshooting
 
