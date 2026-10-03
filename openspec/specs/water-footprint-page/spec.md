@@ -8,7 +8,7 @@ Defines the water-footprint category page (`/water-footprint/`, rendered through
 
 ### Requirement: The water-footprint page fetches the full product dataset server-side from the BFF
 
-The `/water-footprint/` page (rendered through the `[category]` route segment) SHALL fetch `GET {API_BASE_URL}/water-footprint/products` — with **no** category query parameter — inside a Server Component, via a dedicated helper in `apps/web/src/lib/water-footprint.ts`. The helper SHALL return `{ products: WaterFootprintProduct[]; fetchFailed: boolean }` and SHALL never throw. The fetched array SHALL be passed as props to the page content; filtering and sorting happen client-side and MUST NOT trigger additional requests.
+The `/water-footprint/` page (rendered through the `[category]` route segment) SHALL fetch `GET {API_BASE_URL}/water-footprint/products` — with **no** category query parameter — inside a Server Component, via a dedicated helper in `apps/web/src/lib/waterFootprint.ts`. The helper SHALL return `{ products: WaterFootprintProduct[]; fetchFailed: boolean }` and SHALL never throw. The fetched array SHALL be passed as props to the page content; filtering and sorting happen client-side and MUST NOT trigger additional requests.
 
 #### Scenario: Healthy BFF
 

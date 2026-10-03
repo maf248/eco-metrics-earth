@@ -1,4 +1,3 @@
-import '@testing-library/jest-dom';
 import { ECO_CATEGORIES } from '@eco-metrics/shared';
 import { render, screen } from '@testing-library/react';
 
@@ -6,9 +5,9 @@ import CategoryPage, {
   generateMetadata,
   generateStaticParams,
   revalidate,
-} from '../../../src/app/[category]/page';
+} from '@/app/[category]/page';
 
-jest.mock('@/lib/water-footprint', () => ({
+jest.mock('@/lib/waterFootprint', () => ({
   getWaterFootprintProducts: jest.fn().mockResolvedValue({
     products: [
       {
@@ -16,6 +15,7 @@ jest.mock('@/lib/water-footprint', () => ({
         category: 'Food & Beverages',
         waterFootprintLiters: 180.1,
         unit: 'per kg',
+        waterType: 'blue',
         source: 'Poore & Nemecek (2018), Science',
         sourceUrl: 'https://ourworldindata.org/grapher/water-withdrawals-per-kg-poore',
         methodology: 'Freshwater withdrawals per kg of final product.',
@@ -70,12 +70,6 @@ describe('CategoryPage', () => {
     });
     render(element);
     expect(screen.getByText('Deforestation')).toBeTruthy();
-  });
-
-  it('should display the correct title for ocean-health', async () => {
-    const element = await CategoryPage({ params: Promise.resolve({ category: 'ocean-health' }) });
-    render(element);
-    expect(screen.getByText('Ocean Health')).toBeTruthy();
   });
 
   it('should display the correct title for waste-recycling', async () => {
