@@ -1,4 +1,4 @@
-import manifest from '../../src/app/manifest';
+import manifest from '@/app/manifest';
 
 describe('manifest', () => {
   it('should have name "eco-metrics earth"', () => {

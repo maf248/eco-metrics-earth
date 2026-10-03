@@ -1,4 +1,4 @@
-import robots from '../../src/app/robots';
+import robots from '@/app/robots';
 
 describe('robots', () => {
   it('should allow all user-agents', () => {

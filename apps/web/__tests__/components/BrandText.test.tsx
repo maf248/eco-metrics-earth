@@ -1,6 +1,6 @@
 import { act, render } from '@testing-library/react';
 
-import BrandText from '../../src/components/BrandText';
+import BrandText from '@/components/BrandText';
 
 // ─── matchMedia mock ──────────────────────────────────────────────────────────
 

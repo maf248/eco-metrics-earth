@@ -1,7 +1,7 @@
 import { act, render, renderHook, screen } from '@testing-library/react';
 import React, { PropsWithChildren } from 'react';
 
-import ThemeProvider, { useTheme } from '../../src/components/ThemeProvider';
+import ThemeProvider, { useTheme } from '@/components/ThemeProvider';
 
 const localStorageMock = (() => {
   let store: Record<string, string> = {};

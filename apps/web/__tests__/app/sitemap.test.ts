@@ -1,6 +1,6 @@
 import { ECO_CATEGORIES } from '@eco-metrics/shared';
 
-import sitemap from '../../src/app/sitemap';
+import sitemap from '@/app/sitemap';
 
 describe('sitemap', () => {
   it('should return 12 entries (1 home + 11 categories)', () => {

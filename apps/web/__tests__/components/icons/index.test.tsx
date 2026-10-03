@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react';
 
-import * as Icons from '../../../src/components/icons';
+import * as Icons from '@/components/icons';
 
 const EXPECTED_ICONS = [
   'AirQualityIcon',

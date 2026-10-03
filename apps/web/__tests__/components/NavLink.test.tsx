@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 
-import { AirQualityIcon } from '../../src/components/icons';
-import NavLink from '../../src/components/NavLink';
+import { AirQualityIcon } from '@/components/icons';
+import NavLink from '@/components/NavLink';
 
 describe('NavLink', () => {
   it('should render the label text', () => {

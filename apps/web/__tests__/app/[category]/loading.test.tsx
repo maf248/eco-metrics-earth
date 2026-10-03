@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 
-import CategoryLoading from '../../../src/app/[category]/loading';
+import CategoryLoading from '@/app/[category]/loading';
 
 describe('CategoryLoading', () => {
   it('should render a <main> with id="main-content"', () => {
