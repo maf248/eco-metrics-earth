@@ -5,6 +5,7 @@ import prettierConfig from 'eslint-config-prettier';
 import reactHooks from 'eslint-plugin-react-hooks';
 import jsxA11y from 'eslint-plugin-jsx-a11y';
 import importX from 'eslint-plugin-import-x';
+import globals from 'globals';
 
 export default tseslint.config(
   eslint.configs.recommended,
@@ -54,17 +55,20 @@ export default tseslint.config(
     files: ['**/*.js', '**/*.cjs'],
     languageOptions: {
       sourceType: 'commonjs',
-      globals: {
-        module: 'readonly',
-        require: 'readonly',
-        exports: 'writable',
-        __dirname: 'readonly',
-        __filename: 'readonly',
-        process: 'readonly',
-      },
+      globals: { ...globals.node },
     },
     rules: {
       '@typescript-eslint/no-require-imports': 'off',
+    },
+  },
+  // Node CLI scripts: console is the intended output interface.
+  {
+    files: ['scripts/**/*.{js,cjs,mjs}'],
+    languageOptions: {
+      globals: { ...globals.node },
+    },
+    rules: {
+      'no-console': 'off',
     },
   },
   {
