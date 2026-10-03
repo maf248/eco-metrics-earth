@@ -183,7 +183,7 @@ npx nx build api
 - Coverage is measured via `collectCoverage: true` in each project's `jest.config.cjs`. Do **not** disable or lower thresholds without discussion.
 - **Global thresholds:** 80% statements / functions / lines for all three projects (`shared`, `api`, `web`).
 - **Branches — `shared`:** 80% (achievable with the current pure-function codebase).
-- **Branches — `web`:** 75% (icon components have an untested `title` prop branch that renders `aria-labelledby` vs `aria-hidden`; actual coverage sits at ~79%).
+- **Branches — `web`:** 80% (the icon `title` prop branches — `aria-labelledby` vs `aria-hidden` — are covered by the barrel icon tests in `__tests__/components/icons/`).
 - **Branches — `api`:** threshold intentionally **omitted** — NestJS decorators (`@Controller`, `@Injectable`, etc.) compiled with SWC produce phantom branches in the coverage report that cannot be exercised by unit tests.
 
 #### Snapshot tests — when and how to update
