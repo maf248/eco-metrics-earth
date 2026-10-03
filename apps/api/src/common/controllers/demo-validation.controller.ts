@@ -1,8 +1,8 @@
 import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 import { ApiBody, ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 
-import { CreateMetricDto } from './create-metric.dto';
-import { GetMetricsQueryDto } from './get-metrics-query.dto';
+import { CreateMetricDto } from '../dto/create-metric.dto';
+import { GetMetricsQueryDto } from '../dto/get-metrics-query.dto';
 
 /**
  * @deprecated MOCK CONTROLLER — will be removed when real eco modules are implemented.
