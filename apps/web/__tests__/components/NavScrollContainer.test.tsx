@@ -57,7 +57,7 @@ describe('NavScrollContainer', () => {
       fireEvent.scroll(ul);
       const affordances = document.querySelectorAll('[aria-hidden="true"]');
       expect(affordances.length).toBe(1);
-      expect(affordances[0].className).toContain('bg-gradient-to-l');
+      expect(affordances[0].className).toContain('bg-linear-to-l');
     });
 
     it('should show both affordances when scrolled to the middle', () => {
@@ -76,7 +76,7 @@ describe('NavScrollContainer', () => {
       fireEvent.scroll(ul);
       const affordances = document.querySelectorAll('[aria-hidden="true"]');
       expect(affordances.length).toBe(1);
-      expect(affordances[0].className).toContain('bg-gradient-to-r');
+      expect(affordances[0].className).toContain('bg-linear-to-r');
     });
   });
 });
@@ -135,8 +135,8 @@ describe('NavScrollContainer — vertical scroll affordances', () => {
   }
 
   // Top affordance fades downward (to-b), bottom affordance fades upward (to-t).
-  const topAffordance = () => document.querySelector('[aria-hidden="true"].bg-gradient-to-b');
-  const bottomAffordance = () => document.querySelector('[aria-hidden="true"].bg-gradient-to-t');
+  const topAffordance = () => document.querySelector('[aria-hidden="true"].bg-linear-to-b');
+  const bottomAffordance = () => document.querySelector('[aria-hidden="true"].bg-linear-to-t');
 
   it('should show no vertical affordances when content is not vertically scrollable', () => {
     render(<NavScrollContainer>{null}</NavScrollContainer>);

@@ -93,7 +93,7 @@ describe('NavLink — label rendering', () => {
     );
     const labelSpan = screen.getByText('Endangered Species');
     expect(labelSpan.className).toContain('whitespace-normal');
-    expect(labelSpan.className).toContain('break-words');
+    expect(labelSpan.className).toContain('wrap-break-word');
     // lg:truncate is correct (desktop only) — verify no bare 'truncate' class
     expect(labelSpan.className).not.toMatch(/(?<![a-z:])truncate(?!-)/);
   });

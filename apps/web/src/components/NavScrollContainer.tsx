@@ -64,7 +64,7 @@ export default function NavScrollContainer({ children }: NavScrollContainerProps
       {canScrollLeft && (
         <div
           aria-hidden="true"
-          className="lg:hidden absolute left-0 top-0 bottom-0 w-12 z-10 pointer-events-none bg-gradient-to-r from-nav-surface dark:from-nav-surface-dark to-transparent"
+          className="lg:hidden absolute left-0 top-0 bottom-0 w-12 z-10 pointer-events-none bg-linear-to-r from-nav-surface dark:from-nav-surface-dark to-transparent"
         />
       )}
 
@@ -72,7 +72,7 @@ export default function NavScrollContainer({ children }: NavScrollContainerProps
       {canScrollRight && (
         <div
           aria-hidden="true"
-          className="lg:hidden absolute right-0 top-0 bottom-0 w-12 z-10 pointer-events-none bg-gradient-to-l from-nav-surface dark:from-nav-surface-dark to-transparent"
+          className="lg:hidden absolute right-0 top-0 bottom-0 w-12 z-10 pointer-events-none bg-linear-to-l from-nav-surface dark:from-nav-surface-dark to-transparent"
         />
       )}
 
@@ -80,7 +80,7 @@ export default function NavScrollContainer({ children }: NavScrollContainerProps
       {canScrollUp && (
         <div
           aria-hidden="true"
-          className="hidden lg:block absolute left-0 right-0 top-0 h-12 z-10 pointer-events-none bg-gradient-to-b from-nav-surface dark:from-nav-surface-dark to-transparent"
+          className="hidden lg:block absolute left-0 right-0 top-0 h-12 z-10 pointer-events-none bg-linear-to-b from-nav-surface dark:from-nav-surface-dark to-transparent"
         />
       )}
 
@@ -88,7 +88,7 @@ export default function NavScrollContainer({ children }: NavScrollContainerProps
       {canScrollDown && (
         <div
           aria-hidden="true"
-          className="hidden lg:block absolute left-0 right-0 bottom-0 h-12 z-10 pointer-events-none bg-gradient-to-t from-nav-surface dark:from-nav-surface-dark to-transparent"
+          className="hidden lg:block absolute left-0 right-0 bottom-0 h-12 z-10 pointer-events-none bg-linear-to-t from-nav-surface dark:from-nav-surface-dark to-transparent"
         />
       )}
 
