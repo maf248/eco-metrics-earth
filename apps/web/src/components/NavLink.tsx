@@ -33,7 +33,7 @@ function NavLink({ href, icon: Icon, label, isActive }: NavLinkProps) {
       <span
         data-testid="nav-icon"
         className={[
-          'w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-lg p-1',
+          'w-8 h-8 shrink-0 flex items-center justify-center rounded-lg p-1',
           isActive ? 'bg-gray-400 dark:bg-white/15' : 'bg-gray-300 dark:bg-white/10',
         ].join(' ')}
       >
@@ -42,7 +42,7 @@ function NavLink({ href, icon: Icon, label, isActive }: NavLinkProps) {
           className="w-6 h-6 drop-shadow-sm dark:drop-shadow-[0_0_3px_rgba(255,255,255,0.25)]"
         />
       </span>
-      <span className="w-full text-center whitespace-normal break-words leading-tight lg:truncate lg:max-w-none lg:text-left lg:whitespace-nowrap">
+      <span className="w-full text-center whitespace-normal wrap-break-word leading-tight lg:truncate lg:max-w-none lg:text-left lg:whitespace-nowrap">
         {label}
       </span>
     </Link>

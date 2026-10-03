@@ -51,11 +51,11 @@ export default function Navbar() {
       <Link
         href="/"
         aria-label="eco-metrics earth — go to home"
-        className="hidden lg:flex items-center h-16 px-5 gap-2.5 border-b border-gray-200 dark:border-gray-800 flex-shrink-0 hover:bg-gray-50 dark:hover:bg-white/5 transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-inset"
+        className="hidden lg:flex items-center h-16 px-5 gap-2.5 border-b border-gray-200 dark:border-gray-800 shrink-0 hover:bg-gray-50 dark:hover:bg-white/5 transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-inset"
       >
         <SiteLogoIcon
           aria-hidden
-          className="w-7 h-7 flex-shrink-0 drop-shadow-sm dark:drop-shadow-[0_0_3px_rgba(255,255,255,0.25)]"
+          className="w-7 h-7 shrink-0 drop-shadow-sm dark:drop-shadow-[0_0_3px_rgba(255,255,255,0.25)]"
         />
         <BrandText />
       </Link>

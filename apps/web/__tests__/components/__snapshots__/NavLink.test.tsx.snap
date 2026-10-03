@@ -8,7 +8,7 @@ exports[`NavLink snapshots should match snapshot when active 1`] = `
     href="/air-quality"
   >
     <span
-      class="w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-lg p-1 bg-gray-400 dark:bg-white/15"
+      class="w-8 h-8 shrink-0 flex items-center justify-center rounded-lg p-1 bg-gray-400 dark:bg-white/15"
       data-testid="nav-icon"
     >
       <svg
@@ -89,7 +89,7 @@ exports[`NavLink snapshots should match snapshot when active 1`] = `
       </svg>
     </span>
     <span
-      class="w-full text-center whitespace-normal break-words leading-tight lg:truncate lg:max-w-none lg:text-left lg:whitespace-nowrap"
+      class="w-full text-center whitespace-normal wrap-break-word leading-tight lg:truncate lg:max-w-none lg:text-left lg:whitespace-nowrap"
     >
       Air Quality
     </span>
@@ -104,7 +104,7 @@ exports[`NavLink snapshots should match snapshot when inactive 1`] = `
     href="/air-quality"
   >
     <span
-      class="w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-lg p-1 bg-gray-300 dark:bg-white/10"
+      class="w-8 h-8 shrink-0 flex items-center justify-center rounded-lg p-1 bg-gray-300 dark:bg-white/10"
       data-testid="nav-icon"
     >
       <svg
@@ -185,7 +185,7 @@ exports[`NavLink snapshots should match snapshot when inactive 1`] = `
       </svg>
     </span>
     <span
-      class="w-full text-center whitespace-normal break-words leading-tight lg:truncate lg:max-w-none lg:text-left lg:whitespace-nowrap"
+      class="w-full text-center whitespace-normal wrap-break-word leading-tight lg:truncate lg:max-w-none lg:text-left lg:whitespace-nowrap"
     >
       Air Quality
     </span>
@@ -200,7 +200,7 @@ exports[`NavLink snapshots should match snapshot with a long wrapping label 1`] 
     href="/endangered-species"
   >
     <span
-      class="w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-lg p-1 bg-gray-300 dark:bg-white/10"
+      class="w-8 h-8 shrink-0 flex items-center justify-center rounded-lg p-1 bg-gray-300 dark:bg-white/10"
       data-testid="nav-icon"
     >
       <svg
@@ -281,7 +281,7 @@ exports[`NavLink snapshots should match snapshot with a long wrapping label 1`] 
       </svg>
     </span>
     <span
-      class="w-full text-center whitespace-normal break-words leading-tight lg:truncate lg:max-w-none lg:text-left lg:whitespace-nowrap"
+      class="w-full text-center whitespace-normal wrap-break-word leading-tight lg:truncate lg:max-w-none lg:text-left lg:whitespace-nowrap"
     >
       Endangered Species
     </span>

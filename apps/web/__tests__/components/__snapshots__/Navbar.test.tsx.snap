@@ -8,12 +8,12 @@ exports[`Navbar snapshots should match snapshot with an active route 1`] = `
   >
     <a
       aria-label="eco-metrics earth — go to home"
-      class="hidden lg:flex items-center h-16 px-5 gap-2.5 border-b border-gray-200 dark:border-gray-800 flex-shrink-0 hover:bg-gray-50 dark:hover:bg-white/5 transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-inset"
+      class="hidden lg:flex items-center h-16 px-5 gap-2.5 border-b border-gray-200 dark:border-gray-800 shrink-0 hover:bg-gray-50 dark:hover:bg-white/5 transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-inset"
       href="/"
     >
       <svg
         aria-hidden="true"
-        class="w-7 h-7 flex-shrink-0 drop-shadow-sm dark:drop-shadow-[0_0_3px_rgba(255,255,255,0.25)]"
+        class="w-7 h-7 shrink-0 drop-shadow-sm dark:drop-shadow-[0_0_3px_rgba(255,255,255,0.25)]"
         viewBox="0 0 511.874 511.874"
         xmlns="http://www.w3.org/2000/svg"
       >
@@ -113,7 +113,7 @@ exports[`Navbar snapshots should match snapshot with an active route 1`] = `
             href="/waste-recycling"
           >
             <span
-              class="w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-lg p-1 bg-gray-300 dark:bg-white/10"
+              class="w-8 h-8 shrink-0 flex items-center justify-center rounded-lg p-1 bg-gray-300 dark:bg-white/10"
               data-testid="nav-icon"
             >
               <svg
@@ -170,7 +170,7 @@ exports[`Navbar snapshots should match snapshot with an active route 1`] = `
               </svg>
             </span>
             <span
-              class="w-full text-center whitespace-normal break-words leading-tight lg:truncate lg:max-w-none lg:text-left lg:whitespace-nowrap"
+              class="w-full text-center whitespace-normal wrap-break-word leading-tight lg:truncate lg:max-w-none lg:text-left lg:whitespace-nowrap"
             >
               Waste & Recycling
             </span>
@@ -185,7 +185,7 @@ exports[`Navbar snapshots should match snapshot with an active route 1`] = `
             href="/air-quality"
           >
             <span
-              class="w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-lg p-1 bg-gray-400 dark:bg-white/15"
+              class="w-8 h-8 shrink-0 flex items-center justify-center rounded-lg p-1 bg-gray-400 dark:bg-white/15"
               data-testid="nav-icon"
             >
               <svg
@@ -266,7 +266,7 @@ exports[`Navbar snapshots should match snapshot with an active route 1`] = `
               </svg>
             </span>
             <span
-              class="w-full text-center whitespace-normal break-words leading-tight lg:truncate lg:max-w-none lg:text-left lg:whitespace-nowrap"
+              class="w-full text-center whitespace-normal wrap-break-word leading-tight lg:truncate lg:max-w-none lg:text-left lg:whitespace-nowrap"
             >
               Air Quality
             </span>
@@ -280,7 +280,7 @@ exports[`Navbar snapshots should match snapshot with an active route 1`] = `
             href="/endangered-species"
           >
             <span
-              class="w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-lg p-1 bg-gray-300 dark:bg-white/10"
+              class="w-8 h-8 shrink-0 flex items-center justify-center rounded-lg p-1 bg-gray-300 dark:bg-white/10"
               data-testid="nav-icon"
             >
               <svg
@@ -350,7 +350,7 @@ exports[`Navbar snapshots should match snapshot with an active route 1`] = `
               </svg>
             </span>
             <span
-              class="w-full text-center whitespace-normal break-words leading-tight lg:truncate lg:max-w-none lg:text-left lg:whitespace-nowrap"
+              class="w-full text-center whitespace-normal wrap-break-word leading-tight lg:truncate lg:max-w-none lg:text-left lg:whitespace-nowrap"
             >
               Endangered Species
             </span>
@@ -364,7 +364,7 @@ exports[`Navbar snapshots should match snapshot with an active route 1`] = `
             href="/global-temperature"
           >
             <span
-              class="w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-lg p-1 bg-gray-300 dark:bg-white/10"
+              class="w-8 h-8 shrink-0 flex items-center justify-center rounded-lg p-1 bg-gray-300 dark:bg-white/10"
               data-testid="nav-icon"
             >
               <svg
@@ -510,7 +510,7 @@ exports[`Navbar snapshots should match snapshot with an active route 1`] = `
               </svg>
             </span>
             <span
-              class="w-full text-center whitespace-normal break-words leading-tight lg:truncate lg:max-w-none lg:text-left lg:whitespace-nowrap"
+              class="w-full text-center whitespace-normal wrap-break-word leading-tight lg:truncate lg:max-w-none lg:text-left lg:whitespace-nowrap"
             >
               Global Temperature
             </span>
@@ -524,7 +524,7 @@ exports[`Navbar snapshots should match snapshot with an active route 1`] = `
             href="/deforestation"
           >
             <span
-              class="w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-lg p-1 bg-gray-300 dark:bg-white/10"
+              class="w-8 h-8 shrink-0 flex items-center justify-center rounded-lg p-1 bg-gray-300 dark:bg-white/10"
               data-testid="nav-icon"
             >
               <svg
@@ -650,7 +650,7 @@ exports[`Navbar snapshots should match snapshot with an active route 1`] = `
               </svg>
             </span>
             <span
-              class="w-full text-center whitespace-normal break-words leading-tight lg:truncate lg:max-w-none lg:text-left lg:whitespace-nowrap"
+              class="w-full text-center whitespace-normal wrap-break-word leading-tight lg:truncate lg:max-w-none lg:text-left lg:whitespace-nowrap"
             >
               Deforestation
             </span>
@@ -664,7 +664,7 @@ exports[`Navbar snapshots should match snapshot with an active route 1`] = `
             href="/ocean-health"
           >
             <span
-              class="w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-lg p-1 bg-gray-300 dark:bg-white/10"
+              class="w-8 h-8 shrink-0 flex items-center justify-center rounded-lg p-1 bg-gray-300 dark:bg-white/10"
               data-testid="nav-icon"
             >
               <svg
@@ -764,7 +764,7 @@ exports[`Navbar snapshots should match snapshot with an active route 1`] = `
               </svg>
             </span>
             <span
-              class="w-full text-center whitespace-normal break-words leading-tight lg:truncate lg:max-w-none lg:text-left lg:whitespace-nowrap"
+              class="w-full text-center whitespace-normal wrap-break-word leading-tight lg:truncate lg:max-w-none lg:text-left lg:whitespace-nowrap"
             >
               Ocean Health
             </span>
@@ -778,7 +778,7 @@ exports[`Navbar snapshots should match snapshot with an active route 1`] = `
             href="/co2-emissions"
           >
             <span
-              class="w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-lg p-1 bg-gray-300 dark:bg-white/10"
+              class="w-8 h-8 shrink-0 flex items-center justify-center rounded-lg p-1 bg-gray-300 dark:bg-white/10"
               data-testid="nav-icon"
             >
               <svg
@@ -849,7 +849,7 @@ exports[`Navbar snapshots should match snapshot with an active route 1`] = `
               </svg>
             </span>
             <span
-              class="w-full text-center whitespace-normal break-words leading-tight lg:truncate lg:max-w-none lg:text-left lg:whitespace-nowrap"
+              class="w-full text-center whitespace-normal wrap-break-word leading-tight lg:truncate lg:max-w-none lg:text-left lg:whitespace-nowrap"
             >
               CO2 Emissions
             </span>
@@ -863,7 +863,7 @@ exports[`Navbar snapshots should match snapshot with an active route 1`] = `
             href="/reforestation"
           >
             <span
-              class="w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-lg p-1 bg-gray-300 dark:bg-white/10"
+              class="w-8 h-8 shrink-0 flex items-center justify-center rounded-lg p-1 bg-gray-300 dark:bg-white/10"
               data-testid="nav-icon"
             >
               <svg
@@ -1027,7 +1027,7 @@ exports[`Navbar snapshots should match snapshot with an active route 1`] = `
               </svg>
             </span>
             <span
-              class="w-full text-center whitespace-normal break-words leading-tight lg:truncate lg:max-w-none lg:text-left lg:whitespace-nowrap"
+              class="w-full text-center whitespace-normal wrap-break-word leading-tight lg:truncate lg:max-w-none lg:text-left lg:whitespace-nowrap"
             >
               Reforestation
             </span>
@@ -1041,7 +1041,7 @@ exports[`Navbar snapshots should match snapshot with an active route 1`] = `
             href="/glacier-melting"
           >
             <span
-              class="w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-lg p-1 bg-gray-300 dark:bg-white/10"
+              class="w-8 h-8 shrink-0 flex items-center justify-center rounded-lg p-1 bg-gray-300 dark:bg-white/10"
               data-testid="nav-icon"
             >
               <svg
@@ -1087,7 +1087,7 @@ exports[`Navbar snapshots should match snapshot with an active route 1`] = `
               </svg>
             </span>
             <span
-              class="w-full text-center whitespace-normal break-words leading-tight lg:truncate lg:max-w-none lg:text-left lg:whitespace-nowrap"
+              class="w-full text-center whitespace-normal wrap-break-word leading-tight lg:truncate lg:max-w-none lg:text-left lg:whitespace-nowrap"
             >
               Glacier Melting
             </span>
@@ -1101,7 +1101,7 @@ exports[`Navbar snapshots should match snapshot with an active route 1`] = `
             href="/plastic-pollution"
           >
             <span
-              class="w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-lg p-1 bg-gray-300 dark:bg-white/10"
+              class="w-8 h-8 shrink-0 flex items-center justify-center rounded-lg p-1 bg-gray-300 dark:bg-white/10"
               data-testid="nav-icon"
             >
               <svg
@@ -1201,7 +1201,7 @@ exports[`Navbar snapshots should match snapshot with an active route 1`] = `
               </svg>
             </span>
             <span
-              class="w-full text-center whitespace-normal break-words leading-tight lg:truncate lg:max-w-none lg:text-left lg:whitespace-nowrap"
+              class="w-full text-center whitespace-normal wrap-break-word leading-tight lg:truncate lg:max-w-none lg:text-left lg:whitespace-nowrap"
             >
               Plastic Pollution
             </span>
@@ -1215,7 +1215,7 @@ exports[`Navbar snapshots should match snapshot with an active route 1`] = `
             href="/energy-sources"
           >
             <span
-              class="w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-lg p-1 bg-gray-300 dark:bg-white/10"
+              class="w-8 h-8 shrink-0 flex items-center justify-center rounded-lg p-1 bg-gray-300 dark:bg-white/10"
               data-testid="nav-icon"
             >
               <svg
@@ -1268,7 +1268,7 @@ exports[`Navbar snapshots should match snapshot with an active route 1`] = `
               </svg>
             </span>
             <span
-              class="w-full text-center whitespace-normal break-words leading-tight lg:truncate lg:max-w-none lg:text-left lg:whitespace-nowrap"
+              class="w-full text-center whitespace-normal wrap-break-word leading-tight lg:truncate lg:max-w-none lg:text-left lg:whitespace-nowrap"
             >
               Energy Sources
             </span>
@@ -1282,7 +1282,7 @@ exports[`Navbar snapshots should match snapshot with an active route 1`] = `
             href="/water-footprint"
           >
             <span
-              class="w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-lg p-1 bg-gray-300 dark:bg-white/10"
+              class="w-8 h-8 shrink-0 flex items-center justify-center rounded-lg p-1 bg-gray-300 dark:bg-white/10"
               data-testid="nav-icon"
             >
               <svg
@@ -1350,7 +1350,7 @@ exports[`Navbar snapshots should match snapshot with an active route 1`] = `
               </svg>
             </span>
             <span
-              class="w-full text-center whitespace-normal break-words leading-tight lg:truncate lg:max-w-none lg:text-left lg:whitespace-nowrap"
+              class="w-full text-center whitespace-normal wrap-break-word leading-tight lg:truncate lg:max-w-none lg:text-left lg:whitespace-nowrap"
             >
               Water Footprint
             </span>
@@ -1370,12 +1370,12 @@ exports[`Navbar snapshots should match snapshot with no active route 1`] = `
   >
     <a
       aria-label="eco-metrics earth — go to home"
-      class="hidden lg:flex items-center h-16 px-5 gap-2.5 border-b border-gray-200 dark:border-gray-800 flex-shrink-0 hover:bg-gray-50 dark:hover:bg-white/5 transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-inset"
+      class="hidden lg:flex items-center h-16 px-5 gap-2.5 border-b border-gray-200 dark:border-gray-800 shrink-0 hover:bg-gray-50 dark:hover:bg-white/5 transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-inset"
       href="/"
     >
       <svg
         aria-hidden="true"
-        class="w-7 h-7 flex-shrink-0 drop-shadow-sm dark:drop-shadow-[0_0_3px_rgba(255,255,255,0.25)]"
+        class="w-7 h-7 shrink-0 drop-shadow-sm dark:drop-shadow-[0_0_3px_rgba(255,255,255,0.25)]"
         viewBox="0 0 511.874 511.874"
         xmlns="http://www.w3.org/2000/svg"
       >
@@ -1475,7 +1475,7 @@ exports[`Navbar snapshots should match snapshot with no active route 1`] = `
             href="/waste-recycling"
           >
             <span
-              class="w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-lg p-1 bg-gray-300 dark:bg-white/10"
+              class="w-8 h-8 shrink-0 flex items-center justify-center rounded-lg p-1 bg-gray-300 dark:bg-white/10"
               data-testid="nav-icon"
             >
               <svg
@@ -1532,7 +1532,7 @@ exports[`Navbar snapshots should match snapshot with no active route 1`] = `
               </svg>
             </span>
             <span
-              class="w-full text-center whitespace-normal break-words leading-tight lg:truncate lg:max-w-none lg:text-left lg:whitespace-nowrap"
+              class="w-full text-center whitespace-normal wrap-break-word leading-tight lg:truncate lg:max-w-none lg:text-left lg:whitespace-nowrap"
             >
               Waste & Recycling
             </span>
@@ -1546,7 +1546,7 @@ exports[`Navbar snapshots should match snapshot with no active route 1`] = `
             href="/air-quality"
           >
             <span
-              class="w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-lg p-1 bg-gray-300 dark:bg-white/10"
+              class="w-8 h-8 shrink-0 flex items-center justify-center rounded-lg p-1 bg-gray-300 dark:bg-white/10"
               data-testid="nav-icon"
             >
               <svg
@@ -1627,7 +1627,7 @@ exports[`Navbar snapshots should match snapshot with no active route 1`] = `
               </svg>
             </span>
             <span
-              class="w-full text-center whitespace-normal break-words leading-tight lg:truncate lg:max-w-none lg:text-left lg:whitespace-nowrap"
+              class="w-full text-center whitespace-normal wrap-break-word leading-tight lg:truncate lg:max-w-none lg:text-left lg:whitespace-nowrap"
             >
               Air Quality
             </span>
@@ -1641,7 +1641,7 @@ exports[`Navbar snapshots should match snapshot with no active route 1`] = `
             href="/endangered-species"
           >
             <span
-              class="w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-lg p-1 bg-gray-300 dark:bg-white/10"
+              class="w-8 h-8 shrink-0 flex items-center justify-center rounded-lg p-1 bg-gray-300 dark:bg-white/10"
               data-testid="nav-icon"
             >
               <svg
@@ -1711,7 +1711,7 @@ exports[`Navbar snapshots should match snapshot with no active route 1`] = `
               </svg>
             </span>
             <span
-              class="w-full text-center whitespace-normal break-words leading-tight lg:truncate lg:max-w-none lg:text-left lg:whitespace-nowrap"
+              class="w-full text-center whitespace-normal wrap-break-word leading-tight lg:truncate lg:max-w-none lg:text-left lg:whitespace-nowrap"
             >
               Endangered Species
             </span>
@@ -1725,7 +1725,7 @@ exports[`Navbar snapshots should match snapshot with no active route 1`] = `
             href="/global-temperature"
           >
             <span
-              class="w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-lg p-1 bg-gray-300 dark:bg-white/10"
+              class="w-8 h-8 shrink-0 flex items-center justify-center rounded-lg p-1 bg-gray-300 dark:bg-white/10"
               data-testid="nav-icon"
             >
               <svg
@@ -1871,7 +1871,7 @@ exports[`Navbar snapshots should match snapshot with no active route 1`] = `
               </svg>
             </span>
             <span
-              class="w-full text-center whitespace-normal break-words leading-tight lg:truncate lg:max-w-none lg:text-left lg:whitespace-nowrap"
+              class="w-full text-center whitespace-normal wrap-break-word leading-tight lg:truncate lg:max-w-none lg:text-left lg:whitespace-nowrap"
             >
               Global Temperature
             </span>
@@ -1885,7 +1885,7 @@ exports[`Navbar snapshots should match snapshot with no active route 1`] = `
             href="/deforestation"
           >
             <span
-              class="w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-lg p-1 bg-gray-300 dark:bg-white/10"
+              class="w-8 h-8 shrink-0 flex items-center justify-center rounded-lg p-1 bg-gray-300 dark:bg-white/10"
               data-testid="nav-icon"
             >
               <svg
@@ -2011,7 +2011,7 @@ exports[`Navbar snapshots should match snapshot with no active route 1`] = `
               </svg>
             </span>
             <span
-              class="w-full text-center whitespace-normal break-words leading-tight lg:truncate lg:max-w-none lg:text-left lg:whitespace-nowrap"
+              class="w-full text-center whitespace-normal wrap-break-word leading-tight lg:truncate lg:max-w-none lg:text-left lg:whitespace-nowrap"
             >
               Deforestation
             </span>
@@ -2025,7 +2025,7 @@ exports[`Navbar snapshots should match snapshot with no active route 1`] = `
             href="/ocean-health"
           >
             <span
-              class="w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-lg p-1 bg-gray-300 dark:bg-white/10"
+              class="w-8 h-8 shrink-0 flex items-center justify-center rounded-lg p-1 bg-gray-300 dark:bg-white/10"
               data-testid="nav-icon"
             >
               <svg
@@ -2125,7 +2125,7 @@ exports[`Navbar snapshots should match snapshot with no active route 1`] = `
               </svg>
             </span>
             <span
-              class="w-full text-center whitespace-normal break-words leading-tight lg:truncate lg:max-w-none lg:text-left lg:whitespace-nowrap"
+              class="w-full text-center whitespace-normal wrap-break-word leading-tight lg:truncate lg:max-w-none lg:text-left lg:whitespace-nowrap"
             >
               Ocean Health
             </span>
@@ -2139,7 +2139,7 @@ exports[`Navbar snapshots should match snapshot with no active route 1`] = `
             href="/co2-emissions"
           >
             <span
-              class="w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-lg p-1 bg-gray-300 dark:bg-white/10"
+              class="w-8 h-8 shrink-0 flex items-center justify-center rounded-lg p-1 bg-gray-300 dark:bg-white/10"
               data-testid="nav-icon"
             >
               <svg
@@ -2210,7 +2210,7 @@ exports[`Navbar snapshots should match snapshot with no active route 1`] = `
               </svg>
             </span>
             <span
-              class="w-full text-center whitespace-normal break-words leading-tight lg:truncate lg:max-w-none lg:text-left lg:whitespace-nowrap"
+              class="w-full text-center whitespace-normal wrap-break-word leading-tight lg:truncate lg:max-w-none lg:text-left lg:whitespace-nowrap"
             >
               CO2 Emissions
             </span>
@@ -2224,7 +2224,7 @@ exports[`Navbar snapshots should match snapshot with no active route 1`] = `
             href="/reforestation"
           >
             <span
-              class="w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-lg p-1 bg-gray-300 dark:bg-white/10"
+              class="w-8 h-8 shrink-0 flex items-center justify-center rounded-lg p-1 bg-gray-300 dark:bg-white/10"
               data-testid="nav-icon"
             >
               <svg
@@ -2388,7 +2388,7 @@ exports[`Navbar snapshots should match snapshot with no active route 1`] = `
               </svg>
             </span>
             <span
-              class="w-full text-center whitespace-normal break-words leading-tight lg:truncate lg:max-w-none lg:text-left lg:whitespace-nowrap"
+              class="w-full text-center whitespace-normal wrap-break-word leading-tight lg:truncate lg:max-w-none lg:text-left lg:whitespace-nowrap"
             >
               Reforestation
             </span>
@@ -2402,7 +2402,7 @@ exports[`Navbar snapshots should match snapshot with no active route 1`] = `
             href="/glacier-melting"
           >
             <span
-              class="w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-lg p-1 bg-gray-300 dark:bg-white/10"
+              class="w-8 h-8 shrink-0 flex items-center justify-center rounded-lg p-1 bg-gray-300 dark:bg-white/10"
               data-testid="nav-icon"
             >
               <svg
@@ -2448,7 +2448,7 @@ exports[`Navbar snapshots should match snapshot with no active route 1`] = `
               </svg>
             </span>
             <span
-              class="w-full text-center whitespace-normal break-words leading-tight lg:truncate lg:max-w-none lg:text-left lg:whitespace-nowrap"
+              class="w-full text-center whitespace-normal wrap-break-word leading-tight lg:truncate lg:max-w-none lg:text-left lg:whitespace-nowrap"
             >
               Glacier Melting
             </span>
@@ -2462,7 +2462,7 @@ exports[`Navbar snapshots should match snapshot with no active route 1`] = `
             href="/plastic-pollution"
           >
             <span
-              class="w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-lg p-1 bg-gray-300 dark:bg-white/10"
+              class="w-8 h-8 shrink-0 flex items-center justify-center rounded-lg p-1 bg-gray-300 dark:bg-white/10"
               data-testid="nav-icon"
             >
               <svg
@@ -2562,7 +2562,7 @@ exports[`Navbar snapshots should match snapshot with no active route 1`] = `
               </svg>
             </span>
             <span
-              class="w-full text-center whitespace-normal break-words leading-tight lg:truncate lg:max-w-none lg:text-left lg:whitespace-nowrap"
+              class="w-full text-center whitespace-normal wrap-break-word leading-tight lg:truncate lg:max-w-none lg:text-left lg:whitespace-nowrap"
             >
               Plastic Pollution
             </span>
@@ -2576,7 +2576,7 @@ exports[`Navbar snapshots should match snapshot with no active route 1`] = `
             href="/energy-sources"
           >
             <span
-              class="w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-lg p-1 bg-gray-300 dark:bg-white/10"
+              class="w-8 h-8 shrink-0 flex items-center justify-center rounded-lg p-1 bg-gray-300 dark:bg-white/10"
               data-testid="nav-icon"
             >
               <svg
@@ -2629,7 +2629,7 @@ exports[`Navbar snapshots should match snapshot with no active route 1`] = `
               </svg>
             </span>
             <span
-              class="w-full text-center whitespace-normal break-words leading-tight lg:truncate lg:max-w-none lg:text-left lg:whitespace-nowrap"
+              class="w-full text-center whitespace-normal wrap-break-word leading-tight lg:truncate lg:max-w-none lg:text-left lg:whitespace-nowrap"
             >
               Energy Sources
             </span>
@@ -2643,7 +2643,7 @@ exports[`Navbar snapshots should match snapshot with no active route 1`] = `
             href="/water-footprint"
           >
             <span
-              class="w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-lg p-1 bg-gray-300 dark:bg-white/10"
+              class="w-8 h-8 shrink-0 flex items-center justify-center rounded-lg p-1 bg-gray-300 dark:bg-white/10"
               data-testid="nav-icon"
             >
               <svg
@@ -2711,7 +2711,7 @@ exports[`Navbar snapshots should match snapshot with no active route 1`] = `
               </svg>
             </span>
             <span
-              class="w-full text-center whitespace-normal break-words leading-tight lg:truncate lg:max-w-none lg:text-left lg:whitespace-nowrap"
+              class="w-full text-center whitespace-normal wrap-break-word leading-tight lg:truncate lg:max-w-none lg:text-left lg:whitespace-nowrap"
             >
               Water Footprint
             </span>

@@ -92,7 +92,7 @@ test.describe('Bottom navigation bar on mobile', { tag: '@smoke' }, () => {
     const rightGradient = page
       .locator(selectors.navList)
       .locator('..')
-      .locator('[aria-hidden="true"].bg-gradient-to-l');
+      .locator('[aria-hidden="true"].bg-linear-to-l');
     await expect(rightGradient).toBeVisible();
   });
 });
