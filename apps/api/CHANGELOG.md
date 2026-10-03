@@ -1,3 +1,9 @@
+## [2.7.0](https://github.com/maf248/eco-metrics-earth/compare/api-v2.6.1...api-v2.7.0) (2026-10-03)
+
+### Features
+
+* **api:** add OWID data foundation layer ([1ebdbe0](https://github.com/maf248/eco-metrics-earth/commit/1ebdbe04c8ba92893819ce661042cd6decc5d015))
+
 ## [2.6.1](https://github.com/maf248/eco-metrics-earth/compare/api-v2.6.0...api-v2.6.1) (2026-09-30)
 
 ## [2.6.0](https://github.com/maf248/eco-metrics-earth/compare/api-v2.5.0...api-v2.6.0) (2026-09-29)
