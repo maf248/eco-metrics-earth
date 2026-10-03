@@ -4,11 +4,11 @@ Este documento registra todas las propuestas de mejora identificadas para el pro
 
 ---
 
-## Estado del Proyecto (29 Sep 2026)
+## Estado del Proyecto (2 Oct 2026)
 
 | Aspecto          | Estado | Nota                                                                                                                                                                                                                   |
 | ---------------- | ------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Tests            | ✅     | 387 unit (287 web + 85 api + 15 shared) + 274 instancias E2E (5 browsers) pasando, 0 errores                                                                                                                           |
+| Tests            | ✅     | 408 unit (306 web + 87 api + 15 shared) + 274 instancias E2E (5 browsers) pasando, 0 errores                                                                                                                           |
 | Lint             | ✅     | Sin warnings                                                                                                                                                                                                           |
 | Build            | ✅     | Compila correctamente                                                                                                                                                                                                  |
 | CI               | ✅     | CI en PRs y push a cualquier branch                                                                                                                                                                                    |
@@ -16,7 +16,7 @@ Este documento registra todas las propuestas de mejora identificadas para el pro
 | Dependencias     | 🟡     | 2 advisories viven solo en `npm@11.20.0` anidado (tooling de release en CI, no va a producción) — sin fix publicado aún; al salir un 11.x parcheado, correr `npm update npm`.                                          |
 |                  |
 | Coverage         | ✅     | Medido con Jest                                                                                                                                                                                                        |
-| E2E              | ✅     | Playwright: 61 tests en 7 specs, 5 browsers, CI integrado, arranque determinista (readiness de ambos puertos)                                                                                                          |
+| E2E              | ✅     | Playwright: 64 tests en 7 specs, 5 browsers, CI integrado, arranque determinista (readiness de ambos puertos)                                                                                                          |
 | Theming          | ✅     | Light/dark mode con toggle, persistencia (localStorage) y zero-flash (spec `theme-toggle` + `theme-system`)                                                                                                            |
 | Monitoreo        | ❌     | No implementado                                                                                                                                                                                                        |
 | **Datos reales** | 🟡     | **Ningún proveedor externo conectado** — water-footprint completa (dataset estático + UI + tests E2E con datos reales); las 11 páginas restantes siguen como placeholders (ver Estrategia de Proveedores + P1)         |
@@ -78,7 +78,7 @@ Este documento registra todas las propuestas de mejora identificadas para el pro
 
 **Problema:** `apps/api/src/modules/` solo contiene `water-footprint` (dataset estático, ya con UI completa). Ninguna categoría consume datos de un proveedor externo y las 11 páginas de categoría restantes del frontend son placeholders (icono + título).
 
-**Impacto:** El BFF solo sirve `/health`, no hay datos reales.
+**Impacto:** Ninguna categoría consume datos de un proveedor externo; el BFF solo sirve el dataset estático de water-footprint y `/health`.
 
 **Decisión de fuente:** OWID como primer proveedor (ver _Estrategia de Proveedores_). Corrección respecto a la versión anterior de este plan: se **reemplaza `air-quality` por `energy-sources`** en la primera tanda — air-quality en tiempo real no tiene opción comercial-safe sin key (Open-Meteo es no comercial), mientras que CO₂/temperatura/energía se cubren 100% con OWID.
 
