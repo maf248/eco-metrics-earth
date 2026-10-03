@@ -1,7 +1,7 @@
-import { ECO_CATEGORIES } from '@eco-metrics/shared';
 import { MetadataRoute } from 'next';
 
 import { siteUrl } from '@/lib/siteUrl';
+import { ECO_CATEGORIES } from '@eco-metrics/shared';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const base = siteUrl();

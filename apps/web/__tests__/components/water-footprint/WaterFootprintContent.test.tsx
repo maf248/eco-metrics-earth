@@ -1,7 +1,7 @@
-import type { WaterFootprintProduct } from '@eco-metrics/shared';
 import { render, screen } from '@testing-library/react';
 
 import { WaterFootprintContent } from '@/components/water-footprint/WaterFootprintContent';
+import type { WaterFootprintProduct } from '@eco-metrics/shared';
 
 const product: WaterFootprintProduct = {
   product: 'Apples',

@@ -1,6 +1,5 @@
-import { ECO_CATEGORIES } from '@eco-metrics/shared';
-
 import { getCategoryTitle } from '@/lib/categoryTitle';
+import { ECO_CATEGORIES } from '@eco-metrics/shared';
 
 describe('getCategoryTitle', () => {
   it('should return "Waste & Recycling" for waste-recycling', () => {

@@ -1,6 +1,5 @@
-import type { WaterFootprintProduct } from '@eco-metrics/shared';
-
 import { WaterFootprintTable } from '@/components/water-footprint/WaterFootprintTable';
+import type { WaterFootprintProduct } from '@eco-metrics/shared';
 
 interface WaterFootprintContentProps {
   products: WaterFootprintProduct[];

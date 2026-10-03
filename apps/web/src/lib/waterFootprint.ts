@@ -1,6 +1,5 @@
-import type { WaterFootprintProduct } from '@eco-metrics/shared';
-
 import { apiBaseUrl } from '@/lib/apiBaseUrl';
+import type { WaterFootprintProduct } from '@eco-metrics/shared';
 
 interface WaterFootprintDataResult {
   products: WaterFootprintProduct[];

@@ -1,8 +1,8 @@
-import { ECO_CATEGORIES } from '@eco-metrics/shared';
 import { render, screen, within } from '@testing-library/react';
 
 import Navbar from '@/components/Navbar';
 import { getCategoryTitle } from '@/lib/categoryTitle';
+import { ECO_CATEGORIES } from '@eco-metrics/shared';
 
 const mockUsePathname = jest.fn();
 

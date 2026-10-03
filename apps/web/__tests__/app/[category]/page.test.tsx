@@ -1,4 +1,3 @@
-import { ECO_CATEGORIES } from '@eco-metrics/shared';
 import { render, screen } from '@testing-library/react';
 
 import CategoryPage, {
@@ -6,6 +5,7 @@ import CategoryPage, {
   generateStaticParams,
   revalidate,
 } from '@/app/[category]/page';
+import { ECO_CATEGORIES } from '@eco-metrics/shared';
 
 jest.mock('@/lib/waterFootprint', () => ({
   getWaterFootprintProducts: jest.fn().mockResolvedValue({

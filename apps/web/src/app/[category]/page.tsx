@@ -1,4 +1,3 @@
-import { ECO_CATEGORIES } from '@eco-metrics/shared';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
@@ -7,6 +6,7 @@ import { getCategoryIcon } from '@/lib/categoryIcon';
 import { getCategoryTitle } from '@/lib/categoryTitle';
 import { siteUrl } from '@/lib/siteUrl';
 import { getWaterFootprintProducts } from '@/lib/waterFootprint';
+import { ECO_CATEGORIES } from '@eco-metrics/shared';
 
 export const dynamicParams = false;
 export const revalidate = 86400;
