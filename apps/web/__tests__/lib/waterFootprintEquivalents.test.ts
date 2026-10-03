@@ -67,6 +67,14 @@ describe('formatWaterFootprintEquivalents', () => {
     expect(formatWaterFootprintEquivalents(12760)).toBe('≈ 196 showers · ≈ 85.1 bathtubs');
   });
 
+  it('should use the singular label when a quotient rounds to exactly 1 shower', () => {
+    expect(formatWaterFootprintEquivalents(66)).toBe('≈ 1 shower');
+  });
+
+  it('should use the singular label when a quotient rounds to exactly 1 bathtub', () => {
+    expect(formatWaterFootprintEquivalents(151)).toBe('≈ 2.3 showers · ≈ 1 bathtub');
+  });
+
   it('should round very large values to integers', () => {
     expect(formatWaterFootprintEquivalents(400000)).toBe('≈ 6,154 showers · ≈ 2,667 bathtubs');
   });
