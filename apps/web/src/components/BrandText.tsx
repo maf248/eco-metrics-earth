@@ -20,7 +20,7 @@ function prefersReducedMotion(): boolean {
  *
  * Renders '~ eco-metrics.earth' with a typewriter reveal on mount,
  * followed by a blinking cursor (▋) and a [↵] affordance that fades in
- * after typing completes to signal the element is interactive.
+ * after typing completes to signal that the parent link is interactive.
  *
  * Accessibility: all spans are aria-hidden — the parent link provides
  * the accessible name via aria-label.

@@ -17,7 +17,7 @@ import {
   WaterFootprintIcon,
 } from '@/components/icons';
 
-export type IconComponent = React.ComponentType<React.SVGProps<SVGSVGElement>>;
+type IconComponent = React.ComponentType<React.SVGProps<SVGSVGElement>>;
 
 /**
  * Maps each EcoCategory slug to its inline SVG React component.

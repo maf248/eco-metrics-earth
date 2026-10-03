@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 
-import MobileHeader from '../../src/components/MobileHeader';
+import MobileHeader from '@/components/MobileHeader';
 
 // BrandText calls window.matchMedia — mock it for all tests in this file
 beforeEach(() => {

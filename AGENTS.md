@@ -180,7 +180,7 @@ npx nx build api
 
 #### Coverage thresholds
 
-- Coverage is measured via `collectCoverage: true` in each project's `jest.config.cts`. Do **not** disable or lower thresholds without discussion.
+- Coverage is measured via `collectCoverage: true` in each project's `jest.config.cjs`. Do **not** disable or lower thresholds without discussion.
 - **Global thresholds:** 80% statements / functions / lines for all three projects (`shared`, `api`, `web`).
 - **Branches — `shared`:** 80% (achievable with the current pure-function codebase).
 - **Branches — `web`:** 75% (icon components have an untested `title` prop branch that renders `aria-labelledby` vs `aria-hidden`; actual coverage sits at ~79%).

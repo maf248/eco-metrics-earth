@@ -1,6 +1,6 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 
-import NavScrollContainer from '../../src/components/NavScrollContainer';
+import NavScrollContainer from '@/components/NavScrollContainer';
 
 describe('NavScrollContainer', () => {
   it('should render a <ul> with role="list"', () => {

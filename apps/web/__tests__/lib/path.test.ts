@@ -1,4 +1,4 @@
-import { normalise } from '../../src/lib/path';
+import { normalise } from '@/lib/path';
 
 describe('normalise', () => {
   it('should strip a single trailing slash', () => {

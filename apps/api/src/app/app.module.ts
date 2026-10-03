@@ -3,7 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 
-import { DemoValidationController } from '../common/dto/demo-validation.controller';
+import { DemoValidationController } from '../common/controllers/demo-validation.controller';
 import { FallbackModule } from '../common/fallback/fallback.module';
 import { AppConfigService } from '../config/app-config.service';
 import { envValidationSchema } from '../config/env-validation.schema';

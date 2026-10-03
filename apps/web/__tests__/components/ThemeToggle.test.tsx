@@ -1,8 +1,8 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import React from 'react';
 
-import ThemeProvider from '../../src/components/ThemeProvider';
-import ThemeToggle from '../../src/components/ThemeToggle';
+import ThemeProvider from '@/components/ThemeProvider';
+import ThemeToggle from '@/components/ThemeToggle';
 
 const localStorageMock = (() => {
   let store: Record<string, string> = {};

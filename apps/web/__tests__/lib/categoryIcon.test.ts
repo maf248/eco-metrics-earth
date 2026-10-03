@@ -1,7 +1,7 @@
 import { ECO_CATEGORIES } from '@eco-metrics/shared';
 
-import { SiteLogoIcon } from '../../src/components/icons';
-import { CATEGORY_ICONS, getCategoryIcon } from '../../src/lib/categoryIcon';
+import { SiteLogoIcon } from '@/components/icons';
+import { CATEGORY_ICONS, getCategoryIcon } from '@/lib/categoryIcon';
 
 describe('getCategoryIcon', () => {
   it('should return a React component for every ECO_CATEGORY slug', () => {

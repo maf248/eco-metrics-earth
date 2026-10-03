@@ -6,7 +6,7 @@ import { WaterFootprintContent } from '@/components/water-footprint/WaterFootpri
 import { getCategoryIcon } from '@/lib/categoryIcon';
 import { getCategoryTitle } from '@/lib/categoryTitle';
 import { siteUrl } from '@/lib/siteUrl';
-import { getWaterFootprintProducts } from '@/lib/water-footprint';
+import { getWaterFootprintProducts } from '@/lib/waterFootprint';
 
 export const dynamicParams = false;
 export const revalidate = 86400;

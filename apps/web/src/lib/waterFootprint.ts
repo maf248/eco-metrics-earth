@@ -2,7 +2,7 @@ import type { WaterFootprintProduct } from '@eco-metrics/shared';
 
 import { apiBaseUrl } from '@/lib/apiBaseUrl';
 
-export interface WaterFootprintDataResult {
+interface WaterFootprintDataResult {
   products: WaterFootprintProduct[];
   fetchFailed: boolean;
 }

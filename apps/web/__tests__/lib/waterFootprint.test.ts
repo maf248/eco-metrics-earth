@@ -1,4 +1,4 @@
-import { getWaterFootprintProducts } from '@/lib/water-footprint';
+import { getWaterFootprintProducts } from '@/lib/waterFootprint';
 
 interface MockResponse {
   ok: boolean;

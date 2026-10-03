@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 
-import HomePage, { metadata } from '../../src/app/page';
+import HomePage, { metadata } from '@/app/page';
 
 describe('HomePage', () => {
   it('should render successfully', () => {

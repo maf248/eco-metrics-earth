@@ -1,6 +1,6 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 
-import ErrorPage from '../../src/app/error';
+import ErrorPage from '@/app/error';
 
 describe('ErrorPage', () => {
   const mockReset = jest.fn();

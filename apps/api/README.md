@@ -38,23 +38,26 @@ src/
 │       └── data/
 │           └── water-footprint.json  # Static product dataset (60 products, with citations)
 ├── common/
-│   └── dto/                  # Shared DTOs with `class-validator` decorators
+│   ├── controllers/          # Cross-cutting controllers (`demo-validation` mock)
+│   ├── dto/                  # Shared DTOs with `class-validator` decorators
+│   ├── fallback/             # Catch-all JSON 404 fallback for unknown routes
+│   └── filters/              # Global exception filter (`AllExceptionsFilter`)
 └── main.ts
 ```
 
 ### Cross-cutting concerns (AppModule)
 
-| Concern            | Solution                                                          | Configuration                                                                                     |
-| ------------------ | ----------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
-| Env validation     | `@nestjs/config` + Joi                                            | Validates `PORT`, `NODE_ENV`, `CORS_ORIGIN`, `CORS_ORIGIN_PATTERN` on startup; `abortEarly: true` |
-| Rate limiting      | `@nestjs/throttler` + global `ThrottlerGuard`                     | 60 requests per 60 s per IP                                                                       |
-| Security headers   | `helmet` (Express middleware)                                     | Applied at bootstrap, before NestJS routing                                                       |
-| CORS               | NestJS built-in `enableCors`                                      | Restricted to `CORS_ORIGIN` (exact list) plus optional `CORS_ORIGIN_PATTERN` regex                |
-| Request validation | `class-validator` + `class-transformer` + global `ValidationPipe` | `whitelist`, `forbidNonWhitelisted`, `transform`                                                  |
+| Concern            | Solution                                                          | Configuration                                                                                                        |
+| ------------------ | ----------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| Env validation     | `@nestjs/config` + Joi                                            | Validates `PORT`, `NODE_ENV`, `CORS_ORIGIN`, `CORS_ORIGIN_PATTERN`, `SWAGGER_ENABLED` on startup; `abortEarly: true` |
+| Rate limiting      | `@nestjs/throttler` + global `ThrottlerGuard`                     | 60 requests per 60 s per IP                                                                                          |
+| Security headers   | `helmet` (Express middleware)                                     | Applied at bootstrap, before NestJS routing                                                                          |
+| CORS               | NestJS built-in `enableCors`                                      | Restricted to `CORS_ORIGIN` (exact list) plus optional `CORS_ORIGIN_PATTERN` regex                                   |
+| Request validation | `class-validator` + `class-transformer` + global `ValidationPipe` | `whitelist`, `forbidNonWhitelisted`, `transform`                                                                     |
 
 ### AppConfigService
 
-Typed accessor for environment variables. Each getter calls `ConfigService.getOrThrow()` — if the variable is missing or invalid it throws at startup instead of failing silently at runtime.
+Typed accessor for environment variables. Required variables (`PORT`, `NODE_ENV`, `CORS_ORIGIN`) are read with `ConfigService.getOrThrow()` — if missing they throw at startup instead of failing silently at runtime. Optional variables (`CORS_ORIGIN_PATTERN`, `SWAGGER_ENABLED`) are read with `get()` and fall back to no-pattern / `false` when unset.
 
 ```typescript
 appConfig.port; // PORT

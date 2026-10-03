@@ -1,6 +1,6 @@
 import { ECO_CATEGORIES } from '@eco-metrics/shared';
 
-import { NAV_ITEMS } from '../../src/lib/navItems';
+import { NAV_ITEMS } from '@/lib/navItems';
 
 describe('NAV_ITEMS', () => {
   it('should have exactly one item per ECO_CATEGORY', () => {

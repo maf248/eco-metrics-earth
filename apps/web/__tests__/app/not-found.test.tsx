@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 
-import NotFound from '../../src/app/not-found';
+import NotFound from '@/app/not-found';
 
 describe('NotFound page', () => {
   it('should render the not-found heading', () => {
@@ -31,12 +31,11 @@ describe('NotFound page', () => {
     expect(link).toBeTruthy();
     expect(link.getAttribute('href')).toBe('/');
   });
-});
-
-it('should render <main> with id="main-content" and tabIndex={-1}', () => {
-  const { container } = render(<NotFound />);
-  const main = container.querySelector('main');
-  expect(main).not.toBeNull();
-  expect(main?.getAttribute('id')).toBe('main-content');
-  expect(main?.getAttribute('tabindex')).toBe('-1');
+  it('should render <main> with id="main-content" and tabIndex={-1}', () => {
+    const { container } = render(<NotFound />);
+    const main = container.querySelector('main');
+    expect(main).not.toBeNull();
+    expect(main?.getAttribute('id')).toBe('main-content');
+    expect(main?.getAttribute('tabindex')).toBe('-1');
+  });
 });

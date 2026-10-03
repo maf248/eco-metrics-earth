@@ -4,7 +4,7 @@ import type React from 'react';
 import { getCategoryIcon } from './categoryIcon';
 import { getCategoryTitle } from './categoryTitle';
 
-export interface NavItem {
+interface NavItem {
   slug: EcoCategory;
   label: string;
   href: string;

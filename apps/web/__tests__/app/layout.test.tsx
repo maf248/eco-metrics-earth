@@ -1,6 +1,6 @@
 import { renderToString } from 'react-dom/server';
 
-import RootLayout, { metadata } from '../../src/app/layout';
+import RootLayout, { metadata } from '@/app/layout';
 
 // Navbar uses NavLink which calls usePathname — mock it for SSR tests
 jest.mock('next/navigation', () => ({

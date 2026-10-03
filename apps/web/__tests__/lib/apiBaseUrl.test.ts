@@ -21,6 +21,11 @@ describe('apiBaseUrl', () => {
     expect(apiBaseUrl()).toBe('http://localhost:3001/api/v1');
   });
 
+  it('should trim surrounding whitespace from the env var value', () => {
+    process.env.API_BASE_URL = '  http://localhost:3001/api/v1  ';
+    expect(apiBaseUrl()).toBe('http://localhost:3001/api/v1');
+  });
+
   it('should fall back to http://localhost:3001/api/v1 when env var is absent', () => {
     delete process.env.API_BASE_URL;
     expect(apiBaseUrl()).toBe('http://localhost:3001/api/v1');

@@ -29,8 +29,8 @@ function formatQuotient(value: number): string {
   return value >= 100 ? formatter.format(Math.round(value)) : formatter.format(value);
 }
 
-function pluralize(value: number, singular: string, plural: string): string {
-  return value === 1 ? singular : plural;
+function pluralize(displayed: string, singular: string, plural: string): string {
+  return displayed === '1' ? singular : plural;
 }
 
 /**
@@ -42,6 +42,7 @@ function pluralize(value: number, singular: string, plural: string): string {
  * - ≥ 150 L → '≈ {n} showers · ≈ {m} bathtubs'
  *
  * Quotients ≥ 100 are shown as integers; smaller values keep one decimal.
+ * Pluralization follows the displayed (rounded) value, not the raw quotient.
  */
 export function formatWaterFootprintEquivalents(liters: number | null): string {
   if (liters === null) {
@@ -55,12 +56,15 @@ export function formatWaterFootprintEquivalents(liters: number | null): string {
   const showers = liters / SHOWER_LITERS;
 
   if (liters < BATHTUB_LITERS) {
-    return `≈ ${formatQuotient(showers)} ${pluralize(showers, 'shower', 'showers')}`;
+    const formattedShowers = formatQuotient(showers);
+    return `≈ ${formattedShowers} ${pluralize(formattedShowers, 'shower', 'showers')}`;
   }
 
   const bathtubs = liters / BATHTUB_LITERS;
-  return `≈ ${formatQuotient(showers)} showers · ≈ ${formatQuotient(bathtubs)} ${pluralize(
-    bathtubs,
+  const formattedShowers = formatQuotient(showers);
+  const formattedBathtubs = formatQuotient(bathtubs);
+  return `≈ ${formattedShowers} showers · ≈ ${formattedBathtubs} ${pluralize(
+    formattedBathtubs,
     'bathtub',
     'bathtubs',
   )}`;

@@ -1,4 +1,3 @@
-import '@testing-library/jest-dom';
 import type { WaterFootprintProduct } from '@eco-metrics/shared';
 import { render, screen } from '@testing-library/react';
 
