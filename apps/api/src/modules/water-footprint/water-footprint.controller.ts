@@ -1,4 +1,8 @@
-import { ApiResponse, WaterFootprintProduct } from '@eco-metrics/shared';
+import {
+  ApiResponse,
+  WaterFootprintProduct,
+  waterFootprintCategorySlugMap,
+} from '@eco-metrics/shared';
 import { Controller, Get, Query } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
@@ -25,15 +29,7 @@ export class WaterFootprintController {
     name: 'category',
     required: false,
     description: 'Category slug filter',
-    enum: [
-      'food-beverages',
-      'textiles',
-      'technology',
-      'manufactured',
-      'digital-computing',
-      'vehicles',
-      'energy-extractives',
-    ],
+    enum: Object.keys(waterFootprintCategorySlugMap),
   })
   @ApiOkResponse({ description: 'Products returned successfully.' })
   @ApiBadRequestResponse({ description: 'Invalid category filter.' })
