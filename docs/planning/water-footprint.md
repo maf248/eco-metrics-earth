@@ -16,7 +16,7 @@ No current dashboard category displays the water consumption associated with eve
 
 ## Data Sources
 
-The following sources will be used to compile a **static dataset** of ~30–50 products. There is no single public API with per-manufactured-product data — the approach is an embedded static dataset (JSON/CSV) with explicit attribution per item.
+The following sources will be used to compile a **static dataset** of 60 products. There is no single public API with per-manufactured-product data — the approach is an embedded static dataset (JSON/CSV) with explicit attribution per item.
 
 ### 1. Our World in Data — Poore & Nemecek (2018)
 
@@ -82,13 +82,13 @@ Each entry must include the original citation/source (paper, report, or dataset)
 
 ## UX Decisions (Resolved)
 
-| Decision             | Options                                                                     | Status   |
-| -------------------- | --------------------------------------------------------------------------- | -------- |
-| Display format       | Data table on desktop, card list on mobile (Tailwind)                       | Accepted |
-| Category filters     | Food & Beverages, Textiles, Manufactured, Technology                        | Accepted |
-| Search / sort        | Sort by name/footprint accepted; free-text search and category sort dropped | Accepted |
-| Data freshness       | Static dataset — versioned in repo, updated periodically                    | Accepted |
-| Water footprint unit | Liters (L) — with contextual equivalents (shower 65 L / bathtub 150 L)      | Accepted |
+| Decision             | Options                                                                                                                              | Status   |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------ | -------- |
+| Display format       | Data table on desktop, card list on mobile (Tailwind)                                                                                | Accepted |
+| Category filters     | All 7 dataset categories (Food & Beverages, Textiles, Technology, Manufactured, Digital & Computing, Vehicles, Energy & Extractives) | Accepted |
+| Search / sort        | Sort by name/footprint accepted; free-text search and category sort dropped                                                          | Accepted |
+| Data freshness       | Static dataset — versioned in repo, updated periodically                                                                             | Accepted |
+| Water footprint unit | Liters (L) — with contextual equivalents (shower 65 L / bathtub 150 L)                                                               | Accepted |
 
 ---
 
