@@ -44,7 +44,7 @@ test.describe('Desktop sidebar navigation', () => {
     // Verify the last nav item (Water Footprint) is reachable within the nav.
     // toBeInViewport (not toBeVisible): a link clipped off-screen below the
     // fixed sidebar still has a bounding box and would pass toBeVisible.
-    const navList = page.locator('[aria-label="Navigation items"]');
+    const navList = page.locator(selectors.navList);
     const waterFootprintLink = navList.getByRole('link', { name: 'Water Footprint' });
     await waterFootprintLink.scrollIntoViewIfNeeded();
     await expect(waterFootprintLink).toBeInViewport();
