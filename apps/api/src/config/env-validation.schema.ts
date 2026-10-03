@@ -12,6 +12,27 @@ const corsOriginPatternErrorCodes = {
   invalidRegex: 'corsOriginPattern.invalidRegex',
 } as const;
 
+const owidBaseUrlErrorCodes = {
+  trailingSlash: 'owidBaseUrl.trailingSlash',
+} as const;
+
+function owidBaseUrlValidator(defaultValue: string) {
+  return Joi.string()
+    .uri()
+    .default(defaultValue)
+    .custom((value: string, helpers) => {
+      if (value.endsWith('/')) {
+        return helpers.error(owidBaseUrlErrorCodes.trailingSlash, { value });
+      }
+
+      return value;
+    })
+    .messages({
+      [owidBaseUrlErrorCodes.trailingSlash]:
+        '{{#label}} "{{#value}}" must not end with a trailing slash; it would produce broken request URLs like "{{#value}}//path".',
+    });
+}
+
 export const envValidationSchema = Joi.object({
   PORT: Joi.number().port().default(3001),
   NODE_ENV: Joi.string().valid('development', 'test', 'production').default('development'),
@@ -77,4 +98,8 @@ export const envValidationSchema = Joi.object({
         'CORS_ORIGIN_PATTERN is not a valid regular expression.',
     }),
   SWAGGER_ENABLED: Joi.string().valid('true', 'false').default('false'),
+  OWID_GRAPHER_BASE_URL: owidBaseUrlValidator('https://ourworldindata.org/grapher'),
+  OWID_API_BASE_URL: owidBaseUrlValidator('https://api.ourworldindata.org/v1'),
+  OWID_HTTP_TIMEOUT_MS: Joi.number().integer().min(1000).max(60000).default(10000),
+  OWID_CACHE_TTL_SECONDS: Joi.number().integer().min(60).max(604800).default(86400),
 });

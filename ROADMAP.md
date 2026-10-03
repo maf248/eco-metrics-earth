@@ -4,22 +4,22 @@ Este documento registra todas las propuestas de mejora identificadas para el pro
 
 ---
 
-## Estado del Proyecto (2 Oct 2026)
+## Estado del Proyecto (3 Oct 2026)
 
-| Aspecto          | Estado | Nota                                                                                                                                                                                                                   |
-| ---------------- | ------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Tests            | ✅     | 408 unit (306 web + 87 api + 15 shared) + 274 instancias E2E (5 browsers) pasando, 0 errores                                                                                                                           |
-| Lint             | ✅     | Sin warnings                                                                                                                                                                                                           |
-| Build            | ✅     | Compila correctamente                                                                                                                                                                                                  |
-| CI               | ✅     | CI en PRs y push a cualquier branch                                                                                                                                                                                    |
-| CD / Deploy      | ✅     | web: Vercel (auto-deploy desde GitHub); api: Cloud Run (workflow `deploy-api.yml` desde `develop`, servicio `eco-metrics-api`, `eco-metrics-api-fexi2yqv2q-uc.a.run.app`); gap de staging/preview del api sigue en I01 |
-| Dependencias     | 🟡     | 2 advisories viven solo en `npm@11.20.0` anidado (tooling de release en CI, no va a producción) — sin fix publicado aún; al salir un 11.x parcheado, correr `npm update npm`.                                          |
+| Aspecto          | Estado | Nota                                                                                                                                                                                                                                                                         |
+| ---------------- | ------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Tests            | ✅     | 498 unit (306 web + 167 api + 25 shared) + 274 instancias E2E (5 browsers) pasando, 0 errores                                                                                                                                                                                |
+| Lint             | ✅     | Sin warnings                                                                                                                                                                                                                                                                 |
+| Build            | ✅     | Compila correctamente                                                                                                                                                                                                                                                        |
+| CI               | ✅     | CI en PRs y push a cualquier branch                                                                                                                                                                                                                                          |
+| CD / Deploy      | ✅     | web: Vercel (auto-deploy desde GitHub); api: Cloud Run (workflow `deploy-api.yml` desde `develop`, servicio `eco-metrics-api`, `eco-metrics-api-fexi2yqv2q-uc.a.run.app`); gap de staging/preview del api sigue en I01                                                       |
+| Dependencias     | 🟡     | 2 advisories viven solo en `npm@11.20.0` anidado (tooling de release en CI, no va a producción) — sin fix publicado aún; al salir un 11.x parcheado, correr `npm update npm`.                                                                                                |
 |                  |
-| Coverage         | ✅     | Medido con Jest                                                                                                                                                                                                        |
-| E2E              | ✅     | Playwright: 64 tests en 7 specs, 5 browsers, CI integrado, arranque determinista (readiness de ambos puertos)                                                                                                          |
-| Theming          | ✅     | Light/dark mode con toggle, persistencia (localStorage) y zero-flash (spec `theme-toggle` + `theme-system`)                                                                                                            |
-| Monitoreo        | ❌     | No implementado                                                                                                                                                                                                        |
-| **Datos reales** | 🟡     | **Ningún proveedor externo conectado** — water-footprint completa (dataset estático + UI + tests E2E con datos reales); las 11 páginas restantes siguen como placeholders (ver Estrategia de Proveedores + P1)         |
+| Coverage         | ✅     | Medido con Jest                                                                                                                                                                                                                                                              |
+| E2E              | ✅     | Playwright: 64 tests en 7 specs, 5 browsers, CI integrado, arranque determinista (readiness de ambos puertos)                                                                                                                                                                |
+| Theming          | ✅     | Light/dark mode con toggle, persistencia (localStorage) y zero-flash (spec `theme-toggle` + `theme-system`)                                                                                                                                                                  |
+| Monitoreo        | ❌     | No implementado                                                                                                                                                                                                                                                              |
+| **Datos reales** | 🟡     | **Ningún proveedor externo expuesto todavía** (cliente OWID + cache listos en el BFF, sin endpoints) — water-footprint completa (dataset estático + UI + tests E2E con datos reales); las 11 páginas restantes siguen como placeholders (ver Estrategia de Proveedores + P1) |
 
 ---
 
@@ -82,37 +82,31 @@ Este documento registra todas las propuestas de mejora identificadas para el pro
 
 **Decisión de fuente:** OWID como primer proveedor (ver _Estrategia de Proveedores_). Corrección respecto a la versión anterior de este plan: se **reemplaza `air-quality` por `energy-sources`** en la primera tanda — air-quality en tiempo real no tiene opción comercial-safe sin key (Open-Meteo es no comercial), mientras que CO₂/temperatura/energía se cubren 100% con OWID.
 
+**Base ya implementada:** la fundación de la capa de datos está lista en el BFF — tipos compartidos (`MetricSeries`, `MetricPoint`, `DataSourceAttribution`, `ApiResponse<T>.meta`), `OutboundHttpClient` (`apps/api/src/common/http/`) y `OwidClient` con cache en memoria (`apps/api/src/modules/providers/owid/`). Ver specs `api-data-layer` y `owid-provider-client`.
+
 **Propuesta por fases** (cada fase = una propuesta OpenSpec independiente):
 
-#### P1.0 — Fundación de la capa de datos (prerequisito de todo lo demás)
-
-1. **Tipos compartidos** en `packages/shared`: `MetricSeries` (puntos año/valor por entidad), `MetricPoint`, `DataSourceAttribution` (provider, license, sourceUrl, lastUpdated) — la atribución viaja en `ApiResponse<T>.meta` (ver I10).
-2. **Cliente HTTP del BFF**: `@nestjs/axios` (o `fetch` nativo de Node 24 envuelto en un service) con timeout, retry acotado y User-Agent identificable.
-3. **Caching**: `@nestjs/cache-manager` en memoria con TTL 24 h para respuestas de OWID (datos anuales — no necesitan frescura mayor). Sin base de datos en esta fase (I04 sigue en backlog).
-4. **`OwidClient` service** (`apps/api/src/modules/providers/owid/`): métodos `getIndicatorData(id)` / `getIndicatorMetadata(id)` (API v1 JSON) y `getGrapherSeries(slug)` (CSV → parseo server-side). Fixtures de test tomados de las respuestas de la colección Postman.
-5. **Health indicator**: `HttpHealthIndicator` de `@nestjs/terminus` contra un endpoint liviano de OWID, registrado en `HealthModule` (requisito ya acordado con P2).
-6. **Config**: TTLs y base URLs como env vars tipadas en `AppConfigService` (+ `.env.example` + README).
-
-#### P1.1 — Primer módulo end-to-end: `co2-emissions`
+#### P1.0 — Primer módulo end-to-end: `co2-emissions`
 
 La categoría con mejor relación datos/esfuerzo (OWID CO₂ dataset: anual, per cápita, sectorial, acumulado — ya validado en Postman).
 
 - `Co2EmissionsModule` + controller: `GET /api/v1/co2-emissions/series?country=ARG&from=1990` (DTOs con `class-validator` para ISO-3166, rangos de años).
 - Service que mapea OWID → `MetricSeries` con `DataSourceAttribution`.
 - Swagger tag + tests unitarios con fixtures (sin llamadas de red en tests).
-- **Frontend:** la página `/co2-emissions/` deja de ser placeholder — Server Component con `fetch` al BFF e ISR (`revalidate: 86400`), Suspense boundary y primer gráfico de líneas (requiere decidir librería de charts, ver I11; al integrarla aplica el recordatorio de `next/dynamic`).
+- **Health indicator**: instalar `@nestjs/terminus` y registrar un `HttpHealthIndicator` contra un endpoint liviano de OWID en `HealthModule`. Esto agrega OWID como dependencia real del healthcheck, seguro porque este módulo ya expone endpoints que consumen OWID (se difirió de la fundación porque el startup probe de Cloud Run usa `GET /api/v1/health`).
+- **Frontend:** la página `/co2-emissions/` deja de ser placeholder — Server Component con `fetch` al BFF e ISR (`revalidate: 86400`), Suspense boundary y primer gráfico de líneas (requiere decidir librería de charts, ver I10; al integrarla aplica el recordatorio de `next/dynamic`).
 - **Atribución visible** "Data: Our World in Data (CC BY)" (ver I09 — requisito legal de la licencia).
 
-#### P1.2 — `global-temperature` (OWID temperature anomaly) — replica el patrón de P1.1
+#### P1.1 — `global-temperature` (OWID temperature anomaly) — replica el patrón de P1.0
 
-#### P1.3 — `energy-sources` (OWID electricity generation by source + % renovables) — ídem
+#### P1.2 — `energy-sources` (OWID electricity generation by source + % renovables) — ídem
 
 **Criterio de éxito de P1:** 3 categorías con datos reales comercial-safe en producción, healthcheck agregando dependencias externas, patrón replicable documentado en AGENTS.md para las 9 categorías restantes.
 
-**Dificultad:** P1.0: 5/10 · P1.1: 6/10 (incluye la primera integración frontend + charts) · P1.2/P1.3: 3/10 c/u (patrón ya establecido)
+**Dificultad:** P1.0: 6/10 (incluye la primera integración frontend + charts) · P1.1/P1.2: 3/10 c/u (patrón ya establecido)
 **Requisitos:**
 
-- P2 instala `@nestjs/terminus` pero no refactoriza el healthcheck. **Cada módulo de P1 debe agregar su propio `HttpHealthIndicator` al `HealthModule`** para validar su API externa (OWID, NOAA, World Bank). Esto convierte el healthcheck en un agregado real de dependencias externas. P1.0 puede instalar `@nestjs/terminus` directamente si se ejecuta antes que P2.
+- P2 instala `@nestjs/terminus` pero no refactoriza el healthcheck. **Cada módulo de P1 debe agregar su propio `HttpHealthIndicator` al `HealthModule`** para validar su API externa (OWID, NOAA, World Bank). Esto convierte el healthcheck en un agregado real de dependencias externas. El primer módulo (P1.0) instala `@nestjs/terminus` directamente si se ejecuta antes que P2.
   **Estado:** Pendiente
 
 ---
@@ -187,10 +181,9 @@ La categoría con mejor relación datos/esfuerzo (OWID CO₂ dataset: anual, per
 
 Si no estás seguro por dónde empezar, este es el orden recomendado:
 
-1. **P1.0: Fundación de capa de datos** → Cliente OWID + caching + health indicator (Dificultad: 5/10)
-2. **P1.1: Módulo `co2-emissions` end-to-end** → Primera sección con datos reales + charts (Dificultad: 6/10)
-3. **P1.2 / P1.3: `global-temperature` y `energy-sources`** → Replicar el patrón (Dificultad: 3/10 c/u)
-4. **P2: Monitoreo y observabilidad** → Logs, métricas y error tracking (Dificultad: 5/10)
+1. **P1.0: Módulo `co2-emissions` end-to-end** → Primera sección con datos reales + charts (Dificultad: 6/10)
+2. **P1.1 / P1.2: `global-temperature` y `energy-sources`** → Replicar el patrón (Dificultad: 3/10 c/u)
+3. **P2: Monitoreo y observabilidad** → Logs, métricas y error tracking (Dificultad: 5/10)
 
 D1 (TypeScript 7) queda como seguimiento pasivo — sin acción por ahora.
 
@@ -224,9 +217,9 @@ Lista de hallazgos del análisis de repositorio, ordenados por prioridad (más c
 
 ### 🟡 CI/CD
 
-- **I01.** Staging parcial — Vercel genera preview deploys automáticos desde `develop`, lo que funciona como staging de facto para el frontend. Cloud Run no tiene equivalente a PR previews; los previews de Vercel consumen el BFF productivo (trade-off staging-is-production aceptado por ahora; solución planificada en I12).
+- **I01.** Staging parcial — Vercel genera preview deploys automáticos desde `develop`, lo que funciona como staging de facto para el frontend. Cloud Run no tiene equivalente a PR previews; los previews de Vercel consumen el BFF productivo (trade-off staging-is-production aceptado por ahora; solución planificada en I11).
 
-- **I12.** Backend de desarrollo en Cloud Run — segundo servicio `eco-metrics-api-dev` deployado desde `develop` (el productivo `eco-metrics-api` pasa a deployar desde `main`), consumido por el entorno Preview de Vercel (`API_BASE_URL` de Preview → URL del servicio dev). Resuelve el trade-off staging-is-production del back (I01) sin costo extra: el always-free tier de Cloud Run (2M req/mes, 180k vCPU-s, 360k GiB-s) se comparte por cuenta de billing y ambos servicios escalan a cero. Reutiliza WIF + `github-deployer` existentes (`roles/run.admin` ya cubre deployar un segundo servicio en el mismo proyecto). Requiere: propuesta OpenSpec sobre `api-cloud-run-deploy` (el workflow `deploy-api.yml` pasa a dos entornos con triggers distintos), variables GitHub nuevas para el servicio dev (URL/origins CORS) y cleanup policy de Artifact Registry para el churn extra de imágenes.
+- **I11.** Backend de desarrollo en Cloud Run — segundo servicio `eco-metrics-api-dev` deployado desde `develop` (el productivo `eco-metrics-api` pasa a deployar desde `main`), consumido por el entorno Preview de Vercel (`API_BASE_URL` de Preview → URL del servicio dev). Resuelve el trade-off staging-is-production del back (I01) sin costo extra: el always-free tier de Cloud Run (2M req/mes, 180k vCPU-s, 360k GiB-s) se comparte por cuenta de billing y ambos servicios escalan a cero. Reutiliza WIF + `github-deployer` existentes (`roles/run.admin` ya cubre deployar un segundo servicio en el mismo proyecto). Requiere: propuesta OpenSpec sobre `api-cloud-run-deploy` (el workflow `deploy-api.yml` pasa a dos entornos con triggers distintos), variables GitHub nuevas para el servicio dev (URL/origins CORS) y cleanup policy de Artifact Registry para el churn extra de imágenes.
 
 ### 🟡 Testing
 
@@ -244,9 +237,8 @@ Lista de hallazgos del análisis de repositorio, ordenados por prioridad (más c
 
 ### 🟡 Datos / Proveedores
 
-- **I09.** Atribución de datos (requisito legal, no opcional) — CC BY exige atribución visible. Antes de publicar la primera sección con datos reales (P1.1): componente de atribución al pie de cada visualización ("Data: Our World in Data — CC BY" con link) + página `/data-sources/` listando proveedores y licencias. Alimentado por el `DataSourceAttribution` de I10. Bonus SEO: contenido indexable con estructura.
-- **I10.** Extender `ApiResponse<T>` con metadata de fuente — el contrato actual no transporta procedencia. Agregar `meta: { source: DataSourceAttribution; fetchedAt: string }` para que el frontend renderice atribución y frescura sin hardcodear nada por página. Diseñarlo en P1.0 para no romper el contrato después.
-- **I11.** Elegir librería de charts — pendiente. Cuando toque (antes de P1.1), ver `docs/technical/libraries.md`: tiene candidatas, descartadas con motivo, spikes por candidata y los gates a cumplir. La decisión se registra en `docs/design-system.md` y activa el recordatorio de Dynamic Imports.
+- **I09.** Atribución de datos (requisito legal, no opcional) — CC BY exige atribución visible. Antes de publicar la primera sección con datos reales (P1.0): componente de atribución al pie de cada visualización ("Data: Our World in Data — CC BY" con link) + página `/data-sources/` listando proveedores y licencias. Alimentado por `ApiResponse<T>.meta.source` (`DataSourceAttribution`, ya disponible en `@eco-metrics/shared`). Bonus SEO: contenido indexable con estructura.
+- **I10.** Elegir librería de charts — pendiente. Cuando toque (antes de P1.0), ver `docs/technical/libraries.md`: tiene candidatas, descartadas con motivo, spikes por candidata y los gates a cumplir. La decisión se registra en `docs/design-system.md` y activa el recordatorio de Dynamic Imports.
 
 ---
 
@@ -257,4 +249,4 @@ Lista de hallazgos del análisis de repositorio, ordenados por prioridad (más c
 - **I07.** OpenTelemetry — considerado para el futuro cuando el sistema escale a múltiples servicios o se quiera cambiar de backend de observabilidad (Sentry → Datadog, Honeycomb, etc.) sin tocar código de instrumentación. Con un solo BFF, Sentry Performance cubre el tracing necesario. No justifica el overhead de configuración actual (collector, exporters, SDK setup).
 - **I08.** Axiom — plataforma de logs como servicio. Solo relevante si la retención de Cloud Logging (30 días en free tier) o Vercel resulta insuficiente para debugging post-mortem. Por ahora los logs agregados de cada plataforma son suficientes.
 
-**Última actualización:** 1 Oct 2026
+**Última actualización:** 3 Oct 2026

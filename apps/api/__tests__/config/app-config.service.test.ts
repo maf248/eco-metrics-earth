@@ -90,4 +90,52 @@ describe('AppConfigService', () => {
       expect(() => service.corsOrigins).toThrow('CORS_ORIGIN');
     });
   });
+
+  describe('owidGrapherBaseUrl', () => {
+    it('should return the configured OWID_GRAPHER_BASE_URL', () => {
+      const service = buildService({ OWID_GRAPHER_BASE_URL: 'https://owid.example.com/grapher' });
+      expect(service.owidGrapherBaseUrl).toBe('https://owid.example.com/grapher');
+    });
+
+    it('should throw when OWID_GRAPHER_BASE_URL is not in config', () => {
+      const service = buildService({});
+      expect(() => service.owidGrapherBaseUrl).toThrow('OWID_GRAPHER_BASE_URL');
+    });
+  });
+
+  describe('owidApiBaseUrl', () => {
+    it('should return the configured OWID_API_BASE_URL', () => {
+      const service = buildService({ OWID_API_BASE_URL: 'https://api.owid.example.com/v1' });
+      expect(service.owidApiBaseUrl).toBe('https://api.owid.example.com/v1');
+    });
+
+    it('should throw when OWID_API_BASE_URL is not in config', () => {
+      const service = buildService({});
+      expect(() => service.owidApiBaseUrl).toThrow('OWID_API_BASE_URL');
+    });
+  });
+
+  describe('owidHttpTimeoutMs', () => {
+    it('should return the configured OWID_HTTP_TIMEOUT_MS', () => {
+      const service = buildService({ OWID_HTTP_TIMEOUT_MS: 30000 });
+      expect(service.owidHttpTimeoutMs).toBe(30000);
+    });
+
+    it('should throw when OWID_HTTP_TIMEOUT_MS is not in config', () => {
+      const service = buildService({});
+      expect(() => service.owidHttpTimeoutMs).toThrow('OWID_HTTP_TIMEOUT_MS');
+    });
+  });
+
+  describe('owidCacheTtlSeconds', () => {
+    it('should return the configured OWID_CACHE_TTL_SECONDS', () => {
+      const service = buildService({ OWID_CACHE_TTL_SECONDS: 3600 });
+      expect(service.owidCacheTtlSeconds).toBe(3600);
+    });
+
+    it('should throw when OWID_CACHE_TTL_SECONDS is not in config', () => {
+      const service = buildService({});
+      expect(() => service.owidCacheTtlSeconds).toThrow('OWID_CACHE_TTL_SECONDS');
+    });
+  });
 });
