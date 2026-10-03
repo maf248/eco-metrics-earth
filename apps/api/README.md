@@ -32,8 +32,11 @@ src/
 │   ├── health.module.ts
 │   └── health.controller.ts  # GET /api/v1/health
 ├── config/
+│   ├── app-config.module.ts  # @Global module that provides and exports AppConfigService
 │   └── app-config.service.ts # Typed wrapper over @nestjs/config
 ├── modules/
+│   ├── providers/
+│   │   └── owid/             # OwidModule — cached OWID provider client (Grapher CSV + API v1 JSON)
 │   └── water-footprint/      # WaterFootprintModule — module, controller, service
 │       └── data/
 │           └── water-footprint.json  # Static product dataset (60 products, with citations)
@@ -41,19 +44,22 @@ src/
 │   ├── controllers/          # Cross-cutting controllers (`demo-validation` mock)
 │   ├── dto/                  # Shared DTOs with `class-validator` decorators
 │   ├── fallback/             # Catch-all JSON 404 fallback for unknown routes
-│   └── filters/              # Global exception filter (`AllExceptionsFilter`)
+│   ├── filters/              # Global exception filter (`AllExceptionsFilter`)
+│   └── http/                 # Outbound HTTP client + errors + injectable OUTBOUND_FETCH token
 └── main.ts
 ```
 
 ### Cross-cutting concerns (AppModule)
 
-| Concern            | Solution                                                          | Configuration                                                                                                        |
-| ------------------ | ----------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
-| Env validation     | `@nestjs/config` + Joi                                            | Validates `PORT`, `NODE_ENV`, `CORS_ORIGIN`, `CORS_ORIGIN_PATTERN`, `SWAGGER_ENABLED` on startup; `abortEarly: true` |
-| Rate limiting      | `@nestjs/throttler` + global `ThrottlerGuard`                     | 60 requests per 60 s per IP                                                                                          |
-| Security headers   | `helmet` (Express middleware)                                     | Applied at bootstrap, before NestJS routing                                                                          |
-| CORS               | NestJS built-in `enableCors`                                      | Restricted to `CORS_ORIGIN` (exact list) plus optional `CORS_ORIGIN_PATTERN` regex                                   |
-| Request validation | `class-validator` + `class-transformer` + global `ValidationPipe` | `whitelist`, `forbidNonWhitelisted`, `transform`                                                                     |
+| Concern            | Solution                                                          | Configuration                                                                                                                               |
+| ------------------ | ----------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| Env validation     | `@nestjs/config` + Joi                                            | Validates `PORT`, `NODE_ENV`, `CORS_ORIGIN`, `CORS_ORIGIN_PATTERN`, `SWAGGER_ENABLED`, and `OWID_*` vars on startup; `abortEarly: true`     |
+| Rate limiting      | `@nestjs/throttler` + global `ThrottlerGuard`                     | 60 requests per 60 s per IP                                                                                                                 |
+| Security headers   | `helmet` (Express middleware)                                     | Applied at bootstrap, before NestJS routing                                                                                                 |
+| CORS               | NestJS built-in `enableCors`                                      | Restricted to `CORS_ORIGIN` (exact list) plus optional `CORS_ORIGIN_PATTERN` regex                                                          |
+| Request validation | `class-validator` + `class-transformer` + global `ValidationPipe` | `whitelist`, `forbidNonWhitelisted`, `transform`                                                                                            |
+| Outbound HTTP      | `OutboundHttpClient` (`common/http/`)                             | Node 24 native `fetch` with per-attempt timeout, bounded retry, and identifiable `User-Agent`; stubbed via `OUTBOUND_FETCH` in tests        |
+| Provider caching   | `@nestjs/cache-manager` + in-memory store                         | Module-scoped inside `OwidModule`; TTL from `OWID_CACHE_TTL_SECONDS`; parsed payloads only; callers always receive copies, never cache refs |
 
 ### AppConfigService
 
@@ -63,6 +69,10 @@ Typed accessor for environment variables. Required variables (`PORT`, `NODE_ENV`
 appConfig.port; // PORT
 appConfig.nodeEnv; // NODE_ENV
 appConfig.corsOrigins; // CORS_ORIGIN (+ optional CORS_ORIGIN_PATTERN as a RegExp)
+appConfig.owidGrapherBaseUrl; // OWID_GRAPHER_BASE_URL
+appConfig.owidApiBaseUrl; // OWID_API_BASE_URL
+appConfig.owidHttpTimeoutMs; // OWID_HTTP_TIMEOUT_MS
+appConfig.owidCacheTtlSeconds; // OWID_CACHE_TTL_SECONDS
 ```
 
 ---
@@ -87,13 +97,17 @@ Copy `.env.example` before running locally:
 cp apps/api/.env.example apps/api/.env
 ```
 
-| Variable              | Default                 | Description                                                                                                        |
-| --------------------- | ----------------------- | ------------------------------------------------------------------------------------------------------------------ |
-| `PORT`                | `3001`                  | Port the server listens on                                                                                         |
-| `NODE_ENV`            | `development`           | `development` \| `test` \| `production`                                                                            |
-| `CORS_ORIGIN`         | `http://localhost:3000` | Comma-separated list of exact allowed CORS origins — single origin is valid; no wildcards                          |
-| `CORS_ORIGIN_PATTERN` | —                       | Optional anchored regex (`^...$`) for pattern-based origins such as Vercel previews — empty/unset means no pattern |
-| `SWAGGER_ENABLED`     | `false`                 | Enable OpenAPI/Swagger UI at `/api/docs` — set to `true` for local development                                     |
+| Variable                 | Default                              | Description                                                                                                        |
+| ------------------------ | ------------------------------------ | ------------------------------------------------------------------------------------------------------------------ |
+| `PORT`                   | `3001`                               | Port the server listens on                                                                                         |
+| `NODE_ENV`               | `development`                        | `development` \| `test` \| `production`                                                                            |
+| `CORS_ORIGIN`            | `http://localhost:3000`              | Comma-separated list of exact allowed CORS origins — single origin is valid; no wildcards                          |
+| `CORS_ORIGIN_PATTERN`    | —                                    | Optional anchored regex (`^...$`) for pattern-based origins such as Vercel previews — empty/unset means no pattern |
+| `SWAGGER_ENABLED`        | `false`                              | Enable OpenAPI/Swagger UI at `/api/docs` — set to `true` for local development                                     |
+| `OWID_GRAPHER_BASE_URL`  | `https://ourworldindata.org/grapher` | OWID Grapher base URL; must not end with a trailing slash (Joi rejects trailing slashes at startup)                |
+| `OWID_API_BASE_URL`      | `https://api.ourworldindata.org/v1`  | OWID API v1 base URL; must not end with a trailing slash                                                           |
+| `OWID_HTTP_TIMEOUT_MS`   | `10000`                              | Per-attempt HTTP timeout for OWID outbound requests in milliseconds (1 000–60 000)                                 |
+| `OWID_CACHE_TTL_SECONDS` | `86400`                              | In-memory cache TTL for parsed OWID responses in seconds (60–604 800); converted to milliseconds for cache-manager |
 
 ---
 

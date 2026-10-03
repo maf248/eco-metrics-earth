@@ -63,7 +63,7 @@ Pending — see `docs/technical/libraries.md`
 
 ## Presentation Stack
 
-Pending — the charting/mapping/table library (or libraries) is not yet chosen. Candidates, discarded options, and the gates to clear before deciding are catalogued in `docs/technical/libraries.md`. See `ROADMAP.md` I11 for the screening that will inform that decision.
+Pending — the charting/mapping/table library (or libraries) is not yet chosen. Candidates, discarded options, and the gates to clear before deciding are catalogued in `docs/technical/libraries.md`. See `ROADMAP.md` I10 for the screening that will inform that decision.
 
 ## Tooling note
 

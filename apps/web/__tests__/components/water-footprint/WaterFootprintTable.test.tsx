@@ -1,7 +1,7 @@
-import type { WaterFootprintProduct } from '@eco-metrics/shared';
 import { fireEvent, render, screen, within } from '@testing-library/react';
 
 import { WaterFootprintTable } from '@/components/water-footprint/WaterFootprintTable';
+import type { WaterFootprintProduct } from '@eco-metrics/shared';
 
 const fixtures: WaterFootprintProduct[] = [
   {

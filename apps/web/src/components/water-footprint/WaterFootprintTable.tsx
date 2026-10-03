@@ -1,10 +1,10 @@
 'use client';
 
-import type { WaterFootprintCategory, WaterFootprintProduct } from '@eco-metrics/shared';
-import { waterFootprintCategorySlugMap, waterFootprintWaterTypeLabels } from '@eco-metrics/shared';
 import { useId, useMemo, useState } from 'react';
 
 import { formatLiters, formatWaterFootprintEquivalents } from '@/lib/waterFootprintEquivalents';
+import type { WaterFootprintCategory, WaterFootprintProduct } from '@eco-metrics/shared';
+import { waterFootprintCategorySlugMap, waterFootprintWaterTypeLabels } from '@eco-metrics/shared';
 
 type SortKey = 'name' | 'footprint';
 type SortDirection = 'asc' | 'desc';

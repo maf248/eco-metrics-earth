@@ -1,4 +1,3 @@
-import type { EcoCategory } from '@eco-metrics/shared';
 import type React from 'react';
 
 import {
@@ -16,6 +15,7 @@ import {
   WasteRecyclingIcon,
   WaterFootprintIcon,
 } from '@/components/icons';
+import type { EcoCategory } from '@eco-metrics/shared';
 
 type IconComponent = React.ComponentType<React.SVGProps<SVGSVGElement>>;
 

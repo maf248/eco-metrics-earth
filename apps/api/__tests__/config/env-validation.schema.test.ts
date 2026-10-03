@@ -117,4 +117,100 @@ describe('envValidationSchema', () => {
       expect(value.CORS_ORIGIN_PATTERN).toBeUndefined();
     });
   });
+
+  describe('OWID_GRAPHER_BASE_URL', () => {
+    it('should default to https://ourworldindata.org/grapher when absent', () => {
+      const { error, value } = validate({});
+      expect(error).toBeUndefined();
+      expect(value.OWID_GRAPHER_BASE_URL).toBe('https://ourworldindata.org/grapher');
+    });
+
+    it('should accept a valid custom base URL without trailing slash', () => {
+      const { error, value } = validate({
+        OWID_GRAPHER_BASE_URL: 'https://owid.example.com/grapher',
+      });
+      expect(error).toBeUndefined();
+      expect(value.OWID_GRAPHER_BASE_URL).toBe('https://owid.example.com/grapher');
+    });
+
+    it('should reject a non-URI value', () => {
+      const { error } = validate({ OWID_GRAPHER_BASE_URL: 'not-a-url' });
+      expect(error).toBeDefined();
+      expect(error?.message).toContain('OWID_GRAPHER_BASE_URL');
+    });
+
+    it('should reject a trailing slash and explain the broken URL consequence', () => {
+      const { error } = validate({ OWID_GRAPHER_BASE_URL: 'https://ourworldindata.org/grapher/' });
+      expect(error).toBeDefined();
+      expect(error?.message).toContain('trailing slash');
+      expect(error?.message).toContain('//path');
+    });
+  });
+
+  describe('OWID_API_BASE_URL', () => {
+    it('should default to https://api.ourworldindata.org/v1 when absent', () => {
+      const { error, value } = validate({});
+      expect(error).toBeUndefined();
+      expect(value.OWID_API_BASE_URL).toBe('https://api.ourworldindata.org/v1');
+    });
+
+    it('should reject a trailing slash', () => {
+      const { error } = validate({ OWID_API_BASE_URL: 'https://api.ourworldindata.org/v1/' });
+      expect(error).toBeDefined();
+      expect(error?.message).toContain('OWID_API_BASE_URL');
+      expect(error?.message).toContain('trailing slash');
+    });
+  });
+
+  describe('OWID_HTTP_TIMEOUT_MS', () => {
+    it('should default to 10000 when absent', () => {
+      const { error, value } = validate({});
+      expect(error).toBeUndefined();
+      expect(value.OWID_HTTP_TIMEOUT_MS).toBe(10000);
+    });
+
+    it('should accept a valid custom value', () => {
+      const { error, value } = validate({ OWID_HTTP_TIMEOUT_MS: 30000 });
+      expect(error).toBeUndefined();
+      expect(value.OWID_HTTP_TIMEOUT_MS).toBe(30000);
+    });
+
+    it('should reject a value below the lower bound', () => {
+      const { error } = validate({ OWID_HTTP_TIMEOUT_MS: 999 });
+      expect(error).toBeDefined();
+      expect(error?.message).toContain('OWID_HTTP_TIMEOUT_MS');
+    });
+
+    it('should reject a value above the upper bound', () => {
+      const { error } = validate({ OWID_HTTP_TIMEOUT_MS: 60001 });
+      expect(error).toBeDefined();
+      expect(error?.message).toContain('OWID_HTTP_TIMEOUT_MS');
+    });
+  });
+
+  describe('OWID_CACHE_TTL_SECONDS', () => {
+    it('should default to 86400 when absent', () => {
+      const { error, value } = validate({});
+      expect(error).toBeUndefined();
+      expect(value.OWID_CACHE_TTL_SECONDS).toBe(86400);
+    });
+
+    it('should accept a valid custom value', () => {
+      const { error, value } = validate({ OWID_CACHE_TTL_SECONDS: 3600 });
+      expect(error).toBeUndefined();
+      expect(value.OWID_CACHE_TTL_SECONDS).toBe(3600);
+    });
+
+    it('should reject a value below the lower bound', () => {
+      const { error } = validate({ OWID_CACHE_TTL_SECONDS: 59 });
+      expect(error).toBeDefined();
+      expect(error?.message).toContain('OWID_CACHE_TTL_SECONDS');
+    });
+
+    it('should reject a value above the upper bound', () => {
+      const { error } = validate({ OWID_CACHE_TTL_SECONDS: 604801 });
+      expect(error).toBeDefined();
+      expect(error?.message).toContain('OWID_CACHE_TTL_SECONDS');
+    });
+  });
 });

@@ -14,7 +14,7 @@ export default tseslint.config(
   {
     rules: {
       '@typescript-eslint/no-explicit-any': 'error',
-      '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^\_' }],
+      '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
       'no-console': 'warn',
     },
   },
@@ -45,7 +45,12 @@ export default tseslint.config(
             // so we explicitly place it in the internal group to keep alias
             // imports before relative imports as documented in AGENTS.md.
             { pattern: '@/**', group: 'internal' },
+            // The @eco-metrics/shared workspace package is scoped like an
+            // external dependency, so we explicitly treat it as internal so
+            // workspace imports stay after external imports per AGENTS.md.
+            { pattern: '@eco-metrics/**', group: 'internal' },
           ],
+          pathGroupsExcludedImportTypes: [],
         },
       ],
       'import-x/no-duplicates': 'error',

@@ -1,0 +1,4 @@
+entity,code,year,near_surface_temperature_anomaly,near_surface_temperature_anomaly_lower,near_surface_temperature_anomaly_upper
+World,OWID_WRL,1990,0.7190031,0.68379974,0.7542065
+World,OWID_WRL,1991,0.69776946,0.6621659,0.7333731
+World,OWID_WRL,1992,0.48398593,0.45042333,0.51754856

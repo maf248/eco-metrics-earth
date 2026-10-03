@@ -1,6 +1,5 @@
-import { ECO_CATEGORIES } from '@eco-metrics/shared';
-
 import { slugToTitle } from '@/lib/slugToTitle';
+import { ECO_CATEGORIES } from '@eco-metrics/shared';
 
 describe('slugToTitle', () => {
   it('should capitalize a single-word slug', () => {

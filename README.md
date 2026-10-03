@@ -35,9 +35,9 @@ An environmental metrics dashboard monorepo — tracking air quality, CO₂ emis
 
 ### Packages
 
-| Package           | Name                  | Description                                                                                              |
-| ----------------- | --------------------- | -------------------------------------------------------------------------------------------------------- |
-| `packages/shared` | `@eco-metrics/shared` | Shared TypeScript types: `ApiResponse<T>`, `EcoCategory`, `ECO_CATEGORIES`, water-footprint domain types |
+| Package           | Name                  | Description                                                                                                                                                                         |
+| ----------------- | --------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `packages/shared` | `@eco-metrics/shared` | Shared TypeScript types: `ApiResponse<T>`, `ApiResponseMeta`, `EcoCategory`, `ECO_CATEGORIES`, `MetricPoint`, `MetricSeries`, `DataSourceAttribution`, water-footprint domain types |
 
 ### Deploy Targets
 
@@ -237,13 +237,17 @@ cp apps/web/.env.example apps/web/.env.local
 
 ### `apps/api/.env.example`
 
-| Variable              | Default                 | Description                                                                                                        |
-| --------------------- | ----------------------- | ------------------------------------------------------------------------------------------------------------------ |
-| `PORT`                | `3001`                  | Port the API listens on (injected by Cloud Run in production — never set it manually there)                        |
-| `NODE_ENV`            | `development`           | Node environment                                                                                                   |
-| `CORS_ORIGIN`         | `http://localhost:3000` | Comma-separated list of exact allowed CORS origins (single origin is valid; no wildcards)                          |
-| `CORS_ORIGIN_PATTERN` | —                       | Optional anchored regex (`^...$`) for pattern-based origins such as Vercel preview URLs (empty/unset = no pattern) |
-| `SWAGGER_ENABLED`     | `false`                 | Enable OpenAPI/Swagger UI. Set to `true` for local development, `false` in production.                             |
+| Variable                 | Default                              | Description                                                                                                        |
+| ------------------------ | ------------------------------------ | ------------------------------------------------------------------------------------------------------------------ |
+| `PORT`                   | `3001`                               | Port the API listens on (injected by Cloud Run in production — never set it manually there)                        |
+| `NODE_ENV`               | `development`                        | Node environment                                                                                                   |
+| `CORS_ORIGIN`            | `http://localhost:3000`              | Comma-separated list of exact allowed CORS origins (single origin is valid; no wildcards)                          |
+| `CORS_ORIGIN_PATTERN`    | —                                    | Optional anchored regex (`^...$`) for pattern-based origins such as Vercel preview URLs (empty/unset = no pattern) |
+| `SWAGGER_ENABLED`        | `false`                              | Enable OpenAPI/Swagger UI. Set to `true` for local development, `false` in production.                             |
+| `OWID_GRAPHER_BASE_URL`  | `https://ourworldindata.org/grapher` | OWID Grapher base URL; must not end with a trailing slash                                                          |
+| `OWID_API_BASE_URL`      | `https://api.ourworldindata.org/v1`  | OWID API v1 base URL; must not end with a trailing slash                                                           |
+| `OWID_HTTP_TIMEOUT_MS`   | `10000`                              | Per-attempt HTTP timeout for OWID requests, in milliseconds (1 000–60 000)                                         |
+| `OWID_CACHE_TTL_SECONDS` | `86400`                              | In-memory cache TTL for parsed OWID responses, in seconds (60–604 800 = 7 days)                                    |
 
 ### `apps/web/.env.example`
 
@@ -260,7 +264,20 @@ cp apps/web/.env.example apps/web/.env.local
 ```typescript
 // API response wrapper (discriminated union)
 type ApiResponse<T> =
-  { success: true; data: T; status: number } | { success: false; error: string; status: number };
+  | { success: true; data: T; status: number; meta?: ApiResponseMeta }
+  | { success: false; error: string; status: number; meta?: ApiResponseMeta };
+
+interface ApiResponseMeta {
+  source: DataSourceAttribution;
+  fetchedAt: string;
+}
+
+interface DataSourceAttribution {
+  provider: string;
+  license: string;
+  sourceUrl: string;
+  lastUpdated: string;
+}
 
 // Eco categories
 const ECO_CATEGORIES = {
@@ -279,6 +296,18 @@ const ECO_CATEGORIES = {
 } as const;
 
 type EcoCategory = (typeof ECO_CATEGORIES)[keyof typeof ECO_CATEGORIES];
+
+// Time-series shape used by provider clients and BFF endpoints
+interface MetricPoint {
+  year: number;
+  value: number | null;
+}
+
+interface MetricSeries {
+  entityName: string;
+  entityCode: string;
+  points: MetricPoint[];
+}
 
 // Water footprint (see packages/shared/src/lib/water-footprint.ts)
 type WaterFootprintWaterType = 'blue' | 'green-blue-grey' | 'lifecycle-onsite' | 'lifecycle-total';

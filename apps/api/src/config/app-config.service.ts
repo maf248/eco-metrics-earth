@@ -29,4 +29,20 @@ export class AppConfigService {
   get swaggerEnabled(): boolean {
     return this.configService.get<string>('SWAGGER_ENABLED') === 'true';
   }
+
+  get owidGrapherBaseUrl(): string {
+    return this.configService.getOrThrow<string>('OWID_GRAPHER_BASE_URL');
+  }
+
+  get owidApiBaseUrl(): string {
+    return this.configService.getOrThrow<string>('OWID_API_BASE_URL');
+  }
+
+  get owidHttpTimeoutMs(): number {
+    return this.configService.getOrThrow<number>('OWID_HTTP_TIMEOUT_MS');
+  }
+
+  get owidCacheTtlSeconds(): number {
+    return this.configService.getOrThrow<number>('OWID_CACHE_TTL_SECONDS');
+  }
 }

@@ -1,8 +1,3 @@
-import {
-  ApiResponse,
-  WaterFootprintProduct,
-  waterFootprintCategorySlugMap,
-} from '@eco-metrics/shared';
 import { Controller, Get, Query } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
@@ -11,6 +6,12 @@ import {
   ApiQuery,
   ApiTags,
 } from '@nestjs/swagger';
+
+import {
+  ApiResponse,
+  WaterFootprintProduct,
+  waterFootprintCategorySlugMap,
+} from '@eco-metrics/shared';
 
 import { WaterFootprintService } from './water-footprint.service';
 

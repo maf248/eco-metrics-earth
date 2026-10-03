@@ -1,8 +1,9 @@
 import { readFileSync } from 'fs';
 import { join } from 'path';
 
-import { WaterFootprintProduct, waterFootprintCategorySlugMap } from '@eco-metrics/shared';
 import { BadRequestException, Injectable, Logger } from '@nestjs/common';
+
+import { WaterFootprintProduct, waterFootprintCategorySlugMap } from '@eco-metrics/shared';
 
 @Injectable()
 export class WaterFootprintService {

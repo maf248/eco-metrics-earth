@@ -71,13 +71,61 @@ interface WaterFootprintProduct {
 }
 ```
 
+### `MetricPoint` / `MetricSeries`
+
+Time-series shape used by provider clients and BFF endpoints. A `MetricSeries` groups one or
+more `MetricPoint` values by entity (country/region).
+
+```typescript
+interface MetricPoint {
+  year: number;
+  value: number | null;
+}
+
+interface MetricSeries {
+  entityName: string;
+  entityCode: string;
+  points: MetricPoint[];
+}
+```
+
+### `DataSourceAttribution`
+
+Attribution metadata carried in API responses so the frontend can render source, license and
+last-updated information without hard-coding provider details per page.
+
+```typescript
+interface DataSourceAttribution {
+  provider: string;
+  license: string;
+  sourceUrl: string;
+  lastUpdated: string;
+}
+```
+
+### `ApiResponseMeta`
+
+Optional metadata envelope for `ApiResponse<T>`; currently carries `DataSourceAttribution` and
+`fetchedAt`.
+
+```typescript
+interface ApiResponseMeta {
+  source: DataSourceAttribution;
+  fetchedAt: string; // ISO 8601
+}
+```
+
 ## Usage
 
 ```typescript
 import {
   ApiResponse,
+  ApiResponseMeta,
+  DataSourceAttribution,
   EcoCategory,
   ECO_CATEGORIES,
+  MetricPoint,
+  MetricSeries,
   WaterFootprintProduct,
 } from '@eco-metrics/shared';
 ```

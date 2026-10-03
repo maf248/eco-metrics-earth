@@ -1,6 +1,19 @@
-import type { ApiResponse } from '../../src/lib/api-response';
+import type { ApiResponse, ApiResponseMeta } from '../../src/lib/api-response';
+import type { DataSourceAttribution } from '../../src/lib/data-source-attribution';
 
 describe('ApiResponse', () => {
+  const attribution: DataSourceAttribution = {
+    provider: 'Our World in Data',
+    license: 'CC BY 4.0',
+    sourceUrl: 'https://ourworldindata.org/grapher/example',
+    lastUpdated: '2024-01-15T00:00:00.000Z',
+  };
+
+  const meta: ApiResponseMeta = {
+    source: attribution,
+    fetchedAt: '2024-01-20T12:00:00.000Z',
+  };
+
   it('should narrow to data when success is true', () => {
     const response: ApiResponse<number> = { success: true, data: 42, status: 200 };
     expect(response.success).toBe(true);
@@ -29,5 +42,60 @@ describe('ApiResponse', () => {
   it('should have status on the error branch', () => {
     const response: ApiResponse<never> = { success: false, error: 'Not found', status: 404 };
     expect(response.status).toBe(404);
+  });
+
+  it('should allow meta on the success branch', () => {
+    const response: ApiResponse<number> = {
+      success: true,
+      data: 42,
+      status: 200,
+      meta,
+    };
+    expect(response.success).toBe(true);
+    if (response.success) {
+      expect(response.meta?.source.provider).toBe('Our World in Data');
+      expect(response.meta?.fetchedAt).toBe('2024-01-20T12:00:00.000Z');
+    }
+  });
+
+  it('should keep meta optional on the success branch (backward compatible)', () => {
+    const response: ApiResponse<number> = { success: true, data: 42, status: 200 };
+    expect(response.meta).toBeUndefined();
+  });
+
+  it('should allow meta on the error branch', () => {
+    const response: ApiResponse<never> = {
+      success: false,
+      error: 'Upstream timeout',
+      status: 504,
+      meta,
+    };
+    expect(response.success).toBe(false);
+    if (!response.success) {
+      expect(response.meta?.source.provider).toBe('Our World in Data');
+    }
+  });
+
+  it('should keep meta optional on the error branch (backward compatible)', () => {
+    const response: ApiResponse<never> = {
+      success: false,
+      error: 'Not found',
+      status: 404,
+    };
+    expect(response.meta).toBeUndefined();
+  });
+
+  it('should keep narrowing semantics unchanged with meta present', () => {
+    const responses: ApiResponse<number>[] = [
+      { success: true, data: 99, status: 200, meta },
+      { success: false, error: 'Upstream timeout', status: 504, meta },
+    ];
+
+    const narrowed = responses.map((response) =>
+      response.success ? response.data : response.error,
+    );
+
+    expect(narrowed).toEqual([99, 'Upstream timeout']);
+    expect(responses.every((response) => response.meta === meta)).toBe(true);
   });
 });
