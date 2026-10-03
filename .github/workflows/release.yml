@@ -50,6 +50,17 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: npx semantic-release
 
+      - name: Sync lockfile versions after releases
+        run: node scripts/sync-lockfile-versions.mjs
+
+      - name: Commit lockfile sync
+        run: |
+          if ! git diff --quiet package-lock.json; then
+            git add package-lock.json
+            git commit -m "chore(release): sync lockfile versions [skip ci]"
+            git push origin main
+          fi
+
       - name: Back-merge main into develop
         if: success()
         run: |

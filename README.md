@@ -218,7 +218,7 @@ Each package/app has its own version number and Git tag:
 
 ### Release workflow
 
-Releases are automated via `.github/workflows/release.yml` on every push to `main`. The workflow runs semantic-release sequentially (root → web → api), then auto-back-merges `main` into `develop` to keep both branches synchronized with the same versions and changelogs.
+Releases are automated via `.github/workflows/release.yml` on every push to `main`. The workflow runs semantic-release sequentially (root → web → api), then syncs the workspace `version` fields in `package-lock.json` with the bumped `package.json` versions via `scripts/sync-lockfile-versions.mjs` (a deterministic patch — no dependency resolution, no transitive changes), and finally auto-back-merges `main` into `develop` to keep both branches synchronized with the same versions and changelogs.
 
 ### CI
 
