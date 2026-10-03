@@ -1,3 +1,10 @@
+## [2.5.2](https://github.com/maf248/eco-metrics-earth/compare/web-v2.5.1...web-v2.5.2) (2026-10-03)
+
+### Bug Fixes
+
+* **web:** make equivalent pluralization follow the displayed quotient ([5a031a0](https://github.com/maf248/eco-metrics-earth/commit/5a031a064055c8299a201d44e9384b096a8acc65))
+* **web:** trim padded env values in base URL helpers ([92c21aa](https://github.com/maf248/eco-metrics-earth/commit/92c21aaa61c21c0dc3d441310f8cde1912297d5d))
+
 ## [2.5.1](https://github.com/maf248/eco-metrics-earth/compare/web-v2.5.0...web-v2.5.1) (2026-09-30)
 
 ## [2.5.0](https://github.com/maf248/eco-metrics-earth/compare/web-v2.4.2...web-v2.5.0) (2026-09-22)
