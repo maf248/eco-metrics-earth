@@ -1,3 +1,10 @@
+## [2.7.1](https://github.com/maf248/eco-metrics-earth/compare/v2.7.0...v2.7.1) (2026-10-06)
+
+### Bug Fixes
+
+* **api:** reject inherited keys and non-array datasets in water-footprint service ([9b183f5](https://github.com/maf248/eco-metrics-earth/commit/9b183f5525ebed00cbd2e2dd16f5afb3451d37c0))
+* **tooling:** use checkout hook args and detect lockfile-only changes ([7c009f3](https://github.com/maf248/eco-metrics-earth/commit/7c009f37b864b58a9153e02787fdd2db1c089242))
+
 ## [2.7.0](https://github.com/maf248/eco-metrics-earth/compare/v2.6.3...v2.7.0) (2026-10-03)
 
 ### Features
