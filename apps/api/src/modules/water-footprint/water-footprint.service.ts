@@ -32,14 +32,21 @@ export class WaterFootprintService {
       });
     }
 
+    let parsed: unknown;
     try {
-      this.products = JSON.parse(raw) as WaterFootprintProduct[];
+      parsed = JSON.parse(raw);
     } catch (error: unknown) {
       const message = error instanceof Error ? error.message : String(error);
       throw new Error(`Failed to parse water footprint data: ${message}`, {
         cause: error,
       });
     }
+
+    if (!Array.isArray(parsed)) {
+      throw new Error('Failed to parse water footprint data: expected a JSON array of products.');
+    }
+
+    this.products = parsed as WaterFootprintProduct[];
   }
 
   getAllProducts(): WaterFootprintProduct[] {
@@ -47,13 +54,14 @@ export class WaterFootprintService {
   }
 
   getByCategory(slug: string): WaterFootprintProduct[] {
-    const category = waterFootprintCategorySlugMap[slug];
-
-    if (!category) {
+    // Own-property check: a plain lookup would resolve inherited keys such as
+    // `constructor` or `__proto__` and silently accept them as valid slugs.
+    if (!Object.hasOwn(waterFootprintCategorySlugMap, slug)) {
       const valid = Object.keys(waterFootprintCategorySlugMap).join(', ');
       throw new BadRequestException(`Invalid category filter. Valid values: ${valid}`);
     }
 
+    const category = waterFootprintCategorySlugMap[slug];
     return this.products.filter((product) => product.category === category);
   }
 }

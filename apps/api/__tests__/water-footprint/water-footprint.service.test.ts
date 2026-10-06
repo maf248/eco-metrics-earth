@@ -87,6 +87,17 @@ describe('WaterFootprintService', () => {
     expect(() => service.getByCategory('unknown-slug')).toThrow(BadRequestException);
   });
 
+  it.each(['constructor', 'toString', '__proto__', 'hasOwnProperty'])(
+    'should throw BadRequestException for the inherited object key "%s"',
+    (slug) => {
+      mockReadFileSync.mockReturnValue(JSON.stringify(mockProducts));
+
+      const service = new WaterFootprintService();
+
+      expect(() => service.getByCategory(slug)).toThrow(BadRequestException);
+    },
+  );
+
   it('should return an empty array when a valid slug matches no products', () => {
     mockReadFileSync.mockReturnValue(JSON.stringify(mockProducts));
 
@@ -129,5 +140,15 @@ describe('WaterFootprintService', () => {
     mockReadFileSync.mockReturnValue('{ invalid json');
 
     expect(() => new WaterFootprintService()).toThrow(/Failed to parse water footprint data/);
+  });
+
+  it.each([
+    ['an object', '{ "product": "Apples" }'],
+    ['null', 'null'],
+    ['a string', '"products"'],
+  ])('should throw when the data file contains %s instead of an array', (_label, payload) => {
+    mockReadFileSync.mockReturnValue(payload);
+
+    expect(() => new WaterFootprintService()).toThrow(/expected a JSON array of products/);
   });
 });
