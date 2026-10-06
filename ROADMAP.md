@@ -4,22 +4,21 @@ Este documento registra todas las propuestas de mejora identificadas para el pro
 
 ---
 
-## Estado del Proyecto (3 Oct 2026)
+## Estado del Proyecto (5 Oct 2026)
 
-| Aspecto          | Estado | Nota                                                                                                                                                                                                                                                                         |
-| ---------------- | ------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Tests            | ✅     | 498 unit (306 web + 167 api + 25 shared) + 274 instancias E2E (5 browsers) pasando, 0 errores                                                                                                                                                                                |
-| Lint             | ✅     | Sin warnings                                                                                                                                                                                                                                                                 |
-| Build            | ✅     | Compila correctamente                                                                                                                                                                                                                                                        |
-| CI               | ✅     | CI en PRs y push a cualquier branch                                                                                                                                                                                                                                          |
-| CD / Deploy      | ✅     | web: Vercel (auto-deploy desde GitHub); api: Cloud Run (workflow `deploy-api.yml` desde `develop`, servicio `eco-metrics-api`, `eco-metrics-api-fexi2yqv2q-uc.a.run.app`); gap de staging/preview del api sigue en I01                                                       |
-| Dependencias     | 🟡     | 2 advisories viven solo en `npm@11.20.0` anidado (tooling de release en CI, no va a producción) — sin fix publicado aún; al salir un 11.x parcheado, correr `npm update npm`.                                                                                                |
-|                  |
-| Coverage         | ✅     | Medido con Jest                                                                                                                                                                                                                                                              |
-| E2E              | ✅     | Playwright: 64 tests en 7 specs, 5 browsers, CI integrado, arranque determinista (readiness de ambos puertos)                                                                                                                                                                |
-| Theming          | ✅     | Light/dark mode con toggle, persistencia (localStorage) y zero-flash (spec `theme-toggle` + `theme-system`)                                                                                                                                                                  |
-| Monitoreo        | ❌     | No implementado                                                                                                                                                                                                                                                              |
-| **Datos reales** | 🟡     | **Ningún proveedor externo expuesto todavía** (cliente OWID + cache listos en el BFF, sin endpoints) — water-footprint completa (dataset estático + UI + tests E2E con datos reales); las 11 páginas restantes siguen como placeholders (ver Estrategia de Proveedores + P1) |
+| Aspecto          | Estado | Nota                                                                                                                                                                                                                                                                                                                                                                                       |
+| ---------------- | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Tests            | ✅     | 526 unit (308 web + 193 api + 25 shared) + 274 instancias E2E (5 browsers) pasando, 0 errores                                                                                                                                                                                                                                                                                              |
+| Lint             | ✅     | Sin warnings                                                                                                                                                                                                                                                                                                                                                                               |
+| Build            | ✅     | Compila correctamente                                                                                                                                                                                                                                                                                                                                                                      |
+| CI               | ✅     | CI en PRs y push a cualquier branch (`permissions` mínimos y `concurrency` que cancela corridas reemplazadas)                                                                                                                                                                                                                                                                              |
+| CD / Deploy      | ✅     | web: Vercel (auto-deploy desde GitHub); api: Cloud Run (workflow `deploy-api.yml` desde `develop`, servicio `eco-metrics-api`, `eco-metrics-api-fexi2yqv2q-uc.a.run.app`); gap de staging/preview del api sigue en I01                                                                                                                                                                     |
+| Dependencias     | 🟡     | 11 advisories, todas en tooling de desarrollo (`npm ls --omit=dev` vacío — nada llega a producción): 4 viven en el `npm@11.20.0` empaquetado por `semantic-release` (sin fix hasta un 11.x parcheado → `npm update npm`) y el resto es la cadena `braces`/`micromatch` (sin versión parcheada publicada). `axios` y `brace-expansion@5` (pins exactos de `nx`) se fuerzan vía `overrides`. |
+| Coverage         | ✅     | Medido con Jest                                                                                                                                                                                                                                                                                                                                                                            |
+| E2E              | ✅     | Playwright: 64 tests en 7 specs, 5 browsers, CI integrado, arranque determinista (readiness de ambos puertos)                                                                                                                                                                                                                                                                              |
+| Theming          | ✅     | Light/dark mode con toggle, persistencia (localStorage) y zero-flash (spec `theme-toggle` + `theme-system`)                                                                                                                                                                                                                                                                                |
+| Monitoreo        | ❌     | No implementado                                                                                                                                                                                                                                                                                                                                                                            |
+| **Datos reales** | 🟡     | **Ningún proveedor externo expuesto todavía** (cliente OWID + cache listos en el BFF, sin endpoints) — water-footprint completa (dataset estático + UI + tests E2E con datos reales); las 11 páginas restantes siguen como placeholders (ver Estrategia de Proveedores + P1)                                                                                                               |
 
 ---
 
@@ -177,21 +176,62 @@ La categoría con mejor relación datos/esfuerzo (OWID CO₂ dataset: anual, per
 
 ---
 
+### P3: Hardening del API en Cloud Run (rate limiting por cliente + apagado ordenado)
+
+**Problema:**
+
+- **Rate limiting probablemente compartido entre todos los usuarios.** `ThrottlerGuard` (60 req/min) usa `req.ip` como clave, y `main.ts` no configura `trust proxy` en Express. Detrás del front-end de Cloud Run, `req.ip` es muy probablemente la IP del proxy de Google, no la del cliente → todos los usuarios comparten un único bucket de 60 req/min (un solo cliente agresivo bloquea al resto).
+- **Sin apagado ordenado.** `main.ts` no llama a `app.enableShutdownHooks()`. En el contenedor Node corre como PID 1 y, sin handler, ignora `SIGTERM`: Cloud Run espera los 10 s de gracia y termina con `SIGKILL`, cortando requests en curso.
+
+**Propuesta:**
+
+1. Verificar primero en Cloud Run (log temporal o request de prueba) qué llega en `req.ip`, `req.ips` y `X-Forwarded-For`, para determinar la cantidad exacta de saltos de proxy.
+2. Configurar `app.set('trust proxy', <saltos>)` con ese valor exacto — nunca `true`: confiar de más permite que un cliente falsifique `X-Forwarded-For` y evada el límite. Test con supertest enviando `X-Forwarded-For` (clientes distintos → buckets distintos; header falsificado extra → ignorado).
+3. `app.enableShutdownHooks()` + test de bootstrap. Revisar si `OwidModule`/cache necesitan `onApplicationShutdown`.
+4. Actualizar spec `api-security-hardening` y la tabla de cross-cutting concerns de `apps/api/README.md` ("per IP" pasa a ser cierto).
+
+**Dificultad:** 3/10 — el código es chico; lo delicado es medir el número correcto de proxies en producción.
+**Requisitos:** Acceso a logs de Cloud Run. Spec OpenSpec (cambia comportamiento de seguridad).
+**Estado:** Pendiente
+
+---
+
+### P4: Pipeline de deploy del API (gate de CI + imagen reproducible)
+
+**Problema:**
+
+- **El deploy no espera al CI.** `deploy-api.yml` y `ci.yml` corren en paralelo en cada push a `develop`, y `eco-metrics-api` es el servicio productivo (trade-off staging-is-production, ver I01). Una imagen con tests rotos puede llegar a producción.
+- **Dependencias de producción sin lockfile.** El `Dockerfile` descarta el `package-lock.json` que genera `prune-lockfile` (inconsistente con el hoisting cross-workspace) y corre `npm install --omit=dev`. Las dependencias directas quedan fijadas, pero las **transitivas se resuelven en cada build**: la imagen no es reproducible y amplía la superficie de supply-chain.
+
+**Propuesta:**
+
+1. Gatear el deploy: disparar `deploy-api.yml` vía `workflow_run` sobre `CI` (`conclusion == 'success'`, branch `develop`, mismo SHA), o mover el deploy a un job con `needs:` dentro del pipeline. Mantener `workflow_dispatch` para deploys manuales.
+2. Imagen reproducible: investigar por qué el lockfile podado es inconsistente y elegir entre arreglar `prune-lockfile` o instalar en el builder con `npm ci --omit=dev --workspace api` y copiar el resultado al runtime. Validar con `docker build` + arranque local + `npm ls --omit=dev` dentro de la imagen.
+3. Actualizar spec `api-cloud-run-deploy`, `apps/api/README.md` (sección Deploy) y `docs/deploy/cloud-run.md`.
+
+**Dificultad:** 4/10 — el gate es simple; la imagen reproducible requiere investigación del pruning de NX.
+**Requisitos:** Spec OpenSpec. Coordinar con I11 (servicio dev) si se implementa antes, ya que ambos tocan `deploy-api.yml`.
+**Estado:** Pendiente
+
+---
+
 ## 📋 Plan de Acción Sugerido
 
 Si no estás seguro por dónde empezar, este es el orden recomendado:
 
-1. **P1.0: Módulo `co2-emissions` end-to-end** → Primera sección con datos reales + charts (Dificultad: 6/10)
-2. **P1.1 / P1.2: `global-temperature` y `energy-sources`** → Replicar el patrón (Dificultad: 3/10 c/u)
-3. **P2: Monitoreo y observabilidad** → Logs, métricas y error tracking (Dificultad: 5/10)
+1. **P3: Hardening del API en Cloud Run** → Rate limiting por cliente real + apagado ordenado; afecta producción hoy (Dificultad: 3/10)
+2. **P4: Pipeline de deploy del API** → Deploy gateado por CI + imagen reproducible, antes de sumar endpoints con datos reales (Dificultad: 4/10)
+3. **P1.0: Módulo `co2-emissions` end-to-end** → Primera sección con datos reales + charts (Dificultad: 6/10)
+4. **P1.1 / P1.2: `global-temperature` y `energy-sources`** → Replicar el patrón (Dificultad: 3/10 c/u)
+5. **P2: Monitoreo y observabilidad** → Logs, métricas y error tracking (Dificultad: 5/10)
 
 D1 (TypeScript 7) queda como seguimiento pasivo — sin acción por ahora.
 
 ---
 
-## 🟠 Mantenimiento / Dependencias (Sep 2026)
+## 🟠 Mantenimiento / Dependencias
 
-> Hallazgos de la revisión del 10 Sep 2026: drift de dependencias (~2 meses), `npm audit` en 80 vulnerabilidades y docs desincronizados tras el trabajo de water-footprint.
+> Seguimiento de dependencias que no se pueden actualizar todavía (majors bloqueadas o en evaluación).
 
 ### D1: Evaluación de TypeScript 7 (tsc nativo en Go)
 
@@ -229,6 +269,7 @@ Lista de hallazgos del análisis de repositorio, ordenados por prioridad (más c
 ### 🟢 Arquitectura / Deuda técnica
 
 - **I04.** Sin capa de datos ni ORM — cuando empiece la integración real de datos, no hay TypeORM, Prisma ni esquema de base de datos definido.
+- **I12.** Endpoints de scaffold expuestos en producción — `GET/POST /api/v1/demo-validation` (`DemoValidationController`, marcado `@deprecated` "will be removed when real eco modules are implemented") y `GET /api/v1/` ("Hello API") siguen públicos en Cloud Run. Propuesta: eliminar `DemoValidationController`, `AppController`/`AppService` y los DTOs que solo usan ellos (`create-metric.dto.ts`, `get-metrics-query.dto.ts`) con sus tests; mover los E2E de validación de `e2e/api-health.spec.ts` a `water-footprint/products?category=<inválida>` (400 en formato `ApiResponse`); actualizar tablas de endpoints (`README.md`, `apps/api/README.md`) y tags de Swagger. Requiere spec (cambia la superficie pública del API). Puede hacerse junto con P1.0, cuando exista el primer endpoint real con DTOs.
 
 ### 🟢 Configuración / Build
 
@@ -240,6 +281,14 @@ Lista de hallazgos del análisis de repositorio, ordenados por prioridad (más c
 - **I09.** Atribución de datos (requisito legal, no opcional) — CC BY exige atribución visible. Antes de publicar la primera sección con datos reales (P1.0): componente de atribución al pie de cada visualización ("Data: Our World in Data — CC BY" con link) + página `/data-sources/` listando proveedores y licencias. Alimentado por `ApiResponse<T>.meta.source` (`DataSourceAttribution`, ya disponible en `@eco-metrics/shared`). Bonus SEO: contenido indexable con estructura.
 - **I10.** Elegir librería de charts — pendiente. Cuando toque (antes de P1.0), ver `docs/technical/libraries.md`: tiene candidatas, descartadas con motivo, spikes por candidata y los gates a cumplir. La decisión se registra en `docs/design-system.md` y activa el recordatorio de Dynamic Imports.
 
+### 🟡 Web / SEO
+
+- **I13.** Íconos, robots y CSP del front — tres ajustes chicos de `apps/web`, todos con spec existente que hay que corregir, por eso van juntos en una sola propuesta:
+  - **Íconos PWA:** las 3 entradas de `manifest.ts` tienen solo `purpose: 'maskable'` (ningún ícono `any`). Los specs `web-app-manifest` y `pwa-icons` piden `'any maskable'`, valor que los tipos de Next (`'any' | 'maskable' | 'monochrome'`) no aceptan → el código ya diverge del spec. Separar en entradas `any` y `maskable` (idealmente con un PNG maskable con safe zone) y corregir ambos specs.
+  - **Imagen OG/Twitter y apple icon:** `layout.tsx` usa el SVG como `og:image` (declarado 512×512) y como `apple` icon. Facebook, X y LinkedIn no renderizan `og:image` SVG e iOS ignora apple-touch-icon SVG → pasar a PNG (`icon-512.png` / un 180×180, o `opengraph-image`) y actualizar spec `seo-metadata`.
+  - **robots.txt:** los specs se contradicen — `robots` dice "sin reglas `disallow`" y `sitemap-and-robots` exige `disallow: /api/`. Además `robots.ts` emite dos grupos separados para `User-Agent: *`. Unificar specs y emitir un único grupo (evaluar si `/api/` tiene sentido: el BFF vive en Cloud Run, no en el dominio web).
+  - **CSP:** permite `fonts.googleapis.com` / `fonts.gstatic.com` pero el sitio no usa Google Fonts (y `next/font` las self-hostea). Quitarlos y actualizar spec `web-security-headers` + `e2e/security-headers.spec.ts`.
+
 ---
 
 ### 📝 Recordatorios
@@ -249,4 +298,4 @@ Lista de hallazgos del análisis de repositorio, ordenados por prioridad (más c
 - **I07.** OpenTelemetry — considerado para el futuro cuando el sistema escale a múltiples servicios o se quiera cambiar de backend de observabilidad (Sentry → Datadog, Honeycomb, etc.) sin tocar código de instrumentación. Con un solo BFF, Sentry Performance cubre el tracing necesario. No justifica el overhead de configuración actual (collector, exporters, SDK setup).
 - **I08.** Axiom — plataforma de logs como servicio. Solo relevante si la retención de Cloud Logging (30 días en free tier) o Vercel resulta insuficiente para debugging post-mortem. Por ahora los logs agregados de cada plataforma son suficientes.
 
-**Última actualización:** 3 Oct 2026
+**Última actualización:** 5 Oct 2026
