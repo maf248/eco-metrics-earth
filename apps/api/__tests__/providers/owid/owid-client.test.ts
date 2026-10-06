@@ -514,4 +514,122 @@ describe('OwidClient', () => {
       await expect(promise).rejects.toMatchObject({ cause: expect.any(OwidParseError) });
     });
   });
+
+  describe('parameter validation', () => {
+    it.each([
+      ['a non-array country option', { country: 'ARG' as unknown as string[] }],
+      ['a non-string country code', { country: [42 as unknown as string] }],
+      ['a non-integer time range bound', { timeRange: { from: 1990.5, to: 2020 } }],
+    ])('should reject %s before fetching', async (_label, options) => {
+      const fetchStub = buildFetchStub();
+      const client = await buildClient(fetchStub);
+
+      await expect(
+        client.getGrapherSeries('co-emissions-per-capita', options),
+      ).rejects.toBeInstanceOf(OwidInvalidParameterError);
+      expect(fetchStub).not.toHaveBeenCalled();
+    });
+
+    it('should reject a non-integer indicator id before fetching', async () => {
+      const fetchStub = buildFetchStub();
+      const client = await buildClient(fetchStub);
+
+      await expect(client.getIndicatorData(1.5)).rejects.toBeInstanceOf(OwidInvalidParameterError);
+      expect(fetchStub).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('indicator data payload validation', () => {
+    // Raw JSON bodies: `1e999` parses to Infinity, which JSON.stringify cannot produce.
+    it.each([
+      ['a null body', 'null', 'expected an object'],
+      [
+        'arrays of unequal length',
+        '{"years":[2000,2001],"entities":[1],"values":[1.1,2.2]}',
+        'unequal lengths',
+      ],
+      [
+        'a non-numeric value',
+        '{"years":[2000],"entities":[1],"values":["not-a-number"]}',
+        'value at index 0',
+      ],
+      [
+        'a non-finite value',
+        '{"years":[2000],"entities":[1],"values":[1e999]}',
+        'value at index 0',
+      ],
+    ])('should throw OwidParseError for %s', async (_label, body, message) => {
+      const fetchStub = buildFetchStub();
+      fetchStub.mockResolvedValue(textResponse(body));
+      const client = await buildClient(fetchStub);
+
+      const promise = client.getIndicatorData(1146696);
+      await expect(promise).rejects.toBeInstanceOf(OwidParseError);
+      await expect(promise).rejects.toThrow(message);
+    });
+
+    it('should accept null values as missing data points', async () => {
+      const fetchStub = buildFetchStub();
+      fetchStub.mockResolvedValue(
+        jsonResponse({ years: [2000, 2001], entities: [1, 1], values: [null, 2.5] }),
+      );
+      const client = await buildClient(fetchStub);
+
+      const result = await client.getIndicatorData(1146696);
+
+      expect(result.values).toEqual([null, 2.5]);
+    });
+  });
+
+  describe('indicator metadata payload validation', () => {
+    function validMetadata(): Record<string, unknown> {
+      return loadJsonFixture<Record<string, unknown>>('indicator-1146696-metadata.json');
+    }
+
+    it.each([
+      ['a null body', () => null, 'expected an object'],
+      [
+        'a missing string field',
+        () => ({ ...validMetadata(), unit: undefined }),
+        'missing or invalid field "unit"',
+      ],
+      [
+        'missing dimensions',
+        () => ({ ...validMetadata(), dimensions: undefined }),
+        'missing dimensions object',
+      ],
+      [
+        'missing dimensions.entities',
+        () => ({ ...validMetadata(), dimensions: {} }),
+        'missing dimensions.entities object',
+      ],
+      [
+        'non-array entity values',
+        () => ({ ...validMetadata(), dimensions: { entities: { values: 'ARG' } } }),
+        'dimensions.entities.values is not an array',
+      ],
+      [
+        'a non-object entity',
+        () => ({ ...validMetadata(), dimensions: { entities: { values: ['ARG'] } } }),
+        'entity at index 0 is not an object',
+      ],
+      [
+        'an entity without a code',
+        () => ({
+          ...validMetadata(),
+          dimensions: { entities: { values: [{ id: 21, name: 'Argentina' }] } },
+        }),
+        'entity at index 0 is missing id, name, or code',
+      ],
+    ])('should throw OwidParseError for %s', async (_label, buildBody, message) => {
+      const fetchStub = buildFetchStub();
+      fetchStub.mockResolvedValue(jsonResponse(buildBody()));
+      const client = await buildClient(fetchStub);
+
+      const promise = client.getIndicatorMetadata(1146696);
+      await expect(promise).rejects.toBeInstanceOf(OwidParseError);
+      await expect(promise).rejects.toThrow(message);
+      await expect(promise).rejects.toThrow('OWID indicator 1146696');
+    });
+  });
 });
