@@ -7,7 +7,7 @@ Tracks ocean-related indicators including sea surface temperature, acidity (pH),
 ### 1. NOAA Coral Reef Watch (CRW) — CoralTemp
 
 - **URL:** https://coralreefwatch.noaa.gov/ — data: https://www.ncei.noaa.gov/products/coral-reef-watch
-- **License:** ✅ Comercial/ads OK — Public domain (NOAA).
+- **License:** ✅ Commercial/ads OK — Public domain (NOAA).
 - **Model:** Free. NetCDF + PNG files.
 - **Data type:** Real-time (daily) + reanalysis from 1985.
 - **Data:** Daily global SST at 5 km (CoralTemp), SST anomaly, HotSpot, Degree Heating Week (DHW), Bleaching Alert Area (5 levels), seasonal bleaching forecast, marine heatwave, disease risk, larval connectivity.
@@ -28,7 +28,7 @@ Tracks ocean-related indicators including sea surface temperature, acidity (pH),
 ### 2. NOAA OISST (Optimum Interpolation SST)
 
 - **URL:** https://www.ncei.noaa.gov/products/optimum-interpolation-sst
-- **License:** ✅ Comercial/ads OK — Public domain (NOAA).
+- **License:** ✅ Commercial/ads OK — Public domain (NOAA).
 - **Model:** Free.
 - **Data type:** Daily global SST from 1981.
 - **Data:** Sea surface temperature at 0.25° resolution, from 1981 to present.
@@ -48,7 +48,7 @@ Tracks ocean-related indicators including sea surface temperature, acidity (pH),
 ### 3. NOAA ERDDAP Servers
 
 - **URL:** https://coastwatch.pfeg.noaa.gov/erddap/
-- **License:** ✅ Comercial/ads OK — Public domain (NOAA).
+- **License:** ✅ Commercial/ads OK — Public domain (NOAA).
 - **Model:** Free. REST with JSON, CSV, GeoJSON, netCDF output.
 - **Data type:** Hundreds of oceanographic datasets.
 - **Data:** Chlorophyll, salinity, currents, wind, SST, dissolved oxygen, and much more.
@@ -69,7 +69,7 @@ Tracks ocean-related indicators including sea surface temperature, acidity (pH),
 ### 4. Open-Meteo Marine API
 
 - **URL:** `https://marine-api.open-meteo.com/v1/marine`
-- **License:** ⚠️ Solo no comercial — CC BY-NC 4.0. Commercial use requires a paid plan.
+- **License:** ⚠️ Non-commercial only — CC BY-NC 4.0. Commercial use requires a paid plan.
 - **Model:** Free for non-commercial use.
 - **Data type:** Forecast. JSON.
 - **Data:** Wave height, period, direction, marine wind.
@@ -90,7 +90,7 @@ Tracks ocean-related indicators including sea surface temperature, acidity (pH),
 ### 5. Ocean Health Index
 
 - **URL:** https://oceanhealthindex.org/global-scores/data-download/
-- **License:** ✅ Comercial/ads OK — CC BY.
+- **License:** ✅ Commercial/ads OK — CC BY.
 - **Model:** Static downloadable (CSV).
 - **Data type:** Annual scores.
 - **Data:** Annual scores (0–100) per country across 10 goals: food provision, artisanal fishing, natural products, carbon storage, coastal protection, tourism, livelihoods, sense of place, clean waters, biodiversity.
@@ -110,7 +110,7 @@ Tracks ocean-related indicators including sea surface temperature, acidity (pH),
 ### 6. NOAA Tides & Currents API
 
 - **URL:** https://api.tidesandcurrents.noaa.gov/api/prod/
-- **License:** ✅ Comercial/ads OK — Public domain (NOAA).
+- **License:** ✅ Commercial/ads OK — Public domain (NOAA).
 - **Model:** Free. JSON. No API key required.
 - **Data:** Sea levels, tide predictions, water temperature, salinity.
 - **API key:** Not required.

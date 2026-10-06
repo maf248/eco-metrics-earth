@@ -7,7 +7,7 @@ Tracks global and regional surface temperature anomalies over time. Key indicato
 ### 1. NASA GISTEMP v4 (GISS Surface Temperature Analysis)
 
 - **URL:** https://data.giss.nasa.gov/gistemp/
-- **License:** ✅ Comercial/ads OK — Public domain.
+- **License:** ✅ Commercial/ads OK — Public domain.
 - **Model:** Free, public domain. Static files updated monthly.
 - **Data type:** Static downloadable, updated monthly.
 - **Data:** Monthly/seasonal/annual temperature anomalies from 1880 (global, NH, SH, zonal). Formats: TXT, CSV, netCDF (2°×2° grid), Zarr v3, SBBX. Includes 200-member uncertainty ensemble (Lenssen et al. 2024).
@@ -29,7 +29,7 @@ Tracks global and regional surface temperature anomalies over time. Key indicato
 ### 2. NOAA Global Climate at a Glance
 
 - **URL:** https://www.ncei.noaa.gov/cag/global/time-series/ — JSON endpoint: `https://www.ncei.noaa.gov/access/services/data/v1`
-- **License:** ✅ Comercial/ads OK — Public domain (NOAA).
+- **License:** ✅ Commercial/ads OK — Public domain (NOAA).
 - **Model:** Free. REST with JSON output.
 - **Data type:** Monthly and annual series from 1850.
 - **Data:** Land+ocean, land-only, ocean-only temperature anomalies by hemisphere and region.
@@ -49,7 +49,7 @@ Tracks global and regional surface temperature anomalies over time. Key indicato
 ### 3. Berkeley Earth
 
 - **URL:** https://berkeleyearth.org/data/
-- **License:** ✅ Comercial/ads OK — CC BY 4.0.
+- **License:** ✅ Commercial/ads OK — CC BY 4.0.
 - **Model:** Free / open data. Static downloads.
 - **Data type:** Static downloadable (TXT, netCDF).
 - **Data:** Global, country-level, and city-level temperature series from 1750.
@@ -69,7 +69,7 @@ Tracks global and regional surface temperature anomalies over time. Key indicato
 ### 4. Our World in Data — Temperature Anomalies
 
 - **URL:** https://ourworldindata.org/grapher/temperature-anomaly — CSV: `https://ourworldindata.org/grapher/temperature-anomaly.csv?v=1&csvType=full`
-- **License:** ✅ Comercial/ads OK — CC BY.
+- **License:** ✅ Commercial/ads OK — CC BY.
 - **Model:** Free (CC BY). JSON metadata available alongside CSV.
 - **Data type:** Static downloadable, updated periodically.
 - **Data:** Global and hemispheric temperature anomalies based on HadCRUT, GISTEMP, and NOAA series.
@@ -90,7 +90,7 @@ Tracks global and regional surface temperature anomalies over time. Key indicato
 ### 5. DataHub.io Global Temp Time Series
 
 - **URL:** https://datahub.io/core/global-temp
-- **License:** ✅ Comercial/ads OK — Public Domain Dedication (PDDL).
+- **License:** ✅ Commercial/ads OK — Public Domain Dedication (PDDL).
 - **Model:** Open data. Static.
 - **Data type:** Static downloadable.
 - **Data:** Monthly and annual GISTEMP + GCAG combined series (CSV/JSON).

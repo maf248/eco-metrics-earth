@@ -7,7 +7,7 @@ Tracks glacier mass balance, retreat rates, and ice volume loss globally. Key in
 ### 1. NSIDC Sea Ice Index v4
 
 - **URL:** https://nsidc.org/data/seaice_index — data: https://noaadata.apps.nsidc.org/NOAA/G02135/
-- **License:** ✅ Comercial/ads OK — Public domain (NASA/NOAA).
+- **License:** ✅ Commercial/ads OK — Public domain (NASA/NOAA).
 - **Model:** Free. CSV, GeoTIFF, shapefile, PNG.
 - **Data type:** Daily and monthly from 1978–present.
 - **Data:** Arctic and Antarctic sea ice extent and concentration, anomalies, trends.
@@ -28,7 +28,7 @@ Tracks glacier mass balance, retreat rates, and ice volume loss globally. Key in
 ### 2. NSIDC Data Map Services API (WMS/WFS)
 
 - **URL:** https://nsidc.org/data/user-resources/help-center/guide-nsidc-data-map-services-api
-- **License:** ✅ Comercial/ads OK — Public domain (NASA/NOAA).
+- **License:** ✅ Commercial/ads OK — Public domain (NASA/NOAA).
 - **Model:** Free. WMS/WFS map services.
 - **Data:** Sea ice concentration raster/vector layers, freeze/thaw, glacier velocity, Greenland melt.
 - **API key:** Not required.
@@ -47,7 +47,7 @@ Tracks glacier mass balance, retreat rates, and ice volume loss globally. Key in
 ### 3. World Glacier Monitoring Service (WGMS)
 
 - **URL:** https://wgms.ch/data_databaseversions/
-- **License:** ✅ Comercial/ads OK — CC BY 4.0 (open access; correct citation required, equivalent to CC BY 4.0 per WGMS data policy).
+- **License:** ✅ Commercial/ads OK — CC BY 4.0 (open access; correct citation required, equivalent to CC BY 4.0 per WGMS data policy).
 - **Model:** Free. Open access, direct download (no registration required).
 - **Data:** Mass balance, length, area, thickness of 6,000+ glaciers; Fluctuations of Glaciers (FoG) database, updated annually. Latest version: FoG 2026-02-10.
 - **API key:** None (direct download; cite the database version DOI).
@@ -66,7 +66,7 @@ Tracks glacier mass balance, retreat rates, and ice volume loss globally. Key in
 ### 4. NSIDC GLIMS Glacier Database
 
 - **URL:** https://www.glims.org/ — download: https://nsidc.org/data/nsidc-0272/versions/1
-- **License:** ✅ Comercial/ads OK — Public domain (NASA/NOAA).
+- **License:** ✅ Commercial/ads OK — Public domain (NASA/NOAA).
 - **Model:** Free. Static download.
 - **Data:** Global glacier inventory with polygons, length, area.
 - **API key:** Not required.
@@ -85,7 +85,7 @@ Tracks glacier mass balance, retreat rates, and ice volume loss globally. Key in
 ### 5. NASA MEaSUREs / ICESat-2 Datasets (via NSIDC DAAC)
 
 - **URL:** https://nsidc.org/data
-- **License:** ✅ Comercial/ads OK — Public domain (NASA); requires free Earthdata Login.
+- **License:** ✅ Commercial/ads OK — Public domain (NASA); requires free Earthdata Login.
 - **Model:** Free (Earthdata Login). Accessible via `earthaccess` Python library or HTTPS.
 - **Data:** Greenland glacier velocity (InSAR), surface elevation (ATL15), ice mass.
 - **API key:** Free NASA Earthdata Login required.
@@ -104,7 +104,7 @@ Tracks glacier mass balance, retreat rates, and ice volume loss globally. Key in
 ### 6. NASA GRACE / GRACE-FO Mass Balance
 
 - **URL:** https://podaac.jpl.nasa.gov/GRACE
-- **License:** ✅ Comercial/ads OK — Public domain (NASA); requires free Earthdata Login.
+- **License:** ✅ Commercial/ads OK — Public domain (NASA); requires free Earthdata Login.
 - **Model:** Free (Earthdata Login).
 - **Data:** Greenland and Antarctic ice mass loss (Gt/year) from 2002 to present.
 - **API key:** Free NASA Earthdata Login required.
@@ -123,7 +123,7 @@ Tracks glacier mass balance, retreat rates, and ice volume loss globally. Key in
 ### 7. Our World in Data — Ice & Glaciers
 
 - **URL:** https://ourworldindata.org/grapher/cumulative-mass-balance-of-us-reference-glaciers (and others)
-- **License:** ✅ Comercial/ads OK — CC BY.
+- **License:** ✅ Commercial/ads OK — CC BY.
 - **Model:** Free (CC BY). CSV via grapher.
 - **Data:** Annual mass balance series of reference glaciers.
 - **API key:** Not required.

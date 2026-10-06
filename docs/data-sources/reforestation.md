@@ -9,7 +9,7 @@ Tracks tree planting initiatives, forest restoration progress, and net forest ga
 ### 1. Global Forest Watch — Tree Cover Gain (WRI)
 
 - **URL:** https://data-api.globalforestwatch.org/
-- **License:** ⚠️ Solo no comercial — CC BY-NC-SA on some datasets.
+- **License:** ⚠️ Non-commercial only — CC BY-NC-SA on some datasets.
 - **Model:** Free and open. REST + JSON/GeoJSON.
 - **Data:** Tree cover gain dataset (Hansen 2000–2020) used as a proxy for gross reforestation. Same API as the Deforestation category.
 - **API key:** Required for some endpoints (free).
@@ -29,7 +29,7 @@ Tracks tree planting initiatives, forest restoration progress, and net forest ga
 ### 2. FAO Forest Resources Assessment (FRA) / FAOSTAT
 
 - **URL:** https://www.fao.org/forest-resources-assessment/en/ — FAOSTAT bulk CSV: `https://bulks-faostat.fao.org/production/`
-- **License:** ✅ Comercial/ads OK — CC BY 4.0 (FAO Statistical Database Terms of Use).
+- **License:** ✅ Commercial/ads OK — CC BY 4.0 (FAO Statistical Database Terms of Use).
 - **Model:** Free. Annual country-level data (bulk CSV downloads).
 - **Data:** Net forest area change, forest plantations, natural regeneration by country (every 5 years — FRA cycle).
 - **API key:** Not required.
@@ -49,7 +49,7 @@ Tracks tree planting initiatives, forest restoration progress, and net forest ga
 ### 3. Trees.org / Plant-for-the-Planet Forest Cloud
 
 - **URL:** https://www.trilliontreecampaign.org/ — open source: https://github.com/Plant-for-the-Planet-org
-- **License:** ⚠️ Solo no comercial — Complex licensing; widget/embed use only; no official public REST API.
+- **License:** ⚠️ Non-commercial only — Complex licensing; widget/embed use only; no official public REST API.
 - **Model:** Free widgets and embeds for tree counter. Open-source app.
 - **Data:** Global tree-planting counter, restoration project registry (160+ projects), donations.
 - **API key:** Some integrations require authentication.
@@ -69,7 +69,7 @@ Tracks tree planting initiatives, forest restoration progress, and net forest ga
 ### 4. Bonn Challenge Barometer (IUCN / WRI)
 
 - **URL:** https://www.bonnchallenge.org/ — barometer: https://infoflr.org/bonn-challenge-barometer
-- **License:** ✅ Comercial/ads OK — CC BY (reports and dashboards).
+- **License:** ✅ Commercial/ads OK — CC BY (reports and dashboards).
 - **Model:** Free. No REST API — exportable dashboard and PDF reports.
 - **Data:** National restoration commitments (hectares), progress by country.
 - **Data type:** Static/periodic (reports and exportable dashboards).
@@ -89,7 +89,7 @@ Tracks tree planting initiatives, forest restoration progress, and net forest ga
 ### 5. Restor (Crowther Lab / ETH Zürich)
 
 - **URL:** https://restor.eco/
-- **License:** ✅ Comercial/ads OK — Open data (CC BY for base datasets).
+- **License:** ✅ Commercial/ads OK — Open data (CC BY for base datasets).
 - **Model:** Interactive map with open restoration project data.
 - **Data:** Global restoration project registry with ecological and geographic data.
 - **API:** Exists but programmatic use requires contacting the Restor team.

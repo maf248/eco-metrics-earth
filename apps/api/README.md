@@ -116,13 +116,13 @@ cp apps/api/.env.example apps/api/.env
 The API uses **webpack** via `NxAppWebpackPlugin` instead of the standard NestJS CLI. This bundles the application into a single output under `dist/` and generates a pruned `package.json` for deployment.
 
 ```bash
-# Development build (source maps enabled)
+# Production build (default — NODE_ENV=production)
 npx nx build api
 
-# Production build
-npx nx build api --configuration=production
+# Development build (NODE_ENV=development, absolute source paths in source maps)
+npx nx build api --configuration=development
 
-# Development server (build + watch + restart)
+# Development server (development build + watch + restart)
 npx nx serve api
 ```
 

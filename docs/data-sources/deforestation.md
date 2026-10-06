@@ -9,7 +9,7 @@ Tracks forest cover loss and gain by region and country. Includes primary forest
 ### 1. Global Forest Watch Data API (WRI)
 
 - **URL:** https://data-api.globalforestwatch.org/ — portal: https://data.globalforestwatch.org/
-- **License:** ⚠️ Solo no comercial — CC BY-NC-SA on some datasets.
+- **License:** ⚠️ Non-commercial only — CC BY-NC-SA on some datasets.
 - **Model:** Free and open. REST + JSON/GeoJSON.
 - **Data type:** Real-time (weekly GLAD/RADD alerts) + historical (Hansen tree cover loss from 2000).
 - **Data:** Forest cover loss (Hansen 30 m), GLAD alerts (Landsat), RADD alerts (Sentinel-1, cloud-penetrating), active fires (VIIRS), protected areas, concessions, carbon stocks, biodiversity hotspots, EUDR risk layer. Supports geometry/AOI queries.
@@ -31,7 +31,7 @@ Tracks forest cover loss and gain by region and country. Includes primary forest
 ### 2. Hansen Global Forest Change (University of Maryland)
 
 - **URL:** https://glad.earthengine.app/view/global-forest-change
-- **License:** ✅ Comercial/ads OK — CC BY.
+- **License:** ✅ Commercial/ads OK — CC BY.
 - **Model:** Static downloadable (GeoTIFF tiles at 10°×10°). Also available in Google Earth Engine.
 - **Data type:** Static raster tiles.
 - **Data:** Forest cover 2000, annual gain/loss to the most recent year at 30 m resolution.
@@ -51,7 +51,7 @@ Tracks forest cover loss and gain by region and country. Includes primary forest
 ### 3. FAO FAOSTAT — Forestry
 
 - **URL:** https://www.fao.org/faostat/en/#data/FO — bulk CSV: `https://bulks-faostat.fao.org/production/`
-- **License:** ✅ Comercial/ads OK — CC BY 4.0 (FAO Statistical Database Terms of Use).
+- **License:** ✅ Commercial/ads OK — CC BY 4.0 (FAO Statistical Database Terms of Use).
 - **Model:** Free. Annual country-level data (bulk CSV downloads).
 - **Data:** Forest area, net deforestation, timber production, trade in forest products.
 - **API key:** Not required.
@@ -71,7 +71,7 @@ Tracks forest cover loss and gain by region and country. Includes primary forest
 ### 4. Our World in Data — Deforestation
 
 - **URL:** https://ourworldindata.org/deforestation — CSV via grapher: `https://ourworldindata.org/grapher/<chart>.csv`
-- **License:** ✅ Comercial/ads OK — CC BY.
+- **License:** ✅ Commercial/ads OK — CC BY.
 - **Model:** Free (CC BY). Static downloadable.
 - **Data:** Annual forest loss and gain series by country (based on Hansen/UMD and FAO FRA).
 - **API key:** Not required.

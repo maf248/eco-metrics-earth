@@ -52,7 +52,7 @@ This section documents how to obtain the **percentage breakdown of electricity g
 ### 1. IRENA Statistics (PxWeb / IRENASTAT)
 
 - **URL:** https://pxweb.irena.org/pxweb/en/IRENASTAT/ — downloads: https://www.irena.org/Data
-- **License:** ⚠️ Solo no comercial — Commercial use ambiguous in ToS; requires attribution.
+- **License:** ⚠️ Non-commercial only — Commercial use ambiguous in ToS; requires attribution.
 - **Model:** Free. Annual downloads (Excel, CSV) and PxWeb API (JSON-stat) for 150+ countries from 2000.
 - **Data:** Installed capacity (MW) by technology (solar, onshore/offshore wind, hydro, geothermal, bioenergy, marine), generation (GWh), energy balances, LCOE, investments.
 - **API key:** Not required.
@@ -72,7 +72,7 @@ This section documents how to obtain the **percentage breakdown of electricity g
 ### 2. Our World in Data — Energy Dataset
 
 - **URL:** https://github.com/owid/energy-data — CSV: `https://nyc3.digitaloceanspaces.com/owid-public/data/energy/owid-energy-data.csv`
-- **License:** ✅ Comercial/ads OK — CC BY.
+- **License:** ✅ Commercial/ads OK — CC BY.
 - **Model:** Free (CC BY). Static downloadable, updated periodically.
 - **Data:** Energy mix, renewable share, generation by source, capacity by technology. Based on Energy Institute Statistical Review + EIA + Ember + IRENA.
 - **API key:** Not required.
@@ -91,7 +91,7 @@ This section documents how to obtain the **percentage breakdown of electricity g
 ### 3. Ember — Electricity Data Explorer
 
 - **URL:** https://ember-energy.org/data/ — API: `https://api.ember-energy.org/v1/` — API docs: https://api.ember-energy.org/v1/docs
-- **License:** ✅ Comercial/ads OK — CC BY 4.0.
+- **License:** ✅ Commercial/ads OK — CC BY 4.0.
 - **Model:** Free (CC BY 4.0). CSV downloads (no key) + REST API (free API key required).
 - **Data:** Monthly and annual electricity generation by country and by source (coal, gas, nuclear, hydro, solar, wind, biomass, etc.), electricity sector emissions, carbon intensity. 200+ geographies (yearly); 88 areas (monthly). Last updated March 2026. **Ideal for full electricity mix breakdown — both absolute (TWh) and share (%).**
 - **API key:** Not required for CSV downloads. Required for API (free signup at ember-energy.org/data/api).
@@ -111,7 +111,7 @@ This section documents how to obtain the **percentage breakdown of electricity g
 ### 4. IEA Free Data
 
 - **URL:** https://www.iea.org/data-and-statistics/data-product
-- **License:** ✅ Comercial/ads OK — CC BY 4.0 (for free datasets).
+- **License:** ✅ Commercial/ads OK — CC BY 4.0 (for free datasets).
 - **Model:** Mixed: some datasets free, others paid.
 - **Data:** Key clean energy indicators, investment, electrification. Detailed energy balances require paid subscription.
 - **Limitations:** Detailed energy balance downloads are paid; highlights and main dashboards are free.
@@ -130,7 +130,7 @@ This section documents how to obtain the **percentage breakdown of electricity g
 ### 5. EIA (US Energy Information Administration) Open Data API
 
 - **URL:** https://www.eia.gov/opendata/
-- **License:** ✅ Comercial/ads OK — Public domain (US Government).
+- **License:** ✅ Commercial/ads OK — Public domain (US Government).
 - **Model:** Free. REST + JSON.
 - **Data:** US renewable generation by state and source, capacity, prices, real-time grid data (RTO/ISO).
 - **API key:** Required (free).
@@ -150,7 +150,7 @@ This section documents how to obtain the **percentage breakdown of electricity g
 ### 6. ENTSO-E Transparency Platform (Europe)
 
 - **URL:** https://transparency.entsoe.eu/ — API guide: https://transparency.entsoe.eu/content/static_content/Static%20content/web%20api/Guide.html
-- **License:** ✅ Comercial/ads OK — Free with attribution.
+- **License:** ✅ Commercial/ads OK — Free with attribution.
 - **Model:** Free.
 - **Data:** Generation by source every 15 min/hour for all European countries, cross-border flows, prices.
 - **API key:** Required (free token).
@@ -169,7 +169,7 @@ This section documents how to obtain the **percentage breakdown of electricity g
 ### 7. Electricity Maps API
 
 - **URL:** https://www.electricitymaps.com/ — API portal: https://api-portal.electricitymaps.com/
-- **License:** ⚠️ Solo no comercial — Freemium; commercial use requires a paid plan.
+- **License:** ⚠️ Non-commercial only — Freemium; commercial use requires a paid plan.
 - **Model:** Freemium; free tier limited for research.
 - **Data:** Real-time carbon intensity and energy mix by country/zone.
 - **API key:** Required.
@@ -190,7 +190,7 @@ This section documents how to obtain the **percentage breakdown of electricity g
 ### 8. UK Carbon Intensity API
 
 - **URL:** https://api.carbonintensity.org.uk/ (UK National Energy System Operator — NESO)
-- **License:** ✅ Comercial/ads OK — CC BY 4.0.
+- **License:** ✅ Commercial/ads OK — CC BY 4.0.
 - **Model:** Free. JSON, no API key, CORS enabled.
 - **Data:** Carbon intensity and renewable vs fossil fuel mix of the UK electricity grid in real-time and 48h forecast.
 - **API key:** Not required.

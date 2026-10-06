@@ -139,8 +139,9 @@ eco-metrics-earth/
 │   │       ├── app/             # AppModule, AppController, AppService
 │   │       ├── health/          # HealthController (GET /api/v1/health)
 │   │       ├── modules/         # Per-category eco modules
+│   │       │   ├── providers/owid/   # Cached OWID provider client (Grapher CSV + API v1 JSON)
 │   │       │   └── water-footprint/  # Module, controller, service + static dataset (data/)
-│   │       ├── common/          # DTOs, global exception filter, catch-all 404 fallback
+│   │       ├── common/          # DTOs, outbound HTTP client, global exception filter, catch-all 404 fallback
 │   │       ├── config/          # AppConfigService (typed env vars)
 │   │       └── main.ts          # Bootstrap — port 3001, prefix /api/v1
 │   └── web/                     # Next.js App Router (deployed to Vercel)
@@ -152,9 +153,11 @@ eco-metrics-earth/
 ├── packages/
 │   └── shared/                  # @eco-metrics/shared
 │       └── src/lib/
-│           ├── api-response.ts  # ApiResponse<T> interface
-│           ├── eco-category.ts  # EcoCategory type + ECO_CATEGORIES const
-│           └── water-footprint.ts  # Water-footprint product, category and water-type types
+│           ├── api-response.ts             # ApiResponse<T> union + ApiResponseMeta
+│           ├── data-source-attribution.ts  # DataSourceAttribution (provider, license, source)
+│           ├── eco-category.ts             # EcoCategory type + ECO_CATEGORIES const
+│           ├── metric-series.ts            # MetricPoint + MetricSeries time-series shapes
+│           └── water-footprint.ts          # Water-footprint product, category and water-type types
 ├── dev/                         # Local development tooling (Caddy reverse proxy)
 ├── docs/                        # Data sources, deploy runbooks, design system, planning
 ├── openspec/                    # Spec-Driven Development artifacts
@@ -177,6 +180,7 @@ eco-metrics-earth/
 
 | Method | Path                               | Description                                                                                                                                                                                                           |
 | ------ | ---------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `GET`  | `/api/v1/`                         | Welcome message — returns `{ message: 'Hello API' }`                                                                                                                                                                  |
 | `GET`  | `/api/v1/health`                   | Health check — returns `{ status: 'ok' }`                                                                                                                                                                             |
 | `GET`  | `/api/v1/demo-validation`          | Echo query params (`fromDate`, `toDate`, `category`) — mock                                                                                                                                                           |
 | `POST` | `/api/v1/demo-validation`          | Echo body (`name`, `value`, `unit`) with validation — mock                                                                                                                                                            |
