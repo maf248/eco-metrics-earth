@@ -23,9 +23,11 @@ Object.defineProperty(window, 'localStorage', {
   value: localStorageMock,
 });
 
-const matchMediaMock = (prefersDark: boolean) =>
+const matchMediaMock = (prefersDark: boolean, prefersLight = false) =>
   jest.fn().mockImplementation((query: string) => ({
-    matches: query === '(prefers-color-scheme: dark)' ? prefersDark : false,
+    matches:
+      (query === '(prefers-color-scheme: dark)' && prefersDark) ||
+      (query === '(prefers-color-scheme: light)' && prefersLight),
     media: query,
     onchange: null,
     addListener: jest.fn(),
@@ -116,6 +118,18 @@ describe('ThemeProvider', () => {
       renderWithTheme(<ThemeConsumer />);
 
       expect(screen.getByTestId('theme-value').textContent).toBe('dark');
+    });
+
+    it('should use light theme when system preference is light and no stored value', () => {
+      Object.defineProperty(window, 'matchMedia', {
+        writable: true,
+        value: matchMediaMock(false, true),
+      });
+
+      renderWithTheme(<ThemeConsumer />);
+
+      expect(screen.getByTestId('theme-value').textContent).toBe('light');
+      expect(document.documentElement.classList.contains('dark')).toBe(false);
     });
   });
 

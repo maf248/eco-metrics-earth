@@ -7,7 +7,7 @@ Tracks the conservation status of animal and plant species worldwide. Covers IUC
 ### 1. IUCN Red List API (v4)
 
 - **URL:** `https://api.iucnredlist.org/` — docs (Swagger): https://api.iucnredlist.org/api-docs/index.html
-- **License:** ⚠️ Solo no comercial — Non-commercial use only. Commercial use via IBAT.
+- **License:** ⚠️ Non-commercial only — Non-commercial use only. Commercial use via IBAT.
 - **Model:** Free for non-commercial use. REST + JSON.
 - **Data type:** Periodic (releases ~2×/year), queried via REST.
 - **Data:** Red List category (CR, EN, VU, NT, LC, DD, EW, EX), population trends, habitat, threats, conservation actions, taxonomic synonyms, assessments by country and region. 172,600+ species globally evaluated.
@@ -29,7 +29,7 @@ Tracks the conservation status of animal and plant species worldwide. Covers IUC
 ### 2. IUCN Red List Spatial Data Download
 
 - **URL:** https://www.iucnredlist.org/resources/spatial-data-download
-- **License:** ⚠️ Solo no comercial — Non-commercial use only.
+- **License:** ⚠️ Non-commercial only — Non-commercial use only.
 - **Model:** Static download (shapefiles, CSV). Requires free registration.
 - **Data type:** Static datasets downloadable by taxonomic group.
 - **Data:** Distribution polygons, observation points, taxonomy, Red List category.
@@ -50,7 +50,7 @@ Tracks the conservation status of animal and plant species worldwide. Covers IUC
 ### 3. GBIF (Global Biodiversity Information Facility) API
 
 - **URL:** `https://api.gbif.org/v1/` — docs: https://www.gbif.org/developer/summary
-- **License:** ✅ Comercial/ads OK — CC BY.
+- **License:** ✅ Commercial/ads OK — CC BY.
 - **Model:** Fully free and open. REST + JSON.
 - **Data type:** Real-time (2+ billion occurrence records).
 - **Data:** Species occurrences, taxonomy, datasets, species by location/date. Complements IUCN with observed geographic presence.
@@ -72,7 +72,7 @@ Tracks the conservation status of animal and plant species worldwide. Covers IUC
 ### 4. Protected Planet API (UNEP-WCMC)
 
 - **URL:** https://api.protectedplanet.net/ — docs: https://api.protectedplanet.net/documentation
-- **License:** ⚠️ Solo no comercial — Non-commercial restrictions apply to WDPA data.
+- **License:** ⚠️ Non-commercial only — Non-commercial restrictions apply to WDPA data.
 - **Model:** Free. REST + JSON.
 - **Data:** World Database on Protected Areas (WDPA) and Key Biodiversity Areas (KBA).
 - **API key:** Required (free registration).

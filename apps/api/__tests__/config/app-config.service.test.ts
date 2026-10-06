@@ -91,6 +91,23 @@ describe('AppConfigService', () => {
     });
   });
 
+  describe('swaggerEnabled', () => {
+    it('should return true when SWAGGER_ENABLED is "true"', () => {
+      const service = buildService({ SWAGGER_ENABLED: 'true' });
+      expect(service.swaggerEnabled).toBe(true);
+    });
+
+    it('should return false when SWAGGER_ENABLED is "false"', () => {
+      const service = buildService({ SWAGGER_ENABLED: 'false' });
+      expect(service.swaggerEnabled).toBe(false);
+    });
+
+    it('should return false when SWAGGER_ENABLED is not in config', () => {
+      const service = buildService({});
+      expect(service.swaggerEnabled).toBe(false);
+    });
+  });
+
   describe('owidGrapherBaseUrl', () => {
     it('should return the configured OWID_GRAPHER_BASE_URL', () => {
       const service = buildService({ OWID_GRAPHER_BASE_URL: 'https://owid.example.com/grapher' });

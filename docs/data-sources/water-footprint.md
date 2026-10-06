@@ -9,7 +9,7 @@ Tracks the water consumed to produce everyday goods — food, textiles, technolo
 ### 1. Our World in Data — Water Use & Stress
 
 - **URL:** https://ourworldindata.org/water-use-stress — CSV via grapher: `https://ourworldindata.org/grapher/<chart>.csv`
-- **License:** ✅ Comercial/ads OK — CC BY.
+- **License:** ✅ Commercial/ads OK — CC BY.
 - **Model:** Free (CC BY). CSV/JSON via grapher endpoints. Underlying data comes from FAO AQUASTAT (partly via World Bank).
 - **Data type:** Annual; one row per country-year.
 - **Data:** Freshwater withdrawals (total, per capita, by sector share), water stress (SDG 6.4.2), renewable freshwater resources per capita, long-run global freshwater use.
@@ -38,7 +38,7 @@ Tracks the water consumed to produce everyday goods — food, textiles, technolo
 ### 2. World Bank Open Data API
 
 - **URL:** `https://api.worldbank.org/v2/country/{iso}/indicator/{code}?format=json`
-- **License:** ✅ Comercial/ads OK — CC BY.
+- **License:** ✅ Commercial/ads OK — CC BY.
 - **Model:** Free. REST + JSON.
 - **Data:** Renewable freshwater resources, withdrawals (total and by sector), water stress, drinking water access — by country and year. Source data is FAO AQUASTAT.
 - **API key:** Not required.
@@ -68,7 +68,7 @@ Tracks the water consumed to produce everyday goods — food, textiles, technolo
 ### 3. FAO AQUASTAT
 
 - **URL:** https://www.fao.org/aquastat/en/ — dissemination platform: https://data.apps.fao.org/aquastat/
-- **License:** ✅ Comercial/ads OK — CC BY 4.0 (FAO Statistical Database Terms of Use, applies to FAOSTAT and AQUASTAT). ⚠️ Some older FAO data catalog entries still show a legacy "CC BY-NC-SA 3.0 IGO" label; the current terms of use (CC BY 4.0) prevail.
+- **License:** ✅ Commercial/ads OK — CC BY 4.0 (FAO Statistical Database Terms of Use, applies to FAOSTAT and AQUASTAT). ⚠️ Some older FAO data catalog entries still show a legacy "CC BY-NC-SA 3.0 IGO" label; the current terms of use (CC BY 4.0) prevail.
 - **Model:** Free. Web platform with CSV export and bulk download; per-variable CSVs also in the FAO data catalog (`data.apps.fao.org/catalog/`).
 - **Data type:** Annual country series, reported in ~5-year questionnaire cycles.
 - **Data:** 180+ variables for 200+ countries: renewable water resources (internal/external), withdrawals by sector and source, water stress, irrigation and drainage, wastewater treatment and reuse, environmental flow requirements, dams.
@@ -89,7 +89,7 @@ Tracks the water consumed to produce everyday goods — food, textiles, technolo
 ### 4. Our World in Data — Poore & Nemecek (2018) Product Footprints
 
 - **URL:** https://ourworldindata.org/environmental-impacts-of-food — CSV via grapher.
-- **License:** ✅ Comercial/ads OK — CC BY (OWID processing; cite Poore & Nemecek 2018, _Science_).
+- **License:** ✅ Commercial/ads OK — CC BY (OWID processing; cite Poore & Nemecek 2018, _Science_).
 - **Model:** Free (CC BY). Static dataset (study data, reference year 2010).
 - **Data type:** Static; one value per food product (not a time series).
 - **Data:** Freshwater withdrawals per kg of food product (L/kg), per 1,000 kcal, per 100 g of protein; scarcity-weighted water use variants. ~40 food products (beef, chicken, rice, almonds, chocolate, wine, etc.).

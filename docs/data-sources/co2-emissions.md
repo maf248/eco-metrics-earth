@@ -12,7 +12,7 @@ Tracks carbon dioxide emissions by country, sector, and source. Includes histori
   - CSV: `https://nyc3.digitaloceanspaces.com/owid-public/data/co2/owid-co2-data.csv`
   - JSON: `https://nyc3.digitaloceanspaces.com/owid-public/data/co2/owid-co2-data.json`
   - XLSX: `https://nyc3.digitaloceanspaces.com/owid-public/data/co2/owid-co2-data.xlsx`
-- **License:** ✅ Comercial/ads OK — CC BY.
+- **License:** ✅ Commercial/ads OK — CC BY.
 - **Model:** Free (CC BY). Static downloadable updated periodically.
 - **Data type:** Annual; one row per country-year (CSV) or array per country (JSON).
 - **Data:** Annual emissions, per-capita, cumulative, consumption-based, by sector; other GHGs; energy mix; emissions intensity. Based on Global Carbon Project + Climate Watch + Energy Institute.
@@ -33,7 +33,7 @@ Tracks carbon dioxide emissions by country, sector, and source. Includes histori
 ### 2. Global Carbon Project / Global Carbon Budget
 
 - **URL:** https://globalcarbonbudget.org/carbonbudget/ — data on Zenodo: https://zenodo.org/
-- **License:** ✅ Comercial/ads OK — CC BY.
+- **License:** ✅ Commercial/ads OK — CC BY.
 - **Model:** Free. Static downloads (CSV/Excel) published on Zenodo.
 - **Data:** Fossil emissions + land-use change + sinks, annually from 1750.
 - **API key:** Not required.
@@ -52,7 +52,7 @@ Tracks carbon dioxide emissions by country, sector, and source. Includes histori
 ### 3. NOAA Global Monitoring Laboratory — Mauna Loa CO₂
 
 - **URL:** https://gml.noaa.gov/ccgg/trends/data.html
-- **License:** ✅ Comercial/ads OK — Public domain (NOAA).
+- **License:** ✅ Commercial/ads OK — Public domain (NOAA).
 - **Model:** Free. Static downloadable.
 - **Data type:** Monthly and annual atmospheric CO₂ (Mauna Loa from 1958; global from 1979), CH₄, N₂O, SF₆, halogenated gases.
 - **API key:** Not required.
@@ -72,7 +72,7 @@ Tracks carbon dioxide emissions by country, sector, and source. Includes histori
 ### 4. Climate TRACE
 
 - **URL:** https://climatetrace.org/data
-- **License:** ✅ Comercial/ads OK — CC BY.
+- **License:** ✅ Commercial/ads OK — CC BY.
 - **Model:** Free. Static downloads + API v7.
 - **Data:** Facility-level emissions inventory derived from satellites + AI, by sector. Covers 2015–2024 (annual) and 2021–2024 (monthly).
 - **API key:** Not required for direct downloads; API v7 available.
@@ -91,7 +91,7 @@ Tracks carbon dioxide emissions by country, sector, and source. Includes histori
 ### 5. EU EDGAR (Emissions Database for Global Atmospheric Research)
 
 - **URL:** https://edgar.jrc.ec.europa.eu/
-- **License:** ✅ Comercial/ads OK — CC BY 4.0 (European Commission).
+- **License:** ✅ Commercial/ads OK — CC BY 4.0 (European Commission).
 - **Model:** Free.
 - **Data:** GHG and pollutant emissions by country, sector, and year (1970–present). Excel and netCDF (0.1° grid).
 - **API key:** Not required.
@@ -110,7 +110,7 @@ Tracks carbon dioxide emissions by country, sector, and source. Includes histori
 ### 6. World Bank Climate Change API
 
 - **URL:** `https://api.worldbank.org/v2/country/{iso}/indicator/EN.GHG.CO2.MT.CE.AR5?format=json`
-- **License:** ✅ Comercial/ads OK — CC BY.
+- **License:** ✅ Commercial/ads OK — CC BY.
 - **Model:** Free. REST + JSON.
 - **Data:** Total CO₂ emissions, per-capita, intensity, etc., by country and year.
 - **API key:** Not required.
@@ -134,7 +134,7 @@ Tracks carbon dioxide emissions by country, sector, and source. Includes histori
 ### 7. UK Carbon Intensity API
 
 - **URL:** https://api.carbonintensity.org.uk/ (UK National Energy System Operator — NESO)
-- **License:** ✅ Comercial/ads OK — CC BY 4.0.
+- **License:** ✅ Commercial/ads OK — CC BY 4.0.
 - **Model:** Free. JSON, no API key, CORS enabled.
 - **Data:** Carbon intensity of the UK electricity grid in real-time (gCO₂/kWh). Includes national + regional data (14 regions plus England, Scotland, Wales aggregates).
 - **API key:** Not required.

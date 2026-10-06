@@ -1,4 +1,8 @@
-changed=$(git diff-tree -r --name-only --no-commit-id ORIG_HEAD HEAD 2>/dev/null || echo "")
-if echo "$changed" | grep -q "package.json"; then
-  echo "package.json changed — run: npm install"
+# Git passes: $1 = previous HEAD, $2 = new HEAD, $3 = 1 for a branch checkout
+# (0 for a file checkout, which never changes dependencies).
+[ "$3" = "1" ] || exit 0
+
+changed=$(git diff --name-only "$1" "$2" 2>/dev/null || echo "")
+if echo "$changed" | grep -qE '(^|/)package(-lock)?\.json$'; then
+  echo "package.json or package-lock.json changed — run: npm install"
 fi

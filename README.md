@@ -8,17 +8,17 @@ An environmental metrics dashboard monorepo — tracking air quality, CO₂ emis
 | -------------- | ------------------------------------------------------------------------ | ------- | -------------------------------------------------------------------------------------------- |
 | **Monorepo**   | [NX](https://nx.dev)                                                     | 23.2.1  | [nx.dev/docs](https://nx.dev/getting-started/intro)                                          |
 | **Runtime**    | [Node.js](https://nodejs.org) LTS                                        | 24.x    | [nodejs.org/docs](https://nodejs.org/docs/latest-v24.x/api/)                                 |
-| **Frontend**   | [Next.js](https://nextjs.org) (App Router)                               | 16.3.6  | [nextjs.org/docs](https://nextjs.org/docs)                                                   |
+| **Frontend**   | [Next.js](https://nextjs.org) (App Router)                               | 16.3.8  | [nextjs.org/docs](https://nextjs.org/docs)                                                   |
 | **UI**         | [React](https://react.dev)                                               | 19.3.0  | [react.dev](https://react.dev/reference/react)                                               |
 | **Styling**    | [Tailwind CSS](https://tailwindcss.com)                                  | 4.3.3   | [tailwindcss.com/docs](https://tailwindcss.com/docs)                                         |
 | **Theming**    | React Context + localStorage                                             | —       | Light and dark mode support with persistent user preference via a theme toggle               |
-| **Backend**    | [NestJS](https://nestjs.com)                                             | 12.1.0  | [docs.nestjs.com](https://docs.nestjs.com)                                                   |
+| **Backend**    | [NestJS](https://nestjs.com)                                             | 12.1.2  | [docs.nestjs.com](https://docs.nestjs.com)                                                   |
 | **Language**   | [TypeScript](https://www.typescriptlang.org)                             | 5.9.3   | [typescriptlang.org/docs](https://www.typescriptlang.org/docs/)                              |
 | **Testing**    | [Jest](https://jestjs.io)                                                | 30.5.2  | [jestjs.io/docs](https://jestjs.io/docs/getting-started)                                     |
 | **Testing**    | [Testing Library](https://testing-library.com)                           | 16.3.3  | [testing-library.com/docs](https://testing-library.com/docs/)                                |
 | **E2E**        | [Playwright](https://playwright.dev)                                     | 1.63.0  | [playwright.dev/docs](https://playwright.dev/docs/intro)                                     |
 | **A11y**       | [axe-core](https://github.com/dequelabs/axe-core-npm) (Playwright)       | 4.13.0  | [github.com/dequelabs/axe-core-npm](https://github.com/dequelabs/axe-core-npm)               |
-| **Linting**    | [ESLint](https://eslint.org)                                             | 10.11.0 | [eslint.org/docs](https://eslint.org/docs/latest/)                                           |
+| **Linting**    | [ESLint](https://eslint.org)                                             | 10.12.0 | [eslint.org/docs](https://eslint.org/docs/latest/)                                           |
 | **Formatting** | [Prettier](https://prettier.io)                                          | 3.9.9   | [prettier.io/docs](https://prettier.io/docs/en/)                                             |
 | **Config**     | [@nestjs/config](https://docs.nestjs.com/techniques/configuration)       | 12.0.1  | [docs.nestjs.com/techniques/configuration](https://docs.nestjs.com/techniques/configuration) |
 | **API Docs**   | [@nestjs/swagger](https://docs.nestjs.com/openapi/introduction)          | 12.0.2  | [docs.nestjs.com/openapi/introduction](https://docs.nestjs.com/openapi/introduction)         |
@@ -27,7 +27,7 @@ An environmental metrics dashboard monorepo — tracking air quality, CO₂ emis
 | **Env schema** | [Joi](https://joi.dev)                                                   | 18.2.9  | [joi.dev/api](https://joi.dev/api/)                                                          |
 | **Security**   | [Helmet](https://helmetjs.github.io)                                     | 8.3.0   | [helmetjs.github.io](https://helmetjs.github.io/)                                            |
 | **Rate limit** | [@nestjs/throttler](https://docs.nestjs.com/security/rate-limiting)      | 6.7.1   | [docs.nestjs.com/security/rate-limiting](https://docs.nestjs.com/security/rate-limiting)     |
-| **Compiler**   | [SWC](https://swc.rs) (Jest transform)                                   | 1.16.2  | [swc.rs/docs](https://swc.rs/docs/getting-started)                                           |
+| **Compiler**   | [SWC](https://swc.rs) (Jest transform)                                   | 1.16.13 | [swc.rs/docs](https://swc.rs/docs/getting-started)                                           |
 | **Releases**   | [semantic-release](https://semantic-release.gitbook.io/semantic-release) | 25.0.9  | [semantic-release docs](https://semantic-release.gitbook.io/semantic-release)                |
 | **Git hooks**  | [Husky](https://typicode.github.io/husky)                                | 9.1.7   | [typicode.github.io/husky](https://typicode.github.io/husky/)                                |
 | **Git hooks**  | [lint-staged](https://github.com/lint-staged/lint-staged)                | 17.6.0  | [github.com/lint-staged/lint-staged](https://github.com/lint-staged/lint-staged)             |
@@ -139,8 +139,9 @@ eco-metrics-earth/
 │   │       ├── app/             # AppModule, AppController, AppService
 │   │       ├── health/          # HealthController (GET /api/v1/health)
 │   │       ├── modules/         # Per-category eco modules
+│   │       │   ├── providers/owid/   # Cached OWID provider client (Grapher CSV + API v1 JSON)
 │   │       │   └── water-footprint/  # Module, controller, service + static dataset (data/)
-│   │       ├── common/          # DTOs, global exception filter, catch-all 404 fallback
+│   │       ├── common/          # DTOs, outbound HTTP client, global exception filter, catch-all 404 fallback
 │   │       ├── config/          # AppConfigService (typed env vars)
 │   │       └── main.ts          # Bootstrap — port 3001, prefix /api/v1
 │   └── web/                     # Next.js App Router (deployed to Vercel)
@@ -152,9 +153,11 @@ eco-metrics-earth/
 ├── packages/
 │   └── shared/                  # @eco-metrics/shared
 │       └── src/lib/
-│           ├── api-response.ts  # ApiResponse<T> interface
-│           ├── eco-category.ts  # EcoCategory type + ECO_CATEGORIES const
-│           └── water-footprint.ts  # Water-footprint product, category and water-type types
+│           ├── api-response.ts             # ApiResponse<T> union + ApiResponseMeta
+│           ├── data-source-attribution.ts  # DataSourceAttribution (provider, license, source)
+│           ├── eco-category.ts             # EcoCategory type + ECO_CATEGORIES const
+│           ├── metric-series.ts            # MetricPoint + MetricSeries time-series shapes
+│           └── water-footprint.ts          # Water-footprint product, category and water-type types
 ├── dev/                         # Local development tooling (Caddy reverse proxy)
 ├── docs/                        # Data sources, deploy runbooks, design system, planning
 ├── openspec/                    # Spec-Driven Development artifacts
@@ -177,6 +180,7 @@ eco-metrics-earth/
 
 | Method | Path                               | Description                                                                                                                                                                                                           |
 | ------ | ---------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `GET`  | `/api/v1/`                         | Welcome message — returns `{ message: 'Hello API' }`                                                                                                                                                                  |
 | `GET`  | `/api/v1/health`                   | Health check — returns `{ status: 'ok' }`                                                                                                                                                                             |
 | `GET`  | `/api/v1/demo-validation`          | Echo query params (`fromDate`, `toDate`, `category`) — mock                                                                                                                                                           |
 | `POST` | `/api/v1/demo-validation`          | Echo body (`name`, `value`, `unit`) with validation — mock                                                                                                                                                            |

@@ -9,7 +9,7 @@ Tracks municipal solid waste generation, recycling rates, landfill usage, and wa
 ### 1. World Bank — What a Waste Global Database
 
 - **URL:** https://datacatalog.worldbank.org/search/dataset/0039597/what-a-waste-global-database — portal: https://datatopics.worldbank.org/what-a-waste/
-- **License:** ✅ Comercial/ads OK — CC BY (World Bank open data).
+- **License:** ✅ Commercial/ads OK — CC BY (World Bank open data).
 - **Model:** Free (Public). Static downloads (Excel/CSV). Reports 2018 (v2.0) and 2026 (v3.0).
 - **Data type:** Static, periodically updated.
 - **Data:** 217 countries and 262 cities. Waste generation, composition, collection, treatment, disposal, recycling, plastics, financing, informal workers.
@@ -29,7 +29,7 @@ Tracks municipal solid waste generation, recycling rates, landfill usage, and wa
 ### 2. World Bank Open Data API
 
 - **URL:** `https://api.worldbank.org/v2/country/{iso}/indicator/{code}?format=json`
-- **License:** ✅ Comercial/ads OK — CC BY.
+- **License:** ✅ Commercial/ads OK — CC BY.
 - **Model:** Free. REST + JSON.
 - **Data:** Waste-related indicators (e.g. `EN.POP.SLUM.UR.ZS`), solid waste management, urbanization.
 - **API key:** Not required.
@@ -50,7 +50,7 @@ Tracks municipal solid waste generation, recycling rates, landfill usage, and wa
 ### 3. Eurostat Waste Statistics API
 
 - **URL:** `https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/env_wasmun` (JSON-stat format)
-- **License:** ✅ Comercial/ads OK — CC BY 4.0.
+- **License:** ✅ Commercial/ads OK — CC BY 4.0.
 - **Model:** Free.
 - **Data:** Waste generation and treatment by European country, by stream (packaging, electronics, etc.); recycling rates.
 - **API key:** Not required.
@@ -69,7 +69,7 @@ Tracks municipal solid waste generation, recycling rates, landfill usage, and wa
 ### 4. EPA — Waste Reduction Model & Facts and Figures (US)
 
 - **URL:** https://www.epa.gov/facts-and-figures-about-materials-waste-and-recycling
-- **License:** ✅ Comercial/ads OK — Public domain (US Government).
+- **License:** ✅ Commercial/ads OK — Public domain (US Government).
 - **Model:** Free. Static downloadable (Excel/PDF).
 - **Data:** Waste generation, recovery, composting, incineration, landfill in the US.
 - **API key:** Not required.
@@ -88,7 +88,7 @@ Tracks municipal solid waste generation, recycling rates, landfill usage, and wa
 ### 5. Our World in Data — Waste & Recycling
 
 - **URL:** https://ourworldindata.org/waste-management — CSV via grapher — API v1: `https://api.ourworldindata.org/v1/indicators/{id}.data.json`
-- **License:** ✅ Comercial/ads OK — CC BY.
+- **License:** ✅ Commercial/ads OK — CC BY.
 - **Model:** Free (CC BY). CSV downloadable.
 - **Data:** Recycling rates, per-capita waste generation, mismanaged waste, plastic entering the ocean.
 - **API key:** Not required.

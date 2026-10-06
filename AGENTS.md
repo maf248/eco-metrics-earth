@@ -147,7 +147,7 @@ npx nx build api
 - **Formatter:** Prettier (v3)
 - **Config:** `.prettierrc` at repo root
 - Rules: `singleQuote: true`, `semi: true`, `tabWidth: 2`, `trailingComma: 'all'`
-- Run: `npx prettier --write "**/*.{ts,tsx,js,json}"`
+- Run: `npm run format` (check only: `npm run format:check`)
 
 ### TypeScript
 
@@ -247,8 +247,8 @@ eco-metrics-earth/
 │   │   └── src/
 │   │       ├── app/             # AppModule, AppController, AppService
 │   │       ├── health/          # HealthController (GET /api/v1/health)
-│   │       ├── modules/         # Per-category eco modules (currently `water-footprint`)
-│   │       ├── common/          # DTOs, catch-all 404 fallback, global exception filter
+│   │       ├── modules/         # Per-category eco modules (`water-footprint`) + `providers/owid` client
+│   │       ├── common/          # DTOs, outbound HTTP client, catch-all 404 fallback, global exception filter
 │   │       ├── config/          # AppConfigService (typed env vars)
 │   │       └── main.ts          # Bootstrap — port 3001, prefix /api/v1
 │   └── web/                     # Next.js App Router
@@ -259,9 +259,11 @@ eco-metrics-earth/
 ├── packages/
 │   └── shared/                  # @eco-metrics/shared
 │       └── src/lib/
-│           ├── api-response.ts  # ApiResponse<T> interface
-│           ├── eco-category.ts  # EcoCategory type + ECO_CATEGORIES const
-│           └── water-footprint.ts  # Water-footprint product, category and water-type types
+│           ├── api-response.ts             # ApiResponse<T> union + ApiResponseMeta
+│           ├── data-source-attribution.ts  # DataSourceAttribution (provider, license, source)
+│           ├── eco-category.ts             # EcoCategory type + ECO_CATEGORIES const
+│           ├── metric-series.ts            # MetricPoint + MetricSeries time-series shapes
+│           └── water-footprint.ts          # Water-footprint product, category and water-type types
 ├── .nvmrc                       # Node.js v24
 ├── nx.json                      # NX workspace config (cache, targets)
 ├── tsconfig.base.json           # Root TS config + path aliases
@@ -304,7 +306,7 @@ npm run lint
 npx nx run-many --target=build --all
 
 # Format check
-npx prettier --check "**/*.{ts,tsx,js,json}"
+npm run format:check
 
 ```
 

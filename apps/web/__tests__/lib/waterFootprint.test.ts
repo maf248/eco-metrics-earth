@@ -98,6 +98,18 @@ describe('getWaterFootprintProducts', () => {
     expect(result.products).toEqual([]);
   });
 
+  it('should return fetchFailed when the payload is not an object', async () => {
+    mockFetch(async () => ({
+      ok: true,
+      json: async () => null,
+    }));
+
+    const result = await getWaterFootprintProducts();
+
+    expect(result.fetchFailed).toBe(true);
+    expect(result.products).toEqual([]);
+  });
+
   it('should return fetchFailed when the payload shape is wrong', async () => {
     mockFetch(async () => ({
       ok: true,

@@ -7,7 +7,7 @@ Tracks concentrations of atmospheric pollutants (PM2.5, PM10, NO₂, O₃, CO, S
 ### 1. Open-Meteo Air Quality API
 
 - **URL:** `https://air-quality-api.open-meteo.com/v1/air-quality` — docs: https://open-meteo.com/en/docs/air-quality-api
-- **License:** ⚠️ Solo no comercial — CC BY 4.0 (data); free API tier is restricted to non-commercial use. Commercial use requires a paid plan.
+- **License:** ⚠️ Non-commercial only — CC BY 4.0 (data); free API tier is restricted to non-commercial use. Commercial use requires a paid plan.
 - **Model:** Free for non-commercial use.
 - **Data type:** Real-time + 5-day forecast + historical. JSON.
 - **Data:** PM2.5, PM10, O₃, NO₂, SO₂, CO, NH₃, pollen (alder, birch, grasses, ragweed, olive, mugwort), European and US AQI, dust, sulfur dioxide, carbon monoxide.
@@ -30,7 +30,7 @@ Tracks concentrations of atmospheric pollutants (PM2.5, PM10, NO₂, O₃, CO, S
 ### 2. OpenAQ API v3
 
 - **URL:** `https://api.openaq.org/v3` — docs: https://docs.openaq.org/
-- **License:** ⚠️ Solo no comercial — OpenAQ itself is open; commercial use is subject to the terms of the underlying data providers. Review before commercial deployment.
+- **License:** ⚠️ Non-commercial only — OpenAQ itself is open; commercial use is subject to the terms of the underlying data providers. Review before commercial deployment.
 - **Model:** Free (non-profit). REST + JSON.
 - **Data type:** Real-time and historical, aggregated from 100+ governmental and research sources worldwide.
 - **Data:** PM2.5, PM10, O₃, NO₂, SO₂, CO, BC (black carbon) by location, city, country; station metadata.
@@ -52,7 +52,7 @@ Tracks concentrations of atmospheric pollutants (PM2.5, PM10, NO₂, O₃, CO, S
 ### 3. EPA AirNow API
 
 - **URL:** https://docs.airnowapi.org/
-- **License:** ⚠️ Solo no comercial — US Government; ToS restricts commercial redistribution.
+- **License:** ⚠️ Non-commercial only — US Government; ToS restricts commercial redistribution.
 - **Model:** Free (US Government).
 - **Data type:** Real-time (hourly observations) + forecasts. JSON, CSV, RSS, KML.
 - **Data:** AQI and concentrations of O₃, PM2.5, PM10, CO, SO₂, NO₂ for US, Canada, and Mexico (2,500+ stations; 500+ cities with forecast).
@@ -74,7 +74,7 @@ Tracks concentrations of atmospheric pollutants (PM2.5, PM10, NO₂, O₃, CO, S
 ### 4. EU Copernicus Atmosphere Monitoring Service (CAMS)
 
 - **URL:** https://atmosphere.copernicus.eu/ — Atmosphere Data Store: https://ads.atmosphere.copernicus.eu/
-- **License:** ✅ Comercial/ads OK — Copernicus License (commercial use OK with attribution).
+- **License:** ✅ Commercial/ads OK — Copernicus License (commercial use OK with attribution).
 - **Model:** Free (EU programme).
 - **Data type:** Global and European forecasts (downloadable as netCDF/GRIB). Upstream data source that powers Open-Meteo Air Quality.
 - **Data:** Global atmospheric composition, European air quality (11 km), aerosols, ozone, CO, greenhouse gases.
@@ -96,7 +96,7 @@ Tracks concentrations of atmospheric pollutants (PM2.5, PM10, NO₂, O₃, CO, S
 ### 5. OpenWeatherMap Air Pollution API
 
 - **URL:** `https://api.openweathermap.org/data/2.5/air_pollution`
-- **License:** ✅ Comercial/ads OK — ODbL; commercial and non-commercial use allowed. Attribution required: "Weather data © OpenWeather".
+- **License:** ✅ Commercial/ads OK — ODbL; commercial and non-commercial use allowed. Attribution required: "Weather data © OpenWeather".
 - **Model:** Freemium with free tier.
 - **Data type:** Real-time, forecast, and historical. JSON.
 - **Data:** AQI, CO, NO, NO₂, O₃, SO₂, PM2.5, PM10, NH₃.

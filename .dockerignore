@@ -37,4 +37,7 @@ dev
 # Local env & generated credentials — never ship in a layer
 .env
 **/.env
+.env.*
+**/.env.*
+!**/.env.example
 gha-creds-*.json

@@ -6,11 +6,13 @@ Shared TypeScript types for the eco-metrics earth monorepo. Used by both `apps/w
 
 ### `ApiResponse<T>`
 
-Generic wrapper for all BFF responses — a discriminated union on `success`.
+Generic wrapper for all BFF responses — a discriminated union on `success`. Both branches accept
+an optional `meta` envelope (see [`ApiResponseMeta`](#apiresponsemeta)).
 
 ```typescript
 export type ApiResponse<T> =
-  { success: true; data: T; status: number } | { success: false; error: string; status: number };
+  | { success: true; data: T; status: number; meta?: ApiResponseMeta }
+  | { success: false; error: string; status: number; meta?: ApiResponseMeta };
 ```
 
 ### `EcoCategory` / `ECO_CATEGORIES`

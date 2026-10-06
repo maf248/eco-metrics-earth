@@ -8,7 +8,7 @@ Defines the NestJS BFF scaffold with per-category modules, global `/api/v1` pref
 
 ### Requirement: NestJS app with modular per-category structure
 
-The original requirement stands: the `api` app SHALL have a root module (`AppModule`) and a `modules/` folder prepared to host per-eco-category modules, each following `modules/<category>/<category>.module.ts`, `<category>.controller.ts`, `<category>.service.ts`. Updated: the app SHALL run on **NestJS 12** — `@nestjs/common`, `@nestjs/core`, `@nestjs/platform-express`, `@nestjs/swagger`, and `@nestjs/testing` pinned at exactly `12.1.0`, `@nestjs/config` at exactly `12.0.1` (no `^`/`~`), with `@nestjs/throttler` at `6.7.1` (peer range declares NestJS 12 since 6.7.1 — pin retired). The app SHALL remain CommonJS; the ESM-published `@nestjs/*` 12 packages are consumed via Node's native `require(esm)`.
+The original requirement stands: the `api` app SHALL have a root module (`AppModule`) and a `modules/` folder prepared to host per-eco-category modules, each following `modules/<category>/<category>.module.ts`, `<category>.controller.ts`, `<category>.service.ts`. Updated: the app SHALL run on **NestJS 12** — `@nestjs/common`, `@nestjs/core`, `@nestjs/platform-express`, and `@nestjs/testing` pinned at exactly `12.1.2`, `@nestjs/swagger` at exactly `12.0.2`, `@nestjs/config` at exactly `12.0.1` (no `^`/`~`), with `@nestjs/throttler` at `6.7.1` (peer range declares NestJS 12 since 6.7.1 — pin retired). The app SHALL remain CommonJS; the ESM-published `@nestjs/*` 12 packages are consumed via Node's native `require(esm)`.
 
 #### Scenario: API responds on the correct port _(unchanged behavior, new framework major)_
 
@@ -24,7 +24,7 @@ The original requirement stands: the `api` app SHALL have a root module (`AppMod
 #### Scenario: NestJS versions pinned exactly with no nested 11.x copies
 
 - **WHEN** `apps/api/package.json` and the installed tree are inspected after the upgrade
-- **THEN** `@nestjs/common`, `@nestjs/core`, `@nestjs/platform-express`, `@nestjs/swagger` are pinned at `"12.1.0"` and `@nestjs/config` at `"12.0.1"` — exact, no `^`/`~`
+- **THEN** `@nestjs/common`, `@nestjs/core`, `@nestjs/platform-express` are pinned at `"12.1.2"`, `@nestjs/swagger` at `"12.0.2"` and `@nestjs/config` at `"12.0.1"` — exact, no `^`/`~`
 - **AND** `npm ls @nestjs/common @nestjs/core @nestjs/platform-express @nestjs/swagger @nestjs/config @nestjs/testing` resolves a single 12.x version each, with no nested 11.x copies
 
 ### Requirement: Global route prefix configured

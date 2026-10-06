@@ -9,7 +9,7 @@ Tracks plastic waste generation, mismanagement rates, and ocean plastic accumula
 ### 1. Our World in Data — Plastic Pollution
 
 - **URL:** https://ourworldindata.org/plastic-pollution — grapher CSV: `https://ourworldindata.org/grapher/global-plastics-production.csv` — API v1: `https://api.ourworldindata.org/v1/indicators/{id}.data.json`
-- **License:** ✅ Comercial/ads OK — CC BY.
+- **License:** ✅ Commercial/ads OK — CC BY.
 - **Model:** Free (CC BY). Static downloadable.
 - **Data:** Global plastics production, plastic waste by country, mismanaged plastic waste, plastic entering the ocean (Jambeck et al., Meijer et al.), microplastics.
 - **API key:** Not required.
@@ -34,7 +34,7 @@ Tracks plastic waste generation, mismanagement rates, and ocean plastic accumula
 ### 2. World Bank — What a Waste 3.0 (Plastic Module)
 
 - **URL:** https://www.worldbank.org/en/publication/what-a-waste — dataset: https://datacatalog.worldbank.org/search/dataset/0039597/
-- **License:** ✅ Comercial/ads OK — CC BY (World Bank open data).
+- **License:** ✅ Commercial/ads OK — CC BY (World Bank open data).
 - **Model:** Free. Static download.
 - **Data:** Managed/unmanaged plastics by country (~93 Mt/year mismanaged globally), plastic waste exports.
 - **API key:** Not required.
@@ -53,7 +53,7 @@ Tracks plastic waste generation, mismanagement rates, and ocean plastic accumula
 ### 3. NOAA Marine Debris Program
 
 - **URL:** https://marinedebris.noaa.gov/research/monitoring-toolbox-data
-- **License:** ✅ Comercial/ads OK — Public domain (NOAA).
+- **License:** ✅ Commercial/ads OK — Public domain (NOAA).
 - **Model:** Free. CSV downloadable.
 - **Data:** Coastal debris surveys, Marine Debris Monitoring and Assessment Project (MDMAP) data.
 - **API key:** Not required.
@@ -72,7 +72,7 @@ Tracks plastic waste generation, mismanagement rates, and ocean plastic accumula
 ### 4. The Ocean Cleanup — Global River Plastic Pollution Dataset (Meijer et al. 2021)
 
 - **URL:** https://theoceancleanup.com/sources/ — paper: Meijer et al. 2021
-- **License:** ✅ Comercial/ads OK — CC BY.
+- **License:** ✅ Commercial/ads OK — CC BY.
 - **Model:** Free. Static download.
 - **Data:** Plastic emissions by river and country; top 1,000 rivers account for 80% of ocean-bound plastic.
 - **API key:** Not required.
@@ -91,7 +91,7 @@ Tracks plastic waste generation, mismanagement rates, and ocean plastic accumula
 ### 5. Plastic Atlas (Heinrich Böll Foundation)
 
 - **URL:** https://www.boell.de/en/plasticatlas
-- **License:** ✅ Comercial/ads OK — CC BY.
+- **License:** ✅ Commercial/ads OK — CC BY.
 - **Model:** Free. Infographics and aggregated dataset.
 - **Data:** Production and pollution plastic aggregated dataset, infographics.
 - **API key:** Not required.
@@ -110,7 +110,7 @@ Tracks plastic waste generation, mismanagement rates, and ocean plastic accumula
 ### 6. Eurostat — Plastic Packaging Waste
 
 - **URL:** https://ec.europa.eu/eurostat/databrowser/view/env_waspac
-- **License:** ✅ Comercial/ads OK — CC BY 4.0.
+- **License:** ✅ Commercial/ads OK — CC BY 4.0.
 - **Model:** Free.
 - **Data:** Generation, recycling, and recovery of plastic packaging waste in the EU.
 - **API key:** Not required.
