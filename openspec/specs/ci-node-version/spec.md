@@ -46,5 +46,5 @@ The installed `@types/node` version SHALL match the Node.js 24 runtime major ver
 
 - **GIVEN** the project runs on Node.js 24
 - **WHEN** TypeScript resolves `@types/node`
-- **THEN** the installed version is `24.19.0`
+- **THEN** the installed version is a `24.x` release, pinned exactly (no `^`/`~`) in the root `package.json`
 - **AND** `npm run typecheck` exits with code 0
