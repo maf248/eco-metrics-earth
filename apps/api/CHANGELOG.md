@@ -1,3 +1,9 @@
+## [2.7.1](https://github.com/maf248/eco-metrics-earth/compare/api-v2.7.0...api-v2.7.1) (2026-10-06)
+
+### Bug Fixes
+
+* **api:** reject inherited keys and non-array datasets in water-footprint service ([9b183f5](https://github.com/maf248/eco-metrics-earth/commit/9b183f5525ebed00cbd2e2dd16f5afb3451d37c0))
+
 ## [2.7.0](https://github.com/maf248/eco-metrics-earth/compare/api-v2.6.1...api-v2.7.0) (2026-10-03)
 
 ### Features
