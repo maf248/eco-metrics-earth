@@ -1,6 +1,7 @@
 import { renderToString } from 'react-dom/server';
 
 import RootLayout, { metadata } from '@/app/layout';
+import { OG_IMAGE } from '@/lib/socialMetadata';
 
 // Navbar uses NavLink which calls usePathname — mock it for SSR tests
 jest.mock('next/navigation', () => ({
@@ -95,8 +96,27 @@ describe('metadata', () => {
     expect(metadata.openGraph?.siteName).toBe('eco-metrics earth');
   });
 
-  it('should have twitter.card set to "summary"', () => {
-    expect((metadata.twitter as { card?: string } | null | undefined)?.card).toBe('summary');
+  it('should have twitter.card set to "summary_large_image"', () => {
+    expect((metadata.twitter as { card?: string } | null | undefined)?.card).toBe(
+      'summary_large_image',
+    );
+  });
+
+  it('should use the PNG social card as the openGraph image', () => {
+    expect((metadata.openGraph as { images?: unknown } | null | undefined)?.images).toEqual([
+      OG_IMAGE,
+    ]);
+  });
+
+  it('should not use the SVG logo as a social image', () => {
+    expect(JSON.stringify(metadata.openGraph)).not.toContain('.svg');
+    expect(JSON.stringify(metadata.twitter)).not.toContain('.svg');
+  });
+
+  it('should declare the PNG apple touch icon', () => {
+    expect((metadata.icons as { apple?: string } | null | undefined)?.apple).toBe(
+      '/icons/apple-touch-icon.png',
+    );
   });
 });
 

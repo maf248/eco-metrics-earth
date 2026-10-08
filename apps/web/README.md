@@ -24,7 +24,9 @@ src/app/
 ├── not-found.tsx     # 404 — rendered for unknown slugs and missing routes
 ├── globals.css       # Tailwind base + custom global styles
 ├── manifest.ts       # PWA manifest → /manifest.webmanifest
-├── robots.ts         # robots.txt — allows /, disallows /api/
+├── og-image.png/
+│   └── route.tsx     # Social card (1200×630 PNG) → /og-image.png — prerendered at build
+├── robots.ts         # robots.txt — single `User-agent: *` group, allows /
 └── sitemap.ts        # sitemap.xml — home + all 12 category pages
 ```
 
@@ -64,21 +66,23 @@ src/components/
 
 ### Utilities (`src/lib/`)
 
-| File               | Purpose                                                                                                                                                                        |
-| ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `navItems.ts`      | Builds `NAV_ITEMS[]` from `ECO_CATEGORIES` — merges slug, label, href, icon into one object                                                                                    |
-| `categoryIcon.ts`  | Maps a slug to its SVG icon component; warns in development for unknown slugs, falls back to `SiteLogoIcon`                                                                    |
-| `categoryTitle.ts` | Maps a slug to its display title; handles overrides for titles that can't be derived mechanically (`waste-recycling` → `Waste & Recycling`, `co2-emissions` → `CO2 Emissions`) |
-| `siteUrl.ts`       | Returns the canonical base URL from `NEXT_PUBLIC_SITE_URL`, no trailing slash; falls back to `http://localhost:3000`                                                           |
-| `slugToTitle.ts`   | Generic slug → Title Case conversion (`air-quality` → `Air Quality`)                                                                                                           |
+| File                | Purpose                                                                                                                                                                        |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `navItems.ts`       | Builds `NAV_ITEMS[]` from `ECO_CATEGORIES` — merges slug, label, href, icon into one object                                                                                    |
+| `categoryIcon.ts`   | Maps a slug to its SVG icon component; warns in development for unknown slugs, falls back to `SiteLogoIcon`                                                                    |
+| `categoryTitle.ts`  | Maps a slug to its display title; handles overrides for titles that can't be derived mechanically (`waste-recycling` → `Waste & Recycling`, `co2-emissions` → `CO2 Emissions`) |
+| `siteUrl.ts`        | Returns the canonical base URL from `NEXT_PUBLIC_SITE_URL`, no trailing slash; falls back to `http://localhost:3000`                                                           |
+| `socialMetadata.ts` | Shared social metadata: `OG_IMAGE`, `buildOpenGraph()`, `buildTwitter()`                                                                                                       |
+| `slugToTitle.ts`    | Generic slug → Title Case conversion (`air-quality` → `Air Quality`)                                                                                                           |
 
 ### SEO
 
-Every page exports a `metadata` object with `title`, `description`, `alternates.canonical` (trailing-slash URL), and `openGraph` + `twitter` tags. The root layout sets `metadataBase` from `NEXT_PUBLIC_SITE_URL`.
+Every page exports a `metadata` object with `title`, `description`, `alternates.canonical` (trailing-slash URL), and `openGraph` + `twitter` tags built with `buildOpenGraph()` / `buildTwitter()` from `lib/socialMetadata.ts` — Next.js merges metadata shallowly, so the helpers keep the shared type, site name, social card and `summary_large_image` card on every page. The root layout sets `metadataBase` from `NEXT_PUBLIC_SITE_URL`.
 
 Additional SEO outputs:
 
-- `robots.ts` — allows `/`, disallows `/api/`
+- `robots.ts` — a single `User-agent: *` group allowing `/`; no disallow rules (the API lives on its own domain)
+- `og-image.png/route.tsx` — site-wide 1200×630 social card, referenced as `og:image`/`twitter:image` by every page
 - `sitemap.ts` — home (`priority: 1.0`) + all 12 category pages (`priority: 0.8`), `changeFrequency: weekly`
 - `manifest.ts` — PWA manifest; `display: standalone`, `theme_color: #10b981`
 

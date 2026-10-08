@@ -42,7 +42,7 @@ The Next.js web app SHALL serve a set of HTTP security headers on every response
 
 ### Requirement: Web app serves a Content-Security-Policy header
 
-The Next.js web app SHALL serve a `Content-Security-Policy` header that restricts resource loading to self-hosted assets by default, while explicitly permitting Google Fonts, allowing inline styles and scripts required by Next.js App Router, and additionally constraining `<base>` tag rewriting, form submission targets, plugin/object embedding, nested browsing contexts, and insecure subresource loading. The CSP applied to production responses SHALL contain the following directives: `default-src 'self'`, `script-src 'self' 'unsafe-inline'` (with `'unsafe-eval'` additionally present only in development builds), `style-src 'self' 'unsafe-inline' https://fonts.googleapis.com`, `font-src 'self' https://fonts.gstatic.com`, `img-src 'self' data: blob:`, `connect-src 'self'`, `frame-ancestors 'none'`, `base-uri 'self'`, `form-action 'self'`, `object-src 'none'`, and `frame-src 'none'`. Production responses SHALL additionally contain `upgrade-insecure-requests`; development responses SHALL NOT contain it.
+The Next.js web app SHALL serve a `Content-Security-Policy` header that restricts resource loading to self-hosted assets by default (the site loads no third-party stylesheets or fonts), allowing inline styles and scripts required by Next.js App Router, and additionally constraining `<base>` tag rewriting, form submission targets, plugin/object embedding, nested browsing contexts, and insecure subresource loading. The CSP applied to production responses SHALL contain the following directives: `default-src 'self'`, `script-src 'self' 'unsafe-inline'` (with `'unsafe-eval'` additionally present only in development builds), `style-src 'self' 'unsafe-inline'`, `font-src 'self'`, `img-src 'self' data: blob:`, `connect-src 'self'`, `frame-ancestors 'none'`, `base-uri 'self'`, `form-action 'self'`, `object-src 'none'`, and `frame-src 'none'`. Production responses SHALL additionally contain `upgrade-insecure-requests`; development responses SHALL NOT contain it.
 
 #### Scenario: CSP prevents embedding in iframes
 
@@ -56,10 +56,9 @@ The Next.js web app SHALL serve a `Content-Security-Policy` header that restrict
 
 #### Scenario: CSP allows Google Fonts stylesheets and font files
 
-- **WHEN** the page requests a stylesheet from `fonts.googleapis.com`
-- **THEN** the browser loads it without CSP violation
-- **WHEN** the page requests a font file from `fonts.gstatic.com`
-- **THEN** the browser loads it without CSP violation
+- **WHEN** the browser loads any page of the web app
+- **THEN** the `Content-Security-Policy` header contains `style-src 'self' 'unsafe-inline'` and `font-src 'self'`
+- **AND** the header does not reference `fonts.googleapis.com` or `fonts.gstatic.com`, so Google Fonts stylesheets and font files are no longer permitted (the site self-hosts every asset it loads)
 
 #### Scenario: CSP blocks resources from unknown origins
 

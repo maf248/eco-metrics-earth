@@ -6,6 +6,7 @@ import Navbar from '@/components/Navbar';
 import ThemeProvider from '@/components/ThemeProvider';
 import ThemeToggle from '@/components/ThemeToggle';
 import { siteUrl } from '@/lib/siteUrl';
+import { buildOpenGraph, buildTwitter } from '@/lib/socialMetadata';
 
 import './globals.css';
 
@@ -25,24 +26,10 @@ export const metadata: Metadata = {
   description: 'Track and visualize environmental metrics for a sustainable planet.',
   icons: {
     icon: '/icons/eco-metrics-earth.svg',
-    apple: '/icons/eco-metrics-earth.svg',
+    apple: '/icons/apple-touch-icon.png',
   },
-  openGraph: {
-    type: 'website',
-    siteName: 'eco-metrics earth',
-    images: [
-      {
-        url: '/icons/eco-metrics-earth.svg',
-        width: 512,
-        height: 512,
-        alt: 'eco-metrics earth logo',
-      },
-    ],
-  },
-  twitter: {
-    card: 'summary',
-    images: ['/icons/eco-metrics-earth.svg'],
-  },
+  openGraph: buildOpenGraph(),
+  twitter: buildTwitter(),
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {

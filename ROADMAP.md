@@ -260,14 +260,6 @@ Lista de hallazgos del análisis de repositorio, ordenados por prioridad (más c
 - **I09.** Atribución de datos (requisito legal, no opcional) — CC BY exige atribución visible. Antes de publicar la primera sección con datos reales (P1.0): componente de atribución al pie de cada visualización ("Data: Our World in Data — CC BY" con link) + página `/data-sources/` listando proveedores y licencias. Alimentado por `ApiResponse<T>.meta.source` (`DataSourceAttribution`, ya disponible en `@eco-metrics/shared`). Bonus SEO: contenido indexable con estructura.
 - **I10.** Elegir librería de charts — pendiente. Cuando toque (antes de P1.0), ver `docs/technical/libraries.md`: tiene candidatas, descartadas con motivo, spikes por candidata y los gates a cumplir. La decisión se registra en `docs/design-system.md` y activa el recordatorio de Dynamic Imports.
 
-### 🟡 Web / SEO
-
-- **I13.** Íconos, robots y CSP del front — tres ajustes chicos de `apps/web`, todos con spec existente que hay que corregir, por eso van juntos en una sola propuesta:
-  - **Íconos PWA:** las 3 entradas de `manifest.ts` tienen solo `purpose: 'maskable'` (ningún ícono `any`). Los specs `web-app-manifest` y `pwa-icons` piden `'any maskable'`, valor que los tipos de Next (`'any' | 'maskable' | 'monochrome'`) no aceptan → el código ya diverge del spec. Separar en entradas `any` y `maskable` (idealmente con un PNG maskable con safe zone) y corregir ambos specs.
-  - **Imagen OG/Twitter y apple icon:** `layout.tsx` usa el SVG como `og:image` (declarado 512×512) y como `apple` icon. Facebook, X y LinkedIn no renderizan `og:image` SVG e iOS ignora apple-touch-icon SVG → pasar a PNG (`icon-512.png` / un 180×180, o `opengraph-image`) y actualizar spec `seo-metadata`.
-  - **robots.txt:** los specs se contradicen — `robots` dice "sin reglas `disallow`" y `sitemap-and-robots` exige `disallow: /api/`. Además `robots.ts` emite dos grupos separados para `User-Agent: *`. Unificar specs y emitir un único grupo (evaluar si `/api/` tiene sentido: el BFF vive en Cloud Run, no en el dominio web).
-  - **CSP:** permite `fonts.googleapis.com` / `fonts.gstatic.com` pero el sitio no usa Google Fonts (y `next/font` las self-hostea). Quitarlos y actualizar spec `web-security-headers` + `e2e/security-headers.spec.ts`.
-
 ---
 
 ### 📝 Recordatorios

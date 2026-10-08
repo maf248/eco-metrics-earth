@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Defines the sitemap lastModified field and the robots.txt API disallow rule.
+Defines the sitemap lastModified field. robots.txt rules are owned by the `robots` capability.
 
 ## Requirements
 
@@ -14,17 +14,3 @@ Every entry returned by `sitemap.ts` SHALL include a `lastModified` field set to
 
 - **WHEN** the sitemap is generated
 - **THEN** every entry in the returned array has a `lastModified` property that is a valid `Date` object
-
-### Requirement: robots.txt disallows crawling of API paths
-
-The `robots.ts` SHALL include a rule that disallows all user agents from crawling paths starting with `/api/`.
-
-#### Scenario: Robots.txt disallows /api/ for all crawlers
-
-- **WHEN** a search engine crawler fetches `/robots.txt`
-- **THEN** the response includes a `Disallow: /api/` rule for `User-agent: *`
-
-#### Scenario: Robots.txt still allows crawling of all other paths
-
-- **WHEN** a search engine crawler fetches `/robots.txt`
-- **THEN** the response includes an `Allow: /` rule for `User-agent: *`

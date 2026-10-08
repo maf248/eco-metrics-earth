@@ -1,11 +1,22 @@
 import robots from '@/app/robots';
 
 describe('robots', () => {
-  it('should allow all user-agents', () => {
+  it('should declare a single rule group', () => {
     const result = robots();
-    const rules = Array.isArray(result.rules) ? result.rules[0] : result.rules;
-    expect(rules.userAgent).toBe('*');
-    expect(rules.allow).toBe('/');
+    expect(Array.isArray(result.rules)).toBe(false);
+  });
+
+  it('should allow all user-agents on every path', () => {
+    const result = robots();
+    expect(result.rules).toEqual({ userAgent: '*', allow: '/' });
+  });
+
+  it('should not disallow any path', () => {
+    const result = robots();
+    const rules = Array.isArray(result.rules) ? result.rules : [result.rules];
+    for (const rule of rules) {
+      expect(rule.disallow).toBeUndefined();
+    }
   });
 
   it('should include a sitemap URL', () => {

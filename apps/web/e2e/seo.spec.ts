@@ -41,7 +41,10 @@ test.describe('Home page metadata', { tag: '@smoke' }, () => {
 
   test('should have Twitter card tags', async ({ page }) => {
     await page.goto('/');
-    await expect(page.locator('meta[name="twitter:card"]')).toHaveAttribute('content', 'summary');
+    await expect(page.locator('meta[name="twitter:card"]')).toHaveAttribute(
+      'content',
+      'summary_large_image',
+    );
     await expect(page.locator('meta[name="twitter:title"]')).toHaveAttribute(
       'content',
       homePage.title,
@@ -84,6 +87,64 @@ test.describe('Category page metadata', () => {
   });
 });
 
+const SOCIAL_CARD_PAGES = [
+  { name: 'home page', url: homePage.url },
+  { name: 'category page', url: categoryPage('air-quality').url },
+];
+
+test.describe('Social card metadata', { tag: '@smoke' }, () => {
+  for (const { name, url } of SOCIAL_CARD_PAGES) {
+    test(`should declare the shared Open Graph fields and social card on the ${name}`, async ({
+      page,
+    }) => {
+      await page.goto(url);
+      await expect(page.locator('meta[property="og:type"]')).toHaveAttribute('content', 'website');
+      await expect(page.locator('meta[property="og:site_name"]')).toHaveAttribute(
+        'content',
+        'eco-metrics earth',
+      );
+      await expect(page.locator('meta[property="og:image"]')).toHaveAttribute(
+        'content',
+        'http://localhost:3000/og-image.png',
+      );
+      await expect(page.locator('meta[property="og:image:width"]')).toHaveAttribute(
+        'content',
+        '1200',
+      );
+      await expect(page.locator('meta[property="og:image:height"]')).toHaveAttribute(
+        'content',
+        '630',
+      );
+      await expect(page.locator('meta[property="og:image:alt"]')).toHaveAttribute('content', /\S/);
+      await expect(page.locator('meta[name="twitter:card"]')).toHaveAttribute(
+        'content',
+        'summary_large_image',
+      );
+      await expect(page.locator('meta[name="twitter:image"]')).toHaveAttribute(
+        'content',
+        'http://localhost:3000/og-image.png',
+      );
+    });
+  }
+
+  test('should serve the social card as a PNG without a redirect', async ({ request }) => {
+    const response = await request.get('/og-image.png', { maxRedirects: 0 });
+    expect(response.status()).toBe(200);
+    expect(response.headers()['content-type']).toBe('image/png');
+  });
+
+  test('should declare the PNG apple touch icon', async ({ page, request }) => {
+    await page.goto(homePage.url);
+    await expect(page.locator('link[rel="apple-touch-icon"]')).toHaveAttribute(
+      'href',
+      '/icons/apple-touch-icon.png',
+    );
+    const response = await request.get('/icons/apple-touch-icon.png');
+    expect(response.status()).toBe(200);
+    expect(response.headers()['content-type']).toBe('image/png');
+  });
+});
+
 test.describe('Sitemap.xml', { tag: '@smoke' }, () => {
   test('should return 200 with valid XML', async ({ request }) => {
     const response = await request.get('/sitemap.xml');
@@ -115,8 +176,9 @@ test.describe('Robots.txt', { tag: '@smoke' }, () => {
     const response = await request.get('/robots.txt');
     expect(response.status()).toBe(200);
     const text = await response.text();
+    expect(text.match(/^User-Agent: \*$/gim)).toHaveLength(1);
     expect(text).toContain('Allow: /');
-    expect(text).toContain('Disallow: /api/');
+    expect(text).not.toContain('Disallow');
     expect(text).toContain('Sitemap:');
   });
 });
@@ -133,5 +195,14 @@ test.describe('PWA manifest', { tag: '@smoke' }, () => {
     expect(json.theme_color).toBe('#10b981');
     expect(Array.isArray(json.icons)).toBe(true);
     expect(json.icons.length).toBeGreaterThanOrEqual(1);
+  });
+
+  test('should declare separate "any" and "maskable" icons', async ({ request }) => {
+    const response = await request.get('/manifest.webmanifest');
+    const json = await response.json();
+    const purposes = json.icons.map((icon: { purpose: string }) => icon.purpose);
+    expect(purposes).toContain('any');
+    expect(purposes).toContain('maskable');
+    expect(purposes.every((purpose: string) => ['any', 'maskable'].includes(purpose))).toBe(true);
   });
 });
