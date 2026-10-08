@@ -45,4 +45,15 @@ export class AppConfigService {
   get owidCacheTtlSeconds(): number {
     return this.configService.getOrThrow<number>('OWID_CACHE_TTL_SECONDS');
   }
+
+  /** Number of trusted reverse-proxy hops in front of the API (Express `trust proxy`). Default: 0. */
+  get trustProxyHops(): number {
+    return this.configService.get<number>('TRUST_PROXY_HOPS') ?? 0;
+  }
+
+  /** Shared secret that lets trusted first-party traffic skip throttling. Undefined when unset or empty. */
+  get internalApiKey(): string | undefined {
+    const key = this.configService.get<string>('INTERNAL_API_KEY');
+    return key ? key : undefined;
+  }
 }

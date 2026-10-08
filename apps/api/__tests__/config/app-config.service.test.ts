@@ -155,4 +155,33 @@ describe('AppConfigService', () => {
       expect(() => service.owidCacheTtlSeconds).toThrow('OWID_CACHE_TTL_SECONDS');
     });
   });
+
+  describe('trustProxyHops', () => {
+    it('should return the configured hop count', () => {
+      const service = buildService({ TRUST_PROXY_HOPS: 1 });
+      expect(service.trustProxyHops).toBe(1);
+    });
+
+    it('should default to 0 when TRUST_PROXY_HOPS is not in config', () => {
+      const service = buildService({});
+      expect(service.trustProxyHops).toBe(0);
+    });
+  });
+
+  describe('internalApiKey', () => {
+    it('should return the configured key', () => {
+      const service = buildService({ INTERNAL_API_KEY: 'k'.repeat(32) });
+      expect(service.internalApiKey).toBe('k'.repeat(32));
+    });
+
+    it('should return undefined when the key is not set', () => {
+      const service = buildService({});
+      expect(service.internalApiKey).toBeUndefined();
+    });
+
+    it('should return undefined when the key is an empty string', () => {
+      const service = buildService({ INTERNAL_API_KEY: '' });
+      expect(service.internalApiKey).toBeUndefined();
+    });
+  });
 });

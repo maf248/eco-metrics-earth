@@ -241,25 +241,28 @@ cp apps/web/.env.example apps/web/.env.local
 
 ### `apps/api/.env.example`
 
-| Variable                 | Default                              | Description                                                                                                        |
-| ------------------------ | ------------------------------------ | ------------------------------------------------------------------------------------------------------------------ |
-| `PORT`                   | `3001`                               | Port the API listens on (injected by Cloud Run in production — never set it manually there)                        |
-| `NODE_ENV`               | `development`                        | Node environment                                                                                                   |
-| `CORS_ORIGIN`            | `http://localhost:3000`              | Comma-separated list of exact allowed CORS origins (single origin is valid; no wildcards)                          |
-| `CORS_ORIGIN_PATTERN`    | —                                    | Optional anchored regex (`^...$`) for pattern-based origins such as Vercel preview URLs (empty/unset = no pattern) |
-| `SWAGGER_ENABLED`        | `false`                              | Enable OpenAPI/Swagger UI. Set to `true` for local development, `false` in production.                             |
-| `OWID_GRAPHER_BASE_URL`  | `https://ourworldindata.org/grapher` | OWID Grapher base URL; must not end with a trailing slash                                                          |
-| `OWID_API_BASE_URL`      | `https://api.ourworldindata.org/v1`  | OWID API v1 base URL; must not end with a trailing slash                                                           |
-| `OWID_HTTP_TIMEOUT_MS`   | `10000`                              | Per-attempt HTTP timeout for OWID requests, in milliseconds (1 000–60 000)                                         |
-| `OWID_CACHE_TTL_SECONDS` | `86400`                              | In-memory cache TTL for parsed OWID responses, in seconds (60–604 800 = 7 days)                                    |
+| Variable                 | Default                              | Description                                                                                                                                               |
+| ------------------------ | ------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `PORT`                   | `3001`                               | Port the API listens on (injected by Cloud Run in production — never set it manually there)                                                               |
+| `NODE_ENV`               | `development`                        | Node environment                                                                                                                                          |
+| `CORS_ORIGIN`            | `http://localhost:3000`              | Comma-separated list of exact allowed CORS origins (single origin is valid; no wildcards)                                                                 |
+| `CORS_ORIGIN_PATTERN`    | —                                    | Optional anchored regex (`^...$`) for pattern-based origins such as Vercel preview URLs (empty/unset = no pattern)                                        |
+| `SWAGGER_ENABLED`        | `false`                              | Enable OpenAPI/Swagger UI. Set to `true` for local development, `false` in production.                                                                    |
+| `OWID_GRAPHER_BASE_URL`  | `https://ourworldindata.org/grapher` | OWID Grapher base URL; must not end with a trailing slash                                                                                                 |
+| `OWID_API_BASE_URL`      | `https://api.ourworldindata.org/v1`  | OWID API v1 base URL; must not end with a trailing slash                                                                                                  |
+| `OWID_HTTP_TIMEOUT_MS`   | `10000`                              | Per-attempt HTTP timeout for OWID requests, in milliseconds (1 000–60 000)                                                                                |
+| `OWID_CACHE_TTL_SECONDS` | `86400`                              | In-memory cache TTL for parsed OWID responses, in seconds (60–604 800 = 7 days)                                                                           |
+| `TRUST_PROXY_HOPS`       | `0`                                  | Trusted reverse-proxy hops in front of the API (Express `trust proxy`). Cloud Run uses `1` (set by the deploy workflow)                                   |
+| `INTERNAL_API_KEY`       | —                                    | Optional shared secret (min 32 chars); requests with a matching `X-Internal-Api-Key` header skip rate limiting. Mounted from Secret Manager in production |
 
 ### `apps/web/.env.example`
 
-| Variable               | Default                        | Description                                                                                     |
-| ---------------------- | ------------------------------ | ----------------------------------------------------------------------------------------------- |
-| `NEXT_PUBLIC_SITE_URL` | `http://localhost:3000`        | Canonical base URL for SEO metadata (Open Graph, canonical links)                               |
-| `API_BASE_URL`         | `http://localhost:3001/api/v1` | Base URL of the NestJS BFF (server-side only). In production, point it at the Cloud Run service |
-| `ANALYZE`              | `false`                        | Set to `true` to generate bundle analysis report on build (webpack only)                        |
+| Variable               | Default                        | Description                                                                                                                        |
+| ---------------------- | ------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------- |
+| `NEXT_PUBLIC_SITE_URL` | `http://localhost:3000`        | Canonical base URL for SEO metadata (Open Graph, canonical links)                                                                  |
+| `API_BASE_URL`         | `http://localhost:3001/api/v1` | Base URL of the NestJS BFF (server-side only). In production, point it at the Cloud Run service                                    |
+| `INTERNAL_API_KEY`     | —                              | Server-only shared secret sent as `X-Internal-Api-Key` so the API skips rate limiting for the Next.js server. Never `NEXT_PUBLIC_` |
+| `ANALYZE`              | `false`                        | Set to `true` to generate bundle analysis report on build (webpack only)                                                           |
 
 ---
 

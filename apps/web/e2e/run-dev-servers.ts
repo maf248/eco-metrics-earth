@@ -5,6 +5,7 @@ import type { Readable } from 'node:stream';
 import { pathToFileURL } from 'node:url';
 
 import { waitForUrl } from './readiness.ts';
+import { E2E_INTERNAL_API_KEY, E2E_TRUST_PROXY_HOPS } from './utils/api-env.ts';
 
 const API_HEALTH_URL = 'http://localhost:3001/api/v1/health';
 const WEB_URL = 'http://localhost:3000';
@@ -232,8 +233,14 @@ function forwardStream(
   });
 }
 
-function spawnServer(command: string, args: string[], manager: ServerManager): ChildProcess {
+function spawnServer(
+  command: string,
+  args: string[],
+  manager: ServerManager,
+  env: Record<string, string>,
+): ChildProcess {
   const child = spawn(command, args, {
+    env: { ...process.env, ...env },
     stdio: ['ignore', 'pipe', 'pipe'],
     // Intentionally not detached: children share the wrapper's process group
     // so Playwright's group-level signals reach them as a secondary net.
@@ -321,7 +328,10 @@ async function startApi(manager: ServerManager): Promise<void> {
   }
 
   log('starting api server...');
-  const api = spawnServer(API_COMMAND, API_ARGS, manager);
+  const api = spawnServer(API_COMMAND, API_ARGS, manager, {
+    TRUST_PROXY_HOPS: E2E_TRUST_PROXY_HOPS,
+    INTERNAL_API_KEY: E2E_INTERNAL_API_KEY,
+  });
   manager.register(api);
 
   try {
@@ -359,7 +369,9 @@ function clearNextFetchCache(): void {
 async function startWeb(manager: ServerManager): Promise<void> {
   clearNextFetchCache();
   log('starting web server...');
-  const web = spawnServer(WEB_COMMAND, WEB_ARGS, manager);
+  const web = spawnServer(WEB_COMMAND, WEB_ARGS, manager, {
+    INTERNAL_API_KEY: E2E_INTERNAL_API_KEY,
+  });
   manager.register(web);
 
   try {

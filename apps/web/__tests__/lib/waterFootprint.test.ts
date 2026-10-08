@@ -121,4 +121,48 @@ describe('getWaterFootprintProducts', () => {
     expect(result.fetchFailed).toBe(true);
     expect(result.products).toEqual([]);
   });
+
+  describe('internal API key header', () => {
+    const originalKey = process.env.INTERNAL_API_KEY;
+
+    afterEach(() => {
+      if (originalKey === undefined) {
+        delete process.env.INTERNAL_API_KEY;
+      } else {
+        process.env.INTERNAL_API_KEY = originalKey;
+      }
+    });
+
+    const okResponse = async () => ({
+      ok: true,
+      json: async () => ({ success: true, data: [], status: 200 }),
+    });
+
+    it('should send X-Internal-Api-Key and keep the other fetch options when the key is set', async () => {
+      process.env.INTERNAL_API_KEY = 'k'.repeat(32);
+      mockFetch(okResponse);
+
+      await getWaterFootprintProducts();
+
+      const init = (global.fetch as jest.Mock).mock.calls[0][1] as RequestInit & {
+        next?: { revalidate: number };
+      };
+      expect(init.headers).toEqual({ 'X-Internal-Api-Key': 'k'.repeat(32) });
+      expect(init.next).toEqual({ revalidate: 86400 });
+      expect(init.signal).toBeInstanceOf(AbortSignal);
+    });
+
+    it('should send no X-Internal-Api-Key header when the key is unset or whitespace', async () => {
+      delete process.env.INTERNAL_API_KEY;
+      mockFetch(okResponse);
+      await getWaterFootprintProducts();
+
+      process.env.INTERNAL_API_KEY = '   ';
+      mockFetch(okResponse);
+      await getWaterFootprintProducts();
+
+      const init = (global.fetch as jest.Mock).mock.calls[0][1] as RequestInit;
+      expect(init.headers).toEqual({});
+    });
+  });
 });
