@@ -11,6 +11,10 @@ const config = {
   transform: {
     '^(?!.*\\.(js|jsx|ts|tsx|css|json)$)': '@nx/react/plugins/jest',
   },
+  // `server-only` throws outside the Next.js server bundle; map it to an empty stub.
+  moduleNameMapper: {
+    '^server-only$': '<rootDir>/__mocks__/server-only.ts',
+  },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
   coverageDirectory: '../../coverage/apps/web',
   coverageReporters: ['text', 'lcov'],

@@ -213,4 +213,51 @@ describe('envValidationSchema', () => {
       expect(error?.message).toContain('OWID_CACHE_TTL_SECONDS');
     });
   });
+
+  describe('TRUST_PROXY_HOPS', () => {
+    it('should default to 0 when absent', () => {
+      const { error, value } = validate({});
+      expect(error).toBeUndefined();
+      expect(value.TRUST_PROXY_HOPS).toBe(0);
+    });
+
+    it('should accept the string "1" and convert it to the number 1', () => {
+      const { error, value } = validate({ TRUST_PROXY_HOPS: '1' });
+      expect(error).toBeUndefined();
+      expect(value.TRUST_PROXY_HOPS).toBe(1);
+    });
+
+    it.each(['-1', '1.5', 'abc', 'true'])('should reject %s', (input) => {
+      const { error } = validate({ TRUST_PROXY_HOPS: input });
+      expect(error).toBeDefined();
+      expect(error?.message).toContain('TRUST_PROXY_HOPS');
+    });
+  });
+
+  describe('INTERNAL_API_KEY', () => {
+    it('should accept an unset key', () => {
+      const { error, value } = validate({});
+      expect(error).toBeUndefined();
+      expect(value.INTERNAL_API_KEY).toBeUndefined();
+    });
+
+    it('should accept an empty key', () => {
+      const { error } = validate({ INTERNAL_API_KEY: '' });
+      expect(error).toBeUndefined();
+    });
+
+    it('should reject a 31-character key without echoing the value', () => {
+      const shortKey = 'k'.repeat(31);
+      const { error } = validate({ INTERNAL_API_KEY: shortKey });
+      expect(error).toBeDefined();
+      expect(error?.message).toContain('INTERNAL_API_KEY');
+      expect(error?.message).not.toContain(shortKey);
+    });
+
+    it('should accept a 32-character key', () => {
+      const { error, value } = validate({ INTERNAL_API_KEY: 'k'.repeat(32) });
+      expect(error).toBeUndefined();
+      expect(value.INTERNAL_API_KEY).toBe('k'.repeat(32));
+    });
+  });
 });

@@ -248,7 +248,7 @@ eco-metrics-earth/
 │   │       ├── app/             # AppModule, AppController, AppService
 │   │       ├── health/          # HealthController (GET /api/v1/health)
 │   │       ├── modules/         # Per-category eco modules (`water-footprint`) + `providers/owid` client
-│   │       ├── common/          # DTOs, outbound HTTP client, catch-all 404 fallback, global exception filter
+│   │       ├── common/          # DTOs, outbound HTTP client, catch-all 404 fallback, global exception filter, throttler internal-key bypass
 │   │       ├── config/          # AppConfigService (typed env vars)
 │   │       └── main.ts          # Bootstrap — port 3001, prefix /api/v1
 │   └── web/                     # Next.js App Router

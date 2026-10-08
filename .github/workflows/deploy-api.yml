@@ -104,7 +104,10 @@ jobs:
             NODE_ENV=production
             CORS_ORIGIN=${{ steps.cors.outputs.origin }}
             SWAGGER_ENABLED=false
+            TRUST_PROXY_HOPS=1
             ${{ steps.cors.outputs.pattern }}
+          secrets: |
+            INTERNAL_API_KEY=internal-api-key:latest
           flags: >-
             --allow-unauthenticated
             --min-instances=0

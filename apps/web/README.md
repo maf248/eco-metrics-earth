@@ -106,11 +106,12 @@ Copy `.env.example` before running locally:
 cp apps/web/.env.example apps/web/.env.local
 ```
 
-| Variable               | Default                        | Description                                                                              |
-| ---------------------- | ------------------------------ | ---------------------------------------------------------------------------------------- |
-| `NEXT_PUBLIC_SITE_URL` | `http://localhost:3000`        | Canonical base URL for SEO metadata, sitemap, and Open Graph                             |
-| `API_BASE_URL`         | `http://localhost:3001/api/v1` | Base URL of the NestJS BFF (server-side only). Set to the deployed API URL in production |
-| `ANALYZE`              | `false`                        | Set to `true` to generate a bundle analysis report on build (webpack only)               |
+| Variable               | Default                        | Description                                                                                                                        |
+| ---------------------- | ------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------- |
+| `NEXT_PUBLIC_SITE_URL` | `http://localhost:3000`        | Canonical base URL for SEO metadata, sitemap, and Open Graph                                                                       |
+| `API_BASE_URL`         | `http://localhost:3001/api/v1` | Base URL of the NestJS BFF (server-side only). Set to the deployed API URL in production                                           |
+| `INTERNAL_API_KEY`     | —                              | Server-only shared secret sent as `X-Internal-Api-Key` so the API skips rate limiting for the Next.js server. Never `NEXT_PUBLIC_` |
+| `ANALYZE`              | `false`                        | Set to `true` to generate a bundle analysis report on build (webpack only)                                                         |
 
 ---
 

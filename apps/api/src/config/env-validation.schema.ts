@@ -102,4 +102,13 @@ export const envValidationSchema = Joi.object({
   OWID_API_BASE_URL: owidBaseUrlValidator('https://api.ourworldindata.org/v1'),
   OWID_HTTP_TIMEOUT_MS: Joi.number().integer().min(1000).max(60000).default(10000),
   OWID_CACHE_TTL_SECONDS: Joi.number().integer().min(60).max(604800).default(86400),
+  TRUST_PROXY_HOPS: Joi.number().integer().min(0).default(0).messages({
+    'number.base': 'TRUST_PROXY_HOPS must be a non-negative integer.',
+    'number.integer': 'TRUST_PROXY_HOPS must be a non-negative integer.',
+    'number.min': 'TRUST_PROXY_HOPS must be a non-negative integer.',
+  }),
+  INTERNAL_API_KEY: Joi.string().min(32).optional().allow('').messages({
+    'string.base': 'INTERNAL_API_KEY must be a string.',
+    'string.min': 'INTERNAL_API_KEY must be at least 32 characters long.',
+  }),
 });

@@ -4,18 +4,18 @@ Este documento registra todas las propuestas de mejora identificadas para el pro
 
 ---
 
-## Estado del Proyecto (5 Oct 2026)
+## Estado del Proyecto (8 Oct 2026)
 
 | Aspecto          | Estado | Nota                                                                                                                                                                                                                                                                                                                                                                                       |
 | ---------------- | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Tests            | ✅     | 526 unit (308 web + 193 api + 25 shared) + 274 instancias E2E (5 browsers) pasando, 0 errores                                                                                                                                                                                                                                                                                              |
+| Tests            | ✅     | 572 unit (314 web + 233 api + 25 shared) + 280 instancias E2E (5 browsers) pasando, 0 errores                                                                                                                                                                                                                                                                                              |
 | Lint             | ✅     | Sin warnings                                                                                                                                                                                                                                                                                                                                                                               |
 | Build            | ✅     | Compila correctamente                                                                                                                                                                                                                                                                                                                                                                      |
 | CI               | ✅     | CI en PRs y push a cualquier branch (`permissions` mínimos y `concurrency` que cancela corridas reemplazadas)                                                                                                                                                                                                                                                                              |
 | CD / Deploy      | ✅     | web: Vercel (auto-deploy desde GitHub); api: Cloud Run (workflow `deploy-api.yml` desde `develop`, servicio `eco-metrics-api`, `eco-metrics-api-fexi2yqv2q-uc.a.run.app`); gap de staging/preview del api sigue en I01                                                                                                                                                                     |
 | Dependencias     | 🟡     | 11 advisories, todas en tooling de desarrollo (`npm ls --omit=dev` vacío — nada llega a producción): 4 viven en el `npm@11.20.0` empaquetado por `semantic-release` (sin fix hasta un 11.x parcheado → `npm update npm`) y el resto es la cadena `braces`/`micromatch` (sin versión parcheada publicada). `axios` y `brace-expansion@5` (pins exactos de `nx`) se fuerzan vía `overrides`. |
 | Coverage         | ✅     | Medido con Jest                                                                                                                                                                                                                                                                                                                                                                            |
-| E2E              | ✅     | Playwright: 64 tests en 7 specs, 5 browsers, CI integrado, arranque determinista (readiness de ambos puertos)                                                                                                                                                                                                                                                                              |
+| E2E              | ✅     | Playwright: 70 tests en 8 specs, 5 browsers, CI integrado, arranque determinista (readiness de ambos puertos)                                                                                                                                                                                                                                                                              |
 | Theming          | ✅     | Light/dark mode con toggle, persistencia (localStorage) y zero-flash (spec `theme-toggle` + `theme-system`)                                                                                                                                                                                                                                                                                |
 | Monitoreo        | ❌     | No implementado                                                                                                                                                                                                                                                                                                                                                                            |
 | **Datos reales** | 🟡     | **Ningún proveedor externo expuesto todavía** (cliente OWID + cache listos en el BFF, sin endpoints) — water-footprint completa (dataset estático + UI + tests E2E con datos reales); las 11 páginas restantes siguen como placeholders (ver Estrategia de Proveedores + P1)                                                                                                               |
@@ -176,27 +176,7 @@ La categoría con mejor relación datos/esfuerzo (OWID CO₂ dataset: anual, per
 
 ---
 
-### P3: Hardening del API en Cloud Run (rate limiting por cliente + apagado ordenado)
-
-**Problema:**
-
-- **Rate limiting probablemente compartido entre todos los usuarios.** `ThrottlerGuard` (60 req/min) usa `req.ip` como clave, y `main.ts` no configura `trust proxy` en Express. Detrás del front-end de Cloud Run, `req.ip` es muy probablemente la IP del proxy de Google, no la del cliente → todos los usuarios comparten un único bucket de 60 req/min (un solo cliente agresivo bloquea al resto).
-- **Sin apagado ordenado.** `main.ts` no llama a `app.enableShutdownHooks()`. En el contenedor Node corre como PID 1 y, sin handler, ignora `SIGTERM`: Cloud Run espera los 10 s de gracia y termina con `SIGKILL`, cortando requests en curso.
-
-**Propuesta:**
-
-1. Verificar primero en Cloud Run (log temporal o request de prueba) qué llega en `req.ip`, `req.ips` y `X-Forwarded-For`, para determinar la cantidad exacta de saltos de proxy.
-2. Configurar `app.set('trust proxy', <saltos>)` con ese valor exacto — nunca `true`: confiar de más permite que un cliente falsifique `X-Forwarded-For` y evada el límite. Test con supertest enviando `X-Forwarded-For` (clientes distintos → buckets distintos; header falsificado extra → ignorado).
-3. `app.enableShutdownHooks()` + test de bootstrap. Revisar si `OwidModule`/cache necesitan `onApplicationShutdown`.
-4. Actualizar spec `api-security-hardening` y la tabla de cross-cutting concerns de `apps/api/README.md` ("per IP" pasa a ser cierto).
-
-**Dificultad:** 3/10 — el código es chico; lo delicado es medir el número correcto de proxies en producción.
-**Requisitos:** Acceso a logs de Cloud Run. Spec OpenSpec (cambia comportamiento de seguridad).
-**Estado:** Pendiente
-
----
-
-### P4: Pipeline de deploy del API (gate de CI + imagen reproducible)
+### P3: Pipeline de deploy del API (gate de CI + imagen reproducible)
 
 **Problema:**
 
@@ -219,11 +199,10 @@ La categoría con mejor relación datos/esfuerzo (OWID CO₂ dataset: anual, per
 
 Si no estás seguro por dónde empezar, este es el orden recomendado:
 
-1. **P3: Hardening del API en Cloud Run** → Rate limiting por cliente real + apagado ordenado; afecta producción hoy (Dificultad: 3/10)
-2. **P4: Pipeline de deploy del API** → Deploy gateado por CI + imagen reproducible, antes de sumar endpoints con datos reales (Dificultad: 4/10)
-3. **P1.0: Módulo `co2-emissions` end-to-end** → Primera sección con datos reales + charts (Dificultad: 6/10)
-4. **P1.1 / P1.2: `global-temperature` y `energy-sources`** → Replicar el patrón (Dificultad: 3/10 c/u)
-5. **P2: Monitoreo y observabilidad** → Logs, métricas y error tracking (Dificultad: 5/10)
+1. **P3: Pipeline de deploy del API** → Deploy gateado por CI + imagen reproducible, antes de sumar endpoints con datos reales (Dificultad: 4/10)
+2. **P1.0: Módulo `co2-emissions` end-to-end** → Primera sección con datos reales + charts (Dificultad: 6/10)
+3. **P1.1 / P1.2: `global-temperature` y `energy-sources`** → Replicar el patrón (Dificultad: 3/10 c/u)
+4. **P2: Monitoreo y observabilidad** → Logs, métricas y error tracking (Dificultad: 5/10)
 
 D1 (TypeScript 7) queda como seguimiento pasivo — sin acción por ahora.
 
@@ -269,7 +248,7 @@ Lista de hallazgos del análisis de repositorio, ordenados por prioridad (más c
 ### 🟢 Arquitectura / Deuda técnica
 
 - **I04.** Sin capa de datos ni ORM — cuando empiece la integración real de datos, no hay TypeORM, Prisma ni esquema de base de datos definido.
-- **I12.** Endpoints de scaffold expuestos en producción — `GET/POST /api/v1/demo-validation` (`DemoValidationController`, marcado `@deprecated` "will be removed when real eco modules are implemented") y `GET /api/v1/` ("Hello API") siguen públicos en Cloud Run. Propuesta: eliminar `DemoValidationController`, `AppController`/`AppService` y los DTOs que solo usan ellos (`create-metric.dto.ts`, `get-metrics-query.dto.ts`) con sus tests; mover los E2E de validación de `e2e/api-health.spec.ts` a `water-footprint/products?category=<inválida>` (400 en formato `ApiResponse`); actualizar tablas de endpoints (`README.md`, `apps/api/README.md`) y tags de Swagger. Requiere spec (cambia la superficie pública del API). Puede hacerse junto con P1.0, cuando exista el primer endpoint real con DTOs.
+- **I12.** Endpoints de scaffold expuestos en producción — `GET/POST /api/v1/demo-validation` (`DemoValidationController`, marcado `@deprecated` "will be removed when real eco modules are implemented") y `GET /api/v1/` ("Hello API") siguen públicos en Cloud Run. Propuesta: eliminar `DemoValidationController`, `AppController`/`AppService` y los DTOs que solo usan ellos (`create-metric.dto.ts`, `get-metrics-query.dto.ts`) con sus tests; mover los E2E de validación de `e2e/api-health.spec.ts` a `water-footprint/products?category=<inválida>` (400 en formato `ApiResponse`) y mover `e2e/rate-limit.spec.ts` (hoy usa `GET /demo-validation`) a un endpoint real; actualizar tablas de endpoints (`README.md`, `apps/api/README.md`) y tags de Swagger. Requiere spec (cambia la superficie pública del API). Puede hacerse junto con P1.0, cuando exista el primer endpoint real con DTOs.
 
 ### 🟢 Configuración / Build
 
@@ -298,4 +277,4 @@ Lista de hallazgos del análisis de repositorio, ordenados por prioridad (más c
 - **I07.** OpenTelemetry — considerado para el futuro cuando el sistema escale a múltiples servicios o se quiera cambiar de backend de observabilidad (Sentry → Datadog, Honeycomb, etc.) sin tocar código de instrumentación. Con un solo BFF, Sentry Performance cubre el tracing necesario. No justifica el overhead de configuración actual (collector, exporters, SDK setup).
 - **I08.** Axiom — plataforma de logs como servicio. Solo relevante si la retención de Cloud Logging (30 días en free tier) o Vercel resulta insuficiente para debugging post-mortem. Por ahora los logs agregados de cada plataforma son suficientes.
 
-**Última actualización:** 5 Oct 2026
+**Última actualización:** 8 Oct 2026

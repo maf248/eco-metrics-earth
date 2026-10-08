@@ -1,5 +1,6 @@
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
+import { NestExpressApplication } from '@nestjs/platform-express';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import helmet from 'helmet';
 
@@ -8,7 +9,7 @@ import { AllExceptionsFilter } from './common/filters/all-exceptions.filter';
 import { AppConfigService } from './config/app-config.service';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
   app.useGlobalPipes(
     new ValidationPipe({
@@ -24,6 +25,8 @@ async function bootstrap() {
   app.setGlobalPrefix('api/v1');
 
   const appConfig = app.get(AppConfigService);
+  // Trust exactly N proxy hops so req.ip is the real client address. Never `true`.
+  app.set('trust proxy', appConfig.trustProxyHops);
   app.enableCors({ origin: appConfig.corsOrigins });
 
   // Swagger / OpenAPI
@@ -46,6 +49,9 @@ async function bootstrap() {
       customSiteTitle: 'eco-metrics earth — API Docs',
     });
   }
+
+  // Handle SIGTERM/SIGINT: drain in-flight requests, run lifecycle hooks, then exit.
+  app.enableShutdownHooks();
 
   await app.listen(appConfig.port);
 }

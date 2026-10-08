@@ -1,4 +1,5 @@
 import { apiBaseUrl } from '@/lib/apiBaseUrl';
+import { internalApiHeaders } from '@/lib/internalApiHeaders';
 import type { WaterFootprintProduct } from '@eco-metrics/shared';
 
 interface WaterFootprintDataResult {
@@ -22,6 +23,7 @@ function isWaterFootprintResponse(value: unknown): value is WaterFootprintSucces
 export async function getWaterFootprintProducts(): Promise<WaterFootprintDataResult> {
   try {
     const response = await fetch(`${apiBaseUrl()}/water-footprint/products`, {
+      headers: internalApiHeaders(),
       next: { revalidate: 86400 },
       signal: AbortSignal.timeout(5000),
     });
