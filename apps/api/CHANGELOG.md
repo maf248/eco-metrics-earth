@@ -1,3 +1,9 @@
+## [2.8.0](https://github.com/maf248/eco-metrics-earth/compare/api-v2.7.1...api-v2.8.0) (2026-10-08)
+
+### Features
+
+* **api:** rate-limit per real client IP behind Cloud Run and add graceful shutdown ([f474560](https://github.com/maf248/eco-metrics-earth/commit/f474560e5cd99f81797153924ffdd8ac8531f6a4))
+
 ## [2.7.1](https://github.com/maf248/eco-metrics-earth/compare/api-v2.7.0...api-v2.7.1) (2026-10-06)
 
 ### Bug Fixes
