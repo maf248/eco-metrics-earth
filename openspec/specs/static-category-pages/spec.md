@@ -2,43 +2,38 @@
 
 ## Purpose
 
-All 12 eco-category pages under the dynamic `[category]` route segment are statically pre-rendered at build time from the `ECO_CATEGORIES` slugs: unknown slugs return 404 (`dynamicParams: false`), pages are served from the ISR cache with daily background revalidation (`revalidate = 86400`), the water-footprint page pre-renders with its server-fetched BFF data (or the graceful fallback), and the remaining 11 categories render their unchanged "coming soon" placeholder.
+The 12 eco-category pages under the dynamic `[category]` route segment are served from the ISR cache with daily background revalidation (`revalidate = 86400`): the 11 placeholder categories are pre-rendered at build time from the `ECO_CATEGORIES` slugs and render their unchanged "coming soon" placeholder, the water-footprint page is generated on its first request so the build never depends on the BFF, and unknown slugs get a real 404 from the segment layout.
 
 ## Requirements
 
-### Requirement: All category pages are statically pre-rendered at build time
+### Requirement: Category pages are served from the ISR cache
 
-The `[category]/page.tsx` route segment SHALL export a `generateStaticParams` function that returns all valid category slugs from `ECO_CATEGORIES`, `dynamicParams = false`, and `revalidate = 86400` (ISR). Next.js SHALL pre-render all 12 category pages at build time and serve them from the ISR cache, revalidating in the background at most once per day. The `revalidate` value applies to the whole segment: the 11 placeholder pages re-render byte-identically on revalidation (accepted trade-off — isolating ISR to a single category would require splitting the route, rejected in the archived `2026-09-14-water-footprint-phase3-4-ui` design, D1).
+The `[category]/page.tsx` route segment SHALL export `revalidate = 86400` (ISR), `dynamicParams = true`, `maxDuration = 30`, and a `generateStaticParams` function that returns every slug from `ECO_CATEGORIES` **except** `water-footprint`. Next.js SHALL pre-render those category pages at build time and generate `/water-footprint/` on its first request; every page is then served from the ISR cache and revalidated in the background at most once per day. The `revalidate` value applies to the whole segment: the placeholder pages re-render byte-identically on revalidation (accepted trade-off — isolating ISR to a single category would require splitting the route, rejected in the archived `2026-09-14-water-footprint-phase3-4-ui` design, D1). Unknown slugs SHALL return a real HTTP 404 status: a `[category]/layout.tsx` SHALL call `notFound()` for any slug not in `ECO_CATEGORIES`, before any data fetch. The check SHALL live in the layout because the segment's `loading.tsx` wraps the page in a Suspense boundary, so with on-demand rendering a `notFound()` raised only inside the page fires after the response has started streaming with status 200 (a soft 404 with `noindex`). `maxDuration = 30` SHALL cover the worst-case data fetch (2 attempts × 10 s) within the Vercel Hobby function limit.
 
-The water-footprint page SHALL pre-render with its server-fetched product data (or the graceful fallback state when the BFF is unreachable at build time — see the `water-footprint-page` spec). The other 11 category pages SHALL render the unchanged placeholder (icon + title + "coming soon").
+The other 11 category pages SHALL render the unchanged placeholder (icon + title + "coming soon").
 
-#### Scenario: generateStaticParams returns all known category slugs
+#### Scenario: generateStaticParams returns every category except water-footprint
 
 - **WHEN** `generateStaticParams()` is called
-- **THEN** it returns an array of objects with shape `{ category: string }` where each `category` value is a key of `ECO_CATEGORIES`
-- **THEN** the array length equals `Object.keys(ECO_CATEGORIES).length` (currently 12)
+- **THEN** it returns an array of objects with shape `{ category: string }` covering every value of `ECO_CATEGORIES` except `water-footprint`
+- **THEN** the array length equals the number of `ECO_CATEGORIES` minus one (currently 11)
 
 #### Scenario: Unknown category slugs return 404
 
 - **WHEN** a request arrives for a slug not present in `ECO_CATEGORIES` (e.g., `/unknown-category/`)
-- **THEN** the page returns a 404 Not Found response
-- **THEN** `dynamicParams: false` is exported from the route segment to enforce this at the framework level
+- **THEN** the response status is 404 Not Found (not a 200 with `noindex`), for browsers and crawlers alike
+- **THEN** no BFF request is made
 
-#### Scenario: Build succeeds with all category pages pre-rendered
+#### Scenario: Build pre-renders the placeholder categories without the BFF
 
-- **WHEN** `npx nx build web` is run
-- **THEN** the build output includes static HTML files for all 12 category slugs
-- **THEN** no blocking SSR is performed for these routes at request time — pages are served from the ISR cache
+- **WHEN** `npx nx build web` is run, with or without an API server listening
+- **THEN** the build output includes static HTML for the 11 placeholder category slugs
+- **THEN** the build completes successfully and makes no request to the BFF
 
-#### Scenario: Water-footprint pre-renders with data
+#### Scenario: Segment configuration
 
-- **WHEN** `npx nx build web` runs with the BFF reachable
-- **THEN** the pre-rendered `/water-footprint/` HTML contains product data from the dataset
-
-#### Scenario: Water-footprint build stays green with the BFF unreachable
-
-- **WHEN** `npx nx build web` runs with no API server listening (the CI situation)
-- **THEN** the build completes successfully with the fallback state baked into the static page
+- **WHEN** the `[category]/page.tsx` module is imported
+- **THEN** it exports `revalidate = 86400`, `dynamicParams = true`, and `maxDuration = 30`
 
 #### Scenario: The other 11 category pages are unchanged
 

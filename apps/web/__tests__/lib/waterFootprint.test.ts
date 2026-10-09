@@ -1,15 +1,22 @@
+import { inspect } from 'node:util';
+
 import { getWaterFootprintProducts } from '@/lib/waterFootprint';
 
 interface MockResponse {
   ok: boolean;
+  status: number;
   json: () => Promise<unknown>;
 }
 
+type FetchInit = RequestInit & { next?: { revalidate: number } };
+
 describe('getWaterFootprintProducts', () => {
   const originalFetch = global.fetch;
+  let consoleErrorSpy: jest.SpyInstance;
 
   beforeEach(() => {
     delete process.env.API_BASE_URL;
+    consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => undefined);
   });
 
   afterEach(() => {
@@ -17,8 +24,11 @@ describe('getWaterFootprintProducts', () => {
     jest.restoreAllMocks();
   });
 
-  const mockFetch = (impl: (url: string) => Promise<MockResponse>) => {
-    global.fetch = jest.fn((url: string) => impl(url)) as unknown as typeof global.fetch;
+  const mockFetch = (...responses: Array<() => Promise<MockResponse>>): jest.Mock => {
+    const fetchMock = jest.fn();
+    responses.forEach((response) => fetchMock.mockImplementationOnce(response));
+    global.fetch = fetchMock as unknown as typeof global.fetch;
+    return fetchMock;
   };
 
   const product = {
@@ -32,94 +42,125 @@ describe('getWaterFootprintProducts', () => {
     methodology: 'Freshwater withdrawals per kg of final product.',
   };
 
-  it('should return products when the BFF responds with success', async () => {
-    mockFetch(async (url) => {
-      const requestUrl = new URL(url);
-      expect(requestUrl.pathname).toBe('/api/v1/water-footprint/products');
-      expect(requestUrl.search).toBe('');
-      return {
-        ok: true,
-        json: async () => ({ success: true, data: [product], status: 200 }),
-      };
-    });
-
-    const result = await getWaterFootprintProducts();
-
-    expect(result.fetchFailed).toBe(false);
-    expect(result.products).toEqual([product]);
+  const success = async (): Promise<MockResponse> => ({
+    ok: true,
+    status: 200,
+    json: async () => ({ success: true, data: [product], status: 200 }),
   });
 
-  it('should return fetchFailed when the BFF responds with success:false', async () => {
-    mockFetch(async () => ({
-      ok: true,
-      json: async () => ({ success: false, error: 'Internal error', status: 500 }),
-    }));
+  const timeout = async (): Promise<MockResponse> => {
+    throw new DOMException('The operation was aborted due to timeout', 'TimeoutError');
+  };
 
-    const result = await getWaterFootprintProducts();
+  it('should return products from a single request when the BFF responds with success', async () => {
+    const fetchMock = mockFetch(success);
 
-    expect(result.fetchFailed).toBe(true);
-    expect(result.products).toEqual([]);
+    const products = await getWaterFootprintProducts();
+
+    expect(products).toEqual([product]);
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+    const requestUrl = new URL(fetchMock.mock.calls[0][0] as string);
+    expect(requestUrl.pathname).toBe('/api/v1/water-footprint/products');
+    expect(requestUrl.search).toBe('');
+    expect(consoleErrorSpy).not.toHaveBeenCalled();
   });
 
-  it('should return fetchFailed for a non-2xx response', async () => {
-    mockFetch(async () => ({
-      ok: false,
-      json: async () => 'Service Unavailable',
-    }));
+  it('should retry once and return products when the first attempt times out (cold start)', async () => {
+    const fetchMock = mockFetch(timeout, success);
 
-    const result = await getWaterFootprintProducts();
+    const products = await getWaterFootprintProducts();
 
-    expect(result.fetchFailed).toBe(true);
-    expect(result.products).toEqual([]);
+    expect(products).toEqual([product]);
+    expect(fetchMock).toHaveBeenCalledTimes(2);
+    expect(consoleErrorSpy).not.toHaveBeenCalled();
   });
 
-  it('should return fetchFailed when fetch rejects', async () => {
-    mockFetch(async () => {
-      throw new Error('Network error');
-    });
+  it('should use a new 10 s timeout signal for each attempt', async () => {
+    const timeoutSpy = jest.spyOn(AbortSignal, 'timeout');
+    const fetchMock = mockFetch(timeout, success);
 
-    const result = await getWaterFootprintProducts();
+    await getWaterFootprintProducts();
 
-    expect(result.fetchFailed).toBe(true);
-    expect(result.products).toEqual([]);
+    expect(timeoutSpy).toHaveBeenCalledTimes(2);
+    expect(timeoutSpy).toHaveBeenNthCalledWith(1, 10_000);
+    expect(timeoutSpy).toHaveBeenNthCalledWith(2, 10_000);
+    const firstSignal = (fetchMock.mock.calls[0][1] as FetchInit).signal;
+    const secondSignal = (fetchMock.mock.calls[1][1] as FetchInit).signal;
+    expect(firstSignal).toBeInstanceOf(AbortSignal);
+    expect(secondSignal).toBeInstanceOf(AbortSignal);
+    expect(secondSignal).not.toBe(firstSignal);
   });
 
-  it('should return fetchFailed for malformed JSON', async () => {
-    mockFetch(async () => ({
-      ok: true,
-      json: async () => {
-        throw new Error('Unexpected token');
+  describe('when both attempts fail', () => {
+    const failures: Array<[string, () => Promise<MockResponse>]> = [
+      ['the request times out', timeout],
+      [
+        'fetch rejects with a network error',
+        async () => {
+          throw new Error('Network error');
+        },
+      ],
+      [
+        'the BFF responds with a non-2xx status',
+        async () => ({ ok: false, status: 503, json: async () => 'Service Unavailable' }),
+      ],
+      [
+        'the BFF responds with success:false',
+        async () => ({
+          ok: true,
+          status: 200,
+          json: async () => ({ success: false, error: 'Internal error', status: 500 }),
+        }),
+      ],
+      [
+        'the JSON is malformed',
+        async () => ({
+          ok: true,
+          status: 200,
+          json: async () => {
+            throw new Error('Unexpected token');
+          },
+        }),
+      ],
+      [
+        'the payload is not an object',
+        async () => ({ ok: true, status: 200, json: async () => null }),
+      ],
+      [
+        'the payload shape is wrong',
+        async () => ({
+          ok: true,
+          status: 200,
+          json: async () => ({ success: true, data: 'not-an-array', status: 200 }),
+        }),
+      ],
+    ];
+
+    it.each(failures)(
+      'should make 2 attempts, log one error and throw when %s',
+      async (_label, failure) => {
+        const fetchMock = mockFetch(failure, failure);
+
+        await expect(getWaterFootprintProducts()).rejects.toThrow(
+          'Water footprint data could not be fetched from the BFF',
+        );
+
+        expect(fetchMock).toHaveBeenCalledTimes(2);
+        expect(consoleErrorSpy).toHaveBeenCalledTimes(1);
       },
-    }));
+    );
 
-    const result = await getWaterFootprintProducts();
+    it('should attach the last failure as the error cause', async () => {
+      const lastFailure = new Error('second attempt failed');
+      mockFetch(timeout, async () => {
+        throw lastFailure;
+      });
 
-    expect(result.fetchFailed).toBe(true);
-    expect(result.products).toEqual([]);
-  });
+      const error: unknown = await getWaterFootprintProducts().catch((caught: unknown) => caught);
 
-  it('should return fetchFailed when the payload is not an object', async () => {
-    mockFetch(async () => ({
-      ok: true,
-      json: async () => null,
-    }));
-
-    const result = await getWaterFootprintProducts();
-
-    expect(result.fetchFailed).toBe(true);
-    expect(result.products).toEqual([]);
-  });
-
-  it('should return fetchFailed when the payload shape is wrong', async () => {
-    mockFetch(async () => ({
-      ok: true,
-      json: async () => ({ success: true, data: 'not-an-array', status: 200 }),
-    }));
-
-    const result = await getWaterFootprintProducts();
-
-    expect(result.fetchFailed).toBe(true);
-    expect(result.products).toEqual([]);
+      expect(error).toBeInstanceOf(Error);
+      expect((error as Error).cause).toBe(lastFailure);
+    });
   });
 
   describe('internal API key header', () => {
@@ -133,36 +174,43 @@ describe('getWaterFootprintProducts', () => {
       }
     });
 
-    const okResponse = async () => ({
-      ok: true,
-      json: async () => ({ success: true, data: [], status: 200 }),
-    });
-
-    it('should send X-Internal-Api-Key and keep the other fetch options when the key is set', async () => {
+    it('should send X-Internal-Api-Key with the cache and timeout options on every attempt', async () => {
       process.env.INTERNAL_API_KEY = 'k'.repeat(32);
-      mockFetch(okResponse);
+      const fetchMock = mockFetch(timeout, success);
 
       await getWaterFootprintProducts();
 
-      const init = (global.fetch as jest.Mock).mock.calls[0][1] as RequestInit & {
-        next?: { revalidate: number };
-      };
-      expect(init.headers).toEqual({ 'X-Internal-Api-Key': 'k'.repeat(32) });
-      expect(init.next).toEqual({ revalidate: 86400 });
-      expect(init.signal).toBeInstanceOf(AbortSignal);
+      for (const call of fetchMock.mock.calls) {
+        const init = call[1] as FetchInit;
+        expect(init.headers).toEqual({ 'X-Internal-Api-Key': 'k'.repeat(32) });
+        expect(init.next).toEqual({ revalidate: 86400 });
+        expect(init.signal).toBeInstanceOf(AbortSignal);
+      }
+    });
+
+    it('should never log the internal API key when both attempts fail', async () => {
+      process.env.INTERNAL_API_KEY = 'k'.repeat(32);
+      mockFetch(timeout, timeout);
+
+      await expect(getWaterFootprintProducts()).rejects.toThrow();
+
+      expect(consoleErrorSpy).toHaveBeenCalledTimes(1);
+      // inspect() renders Error messages and stacks, which JSON.stringify would drop.
+      const logged = inspect(consoleErrorSpy.mock.calls, { depth: null });
+      expect(logged).toContain('Water footprint fetch failed after 2 attempts');
+      expect(logged).not.toContain('k'.repeat(32));
     });
 
     it('should send no X-Internal-Api-Key header when the key is unset or whitespace', async () => {
       delete process.env.INTERNAL_API_KEY;
-      mockFetch(okResponse);
+      let fetchMock = mockFetch(success);
       await getWaterFootprintProducts();
+      expect((fetchMock.mock.calls[0][1] as FetchInit).headers).toEqual({});
 
       process.env.INTERNAL_API_KEY = '   ';
-      mockFetch(okResponse);
+      fetchMock = mockFetch(success);
       await getWaterFootprintProducts();
-
-      const init = (global.fetch as jest.Mock).mock.calls[0][1] as RequestInit;
-      expect(init.headers).toEqual({});
+      expect((fetchMock.mock.calls[0][1] as FetchInit).headers).toEqual({});
     });
   });
 });

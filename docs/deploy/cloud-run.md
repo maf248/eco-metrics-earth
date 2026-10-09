@@ -216,7 +216,7 @@ curl -s "$RUN_URL/api/v1/water-footprint/products" | head -c 300
    - **Production** → `https://<production-run-url>/api/v1` (`eco-metrics-api`)
    - **Preview** → `https://<dev-run-url>/api/v1` (`eco-metrics-api-dev`)
    - Any custom environment that deploys `develop` → the dev URL as well.
-3. Redeploy the web app (or wait up to 24 h for ISR background revalidation).
+3. Redeploy the web app: environment variables apply only to new deployments.
 4. Open `/water-footprint/` and confirm the product table renders.
 5. To make Vercel production deployments wait for CI as well, follow [`docs/deploy/vercel.md`](./vercel.md) (Deployment Checks).
 
@@ -384,9 +384,15 @@ gcloud run services update eco-metrics-api --remove-env-vars CORS_ORIGIN_PATTERN
 
 ### Cold-start first request
 
-**Symptom:** the first request after idle is slow (~1–3 s).
+**Symptom:** the first request after idle is slow: about 6–7 s (measured on 2026-10-09).
 
-**Fix:** this is expected behavior for scale-to-zero. The web app's ISR background revalidation absorbs it; end users do not wait on a cold start.
+**Fix:** this is expected behavior for scale-to-zero, and the web app absorbs it:
+
+- `getWaterFootprintProducts()` makes 2 attempts of 10 s each. The first one wakes the instance and the second one finds it ready.
+- If both fail, it logs `Water footprint fetch failed after 2 attempts` and throws. During an ISR revalidation, visitors keep receiving the last good page (`x-nextjs-cache: STALE`) and the page regenerates on a later request once the API answers. A failed fetch is never cached.
+- `/water-footprint/` is not pre-rendered at build time: it is generated on its first request after each deploy, so that one request may wait for the cold start. If the API is down at that moment, the visitor sees the error page and the next request tries again.
+
+End users only wait on a cold start for that first request after a deploy.
 
 ### Deploy fails with a Secret Manager error
 

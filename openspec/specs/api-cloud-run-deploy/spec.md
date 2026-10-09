@@ -189,7 +189,8 @@ The workflow SHALL deploy with `google-github-actions/deploy-cloudrun@v3` to the
 
 - **WHEN** the service receives no requests
 - **THEN** Cloud Run scales the instance count to zero (no idle billing)
-- **AND** the next request pays a ~1–3 s cold start, absorbed by the web app's ISR background revalidation
+- **AND** the next request pays a cold start of several seconds (~6–7 s measured on 2026-10-09)
+- **AND** the web app absorbs it with a second fetch attempt and never caches a failed fetch (see `water-footprint-page`)
 
 #### Scenario: CORS allows the Vercel production origin
 
@@ -240,7 +241,7 @@ The workflow SHALL read four **required** repository **variables** shared by bot
 
 ### Requirement: Post-deploy verification proves the deployed BFF end-to-end
 
-The runbook SHALL define the user-executed verification (curl + browser — not automated specs): `GET /api/v1/health` on the deployed `*.run.app` URL returns `200` `{ "status": "ok" }`; `GET /api/v1/water-footprint/products` returns `success: true` with 60 products; after setting `API_BASE_URL=https://<run-url>/api/v1` in Vercel (Production AND Preview) and a redeploy (or ISR self-heal within 24 h), the deployed `/water-footprint/` page renders the product table from the deployed BFF.
+The runbook SHALL define the user-executed verification (curl + browser — not automated specs): `GET /api/v1/health` on the deployed `*.run.app` URL returns `200` `{ "status": "ok" }`; `GET /api/v1/water-footprint/products` returns `success: true` with 60 products; after setting `API_BASE_URL` in Vercel (Production → `https://<production-run-url>/api/v1`, Preview → `https://<dev-run-url>/api/v1`) and redeploying (environment variables apply only to new deployments), the deployed `/water-footprint/` page renders the product table from that environment's BFF.
 
 #### Scenario: Health on the deployed URL
 
@@ -254,7 +255,7 @@ The runbook SHALL define the user-executed verification (curl + browser — not 
 
 #### Scenario: The deployed web page renders from the deployed BFF
 
-- **GIVEN** `API_BASE_URL` set in Vercel to the deployed API and the web app redeployed (or ISR revalidation elapsed)
+- **GIVEN** `API_BASE_URL` set in Vercel to the environment's deployed API and the web app redeployed
 - **WHEN** a visitor loads `/water-footprint/`
 - **THEN** the product table renders with real data (server-rendered HTML contains product names)
 

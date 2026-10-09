@@ -1,29 +1,29 @@
 import { render, screen } from '@testing-library/react';
 
 import CategoryPage, {
+  dynamicParams,
   generateMetadata,
   generateStaticParams,
+  maxDuration,
   revalidate,
 } from '@/app/[category]/page';
 import { OG_IMAGE } from '@/lib/socialMetadata';
+import { getWaterFootprintProducts } from '@/lib/waterFootprint';
 import { ECO_CATEGORIES } from '@eco-metrics/shared';
 
 jest.mock('@/lib/waterFootprint', () => ({
-  getWaterFootprintProducts: jest.fn().mockResolvedValue({
-    products: [
-      {
-        product: 'Apples',
-        category: 'Food & Beverages',
-        waterFootprintLiters: 180.1,
-        unit: 'per kg',
-        waterType: 'blue',
-        source: 'Poore & Nemecek (2018), Science',
-        sourceUrl: 'https://ourworldindata.org/grapher/water-withdrawals-per-kg-poore',
-        methodology: 'Freshwater withdrawals per kg of final product.',
-      },
-    ],
-    fetchFailed: false,
-  }),
+  getWaterFootprintProducts: jest.fn().mockResolvedValue([
+    {
+      product: 'Apples',
+      category: 'Food & Beverages',
+      waterFootprintLiters: 180.1,
+      unit: 'per kg',
+      waterType: 'blue',
+      source: 'Poore & Nemecek (2018), Science',
+      sourceUrl: 'https://ourworldindata.org/grapher/water-withdrawals-per-kg-poore',
+      methodology: 'Freshwater withdrawals per kg of final product.',
+    },
+  ]),
 }));
 
 jest.mock('next/navigation', () => ({
@@ -243,9 +243,10 @@ describe('generateStaticParams', () => {
     });
   });
 
-  it('should return the correct count matching ECO_CATEGORIES', async () => {
+  it('should return every category except water-footprint', async () => {
     const params = await generateStaticParams();
-    expect(params).toHaveLength(Object.keys(ECO_CATEGORIES).length);
+    expect(params).toHaveLength(Object.keys(ECO_CATEGORIES).length - 1);
+    expect(params).not.toContainEqual({ category: ECO_CATEGORIES.WATER_FOOTPRINT });
   });
 });
 
@@ -302,7 +303,34 @@ describe('CategoryPage — water-footprint branch', () => {
     expect(screen.queryByRole('table')).not.toBeInTheDocument();
   });
 
+  it('should propagate a helper failure instead of rendering the page', async () => {
+    const failure = new Error('Water footprint data could not be fetched from the BFF');
+    jest.mocked(getWaterFootprintProducts).mockRejectedValueOnce(failure);
+
+    await expect(
+      CategoryPage({ params: Promise.resolve({ category: 'water-footprint' }) }),
+    ).rejects.toBe(failure);
+  });
+
+  it('should not call the helper for non-water-footprint categories', async () => {
+    jest.mocked(getWaterFootprintProducts).mockClear();
+
+    await CategoryPage({ params: Promise.resolve({ category: 'ocean-health' }) });
+
+    expect(getWaterFootprintProducts).not.toHaveBeenCalled();
+  });
+});
+
+describe('CategoryPage — segment config', () => {
   it('should export revalidate as 86400', () => {
     expect(revalidate).toBe(86400);
+  });
+
+  it('should render unlisted params on demand (dynamicParams = true)', () => {
+    expect(dynamicParams).toBe(true);
+  });
+
+  it('should export maxDuration as 30 to cover two 10 s fetch attempts', () => {
+    expect(maxDuration).toBe(30);
   });
 });

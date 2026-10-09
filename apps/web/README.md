@@ -13,14 +13,16 @@ Environmental metrics dashboard — the user-facing app consuming the NestJS BFF
 
 ### Routing
 
-All routes use the **App Router** convention (`app/` directory). Category pages are statically generated at build time.
+All routes use the **App Router** convention (`app/` directory). Category pages are served from the ISR cache (`revalidate = 86400`).
 
 ```
 src/app/
 ├── layout.tsx        # Root layout — <html>, Navbar/MobileHeader, skip-to-content, theme script, global CSS, metadata base
 ├── page.tsx          # Home — /
 ├── [category]/
-│   └── page.tsx      # Category page — /[slug]/ — statically generated
+│   ├── layout.tsx    # Rejects unknown slugs with a real 404
+│   ├── loading.tsx   # Loading skeleton
+│   └── page.tsx      # Category page — /[slug]/ — ISR
 ├── not-found.tsx     # 404 — rendered for unknown slugs and missing routes
 ├── globals.css       # Tailwind base + custom global styles
 ├── manifest.ts       # PWA manifest → /manifest.webmanifest
@@ -30,7 +32,7 @@ src/app/
 └── sitemap.ts        # sitemap.xml — home + all 12 category pages
 ```
 
-Category pages use `generateStaticParams` to enumerate all `ECO_CATEGORIES` slugs and `dynamicParams = false` to reject any slug not in that list at build time. Unknown slugs call `notFound()`.
+Category pages use `generateStaticParams` to pre-render every `ECO_CATEGORIES` slug at build time except `water-footprint`, which is generated on its first request after a deploy and then cached (`dynamicParams = true`), so `next build` never calls the API. `[category]/layout.tsx` calls `notFound()` for any slug not in `ECO_CATEGORIES`; it sits above the `loading.tsx` Suspense boundary, so the response is a real 404 instead of a streamed 200. If the API fetch fails twice (10 s per attempt), the page throws: during a revalidation the last good page keeps being served.
 
 ### Components
 
