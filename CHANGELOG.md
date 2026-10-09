@@ -1,3 +1,9 @@
+## [2.8.1](https://github.com/maf248/eco-metrics-earth/compare/v2.8.0...v2.8.1) (2026-10-09)
+
+### Bug Fixes
+
+* **web:** add PNG social card and PWA icons, single robots group, drop Google Fonts from CSP ([d9041f7](https://github.com/maf248/eco-metrics-earth/commit/d9041f7998ea29f9f03fdaad00b00d133f3df5e4))
+
 ## [2.8.0](https://github.com/maf248/eco-metrics-earth/compare/v2.7.1...v2.8.0) (2026-10-08)
 
 ### Features
