@@ -5,6 +5,7 @@ import CategoryPage, {
   generateStaticParams,
   revalidate,
 } from '@/app/[category]/page';
+import { OG_IMAGE } from '@/lib/socialMetadata';
 import { ECO_CATEGORIES } from '@eco-metrics/shared';
 
 jest.mock('@/lib/waterFootprint', () => ({
@@ -182,6 +183,23 @@ describe('generateMetadata', () => {
     });
     const canonical = metadata.alternates?.canonical as string;
     expect(metadata.openGraph?.url).toBe(canonical);
+  });
+
+  it('should keep the shared openGraph fields and social card for air-quality', async () => {
+    const metadata = await generateMetadata({
+      params: Promise.resolve({ category: 'air-quality' }),
+    });
+    const openGraph = metadata.openGraph as { type?: string; images?: unknown };
+    expect(openGraph.type).toBe('website');
+    expect(metadata.openGraph?.siteName).toBe('eco-metrics earth');
+    expect(openGraph.images).toEqual([OG_IMAGE]);
+  });
+
+  it('should use the summary_large_image twitter card for air-quality', async () => {
+    const metadata = await generateMetadata({
+      params: Promise.resolve({ category: 'air-quality' }),
+    });
+    expect((metadata.twitter as { card?: string }).card).toBe('summary_large_image');
   });
 });
 

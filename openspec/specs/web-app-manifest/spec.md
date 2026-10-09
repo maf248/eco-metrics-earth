@@ -16,7 +16,7 @@ Defines the PWA web app manifest served by the Next.js app.
 - `display`: `"standalone"`
 - `theme_color`: `"#10b981"`
 - `background_color`: `"#000000"`
-- `icons`: at least one entry referencing the site logo SVG at `/icons/eco-metrics-earth.svg` with `purpose: "any maskable"`.
+- `icons`: at least one entry referencing the site logo SVG at `/icons/eco-metrics-earth.svg` with `purpose: "any"`. Maskable icons are declared as separate raster entries (see the `pwa-icons` capability).
 
 #### Scenario: Manifest is served at the correct path
 
@@ -32,3 +32,4 @@ Defines the PWA web app manifest served by the Next.js app.
 
 - **WHEN** the manifest function is called
 - **THEN** the `icons` array contains at least one entry with a valid `src` path
+- **AND** the SVG logo entry declares `purpose: "any"`

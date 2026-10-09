@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react';
 
 import HomePage, { metadata } from '@/app/page';
+import { OG_IMAGE } from '@/lib/socialMetadata';
 
 describe('HomePage', () => {
   it('should render successfully', () => {
@@ -54,6 +55,17 @@ describe('HomePage metadata', () => {
   it('should have openGraph url ending with trailing slash', () => {
     const url = metadata.openGraph?.url as string;
     expect(url).toMatch(/\/$/);
+  });
+
+  it('should keep the shared openGraph fields and social card', () => {
+    const openGraph = metadata.openGraph as { type?: string; images?: unknown };
+    expect(openGraph.type).toBe('website');
+    expect(metadata.openGraph?.siteName).toBe('eco-metrics earth');
+    expect(openGraph.images).toEqual([OG_IMAGE]);
+  });
+
+  it('should use the summary_large_image twitter card', () => {
+    expect((metadata.twitter as { card?: string }).card).toBe('summary_large_image');
   });
 });
 

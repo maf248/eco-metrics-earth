@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 
 import { SiteLogoIcon } from '@/components/icons';
 import { siteUrl } from '@/lib/siteUrl';
+import { buildOpenGraph, buildTwitter } from '@/lib/socialMetadata';
 
 const TITLE = 'eco-metrics earth';
 const DESCRIPTION = 'Track and visualize environmental metrics for a sustainable planet.';
@@ -12,15 +13,15 @@ export const metadata: Metadata = {
   alternates: {
     canonical: `${siteUrl()}/`,
   },
-  openGraph: {
+  openGraph: buildOpenGraph({
     title: TITLE,
     description: DESCRIPTION,
     url: `${siteUrl()}/`,
-  },
-  twitter: {
+  }),
+  twitter: buildTwitter({
     title: TITLE,
     description: DESCRIPTION,
-  },
+  }),
 };
 
 export default function HomePage() {

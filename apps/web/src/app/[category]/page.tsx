@@ -5,6 +5,7 @@ import { WaterFootprintContent } from '@/components/water-footprint/WaterFootpri
 import { getCategoryIcon } from '@/lib/categoryIcon';
 import { getCategoryTitle } from '@/lib/categoryTitle';
 import { siteUrl } from '@/lib/siteUrl';
+import { buildOpenGraph, buildTwitter } from '@/lib/socialMetadata';
 import { getWaterFootprintProducts } from '@/lib/waterFootprint';
 import { ECO_CATEGORIES } from '@eco-metrics/shared';
 
@@ -33,15 +34,15 @@ export async function generateMetadata({ params }: CategoryPageProps): Promise<M
     alternates: {
       canonical: canonicalUrl,
     },
-    openGraph: {
+    openGraph: buildOpenGraph({
       title,
       description,
       url: canonicalUrl,
-    },
-    twitter: {
+    }),
+    twitter: buildTwitter({
       title,
       description,
-    },
+    }),
   };
 }
 

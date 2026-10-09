@@ -27,9 +27,30 @@ describe('manifest', () => {
     expect(result.icons!.length).toBeGreaterThanOrEqual(1);
   });
 
-  it('should have icon referencing the site logo SVG', () => {
+  it('should declare the site logo SVG with purpose "any"', () => {
     const result = manifest();
-    const icon = result.icons![0];
-    expect(icon.src).toBeTruthy();
+    expect(result.icons).toContainEqual({
+      src: '/icons/eco-metrics-earth.svg',
+      sizes: 'any',
+      type: 'image/svg+xml',
+      purpose: 'any',
+    });
+  });
+
+  it.each([
+    ['/icons/icon-192.png', '192x192', 'any'],
+    ['/icons/icon-512.png', '512x512', 'any'],
+    ['/icons/icon-maskable-192.png', '192x192', 'maskable'],
+    ['/icons/icon-maskable-512.png', '512x512', 'maskable'],
+  ] as const)('should declare %s (%s) with purpose "%s"', (src, sizes, purpose) => {
+    const result = manifest();
+    expect(result.icons).toContainEqual({ src, sizes, type: 'image/png', purpose });
+  });
+
+  it('should declare exactly one purpose per icon entry', () => {
+    const result = manifest();
+    for (const icon of result.icons!) {
+      expect(['any', 'maskable']).toContain(icon.purpose);
+    }
   });
 });

@@ -4,16 +4,11 @@ import { siteUrl } from '@/lib/siteUrl';
 
 export default function robots(): MetadataRoute.Robots {
   return {
-    rules: [
-      {
-        userAgent: '*',
-        allow: '/',
-      },
-      {
-        userAgent: '*',
-        disallow: ['/api/'],
-      },
-    ],
+    // No disallow rules: the API is served from its own domain, not this one.
+    rules: {
+      userAgent: '*',
+      allow: '/',
+    },
     sitemap: siteUrl() + '/sitemap.xml',
   };
 }
