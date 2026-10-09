@@ -255,6 +255,15 @@ Lista de hallazgos del análisis de repositorio, ordenados por prioridad (más c
 - **I05.** `legacy-peer-deps=true` en `.npmrc` — workaround porque `eslint-plugin-jsx-a11y@6.10.2` no declara ESLint 10 en sus peer deps. PR [#1081](https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/pull/1081) abierto. Eliminar cuando se publique un release con soporte.
 - **I06.** Sin Storybook ni documentación visual de componentes. Actualmente hay 24 componentes (verificado al 16 Sep 2026), por lo que no se justifica el overhead de configuración y mantenimiento. Reconsiderar cuando supere ~40.
 
+### 🟢 SEO / Metadatos
+
+- **I13.** Títulos, descripciones e imagen social optimizados para buscadores y redes — un inspector de meta-tags sobre la home marca 3 advertencias, validadas contra el código (8 Oct 2026):
+  - **Título corto:** el título de la home es solo la marca, `eco-metrics earth` (17 caracteres, `apps/web/src/app/page.tsx`). Recomendado: 50–60 caracteres, con palabras clave que digan de qué trata el sitio (p. ej. CO2, clima, energía, agua) además de la marca.
+  - **Descripción corta:** `Track and visualize environmental metrics for a sustainable planet.` (67 caracteres), repetida en `layout.tsx`, `page.tsx` y la imagen social. Recomendado: 120–160 caracteres.
+  - **Imagen social sin llamada a la acción:** `src/app/og-image.png/route.tsx` muestra solo logo, marca y tagline. Agregar un CTA sutil (p. ej. "Explore the data →"). Es una heurística de marketing, no de SEO, pero es barata y mejora los links compartidos.
+  - **Categorías (no lo detecta la herramienta, que solo miró la home):** las 12 páginas tienen títulos de 31–38 caracteres (`Air Quality — eco-metrics earth`) y descripciones generadas desde una única plantilla (`Track and visualize <x> metrics for a sustainable planet.`, ~70 caracteres); Google tiende a ignorar descripciones casi idénticas entre páginas. Escribir título y descripción únicos por categoría. 11 de las 12 todavía son placeholders: el texto debe ser honesto sobre lo que la sección ofrece hoy y ajustarse cuando cada una reciba datos reales (P1).
+  - **Requiere spec:** el spec canónico `water-footprint-page` ("SEO preservation on the water-footprint page") fija textualmente la descripción actual, así que cambiarla es un MODIFIED de ese requisito. Mantener la tagline de la imagen social alineada con la descripción del sitio, actualizar los tests que fijen esos textos y validar el resultado con el mismo inspector.
+
 ### 🟡 Datos / Proveedores
 
 - **I09.** Atribución de datos (requisito legal, no opcional) — CC BY exige atribución visible. Antes de publicar la primera sección con datos reales (P1.0): componente de atribución al pie de cada visualización ("Data: Our World in Data — CC BY" con link) + página `/data-sources/` listando proveedores y licencias. Alimentado por `ApiResponse<T>.meta.source` (`DataSourceAttribution`, ya disponible en `@eco-metrics/shared`). Bonus SEO: contenido indexable con estructura.
