@@ -12,7 +12,7 @@ permissions:
 jobs:
   ci:
     # CONTRACT: this exact name is selected in Vercel Deployment Checks and the
-    # `deploy-api` job depends on this job. Do not rename it without updating
+    # `deploy-api-*` jobs depend on this job. Do not rename it without updating
     # Vercel (see docs/deploy/vercel.md).
     name: Format, Lint, Typecheck, Build & Test
     runs-on: ubuntu-latest
@@ -72,11 +72,26 @@ jobs:
       - name: E2E
         run: npm run e2e
 
-  deploy-api:
-    name: Deploy API
+  # Production follows `main`, like the web app on Vercel; `develop` feeds the
+  # dev service that Vercel previews consume. Both deploy only after CI passes.
+  deploy-api-production:
+    name: Deploy API (production)
+    needs: ci
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    permissions:
+      contents: read
+      id-token: write
+    uses: ./.github/workflows/deploy-api.yml
+    with:
+      target: production
+
+  deploy-api-development:
+    name: Deploy API (development)
     needs: ci
     if: github.event_name == 'push' && github.ref == 'refs/heads/develop'
     permissions:
       contents: read
       id-token: write
     uses: ./.github/workflows/deploy-api.yml
+    with:
+      target: development

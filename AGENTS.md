@@ -221,15 +221,16 @@ feature/* ──► develop ⇄ main (production)
 #                      ▲        back-merge auto: syncs versions + changelogs (release.yml)
 ```
 
-- **`main`** — production. All changes enter via PR from `develop`; never push to it directly and never force-push it. **There is no server-side protection on the current plan** (private repo on GitHub Free: branch protection and rulesets return `403 Upgrade to GitHub Pro or make this repository public`), so the rule is enforced by convention plus the husky `pre-push` hook, which blocks direct pushes to `main` from a local machine. Production safety comes from the CI gates, not from GitHub: the API deploy `needs` the CI job, and Vercel Deployment Checks hold the web production deployment until CI passes (see [`docs/deploy/vercel.md`](./docs/deploy/vercel.md)).
+- **`main`** — production. All changes enter via PR from `develop`; never push to it directly and never force-push it. **There is no server-side protection on the current plan** (private repo on GitHub Free: branch protection and rulesets return `403 Upgrade to GitHub Pro or make this repository public`), so the rule is enforced by convention plus the husky `pre-push` hook, which blocks direct pushes to `main` from a local machine. Production safety comes from the CI gates, not from GitHub: the API deploys `need` the CI job (production from `main`, dev from `develop`), and Vercel Deployment Checks hold the web production deployment until CI passes (see [`docs/deploy/vercel.md`](./docs/deploy/vercel.md)).
 - **`develop`** — integration branch. Work happens here or in short-lived `feature/*` branches off `develop`. Force push allowed for history cleanup before opening a PR.
 - **`feature/*`** — optional, for large or parallel work. Branch off `develop`, PR back into `develop`.
 
 #### CI/CD gates
 
 - The CI job name `Format, Lint, Typecheck, Build & Test` is a contract with Vercel Deployment Checks: renaming it requires updating the Vercel setting in the same change.
-- The API deploys only through the CI-gated `deploy-api` job in `ci.yml` (which calls `deploy-api.yml`) or a deliberate `workflow_dispatch`. Never add a deploy trigger that bypasses CI.
-- The deploy concurrency group is the literal `deploy-api` (never `${{ github.workflow }}`, which resolves to the caller's name in a reusable workflow).
+- The API deploys only through the CI-gated jobs in `ci.yml` that call `deploy-api.yml` — `deploy-api-production` (`main` → Cloud Run `eco-metrics-api`) and `deploy-api-development` (`develop` → `eco-metrics-api-dev`, consumed by Vercel previews) — or a deliberate `workflow_dispatch` with a `target` (`production` only from `main`). Never add a deploy trigger that bypasses CI.
+- The deploy concurrency group is `deploy-api-${{ inputs.target }}` — a literal prefix per target, never `${{ github.workflow }}` (which resolves to the caller's name in a reusable workflow).
+- The target → service/CORS-variable mapping lives only in the `Resolve deploy target and pre-flight checks` step of `deploy-api.yml`. Dev variables use a `_DEV` suffix (`CORS_ORIGIN_DEV`, `CORS_ORIGIN_PATTERN_DEV`): GitHub Environments are unavailable on this plan.
 
 #### Rules — for humans and AI agents alike
 
@@ -329,7 +330,7 @@ Pre-PR checklist: `npm run lint`, `npm run build`, `npm run test`, and `npm run 
   - `packages/shared/`-only deps → install in `packages/shared/package.json`
   - Shared dev tooling (e.g., `eslint`, `prettier`, `nx`, `typescript`) → root `package.json`
   - When in doubt, ask before installing.
-- **`legacy-peer-deps=true` in `.npmrc` is required** because `eslint-plugin-jsx-a11y@6.10.2` does not declare ESLint 10 in its peer dependencies. Remove it only when a jsx-a11y release adds ESLint 10 support (tracked as I05 in ROADMAP.md).
+- **`legacy-peer-deps=true` in `.npmrc` is required** because `eslint-plugin-jsx-a11y@6.10.2` does not declare ESLint 10 in its peer dependencies. Remove it only when a jsx-a11y release adds ESLint 10 support (tracked as I04 in ROADMAP.md).
 - To update a package: check `npm outdated`, verify compatibility, install with `--save-exact`, then run `npm run build` and `npm run test` before committing.
 
 ## Documentation Maintenance

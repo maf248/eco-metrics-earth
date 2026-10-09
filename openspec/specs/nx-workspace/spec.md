@@ -69,7 +69,7 @@ The workspace dependency tree SHALL be free of `npm audit` advisories whose fix 
 #### Scenario: Audit counts recorded
 
 - **WHEN** the migration completes
-- **THEN** the exact before/after counts (by severity) are recorded in ROADMAP.md (I01)
+- **THEN** the exact before/after counts (by severity) are recorded in ROADMAP.md (status table, "Dependencias" row)
 - **AND** the remaining families are documented with their owner in ROADMAP
 
 ### Requirement: Toolchain operation without warnings on NX 23

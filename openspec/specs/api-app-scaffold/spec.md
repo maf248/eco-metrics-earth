@@ -139,5 +139,5 @@ The dependency tree SHALL be free of `npm audit` advisories whose vulnerable cha
 #### Scenario: Audit counts recorded
 
 - **WHEN** the upgrade completes
-- **THEN** the before (32: 4 critical, 21 high, 5 moderate, 2 low) and after counts are recorded in ROADMAP.md (I01 and the status table)
+- **THEN** the before (32: 4 critical, 21 high, 5 moderate, 2 low) and after counts are recorded in ROADMAP.md (status table, "Dependencias" row)
 - **AND** the after count is ~8 lower (the exact number is recorded, not promised)

@@ -339,7 +339,7 @@ Researched Sep 2026, deferred to follow-up changes — recorded here so the work
 ## Integration Notes
 
 - **Recommended combination:** OWID grapher (water stress + withdrawals + resources per capita; CC BY, no key, CORS) for country series, World Bank API for on-demand REST queries per country, and OWID Poore & Nemecek for the product-level table.
-- OWID and World Bank both republish AQUASTAT — credit **FAO AQUASTAT** as the underlying source in the attribution component (see I09 in `ROADMAP.md`).
+- OWID and World Bank both republish AQUASTAT — credit **FAO AQUASTAT** as the underlying source in the attribution component (see I08 in `ROADMAP.md`).
 - AQUASTAT country data arrives in ~5-year questionnaire cycles and is carried forward in between, so series look "stepped" (flat segments with identical values). Don't interpret those plateaus as real stability; consider showing only years with actual updates.
 - The water-stress chart was renamed upstream: any saved URL using `water-stress-indicator` must switch to `freshwater-withdrawals-as-a-share-of-internal-resources` (the Postman OWID collection was already updated).
 - Water Footprint Network data is research/education oriented — for the commercial product dataset prefer OWID Poore & Nemecek (CC BY) and cite the primary study per entry, as specified in `docs/planning/water-footprint.md`.

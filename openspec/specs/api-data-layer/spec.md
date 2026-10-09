@@ -104,7 +104,7 @@ The API SHALL cache outbound provider responses in memory using `@nestjs/cache-m
 #### Scenario: No database
 
 - **GIVEN** any configuration
-- **THEN** the cache is in-memory only — no database and no persistence layer (ROADMAP I04 stays backlog)
+- **THEN** the cache is in-memory only — no database and no persistence layer (ROADMAP I03 stays backlog)
 
 ### Requirement: OWID environment variables validated at startup
 
