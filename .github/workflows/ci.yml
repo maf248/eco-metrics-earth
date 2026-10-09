@@ -9,16 +9,20 @@ on:
 permissions:
   contents: read
 
-# A newer push to the same ref supersedes the running check. Runs on `main`
-# are never cancelled so every merged commit keeps a complete CI record.
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
-
 jobs:
   ci:
+    # CONTRACT: this exact name is selected in Vercel Deployment Checks and the
+    # `deploy-api` job depends on this job. Do not rename it without updating
+    # Vercel (see docs/deploy/vercel.md).
     name: Format, Lint, Typecheck, Build & Test
     runs-on: ubuntu-latest
+    # A newer push to the same ref supersedes the running check. Runs on `main`
+    # are never cancelled so every merged commit keeps a complete CI record.
+    # Scoped to this job (not the workflow) so a newer push never cancels a
+    # deploy that is already running.
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
+      cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v7
@@ -47,6 +51,15 @@ jobs:
       - name: Build
         run: npm run build
 
+      # Guards the API image: the production install in the Docker build runs
+      # `npm ci` from the pruned lockfile, which fails if it is inconsistent.
+      - name: Verify API production install (pruned lockfile)
+        run: npx nx run api:prune
+
+      - name: Verify API production install (npm ci dry run)
+        working-directory: apps/api/dist
+        run: npm ci --omit=dev --ignore-scripts --dry-run
+
       - name: Test
         run: npm run test
 
@@ -58,3 +71,12 @@ jobs:
 
       - name: E2E
         run: npm run e2e
+
+  deploy-api:
+    name: Deploy API
+    needs: ci
+    if: github.event_name == 'push' && github.ref == 'refs/heads/develop'
+    permissions:
+      contents: read
+      id-token: write
+    uses: ./.github/workflows/deploy-api.yml

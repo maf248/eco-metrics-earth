@@ -1,38 +1,36 @@
 name: Deploy API
 
+# Runs only after CI has passed (called from ci.yml, job `deploy-api`) or when
+# dispatched manually. A manual dispatch always deploys the dispatched ref and
+# skips change detection; it is also how edits to this workflow are tested from
+# a branch before they are merged.
 on:
-  push:
-    branches: [develop]
-    paths:
-      - 'apps/api/**'
-      - 'packages/shared/**'
-      - 'Dockerfile'
-      - '.dockerignore'
-      - '.github/workflows/deploy-api.yml'
-      - 'package.json'
-      - 'package-lock.json'
-      - '.npmrc'
-      - '.nvmrc'
-      - 'nx.json'
-      - 'tsconfig.base.json'
-      - 'tsconfig.json'
-  workflow_dispatch:
+  workflow_call: {}
+  workflow_dispatch: {}
 
-concurrency:
-  group: deploy-api
-  cancel-in-progress: false
-
-permissions:
-  contents: read
-  id-token: write
+env:
+  # Kept in one place so a future per-environment split (ROADMAP I11) is mechanical.
+  SERVICE: eco-metrics-api
 
 jobs:
   deploy:
     name: Build and deploy API to Cloud Run
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    # Literal group on purpose: `github.workflow` would resolve to the caller's
+    # workflow name when this file is called from ci.yml. Overlapping deploys
+    # queue instead of cancelling a rollout that is already in progress.
+    concurrency:
+      group: deploy-api
+      cancel-in-progress: false
     steps:
       - name: Checkout
         uses: actions/checkout@v7
+        with:
+          # Full history so change detection can diff against the deployed SHA.
+          fetch-depth: 0
 
       - name: Pre-flight checks
         run: |
@@ -60,7 +58,70 @@ jobs:
           service_account: ${{ vars.WIF_SERVICE_ACCOUNT }}
           project_id: ${{ vars.GCP_PROJECT_ID }}
 
+      # Decides whether the image inputs changed since the revision that is
+      # serving. Diffing against the deployed SHA (not HEAD~1) covers commits
+      # whose CI run was cancelled and self-heals after a failed deploy. Any
+      # doubt falls back to deploying; a skipped deploy is never the fail-safe.
+      - name: Detect api-affecting changes
+        id: detect
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          TARGET_SHA: ${{ github.sha }}
+          GCP_REGION: ${{ vars.GCP_REGION }}
+          GCP_PROJECT_ID: ${{ vars.GCP_PROJECT_ID }}
+        run: |
+          # Same list the former `paths:` filter used (root files match exactly).
+          PATTERN='^(apps/api/|packages/shared/)|^(Dockerfile|\.dockerignore|package\.json|package-lock\.json|\.npmrc|\.nvmrc|nx\.json|tsconfig\.base\.json|tsconfig\.json)$|^\.github/workflows/deploy-api\.yml$'
+          deployed_sha=""
+          matched=""
+
+          decide() {
+            echo "deploy=$1" >> "$GITHUB_OUTPUT"
+            echo "Deployed SHA: ${deployed_sha:-unknown}"
+            echo "Target SHA:   $TARGET_SHA"
+            echo "Matched files: ${matched:-none}"
+            echo "Decision: deploy=$1 ($2)"
+            {
+              echo "### API change detection"
+              echo "- Deployed SHA: \`${deployed_sha:-unknown}\`"
+              echo "- Target SHA: \`$TARGET_SHA\`"
+              echo "- Matched files: $(printf '%s' "${matched:-none}" | tr '\n' ' ')"
+              echo "- Decision: **deploy=$1** ($2)"
+            } >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          }
+
+          if [ "$EVENT_NAME" = "workflow_dispatch" ]; then
+            decide true "manual dispatch"
+          fi
+
+          if ! image=$(gcloud run services describe "$SERVICE" \
+            --region "$GCP_REGION" --project "$GCP_PROJECT_ID" \
+            --format='value(spec.template.spec.containers[0].image)') || [ -z "$image" ]; then
+            decide true "could not read the serving image"
+          fi
+
+          deployed_sha="${image##*:}"
+          if ! [[ "$deployed_sha" =~ ^[0-9a-f]{40}$ ]]; then
+            decide true "serving image tag is not a commit SHA"
+          fi
+
+          if ! git cat-file -e "${deployed_sha}^{commit}" 2>/dev/null; then
+            decide true "deployed SHA is not in the repository history"
+          fi
+
+          if ! changed=$(git diff --name-only "$deployed_sha" "$TARGET_SHA"); then
+            decide true "git diff failed"
+          fi
+
+          matched=$(printf '%s\n' "$changed" | grep -E "$PATTERN" || true)
+          if [ -n "$matched" ]; then
+            decide true "API inputs changed"
+          fi
+          decide false "no API inputs changed since the deployed revision"
+
       - name: Login to Artifact Registry
+        if: steps.detect.outputs.deploy == 'true'
         uses: docker/login-action@v4
         with:
           registry: ${{ vars.GCP_REGION }}-docker.pkg.dev
@@ -68,12 +129,14 @@ jobs:
           password: ${{ steps.auth.outputs.access_token }}
 
       - name: Build and push container image
+        if: steps.detect.outputs.deploy == 'true'
         run: |
           IMAGE="${{ vars.GCP_REGION }}-docker.pkg.dev/${{ vars.GCP_PROJECT_ID }}/eco-metrics/api:${{ github.sha }}"
           docker build -t "$IMAGE" .
           docker push "$IMAGE"
 
       - name: Prepare CORS env values for deploy-cloudrun
+        if: steps.detect.outputs.deploy == 'true'
         id: cors
         env:
           CORS_ORIGIN: ${{ vars.CORS_ORIGIN }}
@@ -93,10 +156,11 @@ jobs:
           } >> "$GITHUB_OUTPUT"
 
       - name: Deploy to Cloud Run
+        if: steps.detect.outputs.deploy == 'true'
         id: deploy
         uses: google-github-actions/deploy-cloudrun@v3
         with:
-          service: eco-metrics-api
+          service: ${{ env.SERVICE }}
           image: ${{ vars.GCP_REGION }}-docker.pkg.dev/${{ vars.GCP_PROJECT_ID }}/eco-metrics/api:${{ github.sha }}
           region: ${{ vars.GCP_REGION }}
           project_id: ${{ vars.GCP_PROJECT_ID }}
@@ -116,4 +180,5 @@ jobs:
             --startup-probe=httpGet.path=/api/v1/health,httpGet.port=8080,periodSeconds=2,timeoutSeconds=2,failureThreshold=15
 
       - name: Show deployed URL
+        if: steps.detect.outputs.deploy == 'true'
         run: echo "Deployed API URL ${{ steps.deploy.outputs.url }}"
