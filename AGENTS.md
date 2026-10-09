@@ -221,16 +221,20 @@ feature/* ──► develop ⇄ main (production)
 #                      ▲        back-merge auto: syncs versions + changelogs (release.yml)
 ```
 
-- **`main`** — protected. No direct pushes. All changes enter via PR from `develop`. Requires CI pass + 1 PR review before merge. No force pushes allowed.
+- **`main`** — production. All changes enter via PR from `develop`; never push to it directly and never force-push it. **There is no server-side protection on the current plan** (private repo on GitHub Free: branch protection and rulesets return `403 Upgrade to GitHub Pro or make this repository public`), so the rule is enforced by convention plus the husky `pre-push` hook, which blocks direct pushes to `main` from a local machine. Production safety comes from the CI gates, not from GitHub: the API deploy `needs` the CI job, and Vercel Deployment Checks hold the web production deployment until CI passes (see [`docs/deploy/vercel.md`](./docs/deploy/vercel.md)).
 - **`develop`** — integration branch. Work happens here or in short-lived `feature/*` branches off `develop`. Force push allowed for history cleanup before opening a PR.
 - **`feature/*`** — optional, for large or parallel work. Branch off `develop`, PR back into `develop`.
 
-> **Admin override:** as repo owner you can merge a PR on `main` without a reviewer approval via GitHub's "Merge without waiting for requirements" button. Use it when working solo — the protection is a guardrail, not a blocker.
+#### CI/CD gates
+
+- The CI job name `Format, Lint, Typecheck, Build & Test` is a contract with Vercel Deployment Checks: renaming it requires updating the Vercel setting in the same change.
+- The API deploys only through the CI-gated `deploy-api` job in `ci.yml` (which calls `deploy-api.yml`) or a deliberate `workflow_dispatch`. Never add a deploy trigger that bypasses CI.
+- The deploy concurrency group is the literal `deploy-api` (never `${{ github.workflow }}`, which resolves to the caller's name in a reusable workflow).
 
 #### Rules — for humans and AI agents alike
 
 1. **Never commit without explicit request** — do not create a commit unless the user explicitly asks for it.
-2. **Never push to `main` directly** — all changes must go through a PR from `develop`. Branch protection enforces this.
+2. **Never push to `main` directly** — all changes must go through a PR from `develop`. GitHub does not enforce this on the current plan; the husky `pre-push` hook blocks it locally.
 3. **Never push without confirmation** — always ask the user before running `git push`, regardless of the branch.
 4. **Always run tests before pushing** — run `npm run test` before any push. If all tests pass and the push has been authorized, proceed. If any test fails, show a summary of the failing suites and do not push until they are fixed.
 5. **Always use Commitizen format** — every commit message must follow `type(scope): description`. Free-form messages are not allowed.

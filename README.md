@@ -41,10 +41,10 @@ An environmental metrics dashboard monorepo — tracking air quality, CO₂ emis
 
 ### Deploy Targets
 
-| App        | Platform                                         | Trigger                                                                          | Details                                                                                                                                       |
-| ---------- | ------------------------------------------------ | -------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
-| `apps/web` | [Vercel](https://vercel.com)                     | Auto-deploy from GitHub (`vercel.json`, `scripts/vercel-ignore.sh`)              | —                                                                                                                                             |
-| `apps/api` | [Google Cloud Run](https://cloud.google.com/run) | `.github/workflows/deploy-api.yml` on push to `develop` (API-related paths only) | Service `eco-metrics-api` at `https://eco-metrics-api-fexi2yqv2q-uc.a.run.app` — see [`docs/deploy/cloud-run.md`](./docs/deploy/cloud-run.md) |
+| App        | Platform                                         | Trigger                                                                                                        | Details                                                                                                                                       |
+| ---------- | ------------------------------------------------ | -------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| `apps/web` | [Vercel](https://vercel.com)                     | Auto-deploy from GitHub (`vercel.json`, `scripts/vercel-ignore.sh`); production waits for the CI check         | See [`docs/deploy/vercel.md`](./docs/deploy/vercel.md)                                                                                        |
+| `apps/api` | [Google Cloud Run](https://cloud.google.com/run) | `.github/workflows/deploy-api.yml`, called by `ci.yml` after CI passes on `develop` (API-related changes only) | Service `eco-metrics-api` at `https://eco-metrics-api-fexi2yqv2q-uc.a.run.app` — see [`docs/deploy/cloud-run.md`](./docs/deploy/cloud-run.md) |
 
 ---
 
@@ -352,6 +352,7 @@ See [`AGENTS.md`](./AGENTS.md) for the full development guide.
 | -------------------------------------------------------------- | --------------------------------------------------------------- |
 | [`docs/data-sources/`](./docs/data-sources/)                   | Research on data providers and licensing per eco category       |
 | [`docs/deploy/cloud-run.md`](./docs/deploy/cloud-run.md)       | GCP / gcloud / GitHub / Vercel runbook for deploying `apps/api` |
+| [`docs/deploy/vercel.md`](./docs/deploy/vercel.md)             | Vercel Deployment Checks runbook: gate web production on CI     |
 | [`docs/design-system.md`](./docs/design-system.md)             | Presentation source of truth: theming, palettes, a11y           |
 | [`docs/technical/libraries.md`](./docs/technical/libraries.md) | Library candidates catalogue (research, not decisions)          |
 | [`docs/planning/`](./docs/planning/)                           | Feature planning notes                                          |

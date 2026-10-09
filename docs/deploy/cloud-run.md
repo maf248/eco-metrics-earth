@@ -1,6 +1,6 @@
 # Deploy `apps/api` on Google Cloud Run
 
-This runbook configures the GCP project, GitHub Actions OIDC authentication, Artifact Registry, and Cloud Run service so that pushes to `develop` automatically build and deploy the NestJS BFF.
+This runbook configures the GCP project, GitHub Actions OIDC authentication, Artifact Registry, and Cloud Run service so that pushes to `develop` build and deploy the NestJS BFF automatically **after CI passes** (the deploy job `needs` the CI job; a red or cancelled CI never deploys).
 
 > **Prerequisites:** a GCP account with an active billing account (the Cloud Run always-free tier requires a card on file), the `gcloud` CLI installed, and admin access to the `maf248/eco-metrics-earth` GitHub repo and the Vercel project.
 
@@ -161,9 +161,12 @@ After creating the WIF provider and grants, wait **~5 minutes** before the first
 
 ## 11. Trigger the first deploy
 
-1. Merge this change into `develop` (after the mandatory user-approval checkpoint).
-2. Go to **Actions → Deploy API → Run workflow** and trigger a `workflow_dispatch` run against `develop`.
-3. Watch the workflow build the image, push it to Artifact Registry, and deploy the Cloud Run service.
+Pick one:
+
+- **Merge or push to `develop`.** The **CI** workflow runs first; the `Deploy API` job starts only if the CI job `Format, Lint, Typecheck, Build & Test` succeeds on that commit. Before building, the deploy reads the image that is currently serving and diffs it against the commit being deployed (change detection, see [Optional change-detection verification](#15-optional-change-detection-verification)). When the service does not exist yet or its image tag is not a commit SHA, it always deploys.
+- **Manual run.** Go to **Actions → Deploy API → Run workflow** and trigger a `workflow_dispatch` run against `develop`. A manual run **skips the CI gate and change detection** and always deploys the dispatched ref. Use it for the first deploy, to force a redeploy (for example after rotating a secret) or to test edits to the deploy workflow from a branch.
+
+Watch the workflow build the image, push it to Artifact Registry, and deploy the Cloud Run service. Overlapping deploys queue (concurrency group `deploy-api`, never cancelled mid-rollout).
 
 ## 12. Record the Cloud Run URL
 
@@ -193,6 +196,7 @@ curl -s "$RUN_URL/api/v1/water-footprint/products" | head -c 300
 2. Set `API_BASE_URL` to `https://<run-url>/api/v1` for both **Production** and **Preview**.
 3. Redeploy the web app (or wait up to 24 h for ISR background revalidation).
 4. Open `/water-footprint/` and confirm the product table renders.
+5. To make Vercel production deployments wait for CI as well, follow [`docs/deploy/vercel.md`](./vercel.md) (Deployment Checks).
 
 ### `INTERNAL_API_KEY` in Vercel
 
@@ -207,10 +211,13 @@ curl -s "$RUN_URL/api/v1/water-footprint/products" | head -c 300
 
 If the variable is missing on either side, nothing breaks: the API simply throttles the web server per client IP.
 
-## 15. Optional path-filter verification pushes
+## 15. Optional change-detection verification
 
-- Push a change that touches only `apps/web/**` → the **Deploy API** workflow should **not** run, and Vercel should build as usual.
-- Push a change that touches only `apps/api/**`, `packages/shared/**`, `Dockerfile`, `.dockerignore`, `.github/workflows/deploy-api.yml`, or any root build manifest (`package.json`, `package-lock.json`, `.npmrc`, `.nvmrc`, `nx.json`, `tsconfig.base.json`, `tsconfig.json`) → the **Deploy API** workflow should run, and Vercel should skip the build.
+The `Detect api-affecting changes` step compares the commit being deployed with the commit of the image that is serving (the image tag is the commit SHA). It deploys when any file in the diff is one of `apps/api/**`, `packages/shared/**`, `Dockerfile`, `.dockerignore`, `.github/workflows/deploy-api.yml`, or a root build manifest (`package.json`, `package-lock.json`, `.npmrc`, `.nvmrc`, `nx.json`, `tsconfig.base.json`, `tsconfig.json`). It logs the deployed SHA, the target SHA, the matched files and the decision, and repeats them in the job summary.
+
+- Push a change that touches only `apps/web/**` → CI passes, the `Deploy API` job runs but skips build and deploy (the job summary says no API inputs changed), and Vercel builds as usual.
+- Push a change that touches only `apps/api/**`, `packages/shared/**` or any other file listed above → CI passes, then the `Deploy API` job builds and deploys, and Vercel skips the build.
+- Push a commit that fails CI → the `Deploy API` job is skipped (it does not run at all) and no new revision is created.
 
 ## 16. Cost controls and free tier
 
@@ -336,3 +343,27 @@ gcloud run services update eco-metrics-api --remove-env-vars CORS_ORIGIN_PATTERN
 2. Grant `roles/secretmanager.secretAccessor` on it to the Cloud Run **runtime** service account (step 9).
 3. If the error names the **deployer** (`github-deployer`), grant it `roles/secretmanager.viewer` on the secret as well: `gcloud secrets add-iam-policy-binding internal-api-key --member="serviceAccount:github-deployer@<GCP_PROJECT_ID>.iam.gserviceaccount.com" --role="roles/secretmanager.viewer" --project=<GCP_PROJECT_ID>`.
 4. Re-run the workflow. The previous healthy revision keeps serving traffic in the meantime.
+
+### The Deploy API job was skipped
+
+**Symptom:** a push to `develop` shows the `Deploy API` job as skipped (grey) and no new revision exists.
+
+**Fix:** the job `needs` the CI job, so it is skipped when `Format, Lint, Typecheck, Build & Test` failed or was cancelled (a newer push to the same ref supersedes a running CI). Fix CI and push again; the next successful run deploys every change since the serving revision. It also does not run for pushes to other branches or for pull requests.
+
+### Deploy ran but nothing was built or deployed
+
+**Symptom:** the `Deploy API` job is green but there is no new revision.
+
+**Fix:** change detection found no API inputs in the diff between the serving commit and the pushed commit. Open the job summary (deployed SHA, target SHA, matched files, decision). To deploy anyway, run **Actions → Deploy API → Run workflow** (a manual run skips change detection).
+
+### Deployed SHA unknown after a force-push
+
+**Symptom:** the detection log says the deployed SHA is not in the repository history.
+
+**Fix:** none needed. `develop` may be force-pushed, so the serving commit can disappear from history; in that case, as in any case where the serving image cannot be read or its tag is not a commit SHA, the workflow deploys. Skipping is never the fallback.
+
+### `vars` are empty in the called workflow
+
+**Symptom:** the `Pre-flight checks` step of an automatic run fails with `Missing required GitHub variables`, while a manual run works.
+
+**Fix:** repository variables are expected to be available to a reusable workflow called from the same repository. If they are not, pass the five required values and `CORS_ORIGIN_PATTERN` as `workflow_call` inputs from the `deploy-api` job in `ci.yml` (`${{ vars.X }}`) and read them from `inputs` in `deploy-api.yml`.

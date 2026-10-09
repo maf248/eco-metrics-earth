@@ -101,6 +101,7 @@
     "chokidar": "5.0.0",
     "multer": "2.4.0",
     "readdirp": "5.0.0",
+    "rxjs": "7.8.2",
     "smol-toml": "1.8.0"
   }
 }

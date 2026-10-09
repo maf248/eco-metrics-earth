@@ -4,7 +4,16 @@
 #   openspec/  (spec artifacts)
 #   *.md       (documentation)
 #   Dockerfile / .dockerignore / .github/workflows/deploy-api.yml  (API deploy plumbing)
-# Vercel sets: VERCEL_GIT_PREVIOUS_SHA, VERCEL_GIT_COMMIT_SHA
+# Also skip automated release commits (`chore(release): ...`, pushed by
+# release.yml with [skip ci]). They never receive CI, so with the Vercel
+# Deployment Check enabled their production deployment would wait forever; they
+# only touch version fields, changelogs and lockfile metadata, so no build is needed.
+# Vercel sets: VERCEL_GIT_PREVIOUS_SHA, VERCEL_GIT_COMMIT_SHA, VERCEL_GIT_COMMIT_MESSAGE
+
+# Release commits → skip (exit 0)
+case "$VERCEL_GIT_COMMIT_MESSAGE" in
+  'chore(release):'*) exit 0 ;;
+esac
 
 # Guard: missing or unresolvable SHA → build
 [ -z "$VERCEL_GIT_PREVIOUS_SHA" ] && exit 1

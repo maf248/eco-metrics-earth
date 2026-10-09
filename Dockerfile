@@ -25,13 +25,10 @@ COPY packages/shared packages/shared
 # workspace as out of sync inside the isolated Docker environment.
 RUN npx nx sync && npx nx run api:prune
 
-# Install production dependencies inside dist, using the root overrides as the
-# single source of truth for security pins. The lockfile emitted by prune-lockfile
-# is inconsistent for this repo's cross-workspace hoisting, so it is discarded.
-RUN cd apps/api/dist \
-  && node -e "const fs=require('fs'); const root=JSON.parse(fs.readFileSync('../../../package.json','utf8')); const dist=JSON.parse(fs.readFileSync('package.json','utf8')); dist.overrides=root.overrides; fs.writeFileSync('package.json', JSON.stringify(dist, null, 2));" \
-  && rm -f package-lock.json \
-  && npm install --omit=dev --legacy-peer-deps --ignore-scripts --no-audit --no-fund
+# Install production dependencies inside dist from the pruned lockfile, which is
+# authoritative: the root overrides (security pins) are already resolved in it,
+# so `npm ci` installs exactly those versions and fails if it is inconsistent.
+RUN cd apps/api/dist && npm ci --omit=dev --ignore-scripts --no-audit --no-fund
 
 # --- Runtime stage ---
 FROM node:24-alpine
