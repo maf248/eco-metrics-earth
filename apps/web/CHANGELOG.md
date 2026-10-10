@@ -1,3 +1,9 @@
+## [2.7.0](https://github.com/maf248/eco-metrics-earth/compare/web-v2.6.0...web-v2.7.0) (2026-10-10)
+
+### Bug Fixes
+
+* **web:** retry the BFF fetch and never cache a failed water-footprint render ([d7c340e](https://github.com/maf248/eco-metrics-earth/commit/d7c340e53b7a465ed03536830c97c5cb7649b73c))
+
 ## [2.6.0](https://github.com/maf248/eco-metrics-earth/compare/web-v2.5.3...web-v2.6.0) (2026-10-09)
 
 ## [2.5.3](https://github.com/maf248/eco-metrics-earth/compare/web-v2.5.2...web-v2.5.3) (2026-10-09)
