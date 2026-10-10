@@ -45,7 +45,7 @@ jobs:
           # Full history so change detection can diff against the deployed SHA.
           fetch-depth: 0
 
-      # Single place where a target maps to its service and CORS variables.
+      # Single place where a target maps to its service, image package and CORS variables.
       # Bash `case` instead of `a && b || c` expressions: an empty optional
       # variable would make such an expression fall through to the wrong value.
       - name: Resolve deploy target and pre-flight checks
@@ -53,6 +53,7 @@ jobs:
         env:
           DEPLOY_TARGET: ${{ inputs.target }}
           REF: ${{ github.ref }}
+          COMMIT_SHA: ${{ github.sha }}
           GCP_PROJECT_ID: ${{ vars.GCP_PROJECT_ID }}
           GCP_REGION: ${{ vars.GCP_REGION }}
           WIF_PROVIDER: ${{ vars.WIF_PROVIDER }}
@@ -65,11 +66,13 @@ jobs:
           case "$DEPLOY_TARGET" in
             production)
               service="eco-metrics-api"
+              package="api-production"
               origin_var="CORS_ORIGIN"
               pattern_var="CORS_ORIGIN_PATTERN"
               ;;
             development)
               service="eco-metrics-api-dev"
+              package="api-development"
               origin_var="CORS_ORIGIN_DEV"
               pattern_var="CORS_ORIGIN_PATTERN_DEV"
               ;;
@@ -99,11 +102,12 @@ jobs:
 
           {
             echo "service=$service"
+            echo "image=${GCP_REGION}-docker.pkg.dev/${GCP_PROJECT_ID}/eco-metrics/${package}:${COMMIT_SHA}"
             echo "origin=${!origin_var}"
             echo "pattern=${!pattern_var}"
           } >> "$GITHUB_OUTPUT"
 
-          echo "Deploy target: $DEPLOY_TARGET → service $service (CORS from $origin_var / $pattern_var)."
+          echo "Deploy target: $DEPLOY_TARGET → service $service, package $package (CORS from $origin_var / $pattern_var)."
           echo "All required GitHub variables are set."
 
       - name: Authenticate to Google Cloud
@@ -191,8 +195,9 @@ jobs:
 
       - name: Build and push container image
         if: steps.detect.outputs.deploy == 'true'
+        env:
+          IMAGE: ${{ steps.target.outputs.image }}
         run: |
-          IMAGE="${{ vars.GCP_REGION }}-docker.pkg.dev/${{ vars.GCP_PROJECT_ID }}/eco-metrics/api:${{ github.sha }}"
           docker build -t "$IMAGE" .
           docker push "$IMAGE"
 
@@ -222,7 +227,7 @@ jobs:
         uses: google-github-actions/deploy-cloudrun@v3
         with:
           service: ${{ steps.target.outputs.service }}
-          image: ${{ vars.GCP_REGION }}-docker.pkg.dev/${{ vars.GCP_PROJECT_ID }}/eco-metrics/api:${{ github.sha }}
+          image: ${{ steps.target.outputs.image }}
           region: ${{ vars.GCP_REGION }}
           project_id: ${{ vars.GCP_PROJECT_ID }}
           env_vars: |

@@ -255,21 +255,38 @@ At this project's volume (hundreds of requests/month), the bill stays at **US$0*
 Recommended safeguards:
 
 - Set a GCP billing alert (e.g. notify at US$1/month).
-- Artifact Registry: the first 0.5 GB-month is free. Each image is ~100–120 MB compressed and both services push to the same `eco-metrics/api` package, so images accumulate twice as fast. Apply the versioned cleanup policy (keeps the 20 most recent images, deletes older ones after 90 days):
+- Artifact Registry: the first 0.5 GB-month is free. Each environment publishes to its own package (`eco-metrics/api-production` and `eco-metrics/api-development`, tagged with the commit SHA). Images share layers, so each one adds ~15 MB on average. The versioned cleanup policy keeps the **3 most recent images of each package** (the serving image plus two rollback candidates) and deletes any other image of those packages once it is older than 1 day. Development deploys can never delete a production image, and storage stays around 200–350 MB.
 
-  ```bash
-  # Preview what it would delete (no changes)
-  gcloud artifacts repositories set-cleanup-policies eco-metrics \
-    --policy=docs/deploy/artifact-registry-cleanup-policy.json \
-    --location=<GCP_REGION> --project=<GCP_PROJECT_ID> --dry-run
+  **One-time setup** (from a repository that still has the legacy shared `api` package):
+  1. Deploy both environments with the per-environment workflow: push to `develop`, then merge to `main`. Both deploys rebuild, because the workflow file changed.
+  2. Check that both services serve an image from the new packages (deleting the legacy package earlier would break production cold starts):
 
-  # Apply it
-  gcloud artifacts repositories set-cleanup-policies eco-metrics \
-    --policy=docs/deploy/artifact-registry-cleanup-policy.json \
-    --location=<GCP_REGION> --project=<GCP_PROJECT_ID> --no-dry-run
-  ```
+     ```bash
+     for s in eco-metrics-api eco-metrics-api-dev; do
+       gcloud run services describe "$s" --region=<GCP_REGION> --project=<GCP_PROJECT_ID> \
+         --format='value(spec.template.spec.containers[0].image)'
+     done
+     # Expect .../eco-metrics/api-production:<sha> and .../eco-metrics/api-development:<sha>
+     ```
 
-  Keeping a count (not only an age) protects the production image while `main` lags `develop`, **but only up to 20 API images**: Cloud Run revisions reference their image, so if the image serving production falls outside the 20 most recent and is older than 90 days, the policy deletes it and the next cold start of production cannot pull it. Merge `develop` → `main` before that many API-affecting dev deploys accumulate, or raise `keepCount`. Twenty images can exceed 0.5 GB (cents per month); lower `keepCount` in the JSON for a strict US$0, at the cost of fewer rollback images.
+  3. Apply the policy. It only matches the two environment packages. `gcloud` validates the file when you run the command; if it rejects it, the repository is left unchanged. Optionally, apply it first with `--dry-run`: the policy is evaluated in its regular (roughly daily) run without deleting anything, and the would-be deletions are recorded in the repository's audit logs.
+
+     ```bash
+     gcloud artifacts repositories set-cleanup-policies eco-metrics \
+       --policy=docs/deploy/artifact-registry-cleanup-policy.json \
+       --location=<GCP_REGION> --project=<GCP_PROJECT_ID> --no-dry-run
+     ```
+
+  4. Delete the legacy package, which the policy does not manage:
+
+     ```bash
+     gcloud artifacts packages delete api --repository=eco-metrics \
+       --location=<GCP_REGION> --project=<GCP_PROJECT_ID>
+     ```
+
+  5. A day later, check the size: `gcloud artifacts repositories describe eco-metrics --location=<GCP_REGION> --project=<GCP_PROJECT_ID>` prints `Repository Size: …` (it should stay below 0.5 GB).
+
+  Rolling back further than the two previous images per environment means reverting in git and redeploying. After step 4, Cloud Run revisions created before the migration point at the deleted `api` package and can no longer start, so traffic rollback only works to revisions deployed from the new packages.
 
 - Both services scale to zero and share the always-free tier of the billing account.
 - Cloud Logging: 30-day retention on the free tier, with 50 GB/month ingestion free.
@@ -335,7 +352,7 @@ For a project that already runs the single `eco-metrics-api` service deployed fr
 4. **Vercel.** Point **Preview** `API_BASE_URL` at the dev URL ([§14](#14-wire-up-vercel)) and redeploy a preview to check the pages render.
 5. **Merge `develop` → `main`.** CI on `main` runs `Deploy API (production)` for the first time from `main`.
 6. **Trim production CORS** (optional). Previews no longer call production, so remove the `CORS_ORIGIN_PATTERN` variable and clear it on the service: `gcloud run services update eco-metrics-api --remove-env-vars CORS_ORIGIN_PATTERN --region=<GCP_REGION> --project=<GCP_PROJECT_ID>`. `http://localhost:3000` can also go from `CORS_ORIGIN` (local development uses the local API, or the dev service).
-7. **Apply the Artifact Registry cleanup policy** ([§16](#16-cost-controls-and-free-tier)).
+7. **Set up Artifact Registry retention** following the full one-time sequence in [§16](#16-cost-controls-and-free-tier): verify both services serve the per-environment packages, apply the policy, then delete the legacy `api` package.
 
 **Rollback:** revert the change; `develop` then deploys production again on the next push. Delete the dev service with `gcloud run services delete eco-metrics-api-dev --region=<GCP_REGION> --project=<GCP_PROJECT_ID>` and point Vercel Preview back at the production URL.
 

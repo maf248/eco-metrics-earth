@@ -1,19 +1,27 @@
 [
   {
-    "name": "keep-recent-api-images",
+    "name": "keep-recent-production-images",
     "action": { "type": "Keep" },
     "mostRecentVersions": {
-      "packageNamePrefixes": ["api"],
-      "keepCount": 20
+      "packageNamePrefixes": ["api-production"],
+      "keepCount": 3
     }
   },
   {
-    "name": "delete-old-api-images",
+    "name": "keep-recent-development-images",
+    "action": { "type": "Keep" },
+    "mostRecentVersions": {
+      "packageNamePrefixes": ["api-development"],
+      "keepCount": 3
+    }
+  },
+  {
+    "name": "delete-older-environment-images",
     "action": { "type": "Delete" },
     "condition": {
       "tagState": "any",
-      "packageNamePrefixes": ["api"],
-      "olderThan": "90d"
+      "packageNamePrefixes": ["api-production", "api-development"],
+      "olderThan": "1d"
     }
   }
 ]
