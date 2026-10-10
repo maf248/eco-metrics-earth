@@ -6,7 +6,16 @@ This runbook makes the `apps/web` production deployment on Vercel wait for the C
 
 Vercel's Git integration builds `main` and promotes it to production independently of GitHub Actions, so a merge to `main` with red or unfinished CI could go live. The usual guard, GitHub branch protection or rulesets, is **not available**: the repository is private on GitHub Free and the API answers `403 Upgrade to GitHub Pro or make this repository public`. Nothing on GitHub prevents merging a PR with failing CI, so **Vercel Deployment Checks is the only server-side enforcement for the web app**. The local husky `pre-push` hook only blocks direct pushes to `main` from a developer machine.
 
-The API is gated differently: the `deploy-api` job in `.github/workflows/ci.yml` `needs` the CI job (see [`cloud-run.md`](./cloud-run.md)).
+The API is gated differently: the `deploy-api-production` (`main`) and `deploy-api-development` (`develop`) jobs in `.github/workflows/ci.yml` each `needs` the CI job (see [`cloud-run.md`](./cloud-run.md)).
+
+## Which API each environment consumes
+
+| Vercel environment                    | `API_BASE_URL` points at               | API deployed from |
+| ------------------------------------- | -------------------------------------- | ----------------- |
+| Production                            | `eco-metrics-api` (production service) | `main`            |
+| Preview (pull requests and `develop`) | `eco-metrics-api-dev` (dev service)    | `develop`         |
+
+Previews therefore never read from or load the production API. Setup steps are in [`cloud-run.md`](./cloud-run.md#14-wire-up-vercel).
 
 ## One-time setup (dashboard)
 

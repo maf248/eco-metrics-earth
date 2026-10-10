@@ -15,25 +15,16 @@ const product: WaterFootprintProduct = {
 };
 
 describe('WaterFootprintContent', () => {
-  it('should render an alert notice and no table when fetchFailed is true', () => {
-    render(<WaterFootprintContent products={[]} fetchFailed />);
-
-    expect(screen.getByRole('alert')).toHaveTextContent(
-      'Water footprint data is temporarily unavailable. Please try again later.',
-    );
-    expect(screen.queryByRole('table')).not.toBeInTheDocument();
-    expect(screen.queryByRole('list')).not.toBeInTheDocument();
-  });
-
-  it('should render the empty-state message when there is no data and no fetch failure', () => {
-    render(<WaterFootprintContent products={[]} fetchFailed={false} />);
+  it('should render the empty-state message when the BFF returns no products', () => {
+    render(<WaterFootprintContent products={[]} />);
 
     expect(screen.getByText('No water footprint data is currently available.')).toBeInTheDocument();
     expect(screen.queryByRole('table')).not.toBeInTheDocument();
+    expect(screen.queryByRole('alert')).not.toBeInTheDocument();
   });
 
   it('should render the table and footnote when products are provided', () => {
-    render(<WaterFootprintContent products={[product]} fetchFailed={false} />);
+    render(<WaterFootprintContent products={[product]} />);
 
     expect(screen.getByRole('table')).toBeInTheDocument();
     expect(screen.getAllByText('Apples').length).toBeGreaterThanOrEqual(1);

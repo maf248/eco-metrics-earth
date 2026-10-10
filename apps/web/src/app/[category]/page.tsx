@@ -4,25 +4,33 @@ import { notFound } from 'next/navigation';
 import { WaterFootprintContent } from '@/components/water-footprint/WaterFootprintContent';
 import { getCategoryIcon } from '@/lib/categoryIcon';
 import { getCategoryTitle } from '@/lib/categoryTitle';
+import { isEcoCategory } from '@/lib/isEcoCategory';
 import { siteUrl } from '@/lib/siteUrl';
 import { buildOpenGraph, buildTwitter } from '@/lib/socialMetadata';
 import { getWaterFootprintProducts } from '@/lib/waterFootprint';
 import { ECO_CATEGORIES } from '@eco-metrics/shared';
 
-export const dynamicParams = false;
+// water-footprint is not pre-rendered: it is generated on its first request and
+// then cached by ISR, so `next build` never depends on the BFF. Unknown slugs
+// get a real 404 from ./layout.tsx, before any fetch.
+export const dynamicParams = true;
 export const revalidate = 86400;
+// Covers the worst-case BFF fetch (2 attempts x 10 s) within the Vercel Hobby limit.
+export const maxDuration = 30;
 
 interface CategoryPageProps {
   params: Promise<{ category: string }>;
 }
 
 export async function generateStaticParams(): Promise<{ category: string }[]> {
-  return Object.values(ECO_CATEGORIES).map((slug) => ({ category: slug }));
+  return Object.values(ECO_CATEGORIES)
+    .filter((slug) => slug !== ECO_CATEGORIES.WATER_FOOTPRINT)
+    .map((slug) => ({ category: slug }));
 }
 
 export async function generateMetadata({ params }: CategoryPageProps): Promise<Metadata> {
   const { category } = await params;
-  if (!(Object.values(ECO_CATEGORIES) as string[]).includes(category)) {
+  if (!isEcoCategory(category)) {
     notFound();
   }
   const title = getCategoryTitle(category);
@@ -48,16 +56,14 @@ export async function generateMetadata({ params }: CategoryPageProps): Promise<M
 
 export default async function CategoryPage({ params }: CategoryPageProps) {
   const { category } = await params;
-  if (!(Object.values(ECO_CATEGORIES) as string[]).includes(category)) {
+  if (!isEcoCategory(category)) {
     notFound();
   }
   const title = getCategoryTitle(category);
   const Icon = getCategoryIcon(category);
 
   const isWaterFootprint = category === ECO_CATEGORIES.WATER_FOOTPRINT;
-  const { products, fetchFailed } = isWaterFootprint
-    ? await getWaterFootprintProducts()
-    : { products: [], fetchFailed: false };
+  const products = isWaterFootprint ? await getWaterFootprintProducts() : [];
 
   return (
     <main
@@ -83,7 +89,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
       </div>
       {isWaterFootprint && (
         <div className="mt-8 w-full flex justify-center">
-          <WaterFootprintContent products={products} fetchFailed={fetchFailed} />
+          <WaterFootprintContent products={products} />
         </div>
       )}
     </main>

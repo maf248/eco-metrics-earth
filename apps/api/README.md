@@ -150,11 +150,11 @@ npx nx test api
 
 ## Deploy (Cloud Run)
 
-`apps/api` deploys to Google Cloud Run from `develop` via the root `Dockerfile` and `.github/workflows/deploy-api.yml`. The deploy is a reusable workflow called by the `deploy-api` job of `ci.yml`, which `needs` the CI job: it runs only after CI passes on the same commit. Before building, a change-detection step compares the commit being deployed with the commit of the image that is serving and skips the build when no API inputs changed (`apps/api/**`, `packages/shared/**`, `Dockerfile`, `.dockerignore`, the deploy workflow and the root build manifests); when in doubt it deploys. A manual `workflow_dispatch` skips both the CI gate and change detection. Overlapping deploys queue (concurrency group `deploy-api`).
+`apps/api` deploys to two Google Cloud Run services via the root `Dockerfile` and `.github/workflows/deploy-api.yml`: `main` → `eco-metrics-api` (production) and `develop` → `eco-metrics-api-dev` (consumed by Vercel previews). The deploy is a reusable workflow with a `target` input (`production` | `development`), called by the `deploy-api-production` and `deploy-api-development` jobs of `ci.yml`, which `needs` the CI job: it runs only after CI passes on the same commit. Before building, a change-detection step compares the commit being deployed with the commit of the image that is serving on the target's service and skips the build when no API inputs changed (`apps/api/**`, `packages/shared/**`, `Dockerfile`, `.dockerignore`, the deploy workflow and the root build manifests); when in doubt it deploys. A manual `workflow_dispatch` skips both the CI gate and change detection; `production` is accepted only from `main`. Deploys never cancel a running rollout; each target has its own concurrency group (`deploy-api-production`, `deploy-api-development`).
 
 The image is multi-stage `node:24-alpine`: the builder runs `HUSKY=0 npm ci`, `npx nx run api:prune`, and `npm ci --omit=dev` inside `apps/api/dist` from the pruned lockfile (the root `overrides` security pins are already resolved in it, so the install is reproducible). A CI step runs the same `npm ci --dry-run` so an inconsistent pruned lockfile fails CI instead of the deploy. The runtime stage ships only the self-contained `dist` directory, runs as non-root `USER node`, exposes port `8080`, and starts with `CMD ["node", "main.js"]`.
 
-Authentication uses Workload Identity Federation (OIDC) — no service-account JSON keys. Images are tagged by commit SHA and pushed to Artifact Registry; `google-github-actions/deploy-cloudrun@v3` deploys the `eco-metrics-api` service with a startup probe on `/api/v1/health`, scale-to-zero (`--min-instances=0`), and the env vars `NODE_ENV`, `CORS_ORIGIN`, `CORS_ORIGIN_PATTERN` (optional), `SWAGGER_ENABLED`, and `TRUST_PROXY_HOPS=1`, plus `INTERNAL_API_KEY` mounted from the Secret Manager secret `internal-api-key` (Cloud Run injects `PORT`, so it is never set manually).
+Authentication uses Workload Identity Federation (OIDC) — no service-account JSON keys. Images are tagged by commit SHA and pushed to Artifact Registry; `google-github-actions/deploy-cloudrun@v3` deploys the target's service with a startup probe on `/api/v1/health`, scale-to-zero (`--min-instances=0`), and the env vars `NODE_ENV`, `CORS_ORIGIN`, `CORS_ORIGIN_PATTERN` (optional), `SWAGGER_ENABLED`, and `TRUST_PROXY_HOPS=1`, plus `INTERNAL_API_KEY` mounted from the Secret Manager secret `internal-api-key` (Cloud Run injects `PORT`, so it is never set manually).
 
 Required GitHub **variables** (Settings → Secrets and variables → Actions → Variables):
 
@@ -162,11 +162,11 @@ Required GitHub **variables** (Settings → Secrets and variables → Actions �
 - `GCP_REGION`
 - `WIF_PROVIDER`
 - `WIF_SERVICE_ACCOUNT`
-- `CORS_ORIGIN`
+- `CORS_ORIGIN` (production) and `CORS_ORIGIN_DEV` (development) — each checked only for its own target
 
-Optional GitHub **variable**:
+Optional GitHub **variables**:
 
-- `CORS_ORIGIN_PATTERN` — anchored regex for Vercel preview origins (e.g. `^https://eco-metrics-earth-[a-z0-9-]+\.vercel\.app$`); unset or empty means no pattern is passed to the service
+- `CORS_ORIGIN_PATTERN` (production) and `CORS_ORIGIN_PATTERN_DEV` (development) — anchored regex for Vercel preview origins (e.g. `^https://eco-metrics-earth-[a-z0-9-]+\.vercel\.app$`); unset or empty means no pattern is passed to the service. Previews use the dev service, so only `CORS_ORIGIN_PATTERN_DEV` normally needs it
 
 See [`docs/deploy/cloud-run.md`](../../docs/deploy/cloud-run.md) for the full GCP/gcloud/GitHub/Vercel runbook.
 

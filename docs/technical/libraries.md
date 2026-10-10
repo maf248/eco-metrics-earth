@@ -2,7 +2,7 @@
 
 Reference notes for choosing the chart, map, and table libraries for `apps/web`.
 
-**Status: research only. Nothing here is decided, and no library below is installed.** This document records what was screened, what was ruled out and why, and what must be verified before committing to anything. The decision itself is tracked as `ROADMAP.md` item I10.
+**Status: research only. Nothing here is decided, and no library below is installed.** This document records what was screened, what was ruled out and why, and what must be verified before committing to anything. The decision itself is tracked as `ROADMAP.md` item I09.
 
 _Screening date: 16 Sep 2026._ Version numbers and project-health claims below were accurate then and should be re-checked before acting on them.
 

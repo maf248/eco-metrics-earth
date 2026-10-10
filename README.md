@@ -41,10 +41,10 @@ An environmental metrics dashboard monorepo — tracking air quality, CO₂ emis
 
 ### Deploy Targets
 
-| App        | Platform                                         | Trigger                                                                                                        | Details                                                                                                                                       |
-| ---------- | ------------------------------------------------ | -------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
-| `apps/web` | [Vercel](https://vercel.com)                     | Auto-deploy from GitHub (`vercel.json`, `scripts/vercel-ignore.sh`); production waits for the CI check         | See [`docs/deploy/vercel.md`](./docs/deploy/vercel.md)                                                                                        |
-| `apps/api` | [Google Cloud Run](https://cloud.google.com/run) | `.github/workflows/deploy-api.yml`, called by `ci.yml` after CI passes on `develop` (API-related changes only) | Service `eco-metrics-api` at `https://eco-metrics-api-fexi2yqv2q-uc.a.run.app` — see [`docs/deploy/cloud-run.md`](./docs/deploy/cloud-run.md) |
+| App        | Platform                                         | Trigger                                                                                                                                 | Details                                                                                                                                                                                   |
+| ---------- | ------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `apps/web` | [Vercel](https://vercel.com)                     | Auto-deploy from GitHub (`vercel.json`, `scripts/vercel-ignore.sh`); production waits for the CI check                                  | See [`docs/deploy/vercel.md`](./docs/deploy/vercel.md)                                                                                                                                    |
+| `apps/api` | [Google Cloud Run](https://cloud.google.com/run) | `.github/workflows/deploy-api.yml`, called by `ci.yml` after CI passes (API-related changes only): `main` → production, `develop` → dev | Services `eco-metrics-api` (`https://eco-metrics-api-fexi2yqv2q-uc.a.run.app`) and `eco-metrics-api-dev` (Vercel previews) — see [`docs/deploy/cloud-run.md`](./docs/deploy/cloud-run.md) |
 
 ---
 
@@ -260,7 +260,7 @@ cp apps/web/.env.example apps/web/.env.local
 | Variable               | Default                        | Description                                                                                                                        |
 | ---------------------- | ------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------- |
 | `NEXT_PUBLIC_SITE_URL` | `http://localhost:3000`        | Canonical base URL for SEO metadata (Open Graph, canonical links)                                                                  |
-| `API_BASE_URL`         | `http://localhost:3001/api/v1` | Base URL of the NestJS BFF (server-side only). In production, point it at the Cloud Run service                                    |
+| `API_BASE_URL`         | `http://localhost:3001/api/v1` | Base URL of the NestJS BFF (server-side only). On Vercel: Production → `eco-metrics-api`, Preview → `eco-metrics-api-dev`          |
 | `INTERNAL_API_KEY`     | —                              | Server-only shared secret sent as `X-Internal-Api-Key` so the API skips rate limiting for the Next.js server. Never `NEXT_PUBLIC_` |
 | `ANALYZE`              | `false`                        | Set to `true` to generate bundle analysis report on build (webpack only)                                                           |
 

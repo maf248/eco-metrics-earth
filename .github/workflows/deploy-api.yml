@@ -1,29 +1,42 @@
 name: Deploy API
 
-# Runs only after CI has passed (called from ci.yml, job `deploy-api`) or when
-# dispatched manually. A manual dispatch always deploys the dispatched ref and
-# skips change detection; it is also how edits to this workflow are tested from
-# a branch before they are merged.
+# Runs only after CI has passed (called from ci.yml, jobs `deploy-api-production`
+# and `deploy-api-development`) or when dispatched manually. A manual dispatch
+# always deploys the dispatched ref and skips change detection. Production only
+# deploys from `main`; dispatching `development` from a branch is how edits to
+# this workflow are tested before they are merged.
 on:
-  workflow_call: {}
-  workflow_dispatch: {}
-
-env:
-  # Kept in one place so a future per-environment split (ROADMAP I11) is mechanical.
-  SERVICE: eco-metrics-api
+  workflow_call:
+    inputs:
+      target:
+        description: 'Deploy target: production (eco-metrics-api) or development (eco-metrics-api-dev)'
+        required: true
+        type: string
+  workflow_dispatch:
+    inputs:
+      target:
+        description: 'Deploy target'
+        required: true
+        type: choice
+        options:
+          - development
+          - production
+        default: development
 
 jobs:
   deploy:
-    name: Build and deploy API to Cloud Run
+    name: Build and deploy API to Cloud Run (${{ inputs.target }})
     runs-on: ubuntu-latest
     permissions:
       contents: read
       id-token: write
-    # Literal group on purpose: `github.workflow` would resolve to the caller's
-    # workflow name when this file is called from ci.yml. Overlapping deploys
-    # queue instead of cancelling a rollout that is already in progress.
+    # Literal prefix on purpose: `github.workflow` would resolve to the caller's
+    # workflow name when this file is called from ci.yml. A running deploy is
+    # never cancelled; at most one run per target waits (a newer waiting run
+    # replaces an older one, which is safe because change detection diffs
+    # against the serving SHA). Different targets never wait on each other.
     concurrency:
-      group: deploy-api
+      group: deploy-api-${{ inputs.target }}
       cancel-in-progress: false
     steps:
       - name: Checkout
@@ -32,14 +45,51 @@ jobs:
           # Full history so change detection can diff against the deployed SHA.
           fetch-depth: 0
 
-      - name: Pre-flight checks
+      # Single place where a target maps to its service and CORS variables.
+      # Bash `case` instead of `a && b || c` expressions: an empty optional
+      # variable would make such an expression fall through to the wrong value.
+      - name: Resolve deploy target and pre-flight checks
+        id: target
+        env:
+          DEPLOY_TARGET: ${{ inputs.target }}
+          REF: ${{ github.ref }}
+          GCP_PROJECT_ID: ${{ vars.GCP_PROJECT_ID }}
+          GCP_REGION: ${{ vars.GCP_REGION }}
+          WIF_PROVIDER: ${{ vars.WIF_PROVIDER }}
+          WIF_SERVICE_ACCOUNT: ${{ vars.WIF_SERVICE_ACCOUNT }}
+          CORS_ORIGIN: ${{ vars.CORS_ORIGIN }}
+          CORS_ORIGIN_PATTERN: ${{ vars.CORS_ORIGIN_PATTERN }}
+          CORS_ORIGIN_DEV: ${{ vars.CORS_ORIGIN_DEV }}
+          CORS_ORIGIN_PATTERN_DEV: ${{ vars.CORS_ORIGIN_PATTERN_DEV }}
         run: |
+          case "$DEPLOY_TARGET" in
+            production)
+              service="eco-metrics-api"
+              origin_var="CORS_ORIGIN"
+              pattern_var="CORS_ORIGIN_PATTERN"
+              ;;
+            development)
+              service="eco-metrics-api-dev"
+              origin_var="CORS_ORIGIN_DEV"
+              pattern_var="CORS_ORIGIN_PATTERN_DEV"
+              ;;
+            *)
+              echo "Unknown deploy target '$DEPLOY_TARGET' (expected 'production' or 'development')."
+              exit 1
+              ;;
+          esac
+
+          if [ "$DEPLOY_TARGET" = "production" ] && [ "$REF" != "refs/heads/main" ]; then
+            echo "Production deploys only from main (got $REF). Dispatch 'development' to test from this ref."
+            exit 1
+          fi
+
           missing=()
-          [ -z "${{ vars.GCP_PROJECT_ID }}" ] && missing+=("GCP_PROJECT_ID")
-          [ -z "${{ vars.GCP_REGION }}" ] && missing+=("GCP_REGION")
-          [ -z "${{ vars.WIF_PROVIDER }}" ] && missing+=("WIF_PROVIDER")
-          [ -z "${{ vars.WIF_SERVICE_ACCOUNT }}" ] && missing+=("WIF_SERVICE_ACCOUNT")
-          [ -z "${{ vars.CORS_ORIGIN }}" ] && missing+=("CORS_ORIGIN")
+          for name in GCP_PROJECT_ID GCP_REGION WIF_PROVIDER WIF_SERVICE_ACCOUNT "$origin_var"; do
+            if [ -z "${!name}" ]; then
+              missing+=("$name")
+            fi
+          done
 
           if [ ${#missing[@]} -ne 0 ]; then
             echo "Missing required GitHub variables: ${missing[*]}"
@@ -47,6 +97,13 @@ jobs:
             exit 1
           fi
 
+          {
+            echo "service=$service"
+            echo "origin=${!origin_var}"
+            echo "pattern=${!pattern_var}"
+          } >> "$GITHUB_OUTPUT"
+
+          echo "Deploy target: $DEPLOY_TARGET → service $service (CORS from $origin_var / $pattern_var)."
           echo "All required GitHub variables are set."
 
       - name: Authenticate to Google Cloud
@@ -66,6 +123,8 @@ jobs:
         id: detect
         env:
           EVENT_NAME: ${{ github.event_name }}
+          DEPLOY_TARGET: ${{ inputs.target }}
+          SERVICE: ${{ steps.target.outputs.service }}
           TARGET_SHA: ${{ github.sha }}
           GCP_REGION: ${{ vars.GCP_REGION }}
           GCP_PROJECT_ID: ${{ vars.GCP_PROJECT_ID }}
@@ -77,12 +136,14 @@ jobs:
 
           decide() {
             echo "deploy=$1" >> "$GITHUB_OUTPUT"
+            echo "Deploy target: $DEPLOY_TARGET (service $SERVICE)"
             echo "Deployed SHA: ${deployed_sha:-unknown}"
             echo "Target SHA:   $TARGET_SHA"
             echo "Matched files: ${matched:-none}"
             echo "Decision: deploy=$1 ($2)"
             {
               echo "### API change detection"
+              echo "- Deploy target: \`$DEPLOY_TARGET\` (service \`$SERVICE\`)"
               echo "- Deployed SHA: \`${deployed_sha:-unknown}\`"
               echo "- Target SHA: \`$TARGET_SHA\`"
               echo "- Matched files: $(printf '%s' "${matched:-none}" | tr '\n' ' ')"
@@ -139,8 +200,8 @@ jobs:
         if: steps.detect.outputs.deploy == 'true'
         id: cors
         env:
-          CORS_ORIGIN: ${{ vars.CORS_ORIGIN }}
-          CORS_ORIGIN_PATTERN: ${{ vars.CORS_ORIGIN_PATTERN }}
+          CORS_ORIGIN: ${{ steps.target.outputs.origin }}
+          CORS_ORIGIN_PATTERN: ${{ steps.target.outputs.pattern }}
         run: |
           escape() {
             local value="$1"
@@ -160,7 +221,7 @@ jobs:
         id: deploy
         uses: google-github-actions/deploy-cloudrun@v3
         with:
-          service: ${{ env.SERVICE }}
+          service: ${{ steps.target.outputs.service }}
           image: ${{ vars.GCP_REGION }}-docker.pkg.dev/${{ vars.GCP_PROJECT_ID }}/eco-metrics/api:${{ github.sha }}
           region: ${{ vars.GCP_REGION }}
           project_id: ${{ vars.GCP_PROJECT_ID }}

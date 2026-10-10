@@ -3,10 +3,9 @@ import type { WaterFootprintProduct } from '@eco-metrics/shared';
 
 interface WaterFootprintContentProps {
   products: WaterFootprintProduct[];
-  fetchFailed: boolean;
 }
 
-export function WaterFootprintContent({ products, fetchFailed }: WaterFootprintContentProps) {
+export function WaterFootprintContent({ products }: WaterFootprintContentProps) {
   return (
     <div className="w-full max-w-6xl px-4">
       <p className="mb-3 text-center text-gray-600 dark:text-gray-400">
@@ -21,22 +20,13 @@ export function WaterFootprintContent({ products, fetchFailed }: WaterFootprintC
         directly comparable.
       </p>
 
-      {fetchFailed && (
-        <p
-          role="alert"
-          className="mb-6 rounded-lg bg-red-50 p-4 text-red-800 dark:bg-red-900/20 dark:text-red-200"
-        >
-          Water footprint data is temporarily unavailable. Please try again later.
-        </p>
-      )}
-
-      {!fetchFailed && products.length === 0 && (
+      {products.length === 0 && (
         <p className="text-gray-700 dark:text-gray-300">
           No water footprint data is currently available.
         </p>
       )}
 
-      {!fetchFailed && products.length > 0 && (
+      {products.length > 0 && (
         <>
           <WaterFootprintTable products={products} />
           <p className="mb-8 mt-6 text-sm text-gray-500 dark:text-gray-400">

@@ -1,6 +1,13 @@
 # Deploy `apps/api` on Google Cloud Run
 
-This runbook configures the GCP project, GitHub Actions OIDC authentication, Artifact Registry, and Cloud Run service so that pushes to `develop` build and deploy the NestJS BFF automatically **after CI passes** (the deploy job `needs` the CI job; a red or cancelled CI never deploys).
+This runbook configures the GCP project, GitHub Actions OIDC authentication, Artifact Registry, and two Cloud Run services so that the NestJS BFF is built and deployed automatically **after CI passes** (each deploy job `needs` the CI job; a red or cancelled CI never deploys):
+
+| Target        | Cloud Run service     | Deployed from | Consumed by                                      |
+| ------------- | --------------------- | ------------- | ------------------------------------------------ |
+| `production`  | `eco-metrics-api`     | `main`        | Vercel **Production**                            |
+| `development` | `eco-metrics-api-dev` | `develop`     | Vercel **Preview** (pull requests and `develop`) |
+
+Both services run the same image, configuration and runtime identity; only the CORS values differ. API changes reach production when the `develop` → `main` pull request is merged — the same moment the web app does. Already running the single-service setup? Follow [Cutover to two services](#21-cutover-to-two-services-one-time).
 
 > **Prerequisites:** a GCP account with an active billing account (the Cloud Run always-free tier requires a card on file), the `gcloud` CLI installed, and admin access to the `maf248/eco-metrics-earth` GitHub repo and the Vercel project.
 
@@ -114,16 +121,20 @@ Save this value as `WIF_PROVIDER`.
 
 In the GitHub repo, go to **Settings → Secrets and variables → Actions → Variables** and create these **variables** (not secrets):
 
-| Variable              | Value / example                                                                                                                                    |
-| --------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `GCP_PROJECT_ID`      | `<GCP_PROJECT_ID>`                                                                                                                                 |
-| `GCP_REGION`          | `us-central1` (or another Tier 1 region for the free-tier numbers above)                                                                           |
-| `WIF_PROVIDER`        | `projects/<GCP_PROJECT_NUMBER>/locations/global/workloadIdentityPools/...`                                                                         |
-| `WIF_SERVICE_ACCOUNT` | `github-deployer@<GCP_PROJECT_ID>.iam.gserviceaccount.com`                                                                                         |
-| `CORS_ORIGIN`         | Comma-separated list of exact origins, e.g. `https://eco-metrics-earth.vercel.app` or `http://localhost:3000,https://eco-metrics-earth.vercel.app` |
-| `CORS_ORIGIN_PATTERN` | Optional anchored regex for Vercel previews, e.g. `^https://eco-metrics-earth-[a-z0-9-]+\.vercel\.app$` — leave empty/unset by default             |
+| Variable                  | Value / example                                                                                                                              |
+| ------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| `GCP_PROJECT_ID`          | `<GCP_PROJECT_ID>`                                                                                                                           |
+| `GCP_REGION`              | `us-central1` (or another Tier 1 region for the free-tier numbers above)                                                                     |
+| `WIF_PROVIDER`            | `projects/<GCP_PROJECT_NUMBER>/locations/global/workloadIdentityPools/...`                                                                   |
+| `WIF_SERVICE_ACCOUNT`     | `github-deployer@<GCP_PROJECT_ID>.iam.gserviceaccount.com`                                                                                   |
+| `CORS_ORIGIN`             | **Production** service. Comma-separated list of exact origins, e.g. `https://eco-metrics-earth.vercel.app`                                   |
+| `CORS_ORIGIN_PATTERN`     | **Production** service, optional anchored regex. Leave unset: previews use the dev service                                                   |
+| `CORS_ORIGIN_DEV`         | **Dev** service. Comma-separated list of exact origins, e.g. `http://localhost:3000,https://eco-metrics-earth-git-develop-<team>.vercel.app` |
+| `CORS_ORIGIN_PATTERN_DEV` | **Dev** service, optional anchored regex for Vercel previews, e.g. `^https://eco-metrics-earth-[a-z0-9-]+\.vercel\.app$`                     |
 
 > The workflow escapes commas and backslashes in these values automatically before passing them to `deploy-cloudrun`, so store the raw value in the GitHub variable (no manual escaping).
+>
+> The four GCP/WIF variables are shared by both targets. The pre-flight step checks only the variables the selected target needs: `CORS_ORIGIN` for `production`, `CORS_ORIGIN_DEV` for `development`. Repository variables (not GitHub Environments) are used because environment-scoped variables are unavailable for private repositories on GitHub Free.
 
 ## 9. Create the internal API key secret (before the first deploy of this change)
 
@@ -163,20 +174,28 @@ After creating the WIF provider and grants, wait **~5 minutes** before the first
 
 Pick one:
 
-- **Merge or push to `develop`.** The **CI** workflow runs first; the `Deploy API` job starts only if the CI job `Format, Lint, Typecheck, Build & Test` succeeds on that commit. Before building, the deploy reads the image that is currently serving and diffs it against the commit being deployed (change detection, see [Optional change-detection verification](#15-optional-change-detection-verification)). When the service does not exist yet or its image tag is not a commit SHA, it always deploys.
-- **Manual run.** Go to **Actions → Deploy API → Run workflow** and trigger a `workflow_dispatch` run against `develop`. A manual run **skips the CI gate and change detection** and always deploys the dispatched ref. Use it for the first deploy, to force a redeploy (for example after rotating a secret) or to test edits to the deploy workflow from a branch.
+- **Push to `develop` or merge to `main`.** The **CI** workflow runs first; the `Deploy API (development)` job (on `develop`) or `Deploy API (production)` job (on `main`) starts only if the CI job `Format, Lint, Typecheck, Build & Test` succeeds on that commit. Before building, the deploy reads the image that is currently serving on **that target's** service and diffs it against the commit being deployed (change detection, see [Optional change-detection verification](#15-optional-change-detection-verification)). When the service does not exist yet or its image tag is not a commit SHA, it always deploys — so the first push creates the service.
+- **Manual run.** Go to **Actions → Deploy API → Run workflow**, pick the branch and the **target** (`development` or `production`). A manual run **skips the CI gate and change detection** and always deploys the dispatched ref. Use it for a first deploy, to force a redeploy (for example after rotating a secret) or to test edits to the deploy workflow from a branch (target `development`).
+  - **`production` runs only from `main`.** Dispatching `production` from any other branch fails in the pre-flight step before touching GCP.
 
-Watch the workflow build the image, push it to Artifact Registry, and deploy the Cloud Run service. Overlapping deploys queue (concurrency group `deploy-api`, never cancelled mid-rollout).
+Watch the workflow build the image, push it to Artifact Registry, and deploy the Cloud Run service. Each target has its own concurrency group (`deploy-api-production`, `deploy-api-development`): a running deploy is never cancelled mid-rollout, at most one more run per target waits (a newer waiting run replaces an older one, which is safe because change detection diffs against the serving commit), and deploys of different targets run independently.
 
-## 12. Record the Cloud Run URL
+## 12. Record the Cloud Run URLs
 
 After a successful deploy, the final step prints a URL like:
 
 ```
-https://eco-metrics-api-abcdefghij-klm.<GCP_REGION>.run.app
+https://eco-metrics-api-abcdefghij-klm.<GCP_REGION>.run.app       # production
+https://eco-metrics-api-dev-abcdefghij-klm.<GCP_REGION>.run.app   # development
 ```
 
-Save this URL. It is needed for the Vercel `API_BASE_URL` in the next step.
+Or read them at any time:
+
+```bash
+gcloud run services describe eco-metrics-api-dev --region=<GCP_REGION> --project=<GCP_PROJECT_ID> --format='value(status.url)'
+```
+
+Save both URLs. They are needed for the Vercel `API_BASE_URL` in the next steps.
 
 ## 13. Verify the deployed API
 
@@ -193,8 +212,11 @@ curl -s "$RUN_URL/api/v1/water-footprint/products" | head -c 300
 ## 14. Wire up Vercel
 
 1. In the Vercel dashboard, open the project **Settings → Environment Variables**.
-2. Set `API_BASE_URL` to `https://<run-url>/api/v1` for both **Production** and **Preview**.
-3. Redeploy the web app (or wait up to 24 h for ISR background revalidation).
+2. Set `API_BASE_URL` per environment (edit the existing variable and split it if it is shared):
+   - **Production** → `https://<production-run-url>/api/v1` (`eco-metrics-api`)
+   - **Preview** → `https://<dev-run-url>/api/v1` (`eco-metrics-api-dev`)
+   - Any custom environment that deploys `develop` → the dev URL as well.
+3. Redeploy the web app: environment variables apply only to new deployments.
 4. Open `/water-footprint/` and confirm the product table renders.
 5. To make Vercel production deployments wait for CI as well, follow [`docs/deploy/vercel.md`](./vercel.md) (Deployment Checks).
 
@@ -206,18 +228,19 @@ curl -s "$RUN_URL/api/v1/water-footprint/products" | head -c 300
    gcloud secrets versions access latest --secret=internal-api-key --project=<GCP_PROJECT_ID>
    ```
 
-2. In **Settings → Environment Variables**, add `INTERNAL_API_KEY` with that value for **Production**, **Preview** and any custom environment that deploys a branch (e.g. `develop`). Leave **Development** unchecked: local development talks to the local API, and `vercel env pull` would otherwise copy the production key to disk. It is server-only: never prefix it with `NEXT_PUBLIC_` and never expose it to the browser.
+2. In **Settings → Environment Variables**, add `INTERNAL_API_KEY` with that value for **Production**, **Preview** and any custom environment that deploys a branch (e.g. `develop`). Both Cloud Run services mount the same secret, so one value serves both. Leave **Development** unchecked: local development talks to the local API, and `vercel env pull` would otherwise copy the production key to disk. It is server-only: never prefix it with `NEXT_PUBLIC_` and never expose it to the browser.
 3. Redeploy the web app so server-side fetches send `X-Internal-Api-Key` (the API then skips throttling for the Next.js server).
 
 If the variable is missing on either side, nothing breaks: the API simply throttles the web server per client IP.
 
 ## 15. Optional change-detection verification
 
-The `Detect api-affecting changes` step compares the commit being deployed with the commit of the image that is serving (the image tag is the commit SHA). It deploys when any file in the diff is one of `apps/api/**`, `packages/shared/**`, `Dockerfile`, `.dockerignore`, `.github/workflows/deploy-api.yml`, or a root build manifest (`package.json`, `package-lock.json`, `.npmrc`, `.nvmrc`, `nx.json`, `tsconfig.base.json`, `tsconfig.json`). It logs the deployed SHA, the target SHA, the matched files and the decision, and repeats them in the job summary.
+The `Detect api-affecting changes` step compares the commit being deployed with the commit of the image that is serving **on the target's own service** (the image tag is the commit SHA): production diffs against what `eco-metrics-api` runs, development against what `eco-metrics-api-dev` runs. It deploys when any file in the diff is one of `apps/api/**`, `packages/shared/**`, `Dockerfile`, `.dockerignore`, `.github/workflows/deploy-api.yml`, or a root build manifest (`package.json`, `package-lock.json`, `.npmrc`, `.nvmrc`, `nx.json`, `tsconfig.base.json`, `tsconfig.json`). It logs the deployed SHA, the target SHA, the matched files and the decision, and repeats them in the job summary.
 
 - Push a change that touches only `apps/web/**` → CI passes, the `Deploy API` job runs but skips build and deploy (the job summary says no API inputs changed), and Vercel builds as usual.
 - Push a change that touches only `apps/api/**`, `packages/shared/**` or any other file listed above → CI passes, then the `Deploy API` job builds and deploys, and Vercel skips the build.
-- Push a commit that fails CI → the `Deploy API` job is skipped (it does not run at all) and no new revision is created.
+- Push a commit that fails CI → the deploy job is skipped (it does not run at all) and no new revision is created.
+- Release commits on `main` (`[skip ci]`) never deploy by themselves. Because they touch `package.json`/`package-lock.json`, the next deploy of each target rebuilds even without API changes; this is expected.
 
 ## 16. Cost controls and free tier
 
@@ -232,7 +255,23 @@ At this project's volume (hundreds of requests/month), the bill stays at **US$0*
 Recommended safeguards:
 
 - Set a GCP billing alert (e.g. notify at US$1/month).
-- Artifact Registry: the first 0.5 GB-month is free. Each image is ~100–120 MB compressed, so several SHA tags fit. Add an occasional cleanup policy or manual cleanup to keep storage trivial.
+- Artifact Registry: the first 0.5 GB-month is free. Each image is ~100–120 MB compressed and both services push to the same `eco-metrics/api` package, so images accumulate twice as fast. Apply the versioned cleanup policy (keeps the 20 most recent images, deletes older ones after 90 days):
+
+  ```bash
+  # Preview what it would delete (no changes)
+  gcloud artifacts repositories set-cleanup-policies eco-metrics \
+    --policy=docs/deploy/artifact-registry-cleanup-policy.json \
+    --location=<GCP_REGION> --project=<GCP_PROJECT_ID> --dry-run
+
+  # Apply it
+  gcloud artifacts repositories set-cleanup-policies eco-metrics \
+    --policy=docs/deploy/artifact-registry-cleanup-policy.json \
+    --location=<GCP_REGION> --project=<GCP_PROJECT_ID> --no-dry-run
+  ```
+
+  Keeping a count (not only an age) protects the production image while `main` lags `develop`, **but only up to 20 API images**: Cloud Run revisions reference their image, so if the image serving production falls outside the 20 most recent and is older than 90 days, the policy deletes it and the next cold start of production cannot pull it. Merge `develop` → `main` before that many API-affecting dev deploys accumulate, or raise `keepCount`. Twenty images can exceed 0.5 GB (cents per month); lower `keepCount` in the JSON for a strict US$0, at the cost of fewer rollback images.
+
+- Both services scale to zero and share the always-free tier of the billing account.
 - Cloud Logging: 30-day retention on the free tier, with 50 GB/month ingestion free.
 
 ## 17. Post-deploy follow-up (done)
@@ -276,7 +315,7 @@ and update the `TRUST_PROXY_HOPS` value in `.github/workflows/deploy-api.yml` so
 ## 19. Rotating `INTERNAL_API_KEY`
 
 1. Add a new secret version: `openssl rand -hex 32 | gcloud secrets versions add internal-api-key --data-file=- --project=<GCP_PROJECT_ID>`.
-2. Redeploy the API (Run workflow, or `gcloud run services update eco-metrics-api --region=<GCP_REGION> --project=<GCP_PROJECT_ID>`): `latest` is resolved when a revision starts.
+2. Redeploy **both** services (Run workflow once per target, or `gcloud run services update <SERVICE> --region=<GCP_REGION> --project=<GCP_PROJECT_ID>` for `eco-metrics-api` and `eco-metrics-api-dev`): `latest` is resolved when a revision starts.
 3. Update `INTERNAL_API_KEY` in Vercel (Production and Preview) and redeploy the web app.
 4. Disable the old version: `gcloud secrets versions disable <OLD_VERSION> --secret=internal-api-key --project=<GCP_PROJECT_ID>`.
 
@@ -286,7 +325,23 @@ Between steps 2 and 3 the web server is throttled per IP like any other client; 
 
 The API calls `app.enableShutdownHooks()`, so on `SIGTERM` (sent by Cloud Run before stopping an instance) Nest stops accepting connections, lets in-flight requests finish and then terminates (Nest re-raises the signal after closing, so the process ends by `SIGTERM`, status 143, within milliseconds when idle). The container runs `CMD ["node", "main.js"]` in exec form, so Node is PID 1 and receives the signal directly; an init process such as `tini` is not needed because the app spawns no child processes. Cloud Run's default 10 s grace period is unchanged.
 
+## 21. Cutover to two services (one-time)
+
+For a project that already runs the single `eco-metrics-api` service deployed from `develop`. Order matters: the push that carries the two-service workflow makes `develop` deploy to the dev service and stops `develop` from deploying production.
+
+1. **GitHub — before pushing the change.** Add the repository variables `CORS_ORIGIN_DEV` (required) and `CORS_ORIGIN_PATTERN_DEV` (optional; move the current `CORS_ORIGIN_PATTERN` value here). Without `CORS_ORIGIN_DEV`, the development deploy fails in the pre-flight step (production is unaffected).
+2. **Push the change to `develop`.** CI runs; `Deploy API (development)` finds no `eco-metrics-api-dev` service, deploys anyway and creates it. Production keeps serving the last image deployed from `develop`.
+3. **Verify the dev service** with [§13](#13-verify-the-deployed-api) against its URL ([§12](#12-record-the-cloud-run-urls)).
+4. **Vercel.** Point **Preview** `API_BASE_URL` at the dev URL ([§14](#14-wire-up-vercel)) and redeploy a preview to check the pages render.
+5. **Merge `develop` → `main`.** CI on `main` runs `Deploy API (production)` for the first time from `main`.
+6. **Trim production CORS** (optional). Previews no longer call production, so remove the `CORS_ORIGIN_PATTERN` variable and clear it on the service: `gcloud run services update eco-metrics-api --remove-env-vars CORS_ORIGIN_PATTERN --region=<GCP_REGION> --project=<GCP_PROJECT_ID>`. `http://localhost:3000` can also go from `CORS_ORIGIN` (local development uses the local API, or the dev service).
+7. **Apply the Artifact Registry cleanup policy** ([§16](#16-cost-controls-and-free-tier)).
+
+**Rollback:** revert the change; `develop` then deploys production again on the next push. Delete the dev service with `gcloud run services delete eco-metrics-api-dev --region=<GCP_REGION> --project=<GCP_PROJECT_ID>` and point Vercel Preview back at the production URL.
+
 ## Troubleshooting
+
+> Commands below use `eco-metrics-api`; replace it with `eco-metrics-api-dev` when the problem is on the dev service.
 
 ### WIF authentication error
 
@@ -294,7 +349,7 @@ The API calls `app.enableShutdownHooks()`, so on `SIGTERM` (sent by Cloud Run be
 
 **Fix:**
 
-1. Double-check the five GitHub variables for typos.
+1. Double-check the GitHub variables for typos.
 2. Confirm IAM propagation has completed (wait another 2–3 minutes).
 3. Verify the attribute condition matches `maf248/eco-metrics-earth` exactly.
 4. Re-run `gcloud iam service-accounts add-iam-policy-binding` from step 6.
@@ -329,9 +384,15 @@ gcloud run services update eco-metrics-api --remove-env-vars CORS_ORIGIN_PATTERN
 
 ### Cold-start first request
 
-**Symptom:** the first request after idle is slow (~1–3 s).
+**Symptom:** the first request after idle is slow: about 6–7 s (measured on 2026-10-09).
 
-**Fix:** this is expected behavior for scale-to-zero. The web app's ISR background revalidation absorbs it; end users do not wait on a cold start.
+**Fix:** this is expected behavior for scale-to-zero, and the web app absorbs it:
+
+- `getWaterFootprintProducts()` makes 2 attempts of 10 s each. The first one wakes the instance and the second one finds it ready.
+- If both fail, it logs `Water footprint fetch failed after 2 attempts` and throws. During an ISR revalidation, visitors keep receiving the last good page (`x-nextjs-cache: STALE`) and the page regenerates on a later request once the API answers. A failed fetch is never cached.
+- `/water-footprint/` is not pre-rendered at build time: it is generated on its first request after each deploy, so that one request may wait for the cold start. If the API is down at that moment, the visitor sees the error page and the next request tries again.
+
+End users only wait on a cold start for that first request after a deploy.
 
 ### Deploy fails with a Secret Manager error
 
@@ -346,9 +407,21 @@ gcloud run services update eco-metrics-api --remove-env-vars CORS_ORIGIN_PATTERN
 
 ### The Deploy API job was skipped
 
-**Symptom:** a push to `develop` shows the `Deploy API` job as skipped (grey) and no new revision exists.
+**Symptom:** a push to `develop` (or `main`) shows `Deploy API (development)` (or `Deploy API (production)`) as skipped (grey) and no new revision exists.
 
-**Fix:** the job `needs` the CI job, so it is skipped when `Format, Lint, Typecheck, Build & Test` failed or was cancelled (a newer push to the same ref supersedes a running CI). Fix CI and push again; the next successful run deploys every change since the serving revision. It also does not run for pushes to other branches or for pull requests.
+**Fix:** the job `needs` the CI job, so it is skipped when `Format, Lint, Typecheck, Build & Test` failed or was cancelled (a newer push to the same ref supersedes a running CI). Fix CI and push again; the next successful run deploys every change since the serving revision. The job for the other branch is always skipped (a push to `develop` never runs the production job, and vice versa), and neither runs for other branches or pull requests.
+
+### Production dispatch fails with "Production deploys only from main"
+
+**Symptom:** a manual run with target `production` fails in `Resolve deploy target and pre-flight checks`.
+
+**Fix:** expected when it was dispatched from a branch other than `main`. Dispatch from `main`, or use target `development` to test from a branch.
+
+### API change on `develop` is not in production
+
+**Symptom:** an API change is live on the dev service but not on production.
+
+**Fix:** expected. Production deploys from `main`; open and merge the `develop` → `main` pull request. For an urgent redeploy of what is already on `main`, run **Actions → Deploy API → Run workflow** from `main` with target `production`.
 
 ### Deploy ran but nothing was built or deployed
 
@@ -366,4 +439,4 @@ gcloud run services update eco-metrics-api --remove-env-vars CORS_ORIGIN_PATTERN
 
 **Symptom:** the `Pre-flight checks` step of an automatic run fails with `Missing required GitHub variables`, while a manual run works.
 
-**Fix:** repository variables are expected to be available to a reusable workflow called from the same repository. If they are not, pass the five required values and `CORS_ORIGIN_PATTERN` as `workflow_call` inputs from the `deploy-api` job in `ci.yml` (`${{ vars.X }}`) and read them from `inputs` in `deploy-api.yml`.
+**Fix:** repository variables are expected to be available to a reusable workflow called from the same repository. If they are not, pass the required values and the CORS variables as `workflow_call` inputs from the `deploy-api-*` jobs in `ci.yml` (`${{ vars.X }}`) and read them from `inputs` in `deploy-api.yml`.

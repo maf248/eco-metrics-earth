@@ -1,0 +1,19 @@
+[
+  {
+    "name": "keep-recent-api-images",
+    "action": { "type": "Keep" },
+    "mostRecentVersions": {
+      "packageNamePrefixes": ["api"],
+      "keepCount": 20
+    }
+  },
+  {
+    "name": "delete-old-api-images",
+    "action": { "type": "Delete" },
+    "condition": {
+      "tagState": "any",
+      "packageNamePrefixes": ["api"],
+      "olderThan": "90d"
+    }
+  }
+]
