@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-FROM node:24-alpine AS builder
+FROM node:24-alpine@sha256:ebfe2f90462722a7a4de65e91990e97fe0d401c70e0e762c5b53302f905ec1c1 AS builder
 
 WORKDIR /repo
 ENV NX_DAEMON=false
@@ -31,7 +31,7 @@ RUN npx nx sync && npx nx run api:prune
 RUN cd apps/api/dist && npm ci --omit=dev --ignore-scripts --no-audit --no-fund
 
 # --- Runtime stage ---
-FROM node:24-alpine
+FROM node:24-alpine@sha256:ebfe2f90462722a7a4de65e91990e97fe0d401c70e0e762c5b53302f905ec1c1
 
 ENV NODE_ENV=production
 WORKDIR /app

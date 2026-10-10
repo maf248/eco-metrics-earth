@@ -98,9 +98,9 @@ La categoría con mejor relación datos/esfuerzo (OWID CO₂ dataset: anual, per
 
 - `Co2EmissionsModule` + controller: `GET /api/v1/co2-emissions/series?country=ARG&from=1990` (DTOs con `class-validator` para ISO-3166, rangos de años).
 - Service que mapea OWID → `MetricSeries` con `DataSourceAttribution`.
-- **Fallas del proveedor con status definido:** hoy `OwidClientError` no es una `HttpException`, así que el filtro global lo responde como `500` genérico. Definir el contrato — p. ej. `502` en formato `ApiResponse` cuando OWID falla o responde algo inválido — que reutilizarán P1.1/P1.2 e I13.
+- **Fallas del proveedor con status definido:** hoy `OwidClientError` no es una `HttpException`, así que el filtro global lo responde como `500` genérico. Definir el contrato — p. ej. `502` en formato `ApiResponse` cuando OWID falla o responde algo inválido — que reutilizarán P1.1/P1.2 e I12.
 - Swagger tag + tests unitarios con fixtures (sin llamadas de red en tests).
-- **Healthcheck de dependencias, fuera del startup probe:** instalar `@nestjs/terminus` y registrar un `HttpHealthIndicator` contra un endpoint liviano de OWID en un endpoint **separado** (p. ej. `GET /api/v1/health/dependencies`). `GET /api/v1/health` sigue siendo solo liveness: es el startup probe de Cloud Run (`deploy-api.yml`, timeout 2 s), así que si consultara a OWID, una caída de OWID impediría que arranquen instancias y rompería deploys — justo lo que I13 busca evitar.
+- **Healthcheck de dependencias, fuera del startup probe:** instalar `@nestjs/terminus` y registrar un `HttpHealthIndicator` contra un endpoint liviano de OWID en un endpoint **separado** (p. ej. `GET /api/v1/health/dependencies`). `GET /api/v1/health` sigue siendo solo liveness: es el startup probe de Cloud Run (`deploy-api.yml`, timeout 2 s), así que si consultara a OWID, una caída de OWID impediría que arranquen instancias y rompería deploys — justo lo que I12 busca evitar.
 - **Frontend:** la página `/co2-emissions/` deja de ser placeholder — Server Component con `fetch` al BFF e ISR (`revalidate: 86400`), Suspense boundary y primer gráfico de líneas con la librería elegida en I09 (al integrarla aplica el recordatorio de `next/dynamic`). Como con water-footprint, se excluye de `generateStaticParams` para que `next build` no dependa del BFF.
 - **Patrón replicable en la web:** hoy `[category]/page.tsx` despacha con un `if` por water-footprint y la lógica de reintentos ante cold start vive en `lib/waterFootprint.ts`. Extraer un helper genérico de fetch al BFF (reintentos + validación de forma) y un despacho por categoría, para que P1.1/P1.2 solo agreguen piezas.
 - **Atribución visible** "Data: Our World in Data (CC BY)" usando el componente de I08, y OWID agregado a `/data-sources/`.
@@ -114,7 +114,7 @@ La categoría con mejor relación datos/esfuerzo (OWID CO₂ dataset: anual, per
 **Dificultad:** P1.0: 5/10 (primera integración frontend con charts, ya sin la elección de librería ni la atribución) · P1.1/P1.2: 3/10 c/u (patrón ya establecido)
 **Requisitos:**
 
-- I09 e I08 completos antes de P1.0. I13 conviene entre P1.0 y P1.1, cuando ya existe el contrato de error del proveedor y antes de multiplicar módulos.
+- I09 e I08 completos antes de P1.0. I12 conviene entre P1.0 y P1.1, cuando ya existe el contrato de error del proveedor y antes de multiplicar módulos.
 - P2 instala `@nestjs/terminus` pero no refactoriza el healthcheck. **Cada módulo de P1 debe agregar su propio `HttpHealthIndicator` al endpoint de dependencias** para validar su API externa (OWID, NOAA, World Bank) — nunca al liveness que usa el startup probe. El primer módulo (P1.0) instala `@nestjs/terminus` directamente si se ejecuta antes que P2.
   **Estado:** Pendiente
 
@@ -190,14 +190,13 @@ La categoría con mejor relación datos/esfuerzo (OWID CO₂ dataset: anual, per
 
 Si no estás seguro por dónde empezar, este es el orden recomendado:
 
-1. **I12: Pinear imagen base + Dependabot** → Builds reproducibles, cambio corto y aislado (Dificultad: 2/10)
-2. **I10: Eliminar endpoints de scaffold** → Achica la superficie pública del API; independiente de P1 (Dificultad: 3/10)
-3. **I09: Librería de charts + paletas** → Prerrequisito de P1.0 (Dificultad: 4/10)
-4. **I08: Atribución de datos + `/data-sources/`** → Prerrequisito legal de P1.0 (Dificultad: 3/10)
-5. **P1.0: Módulo `co2-emissions` end-to-end** → Primera sección con datos reales + charts (Dificultad: 5/10)
-6. **I13: Resiliencia del BFF ante proveedores externos** → Antes de multiplicar módulos
-7. **P1.1 / P1.2: `global-temperature` y `energy-sources`** → Replicar el patrón (Dificultad: 3/10 c/u)
-8. **P2: Monitoreo y observabilidad** → Logs, métricas y error tracking (Dificultad: 5/10)
+1. **I10: Eliminar endpoints de scaffold** → Achica la superficie pública del API; independiente de P1 (Dificultad: 3/10)
+2. **I09: Librería de charts + paletas** → Prerrequisito de P1.0 (Dificultad: 4/10)
+3. **I08: Atribución de datos + `/data-sources/`** → Prerrequisito legal de P1.0 (Dificultad: 3/10)
+4. **P1.0: Módulo `co2-emissions` end-to-end** → Primera sección con datos reales + charts (Dificultad: 5/10)
+5. **I12: Resiliencia del BFF ante proveedores externos** → Antes de multiplicar módulos
+6. **P1.1 / P1.2: `global-temperature` y `energy-sources`** → Replicar el patrón (Dificultad: 3/10 c/u)
+7. **P2: Monitoreo y observabilidad** → Logs, métricas y error tracking (Dificultad: 5/10)
 
 D1 (TypeScript 7) queda como seguimiento pasivo — sin acción por ahora.
 
@@ -231,7 +230,7 @@ Lista de hallazgos del análisis de repositorio, ordenados por prioridad (más c
 
 ### 🟡 CI/CD
 
-- **I12.** Pinear la imagen base `node:24-alpine` por digest y agregar Dependabot para `docker` y `github-actions` — hoy la imagen base es flotante, lo que mantiene los parches de seguridad de SO y Node pero hace los builds no reproducibles a nivel de base. Un digest sin actualizador automático congelaría esos parches, por eso ambas cosas van juntas (Dependabot propone la actualización del digest y de las versiones de las actions). Dificultad: 2/10. Requiere: spec OpenSpec corta (toca el `Dockerfile` y `.github/dependabot.yml`).
+- **I13.** Construir la imagen Docker del API en CI sin publicarla (`docker build` sin push, idealmente con caché de capas y solo cuando cambian archivos que afectan al API, replicando la lista de rutas de `Detect api-affecting changes` de `deploy-api.yml`) — hoy el build de la imagen solo ocurre en el deploy (dev y prod), después del merge, así que una imagen base rota (p. ej. un PR de Dependabot) o un cambio en el `Dockerfile` o en las dependencias del API falla recién ahí y no en el PR. Aumenta el valor de los PRs semanales de Dependabot para `docker`. Dificultad: 3/10. Requiere: spec OpenSpec (toca `ci.yml`).
 
 ### 🟡 Testing
 
@@ -260,7 +259,7 @@ Lista de hallazgos del análisis de repositorio, ordenados por prioridad (más c
 ### 🟡 Datos / Proveedores
 
 - **I08.** Atribución de datos (requisito legal, no opcional) — CC BY exige atribución visible. Prerrequisito de P1.0, como propuesta propia (ver _Prerrequisitos de P1.0_): componente de atribución al pie de cada visualización ("Data: Our World in Data — CC BY" con link) + página `/data-sources/` listando proveedores y licencias. Alimentado por `ApiResponse<T>.meta.source` (`DataSourceAttribution`, ya disponible en `@eco-metrics/shared`). Bonus SEO: contenido indexable con estructura.
-- **I13.** Resiliencia del BFF ante proveedores externos — hoy la web solo protege la llamada a nuestro BFF (2 intentos de 10 s + stale-if-error del ISR, change `water-footprint-cold-start-resilience`), lo que alcanza para el dataset propio de water footprint. Las próximas categorías dependen de proveedores externos (OWID, etc.) a través del BFF, y la caída de un tercero no debería romper una página ni bloquear un deploy. Propuesta: el BFF guarda la última respuesta buena de cada proveedor y, si el proveedor falla, la devuelve marcada como desactualizada (p. ej. `meta.stale` + `fetchedAt`) o responde un status/código acordado cuando no tiene datos; la web decide por sección qué mostrar (datos viejos o un aviso de "no disponible") sin fallar el build. Requiere caché persistente gratuito (Cloud Run escala a cero y pierde el caché en memoria): Cloud Storage o Firestore dentro del free tier, o un snapshot en la imagen. Conviene hacerlo entre P1.0 y P1.1: parte del contrato de error del proveedor que define P1.0.
+- **I12.** Resiliencia del BFF ante proveedores externos — hoy la web solo protege la llamada a nuestro BFF (2 intentos de 10 s + stale-if-error del ISR, change `water-footprint-cold-start-resilience`), lo que alcanza para el dataset propio de water footprint. Las próximas categorías dependen de proveedores externos (OWID, etc.) a través del BFF, y la caída de un tercero no debería romper una página ni bloquear un deploy. Propuesta: el BFF guarda la última respuesta buena de cada proveedor y, si el proveedor falla, la devuelve marcada como desactualizada (p. ej. `meta.stale` + `fetchedAt`) o responde un status/código acordado cuando no tiene datos; la web decide por sección qué mostrar (datos viejos o un aviso de "no disponible") sin fallar el build. Requiere caché persistente gratuito (Cloud Run escala a cero y pierde el caché en memoria): Cloud Storage o Firestore dentro del free tier, o un snapshot en la imagen. Conviene hacerlo entre P1.0 y P1.1: parte del contrato de error del proveedor que define P1.0.
 - **I09.** Elegir librería de charts — pendiente. Prerrequisito de P1.0, como propuesta propia que también define los tokens de chart y la paleta categórica en ambos temas (ver _Prerrequisitos de P1.0_). Ver `docs/technical/libraries.md`: tiene candidatas, descartadas con motivo, spikes por candidata y los gates a cumplir. La decisión se registra en `docs/design-system.md` y activa el recordatorio de Dynamic Imports.
 
 ---
