@@ -1,3 +1,13 @@
+## [2.10.0](https://github.com/maf248/eco-metrics-earth/compare/v2.9.0...v2.10.0) (2026-10-10)
+
+### Features
+
+* **deploy:** add dev Cloud Run service from develop and deploy production API from main ([562d0ad](https://github.com/maf248/eco-metrics-earth/commit/562d0ad349b476e8a791b0a3048ec5f961ab75d9))
+
+### Bug Fixes
+
+* **web:** retry the BFF fetch and never cache a failed water-footprint render ([d7c340e](https://github.com/maf248/eco-metrics-earth/commit/d7c340e53b7a465ed03536830c97c5cb7649b73c))
+
 ## [2.9.0](https://github.com/maf248/eco-metrics-earth/compare/v2.8.1...v2.9.0) (2026-10-09)
 
 ### Features
