@@ -12,7 +12,7 @@ A `Dockerfile` SHALL exist at the repository root (build context = repo root). I
 
 The **builder stage** SHALL, in order: copy the root manifests (`package.json`, `package-lock.json`, `.npmrc`, `.nvmrc`, `nx.json`, `tsconfig.base.json`, `tsconfig.json`) and the workspace manifests (`apps/api/package.json`, `packages/shared/package.json`) first (layer-cache friendly); run `HUSKY=0 npm ci` (full install — NX and webpack are dev dependencies; `HUSKY=0` because `.git` is not in the context, mirroring the `release.yml` convention; `legacy-peer-deps` comes from the copied `.npmrc`); copy the `apps/api` and `packages/shared` sources; run `npx nx run api:prune` (which triggers `build` → `prune-lockfile` → `copy-workspace-modules` and emits `apps/api/dist` with `main.js`, `data/water-footprint.json`, a pruned `package.json` carrying `"@eco-metrics/shared": "file:./workspace_modules/@eco-metrics/shared"`, a pruned `package-lock.json`, and `workspace_modules/@eco-metrics/shared` including its built `dist/`); then install the runtime dependencies **inside** `apps/api/dist` with `npm ci --omit=dev --ignore-scripts` (plus `--no-audit --no-fund`) **from the pruned `package-lock.json` emitted by `prune-lockfile`**, so every transitive dependency resolves to the exact version recorded in the root lockfile. The Dockerfile SHALL NOT delete or regenerate the pruned lockfile, SHALL NOT use `npm install` for the dist install, and SHALL NOT use `--legacy-peer-deps` for it. The root `overrides` block (security pins) SHALL NOT be copied into `dist/package.json`: the pins are already resolved in the root lockfile and carried into the pruned lockfile (see design.md D3).
 
-The **runtime stage** SHALL copy only `apps/api/dist` from the builder (as `/app`), set `ENV NODE_ENV=production`, run as non-root (`USER node`, with `--chown=node:node` on the copy), declare `EXPOSE 8080` as documentation, and set `CMD ["node", "main.js"]`. The image SHALL NOT contain a `HEALTHCHECK` instruction (Cloud Run uses service-level startup-probe configuration, not the Docker directive). The final image SHALL be fully self-contained: `node main.js` resolves every dependency — including `@eco-metrics/shared` — from `/app/node_modules`, with no workspace tree, no root `node_modules`, and no `.env` file in the image.
+The **runtime stage** SHALL copy only `apps/api/dist` from the builder (as `/app`), set `ENV NODE_ENV=production`, run as non-root (`USER node`, with `--chown=node:node` on the copy), declare `EXPOSE 8080` as documentation, and set `CMD ["node", "main.js"]`. The runtime stage SHALL remove the package managers bundled with the base image — npm, npx, corepack and yarn (their packages under `/usr/local/lib/node_modules/` and `/opt/yarn-v*`, and their `/usr/local/bin` entries) — because the runtime only runs `node main.js` and they only add vulnerable, unused code; the builder stage keeps using npm. The image SHALL NOT contain a `HEALTHCHECK` instruction (Cloud Run uses service-level startup-probe configuration, not the Docker directive). The final image SHALL be fully self-contained: `node main.js` resolves every dependency — including `@eco-metrics/shared` — from `/app/node_modules`, with no workspace tree, no root `node_modules`, and no `.env` file in the image.
 
 #### Scenario: Image builds from a clean checkout
 
@@ -71,6 +71,14 @@ The **runtime stage** SHALL copy only `apps/api/dist` from the builder (as `/app
 - **WHEN** the registry manifest for `node:24-alpine@sha256:<digest>` is requested
 - **THEN** its media type is an OCI image index or Docker manifest list (not a single-platform image manifest)
 - **AND** it equals the `Docker-Content-Digest` returned for the `node:24-alpine` tag at the time of pinning
+
+#### Scenario: Runtime image ships no package manager
+
+- **GIVEN** the built runtime image
+- **WHEN** its filesystem is inspected
+- **THEN** none of `npm`, `npx`, `corepack`, `yarn` or `yarnpkg` resolves on the `PATH`
+- **AND** `/usr/local/lib/node_modules/npm`, `/usr/local/lib/node_modules/corepack` and `/opt/yarn-v*` do not exist
+- **AND** `node main.js` still starts the API and `GET /api/v1/health` returns `200`
 
 ### Requirement: Docker build context excludes everything the API build does not need
 

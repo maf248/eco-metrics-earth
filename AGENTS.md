@@ -331,6 +331,7 @@ Pre-PR checklist: `npm run lint`, `npm run build`, `npm run test`, and `npm run 
   - Shared dev tooling (e.g., `eslint`, `prettier`, `nx`, `typescript`) → root `package.json`
   - When in doubt, ask before installing.
 - **`legacy-peer-deps=true` in `.npmrc` is required** because `eslint-plugin-jsx-a11y@6.10.2` does not declare ESLint 10 in its peer dependencies. Remove it only when a jsx-a11y release adds ESLint 10 support (tracked as I04 in ROADMAP.md).
+- **Dependabot alerts are enabled** (repository Security tab) for known vulnerabilities in the manifests. Automated security-fix PRs are **disabled** on purpose: GitHub always opens them against `main`, which only receives PRs from `develop`. Apply alert fixes manually on `develop`. Routine version updates (base image digest, GitHub Actions) come as weekly `chore(deps)` PRs against `develop` (`.github/dependabot.yml`).
 - To update a package: check `npm outdated`, verify compatibility, install with `--save-exact`, then run `npm run build` and `npm run test` before committing.
 
 ## Documentation Maintenance
