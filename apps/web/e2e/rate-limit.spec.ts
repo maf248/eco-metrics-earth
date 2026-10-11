@@ -98,6 +98,13 @@ test.describe('API rate limiting', () => {
       });
       expect(response.status()).toBe(429);
     }
+
+    // Control: the same forged entry with a fresh rightmost client is allowed, so the 429s above
+    // come from keying on the rightmost entry, not from a shared (e.g. loopback) bucket.
+    const control = await request.get(THROTTLED_URL, {
+      headers: { 'X-Forwarded-For': `198.18.0.1, ${uniqueIp()}` },
+    });
+    expect(control.status()).toBe(200);
   });
 
   test('should bypass the limit with the valid internal API key', async ({ request }) => {
