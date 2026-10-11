@@ -85,27 +85,37 @@ Este documento registra todas las propuestas de mejora identificadas para el pro
 
 **Propuesta por fases** (cada fase = una propuesta OpenSpec independiente):
 
+#### Prerrequisitos de P1.0 (propuestas propias, fuera de P1.0)
+
+P1.0 originalmente juntaba en un solo cambio el módulo del API, el healthcheck, la primera página con datos, la elección de la librería de charts y la atribución legal. Se separan las dos piezas que no dependen de datos de OWID, para que P1.0 tenga un spec y una revisión acotados:
+
+1. **I09 — Elegir librería de charts + paletas.** Decisión con spikes desechables, sin tocar producción. Además de la librería, debe cerrar lo que un primer gráfico de líneas necesita y hoy está pendiente: tokens de chart en el `@theme` (`--color-chart-1…n`) con la paleta categórica validada en ambos temas (`docs/design-system.md`), y la estrategia de tests en jsdom si la librería elegida depende de `ResizeObserver`, como Recharts (`docs/technical/libraries.md`). Bloquea P1.0.
+2. **I08 — Componente de atribución + página `/data-sources/`.** No depende de OWID: el componente consume `DataSourceAttribution` (ya en `@eco-metrics/shared`) y hoy la única atribución es un `Attribution` local dentro de `WaterFootprintTable.tsx`. La página lista las fuentes en uso en ese momento; OWID se suma en P1.0. Requisito legal antes de publicar datos CC BY.
+
 #### P1.0 — Primer módulo end-to-end: `co2-emissions`
 
 La categoría con mejor relación datos/esfuerzo (OWID CO₂ dataset: anual, per cápita, sectorial, acumulado — ya validado en Postman).
 
 - `Co2EmissionsModule` + controller: `GET /api/v1/co2-emissions/series?country=ARG&from=1990` (DTOs con `class-validator` para ISO-3166, rangos de años).
 - Service que mapea OWID → `MetricSeries` con `DataSourceAttribution`.
+- **Fallas del proveedor con status definido:** hoy `OwidClientError` no es una `HttpException`, así que el filtro global lo responde como `500` genérico. Definir el contrato — p. ej. `502` en formato `ApiResponse` cuando OWID falla o responde algo inválido — que reutilizarán P1.1/P1.2 e I12.
 - Swagger tag + tests unitarios con fixtures (sin llamadas de red en tests).
-- **Health indicator**: instalar `@nestjs/terminus` y registrar un `HttpHealthIndicator` contra un endpoint liviano de OWID en `HealthModule`. Esto agrega OWID como dependencia real del healthcheck, seguro porque este módulo ya expone endpoints que consumen OWID (se difirió de la fundación porque el startup probe de Cloud Run usa `GET /api/v1/health`).
-- **Frontend:** la página `/co2-emissions/` deja de ser placeholder — Server Component con `fetch` al BFF e ISR (`revalidate: 86400`), Suspense boundary y primer gráfico de líneas (requiere decidir librería de charts, ver I09; al integrarla aplica el recordatorio de `next/dynamic`).
-- **Atribución visible** "Data: Our World in Data (CC BY)" (ver I08 — requisito legal de la licencia).
+- **Healthcheck de dependencias, fuera del startup probe:** instalar `@nestjs/terminus` y registrar un `HttpHealthIndicator` contra un endpoint liviano de OWID en un endpoint **separado** (p. ej. `GET /api/v1/health/dependencies`). `GET /api/v1/health` sigue siendo solo liveness: es el startup probe de Cloud Run (`deploy-api.yml`, timeout 2 s), así que si consultara a OWID, una caída de OWID impediría que arranquen instancias y rompería deploys — justo lo que I12 busca evitar.
+- **Frontend:** la página `/co2-emissions/` deja de ser placeholder — Server Component con `fetch` al BFF e ISR (`revalidate: 86400`), Suspense boundary y primer gráfico de líneas con la librería elegida en I09 (al integrarla aplica el recordatorio de `next/dynamic`). Como con water-footprint, se excluye de `generateStaticParams` para que `next build` no dependa del BFF.
+- **Patrón replicable en la web:** hoy `[category]/page.tsx` despacha con un `if` por water-footprint y la lógica de reintentos ante cold start vive en `lib/waterFootprint.ts`. Extraer un helper genérico de fetch al BFF (reintentos + validación de forma) y un despacho por categoría, para que P1.1/P1.2 solo agreguen piezas.
+- **Atribución visible** "Data: Our World in Data (CC BY)" usando el componente de I08, y OWID agregado a `/data-sources/`.
 
 #### P1.1 — `global-temperature` (OWID temperature anomaly) — replica el patrón de P1.0
 
 #### P1.2 — `energy-sources` (OWID electricity generation by source + % renovables) — ídem
 
-**Criterio de éxito de P1:** 3 categorías con datos reales comercial-safe en producción, healthcheck agregando dependencias externas, patrón replicable documentado en AGENTS.md para las 9 categorías restantes.
+**Criterio de éxito de P1:** 3 categorías con datos reales comercial-safe en producción, healthcheck de dependencias externas (separado del liveness), patrón replicable documentado en AGENTS.md para las 9 categorías restantes.
 
-**Dificultad:** P1.0: 6/10 (incluye la primera integración frontend + charts) · P1.1/P1.2: 3/10 c/u (patrón ya establecido)
+**Dificultad:** P1.0: 5/10 (primera integración frontend con charts, ya sin la elección de librería ni la atribución) · P1.1/P1.2: 3/10 c/u (patrón ya establecido)
 **Requisitos:**
 
-- P2 instala `@nestjs/terminus` pero no refactoriza el healthcheck. **Cada módulo de P1 debe agregar su propio `HttpHealthIndicator` al `HealthModule`** para validar su API externa (OWID, NOAA, World Bank). Esto convierte el healthcheck en un agregado real de dependencias externas. El primer módulo (P1.0) instala `@nestjs/terminus` directamente si se ejecuta antes que P2.
+- I09 e I08 completos antes de P1.0. I12 conviene entre P1.0 y P1.1, cuando ya existe el contrato de error del proveedor y antes de multiplicar módulos.
+- P2 instala `@nestjs/terminus` pero no refactoriza el healthcheck. **Cada módulo de P1 debe agregar su propio `HttpHealthIndicator` al endpoint de dependencias** para validar su API externa (OWID, NOAA, World Bank) — nunca al liveness que usa el startup probe. El primer módulo (P1.0) instala `@nestjs/terminus` directamente si se ejecuta antes que P2.
   **Estado:** Pendiente
 
 ---
@@ -130,7 +140,7 @@ La categoría con mejor relación datos/esfuerzo (OWID CO₂ dataset: anual, per
   - Proyecto Sentry dedicado: `eco-metrics-earth-api`.
   - Source maps subidos en build de producción (`NODE_ENV=production`).
   - Release identificado por git SHA (`GITHUB_SHA` en CI/CD).
-- **Healthcheck:** Instalar `@nestjs/terminus` (sin refactorizar el módulo actual — eso se hace en P1 cuando existan las APIs externas).
+- **Healthcheck:** Instalar `@nestjs/terminus` (sin refactorizar el módulo actual — eso se hace en P1 cuando existan las APIs externas, en un endpoint de dependencias separado del liveness que usa el startup probe).
 
 #### Frontend — `apps/web`
 
@@ -180,9 +190,13 @@ La categoría con mejor relación datos/esfuerzo (OWID CO₂ dataset: anual, per
 
 Si no estás seguro por dónde empezar, este es el orden recomendado:
 
-1. **P1.0: Módulo `co2-emissions` end-to-end** → Primera sección con datos reales + charts (Dificultad: 6/10)
-2. **P1.1 / P1.2: `global-temperature` y `energy-sources`** → Replicar el patrón (Dificultad: 3/10 c/u)
-3. **P2: Monitoreo y observabilidad** → Logs, métricas y error tracking (Dificultad: 5/10)
+1. **I10: Eliminar endpoints de scaffold** → Achica la superficie pública del API; independiente de P1 (Dificultad: 3/10)
+2. **I09: Librería de charts + paletas** → Prerrequisito de P1.0 (Dificultad: 4/10)
+3. **I08: Atribución de datos + `/data-sources/`** → Prerrequisito legal de P1.0 (Dificultad: 3/10)
+4. **P1.0: Módulo `co2-emissions` end-to-end** → Primera sección con datos reales + charts (Dificultad: 5/10)
+5. **I12: Resiliencia del BFF ante proveedores externos** → Antes de multiplicar módulos
+6. **P1.1 / P1.2: `global-temperature` y `energy-sources`** → Replicar el patrón (Dificultad: 3/10 c/u)
+7. **P2: Monitoreo y observabilidad** → Logs, métricas y error tracking (Dificultad: 5/10)
 
 D1 (TypeScript 7) queda como seguimiento pasivo — sin acción por ahora.
 
@@ -216,7 +230,7 @@ Lista de hallazgos del análisis de repositorio, ordenados por prioridad (más c
 
 ### 🟡 CI/CD
 
-- **I12.** Pinear la imagen base `node:24-alpine` por digest y agregar Dependabot para `docker` y `github-actions` — hoy la imagen base es flotante, lo que mantiene los parches de seguridad de SO y Node pero hace los builds no reproducibles a nivel de base. Un digest sin actualizador automático congelaría esos parches, por eso ambas cosas van juntas (Dependabot propone la actualización del digest y de las versiones de las actions). Dificultad: 2/10. Requiere: spec OpenSpec corta (toca el `Dockerfile` y `.github/dependabot.yml`).
+- **I13.** Construir la imagen Docker del API en CI sin publicarla (`docker build` sin push, idealmente con caché de capas y solo cuando cambian archivos que afectan al API, replicando la lista de rutas de `Detect api-affecting changes` de `deploy-api.yml`) — hoy el build de la imagen solo ocurre en el deploy (dev y prod), después del merge, así que una imagen base rota (p. ej. un PR de Dependabot) o un cambio en el `Dockerfile` o en las dependencias del API falla recién ahí y no en el PR. Aumenta el valor de los PRs semanales de Dependabot para `docker`. Dificultad: 3/10. Requiere: spec OpenSpec (toca `ci.yml`).
 
 ### 🟡 Testing
 
@@ -226,7 +240,7 @@ Lista de hallazgos del análisis de repositorio, ordenados por prioridad (más c
 ### 🟢 Arquitectura / Deuda técnica
 
 - **I03.** Sin capa de datos ni ORM — cuando empiece la integración real de datos, no hay TypeORM, Prisma ni esquema de base de datos definido.
-- **I10.** Endpoints de scaffold expuestos en producción — `GET/POST /api/v1/demo-validation` (`DemoValidationController`, marcado `@deprecated` "will be removed when real eco modules are implemented") y `GET /api/v1/` ("Hello API") siguen públicos en Cloud Run. Propuesta: eliminar `DemoValidationController`, `AppController`/`AppService` y los DTOs que solo usan ellos (`create-metric.dto.ts`, `get-metrics-query.dto.ts`) con sus tests; mover los E2E de validación de `e2e/api-health.spec.ts` a `water-footprint/products?category=<inválida>` (400 en formato `ApiResponse`) y mover `e2e/rate-limit.spec.ts` (hoy usa `GET /demo-validation`) a un endpoint real; actualizar tablas de endpoints (`README.md`, `apps/api/README.md`) y tags de Swagger. Requiere spec (cambia la superficie pública del API). Puede hacerse junto con P1.0, cuando exista el primer endpoint real con DTOs.
+- **I10.** Endpoints de scaffold expuestos en producción — `GET/POST /api/v1/demo-validation` (`DemoValidationController`, marcado `@deprecated` "will be removed when real eco modules are implemented") y `GET /api/v1/` ("Hello API") siguen públicos en Cloud Run. Propuesta: eliminar `DemoValidationController`, `AppController`/`AppService` y los DTOs que solo usan ellos (`create-metric.dto.ts`, `get-metrics-query.dto.ts`) con sus tests; mover los E2E de validación de `e2e/api-health.spec.ts` a `water-footprint/products?category=<inválida>` (400 en formato `ApiResponse`) y mover `e2e/rate-limit.spec.ts` (hoy usa `GET /demo-validation`) a un endpoint real; actualizar tablas de endpoints (`README.md`, `apps/api/README.md`) y tags de Swagger. Requiere spec (cambia la superficie pública del API). No depende de P1.0: `water-footprint/products?category=<inválida>` ya responde 400 en formato `ApiResponse`. Ojo: ese 400 sale de una validación en el service, no del `ValidationPipe` global; al borrar la demo, el pipe queda sin ningún DTO que lo ejercite hasta P1.0, así que el spec debe decidir cómo conservar esa cobertura (p. ej. un test del bootstrap con un DTO de prueba). Dificultad: 3/10.
 
 ### 🟢 Configuración / Build
 
@@ -244,9 +258,9 @@ Lista de hallazgos del análisis de repositorio, ordenados por prioridad (más c
 
 ### 🟡 Datos / Proveedores
 
-- **I08.** Atribución de datos (requisito legal, no opcional) — CC BY exige atribución visible. Antes de publicar la primera sección con datos reales (P1.0): componente de atribución al pie de cada visualización ("Data: Our World in Data — CC BY" con link) + página `/data-sources/` listando proveedores y licencias. Alimentado por `ApiResponse<T>.meta.source` (`DataSourceAttribution`, ya disponible en `@eco-metrics/shared`). Bonus SEO: contenido indexable con estructura.
-- **I13.** Resiliencia del BFF ante proveedores externos — hoy la web solo protege la llamada a nuestro BFF (2 intentos de 10 s + stale-if-error del ISR, change `water-footprint-cold-start-resilience`), lo que alcanza para el dataset propio de water footprint. Las próximas categorías dependen de proveedores externos (OWID, etc.) a través del BFF, y la caída de un tercero no debería romper una página ni bloquear un deploy. Propuesta: el BFF guarda la última respuesta buena de cada proveedor y, si el proveedor falla, la devuelve marcada como desactualizada (p. ej. `meta.stale` + `fetchedAt`) o responde un status/código acordado cuando no tiene datos; la web decide por sección qué mostrar (datos viejos o un aviso de "no disponible") sin fallar el build. Requiere caché persistente gratuito (Cloud Run escala a cero y pierde el caché en memoria): Cloud Storage o Firestore dentro del free tier, o un snapshot en la imagen.
-- **I09.** Elegir librería de charts — pendiente. Cuando toque (antes de P1.0), ver `docs/technical/libraries.md`: tiene candidatas, descartadas con motivo, spikes por candidata y los gates a cumplir. La decisión se registra en `docs/design-system.md` y activa el recordatorio de Dynamic Imports.
+- **I08.** Atribución de datos (requisito legal, no opcional) — CC BY exige atribución visible. Prerrequisito de P1.0, como propuesta propia (ver _Prerrequisitos de P1.0_): componente de atribución al pie de cada visualización ("Data: Our World in Data — CC BY" con link) + página `/data-sources/` listando proveedores y licencias. Alimentado por `ApiResponse<T>.meta.source` (`DataSourceAttribution`, ya disponible en `@eco-metrics/shared`). Bonus SEO: contenido indexable con estructura.
+- **I12.** Resiliencia del BFF ante proveedores externos — hoy la web solo protege la llamada a nuestro BFF (2 intentos de 10 s + stale-if-error del ISR, change `water-footprint-cold-start-resilience`), lo que alcanza para el dataset propio de water footprint. Las próximas categorías dependen de proveedores externos (OWID, etc.) a través del BFF, y la caída de un tercero no debería romper una página ni bloquear un deploy. Propuesta: el BFF guarda la última respuesta buena de cada proveedor y, si el proveedor falla, la devuelve marcada como desactualizada (p. ej. `meta.stale` + `fetchedAt`) o responde un status/código acordado cuando no tiene datos; la web decide por sección qué mostrar (datos viejos o un aviso de "no disponible") sin fallar el build. Requiere caché persistente gratuito (Cloud Run escala a cero y pierde el caché en memoria): Cloud Storage o Firestore dentro del free tier, o un snapshot en la imagen. Conviene hacerlo entre P1.0 y P1.1: parte del contrato de error del proveedor que define P1.0.
+- **I09.** Elegir librería de charts — pendiente. Prerrequisito de P1.0, como propuesta propia que también define los tokens de chart y la paleta categórica en ambos temas (ver _Prerrequisitos de P1.0_). Ver `docs/technical/libraries.md`: tiene candidatas, descartadas con motivo, spikes por candidata y los gates a cumplir. La decisión se registra en `docs/design-system.md` y activa el recordatorio de Dynamic Imports.
 
 ---
 
@@ -257,4 +271,4 @@ Lista de hallazgos del análisis de repositorio, ordenados por prioridad (más c
 - **I06.** OpenTelemetry — considerado para el futuro cuando el sistema escale a múltiples servicios o se quiera cambiar de backend de observabilidad (Sentry → Datadog, Honeycomb, etc.) sin tocar código de instrumentación. Con un solo BFF, Sentry Performance cubre el tracing necesario. No justifica el overhead de configuración actual (collector, exporters, SDK setup).
 - **I07.** Axiom — plataforma de logs como servicio. Solo relevante si la retención de Cloud Logging (30 días en free tier) o Vercel resulta insuficiente para debugging post-mortem. Por ahora los logs agregados de cada plataforma son suficientes.
 
-**Última actualización:** 9 Oct 2026
+**Última actualización:** 10 Oct 2026

@@ -8,7 +8,7 @@ Defines the deployment of the NestJS BFF (`apps/api`) to Google Cloud Run — pr
 
 ### Requirement: Multi-stage Docker image builds a self-contained apps/api runtime
 
-A `Dockerfile` SHALL exist at the repository root (build context = repo root). It SHALL be multi-stage with both stages based on `node:24-alpine` (matching `.nvmrc`; the tag stays floating in this change — see design.md D6).
+A `Dockerfile` SHALL exist at the repository root (build context = repo root). It SHALL be multi-stage with both stages based on `node:24-alpine` (matching `.nvmrc`) **pinned by digest**: each `FROM` line SHALL read `node:24-alpine@sha256:<digest>`, keeping the readable tag next to the digest, and both stages SHALL use the same digest. The digest SHALL be the multi-arch image index (manifest list) digest of the tag, not a single-platform manifest digest, so the build resolves the right platform on any runner. The digest is kept current by Dependabot (see the `dependency-updates` capability), so OS and Node security patches are not frozen.
 
 The **builder stage** SHALL, in order: copy the root manifests (`package.json`, `package-lock.json`, `.npmrc`, `.nvmrc`, `nx.json`, `tsconfig.base.json`, `tsconfig.json`) and the workspace manifests (`apps/api/package.json`, `packages/shared/package.json`) first (layer-cache friendly); run `HUSKY=0 npm ci` (full install — NX and webpack are dev dependencies; `HUSKY=0` because `.git` is not in the context, mirroring the `release.yml` convention; `legacy-peer-deps` comes from the copied `.npmrc`); copy the `apps/api` and `packages/shared` sources; run `npx nx run api:prune` (which triggers `build` → `prune-lockfile` → `copy-workspace-modules` and emits `apps/api/dist` with `main.js`, `data/water-footprint.json`, a pruned `package.json` carrying `"@eco-metrics/shared": "file:./workspace_modules/@eco-metrics/shared"`, a pruned `package-lock.json`, and `workspace_modules/@eco-metrics/shared` including its built `dist/`); then install the runtime dependencies **inside** `apps/api/dist` with `npm ci --omit=dev --ignore-scripts` (plus `--no-audit --no-fund`) **from the pruned `package-lock.json` emitted by `prune-lockfile`**, so every transitive dependency resolves to the exact version recorded in the root lockfile. The Dockerfile SHALL NOT delete or regenerate the pruned lockfile, SHALL NOT use `npm install` for the dist install, and SHALL NOT use `--legacy-peer-deps` for it. The root `overrides` block (security pins) SHALL NOT be copied into `dist/package.json`: the pins are already resolved in the root lockfile and carried into the pruned lockfile (see design.md D3).
 
@@ -57,6 +57,20 @@ The **runtime stage** SHALL copy only `apps/api/dist` from the builder (as `/app
 - **GIVEN** a `package-lock.json` for which the pruned lockfile does not satisfy the pruned `package.json`
 - **WHEN** the builder runs `npm ci --omit=dev --ignore-scripts` in `apps/api/dist`
 - **THEN** the command fails and the image is not built (the lockfile is never silently discarded or regenerated)
+
+#### Scenario: Both stages pin the same base image digest
+
+- **GIVEN** the `Dockerfile` at the repository root
+- **WHEN** its `FROM` lines are read
+- **THEN** there are exactly two, each of the form `FROM node:24-alpine@sha256:<64 hex chars>` (the runtime one without `AS`, the builder one with `AS builder`)
+- **AND** both carry the identical digest
+
+#### Scenario: The pinned digest is the multi-arch index
+
+- **GIVEN** the digest in the `Dockerfile`
+- **WHEN** the registry manifest for `node:24-alpine@sha256:<digest>` is requested
+- **THEN** its media type is an OCI image index or Docker manifest list (not a single-platform image manifest)
+- **AND** it equals the `Docker-Content-Digest` returned for the `node:24-alpine` tag at the time of pinning
 
 ### Requirement: Docker build context excludes everything the API build does not need
 
