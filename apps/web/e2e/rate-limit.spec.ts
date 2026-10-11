@@ -8,7 +8,9 @@ import {
 import { E2E_INTERNAL_API_KEY } from './utils/api-env.ts';
 
 const API_BASE_URL = process.env['API_BASE_URL'] || 'http://localhost:3001/api/v1';
-const THROTTLED_URL = `${API_BASE_URL}/demo-validation`;
+// Required properties of the throttled route: read-only, side-effect-free, governed by the
+// global default throttle with no per-route override. Change the route here only.
+const THROTTLED_URL = `${API_BASE_URL}/water-footprint/products`;
 const HEALTH_URL = `${API_BASE_URL}/health`;
 const LIMIT = 60;
 

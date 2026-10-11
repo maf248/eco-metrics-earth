@@ -136,12 +136,12 @@ eco-metrics-earth/
 ├── apps/
 │   ├── api/                     # NestJS BFF (deployed to Cloud Run)
 │   │   └── src/
-│   │       ├── app/             # AppModule, AppController, AppService
+│   │       ├── app/             # AppModule, global pipeline helper
 │   │       ├── health/          # HealthController (GET /api/v1/health)
 │   │       ├── modules/         # Per-category eco modules
 │   │       │   ├── providers/owid/   # Cached OWID provider client (Grapher CSV + API v1 JSON)
 │   │       │   └── water-footprint/  # Module, controller, service + static dataset (data/)
-│   │       ├── common/          # DTOs, outbound HTTP client, global exception filter, catch-all 404 fallback
+│   │       ├── common/          # Outbound HTTP client, global exception filter, catch-all 404 fallback
 │   │       ├── config/          # AppConfigService (typed env vars)
 │   │       └── main.ts          # Bootstrap — port 3001, prefix /api/v1
 │   └── web/                     # Next.js App Router (deployed to Vercel)
@@ -180,10 +180,7 @@ eco-metrics-earth/
 
 | Method | Path                               | Description                                                                                                                                                                                                           |
 | ------ | ---------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `GET`  | `/api/v1/`                         | Welcome message — returns `{ message: 'Hello API' }`                                                                                                                                                                  |
 | `GET`  | `/api/v1/health`                   | Health check — returns `{ status: 'ok' }`                                                                                                                                                                             |
-| `GET`  | `/api/v1/demo-validation`          | Echo query params (`fromDate`, `toDate`, `category`) — mock                                                                                                                                                           |
-| `POST` | `/api/v1/demo-validation`          | Echo body (`name`, `value`, `unit`) with validation — mock                                                                                                                                                            |
 | `GET`  | `/api/v1/water-footprint/products` | Static product water-footprint dataset (60 products, with citations) — optional `category` filter (`food-beverages`, `textiles`, `technology`, `manufactured`, `digital-computing`, `vehicles`, `energy-extractives`) |
 
 Base URL (development): `http://localhost:3001`

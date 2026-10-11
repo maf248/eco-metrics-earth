@@ -46,55 +46,32 @@ test.describe('API error handling', { tag: '@smoke' }, () => {
   });
 });
 
-test.describe('API demo-validation — GET', { tag: '@smoke' }, () => {
-  test('should return 200 and echo query params', async ({ request }) => {
-    const response = await request.get(`${API_BASE_URL}/demo-validation`);
-    expect(response.status()).toBe(200);
-    const body = await response.json();
-    expect(body).toHaveProperty('query');
-    expect(body.query).toEqual({});
-  });
+test.describe('API water-footprint — error format', { tag: '@smoke' }, () => {
+  const PRODUCTS_URL = `${API_BASE_URL}/water-footprint/products`;
 
-  test('should echo optional query params when provided', async ({ request }) => {
-    const response = await request.get(`${API_BASE_URL}/demo-validation?category=air-quality`);
-    expect(response.status()).toBe(200);
-    const body = await response.json();
-    expect(body.query).toHaveProperty('category', 'air-quality');
-  });
-
-  test('should return CORS headers on GET demo', async ({ request }) => {
-    const response = await request.get(`${API_BASE_URL}/demo-validation`, {
-      headers: { Origin: 'http://localhost:3000' },
-    });
-    expect(response.headers()['access-control-allow-origin']).toBe('http://localhost:3000');
-  });
-});
-
-test.describe('API demo-validation — POST', { tag: '@smoke' }, () => {
-  test('should return 201 and echo valid body', async ({ request }) => {
-    const payload = { name: 'CO2 PPM', value: 415, unit: 'ppm' };
-    const response = await request.post(`${API_BASE_URL}/demo-validation`, {
-      data: payload,
-    });
-    expect(response.status()).toBe(201);
-    const body = await response.json();
-    expect(body.body).toEqual(payload);
-  });
-
-  test('should return 400 for invalid body (missing required fields)', async ({ request }) => {
-    const response = await request.post(`${API_BASE_URL}/demo-validation`, {
-      data: { name: 'Incomplete' },
-    });
+  test('should return 400 in the ApiResponse error format for an invalid category', async ({
+    request,
+  }) => {
+    const response = await request.get(`${PRODUCTS_URL}?category=invalid`);
     expect(response.status()).toBe(400);
     const body = await response.json();
-    expect(body).toHaveProperty('error');
+    expect(body.success).toBe(false);
+    expect(typeof body.error).toBe('string');
+    expect(body.status).toBe(400);
   });
 
-  test('should return CORS headers on POST demo', async ({ request }) => {
-    const response = await request.post(`${API_BASE_URL}/demo-validation`, {
-      data: { name: 'Test', value: 1, unit: 'test' },
+  test('should return 200 with success true for a valid request', async ({ request }) => {
+    const response = await request.get(PRODUCTS_URL);
+    expect(response.status()).toBe(200);
+    const body = await response.json();
+    expect(body.success).toBe(true);
+  });
+
+  test('should return CORS headers on the 400 response', async ({ request }) => {
+    const response = await request.get(`${PRODUCTS_URL}?category=invalid`, {
       headers: { Origin: 'http://localhost:3000' },
     });
+    expect(response.status()).toBe(400);
     expect(response.headers()['access-control-allow-origin']).toBe('http://localhost:3000');
   });
 });

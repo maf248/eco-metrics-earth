@@ -250,10 +250,10 @@ eco-metrics-earth/
 ├── apps/
 │   ├── api/                     # NestJS BFF
 │   │   └── src/
-│   │       ├── app/             # AppModule, AppController, AppService
+│   │       ├── app/             # AppModule, global pipeline helper
 │   │       ├── health/          # HealthController (GET /api/v1/health)
 │   │       ├── modules/         # Per-category eco modules (`water-footprint`) + `providers/owid` client
-│   │       ├── common/          # DTOs, outbound HTTP client, catch-all 404 fallback, global exception filter, throttler internal-key bypass
+│   │       ├── common/          # Outbound HTTP client, catch-all 404 fallback, global exception filter, throttler internal-key bypass
 │   │       ├── config/          # AppConfigService (typed env vars)
 │   │       └── main.ts          # Bootstrap — port 3001, prefix /api/v1
 │   └── web/                     # Next.js App Router
@@ -340,6 +340,7 @@ Pre-PR checklist: `npm run lint`, `npm run build`, `npm run test`, and `npm run 
 - **Update AGENTS.md when conventions change** — if a new architectural pattern, testing rule, or workflow is established, document it here.
 - **Sync changes across related docs** — if you modify environment variables, update both the example files (`.env.example`) and the Environment Variables section in `README.md`.
 - **Keep ROADMAP.md sequence continuous** — when a roadmap item is completed (or removed), delete its block and renumber all subsequent `Pxx`/`Dxx`/`Ixx` IDs so the sequence has no gaps, updating every cross-reference in the document (status table, Plan de Acción, other items' references). Historical archives under `openspec/changes/archive/` keep their old IDs intentionally — do not rewrite history.
+- **OpenSpec artifacts never reference ROADMAP item IDs** — proposals, designs, tasks and specs describe roadmap items by content, not by `Pxx`/`Dxx`/`Ixx` ID, because IDs are renumbered whenever an item closes. Archived changes stay untouched.
 
 ---
 

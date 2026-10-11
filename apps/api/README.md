@@ -28,8 +28,7 @@ Backend For Frontend for eco-metrics earth. Exposes a REST API under `/api/v1` c
 src/
 ├── app/
 │   ├── app.module.ts       # Root module — wires all imports and global providers
-│   ├── app.controller.ts   # Root controller — GET /api/v1/ welcome message
-│   └── app.service.ts      # Root service — returns the welcome message
+│   └── global-pipeline.ts  # applyGlobalPipeline — global ValidationPipe + exception filter (shared by main.ts and tests)
 ├── health/
 │   ├── health.module.ts
 │   └── health.controller.ts  # GET /api/v1/health
@@ -43,8 +42,6 @@ src/
 │       └── data/
 │           └── water-footprint.json  # Static product dataset (60 products, with citations)
 ├── common/
-│   ├── controllers/          # Cross-cutting controllers (`demo-validation` mock)
-│   ├── dto/                  # Shared DTOs with `class-validator` decorators
 │   ├── fallback/             # Catch-all JSON 404 fallback for unknown routes
 │   ├── filters/              # Global exception filter (`AllExceptionsFilter`)
 │   └── http/                 # Outbound HTTP client + errors + injectable OUTBOUND_FETCH token
@@ -85,10 +82,7 @@ appConfig.internalApiKey; // INTERNAL_API_KEY (undefined when unset or empty)
 
 | Method | Path                               | Description                                                                                                                                                                   | Response                               |
 | ------ | ---------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------- |
-| `GET`  | `/api/v1/`                         | Welcome message                                                                                                                                                               | `{ message: 'Hello API' }`             |
 | `GET`  | `/api/v1/health`                   | Liveness check                                                                                                                                                                | `{ status: 'ok' }`                     |
-| `GET`  | `/api/v1/demo-validation`          | **Mock** — query param validation demo                                                                                                                                        | `{ query: GetMetricsQueryDto }`        |
-| `POST` | `/api/v1/demo-validation`          | **Mock** — body validation demo                                                                                                                                               | `{ body: CreateMetricDto }`            |
 | `GET`  | `/api/v1/water-footprint/products` | Static product dataset — optional `category` query filter (`food-beverages`, `textiles`, `technology`, `manufactured`, `digital-computing`, `vehicles`, `energy-extractives`) | `ApiResponse<WaterFootprintProduct[]>` |
 
 ---
