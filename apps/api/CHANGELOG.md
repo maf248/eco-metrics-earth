@@ -1,3 +1,9 @@
+## [2.10.1](https://github.com/maf248/eco-metrics-earth/compare/api-v2.10.0...api-v2.10.1) (2026-10-11)
+
+### Bug Fixes
+
+* **api:** remove package managers from the runtime image ([b98d593](https://github.com/maf248/eco-metrics-earth/commit/b98d593d90f7b7af8da559e39ce17ee1bfb9658c))
+
 ## [2.10.0](https://github.com/maf248/eco-metrics-earth/compare/api-v2.9.0...api-v2.10.0) (2026-10-10)
 
 ## [2.9.0](https://github.com/maf248/eco-metrics-earth/compare/api-v2.8.0...api-v2.9.0) (2026-10-09)
