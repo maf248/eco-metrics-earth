@@ -3,6 +3,7 @@ import { NestFactory } from '@nestjs/core';
 import supertest from 'supertest';
 
 import { AppModule } from '../../src/app/app.module';
+import { applyGlobalPipeline } from '../../src/app/global-pipeline';
 import { AppConfigService } from '../../src/config/app-config.service';
 
 describe('API bootstrap smoke test', () => {
@@ -10,6 +11,7 @@ describe('API bootstrap smoke test', () => {
 
   beforeAll(async () => {
     app = await NestFactory.create(AppModule, { logger: false });
+    applyGlobalPipeline(app);
     app.setGlobalPrefix('api/v1');
 
     const appConfig = app.get(AppConfigService);
@@ -50,6 +52,22 @@ describe('API bootstrap smoke test', () => {
 
       expect(response.status).toBe(200);
       expect(response.headers['access-control-allow-origin']).toBeUndefined();
+    });
+  });
+
+  describe('removed scaffold routes', () => {
+    it.each([
+      ['GET', '/api/v1/'],
+      ['GET', '/api/v1'],
+      ['GET', '/api/v1/demo-validation'],
+      ['POST', '/api/v1/demo-validation'],
+    ] as const)('should return the standard JSON 404 for %s %s', async (method, url) => {
+      const server = supertest(app.getHttpServer());
+      const response = method === 'GET' ? await server.get(url) : await server.post(url).send({});
+
+      expect(response.status).toBe(404);
+      expect(response.headers['content-type']).toMatch(/application\/json/);
+      expect(response.body).toEqual({ success: false, error: expect.any(String), status: 404 });
     });
   });
 });

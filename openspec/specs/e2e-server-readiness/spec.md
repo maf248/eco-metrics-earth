@@ -14,7 +14,7 @@ The Playwright `webServer.command` SHALL be a readiness wrapper (`apps/web/e2e/r
 
 - **GIVEN** no process listening on `:3000` or `:3001`
 - **WHEN** `npx nx e2e web` is executed (which Playwright starts the wrapper for, since `reuseExistingServer: !CI` finds `:3000` down)
-- **THEN** the wrapper brings the API to readiness first, then the web server, and the full suite (including the 10 API specs in `e2e/api-health.spec.ts`) passes with zero `ECONNREFUSED :3001` failures
+- **THEN** the wrapper brings the API to readiness first, then the web server, and the full suite (including the API specs in `e2e/api-health.spec.ts`) passes with zero `ECONNREFUSED :3001` failures
 
 #### Scenario: Fresh CI run is deterministic
 

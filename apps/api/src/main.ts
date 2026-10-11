@@ -1,25 +1,16 @@
-import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import helmet from 'helmet';
 
 import { AppModule } from './app/app.module';
-import { AllExceptionsFilter } from './common/filters/all-exceptions.filter';
+import { applyGlobalPipeline } from './app/global-pipeline';
 import { AppConfigService } from './config/app-config.service';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
-  app.useGlobalPipes(
-    new ValidationPipe({
-      whitelist: true,
-      forbidNonWhitelisted: true,
-      transform: true,
-    }),
-  );
-
-  app.useGlobalFilters(new AllExceptionsFilter());
+  applyGlobalPipeline(app);
 
   app.use(helmet());
   app.setGlobalPrefix('api/v1');
@@ -40,7 +31,6 @@ async function bootstrap() {
       .addServer(`http://localhost:${appConfig.port}`, 'local')
       .addServer('https://eco-metrics-api-fexi2yqv2q-uc.a.run.app', 'production (Cloud Run)')
       .addTag('Health', 'Health check endpoint')
-      .addTag('Demo', 'Demo validation endpoints (mock)')
       .addTag('Water Footprint', 'Product water footprint data')
       .build();
 

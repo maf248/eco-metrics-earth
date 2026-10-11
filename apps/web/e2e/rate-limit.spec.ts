@@ -8,7 +8,9 @@ import {
 import { E2E_INTERNAL_API_KEY } from './utils/api-env.ts';
 
 const API_BASE_URL = process.env['API_BASE_URL'] || 'http://localhost:3001/api/v1';
-const THROTTLED_URL = `${API_BASE_URL}/demo-validation`;
+// Required properties of the throttled route: read-only, side-effect-free, governed by the
+// global default throttle with no per-route override. Change the route here only.
+const THROTTLED_URL = `${API_BASE_URL}/water-footprint/products`;
 const HEALTH_URL = `${API_BASE_URL}/health`;
 const LIMIT = 60;
 
@@ -96,6 +98,13 @@ test.describe('API rate limiting', () => {
       });
       expect(response.status()).toBe(429);
     }
+
+    // Control: the same forged entry with a fresh rightmost client is allowed, so the 429s above
+    // come from keying on the rightmost entry, not from a shared (e.g. loopback) bucket.
+    const control = await request.get(THROTTLED_URL, {
+      headers: { 'X-Forwarded-For': `198.18.0.1, ${uniqueIp()}` },
+    });
+    expect(control.status()).toBe(200);
   });
 
   test('should bypass the limit with the valid internal API key', async ({ request }) => {

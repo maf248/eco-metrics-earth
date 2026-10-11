@@ -1,5 +1,12 @@
 import { NestFactory } from '@nestjs/core';
 
+jest.mock('../../src/app/global-pipeline', () => {
+  const actual = jest.requireActual<typeof import('../../src/app/global-pipeline')>(
+    '../../src/app/global-pipeline',
+  );
+  return { applyGlobalPipeline: jest.fn(actual.applyGlobalPipeline) };
+});
+
 jest.mock('@nestjs/core', () => ({
   ...jest.requireActual<typeof import('@nestjs/core')>('@nestjs/core'),
   NestFactory: { create: jest.fn() },
@@ -40,12 +47,19 @@ async function runMain(appConfig: FakeAppConfig) {
   const { app, calls } = createFakeApp(appConfig);
   (NestFactory.create as jest.Mock).mockResolvedValue(app);
 
+  let applyGlobalPipeline: jest.Mock | undefined;
   await jest.isolateModulesAsync(async () => {
     await import('../../src/main');
+    // Same isolated registry as main.ts, so this is the spy main.ts actually called.
+    applyGlobalPipeline = (
+      (await import('../../src/app/global-pipeline')) as unknown as {
+        applyGlobalPipeline: jest.Mock;
+      }
+    ).applyGlobalPipeline;
   });
   await new Promise<void>((resolve) => setImmediate(resolve));
 
-  return { app, calls };
+  return { app, calls, applyGlobalPipeline };
 }
 
 describe('main bootstrap', () => {
@@ -84,6 +98,23 @@ describe('main bootstrap', () => {
     expect(app.enableShutdownHooks).toHaveBeenCalledTimes(1);
     expect(app.listen).toHaveBeenCalledWith(3001);
     expect(calls.indexOf('enableShutdownHooks')).toBeLessThan(calls.indexOf('listen'));
+  });
+
+  it('should register the pipe and filter only through applyGlobalPipeline, before listen', async () => {
+    const { app, calls, applyGlobalPipeline } = await runMain({
+      corsOrigins: [],
+      swaggerEnabled: false,
+      port: 3001,
+      trustProxyHops: 1,
+    });
+
+    expect(applyGlobalPipeline).toHaveBeenCalledTimes(1);
+    expect(applyGlobalPipeline).toHaveBeenCalledWith(app);
+    // A single call each means main.ts registers nothing inline besides the shared function.
+    expect(app.useGlobalPipes).toHaveBeenCalledTimes(1);
+    expect(app.useGlobalFilters).toHaveBeenCalledTimes(1);
+    expect(calls.indexOf('useGlobalPipes')).toBeLessThan(calls.indexOf('listen'));
+    expect(calls.indexOf('useGlobalFilters')).toBeLessThan(calls.indexOf('listen'));
   });
 
   it('should configure trust proxy before listening', async () => {
