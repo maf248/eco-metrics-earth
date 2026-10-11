@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Defines how Dependabot keeps the digest-pinned API base image and the GitHub Actions versions up to date without leaving the Node 24 LTS line.
+Defines how Dependabot keeps the digest-pinned API base image and the GitHub Actions versions up to date without leaving the Node 24 LTS line, and how vulnerability alerts are surfaced without security-fix PRs that would bypass `develop`.
 
 ## Requirements
 
@@ -46,3 +46,13 @@ The `docker` entry SHALL ignore semver-major updates of the `node` image (`depen
 - **GIVEN** a newer major `alpine` image of Node exists
 - **WHEN** Dependabot runs its docker update
 - **THEN** it does not open a PR that changes the `24-alpine` tag
+
+### Requirement: Dependabot alerts are on and automated security-fix PRs are off
+
+The repository SHALL have Dependabot alerts enabled, so known vulnerabilities in the dependency manifests surface in the Security tab. Dependabot automated security-fix PRs SHALL stay disabled: GitHub always opens them against the default branch (`main`), which only receives PRs from `develop`. Fixes for alerts are applied on `develop` like any other change.
+
+#### Scenario: Alerts enabled, security-fix PRs disabled
+
+- **WHEN** the repository settings are read through the GitHub API
+- **THEN** `GET /repos/{owner}/{repo}/vulnerability-alerts` returns `204`
+- **AND** `GET /repos/{owner}/{repo}/automated-security-fixes` returns `enabled: false`
