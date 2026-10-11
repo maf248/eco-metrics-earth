@@ -1,3 +1,9 @@
+## [2.10.2](https://github.com/maf248/eco-metrics-earth/compare/api-v2.10.1...api-v2.10.2) (2026-10-11)
+
+### Bug Fixes
+
+* **api:** bump proxy-addr to 2.0.8 for GHSA-jqcg-44mw-7w3h ([f06a5af](https://github.com/maf248/eco-metrics-earth/commit/f06a5afb1e9cf8f2747d93a59030c8b99817d9fc))
+
 ## [2.10.1](https://github.com/maf248/eco-metrics-earth/compare/api-v2.10.0...api-v2.10.1) (2026-10-11)
 
 ### Bug Fixes
