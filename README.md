@@ -8,7 +8,7 @@ An environmental metrics dashboard monorepo — tracking air quality, CO₂ emis
 | -------------- | ------------------------------------------------------------------------ | ------- | -------------------------------------------------------------------------------------------- |
 | **Monorepo**   | [NX](https://nx.dev)                                                     | 23.2.1  | [nx.dev/docs](https://nx.dev/getting-started/intro)                                          |
 | **Runtime**    | [Node.js](https://nodejs.org) LTS                                        | 24.x    | [nodejs.org/docs](https://nodejs.org/docs/latest-v24.x/api/)                                 |
-| **Frontend**   | [Next.js](https://nextjs.org) (App Router)                               | 16.3.8  | [nextjs.org/docs](https://nextjs.org/docs)                                                   |
+| **Frontend**   | [Next.js](https://nextjs.org) (App Router)                               | 16.4.2  | [nextjs.org/docs](https://nextjs.org/docs)                                                   |
 | **UI**         | [React](https://react.dev)                                               | 19.3.0  | [react.dev](https://react.dev/reference/react)                                               |
 | **Styling**    | [Tailwind CSS](https://tailwindcss.com)                                  | 4.3.3   | [tailwindcss.com/docs](https://tailwindcss.com/docs)                                         |
 | **Theming**    | React Context + localStorage                                             | —       | Light and dark mode support with persistent user preference via a theme toggle               |
