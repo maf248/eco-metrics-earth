@@ -1,3 +1,9 @@
+## [2.11.4](https://github.com/maf248/eco-metrics-earth/compare/v2.11.3...v2.11.4) (2026-10-23)
+
+### Bug Fixes
+
+* **deps:** update undici and serialize-javascript for dev-tooling advisories ([58be4ef](https://github.com/maf248/eco-metrics-earth/commit/58be4efb7710433dbf43ccbfbc3dc7ed02e0873d))
+
 ## [2.11.3](https://github.com/maf248/eco-metrics-earth/compare/v2.11.2...v2.11.3) (2026-10-23)
 
 ### Bug Fixes
