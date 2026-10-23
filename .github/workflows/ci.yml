@@ -16,6 +16,8 @@ jobs:
     # Vercel (see docs/deploy/vercel.md).
     name: Format, Lint, Typecheck, Build & Test
     runs-on: ubuntu-latest
+    # A full run takes ~7 min; fail fast on a hung step instead of GitHub's 6 h default.
+    timeout-minutes: 30
     # A newer push to the same ref supersedes the running check. Runs on `main`
     # are never cancelled so every merged commit keeps a complete CI record.
     # Scoped to this job (not the workflow) so a newer push never cancels a
@@ -66,7 +68,9 @@ jobs:
       # Browsers are not cached on purpose: Playwright's CI guide notes that
       # restoring the cache takes about as long as downloading the binaries,
       # and the OS dependencies must be installed on every run anyway.
+      # Usually 1–2 min; the browser/apt download has been seen to hang.
       - name: Install Playwright browsers
+        timeout-minutes: 10
         run: npx playwright install --with-deps
 
       - name: E2E
