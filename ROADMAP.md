@@ -230,7 +230,6 @@ Lista de hallazgos del análisis de repositorio, ordenados por prioridad (más c
 ### 🟡 CI/CD
 
 - **I11.** Construir la imagen Docker del API en CI sin publicarla (`docker build` sin push, idealmente con caché de capas y solo cuando cambian archivos que afectan al API, replicando la lista de rutas de `Detect api-affecting changes` de `deploy-api.yml`) — hoy el build de la imagen solo ocurre en el deploy (dev y prod), después del merge, así que una imagen base rota (p. ej. un PR de Dependabot) o un cambio en el `Dockerfile` o en las dependencias del API falla recién ahí y no en el PR. Aumenta el valor de los PRs semanales de Dependabot para `docker`. Dificultad: 3/10. Requiere: spec OpenSpec (toca `ci.yml`).
-- **I12.** Correr el E2E de CI dentro del contenedor oficial de Playwright (`mcr.microsoft.com/playwright`, versión fijada a la de `@playwright/test`) — hoy `npx playwright install --with-deps` instala dependencias del sistema con `apt` en cada corrida, y el 23 Oct 2026 un mirror lento de Ubuntu (`azure.archive.ubuntu.com`) lo estiró a más de 20 min (normalmente ~45 s). Mitigado con `timeout-minutes` (job 30, paso 10); el contenedor elimina el `apt` por completo. Implica separar el E2E en su propio job y validar el arranque de ambos servidores dentro del contenedor. Solo vale la pena si el incidente se repite.
 
 ### 🟡 Testing
 
