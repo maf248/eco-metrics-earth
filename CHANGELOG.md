@@ -1,3 +1,15 @@
+## [2.11.0](https://github.com/maf248/eco-metrics-earth/compare/v2.10.2...v2.11.0) (2026-10-23)
+
+### Features
+
+* **web:** improve SEO titles, descriptions and social card copy ([2623dde](https://github.com/maf248/eco-metrics-earth/commit/2623dde54e597af528b455d4dba75a90190d6ba1))
+
+### Bug Fixes
+
+* **deps:** bump next to 16.4.2 for critical security advisories ([4f36612](https://github.com/maf248/eco-metrics-earth/commit/4f366127a56668ca25b6b66ee6cabf5dc37ddd01))
+* **deps:** override follow-redirects to 1.16.1 for credential-leak advisories ([a7ee497](https://github.com/maf248/eco-metrics-earth/commit/a7ee4972c78045c64f2ed04ecad6d948f11e5ba5))
+* **web:** raise contrast of brand enter affordance and stabilize a11y audit ([46e6e18](https://github.com/maf248/eco-metrics-earth/commit/46e6e18ca77642c67a039b4918ae66ce6af20c9b))
+
 ## [2.10.2](https://github.com/maf248/eco-metrics-earth/compare/v2.10.1...v2.10.2) (2026-10-11)
 
 ### Bug Fixes
