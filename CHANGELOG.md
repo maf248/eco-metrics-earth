@@ -1,3 +1,9 @@
+## [2.11.1](https://github.com/maf248/eco-metrics-earth/compare/v2.11.0...v2.11.1) (2026-10-23)
+
+### Bug Fixes
+
+* **deps:** update zod to 4.6.7 for GHSA-mrhx-c7xc-m3w5 ([7b0803a](https://github.com/maf248/eco-metrics-earth/commit/7b0803a0ecbc990247eec73ad54ffba40068d070))
+
 ## [2.11.0](https://github.com/maf248/eco-metrics-earth/compare/v2.10.2...v2.11.0) (2026-10-23)
 
 ### Features
