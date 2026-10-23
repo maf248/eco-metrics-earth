@@ -1,3 +1,9 @@
+## [2.11.3](https://github.com/maf248/eco-metrics-earth/compare/v2.11.2...v2.11.3) (2026-10-23)
+
+### Bug Fixes
+
+* **deps:** update fast-uri to 3.1.9 for four URI parsing advisories ([abcd702](https://github.com/maf248/eco-metrics-earth/commit/abcd702909eea36824c7a977b2e303d199e3f61d))
+
 ## [2.11.2](https://github.com/maf248/eco-metrics-earth/compare/v2.11.1...v2.11.2) (2026-10-23)
 
 ### Bug Fixes
