@@ -1,13 +1,23 @@
 import AxeBuilder from '@axe-core/playwright';
-import { test, expect } from '@playwright/test';
+import { test, expect, type Page } from '@playwright/test';
 
 import { categoryPage, CATEGORY_SLUGS } from './utils/pages';
 import { selectors } from './utils/selectors';
 
+// Axe samples computed colors, so a `transition-colors` still running after load
+// (e.g. on the nav links) yields intermediate, low-contrast values. Freeze
+// transitions and animations so the audit sees the final colors.
+async function analyzeSettled(page: Page): ReturnType<AxeBuilder['analyze']> {
+  await page.addStyleTag({
+    content: '*, *::before, *::after { transition: none !important; animation: none !important; }',
+  });
+  return new AxeBuilder({ page }).analyze();
+}
+
 test.describe('Accessibility audit — home page', { tag: '@smoke' }, () => {
   test('should have zero critical and serious violations', async ({ page }) => {
     await page.goto('/');
-    const results = await new AxeBuilder({ page }).analyze();
+    const results = await analyzeSettled(page);
     const violations = results.violations.filter(
       (v) => v.impact === 'critical' || v.impact === 'serious',
     );
@@ -24,7 +34,7 @@ test.describe('Accessibility audit — category pages', () => {
     const cp = categoryPage(slug);
     test(`should have zero critical and serious violations on ${slug} page`, async ({ page }) => {
       await page.goto(cp.url);
-      const results = await new AxeBuilder({ page }).analyze();
+      const results = await analyzeSettled(page);
       const violations = results.violations.filter(
         (v) => v.impact === 'critical' || v.impact === 'serious',
       );
