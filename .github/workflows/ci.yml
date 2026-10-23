@@ -18,6 +18,20 @@ jobs:
     runs-on: ubuntu-latest
     # A full run takes ~7 min; fail fast on a hung step instead of GitHub's 6 h default.
     timeout-minutes: 30
+    # Official Playwright image: ships Node, all browsers and all OS
+    # dependencies, so the job never touches `apt` or downloads browsers
+    # (the Ubuntu mirror has hung runs before). The tag must be a literal here
+    # because `env` is not available in `container.image`; keep it equal to the
+    # installed `@playwright/test` version (enforced by the guard step below).
+    # `--ipc=host` avoids Chromium shared-memory crashes; `--init` reaps the
+    # processes spawned by the E2E dev-server wrapper.
+    container:
+      image: mcr.microsoft.com/playwright:v1.63.0-noble
+      options: --init --ipc=host
+    # GitHub sets HOME=/github/home in containers; Playwright's CI guide
+    # requires HOME=/root for Firefox.
+    env:
+      HOME: /root
     # A newer push to the same ref supersedes the running check. Runs on `main`
     # are never cancelled so every merged commit keeps a complete CI record.
     # Scoped to this job (not the workflow) so a newer push never cancels a
@@ -39,6 +53,12 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
+
+      # Fails fast, naming the tag to use, when the container image version
+      # differs from the installed @playwright/test (Dependabot does not
+      # update `container.image`). Needs node_modules, hence after npm ci.
+      - name: Verify Playwright image matches @playwright/test
+        run: node scripts/check-playwright-image.mjs
 
       # Runs before Build/Test so generated artifacts are never in the glob.
       - name: Format check
@@ -65,15 +85,9 @@ jobs:
       - name: Test
         run: npm run test
 
-      # Browsers are not cached on purpose: Playwright's CI guide notes that
-      # restoring the cache takes about as long as downloading the binaries,
-      # and the OS dependencies must be installed on every run anyway.
-      # Usually 1–2 min; the browser/apt download has been seen to hang.
-      - name: Install Playwright browsers
-        timeout-minutes: 10
-        run: npx playwright install --with-deps
-
+      # Browsers and OS dependencies come from the container image.
       - name: E2E
+        timeout-minutes: 15
         run: npm run e2e
 
   # Production follows `main`, like the web app on Vercel; `develop` feeds the

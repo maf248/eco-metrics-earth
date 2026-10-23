@@ -223,7 +223,7 @@ Releases are automated via `.github/workflows/release.yml` on every push to `mai
 
 ### CI
 
-`.github/workflows/ci.yml` runs on every push (any branch) and on PRs to `main`: format check → lint → typecheck → build → unit tests → E2E (Playwright).
+`.github/workflows/ci.yml` runs on every push (any branch) and on PRs to `main`: format check → lint → typecheck → build → unit tests → E2E (Playwright). The job runs inside the official Playwright container (`mcr.microsoft.com/playwright:v<version>-noble`), so CI never installs browsers or OS packages; `scripts/check-playwright-image.mjs` fails the run early if the image tag differs from the installed `@playwright/test` version.
 
 ---
 
