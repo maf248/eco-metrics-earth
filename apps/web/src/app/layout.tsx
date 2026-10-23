@@ -6,7 +6,7 @@ import Navbar from '@/components/Navbar';
 import ThemeProvider from '@/components/ThemeProvider';
 import ThemeToggle from '@/components/ThemeToggle';
 import { siteUrl } from '@/lib/siteUrl';
-import { buildOpenGraph, buildTwitter } from '@/lib/socialMetadata';
+import { SITE_DESCRIPTION, buildOpenGraph, buildTwitter } from '@/lib/socialMetadata';
 
 import './globals.css';
 
@@ -21,9 +21,9 @@ export const metadata: Metadata = {
   metadataBase: new URL(siteUrl()),
   title: {
     default: 'eco-metrics earth',
-    template: '%s — eco-metrics earth',
+    template: '%s | eco-metrics earth',
   },
-  description: 'Track and visualize environmental metrics for a sustainable planet.',
+  description: SITE_DESCRIPTION,
   icons: {
     icon: '/icons/eco-metrics-earth.svg',
     apple: '/icons/apple-touch-icon.png',

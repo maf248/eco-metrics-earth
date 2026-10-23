@@ -1,4 +1,10 @@
-import { buildOpenGraph, buildTwitter, OG_IMAGE, SITE_NAME } from '@/lib/socialMetadata';
+import {
+  buildOpenGraph,
+  buildTwitter,
+  OG_IMAGE,
+  SITE_DESCRIPTION,
+  SITE_NAME,
+} from '@/lib/socialMetadata';
 
 describe('OG_IMAGE', () => {
   it('should describe a 1200x630 PNG with alt text', () => {
@@ -10,6 +16,13 @@ describe('OG_IMAGE', () => {
 
   it('should use a path with a file extension so trailingSlash does not redirect it', () => {
     expect(OG_IMAGE.url).toBe('/og-image.png');
+  });
+});
+
+describe('SITE_DESCRIPTION', () => {
+  it('should be between 110 and 160 characters', () => {
+    expect(SITE_DESCRIPTION.length).toBeGreaterThanOrEqual(110);
+    expect(SITE_DESCRIPTION.length).toBeLessThanOrEqual(160);
   });
 });
 

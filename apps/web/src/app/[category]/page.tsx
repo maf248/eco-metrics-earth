@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 
 import { WaterFootprintContent } from '@/components/water-footprint/WaterFootprintContent';
 import { getCategoryIcon } from '@/lib/categoryIcon';
+import { CATEGORY_DESCRIPTIONS, getCategoryMetadataTitle } from '@/lib/categoryMetadata';
 import { getCategoryTitle } from '@/lib/categoryTitle';
 import { isEcoCategory } from '@/lib/isEcoCategory';
 import { siteUrl } from '@/lib/siteUrl';
@@ -33,8 +34,8 @@ export async function generateMetadata({ params }: CategoryPageProps): Promise<M
   if (!isEcoCategory(category)) {
     notFound();
   }
-  const title = getCategoryTitle(category);
-  const description = `Track and visualize ${title.toLowerCase()} metrics for a sustainable planet.`;
+  const title = getCategoryMetadataTitle(category);
+  const description = CATEGORY_DESCRIPTIONS[category];
   const canonicalUrl = `${siteUrl()}/${category}/`;
   return {
     title: title,

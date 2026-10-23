@@ -7,6 +7,7 @@ import CategoryPage, {
   maxDuration,
   revalidate,
 } from '@/app/[category]/page';
+import { CATEGORY_DESCRIPTIONS } from '@/lib/categoryMetadata';
 import { OG_IMAGE } from '@/lib/socialMetadata';
 import { getWaterFootprintProducts } from '@/lib/waterFootprint';
 import { ECO_CATEGORIES } from '@eco-metrics/shared';
@@ -131,11 +132,27 @@ describe('generateMetadata', () => {
     expect(metadata.title).toBe('Ocean Health');
   });
 
-  it('should return a description referencing the category name', async () => {
+  it('should return the description from the category map', async () => {
     const metadata = await generateMetadata({
       params: Promise.resolve({ category: 'air-quality' }),
     });
-    expect(metadata.description).toContain('air quality');
+    expect(metadata.description).toBe(CATEGORY_DESCRIPTIONS['air-quality']);
+    expect(metadata.openGraph?.description).toBe(CATEGORY_DESCRIPTIONS['air-quality']);
+    expect(metadata.twitter?.description).toBe(CATEGORY_DESCRIPTIONS['air-quality']);
+  });
+
+  it('should return the keyword-bearing title and map description for water-footprint', async () => {
+    jest.mocked(getWaterFootprintProducts).mockClear();
+    const metadata = await generateMetadata({
+      params: Promise.resolve({ category: 'water-footprint' }),
+    });
+    expect(metadata.title).toBe('Water Footprint of Food & Products');
+    expect(metadata.description).toBe(CATEGORY_DESCRIPTIONS['water-footprint']);
+    expect(metadata.openGraph?.title).toBe('Water Footprint of Food & Products');
+    expect(metadata.openGraph?.description).toBe(CATEGORY_DESCRIPTIONS['water-footprint']);
+    expect(metadata.twitter?.title).toBe('Water Footprint of Food & Products');
+    expect(metadata.twitter?.description).toBe(CATEGORY_DESCRIPTIONS['water-footprint']);
+    expect(getWaterFootprintProducts).not.toHaveBeenCalled();
   });
 
   it('should handle co2-emissions correctly in metadata', async () => {

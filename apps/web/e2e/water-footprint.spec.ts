@@ -1,5 +1,7 @@
 import { expect, test } from '@playwright/test';
 
+import { waterFootprintPage } from './utils/pages';
+
 test.describe('Water Footprint page', () => {
   test.describe('Core render', { tag: '@smoke' }, () => {
     test('should render the page with heading, product data, and filters', async ({ page }) => {
@@ -28,7 +30,19 @@ test.describe('Water Footprint page', () => {
     test('should have the correct title and canonical URL', async ({ page }) => {
       await page.goto('/water-footprint/');
 
-      await expect(page).toHaveTitle('Water Footprint — eco-metrics earth');
+      await expect(page).toHaveTitle(waterFootprintPage.fullTitle);
+      await expect(page.locator('meta[name="description"]')).toHaveAttribute(
+        'content',
+        waterFootprintPage.description,
+      );
+      await expect(page.locator('meta[property="og:title"]')).toHaveAttribute(
+        'content',
+        waterFootprintPage.title,
+      );
+      await expect(page.locator('meta[property="og:description"]')).toHaveAttribute(
+        'content',
+        waterFootprintPage.description,
+      );
       const canonical = page.locator('link[rel="canonical"]');
       await expect(canonical).toHaveAttribute('href', /\/water-footprint\/$/);
     });
