@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 
 import HomePage, { metadata } from '@/app/page';
-import { OG_IMAGE } from '@/lib/socialMetadata';
+import { OG_IMAGE, SITE_DESCRIPTION } from '@/lib/socialMetadata';
 
 describe('HomePage', () => {
   it('should render successfully', () => {
@@ -39,17 +39,30 @@ describe('HomePage', () => {
 });
 
 describe('HomePage metadata', () => {
-  it('should have title "eco-metrics earth"', () => {
-    expect(metadata.title).toBe('eco-metrics earth');
+  it('should have the keyword-bearing home title', () => {
+    expect(metadata.title).toBe('eco-metrics earth | CO2, Climate, Energy & Water Data');
+  });
+
+  it('should have a title of 50-60 characters', () => {
+    const length = (metadata.title as string).length;
+    expect(length).toBeGreaterThanOrEqual(50);
+    expect(length).toBeLessThanOrEqual(60);
+  });
+
+  it('should use the shared site description', () => {
+    expect(metadata.description).toBe(SITE_DESCRIPTION);
+  });
+
+  it('should match the openGraph and twitter title and description to the page', () => {
+    expect(metadata.openGraph?.title).toBe(metadata.title);
+    expect(metadata.openGraph?.description).toBe(metadata.description);
+    expect(metadata.twitter?.title).toBe(metadata.title);
+    expect(metadata.twitter?.description).toBe(metadata.description);
   });
 
   it('should have a canonical URL ending with trailing slash', () => {
     const canonical = metadata.alternates?.canonical as string;
     expect(canonical).toMatch(/\/$/);
-  });
-
-  it('should have openGraph title set', () => {
-    expect(metadata.openGraph?.title).toBe('eco-metrics earth');
   });
 
   it('should have openGraph url ending with trailing slash', () => {

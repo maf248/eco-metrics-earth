@@ -5,6 +5,10 @@ type Twitter = NonNullable<Metadata['twitter']>;
 
 export const SITE_NAME = 'eco-metrics earth';
 
+/** Single site description: layout default, home page and social card tagline. */
+export const SITE_DESCRIPTION =
+  'Explore environmental data on CO2 emissions, global temperature, energy sources and water footprint. Open sources, free to use, built in the open.';
+
 /**
  * Site-wide social card, served by `app/og-image.png/route.tsx`.
  *
@@ -16,7 +20,7 @@ export const OG_IMAGE = {
   url: '/og-image.png',
   width: 1200,
   height: 630,
-  alt: 'eco-metrics earth — Track and visualize environmental metrics',
+  alt: 'eco-metrics earth | Environmental data on CO2, climate, energy and water',
   type: 'image/png',
 } as const;
 

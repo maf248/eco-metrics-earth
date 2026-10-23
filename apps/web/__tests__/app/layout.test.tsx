@@ -1,7 +1,7 @@
 import { renderToString } from 'react-dom/server';
 
 import RootLayout, { metadata } from '@/app/layout';
-import { OG_IMAGE } from '@/lib/socialMetadata';
+import { OG_IMAGE, SITE_DESCRIPTION } from '@/lib/socialMetadata';
 
 // Navbar uses NavLink which calls usePathname — mock it for SSR tests
 jest.mock('next/navigation', () => ({
@@ -84,12 +84,13 @@ describe('metadata', () => {
   });
 
   it('should have a title template', () => {
-    expect((metadata.title as { template: string }).template).toBe('%s \u2014 eco-metrics earth');
+    expect((metadata.title as { template: string }).template).toBe('%s | eco-metrics earth');
   });
 
-  it('should have a non-empty description', () => {
-    expect(typeof metadata.description).toBe('string');
-    expect((metadata.description as string).length).toBeGreaterThan(0);
+  it('should use the shared site description within 110-160 characters', () => {
+    expect(metadata.description).toBe(SITE_DESCRIPTION);
+    expect((metadata.description as string).length).toBeGreaterThanOrEqual(110);
+    expect((metadata.description as string).length).toBeLessThanOrEqual(160);
   });
 
   it('should have openGraph.siteName set to "eco-metrics earth"', () => {

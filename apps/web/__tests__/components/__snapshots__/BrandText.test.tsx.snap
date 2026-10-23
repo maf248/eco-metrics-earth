@@ -16,7 +16,7 @@ exports[`BrandText snapshots should match snapshot after typing completes (norma
   </span>
   <span
     aria-hidden="true"
-    class="font-mono text-sm font-medium text-emerald-700/60 dark:text-emerald-400/60 select-none transition-opacity duration-500 opacity-100"
+    class="font-mono text-sm font-medium text-emerald-700 dark:text-emerald-400 select-none transition-opacity duration-500 opacity-100"
   >
     [↵]
   </span>
@@ -39,7 +39,7 @@ exports[`BrandText snapshots should match snapshot with reduced motion 1`] = `
   </span>
   <span
     aria-hidden="true"
-    class="font-mono text-sm font-medium text-emerald-700/60 dark:text-emerald-400/60 select-none transition-opacity duration-500 opacity-100"
+    class="font-mono text-sm font-medium text-emerald-700 dark:text-emerald-400 select-none transition-opacity duration-500 opacity-100"
   >
     [↵]
   </span>

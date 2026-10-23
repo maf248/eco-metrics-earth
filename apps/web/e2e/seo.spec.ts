@@ -1,6 +1,11 @@
 import { test, expect } from '@playwright/test';
 
-import { homePage, categoryPage, CATEGORY_SLUGS } from './utils/pages';
+import {
+  homePage,
+  categoryPage,
+  CATEGORY_SLUGS,
+  CATEGORY_DESCRIPTION_SAMPLES,
+} from './utils/pages';
 
 test.describe('Trailing slash enforcement', { tag: '@smoke' }, () => {
   test('should add trailing slash when navigating without one', async ({ page }) => {
@@ -61,6 +66,17 @@ test.describe('Category page metadata', () => {
     const cp = categoryPage('air-quality');
     await page.goto(cp.url);
     await expect(page).toHaveTitle(cp.title);
+  });
+
+  test('should have a unique meta description per category', async ({ page }) => {
+    const descriptions: string[] = [];
+    for (const slug of ['air-quality', 'co2-emissions'] as const) {
+      await page.goto(categoryPage(slug).url);
+      const meta = page.locator('meta[name="description"]');
+      await expect(meta).toHaveAttribute('content', CATEGORY_DESCRIPTION_SAMPLES[slug]);
+      descriptions.push((await meta.getAttribute('content')) ?? '');
+    }
+    expect(descriptions[0]).not.toBe(descriptions[1]);
   });
 
   test('should have canonical link with trailing slash', async ({ page }) => {

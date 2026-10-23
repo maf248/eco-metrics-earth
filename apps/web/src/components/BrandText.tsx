@@ -77,7 +77,7 @@ export default function BrandText() {
       <span
         aria-hidden="true"
         className={[
-          'font-mono text-sm font-medium text-emerald-700/60 dark:text-emerald-400/60 select-none',
+          'font-mono text-sm font-medium text-emerald-700 dark:text-emerald-400 select-none',
           'transition-opacity duration-500',
           isTypingDone ? 'opacity-100' : 'opacity-0',
         ].join(' ')}

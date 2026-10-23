@@ -58,12 +58,14 @@ When the BFF is healthy but returns an empty array, the page SHALL render the me
 
 ### Requirement: SEO preservation on the water-footprint page
 
-The existing `generateMetadata` behavior SHALL remain unchanged for water-footprint: title "Water Footprint", description "Track and visualize water footprint metrics for a sustainable planet.", canonical URL `{siteUrl}/water-footprint/` (trailing slash), and matching Open Graph/Twitter tags. The product data SHALL be present in the server-rendered HTML so the page content is indexable without client JavaScript.
+The `generateMetadata` output for water-footprint SHALL use title "Water Footprint of Food & Products" (rendered by the root layout template as "Water Footprint of Food & Products | eco-metrics earth", 54 characters), description "Water footprint of food and products: how many liters of green, blue and grey water it takes to produce what we eat and use. Source-cited data." (143 characters), canonical URL `{siteUrl}/water-footprint/` (trailing slash), and matching Open Graph/Twitter tags. The page heading remains "Water Footprint". The product data SHALL be present in the server-rendered HTML so the page content is indexable without client JavaScript.
 
 #### Scenario: Metadata unchanged
 
 - **WHEN** `/water-footprint/` is requested
-- **THEN** `<title>` is "Water Footprint — eco-metrics earth" and `<link rel="canonical">` points to `/water-footprint/` with a trailing slash
+- **THEN** `<title>` is "Water Footprint of Food & Products | eco-metrics earth" and `<link rel="canonical">` points to `/water-footprint/` with a trailing slash
+- **AND** `<meta name="description">` is the description above
+- **AND** `og:title` and `twitter:title` are "Water Footprint of Food & Products", and `og:description` and `twitter:description` equal the meta description
 
 #### Scenario: Server-rendered content is indexable
 

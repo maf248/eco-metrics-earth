@@ -2,10 +2,10 @@ import type { Metadata } from 'next';
 
 import { SiteLogoIcon } from '@/components/icons';
 import { siteUrl } from '@/lib/siteUrl';
-import { buildOpenGraph, buildTwitter } from '@/lib/socialMetadata';
+import { SITE_DESCRIPTION, buildOpenGraph, buildTwitter } from '@/lib/socialMetadata';
 
-const TITLE = 'eco-metrics earth';
-const DESCRIPTION = 'Track and visualize environmental metrics for a sustainable planet.';
+const TITLE = 'eco-metrics earth | CO2, Climate, Energy & Water Data';
+const DESCRIPTION = SITE_DESCRIPTION;
 
 export const metadata: Metadata = {
   title: TITLE,
