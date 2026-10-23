@@ -1,3 +1,13 @@
+## [2.8.0](https://github.com/maf248/eco-metrics-earth/compare/web-v2.7.0...web-v2.8.0) (2026-10-23)
+
+### Features
+
+* **web:** improve SEO titles, descriptions and social card copy ([2623dde](https://github.com/maf248/eco-metrics-earth/commit/2623dde54e597af528b455d4dba75a90190d6ba1))
+
+### Bug Fixes
+
+* **web:** raise contrast of brand enter affordance and stabilize a11y audit ([46e6e18](https://github.com/maf248/eco-metrics-earth/commit/46e6e18ca77642c67a039b4918ae66ce6af20c9b))
+
 ## [2.7.0](https://github.com/maf248/eco-metrics-earth/compare/web-v2.6.0...web-v2.7.0) (2026-10-10)
 
 ### Bug Fixes
