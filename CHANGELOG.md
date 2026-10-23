@@ -1,3 +1,9 @@
+## [2.11.2](https://github.com/maf248/eco-metrics-earth/compare/v2.11.1...v2.11.2) (2026-10-23)
+
+### Bug Fixes
+
+* **deps:** update body-parser to 2.4.0 for GHSA-27r3-jxmh-p828 ([39aba65](https://github.com/maf248/eco-metrics-earth/commit/39aba654d96a93f0df772ca96b0b77fa2957a6aa))
+
 ## [2.11.1](https://github.com/maf248/eco-metrics-earth/compare/v2.11.0...v2.11.1) (2026-10-23)
 
 ### Bug Fixes
