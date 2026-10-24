@@ -2,11 +2,142 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
-/* Nav surface — shared by the nav and its scroll gradients.
- * Keep opaque: page content scrolls behind the fixed nav. */
-@theme {
-  --color-nav-surface: #eaecef;
-  --color-nav-surface-dark: #1a1a1a;
+/* ─── Semantic color tokens ──────────────────────────────────────────────────
+ * Single source of truth for every UI color (docs/design-system.md lists each
+ * token's role). Raw variables hold the light value on :root and the dark value
+ * under .dark; `@theme inline` exposes each one as a single utility
+ * (`bg-surface`, `text-fg-secondary`, `border-line`, …) that follows the theme.
+ * Non-Tailwind code (charts, maps) reads the raw variables: var(--surface).
+ * Values are Tailwind 4.3.3 palette entries, noted per line.
+ * ─────────────────────────────────────────────────────────────────────────── */
+:root {
+  /* Core */
+  --surface: oklch(100% 0 0); /* white */
+  --surface-raised: oklch(100% 0 0); /* white */
+  /* Keep opaque: page content scrolls behind the fixed nav. */
+  --nav-surface: oklch(94.24% 0.0046 258.325); /* #eaecef */
+  --well: oklch(87.2% 0.01 258.338); /* gray-300 */
+  --well-active: oklch(70.7% 0.022 261.325); /* gray-400 */
+  --hover: oklch(96.7% 0.003 264.542); /* gray-100 */
+  --fg: oklch(21% 0.034 264.665); /* gray-900 */
+  --fg-strong: oklch(0% 0 0); /* black */
+  --fg-body: oklch(37.3% 0.034 259.733); /* gray-700 */
+  --fg-secondary: oklch(44.6% 0.03 256.802); /* gray-600 */
+  --fg-muted: oklch(55.1% 0.027 264.364); /* gray-500 */
+  --accent: oklch(50.8% 0.118 165.612); /* emerald-700 */
+  --accent-hover: oklch(43.2% 0.095 166.913); /* emerald-800 */
+  --accent-solid: oklch(59.6% 0.145 163.225); /* emerald-600 */
+  --accent-solid-strong: oklch(50.8% 0.118 165.612); /* emerald-700 */
+  --on-accent: oklch(100% 0 0); /* white */
+  --focus-ring: oklch(76.5% 0.177 163.223); /* emerald-400 */
+  --focus-offset: oklch(100% 0 0); /* white */
+  --line: oklch(92.8% 0.006 264.531); /* gray-200 */
+  --line-strong: oklch(92.8% 0.006 264.531); /* gray-200 */
+  --line-subtle: oklch(96.7% 0.003 264.542); /* gray-100 */
+
+  /* Legacy — kept for a pixel-identical migration; to be consolidated */
+  --hover-subtle: oklch(98.5% 0.002 247.839); /* gray-50 */
+  --control: oklch(96.7% 0.003 264.542); /* gray-100 */
+  --control-hover: oklch(92.8% 0.006 264.531); /* gray-200 */
+  --toggle: oklch(92.8% 0.006 264.531); /* gray-200 */
+  --toggle-hover: oklch(87.2% 0.01 258.338); /* gray-300 */
+  --chip-hover: oklch(98.5% 0.002 247.839); /* gray-50 */
+  --fg-control: oklch(37.3% 0.034 259.733); /* gray-700 */
+  --line-control: oklch(87.2% 0.01 258.338); /* gray-300 */
+  --skeleton-strong: oklch(70.7% 0.022 261.325); /* gray-400 */
+  --skeleton: oklch(92.8% 0.006 264.531); /* gray-200 */
+  --skeleton-subtle: oklch(96.7% 0.003 264.542); /* gray-100 */
+
+  /* Icon separation: subtle drop-shadow in light mode */
+  --icon-shadow-xs: 0 0 2px oklch(0% 0 0 / 0.15);
+  --icon-shadow-sm: 0 1px 2px oklch(0% 0 0 / 0.15); /* drop-shadow-sm */
+  --icon-shadow-lg: 0 4px 4px oklch(0% 0 0 / 0.15); /* drop-shadow-lg */
+  --icon-shadow-xl: 0 9px 7px oklch(0% 0 0 / 0.1); /* drop-shadow-xl */
+}
+
+.dark {
+  /* Core */
+  --surface: oklch(0% 0 0); /* black */
+  --surface-raised: oklch(27.8% 0.033 256.848); /* gray-800 */
+  --nav-surface: oklch(21.78% 0 0); /* #1a1a1a */
+  --well: oklch(100% 0 0 / 0.1); /* white/10 */
+  --well-active: oklch(100% 0 0 / 0.15); /* white/15 */
+  --hover: oklch(100% 0 0 / 0.05); /* white/5 */
+  --fg: oklch(100% 0 0); /* white */
+  --fg-strong: oklch(100% 0 0); /* white */
+  --fg-body: oklch(87.2% 0.01 258.338); /* gray-300 */
+  --fg-secondary: oklch(70.7% 0.022 261.325); /* gray-400 */
+  --fg-muted: oklch(70.7% 0.022 261.325); /* gray-400 */
+  --accent: oklch(76.5% 0.177 163.223); /* emerald-400 */
+  --accent-hover: oklch(84.5% 0.143 164.978); /* emerald-300 */
+  --accent-solid: oklch(59.6% 0.145 163.225); /* emerald-600 */
+  --accent-solid-strong: oklch(50.8% 0.118 165.612); /* emerald-700 */
+  --on-accent: oklch(100% 0 0); /* white */
+  --focus-ring: oklch(76.5% 0.177 163.223); /* emerald-400 */
+  --focus-offset: oklch(13% 0.028 261.692); /* gray-950 */
+  --line: oklch(27.8% 0.033 256.848); /* gray-800 */
+  --line-strong: oklch(37.3% 0.034 259.733); /* gray-700 */
+  --line-subtle: oklch(27.8% 0.033 256.848); /* gray-800 */
+
+  /* Legacy */
+  --hover-subtle: oklch(100% 0 0 / 0.05); /* white/5 */
+  --control: oklch(100% 0 0 / 0.1); /* white/10 */
+  --control-hover: oklch(100% 0 0 / 0.2); /* white/20 */
+  --toggle: oklch(100% 0 0 / 0.1); /* white/10 */
+  --toggle-hover: oklch(100% 0 0 / 0.2); /* white/20 */
+  --chip-hover: oklch(37.3% 0.034 259.733); /* gray-700 */
+  --fg-control: oklch(92.8% 0.006 264.531); /* gray-200 */
+  --line-control: oklch(44.6% 0.03 256.802); /* gray-600 */
+  --skeleton-strong: oklch(100% 0 0 / 0.2); /* white/20 */
+  --skeleton: oklch(100% 0 0 / 0.1); /* white/10 */
+  --skeleton-subtle: oklch(100% 0 0 / 0.05); /* white/5 */
+
+  /* Icon separation: faint white glow in dark mode (xs has none) */
+  --icon-shadow-xs: 0 0 0 oklch(0% 0 0 / 0);
+  --icon-shadow-sm: 0 0 3px oklch(100% 0 0 / 0.25);
+  --icon-shadow-lg: 0 0 8px oklch(100% 0 0 / 0.25);
+  --icon-shadow-xl: 0 0 10px oklch(100% 0 0 / 0.25);
+}
+
+@theme inline {
+  --color-surface: var(--surface);
+  --color-surface-raised: var(--surface-raised);
+  --color-nav-surface: var(--nav-surface);
+  --color-well: var(--well);
+  --color-well-active: var(--well-active);
+  --color-hover: var(--hover);
+  --color-fg: var(--fg);
+  --color-fg-strong: var(--fg-strong);
+  --color-fg-body: var(--fg-body);
+  --color-fg-secondary: var(--fg-secondary);
+  --color-fg-muted: var(--fg-muted);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-solid: var(--accent-solid);
+  --color-accent-solid-strong: var(--accent-solid-strong);
+  --color-on-accent: var(--on-accent);
+  --color-focus-ring: var(--focus-ring);
+  --color-focus-offset: var(--focus-offset);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-line-subtle: var(--line-subtle);
+
+  --color-hover-subtle: var(--hover-subtle);
+  --color-control: var(--control);
+  --color-control-hover: var(--control-hover);
+  --color-toggle: var(--toggle);
+  --color-toggle-hover: var(--toggle-hover);
+  --color-chip-hover: var(--chip-hover);
+  --color-fg-control: var(--fg-control);
+  --color-line-control: var(--line-control);
+  --color-skeleton-strong: var(--skeleton-strong);
+  --color-skeleton: var(--skeleton);
+  --color-skeleton-subtle: var(--skeleton-subtle);
+
+  --drop-shadow-icon-xs: var(--icon-shadow-xs);
+  --drop-shadow-icon-sm: var(--icon-shadow-sm);
+  --drop-shadow-icon-lg: var(--icon-shadow-lg);
+  --drop-shadow-icon-xl: var(--icon-shadow-xl);
 }
 
 /* ─── Terminal cursor blink animation ───────────────────────────────────────

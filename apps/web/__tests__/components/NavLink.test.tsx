@@ -67,8 +67,8 @@ describe('NavLink — icon background classes', () => {
       <NavLink href="/air-quality/" icon={AirQualityIcon} label="Air Quality" isActive={true} />,
     );
     const iconWrapper = screen.getByTestId('nav-icon');
-    expect(iconWrapper.className).toContain('bg-gray-400');
-    expect(iconWrapper.className).toContain('dark:bg-white/15');
+    expect(iconWrapper.classList.contains('bg-well-active')).toBe(true);
+    expect(iconWrapper.classList.contains('bg-well')).toBe(false);
   });
 
   it('should apply inactive icon background when isActive is false', () => {
@@ -76,8 +76,8 @@ describe('NavLink — icon background classes', () => {
       <NavLink href="/air-quality/" icon={AirQualityIcon} label="Air Quality" isActive={false} />,
     );
     const iconWrapper = screen.getByTestId('nav-icon');
-    expect(iconWrapper.className).toContain('bg-gray-300');
-    expect(iconWrapper.className).toContain('dark:bg-white/10');
+    expect(iconWrapper.classList.contains('bg-well')).toBe(true);
+    expect(iconWrapper.classList.contains('bg-well-active')).toBe(false);
   });
 });
 

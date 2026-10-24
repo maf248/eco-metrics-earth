@@ -32,7 +32,7 @@ export default function MobileHeader() {
         // Position: fixed top, full width, above content
         'fixed top-0 left-0 right-0 z-50 h-14',
         // Style: dark background with subtle blur + bottom border
-        'bg-white/95 dark:bg-black/95 backdrop-blur-sm border-b border-gray-200 dark:border-gray-800',
+        'bg-surface/95 backdrop-blur-sm border-b border-line',
       ].join(' ')}
     >
       <Link
@@ -40,16 +40,13 @@ export default function MobileHeader() {
         aria-label="eco-metrics earth — go to home"
         className={[
           'flex items-center h-full gap-3 px-4',
-          'hover:bg-gray-100 dark:hover:bg-white/5 transition-colors duration-150',
-          'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400',
-          'focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-black',
+          'hover:bg-hover transition-colors duration-150',
+          'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring',
+          'focus-visible:ring-offset-2 focus-visible:ring-offset-surface',
         ].join(' ')}
       >
         {/* Site logo — decorative, described by the link aria-label */}
-        <SiteLogoIcon
-          aria-hidden
-          className="w-7 h-7 shrink-0 drop-shadow-[0_0_2px_rgba(0,0,0,0.15)] dark:drop-shadow-none"
-        />
+        <SiteLogoIcon aria-hidden className="w-7 h-7 shrink-0 drop-shadow-icon-xs" />
 
         {/* Animated terminal brand text + cursor + [↵] */}
         <BrandText />

@@ -35,7 +35,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" className="dark" suppressHydrationWarning>
-      <body className="bg-white dark:bg-black text-gray-900 dark:text-white">
+      <body className="bg-surface text-fg">
         {/*
          * Blocking script — runs synchronously before paint.
          * SSR defaults to dark mode; this script only removes the `dark`
@@ -66,7 +66,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
            */}
           <a
             href="#main-content"
-            className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-emerald-600 focus:text-white focus:rounded-md focus:font-medium focus:outline-none"
+            className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-accent-solid focus:text-on-accent focus:rounded-md focus:font-medium focus:outline-none"
           >
             Skip to main content
           </a>

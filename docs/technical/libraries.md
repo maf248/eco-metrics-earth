@@ -13,7 +13,7 @@ _Screening date: 16 Sep 2026._ Version numbers and project-health claims below w
 | Framework              | Next.js 16 (App Router), React 19                                                                                                               |
 | Styling                | Tailwind CSS v4                                                                                                                                 |
 | Dark mode              | Class-based — `@custom-variant dark (&:where(.dark, .dark *))` in `apps/web/src/app/globals.css`, `dark` class toggled on `<html>`              |
-| Design tokens          | Effectively none. Only `--color-nav-surface` / `--color-nav-surface-dark` in the `@theme` block; day-to-day theming is paired `dark:` utilities |
+| Design tokens          | Semantic color tokens: `:root` / `.dark` values mapped through `@theme inline`; no palette colors in UI components. See `docs/design-system.md` |
 | Charts / maps / tables | **None installed.** The existing `WaterFootprintTable` is hand-rolled markup                                                                    |
 | Unit tests             | Jest + React Testing Library (jsdom)                                                                                                            |
 | E2E                    | Playwright, 5 projects: `chromium-desktop`, `firefox-desktop`, `webkit-desktop`, `mobile-chrome`, `mobile-safari`                               |
@@ -73,7 +73,7 @@ Specific traps worth knowing about up front:
 - **`ResponsiveContainer` needs `ResizeObserver`, which jsdom does not implement.** Two workable approaches: a test-only shim in the Jest setup, or rendering inside a fixed-pixel wrapper and asserting on the SVG output instead of resize behavior. Pick one and apply it consistently.
 - **Choose the SVG renderer over canvas** wherever the library offers a choice. Canvas output is invisible to both jsdom assertions and Playwright locators.
 - **Keyboard access to ~180 country `<path>` elements** is not free. Paths aren't natively focusable, so each needs `tabIndex` + `role` + `aria-label` — profile the real cost rather than assuming it's negligible.
-- **Prefer a token bridge over hardcoded colors**: extend the `@theme` block with chart tokens (e.g. `--color-chart-1…n`) and have components read those, so the palette lives in one place.
+- **Prefer a token bridge over hardcoded colors**: add chart tokens (e.g. `--chart-1…n`) with the same mechanism as the existing color tokens — light value on `:root`, dark value under `.dark`, mapped in `@theme inline` — and have chart code read the raw variables (`fill="var(--chart-1)"`), so the palette lives in one place and follows the theme with no JS. See `docs/design-system.md` → Color Tokens.
 - **POC code should be disposable.** Keep it out of `apps/web/src/app/` so it carries no SEO, sitemap, or robots obligations, and delete rejected candidates entirely rather than letting them linger.
 
 ### Per-candidate spikes

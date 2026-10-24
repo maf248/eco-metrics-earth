@@ -25,22 +25,19 @@ function NavLink({ href, icon: Icon, label, isActive }: NavLinkProps) {
         'text-[10px] lg:text-sm font-medium leading-tight transition-colors duration-150',
         // Colour + background: active vs inactive
         isActive
-          ? 'text-emerald-700 lg:bg-gray-100 dark:text-emerald-400 dark:lg:bg-white/5'
-          : 'text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/5',
-        'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 ring-offset-white dark:ring-offset-gray-950',
+          ? 'text-accent lg:bg-hover'
+          : 'text-fg-secondary hover:text-fg-strong hover:bg-hover',
+        'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2 ring-offset-focus-offset',
       ].join(' ')}
     >
       <span
         data-testid="nav-icon"
         className={[
           'w-8 h-8 shrink-0 flex items-center justify-center rounded-lg p-1',
-          isActive ? 'bg-gray-400 dark:bg-white/15' : 'bg-gray-300 dark:bg-white/10',
+          isActive ? 'bg-well-active' : 'bg-well',
         ].join(' ')}
       >
-        <Icon
-          aria-hidden
-          className="w-6 h-6 drop-shadow-sm dark:drop-shadow-[0_0_3px_rgba(255,255,255,0.25)]"
-        />
+        <Icon aria-hidden className="w-6 h-6 drop-shadow-icon-sm" />
       </span>
       <span className="w-full text-center whitespace-normal wrap-break-word leading-tight lg:truncate lg:max-w-none lg:text-left lg:whitespace-nowrap">
         {label}

@@ -141,11 +141,11 @@ describe('BrandText — decorative elements', () => {
     expect(cursorSpan?.className).toContain('animate-cursor-blink');
   });
 
-  it('should render brand text in font-mono and text-emerald-400', () => {
+  it('should render brand text in font-mono with the accent color token', () => {
     const { container } = render(<BrandText />);
     const brandSpan = container.querySelectorAll('span[aria-hidden="true"]')[0];
     expect(brandSpan.className).toContain('font-mono');
-    expect(brandSpan.className).toContain('text-emerald-400');
+    expect(brandSpan.className).toContain('text-accent');
   });
 
   it('should have whitespace-nowrap on brand text span to prevent wrapping', () => {

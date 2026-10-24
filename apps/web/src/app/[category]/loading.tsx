@@ -8,13 +8,13 @@ export default function CategoryLoading() {
     >
       <div className="flex flex-col items-center gap-6 mt-14 lg:mt-0">
         {/* Placeholder icon */}
-        <div className="flex items-center justify-center w-24 h-24 rounded-2xl bg-gray-300 dark:bg-white/10 p-4 motion-safe:animate-pulse">
-          <div className="w-16 h-16 rounded-lg bg-gray-400 dark:bg-white/20" />
+        <div className="flex items-center justify-center w-24 h-24 rounded-2xl bg-well p-4 motion-safe:animate-pulse">
+          <div className="w-16 h-16 rounded-lg bg-skeleton-strong" />
         </div>
         {/* Placeholder text */}
         <div className="flex flex-col items-center gap-4">
-          <div className="h-10 w-48 rounded-md bg-gray-200 dark:bg-white/10 motion-safe:animate-pulse" />
-          <div className="h-5 w-64 rounded-md bg-gray-100 dark:bg-white/5 motion-safe:animate-pulse" />
+          <div className="h-10 w-48 rounded-md bg-skeleton motion-safe:animate-pulse" />
+          <div className="h-5 w-64 rounded-md bg-skeleton-subtle motion-safe:animate-pulse" />
         </div>
       </div>
     </main>

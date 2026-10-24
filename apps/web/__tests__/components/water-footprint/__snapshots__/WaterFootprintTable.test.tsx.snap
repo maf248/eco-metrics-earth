@@ -26,7 +26,7 @@ exports[`WaterFootprintTable should match the default render snapshot 1`] = `
             value="all"
           />
           <label
-            class="cursor-pointer rounded-full border border-gray-300 bg-white px-3 py-1 text-sm text-gray-700 transition-colors peer-checked:border-emerald-700 peer-checked:bg-emerald-700 peer-checked:text-white hover:bg-gray-50 peer-focus-visible:outline-none peer-focus-visible:ring-2 peer-focus-visible:ring-emerald-700 peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-white dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700 dark:peer-focus-visible:ring-emerald-400 dark:peer-focus-visible:ring-offset-gray-950"
+            class="cursor-pointer rounded-full border border-line-control bg-surface-raised px-3 py-1 text-sm text-fg-control transition-colors peer-checked:border-accent-solid-strong peer-checked:bg-accent-solid-strong peer-checked:text-on-accent hover:bg-chip-hover peer-focus-visible:outline-none peer-focus-visible:ring-2 peer-focus-visible:ring-accent peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-focus-offset"
             for="_r_u_-all"
           >
             All
@@ -41,7 +41,7 @@ exports[`WaterFootprintTable should match the default render snapshot 1`] = `
             value="Food & Beverages"
           />
           <label
-            class="cursor-pointer rounded-full border border-gray-300 bg-white px-3 py-1 text-sm text-gray-700 transition-colors peer-checked:border-emerald-700 peer-checked:bg-emerald-700 peer-checked:text-white hover:bg-gray-50 peer-focus-visible:outline-none peer-focus-visible:ring-2 peer-focus-visible:ring-emerald-700 peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-white dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700 dark:peer-focus-visible:ring-emerald-400 dark:peer-focus-visible:ring-offset-gray-950"
+            class="cursor-pointer rounded-full border border-line-control bg-surface-raised px-3 py-1 text-sm text-fg-control transition-colors peer-checked:border-accent-solid-strong peer-checked:bg-accent-solid-strong peer-checked:text-on-accent hover:bg-chip-hover peer-focus-visible:outline-none peer-focus-visible:ring-2 peer-focus-visible:ring-accent peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-focus-offset"
             for="_r_u_-Food & Beverages"
           >
             Food & Beverages
@@ -56,7 +56,7 @@ exports[`WaterFootprintTable should match the default render snapshot 1`] = `
             value="Textiles"
           />
           <label
-            class="cursor-pointer rounded-full border border-gray-300 bg-white px-3 py-1 text-sm text-gray-700 transition-colors peer-checked:border-emerald-700 peer-checked:bg-emerald-700 peer-checked:text-white hover:bg-gray-50 peer-focus-visible:outline-none peer-focus-visible:ring-2 peer-focus-visible:ring-emerald-700 peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-white dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700 dark:peer-focus-visible:ring-emerald-400 dark:peer-focus-visible:ring-offset-gray-950"
+            class="cursor-pointer rounded-full border border-line-control bg-surface-raised px-3 py-1 text-sm text-fg-control transition-colors peer-checked:border-accent-solid-strong peer-checked:bg-accent-solid-strong peer-checked:text-on-accent hover:bg-chip-hover peer-focus-visible:outline-none peer-focus-visible:ring-2 peer-focus-visible:ring-accent peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-focus-offset"
             for="_r_u_-Textiles"
           >
             Textiles
@@ -71,7 +71,7 @@ exports[`WaterFootprintTable should match the default render snapshot 1`] = `
             value="Technology"
           />
           <label
-            class="cursor-pointer rounded-full border border-gray-300 bg-white px-3 py-1 text-sm text-gray-700 transition-colors peer-checked:border-emerald-700 peer-checked:bg-emerald-700 peer-checked:text-white hover:bg-gray-50 peer-focus-visible:outline-none peer-focus-visible:ring-2 peer-focus-visible:ring-emerald-700 peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-white dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700 dark:peer-focus-visible:ring-emerald-400 dark:peer-focus-visible:ring-offset-gray-950"
+            class="cursor-pointer rounded-full border border-line-control bg-surface-raised px-3 py-1 text-sm text-fg-control transition-colors peer-checked:border-accent-solid-strong peer-checked:bg-accent-solid-strong peer-checked:text-on-accent hover:bg-chip-hover peer-focus-visible:outline-none peer-focus-visible:ring-2 peer-focus-visible:ring-accent peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-focus-offset"
             for="_r_u_-Technology"
           >
             Technology
@@ -86,7 +86,7 @@ exports[`WaterFootprintTable should match the default render snapshot 1`] = `
             value="Manufactured"
           />
           <label
-            class="cursor-pointer rounded-full border border-gray-300 bg-white px-3 py-1 text-sm text-gray-700 transition-colors peer-checked:border-emerald-700 peer-checked:bg-emerald-700 peer-checked:text-white hover:bg-gray-50 peer-focus-visible:outline-none peer-focus-visible:ring-2 peer-focus-visible:ring-emerald-700 peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-white dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700 dark:peer-focus-visible:ring-emerald-400 dark:peer-focus-visible:ring-offset-gray-950"
+            class="cursor-pointer rounded-full border border-line-control bg-surface-raised px-3 py-1 text-sm text-fg-control transition-colors peer-checked:border-accent-solid-strong peer-checked:bg-accent-solid-strong peer-checked:text-on-accent hover:bg-chip-hover peer-focus-visible:outline-none peer-focus-visible:ring-2 peer-focus-visible:ring-accent peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-focus-offset"
             for="_r_u_-Manufactured"
           >
             Manufactured
@@ -101,7 +101,7 @@ exports[`WaterFootprintTable should match the default render snapshot 1`] = `
             value="Digital & Computing"
           />
           <label
-            class="cursor-pointer rounded-full border border-gray-300 bg-white px-3 py-1 text-sm text-gray-700 transition-colors peer-checked:border-emerald-700 peer-checked:bg-emerald-700 peer-checked:text-white hover:bg-gray-50 peer-focus-visible:outline-none peer-focus-visible:ring-2 peer-focus-visible:ring-emerald-700 peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-white dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700 dark:peer-focus-visible:ring-emerald-400 dark:peer-focus-visible:ring-offset-gray-950"
+            class="cursor-pointer rounded-full border border-line-control bg-surface-raised px-3 py-1 text-sm text-fg-control transition-colors peer-checked:border-accent-solid-strong peer-checked:bg-accent-solid-strong peer-checked:text-on-accent hover:bg-chip-hover peer-focus-visible:outline-none peer-focus-visible:ring-2 peer-focus-visible:ring-accent peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-focus-offset"
             for="_r_u_-Digital & Computing"
           >
             Digital & Computing
@@ -116,7 +116,7 @@ exports[`WaterFootprintTable should match the default render snapshot 1`] = `
             value="Vehicles"
           />
           <label
-            class="cursor-pointer rounded-full border border-gray-300 bg-white px-3 py-1 text-sm text-gray-700 transition-colors peer-checked:border-emerald-700 peer-checked:bg-emerald-700 peer-checked:text-white hover:bg-gray-50 peer-focus-visible:outline-none peer-focus-visible:ring-2 peer-focus-visible:ring-emerald-700 peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-white dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700 dark:peer-focus-visible:ring-emerald-400 dark:peer-focus-visible:ring-offset-gray-950"
+            class="cursor-pointer rounded-full border border-line-control bg-surface-raised px-3 py-1 text-sm text-fg-control transition-colors peer-checked:border-accent-solid-strong peer-checked:bg-accent-solid-strong peer-checked:text-on-accent hover:bg-chip-hover peer-focus-visible:outline-none peer-focus-visible:ring-2 peer-focus-visible:ring-accent peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-focus-offset"
             for="_r_u_-Vehicles"
           >
             Vehicles
@@ -131,7 +131,7 @@ exports[`WaterFootprintTable should match the default render snapshot 1`] = `
             value="Energy & Extractives"
           />
           <label
-            class="cursor-pointer rounded-full border border-gray-300 bg-white px-3 py-1 text-sm text-gray-700 transition-colors peer-checked:border-emerald-700 peer-checked:bg-emerald-700 peer-checked:text-white hover:bg-gray-50 peer-focus-visible:outline-none peer-focus-visible:ring-2 peer-focus-visible:ring-emerald-700 peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-white dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700 dark:peer-focus-visible:ring-emerald-400 dark:peer-focus-visible:ring-offset-gray-950"
+            class="cursor-pointer rounded-full border border-line-control bg-surface-raised px-3 py-1 text-sm text-fg-control transition-colors peer-checked:border-accent-solid-strong peer-checked:bg-accent-solid-strong peer-checked:text-on-accent hover:bg-chip-hover peer-focus-visible:outline-none peer-focus-visible:ring-2 peer-focus-visible:ring-accent peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-focus-offset"
             for="_r_u_-Energy & Extractives"
           >
             Energy & Extractives
@@ -149,7 +149,7 @@ exports[`WaterFootprintTable should match the default render snapshot 1`] = `
     </p>
     <p
       aria-hidden="true"
-      class="mb-4 text-sm text-gray-600 dark:text-gray-400"
+      class="mb-4 text-sm text-fg-secondary"
     >
       Showing 6 of 6 products — All categories, sorted by water footprint (high to low)
     </p>
@@ -167,10 +167,10 @@ exports[`WaterFootprintTable should match the default render snapshot 1`] = `
         </caption>
         <thead>
           <tr
-            class="border-b border-gray-200 dark:border-gray-700"
+            class="border-b border-line-strong"
           >
             <th
-              class="py-2 pr-4 font-semibold text-gray-900 dark:text-white"
+              class="py-2 pr-4 font-semibold text-fg"
               scope="col"
             >
               <button
@@ -184,14 +184,14 @@ exports[`WaterFootprintTable should match the default render snapshot 1`] = `
               </button>
             </th>
             <th
-              class="py-2 pr-4 font-semibold text-gray-900 dark:text-white"
+              class="py-2 pr-4 font-semibold text-fg"
               scope="col"
             >
               Category
             </th>
             <th
               aria-sort="descending"
-              class="py-2 pr-4 font-semibold text-gray-900 dark:text-white"
+              class="py-2 pr-4 font-semibold text-fg"
               scope="col"
             >
               <button
@@ -207,19 +207,19 @@ exports[`WaterFootprintTable should match the default render snapshot 1`] = `
               </button>
             </th>
             <th
-              class="py-2 pr-4 font-semibold text-gray-900 dark:text-white"
+              class="py-2 pr-4 font-semibold text-fg"
               scope="col"
             >
               Water type
             </th>
             <th
-              class="py-2 pr-4 font-semibold text-gray-900 dark:text-white"
+              class="py-2 pr-4 font-semibold text-fg"
               scope="col"
             >
               Contextual equivalent
             </th>
             <th
-              class="py-2 pr-4 font-semibold text-gray-900 dark:text-white"
+              class="py-2 pr-4 font-semibold text-fg"
               scope="col"
             >
               Source
@@ -228,44 +228,44 @@ exports[`WaterFootprintTable should match the default render snapshot 1`] = `
         </thead>
         <tbody>
           <tr
-            class="border-b border-gray-100 dark:border-gray-800"
+            class="border-b border-line-subtle"
           >
             <th
-              class="py-2 pr-4 font-medium text-gray-900 dark:text-white"
+              class="py-2 pr-4 font-medium text-fg"
               scope="row"
             >
               Cotton t-shirt (250g)
             </th>
             <td
-              class="py-2 pr-4 text-gray-700 dark:text-gray-300"
+              class="py-2 pr-4 text-fg-body"
             >
               Textiles
             </td>
             <td
-              class="py-2 pr-4 text-gray-700 dark:text-gray-300"
+              class="py-2 pr-4 text-fg-body"
             >
               2,720 L 
               <span
-                class="text-gray-500 dark:text-gray-400"
+                class="text-fg-muted"
               >
                 per unit
               </span>
             </td>
             <td
-              class="py-2 pr-4 text-gray-700 dark:text-gray-300"
+              class="py-2 pr-4 text-fg-body"
             >
               Green + blue + grey
             </td>
             <td
-              class="py-2 pr-4 text-gray-700 dark:text-gray-300"
+              class="py-2 pr-4 text-fg-body"
             >
               ≈ 41.8 showers · ≈ 18.1 bathtubs
             </td>
             <td
-              class="py-2 pr-4 text-gray-700 dark:text-gray-300"
+              class="py-2 pr-4 text-fg-body"
             >
               <a
-                class="text-emerald-700 underline hover:text-emerald-800 dark:text-emerald-400 dark:hover:text-emerald-300"
+                class="text-accent underline hover:text-accent-hover"
                 href="https://doi.org/10.5194/hess-15-1577-2011"
                 rel="noopener noreferrer"
                 target="_blank"
@@ -276,12 +276,12 @@ exports[`WaterFootprintTable should match the default render snapshot 1`] = `
                 class="mt-1"
               >
                 <summary
-                  class="cursor-pointer text-gray-600 dark:text-gray-400"
+                  class="cursor-pointer text-fg-secondary"
                 >
                   Methodology
                 </summary>
                 <p
-                  class="mt-1 text-gray-700 dark:text-gray-300"
+                  class="mt-1 text-fg-body"
                 >
                   Water footprint of cotton textile products.
                 </p>
@@ -289,44 +289,44 @@ exports[`WaterFootprintTable should match the default render snapshot 1`] = `
             </td>
           </tr>
           <tr
-            class="border-b border-gray-100 dark:border-gray-800"
+            class="border-b border-line-subtle"
           >
             <th
-              class="py-2 pr-4 font-medium text-gray-900 dark:text-white"
+              class="py-2 pr-4 font-medium text-fg"
               scope="row"
             >
               Apples
             </th>
             <td
-              class="py-2 pr-4 text-gray-700 dark:text-gray-300"
+              class="py-2 pr-4 text-fg-body"
             >
               Food & Beverages
             </td>
             <td
-              class="py-2 pr-4 text-gray-700 dark:text-gray-300"
+              class="py-2 pr-4 text-fg-body"
             >
               180.1 L 
               <span
-                class="text-gray-500 dark:text-gray-400"
+                class="text-fg-muted"
               >
                 per kg
               </span>
             </td>
             <td
-              class="py-2 pr-4 text-gray-700 dark:text-gray-300"
+              class="py-2 pr-4 text-fg-body"
             >
               Blue water
             </td>
             <td
-              class="py-2 pr-4 text-gray-700 dark:text-gray-300"
+              class="py-2 pr-4 text-fg-body"
             >
               ≈ 2.8 showers · ≈ 1.2 bathtubs
             </td>
             <td
-              class="py-2 pr-4 text-gray-700 dark:text-gray-300"
+              class="py-2 pr-4 text-fg-body"
             >
               <a
-                class="text-emerald-700 underline hover:text-emerald-800 dark:text-emerald-400 dark:hover:text-emerald-300"
+                class="text-accent underline hover:text-accent-hover"
                 href="https://ourworldindata.org/grapher/water-withdrawals-per-kg-poore"
                 rel="noopener noreferrer"
                 target="_blank"
@@ -337,12 +337,12 @@ exports[`WaterFootprintTable should match the default render snapshot 1`] = `
                 class="mt-1"
               >
                 <summary
-                  class="cursor-pointer text-gray-600 dark:text-gray-400"
+                  class="cursor-pointer text-fg-secondary"
                 >
                   Methodology
                 </summary>
                 <p
-                  class="mt-1 text-gray-700 dark:text-gray-300"
+                  class="mt-1 text-fg-body"
                 >
                   Freshwater withdrawals per kg of final product.
                 </p>
@@ -350,44 +350,44 @@ exports[`WaterFootprintTable should match the default render snapshot 1`] = `
             </td>
           </tr>
           <tr
-            class="border-b border-gray-100 dark:border-gray-800"
+            class="border-b border-line-subtle"
           >
             <th
-              class="py-2 pr-4 font-medium text-gray-900 dark:text-white"
+              class="py-2 pr-4 font-medium text-fg"
               scope="row"
             >
               Microchip (2g)
             </th>
             <td
-              class="py-2 pr-4 text-gray-700 dark:text-gray-300"
+              class="py-2 pr-4 text-fg-body"
             >
               Technology
             </td>
             <td
-              class="py-2 pr-4 text-gray-700 dark:text-gray-300"
+              class="py-2 pr-4 text-fg-body"
             >
               32 L 
               <span
-                class="text-gray-500 dark:text-gray-400"
+                class="text-fg-muted"
               >
                 per unit
               </span>
             </td>
             <td
-              class="py-2 pr-4 text-gray-700 dark:text-gray-300"
+              class="py-2 pr-4 text-fg-body"
             >
               Life cycle (total)
             </td>
             <td
-              class="py-2 pr-4 text-gray-700 dark:text-gray-300"
+              class="py-2 pr-4 text-fg-body"
             >
               under 1 shower
             </td>
             <td
-              class="py-2 pr-4 text-gray-700 dark:text-gray-300"
+              class="py-2 pr-4 text-fg-body"
             >
               <a
-                class="text-emerald-700 underline hover:text-emerald-800 dark:text-emerald-400 dark:hover:text-emerald-300"
+                class="text-accent underline hover:text-accent-hover"
                 href="https://doi.org/10.1021/es025643o"
                 rel="noopener noreferrer"
                 target="_blank"
@@ -398,12 +398,12 @@ exports[`WaterFootprintTable should match the default render snapshot 1`] = `
                 class="mt-1"
               >
                 <summary
-                  class="cursor-pointer text-gray-600 dark:text-gray-400"
+                  class="cursor-pointer text-fg-secondary"
                 >
                   Methodology
                 </summary>
                 <p
-                  class="mt-1 text-gray-700 dark:text-gray-300"
+                  class="mt-1 text-fg-body"
                 >
                   Life-cycle water consumption of a 2 g microchip.
                 </p>
@@ -411,44 +411,44 @@ exports[`WaterFootprintTable should match the default render snapshot 1`] = `
             </td>
           </tr>
           <tr
-            class="border-b border-gray-100 dark:border-gray-800"
+            class="border-b border-line-subtle"
           >
             <th
-              class="py-2 pr-4 font-medium text-gray-900 dark:text-white"
+              class="py-2 pr-4 font-medium text-fg"
               scope="row"
             >
               Portland cement (CEM I)
             </th>
             <td
-              class="py-2 pr-4 text-gray-700 dark:text-gray-300"
+              class="py-2 pr-4 text-fg-body"
             >
               Manufactured
             </td>
             <td
-              class="py-2 pr-4 text-gray-700 dark:text-gray-300"
+              class="py-2 pr-4 text-fg-body"
             >
               2.6 L 
               <span
-                class="text-gray-500 dark:text-gray-400"
+                class="text-fg-muted"
               >
                 per kg
               </span>
             </td>
             <td
-              class="py-2 pr-4 text-gray-700 dark:text-gray-300"
+              class="py-2 pr-4 text-fg-body"
             >
               Blue water
             </td>
             <td
-              class="py-2 pr-4 text-gray-700 dark:text-gray-300"
+              class="py-2 pr-4 text-fg-body"
             >
               under 1 shower
             </td>
             <td
-              class="py-2 pr-4 text-gray-700 dark:text-gray-300"
+              class="py-2 pr-4 text-fg-body"
             >
               <a
-                class="text-emerald-700 underline hover:text-emerald-800 dark:text-emerald-400 dark:hover:text-emerald-300"
+                class="text-accent underline hover:text-accent-hover"
                 href="https://doi.org/10.1016/j.wri.2017.11.002"
                 rel="noopener noreferrer"
                 target="_blank"
@@ -459,12 +459,12 @@ exports[`WaterFootprintTable should match the default render snapshot 1`] = `
                 class="mt-1"
               >
                 <summary
-                  class="cursor-pointer text-gray-600 dark:text-gray-400"
+                  class="cursor-pointer text-fg-secondary"
                 >
                   Methodology
                 </summary>
                 <p
-                  class="mt-1 text-gray-700 dark:text-gray-300"
+                  class="mt-1 text-fg-body"
                 >
                   Blue water footprint of ordinary Portland cement.
                 </p>
@@ -472,44 +472,44 @@ exports[`WaterFootprintTable should match the default render snapshot 1`] = `
             </td>
           </tr>
           <tr
-            class="border-b border-gray-100 dark:border-gray-800"
+            class="border-b border-line-subtle"
           >
             <th
-              class="py-2 pr-4 font-medium text-gray-900 dark:text-white"
+              class="py-2 pr-4 font-medium text-fg"
               scope="row"
             >
               AI text prompt (Gemini, median)
             </th>
             <td
-              class="py-2 pr-4 text-gray-700 dark:text-gray-300"
+              class="py-2 pr-4 text-fg-body"
             >
               Digital & Computing
             </td>
             <td
-              class="py-2 pr-4 text-gray-700 dark:text-gray-300"
+              class="py-2 pr-4 text-fg-body"
             >
               0.00026 L 
               <span
-                class="text-gray-500 dark:text-gray-400"
+                class="text-fg-muted"
               >
                 per prompt
               </span>
             </td>
             <td
-              class="py-2 pr-4 text-gray-700 dark:text-gray-300"
+              class="py-2 pr-4 text-fg-body"
             >
               Life cycle (on-site)
             </td>
             <td
-              class="py-2 pr-4 text-gray-700 dark:text-gray-300"
+              class="py-2 pr-4 text-fg-body"
             >
               under 1 shower
             </td>
             <td
-              class="py-2 pr-4 text-gray-700 dark:text-gray-300"
+              class="py-2 pr-4 text-fg-body"
             >
               <a
-                class="text-emerald-700 underline hover:text-emerald-800 dark:text-emerald-400 dark:hover:text-emerald-300"
+                class="text-accent underline hover:text-accent-hover"
                 href="https://arxiv.org/abs/2508.15734"
                 rel="noopener noreferrer"
                 target="_blank"
@@ -520,12 +520,12 @@ exports[`WaterFootprintTable should match the default render snapshot 1`] = `
                 class="mt-1"
               >
                 <summary
-                  class="cursor-pointer text-gray-600 dark:text-gray-400"
+                  class="cursor-pointer text-fg-secondary"
                 >
                   Methodology
                 </summary>
                 <p
-                  class="mt-1 text-gray-700 dark:text-gray-300"
+                  class="mt-1 text-fg-body"
                 >
                   On-site data-centre water consumption per median text prompt.
                 </p>
@@ -533,39 +533,39 @@ exports[`WaterFootprintTable should match the default render snapshot 1`] = `
             </td>
           </tr>
           <tr
-            class="border-b border-gray-100 dark:border-gray-800"
+            class="border-b border-line-subtle"
           >
             <th
-              class="py-2 pr-4 font-medium text-gray-900 dark:text-white"
+              class="py-2 pr-4 font-medium text-fg"
               scope="row"
             >
               Unmeasured crop (fixture)
             </th>
             <td
-              class="py-2 pr-4 text-gray-700 dark:text-gray-300"
+              class="py-2 pr-4 text-fg-body"
             >
               Food & Beverages
             </td>
             <td
-              class="py-2 pr-4 text-gray-700 dark:text-gray-300"
+              class="py-2 pr-4 text-fg-body"
             >
               No data
             </td>
             <td
-              class="py-2 pr-4 text-gray-700 dark:text-gray-300"
+              class="py-2 pr-4 text-fg-body"
             >
               Blue water
             </td>
             <td
-              class="py-2 pr-4 text-gray-700 dark:text-gray-300"
+              class="py-2 pr-4 text-fg-body"
             >
               —
             </td>
             <td
-              class="py-2 pr-4 text-gray-700 dark:text-gray-300"
+              class="py-2 pr-4 text-fg-body"
             >
               <a
-                class="text-emerald-700 underline hover:text-emerald-800 dark:text-emerald-400 dark:hover:text-emerald-300"
+                class="text-accent underline hover:text-accent-hover"
                 href="https://ourworldindata.org/grapher/water-withdrawals-per-kg-poore"
                 rel="noopener noreferrer"
                 target="_blank"
@@ -576,12 +576,12 @@ exports[`WaterFootprintTable should match the default render snapshot 1`] = `
                 class="mt-1"
               >
                 <summary
-                  class="cursor-pointer text-gray-600 dark:text-gray-400"
+                  class="cursor-pointer text-fg-secondary"
                 >
                   Methodology
                 </summary>
                 <p
-                  class="mt-1 text-gray-700 dark:text-gray-300"
+                  class="mt-1 text-fg-body"
                 >
                   Freshwater withdrawals per kg of final product.
                 </p>
@@ -596,37 +596,37 @@ exports[`WaterFootprintTable should match the default render snapshot 1`] = `
       data-testid="water-footprint-cards"
     >
       <li
-        class="rounded-lg border border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-800"
+        class="rounded-lg border border-line-strong bg-surface-raised p-4"
       >
         <p
-          class="font-semibold text-gray-900 dark:text-white"
+          class="font-semibold text-fg"
         >
           <strong>
             Cotton t-shirt (250g)
           </strong>
         </p>
         <p
-          class="text-sm text-gray-700 dark:text-gray-300"
+          class="text-sm text-fg-body"
         >
           Textiles
         </p>
         <p
-          class="text-sm text-gray-700 dark:text-gray-300"
+          class="text-sm text-fg-body"
         >
           2,720 L 
           <span
-            class="text-gray-500 dark:text-gray-400"
+            class="text-fg-muted"
           >
             per unit
           </span>
         </p>
         <p
-          class="text-sm text-gray-700 dark:text-gray-300"
+          class="text-sm text-fg-body"
         >
           Green + blue + grey
         </p>
         <p
-          class="text-sm text-gray-700 dark:text-gray-300"
+          class="text-sm text-fg-body"
         >
           ≈ 41.8 showers · ≈ 18.1 bathtubs
         </p>
@@ -634,7 +634,7 @@ exports[`WaterFootprintTable should match the default render snapshot 1`] = `
           class="mt-2 text-sm"
         >
           <a
-            class="text-emerald-700 underline hover:text-emerald-800 dark:text-emerald-400 dark:hover:text-emerald-300"
+            class="text-accent underline hover:text-accent-hover"
             href="https://doi.org/10.5194/hess-15-1577-2011"
             rel="noopener noreferrer"
             target="_blank"
@@ -645,12 +645,12 @@ exports[`WaterFootprintTable should match the default render snapshot 1`] = `
             class="mt-1"
           >
             <summary
-              class="cursor-pointer text-gray-600 dark:text-gray-400"
+              class="cursor-pointer text-fg-secondary"
             >
               Methodology
             </summary>
             <p
-              class="mt-1 text-gray-700 dark:text-gray-300"
+              class="mt-1 text-fg-body"
             >
               Water footprint of cotton textile products.
             </p>
@@ -658,37 +658,37 @@ exports[`WaterFootprintTable should match the default render snapshot 1`] = `
         </div>
       </li>
       <li
-        class="rounded-lg border border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-800"
+        class="rounded-lg border border-line-strong bg-surface-raised p-4"
       >
         <p
-          class="font-semibold text-gray-900 dark:text-white"
+          class="font-semibold text-fg"
         >
           <strong>
             Apples
           </strong>
         </p>
         <p
-          class="text-sm text-gray-700 dark:text-gray-300"
+          class="text-sm text-fg-body"
         >
           Food & Beverages
         </p>
         <p
-          class="text-sm text-gray-700 dark:text-gray-300"
+          class="text-sm text-fg-body"
         >
           180.1 L 
           <span
-            class="text-gray-500 dark:text-gray-400"
+            class="text-fg-muted"
           >
             per kg
           </span>
         </p>
         <p
-          class="text-sm text-gray-700 dark:text-gray-300"
+          class="text-sm text-fg-body"
         >
           Blue water
         </p>
         <p
-          class="text-sm text-gray-700 dark:text-gray-300"
+          class="text-sm text-fg-body"
         >
           ≈ 2.8 showers · ≈ 1.2 bathtubs
         </p>
@@ -696,7 +696,7 @@ exports[`WaterFootprintTable should match the default render snapshot 1`] = `
           class="mt-2 text-sm"
         >
           <a
-            class="text-emerald-700 underline hover:text-emerald-800 dark:text-emerald-400 dark:hover:text-emerald-300"
+            class="text-accent underline hover:text-accent-hover"
             href="https://ourworldindata.org/grapher/water-withdrawals-per-kg-poore"
             rel="noopener noreferrer"
             target="_blank"
@@ -707,12 +707,12 @@ exports[`WaterFootprintTable should match the default render snapshot 1`] = `
             class="mt-1"
           >
             <summary
-              class="cursor-pointer text-gray-600 dark:text-gray-400"
+              class="cursor-pointer text-fg-secondary"
             >
               Methodology
             </summary>
             <p
-              class="mt-1 text-gray-700 dark:text-gray-300"
+              class="mt-1 text-fg-body"
             >
               Freshwater withdrawals per kg of final product.
             </p>
@@ -720,37 +720,37 @@ exports[`WaterFootprintTable should match the default render snapshot 1`] = `
         </div>
       </li>
       <li
-        class="rounded-lg border border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-800"
+        class="rounded-lg border border-line-strong bg-surface-raised p-4"
       >
         <p
-          class="font-semibold text-gray-900 dark:text-white"
+          class="font-semibold text-fg"
         >
           <strong>
             Microchip (2g)
           </strong>
         </p>
         <p
-          class="text-sm text-gray-700 dark:text-gray-300"
+          class="text-sm text-fg-body"
         >
           Technology
         </p>
         <p
-          class="text-sm text-gray-700 dark:text-gray-300"
+          class="text-sm text-fg-body"
         >
           32 L 
           <span
-            class="text-gray-500 dark:text-gray-400"
+            class="text-fg-muted"
           >
             per unit
           </span>
         </p>
         <p
-          class="text-sm text-gray-700 dark:text-gray-300"
+          class="text-sm text-fg-body"
         >
           Life cycle (total)
         </p>
         <p
-          class="text-sm text-gray-700 dark:text-gray-300"
+          class="text-sm text-fg-body"
         >
           under 1 shower
         </p>
@@ -758,7 +758,7 @@ exports[`WaterFootprintTable should match the default render snapshot 1`] = `
           class="mt-2 text-sm"
         >
           <a
-            class="text-emerald-700 underline hover:text-emerald-800 dark:text-emerald-400 dark:hover:text-emerald-300"
+            class="text-accent underline hover:text-accent-hover"
             href="https://doi.org/10.1021/es025643o"
             rel="noopener noreferrer"
             target="_blank"
@@ -769,12 +769,12 @@ exports[`WaterFootprintTable should match the default render snapshot 1`] = `
             class="mt-1"
           >
             <summary
-              class="cursor-pointer text-gray-600 dark:text-gray-400"
+              class="cursor-pointer text-fg-secondary"
             >
               Methodology
             </summary>
             <p
-              class="mt-1 text-gray-700 dark:text-gray-300"
+              class="mt-1 text-fg-body"
             >
               Life-cycle water consumption of a 2 g microchip.
             </p>
@@ -782,37 +782,37 @@ exports[`WaterFootprintTable should match the default render snapshot 1`] = `
         </div>
       </li>
       <li
-        class="rounded-lg border border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-800"
+        class="rounded-lg border border-line-strong bg-surface-raised p-4"
       >
         <p
-          class="font-semibold text-gray-900 dark:text-white"
+          class="font-semibold text-fg"
         >
           <strong>
             Portland cement (CEM I)
           </strong>
         </p>
         <p
-          class="text-sm text-gray-700 dark:text-gray-300"
+          class="text-sm text-fg-body"
         >
           Manufactured
         </p>
         <p
-          class="text-sm text-gray-700 dark:text-gray-300"
+          class="text-sm text-fg-body"
         >
           2.6 L 
           <span
-            class="text-gray-500 dark:text-gray-400"
+            class="text-fg-muted"
           >
             per kg
           </span>
         </p>
         <p
-          class="text-sm text-gray-700 dark:text-gray-300"
+          class="text-sm text-fg-body"
         >
           Blue water
         </p>
         <p
-          class="text-sm text-gray-700 dark:text-gray-300"
+          class="text-sm text-fg-body"
         >
           under 1 shower
         </p>
@@ -820,7 +820,7 @@ exports[`WaterFootprintTable should match the default render snapshot 1`] = `
           class="mt-2 text-sm"
         >
           <a
-            class="text-emerald-700 underline hover:text-emerald-800 dark:text-emerald-400 dark:hover:text-emerald-300"
+            class="text-accent underline hover:text-accent-hover"
             href="https://doi.org/10.1016/j.wri.2017.11.002"
             rel="noopener noreferrer"
             target="_blank"
@@ -831,12 +831,12 @@ exports[`WaterFootprintTable should match the default render snapshot 1`] = `
             class="mt-1"
           >
             <summary
-              class="cursor-pointer text-gray-600 dark:text-gray-400"
+              class="cursor-pointer text-fg-secondary"
             >
               Methodology
             </summary>
             <p
-              class="mt-1 text-gray-700 dark:text-gray-300"
+              class="mt-1 text-fg-body"
             >
               Blue water footprint of ordinary Portland cement.
             </p>
@@ -844,37 +844,37 @@ exports[`WaterFootprintTable should match the default render snapshot 1`] = `
         </div>
       </li>
       <li
-        class="rounded-lg border border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-800"
+        class="rounded-lg border border-line-strong bg-surface-raised p-4"
       >
         <p
-          class="font-semibold text-gray-900 dark:text-white"
+          class="font-semibold text-fg"
         >
           <strong>
             AI text prompt (Gemini, median)
           </strong>
         </p>
         <p
-          class="text-sm text-gray-700 dark:text-gray-300"
+          class="text-sm text-fg-body"
         >
           Digital & Computing
         </p>
         <p
-          class="text-sm text-gray-700 dark:text-gray-300"
+          class="text-sm text-fg-body"
         >
           0.00026 L 
           <span
-            class="text-gray-500 dark:text-gray-400"
+            class="text-fg-muted"
           >
             per prompt
           </span>
         </p>
         <p
-          class="text-sm text-gray-700 dark:text-gray-300"
+          class="text-sm text-fg-body"
         >
           Life cycle (on-site)
         </p>
         <p
-          class="text-sm text-gray-700 dark:text-gray-300"
+          class="text-sm text-fg-body"
         >
           under 1 shower
         </p>
@@ -882,7 +882,7 @@ exports[`WaterFootprintTable should match the default render snapshot 1`] = `
           class="mt-2 text-sm"
         >
           <a
-            class="text-emerald-700 underline hover:text-emerald-800 dark:text-emerald-400 dark:hover:text-emerald-300"
+            class="text-accent underline hover:text-accent-hover"
             href="https://arxiv.org/abs/2508.15734"
             rel="noopener noreferrer"
             target="_blank"
@@ -893,12 +893,12 @@ exports[`WaterFootprintTable should match the default render snapshot 1`] = `
             class="mt-1"
           >
             <summary
-              class="cursor-pointer text-gray-600 dark:text-gray-400"
+              class="cursor-pointer text-fg-secondary"
             >
               Methodology
             </summary>
             <p
-              class="mt-1 text-gray-700 dark:text-gray-300"
+              class="mt-1 text-fg-body"
             >
               On-site data-centre water consumption per median text prompt.
             </p>
@@ -906,32 +906,32 @@ exports[`WaterFootprintTable should match the default render snapshot 1`] = `
         </div>
       </li>
       <li
-        class="rounded-lg border border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-800"
+        class="rounded-lg border border-line-strong bg-surface-raised p-4"
       >
         <p
-          class="font-semibold text-gray-900 dark:text-white"
+          class="font-semibold text-fg"
         >
           <strong>
             Unmeasured crop (fixture)
           </strong>
         </p>
         <p
-          class="text-sm text-gray-700 dark:text-gray-300"
+          class="text-sm text-fg-body"
         >
           Food & Beverages
         </p>
         <p
-          class="text-sm text-gray-700 dark:text-gray-300"
+          class="text-sm text-fg-body"
         >
           No data
         </p>
         <p
-          class="text-sm text-gray-700 dark:text-gray-300"
+          class="text-sm text-fg-body"
         >
           Blue water
         </p>
         <p
-          class="text-sm text-gray-700 dark:text-gray-300"
+          class="text-sm text-fg-body"
         >
           —
         </p>
@@ -939,7 +939,7 @@ exports[`WaterFootprintTable should match the default render snapshot 1`] = `
           class="mt-2 text-sm"
         >
           <a
-            class="text-emerald-700 underline hover:text-emerald-800 dark:text-emerald-400 dark:hover:text-emerald-300"
+            class="text-accent underline hover:text-accent-hover"
             href="https://ourworldindata.org/grapher/water-withdrawals-per-kg-poore"
             rel="noopener noreferrer"
             target="_blank"
@@ -950,12 +950,12 @@ exports[`WaterFootprintTable should match the default render snapshot 1`] = `
             class="mt-1"
           >
             <summary
-              class="cursor-pointer text-gray-600 dark:text-gray-400"
+              class="cursor-pointer text-fg-secondary"
             >
               Methodology
             </summary>
             <p
-              class="mt-1 text-gray-700 dark:text-gray-300"
+              class="mt-1 text-fg-body"
             >
               Freshwater withdrawals per kg of final product.
             </p>

@@ -34,6 +34,7 @@ All non-trivial changes — new features, significant refactors, API contracts �
 
 - `@coder` reads `docs/design-system.md` before implementing a UI-bearing change (new/changed pages, visual components, visualizations, layout or theme changes).
 - `@reviewer` audits UI-bearing changes against it.
+- Colors come only from the semantic tokens listed in `docs/design-system.md` (Color Tokens) — never Tailwind palette or arbitrary color utilities in `apps/web/src/app` or `apps/web/src/components`. `apps/web/__tests__/designTokens.test.ts` enforces it (the only exception, the ThemeToggle lamp, is listed under "Documented exceptions" there).
 
 **These docs outrank an agent's general knowledge.** Where they state a fact about this codebase, that fact wins over the usual answer for a React/Tailwind project. Where they mark something pending, it stays pending — an agent does not settle it in passing, and does not treat the library candidates as a choice it may make on the project's behalf. When a change establishes a new presentation decision, it updates `docs/design-system.md` in the same change.
 

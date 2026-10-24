@@ -27,9 +27,9 @@ export default function ThemeToggle() {
         'fixed top-2 right-4 z-50 lg:top-4',
         'w-10 h-10 rounded-full',
         'flex items-center justify-center',
-        'bg-gray-200 dark:bg-white/10',
-        'hover:bg-gray-300 dark:hover:bg-white/20',
-        'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400',
+        'bg-toggle',
+        'hover:bg-toggle-hover',
+        'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring',
         'transition-all duration-300',
       ].join(' ')}
     >
