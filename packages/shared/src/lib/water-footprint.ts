@@ -1,3 +1,5 @@
+import type { DataSourcePublisher } from './data-sources';
+
 /**
  * Supported water-footprint product categories.
  */
@@ -84,4 +86,7 @@ export interface WaterFootprintProduct {
 
   /** Optional description of the methodology used to obtain the value. */
   methodology?: string;
+
+  /** Licensor that republishes the data at `sourceUrl`, when there is one. */
+  publisher?: DataSourcePublisher;
 }

@@ -35,6 +35,12 @@ export const waterFootprintPage = {
     'Water footprint of food and products: how many liters of green, blue and grey water it takes to produce what we eat and use. Source-cited data.',
 };
 
+export const dataSourcesPage = {
+  url: '/data-sources/',
+  title: 'Data sources',
+  fullTitle: 'Data sources | eco-metrics earth',
+};
+
 /** Per-category meta descriptions for a sample of placeholder categories. */
 export const CATEGORY_DESCRIPTION_SAMPLES = {
   'air-quality':

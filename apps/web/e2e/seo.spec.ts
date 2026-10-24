@@ -172,18 +172,19 @@ test.describe('Sitemap.xml', { tag: '@smoke' }, () => {
     expect(text).toContain('<urlset');
   });
 
-  test('should contain 13 <url> entries with trailing slashes', async ({ request }) => {
+  test('should contain 14 <url> entries with trailing slashes', async ({ request }) => {
     const response = await request.get('/sitemap.xml');
     const text = await response.text();
-    // Home page + 12 category pages = 13 entries
+    // Home page + 12 category pages + data sources = 14 entries
     const urlCount = (text.match(/<url>/g) || []).length;
-    expect(urlCount).toBe(13);
+    expect(urlCount).toBe(14);
     // All category URLs should end with a trailing slash
     for (const slug of CATEGORY_SLUGS) {
       expect(text).toContain(`/${slug}/`);
     }
     // Home page entry
     expect(text).toContain('<loc>http://localhost:3000/</loc>');
+    expect(text).toContain('<loc>http://localhost:3000/data-sources/</loc>');
   });
 });
 

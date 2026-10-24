@@ -36,6 +36,7 @@ src/
 │   ├── app-config.module.ts  # @Global module that provides and exports AppConfigService
 │   └── app-config.service.ts # Typed wrapper over @nestjs/config
 ├── modules/
+│   ├── data-sources/         # DataSourcesModule — aggregates @DataSourceContributor() providers into the catalog
 │   ├── providers/
 │   │   └── owid/             # OwidModule — cached OWID provider client (Grapher CSV + API v1 JSON)
 │   └── water-footprint/      # WaterFootprintModule — module, controller, service
@@ -44,6 +45,7 @@ src/
 ├── common/
 │   ├── fallback/             # Catch-all JSON 404 fallback for unknown routes
 │   ├── filters/              # Global exception filter (`AllExceptionsFilter`)
+│   ├── publishers/           # `resolvePublisher`: licensor that republishes a source URL
 │   └── http/                 # Outbound HTTP client + errors + injectable OUTBOUND_FETCH token
 └── main.ts
 ```
@@ -84,6 +86,7 @@ appConfig.internalApiKey; // INTERNAL_API_KEY (undefined when unset or empty)
 | ------ | ---------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------- |
 | `GET`  | `/api/v1/health`                   | Liveness check                                                                                                                                                                | `{ status: 'ok' }`                     |
 | `GET`  | `/api/v1/water-footprint/products` | Static product dataset — optional `category` query filter (`food-beverages`, `textiles`, `technology`, `manufactured`, `digital-computing`, `vehicles`, `energy-extractives`) | `ApiResponse<WaterFootprintProduct[]>` |
+| `GET`  | `/api/v1/data-sources`             | Catalog of the data sources in use (live providers and static datasets with their publications), declared by each module                                                      | `ApiResponse<DataSourcesCatalog>`      |
 
 ---
 

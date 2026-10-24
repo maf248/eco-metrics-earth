@@ -8,6 +8,7 @@ import CategoryPage, {
   revalidate,
 } from '@/app/[category]/page';
 import { CATEGORY_DESCRIPTIONS } from '@/lib/categoryMetadata';
+import { getDataSources } from '@/lib/dataSources';
 import { OG_IMAGE } from '@/lib/socialMetadata';
 import { getWaterFootprintProducts } from '@/lib/waterFootprint';
 import { ECO_CATEGORIES } from '@eco-metrics/shared';
@@ -26,6 +27,8 @@ jest.mock('@/lib/waterFootprint', () => ({
     },
   ]),
 }));
+
+jest.mock('@/lib/dataSources', () => ({ getDataSources: jest.fn() }));
 
 jest.mock('next/navigation', () => ({
   notFound: jest.fn(),
@@ -327,6 +330,12 @@ describe('CategoryPage — water-footprint branch', () => {
     await expect(
       CategoryPage({ params: Promise.resolve({ category: 'water-footprint' }) }),
     ).rejects.toBe(failure);
+  });
+
+  it('should fetch only the products, never the data sources catalog', async () => {
+    await CategoryPage({ params: Promise.resolve({ category: 'water-footprint' }) });
+
+    expect(getDataSources).not.toHaveBeenCalled();
   });
 
   it('should not call the helper for non-water-footprint categories', async () => {

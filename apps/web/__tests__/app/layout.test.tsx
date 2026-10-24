@@ -78,6 +78,25 @@ describe('RootLayout', () => {
   });
 });
 
+describe('RootLayout — Footer', () => {
+  const html = renderToString(
+    <RootLayout>
+      <main>test content</main>
+    </RootLayout>,
+  );
+
+  it('should render the footer inside the content wrapper, right after the children', () => {
+    const wrapper = html.match(/<div class="pb-20 lg:pb-0 lg:pl-76">(.*)<\/div><\/body>/s)?.[1];
+
+    expect(wrapper).toMatch(/^<main>test content<\/main><footer/);
+    expect(wrapper).toContain('href="/data-sources"');
+  });
+
+  it('should keep the wrapper offsets intact', () => {
+    expect(html).toContain('class="pb-20 lg:pb-0 lg:pl-76"');
+  });
+});
+
 describe('metadata', () => {
   it('should have a default title', () => {
     expect((metadata.title as { default: string }).default).toBe('eco-metrics earth');

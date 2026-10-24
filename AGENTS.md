@@ -34,7 +34,7 @@ All non-trivial changes — new features, significant refactors, API contracts �
 
 - `@coder` reads `docs/design-system.md` before implementing a UI-bearing change (new/changed pages, visual components, visualizations, layout or theme changes).
 - `@reviewer` audits UI-bearing changes against it.
-- Colors come only from the semantic tokens listed in `docs/design-system.md` (Color Tokens) — never Tailwind palette or arbitrary color utilities in `apps/web/src/app` or `apps/web/src/components`. `apps/web/__tests__/designTokens.test.ts` enforces it (the only exception, the ThemeToggle lamp, is listed under "Documented exceptions" there).
+- Colors come only from the tokens listed in `docs/design-system.md` (Color Tokens, and chart tokens under Color Palettes) — never Tailwind palette or arbitrary color utilities in `apps/web/src/app` or `apps/web/src/components`. `apps/web/__tests__/designTokens.test.ts` enforces it (the only exception, the ThemeToggle lamp, is listed under "Documented exceptions" there).
 
 **These docs outrank an agent's general knowledge.** Where they state a fact about this codebase, that fact wins over the usual answer for a React/Tailwind project. Where they mark something pending, it stays pending — an agent does not settle it in passing, and does not treat the library candidates as a choice it may make on the project's behalf. When a change establishes a new presentation decision, it updates `docs/design-system.md` in the same change.
 
@@ -210,10 +210,15 @@ npx nx test api -- --updateSnapshot   # updates only api snapshots
 
 ### Git/Commit Conventions
 
-- Uses [Conventional Commits](https://www.conventionalcommits.org/) enforced via Commitizen
+- Uses [Conventional Commits](https://www.conventionalcommits.org/), enforced by **commitlint** in the husky `commit-msg` hook (`commitlint.config.js`, extends `@commitlint/config-conventional`). A rejected message aborts the commit after `pre-commit` (lint-staged + typecheck) has already run.
 - Format: `type(scope): description`
   - Types: `feat`, `fix`, `docs`, `style`, `refactor`, `test`, `chore`
 - Examples: `feat(metrics): add new chart widget`, `fix(api): resolve data fetch error`
+- Rules commitlint enforces:
+  - **Header** (`type(scope): description`) ≤ 100 characters; scope expected (a missing one warns); description starts lowercase and has no trailing period.
+  - **Body** optional, separated from the header by one blank line; **every line ≤ 100 characters** — wrap prose at ~72. The same limit applies to footers.
+- Write multi-line messages with one `-m` per paragraph and hard line breaks inside each, or with `git commit -F <file>`. Never put a whole paragraph on a single line.
+- To check a message before committing: `printf '%s\n' "<message>" | npx commitlint`.
 
 #### Branch strategy
 
@@ -240,7 +245,7 @@ feature/* ──► develop ⇄ main (production)
 2. **Never push to `main` directly** — all changes must go through a PR from `develop`. GitHub does not enforce this on the current plan; the husky `pre-push` hook blocks it locally.
 3. **Never push without confirmation** — always ask the user before running `git push`, regardless of the branch.
 4. **Always run tests before pushing** — run `npm run test` before any push. If all tests pass and the push has been authorized, proceed. If any test fails, show a summary of the failing suites and do not push until they are fixed.
-5. **Always use Commitizen format** — every commit message must follow `type(scope): description`. Free-form messages are not allowed.
+5. **Always use Conventional Commits format** — every commit message must follow `type(scope): description` and pass commitlint (see Git/Commit Conventions). Free-form messages are not allowed.
 6. **One logical change per commit** — keep commits atomic and focused.
 
 ---
@@ -254,20 +259,21 @@ eco-metrics-earth/
 │   │   └── src/
 │   │       ├── app/             # AppModule, global pipeline helper
 │   │       ├── health/          # HealthController (GET /api/v1/health)
-│   │       ├── modules/         # Per-category eco modules (`water-footprint`) + `providers/owid` client
-│   │       ├── common/          # Outbound HTTP client, catch-all 404 fallback, global exception filter, throttler internal-key bypass
+│   │       ├── modules/         # Per-category eco modules (`water-footprint`) + `providers/owid` client + `data-sources` catalog
+│   │       ├── common/          # Outbound HTTP client, catch-all 404 fallback, global exception filter, throttler internal-key bypass, publisher resolver
 │   │       ├── config/          # AppConfigService (typed env vars)
 │   │       └── main.ts          # Bootstrap — port 3001, prefix /api/v1
 │   └── web/                     # Next.js App Router
 │       └── src/
 │           ├── app/             # Routes, layouts, pages (App Router)
 │           ├── components/      # Reusable UI components
-│           └── lib/             # Utilities and helpers
+│           └── lib/             # Utilities and helpers (`bffFetch.ts`: server-side BFF reads with retry and shape validation)
 ├── packages/
 │   └── shared/                  # @eco-metrics/shared
 │       └── src/lib/
 │           ├── api-response.ts             # ApiResponse<T> union + ApiResponseMeta
 │           ├── data-source-attribution.ts  # DataSourceAttribution (provider, license, source)
+│           ├── data-sources.ts             # Data sources catalog types (live providers, static datasets, publications)
 │           ├── eco-category.ts             # EcoCategory type + ECO_CATEGORIES const
 │           ├── metric-series.ts            # MetricPoint + MetricSeries time-series shapes
 │           └── water-footprint.ts          # Water-footprint product, category and water-type types
@@ -287,6 +293,7 @@ eco-metrics-earth/
 2. Add `<category>.module.ts`, `<category>.controller.ts`, `<category>.service.ts`
 3. Import the new module into `AppModule`
 4. Write smoke test in `__tests__/<category>/<category>.controller.test.ts`
+5. If the module uses external data, decorate a provider with `@DataSourceContributor()` and implement `getDataSources()` to declare its sources — never in the web app or the shared package. Static datasets need no hand-kept dates: citations carry their publication year in parentheses, validated at construction.
 
 ### Adding a new shared type
 

@@ -2,8 +2,14 @@
 
 import { useId, useMemo, useState } from 'react';
 
+import { SourceAttribution } from '@/components/SourceAttribution';
+import { LINK_CLASS_NAME } from '@/lib/linkClassName';
 import { formatLiters, formatWaterFootprintEquivalents } from '@/lib/waterFootprintEquivalents';
-import type { WaterFootprintCategory, WaterFootprintProduct } from '@eco-metrics/shared';
+import type {
+  DataSourcePublisher,
+  WaterFootprintCategory,
+  WaterFootprintProduct,
+} from '@eco-metrics/shared';
 import { waterFootprintCategorySlugMap, waterFootprintWaterTypeLabels } from '@eco-metrics/shared';
 
 type SortKey = 'name' | 'footprint';
@@ -175,6 +181,7 @@ export function WaterFootprintTable({ products }: WaterFootprintTableProps) {
                         source={product.source}
                         sourceUrl={product.sourceUrl}
                         methodology={product.methodology}
+                        publisher={product.publisher}
                       />
                     </td>
                   </tr>
@@ -214,6 +221,7 @@ export function WaterFootprintTable({ products }: WaterFootprintTableProps) {
                     source={product.source}
                     sourceUrl={product.sourceUrl}
                     methodology={product.methodology}
+                    publisher={product.publisher}
                   />
                 </div>
               </li>
@@ -259,19 +267,20 @@ interface AttributionProps {
   source: string;
   sourceUrl: string;
   methodology?: string;
+  publisher?: DataSourcePublisher;
 }
 
-function Attribution({ source, sourceUrl, methodology }: AttributionProps) {
+function Attribution({ source, sourceUrl, methodology, publisher }: AttributionProps) {
   return (
     <>
-      <a
-        href={sourceUrl}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="text-accent underline hover:text-accent-hover"
-      >
+      <a href={sourceUrl} target="_blank" rel="noopener noreferrer" className={LINK_CLASS_NAME}>
         {source}
       </a>
+      {publisher && (
+        <span className="block text-fg-secondary">
+          via <SourceAttribution source={publisher} />
+        </span>
+      )}
       {methodology && (
         <details className="mt-1">
           <summary className="cursor-pointer text-fg-secondary">Methodology</summary>

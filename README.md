@@ -35,9 +35,9 @@ An environmental metrics dashboard monorepo — tracking air quality, CO₂ emis
 
 ### Packages
 
-| Package           | Name                  | Description                                                                                                                                                                         |
-| ----------------- | --------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `packages/shared` | `@eco-metrics/shared` | Shared TypeScript types: `ApiResponse<T>`, `ApiResponseMeta`, `EcoCategory`, `ECO_CATEGORIES`, `MetricPoint`, `MetricSeries`, `DataSourceAttribution`, water-footprint domain types |
+| Package           | Name                  | Description                                                                                                                                                                                                     |
+| ----------------- | --------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `packages/shared` | `@eco-metrics/shared` | Shared TypeScript types: `ApiResponse<T>`, `ApiResponseMeta`, `EcoCategory`, `ECO_CATEGORIES`, `MetricPoint`, `MetricSeries`, `DataSourceAttribution`, data sources catalog types, water-footprint domain types |
 
 ### Deploy Targets
 
@@ -140,6 +140,7 @@ eco-metrics-earth/
 │   │       ├── health/          # HealthController (GET /api/v1/health)
 │   │       ├── modules/         # Per-category eco modules
 │   │       │   ├── providers/owid/   # Cached OWID provider client (Grapher CSV + API v1 JSON)
+│   │       │   ├── data-sources/     # Catalog of sources
 │   │       │   └── water-footprint/  # Module, controller, service + static dataset (data/)
 │   │       ├── common/          # Outbound HTTP client, global exception filter, catch-all 404 fallback
 │   │       ├── config/          # AppConfigService (typed env vars)
@@ -155,6 +156,7 @@ eco-metrics-earth/
 │       └── src/lib/
 │           ├── api-response.ts             # ApiResponse<T> union + ApiResponseMeta
 │           ├── data-source-attribution.ts  # DataSourceAttribution (provider, license, source)
+│           ├── data-sources.ts             # Data sources catalog types
 │           ├── eco-category.ts             # EcoCategory type + ECO_CATEGORIES const
 │           ├── metric-series.ts            # MetricPoint + MetricSeries time-series shapes
 │           └── water-footprint.ts          # Water-footprint product, category and water-type types
@@ -182,6 +184,7 @@ eco-metrics-earth/
 | ------ | ---------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `GET`  | `/api/v1/health`                   | Health check — returns `{ status: 'ok' }`                                                                                                                                                                             |
 | `GET`  | `/api/v1/water-footprint/products` | Static product water-footprint dataset (60 products, with citations) — optional `category` filter (`food-beverages`, `textiles`, `technology`, `manufactured`, `digital-computing`, `vehicles`, `energy-extractives`) |
+| `GET`  | `/api/v1/data-sources`             | Catalog of the data sources in use (live providers and static datasets with their publications)                                                                                                                       |
 
 Base URL (development): `http://localhost:3001`
 

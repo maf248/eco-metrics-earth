@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import type { ReactNode } from 'react';
 
+import { Footer } from '@/components/Footer';
 import MobileHeader from '@/components/MobileHeader';
 import Navbar from '@/components/Navbar';
 import ThemeProvider from '@/components/ThemeProvider';
@@ -90,7 +91,10 @@ export default function RootLayout({ children }: { children: ReactNode }) {
            *  - Mobile bottom: pb-20 clears the fixed bottom nav (h-20)
            *  - Desktop left:  lg:pl-76 clears the fixed left sidebar (w-76)
            */}
-          <div className="pb-20 lg:pb-0 lg:pl-76">{children}</div>
+          <div className="pb-20 lg:pb-0 lg:pl-76">
+            {children}
+            <Footer />
+          </div>
         </ThemeProvider>
       </body>
     </html>

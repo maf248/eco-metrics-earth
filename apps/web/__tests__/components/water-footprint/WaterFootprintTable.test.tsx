@@ -269,4 +269,33 @@ describe('WaterFootprintTable', () => {
       expect(container.querySelectorAll('input[type="radio"]:checked')).toHaveLength(1);
     });
   });
+
+  describe('publisher attribution', () => {
+    const publisher = {
+      provider: 'Our World in Data',
+      license: 'CC BY 4.0',
+      sourceUrl: 'https://ourworldindata.org',
+    };
+
+    it('should show "via" the publisher with its license in both the table and the cards', () => {
+      render(<WaterFootprintTable products={[{ ...fixtures[0], publisher }, fixtures[2]]} />);
+
+      const table = screen.getByRole('table');
+      const cards = screen.getByTestId('water-footprint-cards');
+      [table, cards].forEach((scope) => {
+        const link = within(scope).getByRole('link', { name: 'Our World in Data' });
+        expect(link).toHaveAttribute('href', 'https://ourworldindata.org');
+        expect(link.parentElement).toHaveTextContent('via Our World in Data (CC BY 4.0)');
+        expect(
+          within(scope).getByRole('link', { name: 'Poore & Nemecek (2018), Science' }),
+        ).toBeInTheDocument();
+      });
+    });
+
+    it('should show no "via" text for products without a publisher', () => {
+      render(<WaterFootprintTable products={[fixtures[2]]} />);
+
+      expect(screen.queryByText(/via/)).not.toBeInTheDocument();
+    });
+  });
 });

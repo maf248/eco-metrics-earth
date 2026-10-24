@@ -130,6 +130,28 @@ test.describe('Water Footprint page', () => {
     });
   });
 
+  test.describe('Source attribution', () => {
+    test('should name the OWID publisher per row and in the note below the table', async ({
+      page,
+    }) => {
+      await page.setViewportSize({ width: 1280, height: 720 });
+      await page.goto('/water-footprint/');
+
+      const table = page.getByTestId('water-footprint-table');
+      const owidRow = table.locator('tbody tr', { hasText: 'Poore & Nemecek' }).first();
+      await expect(owidRow).toContainText('via Our World in Data (CC BY 4.0)');
+
+      const dataSourcesLink = page.getByRole('link', { name: 'All data sources' });
+      const note = dataSourcesLink.locator('xpath=..');
+      await expect(note).toContainText(
+        'Some values are republished by Our World in Data (CC BY 4.0)',
+      );
+      await expect(dataSourcesLink).toHaveAttribute('href', '/data-sources/');
+      const [tableBox, noteBox] = [await table.boundingBox(), await note.boundingBox()];
+      expect(noteBox?.y).toBeGreaterThan((tableBox?.y ?? 0) + (tableBox?.height ?? 0));
+    });
+  });
+
   test.describe('Responsive layout', () => {
     test('should show the table on desktop and hide the card list', async ({ page }) => {
       await page.setViewportSize({ width: 1280, height: 720 });

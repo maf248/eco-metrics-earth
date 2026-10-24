@@ -197,7 +197,7 @@ describe('getWaterFootprintProducts', () => {
       expect(consoleErrorSpy).toHaveBeenCalledTimes(1);
       // inspect() renders Error messages and stacks, which JSON.stringify would drop.
       const logged = inspect(consoleErrorSpy.mock.calls, { depth: null });
-      expect(logged).toContain('Water footprint fetch failed after 2 attempts');
+      expect(logged).toContain('Water footprint data fetch failed after 2 attempts');
       expect(logged).not.toContain('k'.repeat(32));
     });
 

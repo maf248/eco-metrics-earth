@@ -12,6 +12,7 @@ Defines the sitemap route and its home and category URL entries.
 
 - One entry for the home page (`siteUrl() + "/"`), with `changeFrequency: 'weekly'` and `priority: 1.0`.
 - One entry for each of the 12 `ECO_CATEGORIES` slugs (`siteUrl() + "/" + slug + "/"`), each with `changeFrequency: 'weekly'` and `priority: 0.8`.
+- One entry for the data sources page (`siteUrl() + "/data-sources/"`), with `changeFrequency: 'monthly'` and `priority: 0.5`.
 
 All URLs SHALL end with a trailing slash.
 
@@ -34,3 +35,9 @@ All URLs SHALL end with a trailing slash.
 
 - **WHEN** the sitemap function is called
 - **THEN** every URL in the result ends with `/`
+
+#### Scenario: Sitemap includes the data sources page
+
+- **WHEN** the sitemap function is called
+- **THEN** the result contains exactly one entry whose `url` is `siteUrl() + "/data-sources/"`
+- **AND** that entry has `changeFrequency: 'monthly'` and `priority: 0.5`
