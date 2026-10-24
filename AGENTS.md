@@ -259,20 +259,21 @@ eco-metrics-earth/
 │   │   └── src/
 │   │       ├── app/             # AppModule, global pipeline helper
 │   │       ├── health/          # HealthController (GET /api/v1/health)
-│   │       ├── modules/         # Per-category eco modules (`water-footprint`) + `providers/owid` client
-│   │       ├── common/          # Outbound HTTP client, catch-all 404 fallback, global exception filter, throttler internal-key bypass
+│   │       ├── modules/         # Per-category eco modules (`water-footprint`) + `providers/owid` client + `data-sources` catalog
+│   │       ├── common/          # Outbound HTTP client, catch-all 404 fallback, global exception filter, throttler internal-key bypass, publisher resolver
 │   │       ├── config/          # AppConfigService (typed env vars)
 │   │       └── main.ts          # Bootstrap — port 3001, prefix /api/v1
 │   └── web/                     # Next.js App Router
 │       └── src/
 │           ├── app/             # Routes, layouts, pages (App Router)
 │           ├── components/      # Reusable UI components
-│           └── lib/             # Utilities and helpers
+│           └── lib/             # Utilities and helpers (`bffFetch.ts`: server-side BFF reads with retry and shape validation)
 ├── packages/
 │   └── shared/                  # @eco-metrics/shared
 │       └── src/lib/
 │           ├── api-response.ts             # ApiResponse<T> union + ApiResponseMeta
 │           ├── data-source-attribution.ts  # DataSourceAttribution (provider, license, source)
+│           ├── data-sources.ts             # Data sources catalog types (live providers, static datasets, publications)
 │           ├── eco-category.ts             # EcoCategory type + ECO_CATEGORIES const
 │           ├── metric-series.ts            # MetricPoint + MetricSeries time-series shapes
 │           └── water-footprint.ts          # Water-footprint product, category and water-type types
@@ -292,6 +293,7 @@ eco-metrics-earth/
 2. Add `<category>.module.ts`, `<category>.controller.ts`, `<category>.service.ts`
 3. Import the new module into `AppModule`
 4. Write smoke test in `__tests__/<category>/<category>.controller.test.ts`
+5. If the module uses external data, decorate a provider with `@DataSourceContributor()` and implement `getDataSources()` to declare its sources — never in the web app or the shared package. Static datasets need no hand-kept dates: citations carry their publication year in parentheses, validated at construction.
 
 ### Adding a new shared type
 

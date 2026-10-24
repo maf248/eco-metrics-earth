@@ -1,11 +1,27 @@
+import Link from 'next/link';
+
+import { SourceAttribution } from '@/components/SourceAttribution';
 import { WaterFootprintTable } from '@/components/water-footprint/WaterFootprintTable';
-import type { WaterFootprintProduct } from '@eco-metrics/shared';
+import { LINK_CLASS_NAME } from '@/lib/linkClassName';
+import type { DataSourcePublisher, WaterFootprintProduct } from '@eco-metrics/shared';
 
 interface WaterFootprintContentProps {
   products: WaterFootprintProduct[];
 }
 
+function distinctPublishers(products: WaterFootprintProduct[]): DataSourcePublisher[] {
+  const byName = new Map<string, DataSourcePublisher>();
+  for (const { publisher } of products) {
+    if (publisher && !byName.has(publisher.provider)) {
+      byName.set(publisher.provider, publisher);
+    }
+  }
+  return [...byName.values()];
+}
+
 export function WaterFootprintContent({ products }: WaterFootprintContentProps) {
+  const publishers = distinctPublishers(products);
+
   return (
     <div className="w-full max-w-6xl px-4">
       <p className="mb-3 text-center text-fg-secondary">
@@ -27,9 +43,26 @@ export function WaterFootprintContent({ products }: WaterFootprintContentProps) 
       {products.length > 0 && (
         <>
           <WaterFootprintTable products={products} />
-          <p className="mb-8 mt-6 text-sm text-fg-muted">
+          <p className="mt-6 text-sm text-fg-muted">
             Equivalents are illustrative references: one average shower ≈ 65 L, one full bathtub ≈
             150 L. They are not part of the cited dataset.
+          </p>
+          <p className="mb-8 mt-2 text-sm text-fg-muted">
+            {publishers.length > 0 && (
+              <>
+                Some values are republished by{' '}
+                {publishers.map((publisher, index) => (
+                  <span key={publisher.provider}>
+                    {index > 0 && ', '}
+                    <SourceAttribution source={publisher} />
+                  </span>
+                ))}
+                .{' '}
+              </>
+            )}
+            <Link href="/data-sources/" className={LINK_CLASS_NAME}>
+              All data sources
+            </Link>
           </p>
         </>
       )}

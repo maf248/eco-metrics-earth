@@ -20,5 +20,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.8,
   }));
 
-  return [homeEntry, ...categoryEntries];
+  const dataSourcesEntry: MetadataRoute.Sitemap[number] = {
+    url: `${base}/data-sources/`,
+    lastModified: new Date(),
+    changeFrequency: 'monthly',
+    priority: 0.5,
+  };
+
+  return [homeEntry, ...categoryEntries, dataSourcesEntry];
 }

@@ -141,6 +141,15 @@ Pending — define and validate it in the first change that encodes polarity (e.
 - Desktop nav item rows (`NavLink.tsx`): row density `lg:py-2`, chosen so all 12 `NAV_ITEMS` fit within a typical desktop viewport height (~700px+) without scrolling.
 - Vertical scroll affordance (`NavScrollContainer.tsx`): on desktop, top/bottom gradient overlays signal hidden nav items above/below the visible area, mirroring the existing horizontal affordance used by the mobile bottom bar. Both reuse the same `nav-surface` token as their horizontal counterparts (`from-nav-surface`), oriented vertically (`bg-linear-to-b` / `bg-linear-to-t`).
 
+- Site footer (`Footer.tsx`): rendered inside the content wrapper right after `{children}` (`pb-20 lg:pb-0 lg:pl-76`), in normal document flow, so it inherits the mobile bottom-nav clearance and the desktop sidebar offset. A single `<footer>` (`contentinfo`, outside `<main>`) in the terminal style of the brand: the site logo with `~ eco-metrics.earth` in mono accent, a one-line tagline, one link shown as `$ cd data-sources/` (decorative `aria-hidden` prompt, accessible name "Data sources", `LINK_CLASS_NAME`), and a muted copyright/signature line under a `border-line-subtle` rule. Two columns from `sm`, stacked on mobile; tokens only (`border-line`, `text-accent`, `text-fg-secondary`, `text-fg-muted`). Mains are `min-h-screen`, so the footer sits at the end of the scroll, not in the first viewport.
+
+### Source attribution
+
+- `SourceAttribution` is the single "<publisher link> (<license>)" fragment for any `DataSourcePublisher`-shaped value; callers add their own lead-in ("via", "Republished by", "Some values are republished by", or "Data:" on a future chart). Names and licenses always come from the API.
+- Live-provider dates on `/data-sources/` are formatted in UTC (`formatUtcDate`) and wrapped in `<time dateTime>`, so server and client render identically.
+- On a cited publication, "Republished by <SourceAttribution>" sits beneath the citation; per product, "via <SourceAttribution>"; under the water-footprint table, "Some values are republished by <SourceAttribution>. <All data sources link>". The citation itself is never replaced.
+- Links in running text are underlined (never color alone) and share `LINK_CLASS_NAME`: `text-accent`, `hover:text-accent-hover` and the focus-ring pattern.
+
 ## Visualization Heuristics
 
 | Data shape                     | Pattern                                |

@@ -265,7 +265,7 @@ exports[`WaterFootprintTable should match the default render snapshot 1`] = `
               class="py-2 pr-4 text-fg-body"
             >
               <a
-                class="text-accent underline hover:text-accent-hover"
+                class="rounded-sm text-accent underline hover:text-accent-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2 ring-offset-focus-offset"
                 href="https://doi.org/10.5194/hess-15-1577-2011"
                 rel="noopener noreferrer"
                 target="_blank"
@@ -326,7 +326,7 @@ exports[`WaterFootprintTable should match the default render snapshot 1`] = `
               class="py-2 pr-4 text-fg-body"
             >
               <a
-                class="text-accent underline hover:text-accent-hover"
+                class="rounded-sm text-accent underline hover:text-accent-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2 ring-offset-focus-offset"
                 href="https://ourworldindata.org/grapher/water-withdrawals-per-kg-poore"
                 rel="noopener noreferrer"
                 target="_blank"
@@ -387,7 +387,7 @@ exports[`WaterFootprintTable should match the default render snapshot 1`] = `
               class="py-2 pr-4 text-fg-body"
             >
               <a
-                class="text-accent underline hover:text-accent-hover"
+                class="rounded-sm text-accent underline hover:text-accent-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2 ring-offset-focus-offset"
                 href="https://doi.org/10.1021/es025643o"
                 rel="noopener noreferrer"
                 target="_blank"
@@ -448,7 +448,7 @@ exports[`WaterFootprintTable should match the default render snapshot 1`] = `
               class="py-2 pr-4 text-fg-body"
             >
               <a
-                class="text-accent underline hover:text-accent-hover"
+                class="rounded-sm text-accent underline hover:text-accent-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2 ring-offset-focus-offset"
                 href="https://doi.org/10.1016/j.wri.2017.11.002"
                 rel="noopener noreferrer"
                 target="_blank"
@@ -509,7 +509,7 @@ exports[`WaterFootprintTable should match the default render snapshot 1`] = `
               class="py-2 pr-4 text-fg-body"
             >
               <a
-                class="text-accent underline hover:text-accent-hover"
+                class="rounded-sm text-accent underline hover:text-accent-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2 ring-offset-focus-offset"
                 href="https://arxiv.org/abs/2508.15734"
                 rel="noopener noreferrer"
                 target="_blank"
@@ -565,7 +565,7 @@ exports[`WaterFootprintTable should match the default render snapshot 1`] = `
               class="py-2 pr-4 text-fg-body"
             >
               <a
-                class="text-accent underline hover:text-accent-hover"
+                class="rounded-sm text-accent underline hover:text-accent-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2 ring-offset-focus-offset"
                 href="https://ourworldindata.org/grapher/water-withdrawals-per-kg-poore"
                 rel="noopener noreferrer"
                 target="_blank"
@@ -634,7 +634,7 @@ exports[`WaterFootprintTable should match the default render snapshot 1`] = `
           class="mt-2 text-sm"
         >
           <a
-            class="text-accent underline hover:text-accent-hover"
+            class="rounded-sm text-accent underline hover:text-accent-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2 ring-offset-focus-offset"
             href="https://doi.org/10.5194/hess-15-1577-2011"
             rel="noopener noreferrer"
             target="_blank"
@@ -696,7 +696,7 @@ exports[`WaterFootprintTable should match the default render snapshot 1`] = `
           class="mt-2 text-sm"
         >
           <a
-            class="text-accent underline hover:text-accent-hover"
+            class="rounded-sm text-accent underline hover:text-accent-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2 ring-offset-focus-offset"
             href="https://ourworldindata.org/grapher/water-withdrawals-per-kg-poore"
             rel="noopener noreferrer"
             target="_blank"
@@ -758,7 +758,7 @@ exports[`WaterFootprintTable should match the default render snapshot 1`] = `
           class="mt-2 text-sm"
         >
           <a
-            class="text-accent underline hover:text-accent-hover"
+            class="rounded-sm text-accent underline hover:text-accent-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2 ring-offset-focus-offset"
             href="https://doi.org/10.1021/es025643o"
             rel="noopener noreferrer"
             target="_blank"
@@ -820,7 +820,7 @@ exports[`WaterFootprintTable should match the default render snapshot 1`] = `
           class="mt-2 text-sm"
         >
           <a
-            class="text-accent underline hover:text-accent-hover"
+            class="rounded-sm text-accent underline hover:text-accent-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2 ring-offset-focus-offset"
             href="https://doi.org/10.1016/j.wri.2017.11.002"
             rel="noopener noreferrer"
             target="_blank"
@@ -882,7 +882,7 @@ exports[`WaterFootprintTable should match the default render snapshot 1`] = `
           class="mt-2 text-sm"
         >
           <a
-            class="text-accent underline hover:text-accent-hover"
+            class="rounded-sm text-accent underline hover:text-accent-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2 ring-offset-focus-offset"
             href="https://arxiv.org/abs/2508.15734"
             rel="noopener noreferrer"
             target="_blank"
@@ -939,7 +939,7 @@ exports[`WaterFootprintTable should match the default render snapshot 1`] = `
           class="mt-2 text-sm"
         >
           <a
-            class="text-accent underline hover:text-accent-hover"
+            class="rounded-sm text-accent underline hover:text-accent-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2 ring-offset-focus-offset"
             href="https://ourworldindata.org/grapher/water-withdrawals-per-kg-poore"
             rel="noopener noreferrer"
             target="_blank"

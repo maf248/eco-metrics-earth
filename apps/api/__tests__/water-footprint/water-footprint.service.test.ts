@@ -2,10 +2,13 @@ import { readFileSync } from 'fs';
 
 import { BadRequestException, Logger } from '@nestjs/common';
 
+import { StaticDataSource } from '@eco-metrics/shared';
+
 jest.mock('fs', () => ({
   readFileSync: jest.fn(),
 }));
 
+import { OWID_PUBLISHER } from '../../src/modules/providers/owid/owid.attribution';
 import { WaterFootprintService } from '../../src/modules/water-footprint/water-footprint.service';
 
 const mockReadFileSync = readFileSync as jest.MockedFunction<typeof readFileSync>;
@@ -55,8 +58,29 @@ describe('WaterFootprintService', () => {
     const service = new WaterFootprintService();
     const all = service.getAllProducts();
 
-    expect(all).toEqual(mockProducts);
+    expect(all).toEqual([
+      { ...mockProducts[0], publisher: OWID_PUBLISHER },
+      mockProducts[1],
+      mockProducts[2],
+    ]);
     expect(all).not.toBe(mockProducts);
+  });
+
+  it('should set the publisher only on rows hosted by a known licensor', () => {
+    mockReadFileSync.mockReturnValue(JSON.stringify(mockProducts));
+
+    const [apples, cotton] = new WaterFootprintService().getAllProducts();
+
+    expect(apples.publisher).toEqual(OWID_PUBLISHER);
+    expect(cotton).not.toHaveProperty('publisher');
+  });
+
+  it('should keep the publisher on rows filtered by category', () => {
+    mockReadFileSync.mockReturnValue(JSON.stringify(mockProducts));
+
+    const [apples] = new WaterFootprintService().getByCategory('food-beverages');
+
+    expect(apples.publisher).toEqual(OWID_PUBLISHER);
   });
 
   it('should return only food products for the food-beverages slug', () => {
@@ -150,5 +174,110 @@ describe('WaterFootprintService', () => {
     mockReadFileSync.mockReturnValue(payload);
 
     expect(() => new WaterFootprintService()).toThrow(/expected a JSON array of products/);
+  });
+
+  describe('construction validation', () => {
+    const row = mockProducts[1];
+
+    it.each([
+      ['no year', 'Mekonnen & Hoekstra, Hydrology'],
+      ['several years', 'Mekonnen (2011) & Hoekstra (2012), Hydrology'],
+    ])('should throw naming the product and source when the citation has %s', (_label, source) => {
+      mockReadFileSync.mockReturnValue(JSON.stringify([{ ...row, source }]));
+
+      const construct = (): WaterFootprintService => new WaterFootprintService();
+
+      expect(construct).toThrow('"Cotton (lint)"');
+      expect(construct).toThrow(`"${source}"`);
+    });
+
+    it('should throw naming the product and source when the sourceUrl is unparsable', () => {
+      mockReadFileSync.mockReturnValue(JSON.stringify([{ ...row, sourceUrl: 'not a url' }]));
+
+      const construct = (): WaterFootprintService => new WaterFootprintService();
+
+      expect(construct).toThrow('"Cotton (lint)"');
+      expect(construct).toThrow(`(source: "${row.source}")`);
+    });
+  });
+
+  describe('getDataSources', () => {
+    it('should group rows by citation and URL, counting entries and parsing the year', () => {
+      mockReadFileSync.mockReturnValue(
+        JSON.stringify([
+          ...mockProducts,
+          { ...mockProducts[0], product: 'Pears' },
+          { ...mockProducts[0], product: 'Plums', sourceUrl: 'https://doi.org/10.1126/science' },
+        ]),
+      );
+
+      const [contribution] = new WaterFootprintService().getDataSources();
+
+      expect(contribution.kind).toBe('dataset');
+      expect(contribution.source).toMatchObject({
+        id: 'water-footprint',
+        categories: ['water-footprint'],
+      });
+      expect(contribution.source).not.toHaveProperty('lastUpdated');
+      const { publications } = contribution.source as StaticDataSource;
+
+      expect(publications).toHaveLength(4);
+      expect(
+        publications.map(({ citation, url, entryCount, publishedYear }) => ({
+          citation,
+          url,
+          entryCount,
+          publishedYear,
+        })),
+      ).toEqual(
+        expect.arrayContaining([
+          {
+            citation: 'Poore & Nemecek (2018), Science',
+            url: 'https://doi.org/10.1126/science',
+            entryCount: 1,
+            publishedYear: 2018,
+          },
+          {
+            citation: 'Mekonnen & Hoekstra (2011), Hydrology and Earth System Sciences',
+            url: 'https://waterfootprint.org/en/resources/waterstat/',
+            entryCount: 1,
+            publishedYear: 2011,
+          },
+          {
+            citation: 'de Vries (2023), Cell Reports Sustainability',
+            url: 'https://doi.org/10.1016/j.crsus.2023.100004',
+            entryCount: 1,
+            publishedYear: 2023,
+          },
+          {
+            citation: 'Poore & Nemecek (2018), Science',
+            url: 'https://ourworldindata.org/grapher/water-withdrawals-per-kg-poore',
+            entryCount: 2,
+            publishedYear: 2018,
+          },
+        ]),
+      );
+    });
+
+    it('should follow the fixture and attach the publisher only where one is resolved', () => {
+      mockReadFileSync.mockReturnValue(JSON.stringify(mockProducts));
+
+      const [contribution] = new WaterFootprintService().getDataSources();
+      const { publications } = contribution.source as StaticDataSource;
+
+      expect(publications).toHaveLength(3);
+      expect(publications.filter(({ publisher }) => publisher)).toEqual([
+        expect.objectContaining({ citation: 'Poore & Nemecek (2018), Science' }),
+      ]);
+    });
+
+    it('should contribute nothing for an empty dataset', () => {
+      jest.spyOn(Logger.prototype, 'warn').mockImplementation();
+      mockReadFileSync.mockImplementation(() => {
+        throw Object.assign(new Error('ENOENT'), { code: 'ENOENT' });
+      });
+
+      expect(new WaterFootprintService().getDataSources()).toEqual([]);
+    });
   });
 });

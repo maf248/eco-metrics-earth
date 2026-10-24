@@ -2,6 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { getOptionsToken, ThrottlerModuleOptions } from '@nestjs/throttler';
 
 import { AppModule } from '../../src/app/app.module';
+import { DataSourcesService } from '../../src/modules/data-sources/data-sources.service';
 
 describe('AppModule', () => {
   it('should compile successfully', async () => {
@@ -25,6 +26,17 @@ describe('AppModule', () => {
         skipIf: expect.any(Function),
       }),
     );
+  });
+
+  it('should register the data sources module and discover the water-footprint dataset', async () => {
+    const module: TestingModule = await Test.createTestingModule({
+      imports: [AppModule],
+    }).compile();
+
+    const catalog = await module.get(DataSourcesService).getCatalog();
+
+    expect(catalog.datasets.map(({ id }) => id)).toEqual(['water-footprint']);
+    expect(catalog.providers).toEqual([]);
   });
 
   // The OWID cache (default in-memory Keyv Map store) holds no timers, sockets or file
