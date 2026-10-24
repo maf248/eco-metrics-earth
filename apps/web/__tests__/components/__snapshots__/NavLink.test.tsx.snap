@@ -4,16 +4,16 @@ exports[`NavLink snapshots should match snapshot when active 1`] = `
 <DocumentFragment>
   <a
     aria-current="page"
-    class="flex flex-col items-center justify-start w-20 h-full gap-1 pt-3 pb-1 px-1 lg:h-auto lg:w-full lg:flex-row lg:justify-start lg:gap-3 lg:px-5 lg:py-2 lg:rounded-lg text-[10px] lg:text-sm font-medium leading-tight transition-colors duration-150 text-emerald-700 lg:bg-gray-100 dark:text-emerald-400 dark:lg:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 ring-offset-white dark:ring-offset-gray-950"
+    class="flex flex-col items-center justify-start w-20 h-full gap-1 pt-3 pb-1 px-1 lg:h-auto lg:w-full lg:flex-row lg:justify-start lg:gap-3 lg:px-5 lg:py-2 lg:rounded-lg text-[10px] lg:text-sm font-medium leading-tight transition-colors duration-150 text-accent lg:bg-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2 ring-offset-focus-offset"
     href="/air-quality"
   >
     <span
-      class="w-8 h-8 shrink-0 flex items-center justify-center rounded-lg p-1 bg-gray-400 dark:bg-white/15"
+      class="w-8 h-8 shrink-0 flex items-center justify-center rounded-lg p-1 bg-well-active"
       data-testid="nav-icon"
     >
       <svg
         aria-hidden="true"
-        class="w-6 h-6 drop-shadow-sm dark:drop-shadow-[0_0_3px_rgba(255,255,255,0.25)]"
+        class="w-6 h-6 drop-shadow-icon-sm"
         viewBox="0 0 64 64"
         xmlns="http://www.w3.org/2000/svg"
       >
@@ -100,16 +100,16 @@ exports[`NavLink snapshots should match snapshot when active 1`] = `
 exports[`NavLink snapshots should match snapshot when inactive 1`] = `
 <DocumentFragment>
   <a
-    class="flex flex-col items-center justify-start w-20 h-full gap-1 pt-3 pb-1 px-1 lg:h-auto lg:w-full lg:flex-row lg:justify-start lg:gap-3 lg:px-5 lg:py-2 lg:rounded-lg text-[10px] lg:text-sm font-medium leading-tight transition-colors duration-150 text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 ring-offset-white dark:ring-offset-gray-950"
+    class="flex flex-col items-center justify-start w-20 h-full gap-1 pt-3 pb-1 px-1 lg:h-auto lg:w-full lg:flex-row lg:justify-start lg:gap-3 lg:px-5 lg:py-2 lg:rounded-lg text-[10px] lg:text-sm font-medium leading-tight transition-colors duration-150 text-fg-secondary hover:text-fg-strong hover:bg-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2 ring-offset-focus-offset"
     href="/air-quality"
   >
     <span
-      class="w-8 h-8 shrink-0 flex items-center justify-center rounded-lg p-1 bg-gray-300 dark:bg-white/10"
+      class="w-8 h-8 shrink-0 flex items-center justify-center rounded-lg p-1 bg-well"
       data-testid="nav-icon"
     >
       <svg
         aria-hidden="true"
-        class="w-6 h-6 drop-shadow-sm dark:drop-shadow-[0_0_3px_rgba(255,255,255,0.25)]"
+        class="w-6 h-6 drop-shadow-icon-sm"
         viewBox="0 0 64 64"
         xmlns="http://www.w3.org/2000/svg"
       >
@@ -196,16 +196,16 @@ exports[`NavLink snapshots should match snapshot when inactive 1`] = `
 exports[`NavLink snapshots should match snapshot with a long wrapping label 1`] = `
 <DocumentFragment>
   <a
-    class="flex flex-col items-center justify-start w-20 h-full gap-1 pt-3 pb-1 px-1 lg:h-auto lg:w-full lg:flex-row lg:justify-start lg:gap-3 lg:px-5 lg:py-2 lg:rounded-lg text-[10px] lg:text-sm font-medium leading-tight transition-colors duration-150 text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 ring-offset-white dark:ring-offset-gray-950"
+    class="flex flex-col items-center justify-start w-20 h-full gap-1 pt-3 pb-1 px-1 lg:h-auto lg:w-full lg:flex-row lg:justify-start lg:gap-3 lg:px-5 lg:py-2 lg:rounded-lg text-[10px] lg:text-sm font-medium leading-tight transition-colors duration-150 text-fg-secondary hover:text-fg-strong hover:bg-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2 ring-offset-focus-offset"
     href="/endangered-species"
   >
     <span
-      class="w-8 h-8 shrink-0 flex items-center justify-center rounded-lg p-1 bg-gray-300 dark:bg-white/10"
+      class="w-8 h-8 shrink-0 flex items-center justify-center rounded-lg p-1 bg-well"
       data-testid="nav-icon"
     >
       <svg
         aria-hidden="true"
-        class="w-6 h-6 drop-shadow-sm dark:drop-shadow-[0_0_3px_rgba(255,255,255,0.25)]"
+        class="w-6 h-6 drop-shadow-icon-sm"
         viewBox="0 0 64 64"
         xmlns="http://www.w3.org/2000/svg"
       >

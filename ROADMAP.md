@@ -89,7 +89,7 @@ Este documento registra todas las propuestas de mejora identificadas para el pro
 
 P1.0 originalmente juntaba en un solo cambio el módulo del API, el healthcheck, la primera página con datos, la elección de la librería de charts y la atribución legal. Se separan las dos piezas que no dependen de datos de OWID, para que P1.0 tenga un spec y una revisión acotados:
 
-1. **I09 — Elegir librería de charts + paletas.** Decisión con spikes desechables, sin tocar producción. Además de la librería, debe cerrar lo que un primer gráfico de líneas necesita y hoy está pendiente: tokens de chart en el `@theme` (`--color-chart-1…n`) con la paleta categórica validada en ambos temas (`docs/design-system.md`), y la estrategia de tests en jsdom si la librería elegida depende de `ResizeObserver`, como Recharts (`docs/technical/libraries.md`). Bloquea P1.0.
+1. **I09 — Elegir librería de charts + paletas.** Decisión con spikes desechables, sin tocar producción. Además de la librería, debe cerrar lo que un primer gráfico de líneas necesita y hoy está pendiente: tokens de chart (`--chart-1…n`, con el mismo mecanismo `:root`/`.dark` + `@theme inline` que el resto de los tokens) con la paleta categórica validada en ambos temas (`docs/design-system.md`), y la estrategia de tests en jsdom si la librería elegida depende de `ResizeObserver`, como Recharts (`docs/technical/libraries.md`). Parte de los tokens semánticos de UI (refactor previo, un solo nombre por color que cambia bajo `.dark`); I09 suma las paletas de chart (categórica, secuencial y divergente) con ese mismo mecanismo. Mapas fuera de alcance: ver I12. Bloquea P1.0.
 2. **I08 — Componente de atribución + página `/data-sources/`.** No depende de OWID: el componente consume `DataSourceAttribution` (ya en `@eco-metrics/shared`) y hoy la única atribución es un `Attribution` local dentro de `WaterFootprintTable.tsx`. La página lista las fuentes en uso en ese momento; OWID se suma en P1.0. Requisito legal antes de publicar datos CC BY.
 
 #### P1.0 — Primer módulo end-to-end: `co2-emissions`
@@ -195,7 +195,8 @@ Si no estás seguro por dónde empezar, este es el orden recomendado:
 3. **P1.0: Módulo `co2-emissions` end-to-end** → Primera sección con datos reales + charts (Dificultad: 5/10)
 4. **I10: Resiliencia del BFF ante proveedores externos** → Antes de multiplicar módulos
 5. **P1.1 / P1.2: `global-temperature` y `energy-sources`** → Replicar el patrón (Dificultad: 3/10 c/u)
-6. **P2: Monitoreo y observabilidad** → Logs, métricas y error tracking (Dificultad: 5/10)
+6. **I12: Mapa coroplético (tabla + mapa)** → Vista por país sobre las tablas, iterable por categoría (Dificultad: 5/10)
+7. **P2: Monitoreo y observabilidad** → Logs, métricas y error tracking (Dificultad: 5/10)
 
 D1 (TypeScript 7) queda como seguimiento pasivo — sin acción por ahora.
 
@@ -249,7 +250,8 @@ Lista de hallazgos del análisis de repositorio, ordenados por prioridad (más c
 
 - **I08.** Atribución de datos (requisito legal, no opcional) — CC BY exige atribución visible. Prerrequisito de P1.0, como propuesta propia (ver _Prerrequisitos de P1.0_): componente de atribución al pie de cada visualización ("Data: Our World in Data — CC BY" con link) + página `/data-sources/` listando proveedores y licencias. Alimentado por `ApiResponse<T>.meta.source` (`DataSourceAttribution`, ya disponible en `@eco-metrics/shared`). Bonus SEO: contenido indexable con estructura.
 - **I10.** Resiliencia del BFF ante proveedores externos — hoy la web solo protege la llamada a nuestro BFF (2 intentos de 10 s + stale-if-error del ISR, change `water-footprint-cold-start-resilience`), lo que alcanza para el dataset propio de water footprint. Las próximas categorías dependen de proveedores externos (OWID, etc.) a través del BFF, y la caída de un tercero no debería romper una página ni bloquear un deploy. Propuesta: el BFF guarda la última respuesta buena de cada proveedor y, si el proveedor falla, la devuelve marcada como desactualizada (p. ej. `meta.stale` + `fetchedAt`) o responde un status/código acordado cuando no tiene datos; la web decide por sección qué mostrar (datos viejos o un aviso de "no disponible") sin fallar el build. Requiere caché persistente gratuito (Cloud Run escala a cero y pierde el caché en memoria): Cloud Storage o Firestore dentro del free tier, o un snapshot en la imagen. Conviene hacerlo entre P1.0 y P1.1: parte del contrato de error del proveedor que define P1.0.
-- **I09.** Elegir librería de charts — pendiente. Prerrequisito de P1.0, como propuesta propia que también define los tokens de chart y la paleta categórica en ambos temas (ver _Prerrequisitos de P1.0_). Ver `docs/technical/libraries.md`: tiene candidatas, descartadas con motivo, spikes por candidata y los gates a cumplir. La decisión se registra en `docs/design-system.md` y activa el recordatorio de Dynamic Imports.
+- **I09.** Elegir librería de charts — pendiente. Prerrequisito de P1.0, como propuesta propia que también define los tokens de chart y la paleta categórica en ambos temas (ver _Prerrequisitos de P1.0_). Ver `docs/technical/libraries.md`: tiene candidatas, descartadas con motivo, spikes por candidata y los gates a cumplir. La decisión se registra en `docs/design-system.md` y activa el recordatorio de Dynamic Imports. Solo charts: los mapas van en I12.
+- **I12.** Mapa coroplético mundial (tabla + mapa) — casi todas las categorías tienen datos país × año (OWID, World Bank, FAO), así que un mapa con tooltip por país suma una vista sobre la tabla, sin reemplazarla: la tabla/buscador queda como alternativa accesible y el mapa se itera por categoría. Tooltip por hover, foco de teclado y tap en mobile; escala por clases con las paletas secuencial/divergente de I09. Solo coroplético SVG por país — mapas de puntos o grilla (air-quality, ocean-health, endangered-species) quedan fuera. Candidatas, trampas y spike en `docs/technical/libraries.md` (_Maps_), incluido el crosswalk ISO alfa-3 ↔ numérico y el filtrado de agregados OWID (`World`, `OWID_*`). Conviene después de P1.0. Dificultad: 5/10. Requiere: spec OpenSpec.
 
 ---
 
@@ -260,4 +262,4 @@ Lista de hallazgos del análisis de repositorio, ordenados por prioridad (más c
 - **I06.** OpenTelemetry — considerado para el futuro cuando el sistema escale a múltiples servicios o se quiera cambiar de backend de observabilidad (Sentry → Datadog, Honeycomb, etc.) sin tocar código de instrumentación. Con un solo BFF, Sentry Performance cubre el tracing necesario. No justifica el overhead de configuración actual (collector, exporters, SDK setup).
 - **I07.** Axiom — plataforma de logs como servicio. Solo relevante si la retención de Cloud Logging (30 días en free tier) o Vercel resulta insuficiente para debugging post-mortem. Por ahora los logs agregados de cada plataforma son suficientes.
 
-**Última actualización:** 22 Oct 2026
+**Última actualización:** 23 Oct 2026

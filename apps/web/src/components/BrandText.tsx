@@ -60,7 +60,7 @@ export default function BrandText() {
       {/* Brand text — typewriter reveal */}
       <span
         aria-hidden="true"
-        className="font-mono text-sm font-medium text-emerald-700 dark:text-emerald-400 tracking-tight whitespace-nowrap"
+        className="font-mono text-sm font-medium text-accent tracking-tight whitespace-nowrap"
       >
         {displayedText}
       </span>
@@ -68,7 +68,7 @@ export default function BrandText() {
       {/* Blinking cursor — always visible */}
       <span
         aria-hidden="true"
-        className="animate-cursor-blink font-mono text-sm font-medium text-emerald-700 dark:text-emerald-400 leading-none select-none -ml-2"
+        className="animate-cursor-blink font-mono text-sm font-medium text-accent leading-none select-none -ml-2"
       >
         ▋
       </span>
@@ -77,7 +77,7 @@ export default function BrandText() {
       <span
         aria-hidden="true"
         className={[
-          'font-mono text-sm font-medium text-emerald-700 dark:text-emerald-400 select-none',
+          'font-mono text-sm font-medium text-accent select-none',
           'transition-opacity duration-500',
           isTypingDone ? 'opacity-100' : 'opacity-0',
         ].join(' ')}

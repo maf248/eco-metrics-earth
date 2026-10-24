@@ -46,7 +46,7 @@ The facts recorded in `docs/design-system.md` SHALL include:
 
 - `apps/web` uses Next.js 16 (App Router), React 19, and Tailwind CSS v4.
 - Dark mode is class-based: `apps/web/src/app/globals.css` declares `@custom-variant dark (&:where(.dark, .dark *))`, and `ThemeProvider`/a blocking inline script toggle the `dark` class on `<html>`.
-- Theming today is expressed primarily through paired Tailwind utility classes rather than a full CSS custom-property token system; the one existing exception is the `@theme` block in `globals.css` defining `--color-nav-surface` / `--color-nav-surface-dark`. A broader token system is aspirational, not an existing fact.
+- Theming is expressed through semantic color tokens (see the `design-tokens` capability): raw custom properties on `:root`, overridden under `.dark`, and exposed through `@theme inline`, so a single utility per role covers both themes. The doc lists every token with its role and light/dark values, plus the documented `dark:` exceptions.
 - Eco-category icon components in `apps/web/src/components/icons/` are intentionally multicolor with hardcoded fills; per the `light-mode-styling` capability, they MUST NOT be recolored or tinted per theme. Contrast fixes must add separation without altering the SVG's own colors.
 - The project's SEO/accessibility baseline: semantic HTML, descriptive titles/meta descriptions, trailing-slash canonical URLs, and accessible markup verified via `@axe-core/playwright` E2E coverage.
 
@@ -54,8 +54,8 @@ The facts recorded in `docs/design-system.md` SHALL include:
 
 - **GIVEN** `docs/design-system.md`
 - **WHEN** its Theme Rules section is read
-- **THEN** it describes theming as Tailwind `dark:`-paired utility classes plus the existing `--color-nav-surface`/`--color-nav-surface-dark` custom properties
-- **AND** it marks a broader token system as not yet existing
+- **THEN** it describes theming as semantic color tokens declared in `globals.css` that switch value under `.dark`, consumed as single utilities
+- **AND** it contains a token table (role, light value, dark value) and the list of remaining `dark:` exceptions
 
 #### Scenario: Design system doc preserves the icon color constraint
 

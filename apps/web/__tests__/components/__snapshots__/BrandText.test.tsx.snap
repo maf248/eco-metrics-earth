@@ -4,19 +4,19 @@ exports[`BrandText snapshots should match snapshot after typing completes (norma
 <DocumentFragment>
   <span
     aria-hidden="true"
-    class="font-mono text-sm font-medium text-emerald-700 dark:text-emerald-400 tracking-tight whitespace-nowrap"
+    class="font-mono text-sm font-medium text-accent tracking-tight whitespace-nowrap"
   >
     ~ eco-metrics.earth
   </span>
   <span
     aria-hidden="true"
-    class="animate-cursor-blink font-mono text-sm font-medium text-emerald-700 dark:text-emerald-400 leading-none select-none -ml-2"
+    class="animate-cursor-blink font-mono text-sm font-medium text-accent leading-none select-none -ml-2"
   >
     ▋
   </span>
   <span
     aria-hidden="true"
-    class="font-mono text-sm font-medium text-emerald-700 dark:text-emerald-400 select-none transition-opacity duration-500 opacity-100"
+    class="font-mono text-sm font-medium text-accent select-none transition-opacity duration-500 opacity-100"
   >
     [↵]
   </span>
@@ -27,19 +27,19 @@ exports[`BrandText snapshots should match snapshot with reduced motion 1`] = `
 <DocumentFragment>
   <span
     aria-hidden="true"
-    class="font-mono text-sm font-medium text-emerald-700 dark:text-emerald-400 tracking-tight whitespace-nowrap"
+    class="font-mono text-sm font-medium text-accent tracking-tight whitespace-nowrap"
   >
     ~ eco-metrics.earth
   </span>
   <span
     aria-hidden="true"
-    class="animate-cursor-blink font-mono text-sm font-medium text-emerald-700 dark:text-emerald-400 leading-none select-none -ml-2"
+    class="animate-cursor-blink font-mono text-sm font-medium text-accent leading-none select-none -ml-2"
   >
     ▋
   </span>
   <span
     aria-hidden="true"
-    class="font-mono text-sm font-medium text-emerald-700 dark:text-emerald-400 select-none transition-opacity duration-500 opacity-100"
+    class="font-mono text-sm font-medium text-accent select-none transition-opacity duration-500 opacity-100"
   >
     [↵]
   </span>

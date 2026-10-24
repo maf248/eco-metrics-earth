@@ -27,31 +27,26 @@ export default function ErrorPage({ error, reset }: ErrorPageProps) {
         <div
           data-testid="error-icon"
           aria-label="Error"
-          className="flex items-center justify-center w-48 h-48 rounded-2xl bg-gray-300 dark:bg-white/10 p-4"
+          className="flex items-center justify-center w-48 h-48 rounded-2xl bg-well p-4"
         >
-          <NotFoundIcon
-            aria-hidden
-            className="w-32 h-32 drop-shadow-xl dark:drop-shadow-[0_0_10px_rgba(255,255,255,0.25)]"
-          />
+          <NotFoundIcon aria-hidden className="w-32 h-32 drop-shadow-icon-xl" />
         </div>
         <div className="text-center" role="alert">
-          <h1 className="text-4xl font-bold text-gray-900 dark:text-white">
-            Oops! Something went wrong…
-          </h1>
-          <p className="mt-4 text-gray-600 dark:text-gray-400">
+          <h1 className="text-4xl font-bold text-fg">Oops! Something went wrong…</h1>
+          <p className="mt-4 text-fg-secondary">
             An unexpected error occurred while loading this page.
           </p>
           <div className="mt-6 flex flex-row items-center justify-center gap-4">
             <button
               type="button"
               onClick={reset}
-              className="px-6 py-3 rounded-lg bg-emerald-600 text-white font-medium hover:bg-emerald-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 ring-offset-white dark:ring-offset-gray-950 transition-colors duration-150"
+              className="px-6 py-3 rounded-lg bg-accent-solid text-on-accent font-medium hover:bg-accent-solid-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2 ring-offset-focus-offset transition-colors duration-150"
             >
               Try again
             </button>
             <Link
               href="/"
-              className="px-6 py-3 rounded-lg bg-gray-100 dark:bg-white/10 text-gray-700 dark:text-gray-300 font-medium hover:bg-gray-200 dark:hover:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 ring-offset-white dark:ring-offset-gray-950 transition-colors duration-150"
+              className="px-6 py-3 rounded-lg bg-control text-fg-body font-medium hover:bg-control-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2 ring-offset-focus-offset transition-colors duration-150"
             >
               Go back home
             </Link>

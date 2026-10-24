@@ -95,7 +95,7 @@ export function WaterFootprintTable({ products }: WaterFootprintTableProps) {
                 />
                 <label
                   htmlFor={inputId}
-                  className="cursor-pointer rounded-full border border-gray-300 bg-white px-3 py-1 text-sm text-gray-700 transition-colors peer-checked:border-emerald-700 peer-checked:bg-emerald-700 peer-checked:text-white hover:bg-gray-50 peer-focus-visible:outline-none peer-focus-visible:ring-2 peer-focus-visible:ring-emerald-700 peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-white dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700 dark:peer-focus-visible:ring-emerald-400 dark:peer-focus-visible:ring-offset-gray-950"
+                  className="cursor-pointer rounded-full border border-line-control bg-surface-raised px-3 py-1 text-sm text-fg-control transition-colors peer-checked:border-accent-solid-strong peer-checked:bg-accent-solid-strong peer-checked:text-on-accent hover:bg-chip-hover peer-focus-visible:outline-none peer-focus-visible:ring-2 peer-focus-visible:ring-accent peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-focus-offset"
                 >
                   {label}
                 </label>
@@ -108,26 +108,26 @@ export function WaterFootprintTable({ products }: WaterFootprintTableProps) {
       <p id={statusId} role="status" aria-live="polite" className="sr-only">
         {statusText}
       </p>
-      <p className="mb-4 text-sm text-gray-600 dark:text-gray-400" aria-hidden="true">
+      <p className="mb-4 text-sm text-fg-secondary" aria-hidden="true">
         {statusText}
       </p>
 
       {visibleRows.length === 0 ? (
-        <p className="text-gray-700 dark:text-gray-300">No products match the selected filter.</p>
+        <p className="text-fg-body">No products match the selected filter.</p>
       ) : (
         <>
           <div className="hidden lg:block overflow-x-auto" data-testid="water-footprint-table">
             <table className="w-full border-collapse text-left text-sm">
               <caption className="sr-only">Water footprint by product</caption>
               <thead>
-                <tr className="border-b border-gray-200 dark:border-gray-700">
+                <tr className="border-b border-line-strong">
                   <SortHeader
                     label="Product"
                     active={sort.key === 'name'}
                     direction={sort.key === 'name' ? sort.direction : 'asc'}
                     onClick={() => handleSort('name')}
                   />
-                  <th scope="col" className="py-2 pr-4 font-semibold text-gray-900 dark:text-white">
+                  <th scope="col" className="py-2 pr-4 font-semibold text-fg">
                     Category
                   </th>
                   <SortHeader
@@ -136,46 +136,41 @@ export function WaterFootprintTable({ products }: WaterFootprintTableProps) {
                     direction={sort.key === 'footprint' ? sort.direction : 'asc'}
                     onClick={() => handleSort('footprint')}
                   />
-                  <th scope="col" className="py-2 pr-4 font-semibold text-gray-900 dark:text-white">
+                  <th scope="col" className="py-2 pr-4 font-semibold text-fg">
                     Water type
                   </th>
-                  <th scope="col" className="py-2 pr-4 font-semibold text-gray-900 dark:text-white">
+                  <th scope="col" className="py-2 pr-4 font-semibold text-fg">
                     Contextual equivalent
                   </th>
-                  <th scope="col" className="py-2 pr-4 font-semibold text-gray-900 dark:text-white">
+                  <th scope="col" className="py-2 pr-4 font-semibold text-fg">
                     Source
                   </th>
                 </tr>
               </thead>
               <tbody>
                 {visibleRows.map((product) => (
-                  <tr
-                    key={product.product}
-                    className="border-b border-gray-100 dark:border-gray-800"
-                  >
-                    <th scope="row" className="py-2 pr-4 font-medium text-gray-900 dark:text-white">
+                  <tr key={product.product} className="border-b border-line-subtle">
+                    <th scope="row" className="py-2 pr-4 font-medium text-fg">
                       {product.product}
                     </th>
-                    <td className="py-2 pr-4 text-gray-700 dark:text-gray-300">
-                      {product.category}
-                    </td>
-                    <td className="py-2 pr-4 text-gray-700 dark:text-gray-300">
+                    <td className="py-2 pr-4 text-fg-body">{product.category}</td>
+                    <td className="py-2 pr-4 text-fg-body">
                       {product.waterFootprintLiters === null ? (
                         'No data'
                       ) : (
                         <>
                           {formatLiters(product.waterFootprintLiters)} L{' '}
-                          <span className="text-gray-500 dark:text-gray-400">{product.unit}</span>
+                          <span className="text-fg-muted">{product.unit}</span>
                         </>
                       )}
                     </td>
-                    <td className="py-2 pr-4 text-gray-700 dark:text-gray-300">
+                    <td className="py-2 pr-4 text-fg-body">
                       {waterFootprintWaterTypeLabels[product.waterType]}
                     </td>
-                    <td className="py-2 pr-4 text-gray-700 dark:text-gray-300">
+                    <td className="py-2 pr-4 text-fg-body">
                       {formatWaterFootprintEquivalents(product.waterFootprintLiters)}
                     </td>
-                    <td className="py-2 pr-4 text-gray-700 dark:text-gray-300">
+                    <td className="py-2 pr-4 text-fg-body">
                       <Attribution
                         source={product.source}
                         sourceUrl={product.sourceUrl}
@@ -192,26 +187,26 @@ export function WaterFootprintTable({ products }: WaterFootprintTableProps) {
             {visibleRows.map((product) => (
               <li
                 key={product.product}
-                className="rounded-lg border border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-800"
+                className="rounded-lg border border-line-strong bg-surface-raised p-4"
               >
-                <p className="font-semibold text-gray-900 dark:text-white">
+                <p className="font-semibold text-fg">
                   <strong>{product.product}</strong>
                 </p>
-                <p className="text-sm text-gray-700 dark:text-gray-300">{product.category}</p>
-                <p className="text-sm text-gray-700 dark:text-gray-300">
+                <p className="text-sm text-fg-body">{product.category}</p>
+                <p className="text-sm text-fg-body">
                   {product.waterFootprintLiters === null ? (
                     'No data'
                   ) : (
                     <>
                       {formatLiters(product.waterFootprintLiters)} L{' '}
-                      <span className="text-gray-500 dark:text-gray-400">{product.unit}</span>
+                      <span className="text-fg-muted">{product.unit}</span>
                     </>
                   )}
                 </p>
-                <p className="text-sm text-gray-700 dark:text-gray-300">
+                <p className="text-sm text-fg-body">
                   {waterFootprintWaterTypeLabels[product.waterType]}
                 </p>
-                <p className="text-sm text-gray-700 dark:text-gray-300">
+                <p className="text-sm text-fg-body">
                   {formatWaterFootprintEquivalents(product.waterFootprintLiters)}
                 </p>
                 <div className="mt-2 text-sm">
@@ -242,7 +237,7 @@ function SortHeader({ label, active, direction, onClick }: SortHeaderProps) {
     <th
       scope="col"
       aria-sort={active ? sortDirectionToAria(direction) : undefined}
-      className="py-2 pr-4 font-semibold text-gray-900 dark:text-white"
+      className="py-2 pr-4 font-semibold text-fg"
     >
       <button
         type="button"
@@ -273,14 +268,14 @@ function Attribution({ source, sourceUrl, methodology }: AttributionProps) {
         href={sourceUrl}
         target="_blank"
         rel="noopener noreferrer"
-        className="text-emerald-700 underline hover:text-emerald-800 dark:text-emerald-400 dark:hover:text-emerald-300"
+        className="text-accent underline hover:text-accent-hover"
       >
         {source}
       </a>
       {methodology && (
         <details className="mt-1">
-          <summary className="cursor-pointer text-gray-600 dark:text-gray-400">Methodology</summary>
-          <p className="mt-1 text-gray-700 dark:text-gray-300">{methodology}</p>
+          <summary className="cursor-pointer text-fg-secondary">Methodology</summary>
+          <p className="mt-1 text-fg-body">{methodology}</p>
         </details>
       )}
     </>

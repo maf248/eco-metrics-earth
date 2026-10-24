@@ -12,12 +12,12 @@ exports[`ErrorPage should match snapshot 1`] = `
     >
       <div
         aria-label="Error"
-        class="flex items-center justify-center w-48 h-48 rounded-2xl bg-gray-300 dark:bg-white/10 p-4"
+        class="flex items-center justify-center w-48 h-48 rounded-2xl bg-well p-4"
         data-testid="error-icon"
       >
         <svg
           aria-hidden="true"
-          class="w-32 h-32 drop-shadow-xl dark:drop-shadow-[0_0_10px_rgba(255,255,255,0.25)]"
+          class="w-32 h-32 drop-shadow-icon-xl"
           viewBox="0 0 60 60"
           xmlns="http://www.w3.org/2000/svg"
         >
@@ -45,12 +45,12 @@ exports[`ErrorPage should match snapshot 1`] = `
         role="alert"
       >
         <h1
-          class="text-4xl font-bold text-gray-900 dark:text-white"
+          class="text-4xl font-bold text-fg"
         >
           Oops! Something went wrong…
         </h1>
         <p
-          class="mt-4 text-gray-600 dark:text-gray-400"
+          class="mt-4 text-fg-secondary"
         >
           An unexpected error occurred while loading this page.
         </p>
@@ -58,13 +58,13 @@ exports[`ErrorPage should match snapshot 1`] = `
           class="mt-6 flex flex-row items-center justify-center gap-4"
         >
           <button
-            class="px-6 py-3 rounded-lg bg-emerald-600 text-white font-medium hover:bg-emerald-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 ring-offset-white dark:ring-offset-gray-950 transition-colors duration-150"
+            class="px-6 py-3 rounded-lg bg-accent-solid text-on-accent font-medium hover:bg-accent-solid-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2 ring-offset-focus-offset transition-colors duration-150"
             type="button"
           >
             Try again
           </button>
           <a
-            class="px-6 py-3 rounded-lg bg-gray-100 dark:bg-white/10 text-gray-700 dark:text-gray-300 font-medium hover:bg-gray-200 dark:hover:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 ring-offset-white dark:ring-offset-gray-950 transition-colors duration-150"
+            class="px-6 py-3 rounded-lg bg-control text-fg-body font-medium hover:bg-control-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2 ring-offset-focus-offset transition-colors duration-150"
             href="/"
           >
             Go back home

@@ -11,11 +11,11 @@ exports[`CategoryPage snapshots should match snapshot for endangered-species 1`]
       class="flex flex-col items-center gap-6 mt-14 lg:mt-0"
     >
       <div
-        class="flex items-center justify-center w-24 h-24 rounded-2xl bg-gray-300 dark:bg-white/10 p-4"
+        class="flex items-center justify-center w-24 h-24 rounded-2xl bg-well p-4"
       >
         <svg
           aria-hidden="true"
-          class="w-16 h-16 drop-shadow-lg dark:drop-shadow-[0_0_8px_rgba(255,255,255,0.25)]"
+          class="w-16 h-16 drop-shadow-icon-lg"
           viewBox="0 0 512 512"
           xmlns="http://www.w3.org/2000/svg"
         >
@@ -83,12 +83,12 @@ exports[`CategoryPage snapshots should match snapshot for endangered-species 1`]
         class="text-center"
       >
         <h1
-          class="text-4xl font-bold text-gray-900 dark:text-white"
+          class="text-4xl font-bold text-fg"
         >
           Endangered Species
         </h1>
         <p
-          class="mt-4 text-gray-600 dark:text-gray-400"
+          class="mt-4 text-fg-secondary"
         >
           Endangered Species metrics — coming soon.
         </p>
@@ -109,11 +109,11 @@ exports[`CategoryPage snapshots should match snapshot for ocean-health 1`] = `
       class="flex flex-col items-center gap-6 mt-14 lg:mt-0"
     >
       <div
-        class="flex items-center justify-center w-24 h-24 rounded-2xl bg-gray-300 dark:bg-white/10 p-4"
+        class="flex items-center justify-center w-24 h-24 rounded-2xl bg-well p-4"
       >
         <svg
           aria-hidden="true"
-          class="w-16 h-16 drop-shadow-lg dark:drop-shadow-[0_0_8px_rgba(255,255,255,0.25)]"
+          class="w-16 h-16 drop-shadow-icon-lg"
           viewBox="0 0 340 340"
           xmlns="http://www.w3.org/2000/svg"
         >
@@ -211,12 +211,12 @@ exports[`CategoryPage snapshots should match snapshot for ocean-health 1`] = `
         class="text-center"
       >
         <h1
-          class="text-4xl font-bold text-gray-900 dark:text-white"
+          class="text-4xl font-bold text-fg"
         >
           Ocean Health
         </h1>
         <p
-          class="mt-4 text-gray-600 dark:text-gray-400"
+          class="mt-4 text-fg-secondary"
         >
           Ocean Health metrics — coming soon.
         </p>
