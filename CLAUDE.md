@@ -49,7 +49,7 @@ Classify every request before choosing a workflow (full criteria in `AGENTS.md` 
 1. **Never commit without explicit user request** — do not run `git commit` unless the user explicitly asks.
 2. **Never push to `main` directly** — all changes to `main` must go through a Pull Request.
 3. **Never push without confirmation** — always ask the user before running `git push`, regardless of the branch.
-4. **Always use Commitizen format** — every commit message must follow `type(scope): description`. Free-form messages are not allowed.
+4. **Always use Conventional Commits format** — every commit message must follow `type(scope): description` and pass commitlint — header and **every body line ≤ 100 chars** (wrap at ~72). Full rules in `AGENTS.md` → Git/Commit Conventions. Free-form messages are not allowed.
 5. **One logical change per commit** — keep commits atomic and focused.
 6. **No AI signatures in commits** — never add `Co-Authored-By` trailers, "Generated with..." footers, or any AI attribution to commit messages or PR descriptions.
 7. **Always run `npm run test` before pushing** — if any suite fails, show the failing summary and do not push until it is fixed.

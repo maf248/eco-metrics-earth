@@ -210,10 +210,15 @@ npx nx test api -- --updateSnapshot   # updates only api snapshots
 
 ### Git/Commit Conventions
 
-- Uses [Conventional Commits](https://www.conventionalcommits.org/) enforced via Commitizen
+- Uses [Conventional Commits](https://www.conventionalcommits.org/), enforced by **commitlint** in the husky `commit-msg` hook (`commitlint.config.js`, extends `@commitlint/config-conventional`). A rejected message aborts the commit after `pre-commit` (lint-staged + typecheck) has already run.
 - Format: `type(scope): description`
   - Types: `feat`, `fix`, `docs`, `style`, `refactor`, `test`, `chore`
 - Examples: `feat(metrics): add new chart widget`, `fix(api): resolve data fetch error`
+- Rules commitlint enforces:
+  - **Header** (`type(scope): description`) ≤ 100 characters; scope expected (a missing one warns); description starts lowercase and has no trailing period.
+  - **Body** optional, separated from the header by one blank line; **every line ≤ 100 characters** — wrap prose at ~72. The same limit applies to footers.
+- Write multi-line messages with one `-m` per paragraph and hard line breaks inside each, or with `git commit -F <file>`. Never put a whole paragraph on a single line.
+- To check a message before committing: `printf '%s\n' "<message>" | npx commitlint`.
 
 #### Branch strategy
 
@@ -240,7 +245,7 @@ feature/* ──► develop ⇄ main (production)
 2. **Never push to `main` directly** — all changes must go through a PR from `develop`. GitHub does not enforce this on the current plan; the husky `pre-push` hook blocks it locally.
 3. **Never push without confirmation** — always ask the user before running `git push`, regardless of the branch.
 4. **Always run tests before pushing** — run `npm run test` before any push. If all tests pass and the push has been authorized, proceed. If any test fails, show a summary of the failing suites and do not push until they are fixed.
-5. **Always use Commitizen format** — every commit message must follow `type(scope): description`. Free-form messages are not allowed.
+5. **Always use Conventional Commits format** — every commit message must follow `type(scope): description` and pass commitlint (see Git/Commit Conventions). Free-form messages are not allowed.
 6. **One logical change per commit** — keep commits atomic and focused.
 
 ---
