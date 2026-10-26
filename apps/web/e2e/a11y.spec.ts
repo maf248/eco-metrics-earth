@@ -43,6 +43,110 @@ test.describe('Accessibility audit — category pages', () => {
   }
 });
 
+test.describe('Accessibility audit — CO2 emissions page', () => {
+  test.setTimeout(60_000);
+
+  const criticalAndSerious = (results: Awaited<ReturnType<typeof analyzeSettled>>) =>
+    results.violations.filter((v) => v.impact === 'critical' || v.impact === 'serious');
+
+  test('should have zero critical and serious violations in the light theme', async ({ page }) => {
+    await page.addInitScript(() => localStorage.setItem('eco-metrics-theme', 'light'));
+    await page.goto('/co2-emissions/');
+    await expect(page.getByTestId('echart').locator('svg').first()).toBeVisible();
+
+    expect(criticalAndSerious(await analyzeSettled(page))).toEqual([]);
+  });
+
+  test('should have zero critical and serious violations in the dark theme', async ({ page }) => {
+    await page.addInitScript(() => localStorage.setItem('eco-metrics-theme', 'dark'));
+    await page.goto('/co2-emissions/');
+    await expect(page.getByTestId('echart').locator('svg').first()).toBeVisible();
+
+    expect(criticalAndSerious(await analyzeSettled(page))).toEqual([]);
+  });
+
+  test('should have zero critical and serious violations with the country list open', async ({
+    page,
+  }) => {
+    await page.goto('/co2-emissions/');
+    await page.getByRole('combobox', { name: 'Country' }).press('ArrowDown');
+    await expect(page.getByRole('option').first()).toBeVisible();
+
+    expect(criticalAndSerious(await analyzeSettled(page))).toEqual([]);
+  });
+
+  test('should have zero critical and serious violations with the data table open', async ({
+    page,
+  }) => {
+    await page.goto('/co2-emissions/');
+    await page.getByText('View data table').click();
+    await expect(page.getByRole('table')).toBeVisible();
+
+    expect(criticalAndSerious(await analyzeSettled(page))).toEqual([]);
+  });
+});
+
+test.describe('Accessibility audit — global temperature page', () => {
+  test.setTimeout(60_000);
+
+  const criticalAndSerious = (results: Awaited<ReturnType<typeof analyzeSettled>>) =>
+    results.violations.filter((v) => v.impact === 'critical' || v.impact === 'serious');
+
+  test('should have zero critical and serious violations in the light theme', async ({ page }) => {
+    await page.addInitScript(() => localStorage.setItem('eco-metrics-theme', 'light'));
+    await page.goto('/global-temperature/');
+    await expect(page.getByTestId('echart').locator('svg').first()).toBeVisible();
+
+    expect(criticalAndSerious(await analyzeSettled(page))).toEqual([]);
+  });
+
+  test('should have zero critical and serious violations in the dark theme', async ({ page }) => {
+    await page.addInitScript(() => localStorage.setItem('eco-metrics-theme', 'dark'));
+    await page.goto('/global-temperature/');
+    await expect(page.getByTestId('echart').locator('svg').first()).toBeVisible();
+
+    expect(criticalAndSerious(await analyzeSettled(page))).toEqual([]);
+  });
+
+  test('should have zero critical and serious violations with the country list open', async ({
+    page,
+  }) => {
+    await page.goto('/global-temperature/');
+    await page.getByRole('combobox', { name: 'Country' }).press('ArrowDown');
+    await expect(page.getByRole('option').first()).toBeVisible();
+
+    expect(criticalAndSerious(await analyzeSettled(page))).toEqual([]);
+  });
+
+  test('should have zero critical and serious violations with the data table open', async ({
+    page,
+  }) => {
+    await page.goto('/global-temperature/');
+    const explorer = page.getByRole('region', { name: 'Explore temperature by country' });
+    await explorer.getByText('View data table').click();
+    await expect(explorer.getByRole('table')).toBeVisible();
+
+    expect(criticalAndSerious(await analyzeSettled(page))).toEqual([]);
+  });
+
+  for (const theme of ['light', 'dark']) {
+    test(`should have zero critical and serious violations with the long-run section in view (${theme})`, async ({
+      page,
+    }) => {
+      await page.addInitScript((value) => localStorage.setItem('eco-metrics-theme', value), theme);
+      await page.goto('/global-temperature/');
+      const section = page.locator('section', {
+        has: page.getByRole('heading', { level: 2, name: /Global temperature since 1850/ }),
+      });
+      await section.scrollIntoViewIfNeeded();
+      await expect(section.getByTestId('echart').locator('svg').first()).toBeVisible();
+      await section.getByText('View data table').click();
+
+      expect(criticalAndSerious(await analyzeSettled(page))).toEqual([]);
+    });
+  }
+});
+
 test.describe('Accessibility audit — data sources page', () => {
   test('should have zero critical and serious violations', async ({ page }) => {
     await page.goto(dataSourcesPage.url);

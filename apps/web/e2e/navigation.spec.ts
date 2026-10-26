@@ -23,7 +23,7 @@ test.describe('Category pages', () => {
       expect(response?.status()).toBe(200);
       await expect(page).toHaveURL(cp.url);
       await expect(page).toHaveTitle(cp.title);
-      await expect(page.getByRole('heading', { name: cp.heading })).toBeVisible();
+      await expect(page.getByRole('heading', { name: cp.heading, level: 1 })).toBeVisible();
       // The icon is an <svg aria-hidden="true"> inside #main-content
       await expect(page.locator(cp.iconSelector)).toBeVisible();
     });

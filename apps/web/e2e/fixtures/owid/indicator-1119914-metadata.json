@@ -1,0 +1,43 @@
+{
+  "id": 1119914,
+  "name": "Annual CO₂ emissions (per capita)",
+  "unit": "tonnes per person",
+  "shortUnit": "t/person",
+  "shortName": "emissions_total_per_capita",
+  "updatedAt": "2026-10-22T21:47:04.000Z",
+  "timespan": "1750-2024",
+  "datasetName": "Global Carbon Budget",
+  "datasetVersion": "2025-11-13",
+  "type": "float",
+  "dimensions": {
+    "entities": {
+      "values": [
+        {
+          "id": 21,
+          "name": "Argentina",
+          "code": "ARG"
+        },
+        {
+          "id": 276,
+          "name": "Europe",
+          "code": "OWID_EUR"
+        },
+        {
+          "id": 379,
+          "name": "Kosovo",
+          "code": "OWID_KOS"
+        },
+        {
+          "id": 13,
+          "name": "United States",
+          "code": "USA"
+        },
+        {
+          "id": 355,
+          "name": "World",
+          "code": "OWID_WRL"
+        }
+      ]
+    }
+  }
+}

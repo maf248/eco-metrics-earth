@@ -23,6 +23,7 @@ const provider: LiveDataSource = {
   categories: ['global-temperature'],
   lastUpdated: '2024-03-09T23:30:00.000Z',
   lastUpdatedBasis: 'provider',
+  origins: [],
 };
 
 const datasets: DataSourcesCatalog['datasets'] = [
@@ -152,5 +153,64 @@ describe('DataSourcesPage — configuration', () => {
       images: [OG_IMAGE],
     });
     expect(metadata.twitter).toMatchObject({ card: 'summary_large_image', title: 'Data sources' });
+  });
+});
+
+describe('DataSourcesPage upstream origins', () => {
+  const withOrigins: LiveDataSource = {
+    ...provider,
+    origins: [
+      {
+        producer: 'Copernicus Climate Change Service (C3S)',
+        title: 'ERA5 monthly averaged data',
+        url: 'https://cds.example/era5',
+        license: { name: 'CC BY 4.0', url: 'https://creativecommons.org/licenses/by/4.0/' },
+        notice: 'Contains modified Copernicus Climate Change Service information',
+        citation: 'Hersbach et al. (2023), doi:10.24381/cds.f17050d7',
+        categories: ['global-temperature'],
+      },
+      {
+        producer: 'Global Carbon Project',
+        title: 'Global Carbon Budget',
+        url: 'https://globalcarbonbudget.org/',
+        license: { name: 'CC BY 4.0', url: 'https://creativecommons.org/licenses/by/4.0/' },
+        categories: ['co2-emissions'],
+      },
+    ],
+  };
+
+  it('should list each origin under its provider with linked title and license', async () => {
+    await renderPage({ providers: [withOrigins], datasets: [] });
+
+    expect(screen.getByRole('heading', { level: 4, name: 'Data produced by' })).toBeInTheDocument();
+    const era5 = screen.getByRole('link', { name: 'ERA5 monthly averaged data' });
+    expect(era5).toHaveAttribute('href', 'https://cds.example/era5');
+    expect(era5).toHaveAttribute('target', '_blank');
+    expect(era5).toHaveAttribute('rel', 'noopener noreferrer');
+    const item = era5.closest('li') as HTMLElement;
+    expect(within(item).getByRole('link', { name: 'CC BY 4.0' })).toHaveAttribute(
+      'href',
+      'https://creativecommons.org/licenses/by/4.0/',
+    );
+    expect(within(item).getByRole('link', { name: 'Global Temperature' })).toHaveAttribute(
+      'href',
+      '/global-temperature',
+    );
+    expect(screen.getByRole('link', { name: 'Global Carbon Budget' })).toBeInTheDocument();
+  });
+
+  it('should show the notice and the citation when present', async () => {
+    await renderPage({ providers: [withOrigins], datasets: [] });
+
+    expect(
+      screen.getByText('Contains modified Copernicus Climate Change Service information'),
+    ).toBeInTheDocument();
+    expect(screen.getByText(/Hersbach et al\. \(2023\)/)).toBeInTheDocument();
+  });
+
+  it('should render no sub-list for a provider without origins', async () => {
+    await renderPage({ providers: [provider], datasets: [] });
+
+    expect(screen.queryByText('Data produced by')).not.toBeInTheDocument();
   });
 });

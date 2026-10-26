@@ -1,19 +1,18 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
-import { WaterFootprintContent } from '@/components/water-footprint/WaterFootprintContent';
 import { getCategoryIcon } from '@/lib/categoryIcon';
 import { CATEGORY_DESCRIPTIONS, getCategoryMetadataTitle } from '@/lib/categoryMetadata';
+import { CATEGORY_PAGES } from '@/lib/categoryPages';
 import { getCategoryTitle } from '@/lib/categoryTitle';
 import { isEcoCategory } from '@/lib/isEcoCategory';
 import { siteUrl } from '@/lib/siteUrl';
 import { buildOpenGraph, buildTwitter } from '@/lib/socialMetadata';
-import { getWaterFootprintProducts } from '@/lib/waterFootprint';
 import { ECO_CATEGORIES } from '@eco-metrics/shared';
 
-// water-footprint is not pre-rendered: it is generated on its first request and
-// then cached by ISR, so `next build` never depends on the BFF. Unknown slugs
-// get a real 404 from ./layout.tsx, before any fetch.
+// Categories with live data (the category page registry) are not pre-rendered: they are
+// generated on their first request and then cached by ISR, so `next build` never depends
+// on the BFF. Unknown slugs get a real 404 from ./layout.tsx, before any fetch.
 export const dynamicParams = true;
 export const revalidate = 86400;
 // Covers the worst-case BFF fetch (2 attempts x 10 s) within the Vercel Hobby limit.
@@ -25,7 +24,7 @@ interface CategoryPageProps {
 
 export async function generateStaticParams(): Promise<{ category: string }[]> {
   return Object.values(ECO_CATEGORIES)
-    .filter((slug) => slug !== ECO_CATEGORIES.WATER_FOOTPRINT)
+    .filter((slug) => !CATEGORY_PAGES[slug])
     .map((slug) => ({ category: slug }));
 }
 
@@ -63,8 +62,9 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
   const title = getCategoryTitle(category);
   const Icon = getCategoryIcon(category);
 
-  const isWaterFootprint = category === ECO_CATEGORIES.WATER_FOOTPRINT;
-  const products = isWaterFootprint ? await getWaterFootprintProducts() : [];
+  const definition = CATEGORY_PAGES[category];
+  const data = definition ? await definition.load() : undefined;
+  const Content = definition?.Content;
 
   return (
     <main
@@ -80,16 +80,10 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
         </div>
         <div className="text-center">
           <h1 className="text-4xl font-bold text-fg">{title}</h1>
-          {!isWaterFootprint && (
-            <p className="mt-4 text-fg-secondary">{title} metrics — coming soon.</p>
-          )}
+          {!Content && <p className="mt-4 text-fg-secondary">{title} metrics — coming soon.</p>}
         </div>
       </div>
-      {isWaterFootprint && (
-        <div className="mt-8 w-full flex justify-center">
-          <WaterFootprintContent products={products} />
-        </div>
-      )}
+      {Content && <Content data={data} />}
     </main>
   );
 }

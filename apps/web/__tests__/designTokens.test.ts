@@ -11,6 +11,8 @@
 import fs from 'node:fs';
 import path from 'node:path';
 
+import { CHART_COLOR_TOKENS } from '../src/components/charts/chartTokens';
+
 const SRC_DIR = path.resolve(__dirname, '../src');
 const GLOBALS_CSS = path.join(SRC_DIR, 'app/globals.css');
 const SCANNED_DIRS = ['app', 'components'].map((dir) => path.join(SRC_DIR, dir));
@@ -61,8 +63,14 @@ function declaredProperties(css: string, selector: string): string[] {
 }
 
 const css = fs.readFileSync(GLOBALS_CSS, 'utf8');
+// Chart tokens are a separate group: hex values read by name by the chart theme adapter,
+// never exposed as Tailwind utilities (docs/design-system.md, Color Palettes).
+const isChartToken = (token: string): boolean => token.startsWith('chart-');
 const lightTokens = declaredProperties(css, ':root');
 const darkTokens = declaredProperties(css, '.dark');
+const lightUiTokens = lightTokens.filter((token) => !isChartToken(token));
+const lightChartTokens = lightTokens.filter(isChartToken);
+const darkChartTokens = darkTokens.filter(isChartToken);
 const themeMappings = [
   ...css
     .slice(css.indexOf('@theme inline {'))
@@ -84,7 +92,12 @@ describe('design tokens — globals.css', () => {
 
   it('should expose every token through @theme inline', () => {
     const mapped = new Set(themeMappings.map(({ rawToken }) => rawToken));
-    expect(lightTokens.filter((token) => !mapped.has(token))).toEqual([]);
+    expect(lightUiTokens.filter((token) => !mapped.has(token))).toEqual([]);
+  });
+
+  it('should not map chart tokens through @theme inline', () => {
+    expect(themeMappings.filter(({ rawToken }) => isChartToken(rawToken))).toEqual([]);
+    expect(css.slice(css.indexOf('@theme inline {'))).not.toContain('--color-chart-');
   });
 
   it('should only map @theme inline entries to declared tokens', () => {
@@ -111,6 +124,23 @@ describe('design tokens — globals.css', () => {
   });
 });
 
+describe('design tokens — chart tokens', () => {
+  it('should declare exactly the names the chart theme adapter reads', () => {
+    expect([...lightChartTokens].sort()).toEqual([...CHART_COLOR_TOKENS].sort());
+  });
+
+  it('should give every chart token a light and a dark hex value', () => {
+    expect([...darkChartTokens].sort()).toEqual([...lightChartTokens].sort());
+    for (const token of lightChartTokens) {
+      expect(css).toMatch(new RegExp(`--${token}:\\s*#[0-9a-fA-F]{6};`));
+    }
+  });
+
+  it('should not declare sequential tokens before a change uses them', () => {
+    expect(css).not.toContain('--chart-seq-');
+  });
+});
+
 describe('design tokens — pages and components', () => {
   const files = SCANNED_DIRS.flatMap(listSourceFiles);
 
@@ -128,6 +158,11 @@ describe('design tokens — pages and components', () => {
         .map((className) => `${relativePath}: ${className}`);
     });
     expect(violations).toEqual([]);
+  });
+
+  it('should not treat flag-icons classes as color utilities', () => {
+    const flagMarkup = '<span className="fi fi-ar rounded-sm ring-1 ring-line-strong" />';
+    expect(flagMarkup.match(COLOR_CLASS)).toBeNull();
   });
 
   it('should keep every allowlisted exception in use', () => {

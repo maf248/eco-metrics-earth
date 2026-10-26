@@ -70,13 +70,13 @@ test.describe('Category page metadata', () => {
 
   test('should have a unique meta description per category', async ({ page }) => {
     const descriptions: string[] = [];
-    for (const slug of ['air-quality', 'co2-emissions'] as const) {
+    for (const slug of ['air-quality', 'co2-emissions', 'global-temperature'] as const) {
       await page.goto(categoryPage(slug).url);
       const meta = page.locator('meta[name="description"]');
       await expect(meta).toHaveAttribute('content', CATEGORY_DESCRIPTION_SAMPLES[slug]);
       descriptions.push((await meta.getAttribute('content')) ?? '');
     }
-    expect(descriptions[0]).not.toBe(descriptions[1]);
+    expect(new Set(descriptions).size).toBe(descriptions.length);
   });
 
   test('should have canonical link with trailing slash', async ({ page }) => {

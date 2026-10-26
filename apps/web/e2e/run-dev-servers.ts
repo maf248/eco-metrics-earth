@@ -1,12 +1,22 @@
 import { spawn, execSync, type ChildProcess } from 'node:child_process';
 import { readFileSync, existsSync, rmSync } from 'node:fs';
+import type { Server } from 'node:http';
 import { join } from 'node:path';
 import type { Readable } from 'node:stream';
-import { pathToFileURL } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 
 import { waitForUrl } from './readiness.ts';
-import { E2E_INTERNAL_API_KEY, E2E_TRUST_PROXY_HOPS } from './utils/api-env.ts';
+import {
+  E2E_INTERNAL_API_KEY,
+  E2E_OWID_API_BASE_URL,
+  E2E_OWID_FIXTURE_PORT,
+  E2E_OWID_GRAPHER_BASE_URL,
+  E2E_OWID_FIXTURE_READY_URL,
+  E2E_TRUST_PROXY_HOPS,
+} from './utils/api-env.ts';
+import { startOwidFixtureServer } from './utils/owid-fixture-server.ts';
 
+const OWID_FIXTURES_DIR = fileURLToPath(new URL('./fixtures/owid', import.meta.url));
 const API_HEALTH_URL = 'http://localhost:3001/api/v1/health';
 const WEB_URL = 'http://localhost:3000';
 const API_COMMAND = 'npx';
@@ -171,6 +181,11 @@ function delay(ms: number): Promise<void> {
 class ServerManager {
   private spawnedChildren: ChildProcess[] = [];
   private isShuttingDown = false;
+  private fixtureServer: Server | undefined;
+
+  registerFixtureServer(server: Server): void {
+    this.fixtureServer = server;
+  }
 
   get children(): ChildProcess[] {
     return this.spawnedChildren;
@@ -189,6 +204,8 @@ class ServerManager {
       return;
     }
     this.isShuttingDown = true;
+
+    this.fixtureServer?.close();
 
     const pids = this.spawnedChildren
       .map((child) => child.pid)
@@ -321,6 +338,27 @@ async function waitForChildOrAdopt(
   });
 }
 
+async function startOwidFixtures(manager: ServerManager): Promise<void> {
+  log(`starting OWID fixture server on :${E2E_OWID_FIXTURE_PORT}...`);
+  try {
+    manager.registerFixtureServer(
+      await startOwidFixtureServer(E2E_OWID_FIXTURE_PORT, OWID_FIXTURES_DIR),
+    );
+    await waitForUrl(E2E_OWID_FIXTURE_READY_URL, {
+      timeoutMs: PRE_CHECK_TIMEOUT_MS * 5,
+      intervalMs: PRE_CHECK_INTERVAL_MS,
+    });
+    log('OWID fixture server ready');
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    logError(
+      `OWID fixture server failed to start (is :${E2E_OWID_FIXTURE_PORT} taken?): ${message}`,
+    );
+    await manager.cleanup();
+    process.exit(1);
+  }
+}
+
 async function startApi(manager: ServerManager): Promise<void> {
   if (await isApiHealthy()) {
     log('api already running — adopting');
@@ -331,6 +369,8 @@ async function startApi(manager: ServerManager): Promise<void> {
   const api = spawnServer(API_COMMAND, API_ARGS, manager, {
     TRUST_PROXY_HOPS: E2E_TRUST_PROXY_HOPS,
     INTERNAL_API_KEY: E2E_INTERNAL_API_KEY,
+    OWID_GRAPHER_BASE_URL: E2E_OWID_GRAPHER_BASE_URL,
+    OWID_API_BASE_URL: E2E_OWID_API_BASE_URL,
   });
   manager.register(api);
 
@@ -411,6 +451,7 @@ async function main(): Promise<void> {
     }
   });
 
+  await startOwidFixtures(manager);
   await startApi(manager);
   await startWeb(manager);
 
