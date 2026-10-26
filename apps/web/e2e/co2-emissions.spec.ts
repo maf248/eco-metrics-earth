@@ -1,6 +1,10 @@
 import { expect, test, type Page } from '@playwright/test';
 
-import { CATEGORY_DESCRIPTION_SAMPLES } from './utils/pages';
+import {
+  CATEGORY_DESCRIPTION_SAMPLES,
+  CATEGORY_METADATA_TITLES,
+  categoryPage,
+} from './utils/pages';
 
 const API_BASE_URL = process.env['API_BASE_URL'] || 'http://localhost:3001/api/v1';
 const PAGE_URL = '/co2-emissions/';
@@ -100,7 +104,7 @@ test.describe('CO2 Emissions page', () => {
       await page.goto(PAGE_URL);
 
       const description = CATEGORY_DESCRIPTION_SAMPLES['co2-emissions'];
-      await expect(page).toHaveTitle('CO2 Emissions | eco-metrics earth');
+      await expect(page).toHaveTitle(categoryPage('co2-emissions').title);
       await expect(page.locator('meta[name="description"]')).toHaveAttribute(
         'content',
         description,
@@ -115,7 +119,7 @@ test.describe('CO2 Emissions page', () => {
       );
       await expect(page.locator('meta[property="og:title"]')).toHaveAttribute(
         'content',
-        'CO2 Emissions',
+        CATEGORY_METADATA_TITLES['co2-emissions'],
       );
       await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
         'href',

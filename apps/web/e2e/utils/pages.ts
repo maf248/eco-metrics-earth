@@ -51,12 +51,26 @@ export const CATEGORY_DESCRIPTION_SAMPLES = {
     "Global temperature by country since 1940: how far each year's surface temperature is from the 1991–2020 average. Data from Our World in Data.",
 } as const;
 
+/**
+ * Page `<title>` overrides of the live data categories, mirroring
+ * `METADATA_TITLE_OVERRIDES` in apps/web/src/lib/categoryMetadata.ts.
+ */
+export const CATEGORY_METADATA_TITLES = {
+  'co2-emissions': 'CO2 Emissions by Country',
+  'global-temperature': 'Global Temperature Anomalies by Country',
+  'water-footprint': waterFootprintPage.title,
+} as const satisfies Partial<Record<EcoCategory, string>>;
+
+function metadataTitle(slug: EcoCategory): string {
+  const overrides: Partial<Record<EcoCategory, string>> = CATEGORY_METADATA_TITLES;
+  return overrides[slug] ?? CATEGORY_TITLES[slug];
+}
+
 export function categoryPage(slug: EcoCategory) {
   const title = CATEGORY_TITLES[slug];
   return {
     url: `/${slug}/`,
-    title:
-      slug === 'water-footprint' ? waterFootprintPage.fullTitle : `${title} | eco-metrics earth`,
+    title: `${metadataTitle(slug)} | eco-metrics earth`,
     heading: title,
     // The icon wrapper div does not carry a data-testid in the current source.
     // Use a structural selector inside #main-content instead of a testid; the shadow class

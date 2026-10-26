@@ -1,6 +1,10 @@
 import { expect, test, type Page } from '@playwright/test';
 
-import { CATEGORY_DESCRIPTION_SAMPLES } from './utils/pages';
+import {
+  CATEGORY_DESCRIPTION_SAMPLES,
+  CATEGORY_METADATA_TITLES,
+  categoryPage,
+} from './utils/pages';
 
 const PAGE_URL = '/global-temperature/';
 const KEY_FIGURES =
@@ -114,7 +118,7 @@ test.describe('Global Temperature page', () => {
       await page.goto(PAGE_URL);
 
       const description = CATEGORY_DESCRIPTION_SAMPLES['global-temperature'];
-      await expect(page).toHaveTitle('Global Temperature | eco-metrics earth');
+      await expect(page).toHaveTitle(categoryPage('global-temperature').title);
       await expect(page.locator('meta[name="description"]')).toHaveAttribute(
         'content',
         description,
@@ -129,11 +133,11 @@ test.describe('Global Temperature page', () => {
       );
       await expect(page.locator('meta[property="og:title"]')).toHaveAttribute(
         'content',
-        'Global Temperature',
+        CATEGORY_METADATA_TITLES['global-temperature'],
       );
       await expect(page.locator('meta[name="twitter:title"]')).toHaveAttribute(
         'content',
-        'Global Temperature',
+        CATEGORY_METADATA_TITLES['global-temperature'],
       );
       await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
         'href',

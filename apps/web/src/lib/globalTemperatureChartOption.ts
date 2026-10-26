@@ -1,6 +1,6 @@
 import type { EChartsCoreOption } from 'echarts/core';
 
-import { baseChartOption } from '@/components/charts/baseChartOption';
+import { baseChartOption, baseTooltipOption } from '@/components/charts/baseChartOption';
 import { formatAnomaly, formatAnomalyAxis } from '@/lib/formatNumber';
 import { buildYearAxis } from '@/lib/yearAxis';
 import type { GlobalTemperatureData, GlobalTemperatureEntity } from '@eco-metrics/shared';
@@ -24,16 +24,12 @@ export function buildGlobalTemperatureChartOption(
   data: ChartData,
 ): EChartsCoreOption {
   const base = baseChartOption();
-  const baseTooltip =
-    typeof base.tooltip === 'object' && base.tooltip !== null && !Array.isArray(base.tooltip)
-      ? base.tooltip
-      : {};
 
   return {
     ...base,
     legend: { show: false },
     tooltip: {
-      ...baseTooltip,
+      ...baseTooltipOption(),
       valueFormatter: (value: unknown): string =>
         typeof value === 'number' ? `${formatAnomaly(value)} ${data.unit}` : 'No data',
     },

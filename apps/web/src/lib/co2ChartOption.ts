@@ -1,6 +1,6 @@
 import type { EChartsCoreOption } from 'echarts/core';
 
-import { baseChartOption } from '@/components/charts/baseChartOption';
+import { baseChartOption, baseTooltipOption } from '@/components/charts/baseChartOption';
 import { formatCompact, formatPerCapita, formatTotal } from '@/lib/formatNumber';
 import { buildYearAxis } from '@/lib/yearAxis';
 import type { Co2EmissionsData, Co2EmissionsEntity, Co2EmissionsMetric } from '@eco-metrics/shared';
@@ -22,10 +22,6 @@ export function buildCo2ChartOption(
   data: Pick<Co2EmissionsData, 'startYear' | 'endYear'>,
 ): EChartsCoreOption {
   const base = baseChartOption();
-  const baseTooltip =
-    typeof base.tooltip === 'object' && base.tooltip !== null && !Array.isArray(base.tooltip)
-      ? base.tooltip
-      : {};
   const format = metric === 'total' ? formatTotal : formatPerCapita;
   const unit = CO2_TOOLTIP_UNITS[metric];
 
@@ -33,7 +29,7 @@ export function buildCo2ChartOption(
     ...base,
     legend: { show: false },
     tooltip: {
-      ...baseTooltip,
+      ...baseTooltipOption(),
       valueFormatter: (value: unknown): string =>
         typeof value === 'number' ? `${format(value)} ${unit}` : 'No data',
     },

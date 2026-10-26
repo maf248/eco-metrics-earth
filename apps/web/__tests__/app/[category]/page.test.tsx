@@ -184,11 +184,14 @@ describe('generateMetadata', () => {
     expect(getWaterFootprintProducts).not.toHaveBeenCalled();
   });
 
-  it('should handle co2-emissions correctly in metadata', async () => {
-    const metadata = await generateMetadata({
-      params: Promise.resolve({ category: 'co2-emissions' }),
-    });
-    expect(metadata.title).toBe('CO2 Emissions');
+  it.each([
+    ['co2-emissions', 'CO2 Emissions by Country'],
+    ['global-temperature', 'Global Temperature Anomalies by Country'],
+  ] as const)('should return the keyword-bearing title for %s', async (category, title) => {
+    const metadata = await generateMetadata({ params: Promise.resolve({ category }) });
+    expect(metadata.title).toBe(title);
+    expect(metadata.openGraph?.title).toBe(title);
+    expect(metadata.twitter?.title).toBe(title);
   });
 
   it('should return the correct title for waste-recycling', async () => {
