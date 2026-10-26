@@ -1,3 +1,9 @@
+## [2.12.0](https://github.com/maf248/eco-metrics-earth/compare/api-v2.11.0...api-v2.12.0) (2026-10-26)
+
+### Features
+
+* **api:** serve co2 emissions and global temperature from owid ([63636b0](https://github.com/maf248/eco-metrics-earth/commit/63636b0c01e92ee39cecadd924a9281441f2dae6))
+
 ## [2.11.0](https://github.com/maf248/eco-metrics-earth/compare/api-v2.10.7...api-v2.11.0) (2026-10-24)
 
 ## [2.10.7](https://github.com/maf248/eco-metrics-earth/compare/api-v2.10.6...api-v2.10.7) (2026-10-23)
