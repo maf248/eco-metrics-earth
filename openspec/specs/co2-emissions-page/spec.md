@@ -163,13 +163,13 @@ Next to the chart the page SHALL render a compact attribution: "Data:" followed 
 
 ### Requirement: SEO and metadata for the CO2 page
 
-`generateMetadata` for `co2-emissions` SHALL use the title "CO2 Emissions" (rendered as "CO2 Emissions | eco-metrics earth"), the description "CO2 emissions by country since 1950: total annual emissions and emissions per person for every country and the world. Data from Our World in Data." (146 characters, replacing the placeholder copy), the canonical URL `{siteUrl}/co2-emissions/` and matching Open Graph/Twitter tags. The `<h1>` SHALL remain "CO2 Emissions" (`co2-title-override`). No JSON-LD SHALL be added. The key figures, the page text and the collapsed table of the default selection SHALL be in the server-rendered HTML.
+`generateMetadata` for `co2-emissions` SHALL use the keyword-bearing title "CO2 Emissions by Country" (rendered as "CO2 Emissions by Country | eco-metrics earth", 44 characters), the description "CO2 emissions by country since 1950: total annual emissions and emissions per person for every country and the world. Data from Our World in Data." (146 characters, replacing the placeholder copy), the canonical URL `{siteUrl}/co2-emissions/` and matching Open Graph/Twitter tags. The `<h1>` SHALL remain "CO2 Emissions" (`co2-title-override`). The page SHALL carry the schema.org `Dataset` JSON-LD defined in "schema.org Dataset structured data for the CO2 page". The key figures, the page text and the collapsed table of the default selection SHALL be in the server-rendered HTML.
 
 #### Scenario: Metadata
 
 - **WHEN** `/co2-emissions/` is requested
-- **THEN** `<title>` is "CO2 Emissions | eco-metrics earth", the meta description is the text above and `<link rel="canonical">` ends with `/co2-emissions/`
-- **AND** `og:title` and `twitter:title` are "CO2 Emissions", and `og:description` and `twitter:description` equal the meta description
+- **THEN** `<title>` is "CO2 Emissions by Country | eco-metrics earth", the meta description is the text above and `<link rel="canonical">` ends with `/co2-emissions/`
+- **AND** `og:title` and `twitter:title` are "CO2 Emissions by Country", and `og:description` and `twitter:description` equal the meta description
 
 #### Scenario: Description differs from placeholders
 

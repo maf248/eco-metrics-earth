@@ -189,13 +189,13 @@ Next to the per-country chart the page SHALL render a compact attribution: "Data
 
 ### Requirement: SEO and metadata
 
-`generateMetadata` for `global-temperature` SHALL use the title "Global Temperature" (rendered as "Global Temperature | eco-metrics earth"), the description "Global temperature by country since 1940: how far each year's surface temperature is from the 1991–2020 average. Data from Our World in Data." (141 characters, replacing the placeholder copy), the canonical URL `{siteUrl}/global-temperature/` and matching Open Graph/Twitter tags. The `<h1>` SHALL remain "Global Temperature". The key figures, the page text and the collapsed table of the default selection SHALL be in the server-rendered HTML.
+`generateMetadata` for `global-temperature` SHALL use the keyword-bearing title "Global Temperature Anomalies by Country" (rendered as "Global Temperature Anomalies by Country | eco-metrics earth", 59 characters), the description "Global temperature by country since 1940: how far each year's surface temperature is from the 1991–2020 average. Data from Our World in Data." (141 characters, replacing the placeholder copy), the canonical URL `{siteUrl}/global-temperature/` and matching Open Graph/Twitter tags. The `<h1>` SHALL remain "Global Temperature". The key figures, the page text and the collapsed table of the default selection SHALL be in the server-rendered HTML.
 
 #### Scenario: Metadata
 
 - **WHEN** `/global-temperature/` is requested
-- **THEN** `<title>` is "Global Temperature | eco-metrics earth", the meta description is the text above and `<link rel="canonical">` ends with `/global-temperature/`
-- **AND** `og:title` and `twitter:title` are "Global Temperature", and `og:description` and `twitter:description` equal the meta description
+- **THEN** `<title>` is "Global Temperature Anomalies by Country | eco-metrics earth", the meta description is the text above and `<link rel="canonical">` ends with `/global-temperature/`
+- **AND** `og:title` and `twitter:title` are "Global Temperature Anomalies by Country", and `og:description` and `twitter:description` equal the meta description
 
 #### Scenario: Description differs from placeholders
 

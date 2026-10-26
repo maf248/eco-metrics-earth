@@ -38,10 +38,13 @@ export const CATEGORY_DESCRIPTIONS: Record<EcoCategory, string> = {
 };
 
 /**
- * Page `<title>` overrides. Kept apart from `getCategoryTitle`, which also
- * drives the `<h1>` and nav labels and must stay `Water Footprint`.
+ * Keyword-bearing page `<title>` overrides for the categories with live data.
+ * Kept apart from `getCategoryTitle`, which also drives the `<h1>` and nav
+ * labels and must stay short (e.g. `Water Footprint`).
  */
 const METADATA_TITLE_OVERRIDES: Partial<Record<EcoCategory, string>> = {
+  'co2-emissions': 'CO2 Emissions by Country',
+  'global-temperature': 'Global Temperature Anomalies by Country',
   'water-footprint': 'Water Footprint of Food & Products',
 };
 

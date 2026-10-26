@@ -49,8 +49,12 @@ describe('CATEGORY_DESCRIPTIONS', () => {
 });
 
 describe('getCategoryMetadataTitle', () => {
-  it('should return the keyword-bearing override for water-footprint', () => {
-    expect(getCategoryMetadataTitle('water-footprint')).toBe('Water Footprint of Food & Products');
+  it.each([
+    ['water-footprint', 'Water Footprint of Food & Products'],
+    ['co2-emissions', 'CO2 Emissions by Country'],
+    ['global-temperature', 'Global Temperature Anomalies by Country'],
+  ] as const)('should return the keyword-bearing override for %s', (slug, title) => {
+    expect(getCategoryMetadataTitle(slug)).toBe(title);
   });
 
   it.each(PLACEHOLDERS)('should return the category name for %s', (slug) => {
