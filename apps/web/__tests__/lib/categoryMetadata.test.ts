@@ -4,7 +4,12 @@ import { SITE_DESCRIPTION } from '@/lib/socialMetadata';
 import { ECO_CATEGORIES, type EcoCategory } from '@eco-metrics/shared';
 
 const CATEGORIES: EcoCategory[] = Object.values(ECO_CATEGORIES);
-const PLACEHOLDERS = CATEGORIES.filter((slug) => slug !== ECO_CATEGORIES.WATER_FOOTPRINT);
+const LIVE = [
+  ECO_CATEGORIES.WATER_FOOTPRINT,
+  ECO_CATEGORIES.CO2_EMISSIONS,
+  ECO_CATEGORIES.GLOBAL_TEMPERATURE,
+];
+const PLACEHOLDERS = CATEGORIES.filter((slug) => !LIVE.some((live) => live === slug));
 
 describe('CATEGORY_DESCRIPTIONS', () => {
   it.each(CATEGORIES)('should have a 110-160 character description for %s', (slug) => {
@@ -18,6 +23,24 @@ describe('CATEGORY_DESCRIPTIONS', () => {
     expect(CATEGORIES).toHaveLength(12);
     expect(new Set(values).size).toBe(12);
     expect(values).not.toContain(SITE_DESCRIPTION);
+  });
+
+  it('should have exactly 9 honest placeholders', () => {
+    expect(PLACEHOLDERS).toHaveLength(9);
+  });
+
+  it('should describe the live CO2 emissions content', () => {
+    expect(CATEGORY_DESCRIPTIONS['co2-emissions']).toBe(
+      'CO2 emissions by country since 1950: total annual emissions and emissions per person for every country and the world. Data from Our World in Data.',
+    );
+    expect(CATEGORY_DESCRIPTIONS['co2-emissions']).not.toMatch(/coming/);
+  });
+
+  it('should describe the live global temperature content', () => {
+    expect(CATEGORY_DESCRIPTIONS['global-temperature']).toBe(
+      "Global temperature by country since 1940: how far each year's surface temperature is from the 1991–2020 average. Data from Our World in Data.",
+    );
+    expect(CATEGORY_DESCRIPTIONS['global-temperature']).not.toMatch(/coming/);
   });
 
   it.each(PLACEHOLDERS)('should state that the data is coming for placeholder %s', (slug) => {

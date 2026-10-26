@@ -24,11 +24,36 @@ test.describe('Data sources page', () => {
       await expect(page.locator('body')).toContainText('CC BY 4.0');
     });
 
-    test('should not render a live providers section while none exists', async ({ page }) => {
+    test('should list Our World in Data as a live provider for the CO2 emissions page', async ({
+      page,
+    }) => {
       await page.goto(dataSourcesPage.url);
 
-      await expect(page.getByRole('heading', { name: 'Live data providers' })).toHaveCount(0);
+      await expect(page.getByRole('heading', { name: 'Live data providers' })).toBeVisible();
+      const providers = page.getByRole('region', { name: 'Live data providers' });
+      await expect(providers.getByRole('link', { name: 'Our World in Data' })).toBeVisible();
+      await expect(providers).toContainText('CO2 Emissions');
       await expect(page.getByRole('heading', { name: 'Cited publications' })).toBeVisible();
+    });
+
+    test('should list the upstream origins under Our World in Data with their licenses', async ({
+      page,
+    }) => {
+      await page.goto(dataSourcesPage.url);
+
+      const providers = page.getByRole('region', { name: 'Live data providers' });
+      await expect(providers.getByRole('heading', { name: 'Data produced by' })).toBeVisible();
+      for (const [producer, title, license] of [
+        ['Global Carbon Project', 'Global Carbon Budget', 'CC BY 4.0'],
+        ['Copernicus Climate Change Service (C3S)', 'ERA5 monthly averaged data', 'CC BY 4.0'],
+        ['Met Office Hadley Centre', 'HadCRUT5', 'Open Government Licence v3.0'],
+      ] as const) {
+        const origin = providers.getByRole('listitem').filter({ hasText: producer }).last();
+        await expect(origin.getByRole('link', { name: new RegExp(title) })).toBeVisible();
+        await expect(origin.getByRole('link', { name: license })).toBeVisible();
+      }
+      await expect(providers).toContainText('Contains modified Copernicus Climate Change Service');
+      await expect(providers).toContainText('Morice et al. (2021)');
     });
 
     test('should include the same content in the server-rendered HTML', async ({ request }) => {

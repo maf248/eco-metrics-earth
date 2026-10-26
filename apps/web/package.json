@@ -3,6 +3,8 @@
   "version": "2.9.0",
   "private": true,
   "dependencies": {
+    "echarts": "6.1.0",
+    "flag-icons": "7.6.0",
     "next": "16.4.2",
     "react": "19.3.0",
     "react-dom": "19.3.0",

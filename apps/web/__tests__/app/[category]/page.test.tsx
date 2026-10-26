@@ -8,10 +8,15 @@ import CategoryPage, {
   revalidate,
 } from '@/app/[category]/page';
 import { CATEGORY_DESCRIPTIONS } from '@/lib/categoryMetadata';
+import { getCo2Emissions } from '@/lib/co2Emissions';
 import { getDataSources } from '@/lib/dataSources';
+import { getGlobalTemperature } from '@/lib/globalTemperature';
 import { OG_IMAGE } from '@/lib/socialMetadata';
 import { getWaterFootprintProducts } from '@/lib/waterFootprint';
 import { ECO_CATEGORIES } from '@eco-metrics/shared';
+
+import { CO2_FIXTURE, CO2_META } from '../../fixtures/co2Emissions';
+import { TEMPERATURE_FIXTURE, TEMPERATURE_META } from '../../fixtures/globalTemperature';
 
 jest.mock('@/lib/waterFootprint', () => ({
   getWaterFootprintProducts: jest.fn().mockResolvedValue([
@@ -28,7 +33,27 @@ jest.mock('@/lib/waterFootprint', () => ({
   ]),
 }));
 
+jest.mock('@/lib/co2Emissions', () => ({
+  getCo2Emissions: jest.fn(),
+}));
+
+jest.mock('@/lib/globalTemperature', () => ({
+  getGlobalTemperature: jest.fn(),
+}));
+
+// ECharts is loaded lazily in the browser; the page test only needs the surrounding markup.
+jest.mock('@/components/charts/LazyEChart', () => ({
+  LazyEChart: () => <div data-testid="chart-stub" />,
+}));
+
 jest.mock('@/lib/dataSources', () => ({ getDataSources: jest.fn() }));
+
+beforeEach(() => {
+  jest.mocked(getCo2Emissions).mockResolvedValue({ data: CO2_FIXTURE, meta: CO2_META });
+  jest
+    .mocked(getGlobalTemperature)
+    .mockResolvedValue({ data: TEMPERATURE_FIXTURE, meta: TEMPERATURE_META });
+});
 
 jest.mock('next/navigation', () => ({
   notFound: jest.fn(),
@@ -48,6 +73,7 @@ describe('CategoryPage', () => {
   });
 
   it('should display the correct title for co2-emissions', async () => {
+    jest.mocked(getCo2Emissions).mockResolvedValue({ data: CO2_FIXTURE, meta: CO2_META });
     const element = await CategoryPage({ params: Promise.resolve({ category: 'co2-emissions' }) });
     render(element);
     expect(screen.getByText('CO2 Emissions')).toBeTruthy();
@@ -263,10 +289,12 @@ describe('generateStaticParams', () => {
     });
   });
 
-  it('should return every category except water-footprint', async () => {
+  it('should return every category except the ones with a registry entry', async () => {
     const params = await generateStaticParams();
-    expect(params).toHaveLength(Object.keys(ECO_CATEGORIES).length - 1);
+    expect(params).toHaveLength(9);
     expect(params).not.toContainEqual({ category: ECO_CATEGORIES.WATER_FOOTPRINT });
+    expect(params).not.toContainEqual({ category: ECO_CATEGORIES.CO2_EMISSIONS });
+    expect(params).not.toContainEqual({ category: ECO_CATEGORIES.GLOBAL_TEMPERATURE });
   });
 });
 
@@ -344,6 +372,78 @@ describe('CategoryPage — water-footprint branch', () => {
     await CategoryPage({ params: Promise.resolve({ category: 'ocean-health' }) });
 
     expect(getWaterFootprintProducts).not.toHaveBeenCalled();
+  });
+});
+
+describe('CategoryPage — co2-emissions branch', () => {
+  it('should render the CO2 content from the loader below the common header', async () => {
+    const element = await CategoryPage({ params: Promise.resolve({ category: 'co2-emissions' }) });
+    render(element);
+
+    expect(screen.getByRole('heading', { level: 1, name: 'CO2 Emissions' })).toBeInTheDocument();
+    expect(screen.getByTestId('co2-key-figures')).toHaveTextContent('In 2023 the world emitted');
+    expect(screen.getByRole('heading', { level: 2 })).toBeInTheDocument();
+    expect(screen.queryByText(/coming soon/)).not.toBeInTheDocument();
+  });
+
+  it('should propagate a loader failure instead of rendering the page', async () => {
+    const failure = new Error('CO2 emissions data could not be fetched from the BFF');
+    jest.mocked(getCo2Emissions).mockRejectedValueOnce(failure);
+
+    await expect(
+      CategoryPage({ params: Promise.resolve({ category: 'co2-emissions' }) }),
+    ).rejects.toBe(failure);
+  });
+
+  it('should not load CO2 data for other categories', async () => {
+    jest.mocked(getCo2Emissions).mockClear();
+
+    await CategoryPage({ params: Promise.resolve({ category: 'ocean-health' }) });
+
+    expect(getCo2Emissions).not.toHaveBeenCalled();
+  });
+});
+
+describe('CategoryPage — global-temperature branch', () => {
+  it('should render the temperature content from the loader below the common header', async () => {
+    const element = await CategoryPage({
+      params: Promise.resolve({ category: 'global-temperature' }),
+    });
+    render(element);
+
+    expect(
+      screen.getByRole('heading', { level: 1, name: 'Global Temperature' }),
+    ).toBeInTheDocument();
+    expect(screen.getByTestId('global-temperature-key-figures')).toHaveTextContent(
+      'In 2023 the world',
+    );
+    expect(screen.queryByText(/coming soon/)).not.toBeInTheDocument();
+  });
+
+  it('should propagate a loader failure instead of rendering the page', async () => {
+    const failure = new Error('Global temperature data could not be fetched from the BFF');
+    jest.mocked(getGlobalTemperature).mockRejectedValueOnce(failure);
+
+    await expect(
+      CategoryPage({ params: Promise.resolve({ category: 'global-temperature' }) }),
+    ).rejects.toBe(failure);
+  });
+
+  it('should not load temperature data for other categories', async () => {
+    jest.mocked(getGlobalTemperature).mockClear();
+
+    await CategoryPage({ params: Promise.resolve({ category: 'ocean-health' }) });
+
+    expect(getGlobalTemperature).not.toHaveBeenCalled();
+  });
+
+  it('should publish the live description in the metadata', async () => {
+    const metadata = await generateMetadata({
+      params: Promise.resolve({ category: 'global-temperature' }),
+    });
+
+    expect(metadata.description).toBe(CATEGORY_DESCRIPTIONS['global-temperature']);
+    expect(metadata.description).not.toMatch(/coming/);
   });
 });
 

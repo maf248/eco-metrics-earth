@@ -32,7 +32,7 @@ src/app/
 └── sitemap.ts        # sitemap.xml — home + all 12 category pages
 ```
 
-Category pages use `generateStaticParams` to pre-render every `ECO_CATEGORIES` slug at build time except `water-footprint`, which is generated on its first request after a deploy and then cached (`dynamicParams = true`), so `next build` never calls the API. `[category]/layout.tsx` calls `notFound()` for any slug not in `ECO_CATEGORIES`; it sits above the `loading.tsx` Suspense boundary, so the response is a real 404 instead of a streamed 200. If the API fetch fails twice (10 s per attempt), the page throws: during a revalidation the last good page keeps being served.
+Category pages use `generateStaticParams` to pre-render every `ECO_CATEGORIES` slug at build time except the categories with live data (the registry in `lib/categoryPages.tsx`: `water-footprint`, `co2-emissions` and `global-temperature`), which are generated on their first request after a deploy and then cached (`dynamicParams = true`), so `next build` never calls the API. `[category]/layout.tsx` calls `notFound()` for any slug not in `ECO_CATEGORIES`; it sits above the `loading.tsx` Suspense boundary, so the response is a real 404 instead of a streamed 200. If the API fetch fails twice (10 s per attempt), the page throws: during a revalidation the last good page keeps being served.
 
 ### Components
 
@@ -43,6 +43,16 @@ src/components/
 ├── Navbar.tsx             # Responsive nav: bottom bar (mobile) / left sidebar (≥ lg)
 ├── NavLink.tsx            # Individual nav item — applies aria-current="page" when active
 ├── NavScrollContainer.tsx # Horizontal scroll wrapper with fade-edge gradients (mobile)
+├── CountryCombobox.tsx    # WAI-ARIA searchable country selector (generic)
+├── CountryFlag.tsx        # flag-icons flag (lazy in lists) or globe
+├── GlobeIcon.tsx          # Monochrome currentColor globe (World)
+├── charts/                # ECharts wrapper, token theme adapter, lazy loading, chart defaults, ChartPanel, RenderWhenVisible, confidence band helper
+├── CountryExplorer.tsx    # Generic explorer shell: country selection (World default) + layout
+├── YearDataTable.tsx      # Generic collapsed year table, the text equivalent of a chart
+├── DataAttribution.tsx    # Generic "Data:" line from the API's meta and dataset identity
+├── OriginCredit.tsx       # Credit of an upstream origin (producer, linked title and license, notice, citation)
+├── co2-emissions/         # CO2 page: key figures, explorer, data table, content
+├── global-temperature/    # Global temperature page: key figures, country explorer, long-run pre-industrial section, content
 ├── ThemeProvider.tsx      # React Context theme provider — light/dark + localStorage persistence
 ├── ThemeToggle.tsx        # Lamp-style theme toggle — zero-flash via blocking script in layout
 └── icons/
@@ -75,6 +85,8 @@ src/components/
 | `categoryTitle.ts`  | Maps a slug to its display title; handles overrides for titles that can't be derived mechanically (`waste-recycling` → `Waste & Recycling`, `co2-emissions` → `CO2 Emissions`) |
 | `siteUrl.ts`        | Returns the canonical base URL from `NEXT_PUBLIC_SITE_URL`, no trailing slash; falls back to `http://localhost:3000`                                                           |
 | `socialMetadata.ts` | Shared social metadata: `OG_IMAGE`, `buildOpenGraph()`, `buildTwitter()`                                                                                                       |
+| `categoryPages.tsx` | Registry of categories with live data (`load` + `Content`); drives the page dispatch and `generateStaticParams`                                                                |
+| `bffFetch.ts`       | Server-side BFF reads with retry and shape validation; `fetchEnvelopeFromBff` also returns the attribution `meta`                                                              |
 | `slugToTitle.ts`    | Generic slug → Title Case conversion (`air-quality` → `Air Quality`)                                                                                                           |
 
 ### SEO

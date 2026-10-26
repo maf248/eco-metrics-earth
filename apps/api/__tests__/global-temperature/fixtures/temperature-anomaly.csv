@@ -1,0 +1,10 @@
+entity,code,year,near_surface_temperature_anomaly,near_surface_temperature_anomaly_lower,near_surface_temperature_anomaly_upper
+World,OWID_WRL,1850,-0.06252327,-0.23564015,0.110593624
+World,OWID_WRL,1851,0.10044155,,0.27468607
+World,OWID_WRL,1852,0.13990693,-0.024693152,0.30450702
+Northern Hemisphere,OWID_NH,1850,9.99,9.0,10.5
+Northern Hemisphere,OWID_NH,1851,9.99,9.0,10.5
+Northern Hemisphere,OWID_NH,1852,9.99,9.0,10.5
+Southern Hemisphere,OWID_SH,1850,9.99,9.0,10.5
+Southern Hemisphere,OWID_SH,1851,9.99,9.0,10.5
+Southern Hemisphere,OWID_SH,1852,9.99,9.0,10.5

@@ -49,6 +49,9 @@ describe('DataSourcesController', () => {
 
       expect(document.paths['/data-sources']?.get?.tags).toEqual(['Data Sources']);
       expect(document.paths['/data-sources']?.get?.responses).toHaveProperty('200');
+      expect(JSON.stringify(document.paths['/data-sources']?.get?.responses['200'])).toContain(
+        '"origins"',
+      );
     } finally {
       await app.close();
     }

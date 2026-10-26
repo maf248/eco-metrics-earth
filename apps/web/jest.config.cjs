@@ -36,4 +36,19 @@ const config = {
   verbose: true,
 };
 
-module.exports = createJestConfig(config);
+// `next/jest` ignores `node_modules` except for an allowlist of packages it knows to be ESM.
+// `echarts` and `zrender` ship as ESM only, so they are added to that allowlist.
+const ESM_PACKAGES = ['echarts', 'zrender'];
+const NEXT_ALLOWLIST_START = '/node_modules/(?!.pnpm)(?!(';
+
+module.exports = async () => {
+  const nextConfig = await createJestConfig(config)();
+  return {
+    ...nextConfig,
+    transformIgnorePatterns: nextConfig.transformIgnorePatterns.map((pattern) =>
+      pattern.startsWith(NEXT_ALLOWLIST_START)
+        ? pattern.replace(NEXT_ALLOWLIST_START, `${NEXT_ALLOWLIST_START}${ESM_PACKAGES.join('|')}|`)
+        : pattern,
+    ),
+  };
+};

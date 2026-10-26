@@ -2,22 +2,22 @@
 
 Reference notes for choosing the chart, map, and table libraries for `apps/web`.
 
-**Status: research catalogue — decisions live in the Presentation Stack section of `docs/design-system.md`.** The decision this research informed is Apache ECharts 6 for charts and maps (not installed yet); tables are still open. This document keeps the candidates, the spike evidence, and what is still to verify — including one gate left for the first real chart: interaction across all five Playwright projects (the spike covered Chromium only).
+**Status: research catalogue — decisions live in the Presentation Stack section of `docs/design-system.md`.** The decision this research informed is Apache ECharts 6 for charts and maps (installed with the CO2 emissions page, which is the first real chart); tables are still open. This document keeps the candidates, the spike evidence, and what is still to verify — The gate left for the first real chart — interaction across all five Playwright projects — is recorded under Remaining gates below.
 
 _Screening: 16 Sep 2026. Spike (Recharts vs ECharts, disposable, never merged): 24 Oct 2026._ Version numbers and project-health claims were accurate then and should be re-checked before acting on them.
 
 ## Current stack
 
-|                        |                                                                                                                                                 |
-| ---------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
-| Framework              | Next.js 16 (App Router), React 19                                                                                                               |
-| Styling                | Tailwind CSS v4                                                                                                                                 |
-| Dark mode              | Class-based — `@custom-variant dark (&:where(.dark, .dark *))` in `apps/web/src/app/globals.css`, `dark` class toggled on `<html>`              |
-| Design tokens          | Semantic color tokens: `:root` / `.dark` values mapped through `@theme inline`; no palette colors in UI components. See `docs/design-system.md` |
-| Charts / maps / tables | **None installed.** ECharts is decided for charts and maps; the existing `WaterFootprintTable` is hand-rolled markup                            |
-| Unit tests             | Jest + React Testing Library (jsdom); `jest.setup.ts` already polyfills `ResizeObserver`                                                        |
-| E2E                    | Playwright, 5 projects: `chromium-desktop`, `firefox-desktop`, `webkit-desktop`, `mobile-chrome`, `mobile-safari`                               |
-| Bundle analysis        | `analyze` target on `web`                                                                                                                       |
+|                        |                                                                                                                                                                                                                                                              |
+| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Framework              | Next.js 16 (App Router), React 19                                                                                                                                                                                                                            |
+| Styling                | Tailwind CSS v4                                                                                                                                                                                                                                              |
+| Dark mode              | Class-based — `@custom-variant dark (&:where(.dark, .dark *))` in `apps/web/src/app/globals.css`, `dark` class toggled on `<html>`                                                                                                                           |
+| Design tokens          | Semantic color tokens: `:root` / `.dark` values mapped through `@theme inline`; no palette colors in UI components. See `docs/design-system.md`                                                                                                              |
+| Charts / maps / tables | ECharts 6.1 installed (line chart, reference lines and a stacked-line confidence band; two chart pages: CO2 emissions and global temperature, the latter with two charts); no map or table library; the existing `WaterFootprintTable` is hand-rolled markup |
+| Unit tests             | Jest + React Testing Library (jsdom); `jest.setup.ts` already polyfills `ResizeObserver`                                                                                                                                                                     |
+| E2E                    | Playwright, 5 projects: `chromium-desktop`, `firefox-desktop`, `webkit-desktop`, `mobile-chrome`, `mobile-safari`                                                                                                                                            |
+| Bundle analysis        | `analyze` target on `web`                                                                                                                                                                                                                                    |
 
 ## Charts
 
@@ -51,6 +51,10 @@ Reading: ECharts downloads more but executes less, so on a real page it does not
 
 Sources for the ECharts theming limits: [apache/echarts#16044](https://github.com/apache/echarts/issues/16044) and [#19743](https://github.com/apache/echarts/issues/19743) (CSS variables, closed as not planned), [#19604](https://github.com/apache/echarts/issues/19604) (modern color syntax, open).
 
+### Reference line (mark line) cost
+
+The global temperature page is the second chart page and the first to need a horizontal reference line, so `MarkLineComponent` is registered in `echartsSetup.ts`. Measured on 25 Oct 2026 by bundling the shared setup (line chart, grid, tooltip, legend, aria, SVG renderer) with webpack in production mode with and without the component: **+5.5 KB gzipped** (183.4 KB to 188.9 KB for the whole ECharts core setup). This is a standalone measurement, not the Next `analyze` target, which could not run while a development server held `.next`. ECharts takes the line stroke and label colors from a `markLine` entry of the theme, which was verified in jsdom (including after `setTheme` on a dark-class change); the option names no color. The confidence band of the long-run chart uses no further component: it is two stacked line series (`stackStrategy: 'all'` so negative bounds stack), colored through the theme by sharing the main series' name.
+
 ## Maps — interactive world choropleth
 
 | Candidate                    | License    | Outcome                                                                                         |
@@ -65,6 +69,19 @@ Sources for the ECharts theming limits: [apache/echarts#16044](https://github.co
 
 **Still open:** Natural Earth (public domain) vs `world-atlas` (ISC), both commercial-safe; `world-atlas` uses numeric ISO 3166-1 codes while OWID uses alpha-3, so a crosswalk is needed — including at least one disputed/former territory as a test case; 110m vs 50m resolution; geometry bundled vs fetched as a static asset.
 
+## Flags
+
+Country flags appear in the country combobox. Flags are images, so they are outside the color-token rules; emoji flags are not an option (Windows renders them as two letters).
+
+| Candidate                            | License | Outcome                                                                                                                 |
+| ------------------------------------ | ------- | ----------------------------------------------------------------------------------------------------------------------- |
+| **flag-icons 7.6.0**                 | MIT     | **Chosen.** SVG flags through CSS classes (`fi fi-ar`); includes `xk` (Kosovo); the browser fetches only rendered flags |
+| `circle-flags`, `country-flag-icons` | MIT     | Not evaluated — remain candidates if asset weight becomes a problem                                                     |
+
+**Measured weights of `flag-icons` 7.6.0:** stylesheet 28 KB minified (about 8.5 KB gzipped in the production build); 271 4:3 SVGs, 1.93 MB raw and about 610 KB gzipped as an archive; largest file `rs.svg`, 181 KB (`bo.svg` and `mx.svg` follow). The production build emits both the 4:3 and the 1:1 variants referenced by the stylesheet as hashed static media (542 files), but only the variants of rendered elements are requested. The package has no `exports` map, so `flag-icons/css/flag-icons.min.css` resolves directly.
+
+**Trap:** opening a listbox with every flag rendered would request all of them (about 1.9 MB), so `CountryFlag` renders a flag in a list only when its row intersects the listbox viewport. The stylesheet is imported by the component, but Next bundles CSS per route entry, so it also ships with the other `[category]` pages (about 8.5 KB gzipped); it does not load on the home or data-sources pages.
+
 ## Tables
 
 Still open — the hand-rolled `WaterFootprintTable` is enough today; a library earns its place once country × year tables with search and sorting repeat across categories.
@@ -77,6 +94,11 @@ Still open — the hand-rolled `WaterFootprintTable` is enough today; a library 
 **Ruled out:** MUI X DataGrid (drags MUI Core + emotion into a Tailwind-only app), Glide Data Grid (canvas, peers not published for React 19), react-data-grid (perpetual beta since 2022).
 
 Spike to run when the item is picked up: TanStack v9 against the v8.21.3 fallback and against hand-rolled markup, on a country × year table — whether the headless hooks map cleanly onto the ARIA patterns `WaterFootprintTable` already uses, and the measured bundle delta.
+
+## Remaining gates
+
+- **Chart interaction across the five Playwright projects — passed (24 Oct 2026).** The CO2 emissions page (first real ECharts chart, SVG renderer) ran in `chromium-desktop`, `firefox-desktop`, `webkit-desktop`, `mobile-chrome` and `mobile-safari`: chart render, country selection, metric toggle, keyboard flow on the combobox, theme repaint and axe, with no console errors or hydration warnings. This closes the gate the spike left open (it covered Chromium only). Firefox, WebKit and the two mobile projects run the `@smoke` subset; the interaction cases run on `chromium-desktop`.
+- **Flag requests:** after opening the 217-option country list, the page requests only the flags of the rows in view (asserted below 40 requests in E2E), not the full set.
 
 ## Evaluation gates
 

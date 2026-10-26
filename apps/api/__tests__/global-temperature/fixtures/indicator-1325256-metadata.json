@@ -1,0 +1,37 @@
+{
+  "id": 1325256,
+  "name": "Temperature anomaly",
+  "unit": "°C",
+  "shortUnit": "°C",
+  "timespan": "1940-2026",
+  "updatedAt": "2026-10-13T08:42:32.000Z",
+  "descriptionShort": "Difference of a specific year's average surface temperature from the 1991-2020 mean, in degrees Celsius.",
+  "datasetName": "Annual surface temperatures and anomalies by country",
+  "datasetVersion": "2026-10-12",
+  "dimensions": {
+    "entities": {
+      "values": [
+        {
+          "id": 21,
+          "name": "Argentina",
+          "code": "ARG"
+        },
+        {
+          "id": 379,
+          "name": "Kosovo",
+          "code": "OWID_KOS"
+        },
+        {
+          "id": 13,
+          "name": "United States",
+          "code": "USA"
+        },
+        {
+          "id": 355,
+          "name": "World",
+          "code": "OWID_WRL"
+        }
+      ]
+    }
+  }
+}

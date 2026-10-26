@@ -53,6 +53,17 @@
   --icon-shadow-sm: 0 1px 2px oklch(0% 0 0 / 0.15); /* drop-shadow-sm */
   --icon-shadow-lg: 0 4px 4px oklch(0% 0 0 / 0.15); /* drop-shadow-lg */
   --icon-shadow-xl: 0 9px 7px oklch(0% 0 0 / 0.1); /* drop-shadow-xl */
+
+  /* Chart categorical palette: read by name by the chart theme adapter, not exposed as
+   * Tailwind utilities. Hex, the form in which the values were validated. */
+  --chart-1: #2a78d6; /* blue */
+  --chart-2: #eb6834; /* orange */
+  --chart-3: #1baf7a; /* aqua */
+  --chart-4: #eda100; /* yellow */
+  --chart-5: #e87ba4; /* magenta */
+  --chart-6: #008300; /* green */
+  --chart-7: #6250d6; /* violet */
+  --chart-8: #e34948; /* red */
 }
 
 .dark {
@@ -97,6 +108,16 @@
   --icon-shadow-sm: 0 0 3px oklch(100% 0 0 / 0.25);
   --icon-shadow-lg: 0 0 8px oklch(100% 0 0 / 0.25);
   --icon-shadow-xl: 0 0 10px oklch(100% 0 0 / 0.25);
+
+  /* Chart categorical palette (dark) */
+  --chart-1: #3987e5; /* blue */
+  --chart-2: #d95926; /* orange */
+  --chart-3: #199e70; /* aqua */
+  --chart-4: #c98500; /* yellow */
+  --chart-5: #d55181; /* magenta */
+  --chart-6: #008300; /* green */
+  --chart-7: #9085e9; /* violet */
+  --chart-8: #e66767; /* red */
 }
 
 @theme inline {

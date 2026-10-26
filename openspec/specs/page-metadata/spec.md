@@ -125,12 +125,10 @@ The site description SHALL be defined once, as the string `Explore environmental
 
 ### Requirement: Category descriptions are unique and honest
 
-`apps/web/src/lib/categoryMetadata.ts` SHALL export a `Record<EcoCategory, string>` of meta descriptions, so a missing `EcoCategory` fails type-checking. Every description SHALL be 110-160 characters, SHALL be unique across categories, and SHALL differ from the site description. The 11 placeholder categories SHALL state that the data is coming ("is coming soon" or "is coming to eco-metrics earth") and SHALL NOT promise data that is not yet available. The placeholder descriptions are:
+`apps/web/src/lib/categoryMetadata.ts` SHALL export a `Record<EcoCategory, string>` of meta descriptions, so a missing `EcoCategory` fails type-checking. Every description SHALL be 110-160 characters, SHALL be unique across categories, and SHALL differ from the site description. The 9 placeholder categories SHALL state that the data is coming ("is coming soon" or "is coming to eco-metrics earth") and SHALL NOT promise data that is not yet available. The placeholder descriptions are:
 
 | Category             | Description                                                                                                                        |
 | -------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
-| `co2-emissions`      | CO2 emissions data is coming to eco-metrics earth: annual, per-capita and cumulative emissions by country, from open sources.      |
-| `global-temperature` | Global temperature data is coming soon: how much the planet has warmed compared with the pre-industrial baseline.                  |
 | `air-quality`        | Air quality data is coming soon: pollutant levels such as PM2.5 and ozone, and how clean the air is in cities around the world.    |
 | `waste-recycling`    | Waste and recycling data is coming to eco-metrics earth: how much waste countries produce and how much is recycled or composted.   |
 | `endangered-species` | Endangered species data is coming soon: how many species are threatened with extinction and how that risk is changing over time.   |
@@ -141,7 +139,7 @@ The site description SHALL be defined once, as the string `Explore environmental
 | `plastic-pollution`  | Plastic pollution data is coming to eco-metrics earth: how much plastic is produced, wasted and ends up in the ocean.              |
 | `energy-sources`     | Energy sources data is coming soon: how much of the world's electricity comes from fossil fuels, nuclear and renewables.           |
 
-The water-footprint description is defined by the `water-footprint-page` capability. When a category ships real data, its change SHALL replace the placeholder description with one that describes the live content.
+The water-footprint description is defined by the `water-footprint-page` capability, the co2-emissions description by the `co2-emissions-page` capability and the global-temperature description by the `global-temperature-page` capability. When a category ships real data, its change SHALL replace the placeholder description with one that describes the live content.
 
 #### Scenario: Length bounds
 
@@ -156,7 +154,7 @@ The water-footprint description is defined by the `water-footprint-page` capabil
 
 #### Scenario: Placeholder descriptions are honest
 
-- **WHEN** the unit test reads the description of each of the 11 non-water-footprint categories
+- **WHEN** the unit test reads the description of each of the 9 categories without live data
 - **THEN** each contains "coming soon" or "coming to eco-metrics earth"
 
 #### Scenario: Missing category fails type-checking

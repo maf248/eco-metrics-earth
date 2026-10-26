@@ -12,6 +12,7 @@ import type {
   DataSourcePublication,
   EcoCategory,
   LiveDataSource,
+  LiveDataSourceOrigin,
   StaticDataSource,
 } from '@eco-metrics/shared';
 
@@ -126,7 +127,47 @@ function LiveProvider({ provider }: { provider: LiveDataSource }) {
         <time dateTime={provider.lastUpdated}>{formatUtcDate(provider.lastUpdated)}</time>
       </p>
       <Categories categories={provider.categories} />
+      <Origins origins={provider.origins} />
     </li>
+  );
+}
+
+function Origins({ origins }: { origins: LiveDataSourceOrigin[] }) {
+  if (origins.length === 0) {
+    return null;
+  }
+
+  return (
+    <div className="mt-4 border-t border-line-subtle pt-4">
+      <h4 className="text-sm font-semibold text-fg">Data produced by</h4>
+      <ul className="mt-2 space-y-3">
+        {origins.map((origin) => (
+          <li key={`${origin.producer}|${origin.title}`} className="text-sm text-fg-body">
+            {origin.producer}:{' '}
+            <a
+              href={origin.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={LINK_CLASS_NAME}
+            >
+              {origin.title}
+            </a>{' '}
+            (License:{' '}
+            <a
+              href={origin.license.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={LINK_CLASS_NAME}
+            >
+              {origin.license.name}
+            </a>
+            ){origin.notice && <p className="text-fg-muted">{origin.notice}</p>}
+            {origin.citation && <p className="text-fg-muted">{origin.citation}</p>}
+            <Categories categories={origin.categories} />
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 }
 

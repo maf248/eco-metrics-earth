@@ -1,0 +1,19 @@
+entity,code,year,temperature_anomaly
+Argentina,ARG,1940,-1.4570675
+Argentina,ARG,1941,
+Argentina,ARG,1942,-1.040778
+Kosovo,OWID_KOS,1940,-3.2156203
+Kosovo,OWID_KOS,1941,-2.559241
+Kosovo,OWID_KOS,1942,-2.199156
+United States,USA,1940,-1.5468966
+United States,USA,1941,-0.001
+United States,USA,1942,-1.7430807
+World,OWID_WRL,1940,-0.68613535
+World,OWID_WRL,1941,-0.64177424
+World,OWID_WRL,1942,-0.7324303
+Europe,OWID_EUR,1940,0.5
+Europe,OWID_EUR,1941,0.6
+Europe,OWID_EUR,1942,0.7
+Nowhere,ZZZ,1940,0.1
+Nowhere,ZZZ,1941,0.2
+Nowhere,ZZZ,1942,0.3

@@ -1,4 +1,5 @@
 import '@testing-library/jest-dom';
+import { setPlatformAPI } from 'zrender/lib/core/platform';
 
 /**
  * Jest global setup — runs after the test framework is installed, before each test file.
@@ -23,3 +24,12 @@ if (typeof AbortSignal.timeout !== 'function') {
     return controller.signal;
   };
 }
+
+/**
+ * jsdom has no canvas, which ECharts uses to measure label text even under the SVG
+ * renderer. An approximate width (7px per character) is enough to lay out unit-test charts.
+ * Only zrender's platform module is imported so tests that render no chart stay fast.
+ */
+setPlatformAPI({
+  measureText: (text: string) => ({ width: text.length * 7 }),
+});

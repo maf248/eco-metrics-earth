@@ -1,9 +1,11 @@
+import { ProviderError } from '../../../common/errors/provider-error';
+
 type OwidClientErrorConstructor = new (
   message: string,
   options?: { cause?: unknown },
 ) => OwidClientError;
 
-export class OwidClientError extends Error {
+export class OwidClientError extends ProviderError {
   constructor(message: string, options?: { cause?: unknown }) {
     super(message, options);
     this.name = 'OwidClientError';
