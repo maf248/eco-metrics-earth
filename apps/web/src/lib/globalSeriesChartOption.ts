@@ -1,6 +1,6 @@
 import type { EChartsCoreOption } from 'echarts/core';
 
-import { baseChartOption } from '@/components/charts/baseChartOption';
+import { baseChartOption, baseTooltipOption } from '@/components/charts/baseChartOption';
 import { buildConfidenceBandSeries } from '@/components/charts/confidenceBand';
 import { formatAnomaly, formatAnomalyAxis } from '@/lib/formatNumber';
 import { buildYearAxis } from '@/lib/yearAxis';
@@ -31,22 +31,19 @@ interface TooltipParam {
 /**
  * Long-run line chart of the World's temperature against the pre-industrial
  * baseline: the mean, its 95% confidence band and two labelled reference lines
- * (zero, dashed, and 1.5 °C, dotted, so they differ without color; short labels placed away from the data line). Pure and
- * color-free: the line and the band take the first palette color and the lines
- * their colors from the chart theme. Missing years are gaps, never zeros.
+ * (zero, dashed, and 1.5 °C, dotted, so they differ without color; short labels
+ * placed away from the data line). Pure and color-free: the line and the band
+ * take the first palette color and the lines their colors from the chart theme.
+ * Missing years are gaps, never zeros.
  */
 export function buildGlobalSeriesChartOption(data: ChartData, unit: string): EChartsCoreOption {
   const base = baseChartOption();
-  const baseTooltip =
-    typeof base.tooltip === 'object' && base.tooltip !== null && !Array.isArray(base.tooltip)
-      ? base.tooltip
-      : {};
 
   return {
     ...base,
     legend: { show: false },
     tooltip: {
-      ...baseTooltip,
+      ...baseTooltipOption(),
       // One line per year with the interval printed once: the band is not a tooltip series.
       formatter: (params: TooltipParam | TooltipParam[]): string => {
         const [{ dataIndex }] = Array.isArray(params) ? params : [params];
