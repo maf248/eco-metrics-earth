@@ -1,10 +1,12 @@
 import type {
   DataSourceAttribution,
+  DataSourceOrigin,
   DataSourcePublication,
   DataSourcePublisher,
   DataSourcesCatalog,
   DataSourceTimestampBasis,
   LiveDataSource,
+  LiveDataSourceOrigin,
   StaticDataSource,
   WaterFootprintProduct,
 } from '../../src/index';
@@ -24,6 +26,7 @@ describe('data sources catalog types', () => {
       description: 'Example live provider',
       categories: ['air-quality'],
       lastUpdatedBasis: 'provider',
+      origins: [],
     };
     const asAttribution: DataSourceAttribution = live;
 
@@ -75,5 +78,41 @@ describe('data sources catalog types', () => {
 
     expect(base.publisher).toBeUndefined();
     expect(withPublisher.publisher?.provider).toBe('Example Provider');
+  });
+});
+
+describe('upstream origin types', () => {
+  it('should accept an origin without notice, citation and disclaimer', () => {
+    const origin: DataSourceOrigin = {
+      producer: 'Producer',
+      title: 'Dataset',
+      url: 'https://producer.example/dataset',
+      license: { name: 'CC BY 4.0', url: 'https://creativecommons.org/licenses/by/4.0/' },
+    };
+
+    expect(origin.notice).toBeUndefined();
+  });
+
+  it('should carry the categories an origin serves in a live source', () => {
+    const origin: LiveDataSourceOrigin = {
+      producer: 'Producer',
+      title: 'Dataset',
+      url: 'https://producer.example/dataset',
+      license: { name: 'CC BY 4.0', url: 'https://creativecommons.org/licenses/by/4.0/' },
+      notice: 'Credit line',
+      citation: 'A citation',
+      disclaimer: 'No liability',
+      categories: ['co2-emissions'],
+    };
+    const live: LiveDataSource = {
+      ...attribution,
+      id: 'example',
+      description: 'Example live provider',
+      categories: ['co2-emissions'],
+      lastUpdatedBasis: 'provider',
+      origins: [origin],
+    };
+
+    expect(live.origins[0].categories).toEqual(['co2-emissions']);
   });
 });

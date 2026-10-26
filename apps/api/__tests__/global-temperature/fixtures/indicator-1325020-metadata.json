@@ -1,0 +1,22 @@
+{
+  "id": 1325020,
+  "name": "Global average temperature anomaly relative to 1861-1890",
+  "unit": "degrees Celsius",
+  "shortUnit": "°C",
+  "timespan": "1850-2026",
+  "updatedAt": "2026-10-13T08:33:29.000Z",
+  "descriptionShort": "Difference in average land-sea surface temperature compared to the 1861-1890 mean, in degrees Celsius.",
+  "datasetName": "Climate Change Impacts - Annual",
+  "datasetVersion": "2026-10-12",
+  "dimensions": {
+    "entities": {
+      "values": [
+        {
+          "id": 355,
+          "name": "World",
+          "code": "OWID_WRL"
+        }
+      ]
+    }
+  }
+}

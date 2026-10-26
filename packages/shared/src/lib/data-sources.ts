@@ -16,6 +16,31 @@ export type DataSourceTimestampBasis = 'provider' | 'retrieval';
 export type DataSourcePublisher = Pick<DataSourceAttribution, 'provider' | 'license' | 'sourceUrl'>;
 
 /**
+ * The organization that produced data a live provider republishes (for example
+ * the Global Carbon Project behind an OWID chart), with the license and the
+ * credit texts that license asks for.
+ */
+export interface DataSourceOrigin {
+  producer: string;
+  /** Title of the upstream dataset. */
+  title: string;
+  /** Page of the upstream dataset. */
+  url: string;
+  license: { name: string; url: string };
+  /** Credit line the license asks to show with the data. */
+  notice?: string;
+  /** How to cite the upstream work. */
+  citation?: string;
+  /** No-liability statement the license asks to show. */
+  disclaimer?: string;
+}
+
+/** An origin as listed in the catalog: with the categories it serves. */
+export interface LiveDataSourceOrigin extends DataSourceOrigin {
+  categories: EcoCategory[];
+}
+
+/**
  * Live provider: data consumed through an external API at runtime.
  */
 export interface LiveDataSource extends DataSourceAttribution {
@@ -28,6 +53,9 @@ export interface LiveDataSource extends DataSourceAttribution {
   categories: EcoCategory[];
 
   lastUpdatedBasis: DataSourceTimestampBasis;
+
+  /** Who produced the data this provider republishes; empty when not declared. */
+  origins: LiveDataSourceOrigin[];
 }
 
 /**

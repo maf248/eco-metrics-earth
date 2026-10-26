@@ -6,6 +6,7 @@ import { AppConfigModule } from '../../../config/app-config.module';
 import { AppConfigService } from '../../../config/app-config.service';
 
 import { OwidClient } from './owid-client.service';
+import { OwidProviderStatus } from './owid-provider-status';
 
 @Module({
   imports: [
@@ -19,7 +20,7 @@ import { OwidClient } from './owid-client.service';
       }),
     }),
   ],
-  providers: [OwidClient],
-  exports: [OwidClient],
+  providers: [OwidClient, OwidProviderStatus],
+  exports: [OwidClient, OwidProviderStatus],
 })
 export class OwidModule {}

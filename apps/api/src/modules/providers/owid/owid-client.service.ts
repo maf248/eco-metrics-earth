@@ -13,16 +13,30 @@ import type {
   OwidIndicatorData,
   OwidIndicatorMetadata,
   OwidIndicatorMetadataEntity,
+  OwidGrapherTab,
 } from './owid.types';
 import { type GrapherTable, parseGrapherTable, selectGrapherColumn } from './parseGrapherCsv';
 
 const SLUG_PATTERN = /^[a-z0-9-]+$/;
 const COUNTRY_CODE_PATTERN = /^[A-Z0-9_]+$/;
+const GRAPHER_TABS: readonly OwidGrapherTab[] = ['chart', 'map', 'table'];
 
 function validateSlug(slug: string): void {
   if (!SLUG_PATTERN.test(slug)) {
     throw new OwidInvalidParameterError(
       `Invalid OWID grapher slug "${slug}". Slug must be a non-empty lowercase kebab string.`,
+    );
+  }
+}
+
+function validateTab(tab: OwidGrapherTab | undefined): void {
+  if (tab === undefined) {
+    return;
+  }
+
+  if (!GRAPHER_TABS.includes(tab)) {
+    throw new OwidInvalidParameterError(
+      `Invalid tab "${String(tab)}". Must be one of: ${GRAPHER_TABS.join(', ')}.`,
     );
   }
 }
@@ -177,6 +191,18 @@ function parseIndicatorMetadata(data: unknown): OwidIndicatorMetadata {
     );
   }
 
+  // A JSON null means the provider has no description: treated as absent.
+  const { descriptionShort } = payload;
+  if (
+    descriptionShort !== undefined &&
+    descriptionShort !== null &&
+    typeof descriptionShort !== 'string'
+  ) {
+    throw new OwidParseError(
+      'Malformed indicator metadata response: invalid field "descriptionShort".',
+    );
+  }
+
   const dimensions = payload.dimensions as Record<string, unknown> | undefined;
   if (!dimensions || typeof dimensions !== 'object') {
     throw new OwidParseError('Malformed indicator metadata response: missing dimensions object.');
@@ -209,7 +235,7 @@ function parseIndicatorMetadata(data: unknown): OwidIndicatorMetadata {
     if (
       typeof entity.id !== 'number' ||
       typeof entity.name !== 'string' ||
-      typeof entity.code !== 'string'
+      (typeof entity.code !== 'string' && entity.code !== null)
     ) {
       throw new OwidParseError(
         `Malformed indicator metadata response: entity at index ${i} is missing id, name, or code.`,
@@ -219,7 +245,7 @@ function parseIndicatorMetadata(data: unknown): OwidIndicatorMetadata {
     entities.push({
       id: entity.id,
       name: entity.name,
-      code: entity.code,
+      code: typeof entity.code === 'string' ? entity.code : null,
     });
   }
 
@@ -232,6 +258,8 @@ function parseIndicatorMetadata(data: unknown): OwidIndicatorMetadata {
     datasetVersion: payload.datasetVersion as string,
     timespan: payload.timespan as string,
     updatedAt: payload.updatedAt as string,
+    descriptionShort:
+      typeof payload.descriptionShort === 'string' ? payload.descriptionShort : null,
     entities,
   };
 }
@@ -248,11 +276,16 @@ function buildGrapherCacheKey(slug: string, options: OwidGrapherSeriesOptions): 
   const countries = normalizeCountries(options.country);
   const country = countries.length > 0 ? countries.join('~') : 'all';
   const time = options.timeRange ? `${options.timeRange.from}..${options.timeRange.to}` : 'all';
-  return `owid:grapher:${slug}:c=${country}:t=${time}`;
+  const tab = options.tab ? `:tab=${options.tab}` : '';
+  return `owid:grapher:${slug}:c=${country}:t=${time}${tab}`;
 }
 
 function buildGrapherUrl(baseUrl: string, slug: string, options: OwidGrapherSeriesOptions): string {
   const params: string[] = ['v=1', 'csvType=filtered', 'useColumnShortNames=true'];
+
+  if (options.tab) {
+    params.push(`tab=${options.tab}`);
+  }
 
   const countries = normalizeCountries(options.country);
   if (countries.length > 0) {
@@ -308,6 +341,7 @@ export class OwidClient {
     options: OwidGrapherSeriesOptions = {},
   ): Promise<MetricSeries[]> {
     validateSlug(slug);
+    validateTab(options.tab);
     validateCountryCodes(options.country);
     validateTimeRange(options.timeRange);
 

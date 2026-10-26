@@ -31,18 +31,24 @@ src/
 │   └── global-pipeline.ts  # applyGlobalPipeline — global ValidationPipe + exception filter (shared by main.ts and tests)
 ├── health/
 │   ├── health.module.ts
-│   └── health.controller.ts  # GET /api/v1/health
+│   ├── health.controller.ts               # GET /api/v1/health (liveness only)
+│   ├── dependencies-health.controller.ts  # GET /api/v1/health/dependencies (Terminus)
+│   └── owid.health-indicator.ts           # One indicator per provider
 ├── config/
 │   ├── app-config.module.ts  # @Global module that provides and exports AppConfigService
 │   └── app-config.service.ts # Typed wrapper over @nestjs/config
 ├── modules/
+│   ├── co2-emissions/        # Co2EmissionsModule — OWID-backed endpoint (service, controller, constants)
+│   ├── global-temperature/   # GlobalTemperatureModule — OWID-backed endpoint (service, controller, constants, baseline guard)
 │   ├── data-sources/         # DataSourcesModule — aggregates @DataSourceContributor() providers into the catalog
 │   ├── providers/
-│   │   └── owid/             # OwidModule — cached OWID provider client (Grapher CSV + API v1 JSON)
+│   │   └── owid/             # OwidModule — cached OWID provider client (Grapher CSV + API v1 JSON) + OwidProviderStatus (the single OWID data-source declaration)
 │   └── water-footprint/      # WaterFootprintModule — module, controller, service
 │       └── data/
 │           └── water-footprint.json  # Static product dataset (60 products, with citations)
 ├── common/
+│   ├── errors/               # `ProviderError` / `ProviderDataError` — mapped to 502 by the global filter
+│   ├── series/               # `buildYearAlignedEntities`: generic year-aligned country-entity builder shared by the OWID-backed categories
 │   ├── fallback/             # Catch-all JSON 404 fallback for unknown routes
 │   ├── filters/              # Global exception filter (`AllExceptionsFilter`)
 │   ├── publishers/           # `resolvePublisher`: licensor that republishes a source URL
@@ -82,11 +88,14 @@ appConfig.internalApiKey; // INTERNAL_API_KEY (undefined when unset or empty)
 
 ## Endpoints
 
-| Method | Path                               | Description                                                                                                                                                                   | Response                               |
-| ------ | ---------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------- |
-| `GET`  | `/api/v1/health`                   | Liveness check                                                                                                                                                                | `{ status: 'ok' }`                     |
-| `GET`  | `/api/v1/water-footprint/products` | Static product dataset — optional `category` query filter (`food-beverages`, `textiles`, `technology`, `manufactured`, `digital-computing`, `vehicles`, `energy-extractives`) | `ApiResponse<WaterFootprintProduct[]>` |
-| `GET`  | `/api/v1/data-sources`             | Catalog of the data sources in use (live providers and static datasets with their publications), declared by each module                                                      | `ApiResponse<DataSourcesCatalog>`      |
+| Method | Path                               | Description                                                                                                                                                                                                                                                               | Response                                            |
+| ------ | ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------- |
+| `GET`  | `/api/v1/health`                   | Liveness check                                                                                                                                                                                                                                                            | `{ status: 'ok' }`                                  |
+| `GET`  | `/api/v1/health/dependencies`      | Provider reachability check (Terminus). Not the `ApiResponse` envelope; `GET /health` stays liveness-only                                                                                                                                                                 | `{ status, info, error, details }` — `200` or `503` |
+| `GET`  | `/api/v1/co2-emissions`            | Annual CO2 emissions since 1950 (total in Mt, per capita in t) for every country plus World, year-aligned arrays; provider failures answer `502`                                                                                                                          | `ApiResponse<Co2EmissionsData>`                     |
+| `GET`  | `/api/v1/global-temperature`       | Annual temperature anomaly since 1940 (°C vs 1991-2020) for every country plus World, year-aligned arrays, plus `data.global` (World since 1850 vs 1861-1890 with 95% bounds); upstream credits in `data.origin` and `data.global.origin`; provider failures answer `502` | `ApiResponse<GlobalTemperatureData>`                |
+| `GET`  | `/api/v1/water-footprint/products` | Static product dataset — optional `category` query filter (`food-beverages`, `textiles`, `technology`, `manufactured`, `digital-computing`, `vehicles`, `energy-extractives`)                                                                                             | `ApiResponse<WaterFootprintProduct[]>`              |
+| `GET`  | `/api/v1/data-sources`             | Catalog of the data sources in use (live providers with their upstream origins, and static datasets with their publications), declared by each module                                                                                                                     | `ApiResponse<DataSourcesCatalog>`                   |
 
 ---
 

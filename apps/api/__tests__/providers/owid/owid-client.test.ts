@@ -211,6 +211,31 @@ describe('OwidClient', () => {
       );
     });
 
+    it('should accept entities with a null code, such as regional aggregates', async () => {
+      const fetchStub = buildFetchStub();
+      fetchStub.mockResolvedValue(
+        jsonResponse({
+          ...loadJsonFixture<Record<string, unknown>>('indicator-1146696-metadata.json'),
+          dimensions: {
+            entities: {
+              values: [
+                { id: 21, name: 'Argentina', code: 'ARG' },
+                { id: 344877, name: 'Africa (GCP)', code: null },
+              ],
+            },
+          },
+        }),
+      );
+      const client = await buildClient(fetchStub);
+
+      const result = await client.getIndicatorMetadata(1146696);
+
+      expect(result.entities).toEqual([
+        { id: 21, name: 'Argentina', code: 'ARG' },
+        { id: 344877, name: 'Africa (GCP)', code: null },
+      ]);
+    });
+
     it('should throw OwidParseError when the metadata payload is malformed', async () => {
       const fetchStub = buildFetchStub();
       fetchStub.mockResolvedValue(jsonResponse({ id: 'not-a-number' }));
@@ -512,6 +537,120 @@ describe('OwidClient', () => {
       await expect(promise).rejects.toBeInstanceOf(OwidParseError);
       await expect(promise).rejects.toThrow('OWID chart "co-emissions-per-capita"');
       await expect(promise).rejects.toMatchObject({ cause: expect.any(OwidParseError) });
+    });
+  });
+
+  describe('grapher tab selection', () => {
+    const slug = 'annual-temperature-anomalies';
+
+    it('should append the tab after the short names flag and before country and time', async () => {
+      const fetchStub = buildFetchStub();
+      fetchStub.mockResolvedValue(textResponse(loadFixture('co-emissions-per-capita.csv')));
+      const client = await buildClient(fetchStub);
+
+      await client.getGrapherSeries(slug, {
+        tab: 'chart',
+        country: ['ARG'],
+        timeRange: { from: 1950, to: 2025 },
+      });
+
+      const [url] = fetchStub.mock.calls[0] as [string, RequestInit];
+      expect(url).toBe(
+        `${grapherBaseUrl}/${slug}.csv?v=1&csvType=filtered&useColumnShortNames=true&tab=chart&country=ARG&time=1950..2025`,
+      );
+    });
+
+    it('should leave the URL without a tab parameter when the option is omitted', async () => {
+      const fetchStub = buildFetchStub();
+      fetchStub.mockResolvedValue(textResponse(loadFixture('co-emissions-per-capita.csv')));
+      const client = await buildClient(fetchStub);
+
+      await client.getGrapherSeries('co-emissions-per-capita', { country: ['ARG'] });
+
+      const [url] = fetchStub.mock.calls[0] as [string, RequestInit];
+      expect(url).not.toContain('tab=');
+      expect(url).toBe(
+        `${grapherBaseUrl}/co-emissions-per-capita.csv?v=1&csvType=filtered&useColumnShortNames=true&country=ARG`,
+      );
+    });
+
+    it('should keep a separate cache entry per tab', async () => {
+      const fetchStub = buildFetchStub();
+      fetchStub.mockImplementation(() =>
+        Promise.resolve(textResponse(loadFixture('co-emissions-per-capita.csv'))),
+      );
+      const client = await buildClient(fetchStub);
+
+      await client.getGrapherSeries('co-emissions-per-capita', { tab: 'chart' });
+      await client.getGrapherSeries('co-emissions-per-capita');
+      expect(fetchStub).toHaveBeenCalledTimes(2);
+
+      await client.getGrapherSeries('co-emissions-per-capita', { tab: 'chart' });
+      expect(fetchStub).toHaveBeenCalledTimes(2);
+
+      await client.getGrapherSeries('co-emissions-per-capita', { tab: 'map' });
+      expect(fetchStub).toHaveBeenCalledTimes(3);
+    });
+
+    it('should reject an unknown tab before fetching', async () => {
+      const fetchStub = buildFetchStub();
+      const client = await buildClient(fetchStub);
+
+      await expect(
+        client.getGrapherSeries(slug, { tab: 'bogus' as unknown as 'chart' }),
+      ).rejects.toBeInstanceOf(OwidInvalidParameterError);
+      expect(fetchStub).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('indicator short description', () => {
+    function validMetadata(): Record<string, unknown> {
+      return loadJsonFixture<Record<string, unknown>>('indicator-1146696-metadata.json');
+    }
+
+    it('should carry the description when the provider has one', async () => {
+      const fetchStub = buildFetchStub();
+      fetchStub.mockResolvedValue(
+        jsonResponse({ ...validMetadata(), descriptionShort: 'From the 1991-2020 mean.' }),
+      );
+      const client = await buildClient(fetchStub);
+
+      const result = await client.getIndicatorMetadata(1146696);
+
+      expect(result.descriptionShort).toBe('From the 1991-2020 mean.');
+    });
+
+    it('should be null when the provider has no description', async () => {
+      const fetchStub = buildFetchStub();
+      fetchStub.mockResolvedValue(
+        jsonResponse({ ...validMetadata(), descriptionShort: undefined }),
+      );
+      const client = await buildClient(fetchStub);
+
+      const result = await client.getIndicatorMetadata(1146696);
+
+      expect(result.descriptionShort).toBeNull();
+    });
+
+    it('should treat a JSON null description as absent', async () => {
+      const fetchStub = buildFetchStub();
+      fetchStub.mockResolvedValue(jsonResponse({ ...validMetadata(), descriptionShort: null }));
+      const client = await buildClient(fetchStub);
+
+      const result = await client.getIndicatorMetadata(1146696);
+
+      expect(result.descriptionShort).toBeNull();
+    });
+
+    it('should throw OwidParseError when the description is not a string', async () => {
+      const fetchStub = buildFetchStub();
+      fetchStub.mockResolvedValue(jsonResponse({ ...validMetadata(), descriptionShort: 42 }));
+      const client = await buildClient(fetchStub);
+
+      const promise = client.getIndicatorMetadata(1146696);
+
+      await expect(promise).rejects.toBeInstanceOf(OwidParseError);
+      await expect(promise).rejects.toThrow('descriptionShort');
     });
   });
 

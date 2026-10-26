@@ -28,7 +28,7 @@ describe('AppModule', () => {
     );
   });
 
-  it('should register the data sources module and discover the water-footprint dataset', async () => {
+  it('should register the data sources module, the water-footprint dataset and the OWID provider', async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
     }).compile();
@@ -36,7 +36,9 @@ describe('AppModule', () => {
     const catalog = await module.get(DataSourcesService).getCatalog();
 
     expect(catalog.datasets.map(({ id }) => id)).toEqual(['water-footprint']);
-    expect(catalog.providers).toEqual([]);
+    expect(catalog.providers.map(({ id, categories }) => ({ id, categories }))).toEqual([
+      { id: 'owid', categories: ['co2-emissions', 'global-temperature'] },
+    ]);
   });
 
   // The OWID cache (default in-memory Keyv Map store) holds no timers, sockets or file

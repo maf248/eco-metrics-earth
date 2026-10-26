@@ -32,6 +32,7 @@ const provider = (id: string, overrides: Partial<LiveDataSource> = {}): LiveData
   sourceUrl: `https://${id}.example`,
   lastUpdated: '2024-01-15T00:00:00.000Z',
   lastUpdatedBasis: 'provider',
+  origins: [],
   ...overrides,
 });
 

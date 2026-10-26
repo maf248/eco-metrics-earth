@@ -1,4 +1,6 @@
-export class OutboundHttpError extends Error {
+import { ProviderError } from '../errors/provider-error';
+
+export class OutboundHttpError extends ProviderError {
   constructor(
     message: string,
     readonly url: string,
