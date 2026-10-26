@@ -1,3 +1,5 @@
+## [2.9.0](https://github.com/maf248/eco-metrics-earth/compare/web-v2.8.4...web-v2.9.0) (2026-10-24)
+
 ## [2.8.4](https://github.com/maf248/eco-metrics-earth/compare/web-v2.8.3...web-v2.8.4) (2026-10-23)
 
 ## [2.8.3](https://github.com/maf248/eco-metrics-earth/compare/web-v2.8.2...web-v2.8.3) (2026-10-23)

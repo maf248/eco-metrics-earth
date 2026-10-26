@@ -1,3 +1,9 @@
+## [2.12.0](https://github.com/maf248/eco-metrics-earth/compare/v2.11.4...v2.12.0) (2026-10-24)
+
+### Features
+
+* **data-sources:** add data sources catalog, page and site footer ([37d7a0d](https://github.com/maf248/eco-metrics-earth/commit/37d7a0dbd2d203d9c6b6c7aa09a2d704800f24f6))
+
 ## [2.11.4](https://github.com/maf248/eco-metrics-earth/compare/v2.11.3...v2.11.4) (2026-10-23)
 
 ### Bug Fixes
