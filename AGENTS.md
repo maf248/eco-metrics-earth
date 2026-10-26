@@ -258,23 +258,27 @@ eco-metrics-earth/
 │   ├── api/                     # NestJS BFF
 │   │   └── src/
 │   │       ├── app/             # AppModule, global pipeline helper
-│   │       ├── health/          # HealthController (GET /api/v1/health)
-│   │       ├── modules/         # Per-category eco modules (`water-footprint`) + `providers/owid` client + `data-sources` catalog
-│   │       ├── common/          # Outbound HTTP client, catch-all 404 fallback, global exception filter, throttler internal-key bypass, publisher resolver
+│   │       ├── health/          # Liveness (GET /api/v1/health) + dependencies check (GET /api/v1/health/dependencies, one Terminus indicator per provider)
+│   │       ├── modules/         # Per-category eco modules (`water-footprint`, `co2-emissions`, `global-temperature`) + `providers/owid` client and `OwidProviderStatus` + `data-sources` catalog
+│   │       ├── common/          # Outbound HTTP client, `errors/` (`ProviderError` -> 502), `series/` (`buildYearAlignedEntities`, `roundTo`), catch-all 404 fallback, global exception filter, throttler internal-key bypass, publisher resolver
 │   │       ├── config/          # AppConfigService (typed env vars)
 │   │       └── main.ts          # Bootstrap — port 3001, prefix /api/v1
 │   └── web/                     # Next.js App Router
 │       └── src/
 │           ├── app/             # Routes, layouts, pages (App Router)
-│           ├── components/      # Reusable UI components
-│           └── lib/             # Utilities and helpers (`bffFetch.ts`: server-side BFF reads with retry and shape validation)
+│           ├── components/      # Reusable UI components (`charts/`: ECharts wrapper, theme adapter, lazy loading, `ChartPanel`; `co2-emissions/`; `global-temperature/`; generic `CountryExplorer`, `YearDataTable`, `DataAttribution`; `CountryCombobox`, `CountryFlag`)
+│           └── lib/             # Utilities and helpers (`bffFetch.ts`: server-side BFF reads with retry and shape validation; `categoryPages.tsx`: per-category page registry)
 ├── packages/
 │   └── shared/                  # @eco-metrics/shared
 │       └── src/lib/
 │           ├── api-response.ts             # ApiResponse<T> union + ApiResponseMeta
+│           ├── co2-emissions.ts            # CO2 emissions wire types (year-aligned arrays)
+│           ├── country-codes.ts            # ISO alpha-3 -> alpha-2 crosswalk, World/Kosovo codes, entity allowlist
+│           ├── country-series.ts           # CountryEntity + DatasetIdentity shared by year-aligned payloads
 │           ├── data-source-attribution.ts  # DataSourceAttribution (provider, license, source)
 │           ├── data-sources.ts             # Data sources catalog types (live providers, static datasets, publications)
 │           ├── eco-category.ts             # EcoCategory type + ECO_CATEGORIES const
+│           ├── global-temperature.ts       # Global temperature wire types (anomaly, baseline, upstream origin)
 │           ├── metric-series.ts            # MetricPoint + MetricSeries time-series shapes
 │           └── water-footprint.ts          # Water-footprint product, category and water-type types
 ├── .nvmrc                       # Node.js v24
@@ -294,6 +298,24 @@ eco-metrics-earth/
 3. Import the new module into `AppModule`
 4. Write smoke test in `__tests__/<category>/<category>.controller.test.ts`
 5. If the module uses external data, decorate a provider with `@DataSourceContributor()` and implement `getDataSources()` to declare its sources — never in the web app or the shared package. Static datasets need no hand-kept dates: citations carry their publication year in parentheses, validated at construction.
+
+### Adding an OWID-backed category (end to end)
+
+`co2-emissions` was the reference implementation and `global-temperature` the first to follow it; start from the generic pieces they share instead of copying either one: `buildYearAlignedEntities` / `roundTo` / `latestTimestamp` (`apps/api/src/common/series/`), `buildOwidEnvelope` (`providers/owid/`), `CountryExplorer` + `ChartPanel` + `YearDataTable` + `DataAttribution` + `OriginCredit` + `RenderWhenVisible` (`apps/web/src/components/`), `buildDatasetJsonLd` (`lib/datasetJsonLd.ts`), `isYearAlignedCountryData` (`lib/payloadGuards.ts`) and `fetchPayloadFromBff` (`lib/bffFetch.ts`). A provider-backed category adds these pieces and nothing else:
+
+1. **Shared wire types** in `packages/shared/src/lib/<category>.ts`, exported from the root. Keep the payload compact (year-aligned arrays rather than per-point objects) when it carries many entities.
+2. **API module** `apps/api/src/modules/<category>/`: a service on `OwidClient` (explicit `column`, explicit `country` allowlist, a pure exported builder function for the assembly), `registerCategory(category, origins)` on `OwidProviderStatus` in its constructor (the static `DataSourceOrigin` constants of the upstream producers: the same constants feed the catalog and the payload's `data.origin`) and `recordProviderUpdate(...)` after each success — never build the OWID data-source entry in the category module (a second `owid` entry crashes the boot) — a controller documented with `@ApiOkResponse` and `@ApiBadGatewayResponse`, the module importing `OwidModule`, and the import in `AppModule`.
+3. **Failures are provider errors.** Provider failures extend `ProviderError` (`common/errors/`); the global filter maps any of them to `502` with a constant body, so there is no per-controller mapping. Throw `ProviderDataError` when the provider answers with unusable content. Unexpected errors stay `500`.
+4. **API tests** with fixtures captured once from the exact URLs the service uses (never inside a test), the transport stubbed through `OUTBOUND_FETCH`, and no network.
+5. **Web side**: `src/lib/<category>.ts` (`server-only`, on `fetchPayloadFromBff` with a shape guard built on `isYearAlignedCountryData`), a content component under `src/components/<category>/` (server-rendered key figures, a client explorer, `SourceAttribution` fed from `meta.source`), a chart option builder on `LazyEChart` (pure, no colors), the entry in `CATEGORY_PAGES` (`src/lib/categoryPages.tsx`; registering a category also removes it from `generateStaticParams`) and the live meta description in `src/lib/categoryMetadata.ts`.
+6. **E2E** in `apps/web/e2e/<category>.spec.ts` against the OWID fixture server (below), plus the axe and SEO specs.
+7. **Docs**: `docs/design-system.md` when a presentation decision is made, this file's structure tree, and the READMEs.
+
+**Check the chart before building on it.** Open the chart's default tab (a chart that opens on its map tab ignores `country` unless the request passes `tab: 'chart'`, which silently yields one year per entity), the unit and baseline (verify any baseline against the provider's description, not an assumption), and the upstream licence: the producer of the measurements is declared as an origin (`registerCategory(category, origins)`), served in the payload and credited next to the chart with `OriginCredit` through the `extra` slot of `DataAttribution`, with the notice, citation and disclaimer its license asks for.
+
+**Health: liveness vs dependencies.** `GET /api/v1/health` is liveness only (the Cloud Run startup probe): it never calls a provider and `HealthController` takes no provider dependency. `GET /api/v1/health/dependencies` runs Terminus indicators against the providers (one indicator per provider, not per category) and answers with Terminus' native body, `200` or `503`.
+
+**E2E never reaches live providers.** The webServer wrapper (`apps/web/e2e/run-dev-servers.ts`) starts a local OWID fixture server (`e2e/utils/owid-fixture-server.ts`, committed trimmed fixtures in `e2e/fixtures/owid/`, port in `e2e/utils/api-env.ts`) and starts the API with `OWID_GRAPHER_BASE_URL` / `OWID_API_BASE_URL` pointing at it. A new OWID-backed category adds its chart CSVs and indicator metadata there. Verify against the real provider manually.
 
 ### Adding a new shared type
 
@@ -458,6 +480,10 @@ The user must **explicitly authorize** every `git commit` and every `git push`. 
 - `.husky/pre-push` blocks direct pushes to `main` and runs `npx nx affected --target=test --base=origin/develop` (fast, NX-cached). E2E is not push-time: CI runs the full suite on every push; locally use `npm run e2e` (deterministic — the webServer wrapper brings up both servers and cleans up their process trees).
 - SSH keep-alive hygiene: set `ServerAliveInterval` for the `github-mafmaggot` host in `~/.ssh/config` so long pushes don't die with `Connection closed by remote host`.
 - If you start dev servers manually: `next dev` spawns a `next-server` worker that survives its parent and holds `:3000` — kill it by PID (`ss -tlnp | grep :3000`), never `pkill -f` with a self-matching pattern.
+
+### Next's fetch Data Cache outlives deployments and holds old BFF contracts
+
+The web reads the BFF with `next: { revalidate: 86400 }`, and that Data Cache persists across deployments and dev restarts (`apps/web/.next/dev/cache/fetch-cache` locally). After a BFF payload contract change, cached responses can fail the new strict payload guard on both attempts and the page throws ("BFF payload does not match the expected response shape"). `fetchEnvelopeFromBff` heals this: a shape mismatch makes the retry use `cache: 'no-store'`. Still: deploy the API before the web for every payload change, and if a dev server misbehaves after a contract change, deleting `.next/dev/cache` is safe.
 
 ### "This model does not support assistant message prefill"
 

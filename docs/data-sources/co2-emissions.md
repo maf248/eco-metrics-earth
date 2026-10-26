@@ -19,6 +19,8 @@ Tracks carbon dioxide emissions by country, sector, and source. Includes histori
 - **API key:** Not required.
 - **CORS:** Enabled on grapher endpoints.
 
+**Verified and in use (25 Oct 2026): two grapher charts.** The site's `co2-emissions` category reads `annual-co2-emissions-per-country` (column `emissions_total`, indicator id `1119906`, tonnes) and `co-emissions-per-capita` (column `emissions_total_per_capita`, indicator id `1119914`, tonnes per person), both opening on their chart tab, from 1950. **Origin and credit:** the data is produced by the Global Carbon Project (Global Carbon Budget, https://globalcarbonbudget.org/), license CC BY 4.0; the API declares this origin once, lists it in `GET /api/v1/data-sources` and serves it as `data.origin`, and the page credits it next to the OWID attribution.
+
 | Field            | Details                                                     |
 | ---------------- | ----------------------------------------------------------- |
 | Base URL         | `https://nyc3.digitaloceanspaces.com/owid-public/data/co2/` |
