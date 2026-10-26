@@ -1,3 +1,9 @@
+## [2.14.0](https://github.com/maf248/eco-metrics-earth/compare/v2.13.0...v2.14.0) (2026-10-26)
+
+### Features
+
+* **web:** add keyword-bearing titles to the live data pages ([9b8e1d3](https://github.com/maf248/eco-metrics-earth/commit/9b8e1d39918426fd93a62b7728df4efb4c6782b1))
+
 ## [2.13.0](https://github.com/maf248/eco-metrics-earth/compare/v2.12.0...v2.13.0) (2026-10-26)
 
 ### Features
