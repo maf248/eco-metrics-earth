@@ -64,6 +64,16 @@
   --chart-6: #008300; /* green */
   --chart-7: #6250d6; /* violet */
   --chart-8: #e34948; /* red */
+
+  /* Energy mix palette: read by name by the chart theme adapter, not a Tailwind utility. */
+  --energy-coal: #252933; /* charcoal */
+  --energy-gas: #caac7c; /* sand */
+  --energy-oil: #97541c; /* brown */
+  --energy-nuclear: #6d028d; /* violet */
+  --energy-hydro: #0475d5; /* blue */
+  --energy-wind: #00c4c6; /* teal / cyan */
+  --energy-solar: #e9a400; /* amber */
+  --energy-bio: #26771e; /* green */
 }
 
 .dark {
@@ -118,6 +128,16 @@
   --chart-6: #008300; /* green */
   --chart-7: #9085e9; /* violet */
   --chart-8: #e66767; /* red */
+
+  /* Energy mix palette (dark) */
+  --energy-coal: #5c5c69; /* charcoal */
+  --energy-gas: #dbbb8f; /* sand */
+  --energy-oil: #9d5834; /* brown */
+  --energy-nuclear: #d277f8; /* violet */
+  --energy-hydro: #226bb0; /* blue */
+  --energy-wind: #33cbea; /* teal / cyan */
+  --energy-solar: #ffd347; /* amber */
+  --energy-bio: #11b254; /* green */
 }
 
 @theme inline {

@@ -14,6 +14,29 @@ export const CHART_COLOR_TOKENS = [
   'chart-8',
 ] as const;
 
+/**
+ * Energy mix chart colors, in the order of `ENERGY_SOURCE_IDS`. Declared as `--energy-*` in `globals.css`; read by name by the theme adapter,
+ * never through Tailwind. A semantic palette: the order is part of its validation.
+ */
+export const CHART_ENERGY_TOKENS = [
+  'energy-coal',
+  'energy-gas',
+  'energy-oil',
+  'energy-nuclear',
+  'energy-hydro',
+  'energy-wind',
+  'energy-solar',
+  'energy-bio',
+] as const;
+
+/** Which colour palette a chart takes its series colours from. */
+export type ChartPalette = 'categorical' | 'energyMix';
+
+export const CHART_PALETTE_TOKENS: Record<ChartPalette, readonly string[]> = {
+  categorical: CHART_COLOR_TOKENS,
+  energyMix: CHART_ENERGY_TOKENS,
+};
+
 export type ChartColorToken = (typeof CHART_COLOR_TOKENS)[number];
 
 /** UI tokens the chart theme takes its axis, tooltip, legend and reference-line colors from. */

@@ -39,6 +39,45 @@ export function formatCompact(value: number): string {
   return compactFormatter.format(value);
 }
 
+const shareFormatter = new Intl.NumberFormat(LOCALE, {
+  minimumFractionDigits: 1,
+  maximumFractionDigits: 1,
+});
+
+/** Label of a positive share that rounds to zero at one decimal. */
+const TINY_SHARE_LABEL = '< 0.1';
+
+/** A share of a total with one decimal: `33.0`, `8.5`; `< 0.1` below 0.05 and `0.0` for zero. */
+export function formatShare(value: number): string {
+  if (value > 0 && value < 0.05) {
+    return TINY_SHARE_LABEL;
+  }
+  return shareFormatter.format(value);
+}
+
+function fractionDigitsForTwh(value: number): number {
+  const magnitude = Math.abs(value);
+  if (magnitude >= 100) return 0;
+  if (magnitude >= 1) return 1;
+  return 2;
+}
+
+/** Rounds to the precision its own magnitude calls for; may cross into the next band (99.96 -> 100). */
+function roundTwh(value: number): number {
+  const factor = 10 ** fractionDigitsForTwh(value);
+  return Math.round(value * factor) / factor;
+}
+
+/** Terawatt-hours: no decimals from 100 up, one from 1, two below: `10,539`, `62.2`, `0.01`. */
+export function formatTwh(value: number): string {
+  // Decimals follow the rounded value, so 99.96 reads `100` and not `100.0`.
+  const digits = fractionDigitsForTwh(roundTwh(value));
+  return new Intl.NumberFormat(LOCALE, {
+    minimumFractionDigits: digits,
+    maximumFractionDigits: digits,
+  }).format(value);
+}
+
 // Real minus sign (U+2212): never read, or wrapped, as a hyphen separator.
 const MINUS_SIGN = '−';
 

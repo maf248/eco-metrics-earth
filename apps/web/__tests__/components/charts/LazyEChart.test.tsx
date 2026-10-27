@@ -6,8 +6,8 @@ import { LazyEChart } from '@/components/charts/LazyEChart';
 
 // The real chart needs layout and a canvas; this suite only checks the lazy hand-over.
 jest.mock('@/components/charts/EChart', () => ({
-  EChart: ({ className }: { className?: string }) => (
-    <div data-testid="chart-loaded" className={className} />
+  EChart: ({ className, palette }: { className?: string; palette?: string }) => (
+    <div data-testid="chart-loaded" className={className} data-palette={palette} />
   ),
 }));
 
@@ -22,6 +22,14 @@ describe('LazyEChart', () => {
     const chart = await screen.findByTestId('chart-loaded');
     expect(chart).toHaveClass('h-72', 'sm:h-96');
     expect(screen.queryByTestId('chart-skeleton')).not.toBeInTheDocument();
+  });
+});
+
+describe('LazyEChart palette', () => {
+  it('should hand the palette to the chart', async () => {
+    render(<LazyEChart option={{}} palette="energyMix" />);
+
+    expect(await screen.findByTestId('chart-loaded')).toHaveAttribute('data-palette', 'energyMix');
   });
 });
 

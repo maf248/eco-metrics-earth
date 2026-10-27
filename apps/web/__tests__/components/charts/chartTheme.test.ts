@@ -2,7 +2,10 @@ import {
   buildChartTheme,
   createCanvasColorResolver,
 } from '../../../src/components/charts/chartTheme';
-import { CHART_COLOR_TOKENS } from '../../../src/components/charts/chartTokens';
+import {
+  CHART_COLOR_TOKENS,
+  CHART_ENERGY_TOKENS,
+} from '../../../src/components/charts/chartTokens';
 
 import { clearTokens, declareTokens, stubCanvasContext } from './canvasStub';
 
@@ -22,6 +25,24 @@ describe('chart theme adapter', () => {
 
   it('should resolve a CSS color to an rgba string through the canvas', () => {
     expect(createCanvasColorResolver()('#2a78d6')).toBe('rgba(42, 120, 214, 1)');
+  });
+
+  it('should not leak the previous colour when a colour is empty or invalid', () => {
+    const resolve = createCanvasColorResolver();
+
+    expect(resolve('#2a78d6')).toBe('rgba(42, 120, 214, 1)');
+    expect(resolve('')).toBe('rgba(0, 0, 0, 0)');
+    expect(resolve('not-a-colour')).toBe('rgba(0, 0, 0, 0)');
+  });
+
+  it('should warn in development when a token is not declared', () => {
+    const warn = jest.spyOn(console, 'warn').mockImplementation(() => undefined);
+    document.documentElement.style.removeProperty('--energy-coal');
+
+    buildChartTheme(undefined, 'energyMix');
+
+    expect(warn).toHaveBeenCalledWith(expect.stringContaining('--energy-coal'));
+    warn.mockRestore();
   });
 
   it('should fall back to the raw value when no 2D context is available', () => {
@@ -80,5 +101,36 @@ describe('chart theme adapter', () => {
     const theme = buildChartTheme((value) => `resolved(${value})`);
 
     expect(theme.color[0]).toBe('resolved(#2a78d6)');
+  });
+
+  it('should resolve the categorical colors when no palette is given', () => {
+    const theme = buildChartTheme();
+
+    expect(theme.color).toEqual(buildChartTheme(undefined, 'categorical').color);
+    expect(theme.color[0]).toBe('rgba(42, 120, 214, 1)');
+  });
+
+  it('should resolve the eight energy tokens in order for the energy mix palette', () => {
+    const theme = buildChartTheme(undefined, 'energyMix');
+
+    expect(CHART_ENERGY_TOKENS).toHaveLength(8);
+    expect(theme.color).toEqual([
+      'rgba(37, 41, 51, 1)',
+      'rgba(202, 172, 124, 1)',
+      'rgba(151, 84, 28, 1)',
+      'rgba(109, 2, 141, 1)',
+      'rgba(4, 117, 213, 1)',
+      'rgba(0, 196, 198, 1)',
+      'rgba(233, 164, 0, 1)',
+      'rgba(38, 119, 30, 1)',
+    ]);
+  });
+
+  it('should leave axes, tooltip, legend and reference line unchanged by the palette', () => {
+    const { color: categorical, ...categoricalRest } = buildChartTheme(undefined, 'categorical');
+    const { color: energy, ...energyRest } = buildChartTheme(undefined, 'energyMix');
+
+    expect(energy).not.toEqual(categorical);
+    expect(energyRest).toEqual(categoricalRest);
   });
 });

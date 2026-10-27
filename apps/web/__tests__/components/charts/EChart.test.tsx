@@ -1,4 +1,4 @@
-import { act, render, waitFor } from '@testing-library/react';
+import { act, cleanup, render, waitFor } from '@testing-library/react';
 import type { EChartsType } from 'echarts/core';
 
 import { EChart } from '../../../src/components/charts/EChart';
@@ -59,6 +59,8 @@ describe('EChart', () => {
   });
 
   afterEach(() => {
+    // Unmount first: a live chart would re-theme on the cleanup below and find no tokens.
+    cleanup();
     getContextSpy.mockRestore();
     clearTokens();
     global.ResizeObserver = originalResizeObserver;
@@ -150,6 +152,44 @@ describe('EChart', () => {
         expect(after.label?.getAttribute('fill')).toBe('rgb(209,213,219)');
         expect(after.line?.getAttribute('stroke')).toBe('rgb(156,163,175)');
       });
+    });
+  });
+
+  describe('palette', () => {
+    it('should color the series with the energy mix palette when asked', async () => {
+      const { container } = render(
+        <EChart option={OPTION} palette="energyMix" initSize={{ width: 400, height: 300 }} />,
+      );
+
+      await waitFor(() => {
+        const stroke = container.querySelector('path[stroke]:not([stroke="none"])');
+        expect(container.innerHTML).toContain('rgb(37,41,51)');
+        expect(stroke).toBeInTheDocument();
+      });
+    });
+
+    it('should keep the categorical palette by default', async () => {
+      const { container } = render(
+        <EChart option={OPTION} initSize={{ width: 400, height: 300 }} />,
+      );
+
+      await waitFor(() => expect(container.innerHTML).toContain('rgb(42,120,214)'));
+      expect(container.innerHTML).not.toContain('rgb(37,41,51)');
+    });
+
+    it('should re-apply the energy palette, not the categorical one, on a theme switch', async () => {
+      const { container } = render(
+        <EChart option={OPTION} palette="energyMix" initSize={{ width: 400, height: 300 }} />,
+      );
+      await waitFor(() => expect(container.innerHTML).toContain('rgb(37,41,51)'));
+
+      declareTokens({ 'energy-coal': '#5c5c69' });
+      act(() => {
+        document.documentElement.classList.add('dark');
+      });
+
+      await waitFor(() => expect(container.innerHTML).toContain('rgb(92,92,105)'));
+      expect(container.innerHTML).not.toContain('rgb(42,120,214)');
     });
   });
 

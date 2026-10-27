@@ -10,12 +10,14 @@ import CategoryPage, {
 import { CATEGORY_DESCRIPTIONS } from '@/lib/categoryMetadata';
 import { getCo2Emissions } from '@/lib/co2Emissions';
 import { getDataSources } from '@/lib/dataSources';
+import { getEnergySources } from '@/lib/energySources';
 import { getGlobalTemperature } from '@/lib/globalTemperature';
 import { OG_IMAGE } from '@/lib/socialMetadata';
 import { getWaterFootprintProducts } from '@/lib/waterFootprint';
 import { ECO_CATEGORIES } from '@eco-metrics/shared';
 
 import { CO2_FIXTURE, CO2_META } from '../../fixtures/co2Emissions';
+import { ENERGY_FIXTURE, ENERGY_META } from '../../fixtures/energySources';
 import { TEMPERATURE_FIXTURE, TEMPERATURE_META } from '../../fixtures/globalTemperature';
 
 jest.mock('@/lib/waterFootprint', () => ({
@@ -41,9 +43,17 @@ jest.mock('@/lib/globalTemperature', () => ({
   getGlobalTemperature: jest.fn(),
 }));
 
+jest.mock('@/lib/energySources', () => ({
+  getEnergySources: jest.fn(),
+}));
+
 // ECharts is loaded lazily in the browser; the page test only needs the surrounding markup.
 jest.mock('@/components/charts/LazyEChart', () => ({
   LazyEChart: () => <div data-testid="chart-stub" />,
+}));
+
+jest.mock('@/components/charts/LazyPieEChart', () => ({
+  LazyPieEChart: () => <div data-testid="pie-stub" />,
 }));
 
 jest.mock('@/lib/dataSources', () => ({ getDataSources: jest.fn() }));
@@ -53,6 +63,7 @@ beforeEach(() => {
   jest
     .mocked(getGlobalTemperature)
     .mockResolvedValue({ data: TEMPERATURE_FIXTURE, meta: TEMPERATURE_META });
+  jest.mocked(getEnergySources).mockResolvedValue({ data: ENERGY_FIXTURE, meta: ENERGY_META });
 });
 
 jest.mock('next/navigation', () => ({
@@ -294,10 +305,11 @@ describe('generateStaticParams', () => {
 
   it('should return every category except the ones with a registry entry', async () => {
     const params = await generateStaticParams();
-    expect(params).toHaveLength(9);
+    expect(params).toHaveLength(8);
     expect(params).not.toContainEqual({ category: ECO_CATEGORIES.WATER_FOOTPRINT });
     expect(params).not.toContainEqual({ category: ECO_CATEGORIES.CO2_EMISSIONS });
     expect(params).not.toContainEqual({ category: ECO_CATEGORIES.GLOBAL_TEMPERATURE });
+    expect(params).not.toContainEqual({ category: ECO_CATEGORIES.ENERGY_SOURCES });
   });
 });
 
@@ -447,6 +459,47 @@ describe('CategoryPage — global-temperature branch', () => {
 
     expect(metadata.description).toBe(CATEGORY_DESCRIPTIONS['global-temperature']);
     expect(metadata.description).not.toMatch(/coming/);
+  });
+});
+
+describe('CategoryPage — energy-sources branch', () => {
+  it('should render the energy content from the loader inside the container below the header', async () => {
+    const element = await CategoryPage({
+      params: Promise.resolve({ category: 'energy-sources' }),
+    });
+    const { container } = render(element);
+
+    expect(screen.getByRole('heading', { level: 1, name: 'Energy Sources' })).toBeInTheDocument();
+    expect(screen.getByTestId('energy-key-figures')).toHaveTextContent('In 2025, renewables');
+    expect(container.querySelector('main .mt-8.w-full.flex.justify-center')).not.toBeNull();
+    expect(screen.queryByText(/coming soon/)).not.toBeInTheDocument();
+  });
+
+  it('should propagate a loader failure instead of rendering the page', async () => {
+    const failure = new Error('Energy sources data could not be fetched from the BFF');
+    jest.mocked(getEnergySources).mockRejectedValueOnce(failure);
+
+    await expect(
+      CategoryPage({ params: Promise.resolve({ category: 'energy-sources' }) }),
+    ).rejects.toBe(failure);
+  });
+
+  it('should not load energy data for other categories', async () => {
+    jest.mocked(getEnergySources).mockClear();
+
+    await CategoryPage({ params: Promise.resolve({ category: 'ocean-health' }) });
+
+    expect(getEnergySources).not.toHaveBeenCalled();
+  });
+
+  it('should publish the live description and the title override in the metadata', async () => {
+    const metadata = await generateMetadata({
+      params: Promise.resolve({ category: 'energy-sources' }),
+    });
+
+    expect(metadata.description).toBe(CATEGORY_DESCRIPTIONS['energy-sources']);
+    expect(metadata.description).not.toMatch(/coming/);
+    expect(metadata.title).toBe('Electricity Mix by Country');
   });
 });
 

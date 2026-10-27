@@ -1,0 +1,42 @@
+{
+  "id": 1295503,
+  "name": "Electricity from coal - TWh",
+  "unit": "terawatt-hours",
+  "shortUnit": "TWh",
+  "timespan": "1900-2025",
+  "updatedAt": "2026-09-10T01:11:13.000Z",
+  "descriptionShort": "Measured in [terawatt-hours](#dod:watt-hours).",
+  "datasetName": "Electricity mix",
+  "datasetVersion": "2026-06-30",
+  "dimensions": {
+    "entities": {
+      "values": [
+        {
+          "id": 17,
+          "name": "Algeria",
+          "code": "DZA"
+        },
+        {
+          "id": 21,
+          "name": "Argentina",
+          "code": "ARG"
+        },
+        {
+          "id": 35,
+          "name": "Bosnia and Herzegovina",
+          "code": "BIH"
+        },
+        {
+          "id": 9,
+          "name": "Spain",
+          "code": "ESP"
+        },
+        {
+          "id": 355,
+          "name": "World",
+          "code": "OWID_WRL"
+        }
+      ]
+    }
+  }
+}

@@ -1,9 +1,11 @@
 import type { ComponentType } from 'react';
 
 import { Co2EmissionsContent } from '@/components/co2-emissions/Co2EmissionsContent';
+import { EnergySourcesContent } from '@/components/energy-sources/EnergySourcesContent';
 import { GlobalTemperatureContent } from '@/components/global-temperature/GlobalTemperatureContent';
 import { WaterFootprintContent } from '@/components/water-footprint/WaterFootprintContent';
 import { getCo2Emissions } from '@/lib/co2Emissions';
+import { getEnergySources } from '@/lib/energySources';
 import { getGlobalTemperature } from '@/lib/globalTemperature';
 import { getWaterFootprintProducts } from '@/lib/waterFootprint';
 import { ECO_CATEGORIES } from '@eco-metrics/shared';
@@ -55,6 +57,14 @@ export const CATEGORY_PAGES: Partial<Record<EcoCategory, CategoryPageDefinition>
     Content: ({ data }) => (
       <div className="mt-8 w-full flex justify-center">
         <GlobalTemperatureContent data={data} />
+      </div>
+    ),
+  }),
+  [ECO_CATEGORIES.ENERGY_SOURCES]: defineCategoryPage({
+    load: getEnergySources,
+    Content: ({ data }) => (
+      <div className="mt-8 w-full flex justify-center">
+        <EnergySourcesContent data={data} />
       </div>
     ),
   }),

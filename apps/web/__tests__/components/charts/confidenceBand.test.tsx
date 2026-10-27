@@ -1,4 +1,4 @@
-import { act, render, waitFor } from '@testing-library/react';
+import { act, cleanup, render, waitFor } from '@testing-library/react';
 
 import { BAND_OPACITY, buildConfidenceBandSeries } from '@/components/charts/confidenceBand';
 import { EChart } from '@/components/charts/EChart';
@@ -65,6 +65,8 @@ describe('confidence band in a chart', () => {
   });
 
   afterEach(() => {
+    // Unmount first: a live chart would re-theme on the cleanup below and find no tokens.
+    cleanup();
     getContextSpy.mockRestore();
     clearTokens();
     document.documentElement.classList.remove('dark');

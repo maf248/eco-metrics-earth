@@ -3,10 +3,12 @@ import { render, screen } from '@testing-library/react';
 import { ChartPanel } from '@/components/charts/ChartPanel';
 
 const received: unknown[] = [];
+const palettes: unknown[] = [];
 
 jest.mock('@/components/charts/LazyEChart', () => ({
-  LazyEChart: ({ option }: { option: unknown }) => {
+  LazyEChart: ({ option, palette }: { option: unknown; palette?: string }) => {
     received.push(option);
+    palettes.push(palette);
     return <div data-testid="chart-stub" />;
   },
 }));
@@ -14,6 +16,7 @@ jest.mock('@/components/charts/LazyEChart', () => ({
 describe('ChartPanel', () => {
   beforeEach(() => {
     received.length = 0;
+    palettes.length = 0;
   });
 
   it('should render the title as an h3 above the chart', () => {
@@ -37,5 +40,12 @@ describe('ChartPanel', () => {
     const status = screen.getByRole('status');
     expect(status).toHaveTextContent('Showing it for Argentina');
     expect(status).toHaveClass('sr-only');
+  });
+
+  it('should pass the palette through to the chart, and leave it unset by default', () => {
+    const { rerender } = render(<ChartPanel title="t" option={{}} announcement="a" />);
+    rerender(<ChartPanel title="t" option={{}} announcement="a" palette="energyMix" />);
+
+    expect(palettes).toEqual([undefined, 'energyMix']);
   });
 });

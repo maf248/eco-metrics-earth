@@ -147,6 +147,49 @@ test.describe('Accessibility audit — global temperature page', () => {
   }
 });
 
+test.describe('Accessibility audit — energy sources page', () => {
+  test.setTimeout(60_000);
+
+  const criticalAndSerious = (results: Awaited<ReturnType<typeof analyzeSettled>>) =>
+    results.violations.filter((v) => v.impact === 'critical' || v.impact === 'serious');
+
+  test('should have zero critical and serious violations in the light theme', async ({ page }) => {
+    await page.addInitScript(() => localStorage.setItem('eco-metrics-theme', 'light'));
+    await page.goto('/energy-sources/');
+    await expect(page.getByTestId('echart').locator('svg').first()).toBeVisible();
+
+    expect(criticalAndSerious(await analyzeSettled(page))).toEqual([]);
+  });
+
+  test('should have zero critical and serious violations in the dark theme', async ({ page }) => {
+    await page.addInitScript(() => localStorage.setItem('eco-metrics-theme', 'dark'));
+    await page.goto('/energy-sources/');
+    await expect(page.getByTestId('echart').locator('svg').first()).toBeVisible();
+
+    expect(criticalAndSerious(await analyzeSettled(page))).toEqual([]);
+  });
+
+  test('should have zero critical and serious violations with the country list open', async ({
+    page,
+  }) => {
+    await page.goto('/energy-sources/');
+    await page.getByRole('combobox', { name: 'Country' }).press('ArrowDown');
+    await expect(page.getByRole('option').first()).toBeVisible();
+
+    expect(criticalAndSerious(await analyzeSettled(page))).toEqual([]);
+  });
+
+  test('should have zero critical and serious violations with the year table open', async ({
+    page,
+  }) => {
+    await page.goto('/energy-sources/');
+    await page.getByText('View data table').click();
+    await expect(page.getByRole('table').first()).toBeVisible();
+
+    expect(criticalAndSerious(await analyzeSettled(page))).toEqual([]);
+  });
+});
+
 test.describe('Accessibility audit — data sources page', () => {
   test('should have zero critical and serious violations', async ({ page }) => {
     await page.goto(dataSourcesPage.url);

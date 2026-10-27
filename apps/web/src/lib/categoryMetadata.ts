@@ -32,7 +32,7 @@ export const CATEGORY_DESCRIPTIONS: Record<EcoCategory, string> = {
   'plastic-pollution':
     'Plastic pollution data is coming to eco-metrics earth: how much plastic is produced, wasted and ends up in the ocean.',
   'energy-sources':
-    "Energy sources data is coming soon: how much of the world's electricity comes from fossil fuels, nuclear and renewables.",
+    'Electricity mix by country since 2000: coal, gas, oil, nuclear, hydro, wind, solar and bioenergy, as a share and in TWh. Data from Our World in Data.',
   'water-footprint':
     'Water footprint of food and products: how many liters of green, blue and grey water it takes to produce what we eat and use. Source-cited data.',
 };
@@ -45,6 +45,7 @@ export const CATEGORY_DESCRIPTIONS: Record<EcoCategory, string> = {
 const METADATA_TITLE_OVERRIDES: Partial<Record<EcoCategory, string>> = {
   'co2-emissions': 'CO2 Emissions by Country',
   'global-temperature': 'Global Temperature Anomalies by Country',
+  'energy-sources': 'Electricity Mix by Country',
   'water-footprint': 'Water Footprint of Food & Products',
 };
 

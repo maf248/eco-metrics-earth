@@ -117,6 +117,35 @@ describe('respondWithFixture', () => {
     expect(metadata.updatedAt).toBeTruthy();
   });
 
+  it('should serve the electricity chart CSV: World and countries, blanks, a zeros-only latest row', () => {
+    const { status, contentType, body } = respond(
+      '/grapher/electricity-production-by-source.csv?v=1&csvType=filtered&time=2000..2026',
+    );
+
+    expect(status).toBe(200);
+    expect(contentType).toContain('text/csv');
+    expect(body.split('\n')[0]).toBe(
+      'entity,code,year,coal_generation__twh,gas_generation__twh,nuclear_generation__twh,hydro_generation__twh,solar_generation__twh,oil_generation__twh,wind_generation__twh,bioenergy_generation__twh,other_renewables_excluding_bioenergy_generation__twh',
+    );
+    for (const code of ['OWID_WRL', 'ARG', 'ESP', 'BIH', 'DZA']) {
+      expect(body).toContain(`,${code},2000,`);
+    }
+    expect(body).toContain('Algeria,DZA,2025,,,0,,,,,,\n');
+    expect(body).toMatch(/Bosnia and Herzegovina,BIH,2000,[\d.]+,,/);
+    expect(body).not.toMatch(/,(19\d\d),/);
+  });
+
+  it('should serve the electricity indicator metadata with the dataset identity', () => {
+    const { status, contentType, body } = respond('/v1/indicators/1295503.metadata.json');
+
+    expect(status).toBe(200);
+    expect(contentType).toBe('application/json');
+    const metadata = JSON.parse(body) as Record<string, string>;
+    expect(metadata.datasetName).toBe('Electricity mix');
+    expect(metadata.datasetVersion).toBe('2026-06-30');
+    expect(metadata.updatedAt).toBeTruthy();
+  });
+
   it('should answer 404 for anything else', () => {
     expect(respond('/grapher/unknown.csv').status).toBe(404);
   });

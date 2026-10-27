@@ -66,4 +66,59 @@ describe('YearDataTable', () => {
     const cells = screen.getAllByRole('cell', { hidden: true });
     expect(cells.filter((cell) => cell.textContent === '—')).toHaveLength(2);
   });
+
+  describe('wide', () => {
+    const eight = Array.from({ length: 8 }, (_, index) => ({
+      header: `Source ${index + 1} (%)`,
+      values: [index, null, index],
+      format: (value: number) => `${value}%`,
+    }));
+
+    function renderWide(wide?: boolean) {
+      return render(
+        <YearDataTable
+          caption="World: sources"
+          entityName="World"
+          startYear={2000}
+          endYear={2002}
+          columns={eight}
+          wide={wide}
+        />,
+      );
+    }
+
+    it('should use a larger minimum width than the default table', () => {
+      const wide = renderWide(true).container.querySelector('table');
+      const regular = renderWide().container.querySelector('table');
+
+      expect(wide).toHaveClass('min-w-208');
+      expect(wide).not.toHaveClass('min-w-72');
+      expect(regular).toHaveClass('min-w-72');
+      expect(regular).not.toHaveClass('min-w-208');
+    });
+
+    it('should keep the collapsed, labelled and focusable behavior with nine headers', () => {
+      const { container } = renderWide(true);
+
+      expect(container.querySelector('details')).not.toHaveAttribute('open');
+      const region = screen.getByRole('region', { hidden: true, name: /Data table for World/ });
+      expect(region).toHaveAttribute('tabindex', '0');
+      expect(screen.getAllByRole('columnheader', { hidden: true })).toHaveLength(9);
+    });
+
+    it('should keep newest-first rows and em dashes', () => {
+      renderWide(true);
+
+      const rows = screen.getAllByRole('row', { hidden: true });
+      expect(within(rows[1]).getByRole('rowheader', { hidden: true })).toHaveTextContent('2002');
+      expect(within(rows[2]).getAllByText('—')).toHaveLength(8);
+    });
+
+    it('should leave the default markup identical to the markup without the flag', () => {
+      const withoutFlag = renderWide().container.innerHTML;
+      const explicitFalse = renderWide(false).container.innerHTML;
+
+      expect(explicitFalse).toBe(withoutFlag);
+    });
+  });
 });
