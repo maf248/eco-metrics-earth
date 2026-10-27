@@ -1,3 +1,9 @@
+## [2.12.0](https://github.com/maf248/eco-metrics-earth/compare/web-v2.11.0...web-v2.12.0) (2026-10-27)
+
+### Features
+
+* **web:** add the energy sources page ([060734b](https://github.com/maf248/eco-metrics-earth/commit/060734b4fecd586e18ccaf2a917e41c20854e5c2))
+
 ## [2.11.0](https://github.com/maf248/eco-metrics-earth/compare/web-v2.10.0...web-v2.11.0) (2026-10-26)
 
 ### Features
