@@ -17,6 +17,7 @@ const PUBLISHERS_FILE = join('apps', 'api', 'src', 'common', 'publishers', 'publ
 // other files allowed to spell it out.
 const ORIGIN_DECLARATIONS = [
   join('apps', 'api', 'src', 'modules', 'co2-emissions', 'co2-emissions.constants.ts'),
+  join('apps', 'api', 'src', 'modules', 'energy-sources', 'energy-sources.constants.ts'),
   join('apps', 'api', 'src', 'modules', 'global-temperature', 'global-temperature.constants.ts'),
 ];
 

@@ -11,7 +11,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 
-import { CHART_COLOR_TOKENS } from '../src/components/charts/chartTokens';
+import { CHART_COLOR_TOKENS, CHART_ENERGY_TOKENS } from '../src/components/charts/chartTokens';
 
 const SRC_DIR = path.resolve(__dirname, '../src');
 const GLOBALS_CSS = path.join(SRC_DIR, 'app/globals.css');
@@ -64,13 +64,19 @@ function declaredProperties(css: string, selector: string): string[] {
 
 const css = fs.readFileSync(GLOBALS_CSS, 'utf8');
 // Chart tokens are a separate group: hex values read by name by the chart theme adapter,
-// never exposed as Tailwind utilities (docs/design-system.md, Color Palettes).
-const isChartToken = (token: string): boolean => token.startsWith('chart-');
+// never exposed as Tailwind utilities (docs/design-system.md, Color Palettes). Two palettes:
+// the categorical `--chart-*` and the energy mix `--energy-*`.
+const isCategoricalToken = (token: string): boolean => token.startsWith('chart-');
+const isEnergyToken = (token: string): boolean => token.startsWith('energy-');
+const isChartToken = (token: string): boolean => isCategoricalToken(token) || isEnergyToken(token);
 const lightTokens = declaredProperties(css, ':root');
 const darkTokens = declaredProperties(css, '.dark');
 const lightUiTokens = lightTokens.filter((token) => !isChartToken(token));
 const lightChartTokens = lightTokens.filter(isChartToken);
 const darkChartTokens = darkTokens.filter(isChartToken);
+const lightCategoricalTokens = lightTokens.filter(isCategoricalToken);
+const lightEnergyTokens = lightTokens.filter(isEnergyToken);
+
 const themeMappings = [
   ...css
     .slice(css.indexOf('@theme inline {'))
@@ -98,6 +104,7 @@ describe('design tokens — globals.css', () => {
   it('should not map chart tokens through @theme inline', () => {
     expect(themeMappings.filter(({ rawToken }) => isChartToken(rawToken))).toEqual([]);
     expect(css.slice(css.indexOf('@theme inline {'))).not.toContain('--color-chart-');
+    expect(css.slice(css.indexOf('@theme inline {'))).not.toContain('--color-energy-');
   });
 
   it('should only map @theme inline entries to declared tokens', () => {
@@ -126,7 +133,12 @@ describe('design tokens — globals.css', () => {
 
 describe('design tokens — chart tokens', () => {
   it('should declare exactly the names the chart theme adapter reads', () => {
-    expect([...lightChartTokens].sort()).toEqual([...CHART_COLOR_TOKENS].sort());
+    expect([...lightCategoricalTokens].sort()).toEqual([...CHART_COLOR_TOKENS].sort());
+  });
+
+  it('should declare exactly the energy mix names the chart theme adapter reads', () => {
+    expect([...lightEnergyTokens].sort()).toEqual([...CHART_ENERGY_TOKENS].sort());
+    expect(lightEnergyTokens).toHaveLength(8);
   });
 
   it('should give every chart token a light and a dark hex value', () => {

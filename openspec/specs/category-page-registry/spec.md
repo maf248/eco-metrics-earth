@@ -30,7 +30,13 @@ Dispatch category pages with live data through a registry, so new categories onl
 #### Scenario: Water-footprint and CO2 are registered
 
 - **WHEN** `CATEGORY_PAGES` is inspected
-- **THEN** it has entries for exactly `water-footprint`, `co2-emissions` and `global-temperature`
+- **THEN** it has entries for exactly `water-footprint`, `co2-emissions`, `global-temperature` and `energy-sources`
+
+#### Scenario: Energy sources renders through the registry
+
+- **GIVEN** the `energy-sources` entry whose `load` is `getEnergySources`
+- **WHEN** the page renders `energy-sources`
+- **THEN** `EnergySourcesContent` is rendered with the fetched payload inside the container `mt-8 w-full flex justify-center`, below the common header
 
 ### Requirement: Water-footprint is migrated without behavior change
 
@@ -52,9 +58,9 @@ The `water-footprint` entry SHALL use `getWaterFootprintProducts` as `load` and 
 
 #### Scenario: Registering a category removes it from static params
 
-- **GIVEN** a registry with `water-footprint`, `co2-emissions` and `global-temperature`
+- **GIVEN** a registry with `water-footprint`, `co2-emissions`, `global-temperature` and `energy-sources`
 - **WHEN** `generateStaticParams()` is called
-- **THEN** none of those slugs is returned and the other 9 are
+- **THEN** none of those slugs is returned and the other 8 are
 
 ### Requirement: The recipe for new categories is documented
 

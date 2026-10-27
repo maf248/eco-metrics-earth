@@ -49,6 +49,8 @@ export const CATEGORY_DESCRIPTION_SAMPLES = {
     'CO2 emissions by country since 1950: total annual emissions and emissions per person for every country and the world. Data from Our World in Data.',
   'global-temperature':
     "Global temperature by country since 1940: how far each year's surface temperature is from the 1991–2020 average. Data from Our World in Data.",
+  'energy-sources':
+    'Electricity mix by country since 2000: coal, gas, oil, nuclear, hydro, wind, solar and bioenergy, as a share and in TWh. Data from Our World in Data.',
 } as const;
 
 /**
@@ -58,6 +60,7 @@ export const CATEGORY_DESCRIPTION_SAMPLES = {
 export const CATEGORY_METADATA_TITLES = {
   'co2-emissions': 'CO2 Emissions by Country',
   'global-temperature': 'Global Temperature Anomalies by Country',
+  'energy-sources': 'Electricity Mix by Country',
   'water-footprint': waterFootprintPage.title,
 } as const satisfies Partial<Record<EcoCategory, string>>;
 

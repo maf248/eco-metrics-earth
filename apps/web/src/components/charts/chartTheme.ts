@@ -1,4 +1,4 @@
-import { CHART_COLOR_TOKENS, CHART_UI_TOKENS } from './chartTokens';
+import { CHART_PALETTE_TOKENS, CHART_UI_TOKENS, type ChartPalette } from './chartTokens';
 
 /** Turns any CSS color (hex, `oklch()`, `var()`-free) into an `rgba()` string. */
 export type ColorResolver = (cssColor: string) => string;
@@ -41,6 +41,8 @@ export function createCanvasColorResolver(): ColorResolver {
       return cssColor;
     }
     context.clearRect(0, 0, 1, 1);
+    // An invalid colour is ignored by the canvas: reset first so the previous one never leaks.
+    context.fillStyle = 'rgba(0, 0, 0, 0)';
     context.fillStyle = cssColor;
     context.fillRect(0, 0, 1, 1);
     const [red, green, blue, alpha] = context.getImageData(0, 0, 1, 1).data;
@@ -49,15 +51,24 @@ export function createCanvasColorResolver(): ColorResolver {
 }
 
 function readToken(name: string): string {
-  return getComputedStyle(document.documentElement).getPropertyValue(`--${name}`).trim();
+  const value = getComputedStyle(document.documentElement).getPropertyValue(`--${name}`).trim();
+  if (!value && process.env.NODE_ENV !== 'production') {
+    // eslint-disable-next-line no-console
+    console.warn(`[chartTheme] Token --${name} is empty or not declared.`);
+  }
+  return value;
 }
 
 /**
  * Builds the ECharts theme from the design tokens currently in effect (light or
  * dark, whichever the `dark` class on `<html>` selects). Chart options never
- * name a color: they inherit everything from this theme.
+ * name a color: they inherit everything from this theme. `palette` swaps only the
+ * series colours; axes, tooltip, legend and reference lines are the same.
  */
-export function buildChartTheme(resolve: ColorResolver = createCanvasColorResolver()): ChartTheme {
+export function buildChartTheme(
+  resolve: ColorResolver = createCanvasColorResolver(),
+  palette: ChartPalette = 'categorical',
+): ChartTheme {
   const ui = (role: keyof typeof CHART_UI_TOKENS): string =>
     resolve(readToken(CHART_UI_TOKENS[role]));
 
@@ -69,7 +80,7 @@ export function buildChartTheme(resolve: ColorResolver = createCanvasColorResolv
   };
 
   return {
-    color: CHART_COLOR_TOKENS.map((token) => resolve(readToken(token))),
+    color: CHART_PALETTE_TOKENS[palette].map((token) => resolve(readToken(token))),
     backgroundColor: 'transparent',
     textStyle: { color: ui('axisLabel') },
     categoryAxis: axis,

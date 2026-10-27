@@ -48,6 +48,14 @@ export const OWID_FIXTURE_ROUTES: Readonly<Record<string, FixtureRoute>> = {
     file: 'indicator-1325256-metadata.json',
     contentType: 'application/json',
   },
+  '/grapher/electricity-production-by-source.csv': {
+    file: 'electricity-production-by-source.csv',
+    contentType: 'text/csv; charset=utf-8',
+  },
+  '/v1/indicators/1295503.metadata.json': {
+    file: 'indicator-1295503-metadata.json',
+    contentType: 'application/json',
+  },
 };
 
 /** Handles one request; exported so the routes can be unit-tested without a socket. */

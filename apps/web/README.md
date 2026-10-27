@@ -32,7 +32,7 @@ src/app/
 └── sitemap.ts        # sitemap.xml — home + all 12 category pages
 ```
 
-Category pages use `generateStaticParams` to pre-render every `ECO_CATEGORIES` slug at build time except the categories with live data (the registry in `lib/categoryPages.tsx`: `water-footprint`, `co2-emissions` and `global-temperature`), which are generated on their first request after a deploy and then cached (`dynamicParams = true`), so `next build` never calls the API. `[category]/layout.tsx` calls `notFound()` for any slug not in `ECO_CATEGORIES`; it sits above the `loading.tsx` Suspense boundary, so the response is a real 404 instead of a streamed 200. If the API fetch fails twice (10 s per attempt), the page throws: during a revalidation the last good page keeps being served.
+Category pages use `generateStaticParams` to pre-render every `ECO_CATEGORIES` slug at build time except the categories with live data (the registry in `lib/categoryPages.tsx`: `water-footprint`, `co2-emissions`, `global-temperature` and `energy-sources`), which are generated on their first request after a deploy and then cached (`dynamicParams = true`), so `next build` never calls the API. `[category]/layout.tsx` calls `notFound()` for any slug not in `ECO_CATEGORIES`; it sits above the `loading.tsx` Suspense boundary, so the response is a real 404 instead of a streamed 200. If the API fetch fails twice (10 s per attempt), the page throws: during a revalidation the last good page keeps being served.
 
 ### Components
 
@@ -46,12 +46,14 @@ src/components/
 ├── CountryCombobox.tsx    # WAI-ARIA searchable country selector (generic)
 ├── CountryFlag.tsx        # flag-icons flag (lazy in lists) or globe
 ├── GlobeIcon.tsx          # Monochrome currentColor globe (World)
-├── charts/                # ECharts wrapper, token theme adapter, lazy loading, chart defaults, ChartPanel, RenderWhenVisible, confidence band helper
+├── charts/                # ECharts wrapper, token theme adapter, lazy loading, chart defaults, ChartPanel, RenderWhenVisible, confidence band helper, energy mix palette support, lazy pie entry (`EPieChart`/`LazyPieEChart`)
 ├── CountryExplorer.tsx    # Generic explorer shell: country selection (World default) + layout
-├── YearDataTable.tsx      # Generic collapsed year table, the text equivalent of a chart
+├── MeasureToggle.tsx      # Generic radio-group toggle between the measures of a chart
+├── YearDataTable.tsx      # Generic collapsed year table, the text equivalent of a chart (`wide` for many columns)
 ├── DataAttribution.tsx    # Generic "Data:" line from the API's meta and dataset identity
 ├── OriginCredit.tsx       # Credit of an upstream origin (producer, linked title and license, notice, citation)
 ├── co2-emissions/         # CO2 page: key figures, explorer, data table, content
+├── energy-sources/        # Energy sources page: key figures, explorer (stacked area + toggle, donut), year and latest-year tables, content
 ├── global-temperature/    # Global temperature page: key figures, country explorer, long-run pre-industrial section, content
 ├── ThemeProvider.tsx      # React Context theme provider — light/dark + localStorage persistence
 ├── ThemeToggle.tsx        # Lamp-style theme toggle — zero-flash via blocking script in layout

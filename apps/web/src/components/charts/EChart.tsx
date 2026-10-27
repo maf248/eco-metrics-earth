@@ -4,6 +4,7 @@ import type { EChartsCoreOption, EChartsType } from 'echarts/core';
 import { useEffect, useRef } from 'react';
 
 import { buildChartTheme, createCanvasColorResolver, type ColorResolver } from './chartTheme';
+import type { ChartPalette } from './chartTokens';
 import { echarts } from './echartsSetup';
 
 interface EChartProps {
@@ -12,6 +13,8 @@ interface EChartProps {
   className?: string;
   /** Fixed size for environments that cannot measure the container (unit tests). */
   initSize?: { width: number; height: number };
+  /** Series colours (read at mount; changing it later is not supported). Categorical by default. */
+  palette?: ChartPalette;
 }
 
 function prefersReducedMotion(): boolean {
@@ -27,16 +30,17 @@ function prefersReducedMotion(): boolean {
  * `dark` class on `<html>` changes) and disposed. It knows nothing about any
  * particular chart: the option arrives as a prop.
  */
-export function EChart({ option, className, initSize }: EChartProps) {
+export function EChart({ option, className, initSize, palette = 'categorical' }: EChartProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const chartRef = useRef<EChartsType | null>(null);
   const resolverRef = useRef<ColorResolver | null>(null);
   const optionRef = useRef(option);
+  const paletteRef = useRef(palette);
   const isFirstOptionRun = useRef(true);
 
   const applyTheme = (chart: EChartsType): void => {
     resolverRef.current ??= createCanvasColorResolver();
-    chart.setTheme(buildChartTheme(resolverRef.current));
+    chart.setTheme(buildChartTheme(resolverRef.current, paletteRef.current));
   };
 
   const applyOption = (chart: EChartsType): void => {

@@ -70,7 +70,12 @@ test.describe('Category page metadata', () => {
 
   test('should have a unique meta description per category', async ({ page }) => {
     const descriptions: string[] = [];
-    for (const slug of ['air-quality', 'co2-emissions', 'global-temperature'] as const) {
+    for (const slug of [
+      'air-quality',
+      'co2-emissions',
+      'global-temperature',
+      'energy-sources',
+    ] as const) {
       await page.goto(categoryPage(slug).url);
       const meta = page.locator('meta[name="description"]');
       await expect(meta).toHaveAttribute('content', CATEGORY_DESCRIPTION_SAMPLES[slug]);

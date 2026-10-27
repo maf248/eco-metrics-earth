@@ -37,7 +37,7 @@ describe('AppModule', () => {
 
     expect(catalog.datasets.map(({ id }) => id)).toEqual(['water-footprint']);
     expect(catalog.providers.map(({ id, categories }) => ({ id, categories }))).toEqual([
-      { id: 'owid', categories: ['co2-emissions', 'global-temperature'] },
+      { id: 'owid', categories: ['co2-emissions', 'energy-sources', 'global-temperature'] },
     ]);
   });
 

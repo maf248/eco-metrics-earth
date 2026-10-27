@@ -11,6 +11,7 @@ import { envValidationSchema } from '../config/env-validation.schema';
 import { HealthModule } from '../health/health.module';
 import { Co2EmissionsModule } from '../modules/co2-emissions/co2-emissions.module';
 import { DataSourcesModule } from '../modules/data-sources/data-sources.module';
+import { EnergySourcesModule } from '../modules/energy-sources/energy-sources.module';
 import { GlobalTemperatureModule } from '../modules/global-temperature/global-temperature.module';
 import { OwidModule } from '../modules/providers/owid/owid.module';
 import { WaterFootprintModule } from '../modules/water-footprint/water-footprint.module';
@@ -41,6 +42,7 @@ import { WaterFootprintModule } from '../modules/water-footprint/water-footprint
     OwidModule,
     Co2EmissionsModule,
     GlobalTemperatureModule,
+    EnergySourcesModule,
     DataSourcesModule,
     FallbackModule,
   ],

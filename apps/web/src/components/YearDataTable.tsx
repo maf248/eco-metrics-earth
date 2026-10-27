@@ -14,9 +14,13 @@ interface YearDataTableProps {
   startYear: number;
   endYear: number;
   columns: YearDataColumn[];
+  /** Many columns: a larger minimum width so the region scrolls. */
+  wide?: boolean;
 }
 
 const EMPTY_CELL = '—';
+const DEFAULT_MIN_WIDTH_CLASS_NAME = 'min-w-72';
+const WIDE_MIN_WIDTH_CLASS_NAME = 'min-w-208';
 
 /**
  * The text equivalent of a chart: every year of the selected entity, newest
@@ -28,6 +32,7 @@ export function YearDataTable({
   startYear,
   endYear,
   columns,
+  wide = false,
 }: YearDataTableProps) {
   const years = Array.from({ length: endYear - startYear + 1 }, (_, index) => endYear - index);
 
@@ -57,7 +62,9 @@ export function YearDataTable({
         tabIndex={0}
         className="mt-2 max-h-96 overflow-auto rounded-lg border border-line-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2 ring-offset-focus-offset"
       >
-        <table className="w-full min-w-72 border-collapse text-sm tabular-nums">
+        <table
+          className={`w-full ${wide ? WIDE_MIN_WIDTH_CLASS_NAME : DEFAULT_MIN_WIDTH_CLASS_NAME} border-collapse text-sm tabular-nums`}
+        >
           <caption className="px-3 py-2 text-left font-medium text-fg">{caption}</caption>
           <thead className="sticky top-0 bg-surface-raised">
             <tr className="border-b border-line-strong text-fg">

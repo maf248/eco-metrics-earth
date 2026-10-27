@@ -125,7 +125,7 @@ The site description SHALL be defined once, as the string `Explore environmental
 
 ### Requirement: Category descriptions are unique and honest
 
-`apps/web/src/lib/categoryMetadata.ts` SHALL export a `Record<EcoCategory, string>` of meta descriptions, so a missing `EcoCategory` fails type-checking. Every description SHALL be 110-160 characters, SHALL be unique across categories, and SHALL differ from the site description. The 9 placeholder categories SHALL state that the data is coming ("is coming soon" or "is coming to eco-metrics earth") and SHALL NOT promise data that is not yet available. The placeholder descriptions are:
+`apps/web/src/lib/categoryMetadata.ts` SHALL export a `Record<EcoCategory, string>` of meta descriptions, so a missing `EcoCategory` fails type-checking. Every description SHALL be 110-160 characters, SHALL be unique across categories, and SHALL differ from the site description. The 8 placeholder categories SHALL state that the data is coming ("is coming soon" or "is coming to eco-metrics earth") and SHALL NOT promise data that is not yet available. The placeholder descriptions are:
 
 | Category             | Description                                                                                                                        |
 | -------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
@@ -137,9 +137,8 @@ The site description SHALL be defined once, as the string `Explore environmental
 | `reforestation`      | Reforestation data is coming to eco-metrics earth: how much forest is being restored or planted, and where it is happening.        |
 | `glacier-melting`    | Glacier melting data is coming soon: how fast glaciers and ice sheets are losing mass, and what it means for sea level.            |
 | `plastic-pollution`  | Plastic pollution data is coming to eco-metrics earth: how much plastic is produced, wasted and ends up in the ocean.              |
-| `energy-sources`     | Energy sources data is coming soon: how much of the world's electricity comes from fossil fuels, nuclear and renewables.           |
 
-The water-footprint description is defined by the `water-footprint-page` capability, the co2-emissions description by the `co2-emissions-page` capability and the global-temperature description by the `global-temperature-page` capability. When a category ships real data, its change SHALL replace the placeholder description with one that describes the live content.
+The water-footprint description is defined by the `water-footprint-page` capability, the co2-emissions description by the `co2-emissions-page` capability, the global-temperature description by the `global-temperature-page` capability and the energy-sources description by the `energy-sources-page` capability. When a category ships real data, its change SHALL replace the placeholder description with one that describes the live content.
 
 #### Scenario: Length bounds
 
@@ -154,7 +153,7 @@ The water-footprint description is defined by the `water-footprint-page` capabil
 
 #### Scenario: Placeholder descriptions are honest
 
-- **WHEN** the unit test reads the description of each of the 9 categories without live data
+- **WHEN** the unit test reads the description of each of the 8 categories without live data
 - **THEN** each contains "coming soon" or "coming to eco-metrics earth"
 
 #### Scenario: Missing category fails type-checking
@@ -162,3 +161,8 @@ The water-footprint description is defined by the `water-footprint-page` capabil
 - **GIVEN** a new value is added to `ECO_CATEGORIES`
 - **WHEN** `npx nx build web` runs without adding its description
 - **THEN** type-checking fails
+
+#### Scenario: Energy sources describes live content
+
+- **WHEN** the description of `energy-sources` is read
+- **THEN** it does not contain "coming soon" and names the electricity mix, the sources and Our World in Data

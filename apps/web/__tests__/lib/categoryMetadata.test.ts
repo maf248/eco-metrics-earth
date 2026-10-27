@@ -8,6 +8,7 @@ const LIVE = [
   ECO_CATEGORIES.WATER_FOOTPRINT,
   ECO_CATEGORIES.CO2_EMISSIONS,
   ECO_CATEGORIES.GLOBAL_TEMPERATURE,
+  ECO_CATEGORIES.ENERGY_SOURCES,
 ];
 const PLACEHOLDERS = CATEGORIES.filter((slug) => !LIVE.some((live) => live === slug));
 
@@ -25,8 +26,8 @@ describe('CATEGORY_DESCRIPTIONS', () => {
     expect(values).not.toContain(SITE_DESCRIPTION);
   });
 
-  it('should have exactly 9 honest placeholders', () => {
-    expect(PLACEHOLDERS).toHaveLength(9);
+  it('should have exactly 8 honest placeholders', () => {
+    expect(PLACEHOLDERS).toHaveLength(8);
   });
 
   it('should describe the live CO2 emissions content', () => {
@@ -43,6 +44,13 @@ describe('CATEGORY_DESCRIPTIONS', () => {
     expect(CATEGORY_DESCRIPTIONS['global-temperature']).not.toMatch(/coming/);
   });
 
+  it('should describe the live energy sources content', () => {
+    expect(CATEGORY_DESCRIPTIONS['energy-sources']).toBe(
+      'Electricity mix by country since 2000: coal, gas, oil, nuclear, hydro, wind, solar and bioenergy, as a share and in TWh. Data from Our World in Data.',
+    );
+    expect(CATEGORY_DESCRIPTIONS['energy-sources']).not.toMatch(/coming/);
+  });
+
   it.each(PLACEHOLDERS)('should state that the data is coming for placeholder %s', (slug) => {
     expect(CATEGORY_DESCRIPTIONS[slug]).toMatch(/coming soon|coming to eco-metrics earth/);
   });
@@ -53,6 +61,7 @@ describe('getCategoryMetadataTitle', () => {
     ['water-footprint', 'Water Footprint of Food & Products'],
     ['co2-emissions', 'CO2 Emissions by Country'],
     ['global-temperature', 'Global Temperature Anomalies by Country'],
+    ['energy-sources', 'Electricity Mix by Country'],
   ] as const)('should return the keyword-bearing override for %s', (slug, title) => {
     expect(getCategoryMetadataTitle(slug)).toBe(title);
   });
