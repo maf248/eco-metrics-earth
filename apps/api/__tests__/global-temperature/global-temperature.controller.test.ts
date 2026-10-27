@@ -285,6 +285,7 @@ describe('GET /api/v1/global-temperature global series', () => {
     ]);
     expect(producers).toEqual([
       ['Copernicus Climate Change Service (C3S)', ['global-temperature']],
+      ['Ember', ['energy-sources']],
       ['Global Carbon Project', ['co2-emissions']],
       ['Met Office Hadley Centre', ['global-temperature']],
     ]);
