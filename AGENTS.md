@@ -259,14 +259,14 @@ eco-metrics-earth/
 │   │   └── src/
 │   │       ├── app/             # AppModule, global pipeline helper
 │   │       ├── health/          # Liveness (GET /api/v1/health) + dependencies check (GET /api/v1/health/dependencies, one Terminus indicator per provider)
-│   │       ├── modules/         # Per-category eco modules (`water-footprint`, `co2-emissions`, `global-temperature`) + `providers/owid` client and `OwidProviderStatus` + `data-sources` catalog
+│   │       ├── modules/         # Per-category eco modules (`water-footprint`, `co2-emissions`, `global-temperature`, `energy-sources`) + `providers/owid` client and `OwidProviderStatus` + `data-sources` catalog
 │   │       ├── common/          # Outbound HTTP client, `errors/` (`ProviderError` -> 502), `series/` (`buildYearAlignedEntities`, `roundTo`), catch-all 404 fallback, global exception filter, throttler internal-key bypass, publisher resolver
 │   │       ├── config/          # AppConfigService (typed env vars)
 │   │       └── main.ts          # Bootstrap — port 3001, prefix /api/v1
 │   └── web/                     # Next.js App Router
 │       └── src/
 │           ├── app/             # Routes, layouts, pages (App Router)
-│           ├── components/      # Reusable UI components (`charts/`: ECharts wrapper, theme adapter, lazy loading, `ChartPanel`; `co2-emissions/`; `global-temperature/`; generic `CountryExplorer`, `YearDataTable`, `DataAttribution`; `CountryCombobox`, `CountryFlag`)
+│           ├── components/      # Reusable UI components (`charts/`: ECharts wrapper, theme adapter, lazy loading, `ChartPanel`; `co2-emissions/`; `global-temperature/`; `energy-sources/`; generic `CountryExplorer`, `MeasureToggle`, `YearDataTable`, `DataAttribution`; `CountryCombobox`, `CountryFlag`)
 │           └── lib/             # Utilities and helpers (`bffFetch.ts`: server-side BFF reads with retry and shape validation; `categoryPages.tsx`: per-category page registry)
 ├── packages/
 │   └── shared/                  # @eco-metrics/shared
@@ -278,6 +278,7 @@ eco-metrics-earth/
 │           ├── data-source-attribution.ts  # DataSourceAttribution (provider, license, source)
 │           ├── data-sources.ts             # Data sources catalog types (live providers, static datasets, publications)
 │           ├── eco-category.ts             # EcoCategory type + ECO_CATEGORIES const
+│           ├── energy-sources.ts           # Energy sources wire types (ENERGY_SOURCE_IDS, generation by source, shares derived by the web)
 │           ├── global-temperature.ts       # Global temperature wire types (anomaly, baseline, upstream origin)
 │           ├── metric-series.ts            # MetricPoint + MetricSeries time-series shapes
 │           └── water-footprint.ts          # Water-footprint product, category and water-type types
@@ -301,7 +302,7 @@ eco-metrics-earth/
 
 ### Adding an OWID-backed category (end to end)
 
-`co2-emissions` was the reference implementation and `global-temperature` the first to follow it; start from the generic pieces they share instead of copying either one: `buildYearAlignedEntities` / `roundTo` / `latestTimestamp` (`apps/api/src/common/series/`), `buildOwidEnvelope` (`providers/owid/`), `CountryExplorer` + `ChartPanel` + `YearDataTable` + `DataAttribution` + `OriginCredit` + `RenderWhenVisible` (`apps/web/src/components/`), `buildDatasetJsonLd` (`lib/datasetJsonLd.ts`), `isYearAlignedCountryData` (`lib/payloadGuards.ts`) and `fetchPayloadFromBff` (`lib/bffFetch.ts`). A provider-backed category adds these pieces and nothing else:
+`co2-emissions` was the reference implementation, `global-temperature` the first to follow it and `energy-sources` the first composition (stacked area + donut, semantic palette); start from the generic pieces they share instead of copying either one: `buildYearAlignedEntities` / `roundTo` / `latestTimestamp` (`apps/api/src/common/series/`), `buildOwidEnvelope` (`providers/owid/`), `CountryExplorer` + `ChartPanel` + `YearDataTable` + `DataAttribution` + `OriginCredit` + `RenderWhenVisible` (`apps/web/src/components/`), `buildDatasetJsonLd` (`lib/datasetJsonLd.ts`), `isYearAlignedCountryData` (`lib/payloadGuards.ts`) and `fetchPayloadFromBff` (`lib/bffFetch.ts`). A provider-backed category adds these pieces and nothing else:
 
 1. **Shared wire types** in `packages/shared/src/lib/<category>.ts`, exported from the root. Keep the payload compact (year-aligned arrays rather than per-point objects) when it carries many entities.
 2. **API module** `apps/api/src/modules/<category>/`: a service on `OwidClient` (explicit `column`, explicit `country` allowlist, a pure exported builder function for the assembly), `registerCategory(category, origins)` on `OwidProviderStatus` in its constructor (the static `DataSourceOrigin` constants of the upstream producers: the same constants feed the catalog and the payload's `data.origin`) and `recordProviderUpdate(...)` after each success — never build the OWID data-source entry in the category module (a second `owid` entry crashes the boot) — a controller documented with `@ApiOkResponse` and `@ApiBadGatewayResponse`, the module importing `OwidModule`, and the import in `AppModule`.

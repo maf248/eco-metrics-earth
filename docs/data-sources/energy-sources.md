@@ -10,6 +10,21 @@ The data shows the complete electricity generation profile — not just the rene
 
 > Note: UK Carbon Intensity API also appears in `co2-emissions.md`.
 
+## What the site serves (live)
+
+The `/energy-sources/` page and `GET /api/v1/energy-sources` serve the **electricity generation mix** (electricity only, not primary energy) of every country plus World from **2000** onward, republished by Our World in Data (OWID) and produced by **Ember** (CC BY 4.0).
+
+- **OWID chart:** the grapher chart `electricity-production-by-source` (terawatt-hours), read as CSV (one cached download keyed by chart, country list and range, shared by all columns) with explicit columns `coal_generation__twh` (indicator 1295503, also the dataset metadata), `gas_generation__twh` (1295509), `oil_generation__twh` (1295524), `nuclear_generation__twh` (1295521), `hydro_generation__twh` (1295516), `wind_generation__twh` (1295559), `solar_generation__twh` (1295552), `bioenergy_generation__twh` (1295498) and `other_renewables_excluding_bioenergy_generation__twh` (1295525). The chart opens on its chart tab, so the `country` filter is honoured without a `tab` parameter.
+- **Do not use `electricity-prod-source-stacked`:** that slug answers `301` to an OWID Explorer whose CSV contract is not guaranteed and whose column is "zero-filled for stacking", which would turn missing data into zeros.
+- **Shares are derived, not downloaded:** OWID's share chart equals `TWh / sum(TWh) x 100` (within 0.5 points in all compared country-years), so the web computes the percentages from the served TWh.
+- **Grouping:** "Bioenergy & other renewables" is bioenergy plus other renewables excluding bioenergy (geothermal, wave, tidal), summed by this site before rounding; it is `null` only when both parts are blank. A blank cell means the source reported no generation and is never served as zero. Years with no real generation (all blank or all zero) are not served.
+
+### Licensing note: why the series starts in 2000
+
+OWID's electricity series are a splice. From 2000 onward (Europe from 1990) the values are Ember's, licensed **CC BY 4.0**, which allows republication with attribution and a statement of changes. Earlier values come from the **Energy Institute Statistical Review of World Energy**, published "© Energy Institute", all rights reserved: extensive reproduction of its tables requires prior permission and some S&P Global-sourced data is prohibited. OWID's own CC BY covers OWID's processing, not the Energy Institute's terms. Pinto et al. (2023, CC BY) only covers the World before 1965 and UK DESNZ (OGL v3.0) only some older UK columns, so neither matters from 2000.
+
+Serving 2000 onward only means every served value is Ember's, so Ember is the only upstream origin credited (`ENERGY_ORIGIN`). The API never requests, parses or serves an earlier year. Provenance is stated by OWID per column, not per row, so "2000 onward is Ember" rests on OWID's description; do not extend the series back without obtaining permission from the Energy Institute.
+
 ## Electricity Mix (Origen de la electricidad)
 
 This section documents how to obtain the **percentage breakdown of electricity generation by source** — not only renewables, but also fossil fuels (coal, natural gas, oil) and nuclear. This is essential to contextualize renewable growth: a country with 30 % wind+solar but 50 % coal is very different from one with 30 % wind+solar and 70 % hydro.

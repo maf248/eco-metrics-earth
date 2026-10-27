@@ -48,7 +48,7 @@ Files under `apps/web/src/app/` and `apps/web/src/components/` SHALL NOT use Tai
 
 ### Requirement: Every token has a consumer and is documented
 
-Each semantic token SHALL be used by at least one page or component, and SHALL be listed in `docs/design-system.md` with its role, light value, and dark value. Tokens SHALL NOT be added speculatively. Chart tokens are not exposed as Tailwind utilities (chart colors never go through Tailwind); their consumer is the chart theme adapter, which reads them by name, and a token counts as used when its name is in the adapter's exported token lists.
+Each semantic token SHALL be used by at least one page or component, and SHALL be listed in `docs/design-system.md` with its role, light value, and dark value. Tokens SHALL NOT be added speculatively. Chart tokens (the categorical `--chart-*` palette and the `--energy-*` energy mix palette) are not exposed as Tailwind utilities (chart colors never go through Tailwind); their consumer is the chart theme adapter, which reads them by name, and a token counts as used when its name is in the adapter's exported token lists.
 
 #### Scenario: No orphan tokens
 
@@ -69,6 +69,11 @@ Each semantic token SHALL be used by at least one page or component, and SHALL b
 
 - **WHEN** `designTokens.test.ts` runs with the chart tokens declared but not mapped in `@theme inline`
 - **THEN** the suite passes, while an unmapped or unused non-chart token still fails it
+
+#### Scenario: Energy tokens are consumed by the adapter
+
+- **WHEN** the `--energy-*` names declared in `globals.css` are compared with `CHART_ENERGY_TOKENS`
+- **THEN** both sets are equal, and each name has both a `:root` and a `.dark` declaration
 
 ### Requirement: Remaining exceptions are documented
 
