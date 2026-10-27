@@ -1,3 +1,9 @@
+## [2.13.0](https://github.com/maf248/eco-metrics-earth/compare/api-v2.12.0...api-v2.13.0) (2026-10-27)
+
+### Features
+
+* **api:** add the energy sources endpoint ([d643005](https://github.com/maf248/eco-metrics-earth/commit/d6430052a8b12189113aa6472566089dc57e7e37))
+
 ## [2.12.0](https://github.com/maf248/eco-metrics-earth/compare/api-v2.11.0...api-v2.12.0) (2026-10-26)
 
 ### Features
