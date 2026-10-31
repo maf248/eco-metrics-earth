@@ -8,7 +8,7 @@ Defines the discriminated union shape of the shared API response type.
 
 ### Requirement: ApiResponse is a discriminated union with a success boolean
 
-The `ApiResponse<T>` type in `packages/shared/src/lib/api-response.ts` SHALL be a discriminated union type with a `success` boolean discriminant. Both branches SHALL include a `status: number` field and an OPTIONAL `meta?: ApiResponseMeta` field — the response-metadata type defined in the `shared-types` capability: `{ source: DataSourceAttribution; fetchedAt: string }`. The type SHALL make it impossible to simultaneously have `data` and `error` populated. The optional `meta` SHALL be backward compatible: every response shape that omits `meta` remains valid, no existing endpoint is required to emit it, and the `success`-based narrowing semantics are unchanged.
+The `ApiResponse<T>` type in `packages/shared/src/lib/api-response.ts` SHALL be a discriminated union type with a `success` boolean discriminant. Both branches SHALL include a `status: number` field and an OPTIONAL `meta?: ApiResponseMeta` field — the response-metadata type defined in the `shared-types` capability: `{ source: DataSourceAttribution; fetchedAt: string; stale?: boolean }`. The type SHALL make it impossible to simultaneously have `data` and `error` populated. The optional `meta` SHALL be backward compatible: every response shape that omits `meta` remains valid, no existing endpoint is required to emit it, and the `success`-based narrowing semantics are unchanged.
 
 #### Scenario: Success branch has data and no error field
 
@@ -48,3 +48,8 @@ The `ApiResponse<T>` type in `packages/shared/src/lib/api-response.ts` SHALL be 
 
 - **WHEN** code checks `if (response.success)`
 - **THEN** narrowing works exactly as before — `response.data` in the if-branch, `response.error` in the else-branch, and `response.meta` (when present) accessible on both
+
+#### Scenario: meta may flag a stale snapshot
+
+- **WHEN** a value is typed as `ApiResponse<T>` with `success: true` and `meta.stale` set to `true`
+- **THEN** TypeScript allows accessing `.meta.stale` as `boolean | undefined`
