@@ -33,6 +33,11 @@ function owidBaseUrlValidator(defaultValue: string) {
     });
 }
 
+// GCS bucket naming rules: 3-63 characters of lowercase letters, digits, dashes, underscores and
+// dots, starting and ending with a letter or digit.
+const SNAPSHOT_BUCKET_PATTERN = /^[a-z0-9][a-z0-9._-]{1,61}[a-z0-9]$/;
+const SNAPSHOT_PREFIX_PATTERN = /^[a-z0-9]+(-[a-z0-9]+)*$/;
+
 export const envValidationSchema = Joi.object({
   PORT: Joi.number().port().default(3001),
   NODE_ENV: Joi.string().valid('development', 'test', 'production').default('development'),
@@ -106,6 +111,19 @@ export const envValidationSchema = Joi.object({
     'number.base': 'TRUST_PROXY_HOPS must be a non-negative integer.',
     'number.integer': 'TRUST_PROXY_HOPS must be a non-negative integer.',
     'number.min': 'TRUST_PROXY_HOPS must be a non-negative integer.',
+  }),
+  SNAPSHOT_BUCKET: Joi.string().pattern(SNAPSHOT_BUCKET_PATTERN).optional().allow('').messages({
+    'string.pattern.base':
+      'SNAPSHOT_BUCKET must be a valid GCS bucket name (3-63 lowercase letters, digits, dashes, underscores or dots).',
+  }),
+  SNAPSHOT_PREFIX: Joi.when('SNAPSHOT_BUCKET', {
+    is: Joi.string().min(1).required(),
+    then: Joi.string().pattern(SNAPSHOT_PREFIX_PATTERN).required(),
+    otherwise: Joi.string().pattern(SNAPSHOT_PREFIX_PATTERN).optional().allow(''),
+  }).messages({
+    'string.pattern.base': 'SNAPSHOT_PREFIX must be kebab-case (for example "production").',
+    'string.empty': 'SNAPSHOT_PREFIX is required when SNAPSHOT_BUCKET is set.',
+    'any.required': 'SNAPSHOT_PREFIX is required when SNAPSHOT_BUCKET is set.',
   }),
   INTERNAL_API_KEY: Joi.string().min(32).optional().allow('').messages({
     'string.base': 'INTERNAL_API_KEY must be a string.',

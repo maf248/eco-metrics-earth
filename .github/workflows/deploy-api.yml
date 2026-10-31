@@ -62,6 +62,8 @@ jobs:
           CORS_ORIGIN_PATTERN: ${{ vars.CORS_ORIGIN_PATTERN }}
           CORS_ORIGIN_DEV: ${{ vars.CORS_ORIGIN_DEV }}
           CORS_ORIGIN_PATTERN_DEV: ${{ vars.CORS_ORIGIN_PATTERN_DEV }}
+          # Optional: unset disables snapshot persistence, so it is not part of the pre-flight list.
+          SNAPSHOT_BUCKET: ${{ vars.SNAPSHOT_BUCKET }}
         run: |
           case "$DEPLOY_TARGET" in
             production)
@@ -105,6 +107,8 @@ jobs:
             echo "image=${GCP_REGION}-docker.pkg.dev/${GCP_PROJECT_ID}/eco-metrics/${package}:${COMMIT_SHA}"
             echo "origin=${!origin_var}"
             echo "pattern=${!pattern_var}"
+            echo "snapshot_bucket=${SNAPSHOT_BUCKET}"
+            echo "snapshot_prefix=${DEPLOY_TARGET}"
           } >> "$GITHUB_OUTPUT"
 
           echo "Deploy target: $DEPLOY_TARGET → service $service, package $package (CORS from $origin_var / $pattern_var)."
@@ -221,6 +225,23 @@ jobs:
             fi
           } >> "$GITHUB_OUTPUT"
 
+      # Snapshot persistence is opt-in: both lines are emitted only when the optional
+      # SNAPSHOT_BUCKET repository variable is set (same mechanism as CORS_ORIGIN_PATTERN).
+      # The prefix is the deploy target, so production and development never share objects.
+      - name: Prepare snapshot env values for deploy-cloudrun
+        if: steps.detect.outputs.deploy == 'true'
+        id: snapshot
+        env:
+          SNAPSHOT_BUCKET: ${{ steps.target.outputs.snapshot_bucket }}
+          SNAPSHOT_PREFIX: ${{ steps.target.outputs.snapshot_prefix }}
+        run: |
+          if [ -n "$SNAPSHOT_BUCKET" ]; then
+            {
+              echo "bucket=SNAPSHOT_BUCKET=$SNAPSHOT_BUCKET"
+              echo "prefix=SNAPSHOT_PREFIX=$SNAPSHOT_PREFIX"
+            } >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Deploy to Cloud Run
         if: steps.detect.outputs.deploy == 'true'
         id: deploy
@@ -236,6 +257,8 @@ jobs:
             SWAGGER_ENABLED=false
             TRUST_PROXY_HOPS=1
             ${{ steps.cors.outputs.pattern }}
+            ${{ steps.snapshot.outputs.bucket }}
+            ${{ steps.snapshot.outputs.prefix }}
           secrets: |
             INTERNAL_API_KEY=internal-api-key:latest
           flags: >-

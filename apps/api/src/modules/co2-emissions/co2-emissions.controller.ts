@@ -24,8 +24,8 @@ export class Co2EmissionsController {
     description: 'The data provider is unavailable or returned invalid data',
   })
   async findAll(): Promise<ApiResponse<Co2EmissionsData>> {
-    const { data, lastUpdated } = await this.service.getCo2Emissions();
+    const { payload, fetchedAt, stale } = await this.service.getCo2Emissions();
 
-    return buildOwidEnvelope(data, lastUpdated);
+    return buildOwidEnvelope(payload.data, payload.lastUpdated, { fetchedAt, stale });
   }
 }

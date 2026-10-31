@@ -254,7 +254,7 @@ At this project's volume (hundreds of requests/month), the bill stays at **US$0*
 
 Recommended safeguards:
 
-- Set a GCP billing alert (e.g. notify at US$1/month).
+- Set a GCP billing alert (e.g. notify at US$1/month); the exact commands, together with the provider snapshot bucket that this project also keeps inside the Cloud Storage free tier, are in [§22](#22-provider-snapshot-bucket-one-time-before-the-first-push-that-enables-it).
 - Artifact Registry: the first 0.5 GB-month is free. Each environment publishes to its own package (`eco-metrics/api-production` and `eco-metrics/api-development`, tagged with the commit SHA). Images share layers, so each one adds ~15 MB on average. The versioned cleanup policy keeps the **3 most recent images of each package** (the serving image plus two rollback candidates) and deletes any other image of those packages once it is older than 1 day. Development deploys can never delete a production image, and storage stays around 200–350 MB.
 
   **One-time setup** (from a repository that still has the legacy shared `api` package):
@@ -356,6 +356,74 @@ For a project that already runs the single `eco-metrics-api` service deployed fr
 
 **Rollback:** revert the change; `develop` then deploys production again on the next push. Delete the dev service with `gcloud run services delete eco-metrics-api-dev --region=<GCP_REGION> --project=<GCP_PROJECT_ID>` and point Vercel Preview back at the production URL.
 
+## 22. Provider snapshot bucket (one-time, before the first push that enables it)
+
+When OWID is unreachable the API serves the last good payload of each OWID-backed category (`meta.stale: true`) instead of a `502`. The payloads live in one Cloud Storage bucket, one object per category per environment: `production/<category>.json` and `development/<category>.json`. The feature is opt-in: with the `SNAPSHOT_BUCKET` repository variable unset, nothing is deployed with persistence and the API behaves as before. Run this section **before the first push to `develop`** that should use it; the code is safe in any order, because an unset, missing or inaccessible bucket only disables persistence.
+
+> **Region.** Create the bucket in `us-central1`, the same region as the Cloud Run services (§8, `GCP_REGION`). Same-region traffic between Cloud Run and the bucket is free; another region breaks the free-tier numbers below.
+
+```bash
+# 1. Create the bucket (the name is global: pick a unique one, e.g. <GCP_PROJECT_ID>-snapshots)
+gcloud storage buckets create gs://<SNAPSHOT_BUCKET> \
+  --location=us-central1 \
+  --default-storage-class=STANDARD \
+  --uniform-bucket-level-access \
+  --public-access-prevention \
+  --soft-delete-duration=0 \
+  --project=<GCP_PROJECT_ID>
+
+# 2. Find the Cloud Run runtime service account (same command as §9; empty output = the
+#    Compute Engine default SA, <GCP_PROJECT_NUMBER>-compute@developer.gserviceaccount.com)
+gcloud run services describe eco-metrics-api \
+  --region=<GCP_REGION> \
+  --format='value(spec.template.spec.serviceAccountName)' \
+  --project=<GCP_PROJECT_ID>
+
+# 3. Let the runtime service account manage objects in this bucket only (not the project).
+#    Repeat steps 2 and 3 for eco-metrics-api-dev if it runs under a different account.
+gcloud storage buckets add-iam-policy-binding gs://<SNAPSHOT_BUCKET> \
+  --member="serviceAccount:<RUNTIME_SERVICE_ACCOUNT>" \
+  --role="roles/storage.objectAdmin"
+```
+
+Why these flags: Standard class is the one covered by the Always Free tier; uniform bucket-level access plus enforced public access prevention keep the bucket private and IAM-only; `--soft-delete-duration=0` disables soft delete (it defaults to 7 days) so an overwrite leaves no billed copy behind; object versioning stays off (its default). `roles/storage.objectAdmin` is needed because overwriting an object requires create and delete; the scope is the single bucket. Credentials are Application Default Credentials of the runtime service account: no key file and no secret exist.
+
+Then set the repository variable (Settings → Secrets and variables → Actions → Variables, as in §8): `SNAPSHOT_BUCKET` = `<SNAPSHOT_BUCKET>`. The deploy then passes `SNAPSHOT_BUCKET=<value>` and `SNAPSHOT_PREFIX=production|development` to each service (the prefix is the deploy target).
+
+**Free tier** (Cloud Storage Always Free, Standard class in `us-central1`): 5 GB-months of storage, 5,000 Class A operations (writes) and 50,000 Class B operations (reads, metadata) per month. The API writes each object at most about once a day (when its content changed or it is older than 24 h) and issues one metadata read per category per cold start: roughly 180 writes and a few thousand metadata reads per month for three categories in two environments, with a few MB stored.
+
+**Budget alert (US$1).** A safety net, created once from Cloud Shell:
+
+```bash
+gcloud services enable billingbudgets.googleapis.com --project=<GCP_PROJECT_ID>
+
+# Find the billing account ID (format 000000-AAAAAA-BBBBBB)
+gcloud billing accounts list
+
+gcloud billing budgets create \
+  --billing-account=<BILLING_ACCOUNT_ID> \
+  --display-name="eco-metrics-earth monthly US$1" \
+  --budget-amount=1USD \
+  --filter-projects=projects/<GCP_PROJECT_ID> \
+  --threshold-rule=percent=0.10 \
+  --threshold-rule=percent=0.50 \
+  --threshold-rule=percent=1.00
+```
+
+`--public-access-prevention` is a boolean flag (no value; it sets prevention to "enforced") and `--soft-delete-duration=0` disables soft delete.
+
+By default the alerts go by email to the billing account administrators. A budget alert **only notifies**: it never stops spending or disables a service, and cost data lags by several hours, so an alert arrives after the spending happened. The currency in `--budget-amount` must match the billing account's currency (omit the `USD` suffix to use the account's own). To see usage: **Billing → Reports**, filtered by the Cloud Storage service, and the bucket's **Observability** tab in the console for request counts by operation.
+
+**Verification and rollout order:**
+
+1. Run the commands above and set the `SNAPSHOT_BUCKET` variable.
+2. Push to `develop`; wait for `Deploy API (development)`.
+3. Call each endpoint once on the dev service: `curl -s <DEV_API_URL>/api/v1/co2-emissions >/dev/null`, then `global-temperature` and `energy-sources`.
+4. Check the objects: `gcloud storage ls gs://<SNAPSHOT_BUCKET>/development/` should list `co2-emissions.json`, `energy-sources.json` and `global-temperature.json`.
+5. Open the `develop` → `main` pull request. Production creates `production/*.json` on its first requests.
+
+Deploy the API before the web for every payload change (the web guards the payload shape). A contract change of a category payload should be followed by deleting its object (`gcloud storage rm gs://<SNAPSHOT_BUCKET>/<prefix>/<category>.json`), because a stored snapshot keeps the old shape until the next successful fetch overwrites it.
+
 ## Troubleshooting
 
 > Commands below use `eco-metrics-api`; replace it with `eco-metrics-api-dev` when the problem is on the dev service.
@@ -398,6 +466,18 @@ Common causes: missing env var, bad image entrypoint, `PORT` not being read from
 ```bash
 gcloud run services update eco-metrics-api --remove-env-vars CORS_ORIGIN_PATTERN --region=<GCP_REGION> --project=<GCP_PROJECT_ID>
 ```
+
+### Snapshot persistence stays on after unsetting the GitHub variable
+
+**Symptom:** you removed or emptied the `SNAPSHOT_BUCKET` repository variable, but the service still reads and writes the bucket.
+
+**Fix:** `deploy-cloudrun` merges env vars, so the values of a previous deploy persist until they are cleared. Remove both from the service (they are optional, so the API boots without them and persistence is disabled):
+
+```bash
+gcloud run services update eco-metrics-api --remove-env-vars SNAPSHOT_BUCKET,SNAPSHOT_PREFIX --region=<GCP_REGION> --project=<GCP_PROJECT_ID>
+```
+
+Use `eco-metrics-api-dev` for the development service. Removing only `SNAPSHOT_PREFIX` would make the next boot fail fast (a bucket without a prefix is invalid).
 
 ### Cold-start first request
 

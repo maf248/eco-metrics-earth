@@ -27,8 +27,8 @@ export class GlobalTemperatureController {
     description: 'The data provider is unavailable or returned invalid data',
   })
   async findAll(): Promise<ApiResponse<GlobalTemperatureData>> {
-    const { data, lastUpdated } = await this.service.getGlobalTemperature();
+    const { payload, fetchedAt, stale } = await this.service.getGlobalTemperature();
 
-    return buildOwidEnvelope(data, lastUpdated);
+    return buildOwidEnvelope(payload.data, payload.lastUpdated, { fetchedAt, stale });
   }
 }

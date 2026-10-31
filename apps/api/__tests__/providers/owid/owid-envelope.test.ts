@@ -2,10 +2,12 @@ import { buildOwidEnvelope } from '../../../src/modules/providers/owid/owid-enve
 import { OWID_PUBLISHER } from '../../../src/modules/providers/owid/owid.attribution';
 
 describe('buildOwidEnvelope', () => {
+  const fresh = { fetchedAt: '2026-10-28T09:00:00.000Z', stale: false };
+
   it('should wrap the data with the OWID attribution and the provider timestamp', () => {
     const data = { answer: 42 };
 
-    const envelope = buildOwidEnvelope(data, '2026-10-13T08:42:32.000Z');
+    const envelope = buildOwidEnvelope(data, '2026-10-13T08:42:32.000Z', fresh);
 
     expect(envelope).toMatchObject({
       success: true,
@@ -15,13 +17,32 @@ describe('buildOwidEnvelope', () => {
     });
   });
 
-  it('should stamp the response with an ISO 8601 assembly time', () => {
-    const before = Date.now();
+  it('should emit the given fetch time and a fresh flag', () => {
+    const envelope = buildOwidEnvelope({}, '2026-10-13T08:42:32.000Z', fresh);
 
-    const envelope = buildOwidEnvelope({}, '2026-10-13T08:42:32.000Z');
+    expect(envelope.meta?.fetchedAt).toBe('2026-10-28T09:00:00.000Z');
+    expect(envelope.meta?.stale).toBe(false);
+  });
 
-    const fetchedAt = envelope.meta?.fetchedAt ?? '';
-    expect(new Date(fetchedAt).toISOString()).toBe(fetchedAt);
-    expect(Date.parse(fetchedAt)).toBeGreaterThanOrEqual(before);
+  it('should emit the stored fetch time and a stale flag for a snapshot', () => {
+    const envelope = buildOwidEnvelope({}, '2026-10-13T08:42:32.000Z', {
+      fetchedAt: '2026-10-20T10:00:00.000Z',
+      stale: true,
+    });
+
+    expect(envelope.meta?.fetchedAt).toBe('2026-10-20T10:00:00.000Z');
+    expect(envelope.meta?.stale).toBe(true);
+  });
+
+  it('should rebuild the source from the current publisher definition', () => {
+    const envelope = buildOwidEnvelope({}, '2026-10-13T08:42:32.000Z', {
+      fetchedAt: '2026-10-20T10:00:00.000Z',
+      stale: true,
+    });
+
+    expect(envelope.meta?.source).toEqual({
+      ...OWID_PUBLISHER,
+      lastUpdated: '2026-10-13T08:42:32.000Z',
+    });
   });
 });

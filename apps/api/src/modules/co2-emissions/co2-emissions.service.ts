@@ -7,6 +7,10 @@ import {
   latestTimestamp,
   roundTo,
 } from '../../common/series/build-year-aligned-entities';
+import {
+  ProviderSnapshotService,
+  type Snapshotted,
+} from '../../common/snapshots/provider-snapshot.service';
 import { OwidClient } from '../providers/owid/owid-client.service';
 import { OwidProviderStatus } from '../providers/owid/owid-provider-status';
 import type { OwidIndicatorMetadata } from '../providers/owid/owid.types';
@@ -92,16 +96,25 @@ export class Co2EmissionsService {
   constructor(
     private readonly owid: OwidClient,
     private readonly providerStatus: OwidProviderStatus,
+    private readonly snapshots: ProviderSnapshotService,
   ) {
     this.providerStatus.registerCategory(CO2_EMISSIONS_CATEGORY, [CO2_ORIGIN]);
   }
 
   /**
-   * Annual CO2 emissions of every country plus World. Provider errors propagate
-   * and become 502 in the global filter. The OWID client caches all four
-   * requests, so assembling cached data takes milliseconds.
+   * Annual CO2 emissions of every country plus World. A provider failure serves
+   * the stored last good payload (`stale: true`) when there is one; without it
+   * the error propagates and becomes 502 in the global filter.
    */
-  async getCo2Emissions(): Promise<Co2EmissionsResult> {
+  getCo2Emissions(): Promise<Snapshotted<Co2EmissionsResult>> {
+    return this.snapshots.resolve(CO2_EMISSIONS_CATEGORY, () => this.assemble());
+  }
+
+  /**
+   * Fetches and assembles the payload from the provider. The OWID client caches
+   * all four requests, so assembling cached data takes milliseconds.
+   */
+  private async assemble(): Promise<Co2EmissionsResult> {
     const options = {
       country: this.allowedCodes,
       timeRange: { from: CO2_START_YEAR, to: new Date().getUTCFullYear() },
