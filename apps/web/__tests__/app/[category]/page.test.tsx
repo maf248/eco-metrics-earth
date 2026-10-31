@@ -59,11 +59,16 @@ jest.mock('@/components/charts/LazyPieEChart', () => ({
 jest.mock('@/lib/dataSources', () => ({ getDataSources: jest.fn() }));
 
 beforeEach(() => {
-  jest.mocked(getCo2Emissions).mockResolvedValue({ data: CO2_FIXTURE, meta: CO2_META });
   jest
-    .mocked(getGlobalTemperature)
-    .mockResolvedValue({ data: TEMPERATURE_FIXTURE, meta: TEMPERATURE_META });
-  jest.mocked(getEnergySources).mockResolvedValue({ data: ENERGY_FIXTURE, meta: ENERGY_META });
+    .mocked(getCo2Emissions)
+    .mockResolvedValue({ kind: 'ok', payload: { data: CO2_FIXTURE, meta: CO2_META } });
+  jest.mocked(getGlobalTemperature).mockResolvedValue({
+    kind: 'ok',
+    payload: { data: TEMPERATURE_FIXTURE, meta: TEMPERATURE_META },
+  });
+  jest
+    .mocked(getEnergySources)
+    .mockResolvedValue({ kind: 'ok', payload: { data: ENERGY_FIXTURE, meta: ENERGY_META } });
 });
 
 jest.mock('next/navigation', () => ({
@@ -84,7 +89,9 @@ describe('CategoryPage', () => {
   });
 
   it('should display the correct title for co2-emissions', async () => {
-    jest.mocked(getCo2Emissions).mockResolvedValue({ data: CO2_FIXTURE, meta: CO2_META });
+    jest
+      .mocked(getCo2Emissions)
+      .mockResolvedValue({ kind: 'ok', payload: { data: CO2_FIXTURE, meta: CO2_META } });
     const element = await CategoryPage({ params: Promise.resolve({ category: 'co2-emissions' }) });
     render(element);
     expect(screen.getByText('CO2 Emissions')).toBeTruthy();
@@ -500,6 +507,65 @@ describe('CategoryPage — energy-sources branch', () => {
     expect(metadata.description).toBe(CATEGORY_DESCRIPTIONS['energy-sources']);
     expect(metadata.description).not.toMatch(/coming/);
     expect(metadata.title).toBe('Electricity Mix by Country');
+  });
+});
+
+describe('CategoryPage — provider degraded states', () => {
+  const daysAgo = (days: number): string =>
+    new Date(Date.now() - days * 24 * 60 * 60 * 1000).toISOString();
+
+  it('should keep the header and show the unavailable state when the provider is down with no snapshot', async () => {
+    jest.mocked(getEnergySources).mockResolvedValueOnce({ kind: 'provider-unavailable' });
+
+    const element = await CategoryPage({
+      params: Promise.resolve({ category: 'energy-sources' }),
+    });
+    render(element);
+
+    expect(screen.getByRole('heading', { level: 1, name: 'Energy Sources' })).toBeInTheDocument();
+    expect(screen.getByTestId('data-unavailable')).toHaveTextContent(
+      "We couldn't reach Our World in Data",
+    );
+    expect(screen.queryByTestId('energy-key-figures')).not.toBeInTheDocument();
+    expect(screen.queryByTestId('stale-data-notice')).not.toBeInTheDocument();
+  });
+
+  it('should show the notice above the content for a 14-day-old stale snapshot', async () => {
+    jest.mocked(getCo2Emissions).mockResolvedValueOnce({
+      kind: 'ok',
+      payload: { data: CO2_FIXTURE, meta: { ...CO2_META, stale: true, fetchedAt: daysAgo(14) } },
+    });
+
+    const element = await CategoryPage({ params: Promise.resolve({ category: 'co2-emissions' }) });
+    render(element);
+
+    expect(screen.getByRole('heading', { level: 1, name: 'CO2 Emissions' })).toBeInTheDocument();
+    expect(screen.getByTestId('stale-data-notice')).toBeInTheDocument();
+    expect(screen.getByTestId('co2-key-figures')).toBeInTheDocument();
+    expect(screen.queryByTestId('data-unavailable')).not.toBeInTheDocument();
+  });
+
+  it('should keep the header, attribution and a last-retrieved line for a 40-day-old stale snapshot', async () => {
+    jest.mocked(getGlobalTemperature).mockResolvedValueOnce({
+      kind: 'ok',
+      payload: {
+        data: TEMPERATURE_FIXTURE,
+        meta: { ...TEMPERATURE_META, stale: true, fetchedAt: daysAgo(40) },
+      },
+    });
+
+    const element = await CategoryPage({
+      params: Promise.resolve({ category: 'global-temperature' }),
+    });
+    render(element);
+
+    expect(
+      screen.getByRole('heading', { level: 1, name: 'Global Temperature' }),
+    ).toBeInTheDocument();
+    expect(screen.getByTestId('data-unavailable')).toHaveTextContent('Last retrieved from');
+    expect(screen.getByTestId('unavailable-data-attribution')).toBeInTheDocument();
+    expect(screen.queryByTestId('global-temperature-key-figures')).not.toBeInTheDocument();
+    expect(screen.queryByTestId('stale-data-notice')).not.toBeInTheDocument();
   });
 });
 

@@ -39,8 +39,9 @@ describe('getGlobalTemperature', () => {
 
     const result = await getGlobalTemperature();
 
-    expect(result.data).toEqual(TEMPERATURE_FIXTURE);
-    expect(result.meta.source.provider).toBe('Our World in Data');
+    if (result.kind !== 'ok') throw new Error('expected an ok result');
+    expect(result.payload.data).toEqual(TEMPERATURE_FIXTURE);
+    expect(result.payload.meta.source.provider).toBe('Our World in Data');
     expect(fetchMock).toHaveBeenCalledTimes(1);
     expect(new URL(fetchMock.mock.calls[0][0] as string).pathname).toBe(
       '/api/v1/global-temperature',
@@ -110,7 +111,7 @@ describe('getGlobalTemperature', () => {
     await expect(getGlobalTemperature()).rejects.toThrow(FAILURE);
   });
 
-  it('should make exactly two attempts, log once and throw when the BFF answers 502', async () => {
+  it('should make exactly two attempts, log once and resolve provider-unavailable when the BFF reports a provider 502', async () => {
     const fetchMock = jest.fn().mockImplementation(async () => ({
       ok: false,
       status: 502,
@@ -118,9 +119,21 @@ describe('getGlobalTemperature', () => {
     }));
     global.fetch = fetchMock as unknown as typeof global.fetch;
 
-    await expect(getGlobalTemperature()).rejects.toThrow(FAILURE);
+    await expect(getGlobalTemperature()).resolves.toEqual({ kind: 'provider-unavailable' });
 
     expect(fetchMock).toHaveBeenCalledTimes(2);
     expect(consoleErrorSpy).toHaveBeenCalledTimes(1);
+  });
+
+  it('should still throw when a 502 is not the BFF provider error', async () => {
+    global.fetch = jest.fn().mockImplementation(async () => ({
+      ok: false,
+      status: 502,
+      json: async () => {
+        throw new SyntaxError('Unexpected token <');
+      },
+    })) as unknown as typeof global.fetch;
+
+    await expect(getGlobalTemperature()).rejects.toThrow('could not be fetched from the BFF');
   });
 });

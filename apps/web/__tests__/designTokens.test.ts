@@ -153,6 +153,109 @@ describe('design tokens — chart tokens', () => {
   });
 });
 
+const WARNING_TOKENS = ['warning-surface', 'warning-line', 'warning-fg'] as const;
+const REPO_ROOT = path.resolve(__dirname, '../../..');
+
+type Theme = 'light' | 'dark';
+type Oklch = { l: number; c: number; h: number };
+
+function themeBlock(theme: Theme): string {
+  const start = css.indexOf(theme === 'light' ? ':root {' : '.dark {');
+  return css.slice(start, css.indexOf('\n}', start));
+}
+
+function oklchOf(theme: Theme, token: string): Oklch {
+  const match = new RegExp(`--${token}:\\s*oklch\\(([\\d.]+)%\\s+([\\d.]+)\\s+([\\d.]+)\\)`).exec(
+    themeBlock(theme),
+  );
+  if (!match) throw new Error(`No oklch() value for --${token} in the ${theme} theme`);
+  return { l: Number(match[1]) / 100, c: Number(match[2]), h: Number(match[3]) };
+}
+
+/** WCAG relative luminance of an OKLCH color (OKLab to linear sRGB, clipped to gamut). */
+function relativeLuminance({ l, c, h }: Oklch): number {
+  const radians = (h * Math.PI) / 180;
+  const a = c * Math.cos(radians);
+  const b = c * Math.sin(radians);
+  const lms1 = (l + 0.3963377774 * a + 0.2158037573 * b) ** 3;
+  const lms2 = (l - 0.1055613458 * a - 0.0638541728 * b) ** 3;
+  const lms3 = (l - 0.0894841775 * a - 1.291485548 * b) ** 3;
+  const clip = (value: number): number => Math.min(1, Math.max(0, value));
+  const red = clip(4.0767416621 * lms1 - 3.3077115913 * lms2 + 0.2309699292 * lms3);
+  const green = clip(-1.2684380046 * lms1 + 2.6097574011 * lms2 - 0.3413193965 * lms3);
+  const blue = clip(-0.0041960863 * lms1 - 0.7034186147 * lms2 + 1.707614701 * lms3);
+  return 0.2126 * red + 0.7152 * green + 0.0722 * blue;
+}
+
+function contrastRatio(foreground: Oklch, background: Oklch): number {
+  const [lighter, darker] = [relativeLuminance(foreground), relativeLuminance(background)].sort(
+    (x, y) => y - x,
+  );
+  return (lighter + 0.05) / (darker + 0.05);
+}
+
+/** The "Warning tokens: contrast" table of docs/design-system.md, as ratio cells per theme. */
+function documentedRatio(pair: string, theme: Theme): string {
+  const docs = fs.readFileSync(path.join(REPO_ROOT, 'docs/design-system.md'), 'utf8');
+  const row = docs.split('\n').find((line) => line.startsWith(`| \`warning-fg\` on \`${pair}\``));
+  if (!row) throw new Error(`No documented contrast row for ${pair}`);
+  const cells = row
+    .split('|')
+    .map((cell) => cell.trim())
+    .filter(Boolean);
+  return cells[theme === 'light' ? 1 : 2];
+}
+
+describe('design tokens — warning tokens', () => {
+  const consumers = ['components/StaleDataNotice.tsx', 'components/DataUnavailable.tsx']
+    .map((file) => fs.readFileSync(path.join(SRC_DIR, file), 'utf8'))
+    .join('\n');
+
+  it('should declare every warning token in both themes and map it through @theme inline', () => {
+    const mapped = themeMappings.map(({ rawToken }) => rawToken);
+    for (const token of WARNING_TOKENS) {
+      expect(lightTokens).toContain(token);
+      expect(darkTokens).toContain(token);
+      expect(mapped).toContain(token);
+    }
+  });
+
+  it('should be referenced by the stale notice and the unavailable state', () => {
+    for (const token of WARNING_TOKENS) {
+      expect(consumers).toMatch(new RegExp(`(?<![\\w-])${COLOR_UTILITY}-${token}(?![\\w-])`));
+    }
+  });
+
+  it.each<Theme>(['light', 'dark'])(
+    'should meet the WCAG thresholds for warning-fg in the %s theme',
+    (theme) => {
+      const foreground = oklchOf(theme, 'warning-fg');
+
+      expect(contrastRatio(foreground, oklchOf(theme, 'warning-surface'))).toBeGreaterThanOrEqual(
+        4.5,
+      );
+      expect(contrastRatio(foreground, oklchOf(theme, 'surface'))).toBeGreaterThanOrEqual(3);
+      expect(contrastRatio(foreground, oklchOf(theme, 'surface-raised'))).toBeGreaterThanOrEqual(3);
+    },
+  );
+
+  it.each<[Theme]>([['light'], ['dark']])(
+    'should record the measured contrast ratios in docs/design-system.md (%s theme)',
+    (theme) => {
+      const foreground = oklchOf(theme, 'warning-fg');
+      const measured: [string, number][] = [
+        ['warning-surface', contrastRatio(foreground, oklchOf(theme, 'warning-surface'))],
+        ['surface', contrastRatio(foreground, oklchOf(theme, 'surface'))],
+        ['surface-raised', contrastRatio(foreground, oklchOf(theme, 'surface-raised'))],
+      ];
+
+      for (const [pair, ratio] of measured) {
+        expect(documentedRatio(pair, theme)).toBe(`${ratio.toFixed(2)}:1`);
+      }
+    },
+  );
+});
+
 describe('design tokens — pages and components', () => {
   const files = SCANNED_DIRS.flatMap(listSourceFiles);
 

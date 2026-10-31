@@ -35,6 +35,16 @@ async function selectCountry(page: Page, query: string): Promise<void> {
 
 test.describe('CO2 Emissions page', () => {
   test.describe('Core render', { tag: '@smoke' }, () => {
+    test('should show neither the stale notice nor the unavailable state while the provider is healthy', async ({
+      page,
+    }) => {
+      await page.goto(PAGE_URL);
+
+      await expect(chart(page).locator('svg').first()).toBeVisible();
+      await expect(page.getByTestId('stale-data-notice')).toHaveCount(0);
+      await expect(page.getByTestId('data-unavailable')).toHaveCount(0);
+    });
+
     test('should render the heading, key figures, chart and attribution', async ({ page }) => {
       const response = await page.goto(PAGE_URL);
       expect(response?.status()).toBe(200);

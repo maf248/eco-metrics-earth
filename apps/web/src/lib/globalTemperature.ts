@@ -1,6 +1,6 @@
 import 'server-only';
 
-import { fetchPayloadFromBff } from '@/lib/bffFetch';
+import { fetchProviderPayloadFromBff, type ProviderPayloadResult } from '@/lib/bffFetch';
 import {
   hasStrings,
   isDataSourceOrigin,
@@ -65,9 +65,14 @@ function isGlobalTemperatureData(data: unknown): data is GlobalTemperatureData {
   );
 }
 
-/** Fetches the global temperature dataset and its attribution; throws when every attempt fails. */
-export async function getGlobalTemperature(): Promise<GlobalTemperaturePayload> {
-  return fetchPayloadFromBff({
+/**
+ * Fetches the global temperature dataset and its attribution. Resolves `provider-unavailable` when the
+ * BFF reports that its provider is down and it holds no snapshot; throws on any other failure.
+ */
+export async function getGlobalTemperature(): Promise<
+  ProviderPayloadResult<GlobalTemperaturePayload>
+> {
+  return fetchProviderPayloadFromBff({
     path: '/global-temperature',
     label: 'Global temperature data',
     isData: isGlobalTemperatureData,

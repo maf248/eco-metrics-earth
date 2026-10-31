@@ -17,11 +17,12 @@ const EXPECTED_ICONS = [
   'ReforestationIcon',
   'SiteLogoIcon',
   'WasteRecyclingIcon',
+  'WarningIcon',
   'WaterFootprintIcon',
 ] as const;
 
 describe('Icon components barrel export', () => {
-  it('should export all 15 named icon components', () => {
+  it('should export all 16 named icon components', () => {
     EXPECTED_ICONS.forEach((name) => {
       expect(typeof Icons[name]).toBe('function');
     });

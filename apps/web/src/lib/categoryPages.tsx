@@ -3,10 +3,17 @@ import type { ComponentType } from 'react';
 import { Co2EmissionsContent } from '@/components/co2-emissions/Co2EmissionsContent';
 import { EnergySourcesContent } from '@/components/energy-sources/EnergySourcesContent';
 import { GlobalTemperatureContent } from '@/components/global-temperature/GlobalTemperatureContent';
+import {
+  ProviderBackedContent,
+  type ProviderPageState,
+  type ProviderPayload,
+} from '@/components/ProviderBackedContent';
 import { WaterFootprintContent } from '@/components/water-footprint/WaterFootprintContent';
+import type { ProviderPayloadResult } from '@/lib/bffFetch';
 import { getCo2Emissions } from '@/lib/co2Emissions';
 import { getEnergySources } from '@/lib/energySources';
 import { getGlobalTemperature } from '@/lib/globalTemperature';
+import { evaluateFreshness, type FreshnessThresholds } from '@/lib/providerFreshness';
 import { getWaterFootprintProducts } from '@/lib/waterFootprint';
 import { ECO_CATEGORIES } from '@eco-metrics/shared';
 import type { EcoCategory } from '@eco-metrics/shared';
@@ -30,6 +37,61 @@ export function defineCategoryPage<T>(
   return definition as unknown as CategoryPageDefinition;
 }
 
+/** The provider a category's data comes from, and how old its stored data may get. */
+export interface ProviderCategoryOptions<P extends ProviderPayload> {
+  provider: {
+    /**
+     * Shown when the provider is down and the BFF sent no `meta` to read the name from
+     * (a `502`). Whenever `meta.source.provider` exists it is used instead.
+     */
+    name: string;
+    /** Overrides `DEFAULT_FRESHNESS_THRESHOLDS` for this category. */
+    freshness?: FreshnessThresholds;
+  };
+  /** Server-side read through `fetchProviderPayloadFromBff`. Other failures propagate. */
+  load: () => Promise<ProviderPayloadResult<P>>;
+  /** The category's own content, rendered for fresh and stale data. */
+  Content: ComponentType<{ data: P }>;
+}
+
+/**
+ * Registers a category whose data comes from an external provider. Freshness is
+ * evaluated once in `load` (so rendering stays pure) and `Content` is the generic
+ * `ProviderBackedContent`: the category content, the same under a stale notice, or an
+ * unavailable state. Failures of our own BFF still throw, exactly as in
+ * `defineCategoryPage`.
+ */
+export function defineProviderCategoryPage<P extends ProviderPayload>({
+  provider,
+  load,
+  Content,
+}: ProviderCategoryOptions<P>): CategoryPageDefinition {
+  return defineCategoryPage<ProviderPageState<P>>({
+    load: async () => {
+      const result = await load();
+      if (result.kind === 'provider-unavailable') {
+        return { kind: 'unavailable', providerName: provider.name };
+      }
+
+      const { payload } = result;
+      const providerName = payload.meta.source.provider;
+      const freshness = evaluateFreshness(payload.meta, new Date(), provider.freshness);
+      switch (freshness.kind) {
+        case 'fresh':
+          return { kind: 'fresh', payload };
+        case 'stale-notice':
+          return { kind: 'stale-notice', payload, providerName, fetchedAt: freshness.fetchedAt };
+        case 'unavailable':
+          return { kind: 'unavailable', providerName, payload, fetchedAt: freshness.fetchedAt };
+      }
+    },
+    Content: ({ data }) => <ProviderBackedContent state={data} Content={Content} />,
+  });
+}
+
+/** Mirrors `OWID_PUBLISHER.provider` in the API; only used when a `502` carries no `meta`. */
+const OWID_PROVIDER_NAME = 'Our World in Data';
+
 /**
  * Categories with live data. A category absent here renders the "coming soon"
  * placeholder and is pre-rendered at build time; adding an entry is all it takes
@@ -44,7 +106,8 @@ export const CATEGORY_PAGES: Partial<Record<EcoCategory, CategoryPageDefinition>
       </div>
     ),
   }),
-  [ECO_CATEGORIES.CO2_EMISSIONS]: defineCategoryPage({
+  [ECO_CATEGORIES.CO2_EMISSIONS]: defineProviderCategoryPage({
+    provider: { name: OWID_PROVIDER_NAME },
     load: getCo2Emissions,
     Content: ({ data }) => (
       <div className="mt-8 w-full flex justify-center">
@@ -52,7 +115,8 @@ export const CATEGORY_PAGES: Partial<Record<EcoCategory, CategoryPageDefinition>
       </div>
     ),
   }),
-  [ECO_CATEGORIES.GLOBAL_TEMPERATURE]: defineCategoryPage({
+  [ECO_CATEGORIES.GLOBAL_TEMPERATURE]: defineProviderCategoryPage({
+    provider: { name: OWID_PROVIDER_NAME },
     load: getGlobalTemperature,
     Content: ({ data }) => (
       <div className="mt-8 w-full flex justify-center">
@@ -60,7 +124,8 @@ export const CATEGORY_PAGES: Partial<Record<EcoCategory, CategoryPageDefinition>
       </div>
     ),
   }),
-  [ECO_CATEGORIES.ENERGY_SOURCES]: defineCategoryPage({
+  [ECO_CATEGORIES.ENERGY_SOURCES]: defineProviderCategoryPage({
+    provider: { name: OWID_PROVIDER_NAME },
     load: getEnergySources,
     Content: ({ data }) => (
       <div className="mt-8 w-full flex justify-center">
