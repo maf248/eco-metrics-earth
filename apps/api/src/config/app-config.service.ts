@@ -56,4 +56,16 @@ export class AppConfigService {
     const key = this.configService.get<string>('INTERNAL_API_KEY');
     return key ? key : undefined;
   }
+
+  /** GCS bucket that holds provider snapshots. Undefined (persistence disabled) when unset or empty. */
+  get snapshotBucket(): string | undefined {
+    const bucket = this.configService.get<string>('SNAPSHOT_BUCKET');
+    return bucket ? bucket : undefined;
+  }
+
+  /** Object prefix of this environment inside the snapshot bucket (`production`, `development`). */
+  get snapshotPrefix(): string | undefined {
+    const prefix = this.configService.get<string>('SNAPSHOT_PREFIX');
+    return prefix ? prefix : undefined;
+  }
 }

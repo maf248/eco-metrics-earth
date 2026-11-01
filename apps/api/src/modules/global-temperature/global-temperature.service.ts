@@ -15,6 +15,10 @@ import {
   latestTimestamp,
   roundTo,
 } from '../../common/series/build-year-aligned-entities';
+import {
+  ProviderSnapshotService,
+  type Snapshotted,
+} from '../../common/snapshots/provider-snapshot.service';
 import { OwidClient } from '../providers/owid/owid-client.service';
 import { OwidProviderStatus } from '../providers/owid/owid-provider-status';
 import type { OwidGrapherSeriesOptions, OwidIndicatorMetadata } from '../providers/owid/owid.types';
@@ -235,6 +239,7 @@ export class GlobalTemperatureService {
   constructor(
     private readonly owid: OwidClient,
     private readonly providerStatus: OwidProviderStatus,
+    private readonly snapshots: ProviderSnapshotService,
   ) {
     this.providerStatus.registerCategory(GLOBAL_TEMPERATURE_CATEGORY, [
       ERA5_ORIGIN,
@@ -244,12 +249,20 @@ export class GlobalTemperatureService {
 
   /**
    * Annual temperature anomaly of every country plus World, and the World's
-   * series since 1850. Provider errors propagate and become 502 in the global
-   * filter; there is never a partial payload. The OWID client caches every
-   * request (the three global columns share one download), so assembling cached
-   * data takes milliseconds.
+   * series since 1850. A provider failure serves the stored last good payload
+   * (`stale: true`) when there is one; without it the error propagates and
+   * becomes 502 in the global filter. There is never a partial payload.
    */
-  async getGlobalTemperature(): Promise<GlobalTemperatureResult> {
+  getGlobalTemperature(): Promise<Snapshotted<GlobalTemperatureResult>> {
+    return this.snapshots.resolve(GLOBAL_TEMPERATURE_CATEGORY, () => this.assemble());
+  }
+
+  /**
+   * Fetches and assembles the payload from the provider. The OWID client caches
+   * every request (the three global columns share one download), so assembling
+   * cached data takes milliseconds.
+   */
+  private async assemble(): Promise<GlobalTemperatureResult> {
     // Completed years only: the mean of a year in progress would look like an annual value.
     const maxYear = new Date().getUTCFullYear() - 1;
     // The charts open on their map tab, where OWID ignores `country` and answers with one year

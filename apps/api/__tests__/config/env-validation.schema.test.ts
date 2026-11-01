@@ -260,4 +260,69 @@ describe('envValidationSchema', () => {
       expect(value.INTERNAL_API_KEY).toBe('k'.repeat(32));
     });
   });
+
+  describe('SNAPSHOT_BUCKET and SNAPSHOT_PREFIX', () => {
+    it('should accept both unset', () => {
+      const { error, value } = validate({});
+      expect(error).toBeUndefined();
+      expect(value.SNAPSHOT_BUCKET).toBeUndefined();
+      expect(value.SNAPSHOT_PREFIX).toBeUndefined();
+    });
+
+    it('should accept an empty bucket without a prefix', () => {
+      const { error } = validate({ SNAPSHOT_BUCKET: '' });
+      expect(error).toBeUndefined();
+    });
+
+    it('should accept an empty bucket with an empty prefix', () => {
+      const { error } = validate({ SNAPSHOT_BUCKET: '', SNAPSHOT_PREFIX: '' });
+      expect(error).toBeUndefined();
+    });
+
+    it('should accept a bucket with a kebab-case prefix', () => {
+      const { error, value } = validate({
+        SNAPSHOT_BUCKET: 'my-bucket',
+        SNAPSHOT_PREFIX: 'production',
+      });
+      expect(error).toBeUndefined();
+      expect(value.SNAPSHOT_BUCKET).toBe('my-bucket');
+      expect(value.SNAPSHOT_PREFIX).toBe('production');
+    });
+
+    it('should fail fast naming SNAPSHOT_PREFIX when the bucket has no prefix', () => {
+      const { error } = validate({ SNAPSHOT_BUCKET: 'my-bucket' });
+      expect(error).toBeDefined();
+      expect(error?.message).toContain('SNAPSHOT_PREFIX');
+    });
+
+    it('should fail naming SNAPSHOT_PREFIX when the bucket has an empty prefix', () => {
+      const { error } = validate({ SNAPSHOT_BUCKET: 'my-bucket', SNAPSHOT_PREFIX: '' });
+      expect(error).toBeDefined();
+      expect(error?.message).toContain('SNAPSHOT_PREFIX');
+    });
+
+    it.each(['Bad Bucket!', 'UPPER', 'a', '-leading-dash', 'trailing-dash-', 'x'.repeat(64)])(
+      'should reject the bucket name %s',
+      (bucket) => {
+        const { error } = validate({ SNAPSHOT_BUCKET: bucket, SNAPSHOT_PREFIX: 'production' });
+        expect(error).toBeDefined();
+        expect(error?.message).toContain('SNAPSHOT_BUCKET');
+      },
+    );
+
+    it.each(['Prod/Env', 'Production', 'a_b', '-a', 'a--b'])(
+      'should reject the prefix %s',
+      (prefix) => {
+        const { error } = validate({ SNAPSHOT_BUCKET: 'my-bucket', SNAPSHOT_PREFIX: prefix });
+        expect(error).toBeDefined();
+        expect(error?.message).toContain('SNAPSHOT_PREFIX');
+      },
+    );
+
+    it('should reject an invalid prefix even when the bucket is unset', () => {
+      const { error } = validate({ SNAPSHOT_PREFIX: 'Prod/Env' });
+      expect(error).toBeDefined();
+      expect(error?.message).toContain('SNAPSHOT_PREFIX');
+    });
+  });
 });

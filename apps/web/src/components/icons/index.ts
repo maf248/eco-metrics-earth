@@ -13,3 +13,4 @@ export { default as EnergySourcesIcon } from './EnergySourcesIcon';
 export { default as SiteLogoIcon } from './SiteLogoIcon';
 export { default as WasteRecyclingIcon } from './WasteRecyclingIcon';
 export { default as WaterFootprintIcon } from './WaterFootprintIcon';
+export { default as WarningIcon } from './WarningIcon';

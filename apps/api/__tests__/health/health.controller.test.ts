@@ -4,7 +4,12 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import supertest from 'supertest';
 
+import { AppModule } from '../../src/app/app.module';
+import { applyGlobalPipeline } from '../../src/app/global-pipeline';
+import { ProviderSnapshotService } from '../../src/common/snapshots/provider-snapshot.service';
+import { SNAPSHOT_STORE } from '../../src/common/snapshots/snapshot-store';
 import { HealthController } from '../../src/health/health.controller';
+import { StubSnapshotStore } from '../common/snapshots/stub-snapshot-store';
 
 describe('HealthController', () => {
   let controller: HealthController;
@@ -46,6 +51,42 @@ describe('HealthController rate-limit exemption', () => {
     for (let i = 0; i < 5; i += 1) {
       const response = await agent.get('/health').expect(200);
       expect(response.body).toEqual({ status: 'ok' });
+    }
+  });
+});
+
+describe('HealthController independence from snapshot persistence', () => {
+  it('should not depend on the snapshot service or the snapshot store token', () => {
+    const injected: unknown[] = [
+      ...(Reflect.getMetadata('design:paramtypes', HealthController) ?? []),
+      ...(Reflect.getMetadata('self:paramtypes', HealthController) ?? []).map(
+        (entry: { param: unknown }) => entry.param,
+      ),
+    ];
+
+    expect(injected).not.toContain(ProviderSnapshotService);
+    expect(injected).not.toContain(SNAPSHOT_STORE);
+  });
+
+  it('should answer 200 with { status: "ok" } and touch no store method when the store rejects everything', async () => {
+    const store = new StubSnapshotStore().failEverything();
+    const module: TestingModule = await Test.createTestingModule({ imports: [AppModule] })
+      .overrideProvider(SNAPSHOT_STORE)
+      .useValue(store)
+      .compile();
+    const app = module.createNestApplication({ logger: false });
+    app.setGlobalPrefix('api/v1');
+    applyGlobalPipeline(app);
+    await app.init();
+
+    try {
+      const response = await supertest(app.getHttpServer()).get('/api/v1/health');
+
+      expect(response.status).toBe(200);
+      expect(response.body).toEqual({ status: 'ok' });
+      expect(store.calls).toEqual([]);
+    } finally {
+      await app.close();
     }
   });
 });

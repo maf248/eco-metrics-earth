@@ -87,7 +87,7 @@ jobs:
 
       # Browsers and OS dependencies come from the container image.
       - name: E2E
-        timeout-minutes: 15
+        timeout-minutes: 20
         run: npm run e2e
 
   # Production follows `main`, like the web app on Vercel; `develop` feeds the

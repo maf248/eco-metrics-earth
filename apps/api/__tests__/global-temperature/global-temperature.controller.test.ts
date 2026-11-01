@@ -4,7 +4,7 @@ import { join } from 'path';
 import { HttpService } from '@nestjs/axios';
 import { INestApplication, Logger } from '@nestjs/common';
 import { DocumentBuilder, OpenAPIObject, SwaggerModule } from '@nestjs/swagger';
-import { Test, TestingModule } from '@nestjs/testing';
+import { Test, TestingModule, TestingModuleBuilder } from '@nestjs/testing';
 import { of } from 'rxjs';
 import supertest from 'supertest';
 
@@ -13,7 +13,10 @@ import { GlobalTemperatureData, listCountryEntityCodes } from '@eco-metrics/shar
 import { AppModule } from '../../src/app/app.module';
 import { applyGlobalPipeline } from '../../src/app/global-pipeline';
 import { OUTBOUND_FETCH } from '../../src/common/http/outbound-http-client.service';
+import { SNAPSHOT_STORE } from '../../src/common/snapshots/snapshot-store';
+import { OwidClient } from '../../src/modules/providers/owid/owid-client.service';
 import { OWID_PUBLISHER } from '../../src/modules/providers/owid/owid.attribution';
+import { StubSnapshotStore } from '../common/snapshots/stub-snapshot-store';
 
 const FIXTURES = join(__dirname, 'fixtures');
 
@@ -31,6 +34,13 @@ function metadataWith(overrides: Record<string, unknown>): string {
 
 type Route = (url: string) => Response;
 
+/** The constant body every provider failure answers with (see the global exception filter). */
+const PROVIDER_ERROR_BODY = {
+  success: false,
+  error: 'Data provider unavailable or returned invalid data',
+  status: 502,
+};
+
 const okRoutes: Route = (url) => {
   if (url.includes('/grapher/annual-temperature-anomalies.csv')) {
     return new Response(fixture('annual-temperature-anomalies.csv'), { status: 200 });
@@ -47,16 +57,20 @@ const okRoutes: Route = (url) => {
   return new Response('not found', { status: 404 });
 };
 
-async function createApp(route: Route): Promise<{ app: INestApplication; fetchStub: jest.Mock }> {
+async function createApp(
+  route: Route,
+  override?: (builder: TestingModuleBuilder) => void,
+): Promise<{ app: INestApplication; fetchStub: jest.Mock }> {
   const fetchStub = jest.fn((input: string | URL) => Promise.resolve(route(String(input))));
-  const moduleRef: TestingModule = await Test.createTestingModule({
+  const builder = Test.createTestingModule({
     imports: [AppModule],
   })
     .overrideProvider(OUTBOUND_FETCH)
     .useValue(fetchStub)
     .overrideProvider(HttpService)
-    .useValue({ request: () => of({ status: 200, data: {} }) })
-    .compile();
+    .useValue({ request: () => of({ status: 200, data: {} }) });
+  override?.(builder);
+  const moduleRef: TestingModule = await builder.compile();
   const app = moduleRef.createNestApplication({ logger: false });
   app.setGlobalPrefix('api/v1');
   applyGlobalPipeline(app);
@@ -127,6 +141,7 @@ describe('GET /api/v1/global-temperature', () => {
       lastUpdated: '2026-10-13T08:42:32.000Z',
     });
     expect(new Date(response.body.meta.fetchedAt).toISOString()).toBe(response.body.meta.fetchedAt);
+    expect(response.body.meta.stale).toBe(false);
   });
 
   it('should identify the OWID dataset and credit the Copernicus origin', async () => {
@@ -430,5 +445,164 @@ describe('GET /api/v1/global-temperature provider failures', () => {
         ? new Response(metadataWith({ datasetVersion: 'latest' }), { status: 200 })
         : okRoutes(url),
     );
+  });
+});
+
+describe('GET /api/v1/global-temperature snapshot fallback', () => {
+  const STORED_AT = '2026-10-25T10:00:00.000Z';
+  const stored = {
+    data: { marker: 'stored-global-temperature' },
+    lastUpdated: '2026-10-01T00:00:00.000Z',
+  };
+  const providerDown: Route = () => new Response('not found', { status: 404 });
+  let spies: jest.SpyInstance[];
+
+  function seededStore(): StubSnapshotStore {
+    return new StubSnapshotStore().seed('global-temperature', {
+      fetchedAt: STORED_AT,
+      contentHash: 'stored-hash',
+      payload: stored,
+    });
+  }
+
+  function createAppWithStore(
+    route: Route,
+    store: StubSnapshotStore,
+    extra?: (builder: TestingModuleBuilder) => void,
+  ): ReturnType<typeof createApp> {
+    return createApp(route, (builder) => {
+      builder.overrideProvider(SNAPSHOT_STORE).useValue(store);
+      extra?.(builder);
+    });
+  }
+
+  beforeEach(() => {
+    spies = [
+      jest.spyOn(Logger.prototype, 'error').mockImplementation(() => undefined),
+      jest.spyOn(Logger.prototype, 'warn').mockImplementation(() => undefined),
+    ];
+  });
+
+  afterEach(() => {
+    spies.forEach((spy) => spy.mockRestore());
+  });
+
+  it('should answer 200 with the stored payload and a stale meta when the provider is down', async () => {
+    const { app } = await createAppWithStore(providerDown, seededStore());
+
+    const response = await supertest(app.getHttpServer()).get('/api/v1/global-temperature');
+
+    expect(response.status).toBe(200);
+    expect(response.body.success).toBe(true);
+    expect(response.body.data).toEqual(stored.data);
+    expect(response.body.meta.stale).toBe(true);
+    expect(response.body.meta.fetchedAt).toBe(STORED_AT);
+    expect(response.body.meta.source).toEqual({
+      ...OWID_PUBLISHER,
+      lastUpdated: stored.lastUpdated,
+    });
+    await app.close();
+  });
+
+  it('should serve the stored payload as stale when every attempt fails with a 503', async () => {
+    const { app } = await createAppWithStore(
+      () => new Response('unavailable', { status: 503 }),
+      seededStore(),
+    );
+
+    const response = await supertest(app.getHttpServer()).get('/api/v1/global-temperature');
+
+    expect(response.status).toBe(200);
+    expect(response.body.data).toEqual(stored.data);
+    expect(response.body.meta.stale).toBe(true);
+    expect(response.body.meta.fetchedAt).toBe(STORED_AT);
+    await app.close();
+  }, 15_000);
+
+  it('should answer 502 when the provider is down and nothing is stored', async () => {
+    const { app } = await createAppWithStore(providerDown, new StubSnapshotStore());
+
+    const response = await supertest(app.getHttpServer()).get('/api/v1/global-temperature');
+
+    expect(response.status).toBe(502);
+    expect(response.body).toEqual(PROVIDER_ERROR_BODY);
+    await app.close();
+  });
+
+  it('should answer 502 when the provider is down and persistence is disabled', async () => {
+    const { app } = await createApp(providerDown);
+
+    const response = await supertest(app.getHttpServer()).get('/api/v1/global-temperature');
+
+    expect(response.status).toBe(502);
+    await app.close();
+  });
+
+  it('should flag a healthy response as fresh with the response time as fetchedAt', async () => {
+    const { app } = await createAppWithStore(okRoutes, new StubSnapshotStore());
+    const before = Date.now();
+
+    const response = await supertest(app.getHttpServer()).get('/api/v1/global-temperature');
+
+    expect(response.status).toBe(200);
+    expect(response.body.meta.stale).toBe(false);
+    expect(Date.parse(response.body.meta.fetchedAt)).toBeGreaterThanOrEqual(before);
+    expect(Date.parse(response.body.meta.fetchedAt)).toBeLessThanOrEqual(Date.now());
+    await app.close();
+  });
+
+  it('should persist the assembled payload of a healthy response', async () => {
+    const store = new StubSnapshotStore();
+    const { app } = await createAppWithStore(okRoutes, store);
+
+    const response = await supertest(app.getHttpServer()).get('/api/v1/global-temperature');
+
+    const snapshot = store.stored('global-temperature') as
+      { payload: { data: unknown } } | undefined;
+    expect(snapshot?.payload.data).toEqual(response.body.data);
+    await app.close();
+  });
+
+  it('should answer 200 with fresh data when the store rejects every call', async () => {
+    const { app } = await createAppWithStore(okRoutes, new StubSnapshotStore().failEverything());
+
+    const response = await supertest(app.getHttpServer()).get('/api/v1/global-temperature');
+
+    expect(response.status).toBe(200);
+    expect(response.body.meta.stale).toBe(false);
+    await app.close();
+  });
+
+  it('should keep a plain Error as 500 even when a snapshot is stored', async () => {
+    const store = seededStore();
+    const { app } = await createAppWithStore(okRoutes, store, (builder) => {
+      builder.overrideProvider(OwidClient).useValue({
+        getGrapherSeries: () => Promise.reject(new TypeError('bug')),
+        getIndicatorMetadata: () => Promise.reject(new TypeError('bug')),
+      });
+    });
+
+    const response = await supertest(app.getHttpServer()).get('/api/v1/global-temperature');
+
+    expect(response.status).toBe(500);
+    expect(store.count('read')).toBe(0);
+    await app.close();
+  });
+
+  it('should not advance the catalog OWID lastUpdated with a stale response', async () => {
+    const { app } = await createAppWithStore(providerDown, seededStore());
+    const owid = async (): Promise<{ lastUpdated: string; lastUpdatedBasis: string }> => {
+      const response = await supertest(app.getHttpServer()).get('/api/v1/data-sources');
+      return response.body.data.providers.find((p: { id: string }) => p.id === 'owid');
+    };
+    const before = await owid();
+
+    const stale = await supertest(app.getHttpServer()).get('/api/v1/global-temperature');
+    const after = await owid();
+
+    expect(stale.body.meta.stale).toBe(true);
+    expect(after.lastUpdated).toBe(before.lastUpdated);
+    expect(after.lastUpdatedBasis).toBe('retrieval');
+    await app.close();
   });
 });

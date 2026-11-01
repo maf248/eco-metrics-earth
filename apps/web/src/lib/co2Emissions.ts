@@ -1,6 +1,6 @@
 import 'server-only';
 
-import { fetchPayloadFromBff } from '@/lib/bffFetch';
+import { fetchProviderPayloadFromBff, type ProviderPayloadResult } from '@/lib/bffFetch';
 import { hasStrings, isDataSourceOrigin, isYearAlignedCountryData } from '@/lib/payloadGuards';
 import type { ApiResponseMeta, Co2EmissionsData } from '@eco-metrics/shared';
 
@@ -22,9 +22,12 @@ function isCo2EmissionsData(data: unknown): data is Co2EmissionsData {
   );
 }
 
-/** Fetches the CO2 emissions dataset and its attribution; throws when every attempt fails. */
-export async function getCo2Emissions(): Promise<Co2EmissionsPayload> {
-  return fetchPayloadFromBff({
+/**
+ * Fetches the CO2 emissions dataset and its attribution. Resolves `provider-unavailable` when the
+ * BFF reports that its provider is down and it holds no snapshot; throws on any other failure.
+ */
+export async function getCo2Emissions(): Promise<ProviderPayloadResult<Co2EmissionsPayload>> {
+  return fetchProviderPayloadFromBff({
     path: '/co2-emissions',
     label: 'CO2 emissions data',
     isData: isCo2EmissionsData,

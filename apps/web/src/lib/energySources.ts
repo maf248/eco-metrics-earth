@@ -1,6 +1,6 @@
 import 'server-only';
 
-import { fetchPayloadFromBff } from '@/lib/bffFetch';
+import { fetchProviderPayloadFromBff, type ProviderPayloadResult } from '@/lib/bffFetch';
 import {
   hasStrings,
   isDataSourceOrigin,
@@ -47,9 +47,12 @@ function isEnergySourcesData(data: unknown): data is EnergySourcesData {
   );
 }
 
-/** Fetches the energy sources dataset and its attribution; throws when every attempt fails. */
-export async function getEnergySources(): Promise<EnergySourcesPayload> {
-  return fetchPayloadFromBff({
+/**
+ * Fetches the energy sources dataset and its attribution. Resolves `provider-unavailable` when the
+ * BFF reports that its provider is down and it holds no snapshot; throws on any other failure.
+ */
+export async function getEnergySources(): Promise<ProviderPayloadResult<EnergySourcesPayload>> {
+  return fetchProviderPayloadFromBff({
     path: '/energy-sources',
     label: 'Energy sources data',
     isData: isEnergySourcesData,

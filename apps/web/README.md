@@ -13,7 +13,7 @@ Environmental metrics dashboard — the user-facing app consuming the NestJS BFF
 
 ### Routing
 
-All routes use the **App Router** convention (`app/` directory). Category pages are served from the ISR cache (`revalidate = 86400`).
+All routes use the **App Router** convention (`app/` directory). Category pages are served from the ISR cache (`revalidate = 86400`). Provider-backed categories show a stale notice (data older than 7 days) or an unavailable state (older than 30 days, or a provider `502` with no snapshot) instead of failing.
 
 ```
 src/app/

@@ -45,8 +45,23 @@ Declared in `apps/web/src/app/globals.css`. Values are Tailwind 4.3.3 palette en
 | `line`                | Structural borders (header, nav)                         | gray-200    | gray-800    |
 | `line-strong`         | Table head row, card borders                             | gray-200    | gray-700    |
 | `line-subtle`         | Table body row dividers                                  | gray-100    | gray-800    |
+| `warning-surface`     | Stale notice background                                  | amber-50    | amber-950   |
+| `warning-line`        | Stale notice border                                      | amber-300   | amber-800   |
+| `warning-fg`          | Stale notice text; warning icon (notice and unavailable) | amber-900   | amber-100   |
 
 `accent-solid`, `accent-solid-strong`, `on-accent` and `focus-ring` currently hold the same value in both themes; they are tokens so a dark value can be introduced in one place.
+
+#### Warning tokens: contrast
+
+Amber family, deliberately not an error red: a degraded provider is not a failure of the site. Ratios are WCAG relative-luminance contrast, computed from the `oklch()` values above (sRGB, no gamut clipping needed). Thresholds: text >= 4.5:1 on its own surface, icon >= 3:1 on every surface it sits on.
+
+| Pair                                                | Light  | Dark    |
+| --------------------------------------------------- | ------ | ------- |
+| `warning-fg` on `warning-surface` (notice text)     | 8.77:1 | 13.47:1 |
+| `warning-fg` on `surface`                           | 9.09:1 | 18.87:1 |
+| `warning-fg` on `surface-raised` (unavailable icon) | 9.09:1 | 13.19:1 |
+
+`warning-line` is a decorative border (1.39:1 on `warning-surface` in light, 2.10:1 in dark): the notice never relies on it, the icon and the text carry the meaning.
 
 ### Legacy — pending consolidation, do not use in new UI
 
@@ -215,6 +230,22 @@ Pending — define and validate it in the first change that encodes polarity wit
 - **A missing value is `null`, never zero:** a gap in a chart, an em dash in a table, "No data" in a tooltip. ECharts' generated `aria` description prints `null` as "NaN", so such a chart sets `aria.label.description` itself.
 - **Tables follow the toggle.** The year table of a chart with a measure toggle shows the measure the chart shows, so it is always the text equivalent of what is visible; a small table that doubles as a donut legend (`EnergyLatestTable`) is visible rather than collapsed. Many columns use `YearDataTable`'s `wide` flag so the scroll region scrolls instead of squeezing them.
 - **`MeasureToggle`** is the one radio-group toggle between measures ("Total / Per capita", "Share (%) / Generation (TWh)").
+
+### Degraded provider states
+
+A provider-backed category (OWID today) can be served from a stored snapshot when its provider is down. The page decides from `meta.stale` and `meta.fetchedAt` (`lib/providerFreshness.ts`), once, on the server:
+
+| Age of the stored data (stale only) | Shown                                      |
+| ----------------------------------- | ------------------------------------------ |
+| up to 7 days                        | the data, silently (no notice)             |
+| over 7 and up to 30 days            | the data under the **stale notice**        |
+| over 30 days, or provider `502`     | the **unavailable state** in place of data |
+
+Defaults are `silentDays: 7` and `noticeDays: 30` (`DEFAULT_FRESHNESS_THRESHOLDS`); a category may override them with `provider.freshness` in its registry entry (`defineProviderCategoryPage`). A payload without `stale: true` is always fresh, whatever its age.
+
+- **Stale notice** (`StaleDataNotice`): a banner directly above the section content, `warning-surface` background, `warning-line` border, `warning-fg` text and a decorative `WarningIcon`. Copy: "{Provider} is currently unreachable. Showing the copy we retrieved on {date}." with the date through `formatUtcDate` in a `<time dateTime>` and the provider from `meta.source.provider`. `role="status"` (informational, never `alert`), no controls.
+- **Unavailable state** (`DataUnavailable`): replaces only the section content; the common header (icon and `<h1>`) stays and, when `meta` is known, so does the source attribution (`DataAttribution`). Neutral panel (`surface-raised`, `line-strong`, `fg`, `fg-body`) with the `WarningIcon` in `warning-fg`, not error red. `<h2>` "Data temporarily unavailable", body "We couldn't reach {Provider} to load this data. We're keeping an eye on it and it should be back soon.", and "Last retrieved from {Provider}: {date}" only when a snapshot date is known. `role="status"`, not `alert`; **no retry button**: ISR retries server-side, so a client control would only suggest an action that does nothing. The provider name comes from `meta.source.provider` when `meta` exists, otherwise from the registry entry (a `502` carries no `meta`).
+- Both are tokens-only (no palette utilities) and are covered by role/semantics unit tests; axe cannot reach them in E2E because the OWID fixture server has no failure mode.
 
 ### Chart rules
 

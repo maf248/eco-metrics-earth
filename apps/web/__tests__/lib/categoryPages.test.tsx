@@ -1,7 +1,16 @@
 import { render, screen } from '@testing-library/react';
 
-import { CATEGORY_PAGES, defineCategoryPage } from '@/lib/categoryPages';
+import {
+  CATEGORY_PAGES,
+  defineCategoryPage,
+  defineProviderCategoryPage,
+} from '@/lib/categoryPages';
+import { getCo2Emissions } from '@/lib/co2Emissions';
+import { getEnergySources } from '@/lib/energySources';
+import { getGlobalTemperature } from '@/lib/globalTemperature';
+import { getWaterFootprintProducts } from '@/lib/waterFootprint';
 
+import { CO2_FIXTURE, CO2_META } from '../fixtures/co2Emissions';
 import { ENERGY_FIXTURE, ENERGY_META } from '../fixtures/energySources';
 import { TEMPERATURE_FIXTURE, TEMPERATURE_META } from '../fixtures/globalTemperature';
 
@@ -44,29 +53,194 @@ describe('CATEGORY_PAGES', () => {
   });
 });
 
-describe('CATEGORY_PAGES global-temperature entry', () => {
-  it('should render the content inside the centered container', () => {
-    const Content = CATEGORY_PAGES['global-temperature']?.Content;
-    if (!Content) throw new Error('missing entry');
+const NOW = new Date('2026-10-28T12:00:00.000Z');
+const DAY_MS = 24 * 60 * 60 * 1000;
 
-    const { container } = render(
-      <Content data={{ data: TEMPERATURE_FIXTURE, meta: TEMPERATURE_META }} />,
-    );
+const daysAgo = (days: number): string => new Date(NOW.getTime() - days * DAY_MS).toISOString();
 
-    expect(container.firstElementChild).toHaveClass('mt-8', 'w-full', 'flex', 'justify-center');
+/** Runs the entry's `load` and renders its `Content` with the result, like the page does. */
+async function renderEntry(slug: 'co2-emissions' | 'global-temperature' | 'energy-sources') {
+  const definition = CATEGORY_PAGES[slug];
+  if (!definition) throw new Error('missing entry');
+  const { Content } = definition;
+  return render(<Content data={await definition.load()} />);
+}
+
+describe('CATEGORY_PAGES provider-backed entries', () => {
+  beforeEach(() => {
+    jest.useFakeTimers({ now: NOW });
+    jest.mocked(getCo2Emissions).mockResolvedValue({
+      kind: 'ok',
+      payload: { data: CO2_FIXTURE, meta: CO2_META },
+    });
+    jest.mocked(getGlobalTemperature).mockResolvedValue({
+      kind: 'ok',
+      payload: { data: TEMPERATURE_FIXTURE, meta: TEMPERATURE_META },
+    });
+    jest.mocked(getEnergySources).mockResolvedValue({
+      kind: 'ok',
+      payload: { data: ENERGY_FIXTURE, meta: ENERGY_META },
+    });
+  });
+
+  afterEach(() => {
+    jest.useRealTimers();
+  });
+
+  it.each([
+    ['co2-emissions', 'co2-key-figures'],
+    ['global-temperature', 'global-temperature-key-figures'],
+    ['energy-sources', 'energy-key-figures'],
+  ] as const)(
+    'should render fresh %s content with no notice and no unavailable state',
+    async (slug, testId) => {
+      const { container } = await renderEntry(slug);
+
+      expect(container.firstElementChild).toHaveClass('mt-8', 'w-full', 'flex', 'justify-center');
+      expect(screen.getByTestId(testId)).toBeInTheDocument();
+      expect(screen.queryByTestId('stale-data-notice')).not.toBeInTheDocument();
+      expect(screen.queryByTestId('data-unavailable')).not.toBeInTheDocument();
+    },
+  );
+
+  it('should treat a 6.9-day-old stale payload as fresh', async () => {
+    jest.mocked(getGlobalTemperature).mockResolvedValue({
+      kind: 'ok',
+      payload: {
+        data: TEMPERATURE_FIXTURE,
+        meta: { ...TEMPERATURE_META, stale: true, fetchedAt: daysAgo(6.9) },
+      },
+    });
+
+    await renderEntry('global-temperature');
+
+    expect(screen.queryByTestId('stale-data-notice')).not.toBeInTheDocument();
     expect(screen.getByTestId('global-temperature-key-figures')).toBeInTheDocument();
+  });
+
+  it('should show the notice above the full content for a 14-day-old stale payload', async () => {
+    jest.mocked(getEnergySources).mockResolvedValue({
+      kind: 'ok',
+      payload: {
+        data: ENERGY_FIXTURE,
+        meta: { ...ENERGY_META, stale: true, fetchedAt: daysAgo(14) },
+      },
+    });
+
+    await renderEntry('energy-sources');
+
+    const notice = screen.getByTestId('stale-data-notice');
+    const content = screen.getByTestId('energy-key-figures');
+    expect(notice).toHaveTextContent(
+      'Our World in Data is currently unreachable. Showing the copy we retrieved on Oct 14, 2026.',
+    );
+    expect(notice.compareDocumentPosition(content) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(screen.queryByTestId('data-unavailable')).not.toBeInTheDocument();
+  });
+
+  it('should replace the content with the unavailable state for a 40-day-old stale payload', async () => {
+    jest.mocked(getCo2Emissions).mockResolvedValue({
+      kind: 'ok',
+      payload: { data: CO2_FIXTURE, meta: { ...CO2_META, stale: true, fetchedAt: daysAgo(40) } },
+    });
+
+    await renderEntry('co2-emissions');
+
+    expect(screen.getByTestId('data-unavailable')).toHaveTextContent(
+      'Last retrieved from Our World in Data: Sep 18, 2026',
+    );
+    expect(screen.getByTestId('unavailable-data-attribution')).toBeInTheDocument();
+    expect(screen.queryByTestId('co2-key-figures')).not.toBeInTheDocument();
+    expect(screen.queryByTestId('stale-data-notice')).not.toBeInTheDocument();
+  });
+
+  it.each([
+    ['co2-emissions', getCo2Emissions],
+    ['global-temperature', getGlobalTemperature],
+    ['energy-sources', getEnergySources],
+  ] as const)(
+    'should show %s as unavailable with the registry provider name on a provider 502',
+    async (slug, getter) => {
+      jest.mocked(getter).mockResolvedValue({ kind: 'provider-unavailable' });
+
+      await renderEntry(slug);
+
+      const unavailable = screen.getByTestId('data-unavailable');
+      expect(unavailable).toHaveTextContent("We couldn't reach Our World in Data");
+      expect(unavailable).not.toHaveTextContent('Last retrieved from');
+      expect(screen.queryByTestId('unavailable-data-attribution')).not.toBeInTheDocument();
+    },
+  );
+
+  it('should propagate a failure of the BFF itself', async () => {
+    jest.mocked(getEnergySources).mockRejectedValue(new Error('unreachable'));
+
+    await expect(CATEGORY_PAGES['energy-sources']?.load()).rejects.toThrow('unreachable');
+  });
+
+  it('should leave water-footprint on the plain registration', async () => {
+    const definition = CATEGORY_PAGES['water-footprint'];
+    jest.mocked(getWaterFootprintProducts).mockResolvedValue([]);
+
+    await expect(definition?.load()).resolves.toEqual([]);
   });
 });
 
-describe('CATEGORY_PAGES energy-sources entry', () => {
-  it('should render the content inside the centered container', () => {
-    const Content = CATEGORY_PAGES['energy-sources']?.Content;
-    if (!Content) throw new Error('missing entry');
+describe('defineProviderCategoryPage', () => {
+  const Content = ({ data }: { data: { meta: typeof TEMPERATURE_META } }) => (
+    <p data-testid="inner">{data.meta.fetchedAt}</p>
+  );
 
-    const { container } = render(<Content data={{ data: ENERGY_FIXTURE, meta: ENERGY_META }} />);
+  beforeEach(() => {
+    jest.useFakeTimers({ now: NOW });
+  });
 
-    expect(container.firstElementChild).toHaveClass('mt-8', 'w-full', 'flex', 'justify-center');
-    expect(screen.getByTestId('energy-key-figures')).toBeInTheDocument();
+  afterEach(() => {
+    jest.useRealTimers();
+  });
+
+  it('should honor a per-category freshness override', async () => {
+    const definition = defineProviderCategoryPage({
+      provider: { name: 'Example', freshness: { silentDays: 1, noticeDays: 3 } },
+      load: async () => ({
+        kind: 'ok' as const,
+        payload: { meta: { ...TEMPERATURE_META, stale: true, fetchedAt: daysAgo(2) } },
+      }),
+      Content,
+    });
+    const { Content: Page } = definition;
+
+    render(<Page data={await definition.load()} />);
+
+    expect(screen.getByTestId('stale-data-notice')).toBeInTheDocument();
+    expect(screen.getByTestId('inner')).toBeInTheDocument();
+  });
+
+  it('should use meta.source.provider over the registry name when meta exists', async () => {
+    const definition = defineProviderCategoryPage({
+      provider: { name: 'Registry name' },
+      load: async () => ({
+        kind: 'ok' as const,
+        payload: { meta: { ...TEMPERATURE_META, stale: true, fetchedAt: daysAgo(14) } },
+      }),
+      Content,
+    });
+    const { Content: Page } = definition;
+
+    render(<Page data={await definition.load()} />);
+
+    expect(screen.getByTestId('stale-data-notice')).toHaveTextContent('Our World in Data');
+    expect(screen.getByTestId('stale-data-notice')).not.toHaveTextContent('Registry name');
+  });
+
+  it('should reject invalid thresholds when loading', async () => {
+    const definition = defineProviderCategoryPage({
+      provider: { name: 'Example', freshness: { silentDays: 5, noticeDays: 5 } },
+      load: async () => ({ kind: 'ok' as const, payload: { meta: TEMPERATURE_META } }),
+      Content,
+    });
+
+    await expect(definition.load()).rejects.toThrow('Invalid freshness thresholds');
   });
 });
 

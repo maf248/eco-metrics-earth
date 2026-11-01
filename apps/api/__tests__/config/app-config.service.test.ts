@@ -184,4 +184,24 @@ describe('AppConfigService', () => {
       expect(service.internalApiKey).toBeUndefined();
     });
   });
+
+  describe('snapshotBucket and snapshotPrefix', () => {
+    it('should return both when they are set', () => {
+      const service = buildService({ SNAPSHOT_BUCKET: 'my-bucket', SNAPSHOT_PREFIX: 'production' });
+      expect(service.snapshotBucket).toBe('my-bucket');
+      expect(service.snapshotPrefix).toBe('production');
+    });
+
+    it('should return undefined when they are not in config', () => {
+      const service = buildService({});
+      expect(service.snapshotBucket).toBeUndefined();
+      expect(service.snapshotPrefix).toBeUndefined();
+    });
+
+    it('should return undefined when they are empty strings', () => {
+      const service = buildService({ SNAPSHOT_BUCKET: '', SNAPSHOT_PREFIX: '' });
+      expect(service.snapshotBucket).toBeUndefined();
+      expect(service.snapshotPrefix).toBeUndefined();
+    });
+  });
 });

@@ -98,4 +98,37 @@ describe('ApiResponse', () => {
     expect(narrowed).toEqual([99, 'Upstream timeout']);
     expect(responses.every((response) => response.meta === meta)).toBe(true);
   });
+
+  it('should keep the stale flag optional on the meta', () => {
+    const fresh: ApiResponseMeta = { source: attribution, fetchedAt: meta.fetchedAt };
+    const stale: ApiResponseMeta = { ...fresh, stale: true };
+
+    expect(fresh.stale).toBeUndefined();
+    expect(stale.stale).toBe(true);
+  });
+
+  it('should only accept a boolean stale flag', () => {
+    const invalid: ApiResponseMeta = {
+      source: attribution,
+      fetchedAt: meta.fetchedAt,
+      // @ts-expect-error stale must be a boolean
+      stale: 'yes',
+    };
+
+    expect(typeof invalid.stale).toBe('string');
+  });
+
+  it('should allow meta to flag a stale snapshot', () => {
+    const response: ApiResponse<number> = {
+      success: true,
+      data: 42,
+      status: 200,
+      meta: { ...meta, stale: true },
+    };
+
+    if (response.success) {
+      const stale: boolean | undefined = response.meta?.stale;
+      expect(stale).toBe(true);
+    }
+  });
 });

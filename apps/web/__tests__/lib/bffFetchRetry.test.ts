@@ -67,6 +67,21 @@ describe('fetchEnvelopeFromBff retry and the Data Cache', () => {
     expect(initOf(fetchMock, 1)).not.toHaveProperty('next');
   });
 
+  it('should keep the regular revalidation on the retry after a provider 502 for non-provider reads', async () => {
+    const fetchMock = useFetch(
+      {
+        ok: false,
+        status: 502,
+        json: async () => ({ success: false, error: 'Data provider unavailable', status: 502 }),
+      },
+      ok({ success: true, data: [1], meta: META }),
+    );
+
+    await request();
+
+    expect(initOf(fetchMock, 1)).toMatchObject({ next: { revalidate: 86400 } });
+  });
+
   it('should bypass the Data Cache after a response without the required meta', async () => {
     const fetchMock = useFetch(
       ok({ success: true, data: [1] }),

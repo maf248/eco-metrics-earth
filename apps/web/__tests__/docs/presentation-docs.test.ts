@@ -1,6 +1,8 @@
 import { readFileSync } from 'fs';
 import { join } from 'path';
 
+import { DEFAULT_FRESHNESS_THRESHOLDS } from '@/lib/providerFreshness';
+
 const REPO_ROOT = join(__dirname, '..', '..', '..', '..');
 
 function readRepoFile(path: string): string {
@@ -55,6 +57,55 @@ describe('presentation docs', () => {
 
     it('should document each origin credited next to the chart it feeds through OriginCredit', () => {
       expect(presentationStack).toMatch(/OriginCredit/);
+    });
+  });
+
+  describe('design-system.md Color Tokens and degraded states', () => {
+    const degradedStates = sectionFrom(designSystem, '### Degraded provider states');
+    const globalsCss = readRepoFile('apps/web/src/app/globals.css');
+
+    it.each(['warning-surface', 'warning-line', 'warning-fg'])(
+      'should list %s in the Color Tokens table with the values declared in globals.css',
+      (token) => {
+        const [light, dark] = [
+          ...globalsCss.matchAll(
+            new RegExp(`--${token}:\\s*oklch\\([^)]*\\);\\s*/\\* ([\\w-]+) \\*/`, 'g'),
+          ),
+        ].map((match) => match[1]);
+        const row = designSystem.split('\n').find((line) => line.startsWith(`| \`${token}\``));
+
+        expect(light).toBeDefined();
+        expect(dark).toBeDefined();
+        expect(row).toBeDefined();
+        expect(row).toContain(light);
+        expect(row).toContain(dark);
+      },
+    );
+
+    const { silentDays, noticeDays } = DEFAULT_FRESHNESS_THRESHOLDS;
+
+    it('should document the stale notice pattern with its copy, role and visibility rule', () => {
+      expect(degradedStates).toMatch(/\*\*Stale notice\*\* \(`StaleDataNotice`\)/);
+      expect(degradedStates).toContain(
+        '{Provider} is currently unreachable. Showing the copy we retrieved on {date}.',
+      );
+      expect(degradedStates).toContain(`over ${silentDays} and up to ${noticeDays} days`);
+      expect(degradedStates).toMatch(/`role="status"`/);
+      expect(degradedStates).toMatch(/`formatUtcDate`/);
+    });
+
+    it('should document the unavailable state, its header rule and the absence of a retry control', () => {
+      expect(degradedStates).toMatch(/\*\*Unavailable state\*\* \(`DataUnavailable`\)/);
+      expect(degradedStates).toContain('Data temporarily unavailable');
+      expect(degradedStates).toMatch(/the common header .* stays/);
+      expect(degradedStates).toMatch(/\*\*no retry button\*\*/);
+      expect(degradedStates).toMatch(/Last retrieved from \{Provider\}: \{date\}/);
+    });
+
+    it('should state the default thresholds and the per-category override', () => {
+      expect(degradedStates).toContain(`\`silentDays: ${silentDays}\``);
+      expect(degradedStates).toContain(`\`noticeDays: ${noticeDays}\``);
+      expect(degradedStates).toMatch(/`provider\.freshness`/);
     });
   });
 

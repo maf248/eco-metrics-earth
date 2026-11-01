@@ -29,8 +29,8 @@ export class EnergySourcesController {
     description: 'The data provider is unavailable or returned invalid data',
   })
   async findAll(): Promise<ApiResponse<EnergySourcesData>> {
-    const { data, lastUpdated } = await this.service.getEnergySources();
+    const { payload, fetchedAt, stale } = await this.service.getEnergySources();
 
-    return buildOwidEnvelope(data, lastUpdated);
+    return buildOwidEnvelope(payload.data, payload.lastUpdated, { fetchedAt, stale });
   }
 }

@@ -10,6 +10,10 @@ import {
 } from '@eco-metrics/shared';
 
 import { buildYearAlignedEntities, roundTo } from '../../common/series/build-year-aligned-entities';
+import {
+  ProviderSnapshotService,
+  type Snapshotted,
+} from '../../common/snapshots/provider-snapshot.service';
 import { OwidClient } from '../providers/owid/owid-client.service';
 import { OwidProviderStatus } from '../providers/owid/owid-provider-status';
 import type { OwidIndicatorMetadata } from '../providers/owid/owid.types';
@@ -196,18 +200,27 @@ export class EnergySourcesService {
   constructor(
     private readonly owid: OwidClient,
     private readonly providerStatus: OwidProviderStatus,
+    private readonly snapshots: ProviderSnapshotService,
   ) {
     this.providerStatus.registerCategory(ENERGY_SOURCES_CATEGORY, [ENERGY_ORIGIN]);
   }
 
   /**
-   * Electricity generation by source of every country plus World. Provider errors
-   * propagate and become 502 in the global filter; there is never a partial
-   * payload. All columns share one cached download (the client caches the table
-   * per chart, country list and range), so a cold start costs one CSV request
-   * and one metadata request.
+   * Electricity generation by source of every country plus World. A provider
+   * failure serves the stored last good payload (`stale: true`) when there is
+   * one; without it the error propagates and becomes 502 in the global filter.
+   * There is never a partial payload.
    */
-  async getEnergySources(): Promise<EnergySourcesResult> {
+  getEnergySources(): Promise<Snapshotted<EnergySourcesResult>> {
+    return this.snapshots.resolve(ENERGY_SOURCES_CATEGORY, () => this.assemble());
+  }
+
+  /**
+   * Fetches and assembles the payload from the provider. All columns share one
+   * cached download (the client caches the table per chart, country list and
+   * range), so a cold start costs one CSV request and one metadata request.
+   */
+  private async assemble(): Promise<EnergySourcesResult> {
     const options = {
       country: this.allowedCodes,
       timeRange: { from: ENERGY_START_YEAR, to: new Date().getUTCFullYear() },
