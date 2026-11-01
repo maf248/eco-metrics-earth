@@ -1,6 +1,8 @@
 import withBundleAnalyzerInit from '@next/bundle-analyzer';
 import type { NextConfig } from 'next';
 
+import { ECO_CATEGORIES } from '../../packages/shared/src/lib/eco-category';
+
 /**
  * packages/shared uses moduleResolution: "bundler" (no .js extensions in
  * re-exports), so Turbopack needs it listed in transpilePackages to compile
@@ -20,6 +22,20 @@ const baseConfig: NextConfig = {
   partialPrefetching: true,
   trailingSlash: true,
   transpilePackages: ['@eco-metrics/shared'],
+
+  async rewrites() {
+    // An unknown slug never reaches `[category]`, where a 404 raised while rendering has an empty
+    // <body> that needs JavaScript. A path no route matches gets the complete not-found page.
+    // Returned as an array, this runs after fixed routes and files, and before dynamic routes.
+    // `%` stays out because `[category]` decodes its param: an encoded slug may be a valid one.
+    const categories = Object.values(ECO_CATEGORIES).join('|');
+    return [
+      {
+        source: `/:slug((?!(?:${categories})(?:/|$))[^/%]+)/`,
+        destination: '/not-found/unknown-category/',
+      },
+    ];
+  },
 
   async headers() {
     // NOTE: `unsafe-inline` in script-src is required by Next.js App Router,

@@ -20,7 +20,6 @@ src/app/
 ├── layout.tsx        # Root layout — <html>, Navbar/MobileHeader, skip-to-content, theme script, global CSS, metadata base
 ├── page.tsx          # Home — /
 ├── [category]/
-│   ├── layout.tsx    # Rejects unknown slugs with a real 404
 │   └── page.tsx      # Category page — /[slug]/ — cached, `ensureStatic`
 ├── not-found.tsx     # 404 — rendered for unknown slugs and missing routes
 ├── globals.css       # Tailwind base + custom global styles
@@ -31,7 +30,7 @@ src/app/
 └── sitemap.ts        # sitemap.xml — home + all 12 category pages
 ```
 
-Category pages use `generateStaticParams` to pre-render every `ECO_CATEGORIES` slug at build time except the categories with live data (the registry in `lib/categoryPages.tsx`: `water-footprint`, `co2-emissions`, `global-temperature` and `energy-sources`), which are generated on demand on their first request and then cached, so the build never needs the BFF. That first request waits for the complete page (`ensureStatic = 'navigation'`): there is no `loading.tsx` or `<Suspense>` around the data, so crawlers always get the content in the visible document. Client navigations show the header and skeletons from `NavigationContent` meanwhile. `[category]/layout.tsx` rejects unknown slugs with a real 404. If the API fetch fails twice (10 s per attempt), the page throws: during a revalidation the last good page keeps being served.
+Category pages use `generateStaticParams` to pre-render every `ECO_CATEGORIES` slug at build time except the categories with live data (the registry in `lib/categoryPages.tsx`: `water-footprint`, `co2-emissions`, `global-temperature` and `energy-sources`), which are generated on demand on their first request and then cached, so the build never needs the BFF. That first request waits for the complete page (`ensureStatic = 'navigation'`): there is no `loading.tsx` or `<Suspense>` around the data, so crawlers always get the content in the visible document. Client navigations show the header and skeletons from `NavigationContent` meanwhile. A rewrite in `next.config.ts` keeps unknown lowercase slugs out of the route, so they get a real 404 with the complete not-found page; the rest get a real 404 from the page itself, drawn by JavaScript. If the API fetch fails twice (10 s per attempt), the page throws: during a revalidation the last good page keeps being served.
 
 ### Components
 
