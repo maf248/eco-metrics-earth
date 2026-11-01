@@ -31,11 +31,8 @@ describe('NotFound page', () => {
     expect(link).toBeTruthy();
     expect(link.getAttribute('href')).toBe('/');
   });
-  it('should render <main> with id="main-content" and tabIndex={-1}', () => {
+  it('should leave the <main> landmark to the root layout', () => {
     const { container } = render(<NotFound />);
-    const main = container.querySelector('main');
-    expect(main).not.toBeNull();
-    expect(main?.getAttribute('id')).toBe('main-content');
-    expect(main?.getAttribute('tabindex')).toBe('-1');
+    expect(container.querySelector('main')).toBeNull();
   });
 });

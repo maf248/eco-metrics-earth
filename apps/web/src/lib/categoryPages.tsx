@@ -1,3 +1,4 @@
+import { cacheLife } from 'next/cache';
 import type { ComponentType } from 'react';
 
 import { Co2EmissionsContent } from '@/components/co2-emissions/Co2EmissionsContent';
@@ -9,7 +10,7 @@ import {
   type ProviderPayload,
 } from '@/components/ProviderBackedContent';
 import { WaterFootprintContent } from '@/components/water-footprint/WaterFootprintContent';
-import type { ProviderPayloadResult } from '@/lib/bffFetch';
+import { DEGRADED_REVALIDATE_SECONDS, type ProviderPayloadResult } from '@/lib/bffFetch';
 import { getCo2Emissions } from '@/lib/co2Emissions';
 import { getEnergySources } from '@/lib/energySources';
 import { getGlobalTemperature } from '@/lib/globalTemperature';
@@ -24,6 +25,8 @@ export interface CategoryPageDefinition<T = unknown> {
   load: () => Promise<T>;
   /** Server component rendering the fetched data below the common header. */
   Content: ComponentType<{ data: T }>;
+  /** True for a result that must leave the cache in minutes (the provider is down). */
+  isDegraded?: (data: T) => boolean;
 }
 
 /**
@@ -86,6 +89,7 @@ export function defineProviderCategoryPage<P extends ProviderPayload>({
       }
     },
     Content: ({ data }) => <ProviderBackedContent state={data} Content={Content} />,
+    isDegraded: (state) => state.kind === 'unavailable' && !state.payload,
   });
 }
 
@@ -134,3 +138,21 @@ export const CATEGORY_PAGES: Partial<Record<EcoCategory, CategoryPageDefinition>
     ),
   }),
 };
+
+const DAY_SECONDS = 86_400;
+
+/**
+ * The cached read of a category: complete pages reach the HTML with their data, a failure
+ * throws and is never stored, and a degraded result is regenerated within minutes.
+ */
+export async function loadCategoryData(category: EcoCategory): Promise<unknown> {
+  'use cache';
+  const definition = CATEGORY_PAGES[category];
+  if (!definition) {
+    return undefined;
+  }
+  const data = await definition.load();
+  const revalidate = definition.isDegraded?.(data) ? DEGRADED_REVALIDATE_SECONDS : DAY_SECONDS;
+  cacheLife({ stale: revalidate, revalidate, expire: DAY_SECONDS * 30 });
+  return data;
+}

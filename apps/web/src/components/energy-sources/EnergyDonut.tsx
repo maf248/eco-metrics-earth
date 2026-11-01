@@ -32,7 +32,7 @@ export function EnergyDonut({ entity, data: { startYear } }: EnergyDonutProps) {
   return (
     <section data-testid="energy-donut">
       <h3 className="mb-2 mt-8 text-base font-semibold leading-snug text-fg sm:text-lg">{title}</h3>
-      <RenderWhenVisible>
+      <RenderWhenVisible variant="donut">
         <LazyPieEChart option={option} palette="energyMix" />
       </RenderWhenVisible>
       <p role="status" className="sr-only">

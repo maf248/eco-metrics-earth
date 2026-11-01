@@ -16,6 +16,8 @@ const withBundleAnalyzer = withBundleAnalyzerInit({
 });
 
 const baseConfig: NextConfig = {
+  cacheComponents: true,
+  partialPrefetching: true,
   trailingSlash: true,
   transpilePackages: ['@eco-metrics/shared'],
 

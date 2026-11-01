@@ -24,7 +24,7 @@ export default function ThemeToggle() {
       aria-label="Toggle light/dark mode"
       onClick={toggleTheme}
       className={[
-        'fixed top-2 right-4 z-50 lg:top-4',
+        'site-theme-toggle fixed top-2 right-4 z-50 lg:top-4',
         'w-10 h-10 rounded-full',
         'flex items-center justify-center',
         'bg-toggle',

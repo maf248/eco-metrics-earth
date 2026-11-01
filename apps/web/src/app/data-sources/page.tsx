@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
-import Link from 'next/link';
+import { connection } from 'next/server';
 
+import { NavigationLink } from '@/components/NavigationLink';
 import { SourceAttribution } from '@/components/SourceAttribution';
 import { getCategoryTitle } from '@/lib/categoryTitle';
 import { getDataSources } from '@/lib/dataSources';
@@ -16,9 +17,10 @@ import type {
   StaticDataSource,
 } from '@eco-metrics/shared';
 
-// `force-dynamic` keeps `next build` from calling the BFF; the fetch Data Cache keeps the
-// catalog for a day and keeps serving it, stale, if a refresh fails.
-export const dynamic = 'force-dynamic';
+// `connection()` keeps `next build` from calling the BFF, and blocking here delivers the whole
+// page in the first response; the fetch Data Cache keeps the catalog for a day and keeps
+// serving it, stale, if a refresh fails.
+export const instant = false;
 // Covers the worst-case BFF fetch (2 attempts x 10 s) within the Vercel Hobby limit.
 export const maxDuration = 30;
 
@@ -39,14 +41,11 @@ export const metadata: Metadata = {
 };
 
 export default async function DataSourcesPage() {
+  await connection();
   const { providers, datasets } = await getDataSources();
 
   return (
-    <main
-      id="main-content"
-      tabIndex={-1}
-      className="mx-auto min-h-screen w-full max-w-3xl px-4 pt-14"
-    >
+    <div className="mx-auto w-full max-w-3xl px-4 pt-14">
       <div className="mt-14 space-y-10 pb-8 lg:mt-0">
         <header>
           <h1 className="text-4xl font-bold text-fg">Data sources</h1>
@@ -83,7 +82,7 @@ export default async function DataSourcesPage() {
           </ul>
         </section>
       </div>
-    </main>
+    </div>
   );
 }
 
@@ -96,9 +95,9 @@ function Categories({ categories }: { categories: EcoCategory[] }) {
       {categories.map((category, index) => (
         <span key={category}>
           {index > 0 && ', '}
-          <Link href={`/${category}/`} className={LINK_CLASS_NAME}>
+          <NavigationLink href={`/${category}/`} className={LINK_CLASS_NAME}>
             {getCategoryTitle(category)}
-          </Link>
+          </NavigationLink>
         </span>
       ))}
     </p>

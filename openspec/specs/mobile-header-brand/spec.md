@@ -112,7 +112,7 @@ The header SHALL use the page surface token at 95% opacity with a backdrop blur 
 
 ### Requirement: Page content top offset accounts for the fixed header
 
-All pages SHALL have a top padding of `pt-14` on their `<main>` element so content is not obscured by the fixed header. The root layout wrapper SHALL add a comment noting this dependency.
+All pages SHALL have a top padding of `pt-14` on their outermost content element so content is not obscured by the fixed header. The root layout wrapper SHALL add a comment noting this dependency.
 
 #### Scenario: Content is not hidden under the header
 

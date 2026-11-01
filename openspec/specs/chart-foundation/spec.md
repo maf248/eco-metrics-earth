@@ -101,7 +101,7 @@ Provide the shared ECharts foundation: chart tokens, token-driven theme adapter,
 
 ### Requirement: Charts load lazily with a same-height skeleton
 
-A Client Component `LazyEChart` SHALL import `EChart` with `next/dynamic` and `ssr: false`, rendering `ChartSkeleton` of exactly the chart's height while the chunk loads, so the layout does not shift when the chart appears. The page itself SHALL remain a Server Component. ECharts SHALL NOT be part of the JavaScript of routes that do not render a chart.
+A Client Component `LazyEChart` SHALL import `EChart` on demand, on the client only and without a Suspense boundary, so that a chunk already loaded draws at once. It SHALL render `ChartSkeleton` of exactly the chart's height, shaped like the chart it stands for (a series silhouette or a donut), while the chunk loads, and hydration SHALL keep that skeleton even if the chunk arrived first, so the client matches the server HTML, so the layout does not shift when the chart appears. The page itself SHALL remain a Server Component. ECharts SHALL NOT be part of the JavaScript of routes that do not render a chart.
 
 #### Scenario: Skeleton then chart
 
@@ -326,7 +326,7 @@ Every chart whose category axis is a year range (CO2, per-country temperature an
 
 ### Requirement: The pie chart registers where it is used
 
-The shared setup (`echartsSetup.ts`) SHALL NOT register `PieChart`. A dedicated lazy entry for pie charts SHALL register `PieChart` on the shared `echarts` instance as a side effect of its own module and reuse the `EChart` wrapper, and a `LazyPieEChart` Client Component SHALL load that entry with `next/dynamic` (`ssr: false`) and the same same-height skeleton as `LazyEChart`. Routes without a donut SHALL NOT download the pie code.
+The shared setup (`echartsSetup.ts`) SHALL NOT register `PieChart`. A dedicated lazy entry for pie charts SHALL register `PieChart` on the shared `echarts` instance as a side effect of its own module and reuse the `EChart` wrapper, and a `LazyPieEChart` Client Component SHALL load that entry on demand through `lazyChart`, on the client only, with the same same-height skeleton as `LazyEChart`. Routes without a donut SHALL NOT download the pie code.
 
 #### Scenario: Pie renders in jsdom
 

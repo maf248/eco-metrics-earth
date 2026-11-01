@@ -10,6 +10,7 @@ import { normalise } from '@/lib/path';
 import BrandText from './BrandText';
 import NavLink from './NavLink';
 import NavScrollContainer from './NavScrollContainer';
+import { usePendingNavigation } from './PendingNavigation';
 
 /**
  * Main site navigation.
@@ -28,12 +29,15 @@ import NavScrollContainer from './NavScrollContainer';
  */
 export default function Navbar() {
   const pathname = usePathname();
+  const { pendingHref } = usePendingNavigation();
+  // The destination lights up at the click, before its route arrives.
+  const activePath = pendingHref ?? pathname;
 
   return (
     <nav
       aria-label="Main navigation"
       className={[
-        'fixed z-50',
+        'site-nav fixed z-50',
         // Mobile / tablet: bottom bar
         'bottom-0 left-0 right-0 h-20',
         'flex flex-row',
@@ -60,7 +64,7 @@ export default function Navbar() {
       {/* Navigation links — scroll container handles mobile gradients + ul/li semantics */}
       <NavScrollContainer>
         {NAV_ITEMS.map((item) => {
-          const isActive = normalise(item.href) === normalise(pathname);
+          const isActive = normalise(item.href) === normalise(activePath);
           return (
             <li
               key={item.slug}

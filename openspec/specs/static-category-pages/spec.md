@@ -8,7 +8,7 @@ The 12 eco-category pages under the dynamic `[category]` route segment are serve
 
 ### Requirement: Category pages are served from the ISR cache
 
-The `[category]/page.tsx` route segment SHALL export `revalidate = 86400` (ISR), `dynamicParams = true`, `maxDuration = 30`, and a `generateStaticParams` function that returns every slug from `ECO_CATEGORIES` **except** the categories that have an entry in the category page registry (`category-page-registry`; today `water-footprint`, `co2-emissions`, `global-temperature` and `energy-sources`). Next.js SHALL pre-render the remaining category pages at build time and generate the registered categories' pages on their first request; every page is then served from the ISR cache and revalidated in the background at most once per day. The `revalidate` value applies to the whole segment: the placeholder pages re-render byte-identically on revalidation (accepted trade-off — isolating ISR to a single category would require splitting the route, rejected in the archived `2026-09-14-water-footprint-phase3-4-ui` design, D1). Unknown slugs SHALL return a real HTTP 404 status: a `[category]/layout.tsx` SHALL call `notFound()` for any slug not in `ECO_CATEGORIES`, before any data fetch. The check SHALL live in the layout because the segment's `loading.tsx` wraps the page in a Suspense boundary, so with on-demand rendering a `notFound()` raised only inside the page fires after the response has started streaming with status 200 (a soft 404 with `noindex`). `maxDuration = 30` SHALL cover the worst-case data fetch (2 attempts × 10 s) within the Vercel Hobby function limit.
+The `[category]` route SHALL declare a static params function that returns every slug from `ECO_CATEGORIES` **except** the categories that have an entry in the category page registry (`category-page-registry`; today `water-footprint`, `co2-emissions`, `global-temperature` and `energy-sources`), and `maxDuration = 30`. Next.js SHALL pre-render the remaining category pages at build time and generate the registered categories' pages on demand after their first request; every page is then served from cache and refreshed in the background at most once per day. The route SHALL declare `ensureStatic = 'navigation'`, so a cold first visit to a registered category waits for the complete page and no visit receives a partial one. Unknown slugs SHALL return a real HTTP 404 status before any response body is streamed and before any data fetch, so that a slug outside `ECO_CATEGORIES` is never a soft 404 (status 200 with `noindex`). `maxDuration = 30` SHALL cover the worst-case data fetch (2 attempts × 10 s) within the Vercel Hobby function limit.
 
 The categories without a registry entry SHALL render the unchanged placeholder (icon + title + "coming soon").
 
@@ -17,6 +17,12 @@ The categories without a registry entry SHALL render the unchanged placeholder (
 - **WHEN** `generateStaticParams()` is called
 - **THEN** it returns an array of objects with shape `{ category: string }` covering every value of `ECO_CATEGORIES` except `water-footprint`, `co2-emissions`, `global-temperature` and `energy-sources`
 - **THEN** the array length equals the number of `ECO_CATEGORIES` minus the number of registry entries (currently 8)
+
+#### Scenario: Static params are never empty
+
+- **GIVEN** a registry that covers every `ECO_CATEGORIES` slug
+- **WHEN** the unit test for static params runs
+- **THEN** it fails, because the route needs at least one param that can be pre-rendered without the BFF
 
 #### Scenario: Unknown category slugs return 404
 
@@ -29,15 +35,20 @@ The categories without a registry entry SHALL render the unchanged placeholder (
 - **WHEN** `npx nx build web` is run, with or without an API server listening
 - **THEN** the build output includes static HTML for the 8 placeholder category slugs
 - **THEN** the build completes successfully and makes no request to the BFF
-- **THEN** `/water-footprint/`, `/co2-emissions/`, `/global-temperature/` and `/energy-sources/` are not among the pre-rendered pages
+- **THEN** `/water-footprint/`, `/co2-emissions/`, `/global-temperature/` and `/energy-sources/` are not among the fully pre-rendered pages
 
 #### Scenario: Segment configuration
 
 - **WHEN** the `[category]/page.tsx` module is imported
-- **THEN** it exports `revalidate = 86400`, `dynamicParams = true`, and `maxDuration = 30`
+- **THEN** it exports `maxDuration = 30` and `ensureStatic = 'navigation'` and `instant = false` and exports neither `revalidate` nor `dynamicParams`
+
+#### Scenario: Daily freshness
+
+- **GIVEN** a cached registered category page older than 24 hours and a healthy BFF
+- **WHEN** the page is requested
+- **THEN** the page is refreshed in the background and later requests receive the new content
 
 #### Scenario: The other 11 category pages are unchanged
 
 - **WHEN** any category page without a registry entry (the 8 remaining placeholders, formerly 9 before `energy-sources` was registered) is rendered (e.g., `/ocean-health/`)
 - **THEN** it shows the placeholder (icon, `<h1>` title, "{title} metrics — coming soon.")
-- **THEN** their existing unit tests and snapshots pass without modification

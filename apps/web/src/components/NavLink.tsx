@@ -1,8 +1,9 @@
 'use client';
 
-import Link from 'next/link';
 import React from 'react';
 import type { ComponentType, SVGProps } from 'react';
+
+import { NavigationLink } from '@/components/NavigationLink';
 
 interface NavLinkProps {
   href: string;
@@ -13,7 +14,7 @@ interface NavLinkProps {
 
 function NavLink({ href, icon: Icon, label, isActive }: NavLinkProps) {
   return (
-    <Link
+    <NavigationLink
       href={href}
       aria-current={isActive ? 'page' : undefined}
       className={[
@@ -42,7 +43,7 @@ function NavLink({ href, icon: Icon, label, isActive }: NavLinkProps) {
       <span className="w-full text-center whitespace-normal wrap-break-word leading-tight lg:truncate lg:max-w-none lg:text-left lg:whitespace-nowrap">
         {label}
       </span>
-    </Link>
+    </NavigationLink>
   );
 }
 

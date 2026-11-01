@@ -18,11 +18,7 @@ export default function ErrorPage({ error, reset }: ErrorPageProps) {
   }, [error]);
 
   return (
-    <main
-      id="main-content"
-      tabIndex={-1}
-      className="flex min-h-screen flex-col items-center justify-start pt-14 px-4"
-    >
+    <div className="flex flex-col items-center justify-start pt-14 px-4">
       <div className="flex flex-col items-center gap-6 mt-14 lg:mt-0">
         <div
           data-testid="error-icon"
@@ -53,6 +49,6 @@ export default function ErrorPage({ error, reset }: ErrorPageProps) {
           </div>
         </div>
       </div>
-    </main>
+    </div>
   );
 }

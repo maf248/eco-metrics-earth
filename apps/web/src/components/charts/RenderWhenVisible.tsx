@@ -3,10 +3,12 @@
 import { useEffect, useRef, useState } from 'react';
 import type { ReactNode } from 'react';
 
-import { ChartSkeleton } from './ChartSkeleton';
+import { ChartSkeleton, type ChartSkeletonVariant } from './ChartSkeleton';
 
 interface RenderWhenVisibleProps {
   children: ReactNode;
+  /** Silhouette of the chart it stands for. */
+  variant?: ChartSkeletonVariant;
 }
 
 // Start a little before the chart enters the viewport so it is ready when it arrives.
@@ -19,7 +21,7 @@ const ROOT_MARGIN = '200px';
  * The first chart of a page should not use it. Without `IntersectionObserver`
  * the children mount immediately.
  */
-export function RenderWhenVisible({ children }: RenderWhenVisibleProps) {
+export function RenderWhenVisible({ children, variant }: RenderWhenVisibleProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
 
@@ -43,5 +45,5 @@ export function RenderWhenVisible({ children }: RenderWhenVisibleProps) {
     return () => observer.disconnect();
   }, []);
 
-  return <div ref={containerRef}>{visible ? children : <ChartSkeleton />}</div>;
+  return <div ref={containerRef}>{visible ? children : <ChartSkeleton variant={variant} />}</div>;
 }

@@ -1,11 +1,11 @@
 import { render, screen } from '@testing-library/react';
 
 import CategoryPage, {
-  dynamicParams,
   generateMetadata,
   generateStaticParams,
+  ensureStatic,
+  instant,
   maxDuration,
-  revalidate,
 } from '@/app/[category]/page';
 import { CATEGORY_DESCRIPTIONS } from '@/lib/categoryMetadata';
 import { getCo2Emissions } from '@/lib/co2Emissions';
@@ -70,6 +70,8 @@ beforeEach(() => {
     .mocked(getEnergySources)
     .mockResolvedValue({ kind: 'ok', payload: { data: ENERGY_FIXTURE, meta: ENERGY_META } });
 });
+
+jest.mock('next/cache', () => ({ cacheLife: jest.fn() }));
 
 jest.mock('next/navigation', () => ({
   notFound: jest.fn(),
@@ -161,13 +163,10 @@ describe('CategoryPage', () => {
     expect(screen.getByText('Energy Sources')).toBeTruthy();
   });
 
-  it('should render a <main> element with id="main-content" and tabIndex={-1}', async () => {
+  it('should leave the <main> landmark to the root layout', async () => {
     const element = await CategoryPage({ params: Promise.resolve({ category: 'ocean-health' }) });
     const { container } = render(element);
-    const main = container.querySelector('main');
-    expect(main).not.toBeNull();
-    expect(main?.getAttribute('id')).toBe('main-content');
-    expect(main?.getAttribute('tabindex')).toBe('-1');
+    expect(container.querySelector('main')).toBeNull();
   });
 });
 
@@ -318,22 +317,26 @@ describe('generateStaticParams', () => {
     expect(params).not.toContainEqual({ category: ECO_CATEGORIES.GLOBAL_TEMPERATURE });
     expect(params).not.toContainEqual({ category: ECO_CATEGORIES.ENERGY_SOURCES });
   });
+
+  it('should never be empty, because the route needs one param to pre-render without the BFF', async () => {
+    expect((await generateStaticParams()).length).toBeGreaterThan(0);
+  });
 });
 
 describe('CategoryPage — layout', () => {
-  it('should render the <main> with top-anchored layout (justify-start)', async () => {
+  it('should render the content with top-anchored layout (justify-start)', async () => {
     const element = await CategoryPage({ params: Promise.resolve({ category: 'ocean-health' }) });
     const { container } = render(element);
-    const main = container.querySelector('main');
-    expect(main?.className).toContain('justify-start');
-    expect(main?.className).not.toContain('justify-center');
+    const content = container.firstElementChild;
+    expect(content?.className).toContain('justify-start');
+    expect(content?.className).not.toContain('justify-center');
   });
 
-  it('should render the <main> with pt-14 top padding', async () => {
+  it('should render the content with pt-14 top padding', async () => {
     const element = await CategoryPage({ params: Promise.resolve({ category: 'ocean-health' }) });
     const { container } = render(element);
-    const main = container.querySelector('main');
-    expect(main?.className).toContain('pt-14');
+    const content = container.firstElementChild;
+    expect(content?.className).toContain('pt-14');
   });
 });
 
@@ -478,7 +481,7 @@ describe('CategoryPage — energy-sources branch', () => {
 
     expect(screen.getByRole('heading', { level: 1, name: 'Energy Sources' })).toBeInTheDocument();
     expect(screen.getByTestId('energy-key-figures')).toHaveTextContent('In 2025, renewables');
-    expect(container.querySelector('main .mt-8.w-full.flex.justify-center')).not.toBeNull();
+    expect(container.querySelector('.mt-8.w-full.flex.justify-center')).not.toBeNull();
     expect(screen.queryByText(/coming soon/)).not.toBeInTheDocument();
   });
 
@@ -570,12 +573,19 @@ describe('CategoryPage — provider degraded states', () => {
 });
 
 describe('CategoryPage — segment config', () => {
-  it('should export revalidate as 86400', () => {
-    expect(revalidate).toBe(86400);
+  it('should not export revalidate: the cached read declares its lifetime', async () => {
+    const page = await import('@/app/[category]/page');
+    expect(page).not.toHaveProperty('revalidate');
   });
 
-  it('should render unlisted params on demand (dynamicParams = true)', () => {
-    expect(dynamicParams).toBe(true);
+  it('should not export dynamicParams: unlisted params render on demand', async () => {
+    const page = await import('@/app/[category]/page');
+    expect(page).not.toHaveProperty('dynamicParams');
+  });
+
+  it('should require complete static output and allow the navigation to block', () => {
+    expect(ensureStatic).toBe('navigation');
+    expect(instant).toBe(false);
   });
 
   it('should export maxDuration as 30 to cover two 10 s fetch attempts', () => {

@@ -1,6 +1,6 @@
 import { render, screen, within } from '@testing-library/react';
 
-import DataSourcesPage, { dynamic, maxDuration, metadata } from '@/app/data-sources/page';
+import DataSourcesPage, { instant, maxDuration, metadata } from '@/app/data-sources/page';
 import { metadata as layoutMetadata } from '@/app/layout';
 import { getDataSources } from '@/lib/dataSources';
 import { OG_IMAGE } from '@/lib/socialMetadata';
@@ -54,6 +54,8 @@ const renderPage = async (catalog: DataSourcesCatalog) => {
   jest.mocked(getDataSources).mockResolvedValueOnce(catalog);
   render(await DataSourcesPage());
 };
+
+jest.mock('next/server', () => ({ connection: jest.fn() }));
 
 describe('DataSourcesPage', () => {
   it('should render both sections when providers and datasets exist', async () => {
@@ -135,7 +137,7 @@ describe('DataSourcesPage', () => {
 
 describe('DataSourcesPage — configuration', () => {
   it('should be rendered on demand so the build never calls the BFF', () => {
-    expect(dynamic).toBe('force-dynamic');
+    expect(instant).toBe(false);
   });
 
   it('should cover two 10 s fetch attempts', () => {

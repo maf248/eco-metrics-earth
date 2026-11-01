@@ -30,7 +30,7 @@ export default function MobileHeader() {
         // Visibility: mobile only
         'lg:hidden',
         // Position: fixed top, full width, above content
-        'fixed top-0 left-0 right-0 z-50 h-14',
+        'site-header fixed top-0 left-0 right-0 z-50 h-14',
         // Style: dark background with subtle blur + bottom border
         'bg-surface/95 backdrop-blur-sm border-b border-line',
       ].join(' ')}
