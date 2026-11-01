@@ -1,3 +1,9 @@
+## [2.14.1](https://github.com/maf248/eco-metrics-earth/compare/web-v2.14.0...web-v2.14.1) (2026-11-01)
+
+### Bug Fixes
+
+* **web:** serve the complete 404 page for unknown category slugs ([61eea43](https://github.com/maf248/eco-metrics-earth/commit/61eea438d4e19639e4a3a156c699a1887c81976a))
+
 ## [2.14.0](https://github.com/maf248/eco-metrics-earth/compare/web-v2.13.1...web-v2.14.0) (2026-11-01)
 
 ### Features
