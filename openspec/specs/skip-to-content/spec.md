@@ -10,7 +10,7 @@ Defines the skip-to-content link and its main landmark targets across pages.
 
 The root layout (`apps/web/src/app/layout.tsx`) SHALL render a skip-navigation anchor with `href="#main-content"` that precedes the Navbar in the DOM.
 
-The skip link target SHALL be the `<main>` element rendered by the active page, identified by `id="main-content"` and `tabIndex={-1}`.
+The skip link target SHALL be the only `<main>` element of the document, rendered by the root layout around the active page and kept mounted across navigations, identified by `id="main-content"` and `tabIndex={-1}`.
 
 The wrapper `<div>` inside the layout SHALL NOT carry `id="main-content"` or `tabIndex`.
 
@@ -26,7 +26,7 @@ The wrapper `<div>` inside the layout SHALL NOT carry `id="main-content"` or `ta
 
 ### Requirement: Home page main landmark is the skip target
 
-`apps/web/src/app/page.tsx` SHALL render a `<main>` element with `id="main-content"` and `tabIndex={-1}` as the outermost landmark of its content.
+`apps/web/src/app/page.tsx` SHALL render inside the `<main>` element of the root layout, which has `id="main-content"` and `tabIndex={-1}`, and SHALL NOT render another `<main>`.
 
 #### Scenario: Home page main has correct id
 
@@ -35,7 +35,7 @@ The wrapper `<div>` inside the layout SHALL NOT carry `id="main-content"` or `ta
 
 ### Requirement: Category page main landmark is the skip target
 
-`apps/web/src/app/[category]/page.tsx` SHALL render a `<main>` element with `id="main-content"` and `tabIndex={-1}` as the outermost landmark of its content.
+`apps/web/src/app/[category]/page.tsx` SHALL render inside the `<main>` element of the root layout, which has `id="main-content"` and `tabIndex={-1}`, and SHALL NOT render another `<main>`.
 
 #### Scenario: Category page main has correct id
 

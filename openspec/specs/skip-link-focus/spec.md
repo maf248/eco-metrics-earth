@@ -8,7 +8,7 @@ Defines the focusable main content landmark for skip-link navigation.
 
 ### Requirement: The main content landmark is programmatically focusable
 
-The `<main>` element in pages that serve as the skip-link target SHALL have `tabIndex={-1}` and an `id` matching the skip-link `href` so that keyboard users can skip navigation.
+The `<main>` element of the root layout, the skip-link target of every page, SHALL have `tabIndex={-1}` and an `id` matching the skip-link `href` so that keyboard users can skip navigation.
 
 #### Scenario: Skip-link moves focus to main content
 

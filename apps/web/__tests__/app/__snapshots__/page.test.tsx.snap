@@ -2,10 +2,8 @@
 
 exports[`HomePage snapshots should match the full page snapshot 1`] = `
 <DocumentFragment>
-  <main
-    class="flex min-h-screen flex-col items-center justify-start pt-14 px-4"
-    id="main-content"
-    tabindex="-1"
+  <div
+    class="flex flex-col items-center justify-start pt-14 px-4"
   >
     <div
       class="flex flex-col items-center gap-6 mt-14 lg:mt-0"
@@ -98,6 +96,6 @@ exports[`HomePage snapshots should match the full page snapshot 1`] = `
         </p>
       </div>
     </div>
-  </main>
+  </div>
 </DocumentFragment>
 `;

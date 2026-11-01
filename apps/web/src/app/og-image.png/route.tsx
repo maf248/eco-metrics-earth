@@ -4,9 +4,7 @@ import { SiteLogoIcon } from '@/components/icons';
 import { OG_IMAGE, SITE_DESCRIPTION, SITE_NAME } from '@/lib/socialMetadata';
 
 // Site-wide social card (see OG_IMAGE). No request-time APIs: prerendered once
-// at build time and served as a static PNG.
-export const dynamic = 'force-static';
-
+// at build time and served as a static PNG, the default for a GET handler that reads no request.
 const BACKGROUND = '#000000';
 const ACCENT = '#10b981';
 const CTA = 'Explore the data →';

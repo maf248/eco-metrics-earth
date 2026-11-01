@@ -17,6 +17,9 @@ interface EChartProps {
   palette?: ChartPalette;
 }
 
+/** Short enough that a line reads as arriving, not as being drawn while the user waits. */
+const ANIMATION_DURATION_MS = 300;
+
 function prefersReducedMotion(): boolean {
   return (
     typeof window.matchMedia === 'function' &&
@@ -44,7 +47,11 @@ export function EChart({ option, className, initSize, palette = 'categorical' }:
   };
 
   const applyOption = (chart: EChartsType): void => {
-    chart.setOption({ ...optionRef.current, animation: !prefersReducedMotion() });
+    chart.setOption({
+      ...optionRef.current,
+      animation: !prefersReducedMotion(),
+      animationDuration: ANIMATION_DURATION_MS,
+    });
   };
 
   useEffect(() => {

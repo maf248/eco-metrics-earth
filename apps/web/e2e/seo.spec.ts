@@ -228,3 +228,23 @@ test.describe('PWA manifest', { tag: '@smoke' }, () => {
     expect(purposes.every((purpose: string) => ['any', 'maskable'].includes(purpose))).toBe(true);
   });
 });
+
+test.describe('Complete HTML on direct visits', { tag: '@smoke' }, () => {
+  for (const { path, heading, content } of [
+    { path: '/co2-emissions/', heading: 'CO2 Emissions', content: 'application/ld+json' },
+    { path: '/energy-sources/', heading: 'Energy Sources', content: 'application/ld+json' },
+    { path: '/ocean-health/', heading: 'Ocean Health', content: 'coming soon' },
+  ]) {
+    test(`should deliver ${path} complete and visible without JavaScript`, async ({ request }) => {
+      const html = await (await request.get(path)).text();
+      const footer = html.indexOf('<footer');
+
+      expect(html.indexOf(heading)).toBeGreaterThan(-1);
+      expect(html.indexOf('<h1')).toBeLessThan(footer);
+      expect(html.indexOf(content)).toBeLessThan(footer);
+      expect(html).not.toMatch(/<div hidden id="S:/);
+      expect(html).not.toContain('aria-busy="true"');
+      expect(html.match(/<main[\s>]/g)).toHaveLength(1);
+    });
+  }
+});

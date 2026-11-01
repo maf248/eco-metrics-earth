@@ -67,19 +67,16 @@ Amber family, deliberately not an error red: a degraded provider is not a failur
 
 These exist only because the migration to tokens was pixel-identical and the code had near-duplicate roles. Each is a candidate to merge into a core token in a future visual pass.
 
-| Token             | Role                         | Light    | Dark     | Likely merges into |
-| ----------------- | ---------------------------- | -------- | -------- | ------------------ |
-| `hover-subtle`    | Navbar logo link hover       | gray-50  | white/5  | `hover`            |
-| `control`         | Error page secondary button  | gray-100 | white/10 | `well` / `hover`   |
-| `control-hover`   | Its hover                    | gray-200 | white/20 | —                  |
-| `toggle`          | Theme toggle background      | gray-200 | white/10 | `control`          |
-| `toggle-hover`    | Its hover                    | gray-300 | white/20 | `control-hover`    |
-| `chip-hover`      | Filter chip hover            | gray-50  | gray-700 | `hover`            |
-| `fg-control`      | Filter chip label            | gray-700 | gray-200 | `fg-body`          |
-| `line-control`    | Filter chip border           | gray-300 | gray-600 | `line-strong`      |
-| `skeleton-strong` | Loading icon placeholder     | gray-400 | white/20 | `well-active`      |
-| `skeleton`        | Loading title placeholder    | gray-200 | white/10 | `well`             |
-| `skeleton-subtle` | Loading subtitle placeholder | gray-100 | white/5  | `hover`            |
+| Token           | Role                        | Light    | Dark     | Likely merges into |
+| --------------- | --------------------------- | -------- | -------- | ------------------ |
+| `hover-subtle`  | Navbar logo link hover      | gray-50  | white/5  | `hover`            |
+| `control`       | Error page secondary button | gray-100 | white/10 | `well` / `hover`   |
+| `control-hover` | Its hover                   | gray-200 | white/20 | —                  |
+| `toggle`        | Theme toggle background     | gray-200 | white/10 | `control`          |
+| `toggle-hover`  | Its hover                   | gray-300 | white/20 | `control-hover`    |
+| `chip-hover`    | Filter chip hover           | gray-50  | gray-700 | `hover`            |
+| `fg-control`    | Filter chip label           | gray-700 | gray-200 | `fg-body`          |
+| `line-control`  | Filter chip border          | gray-300 | gray-600 | `line-strong`      |
 
 `focus-offset` → `surface` is also a consolidation candidate.
 
@@ -179,7 +176,7 @@ Pending — define and validate it in the first change that encodes polarity wit
 - Desktop nav item rows (`NavLink.tsx`): row density `lg:py-2`, chosen so all 12 `NAV_ITEMS` fit within a typical desktop viewport height (~700px+) without scrolling.
 - Vertical scroll affordance (`NavScrollContainer.tsx`): on desktop, top/bottom gradient overlays signal hidden nav items above/below the visible area, mirroring the existing horizontal affordance used by the mobile bottom bar. Both reuse the same `nav-surface` token as their horizontal counterparts (`from-nav-surface`), oriented vertically (`bg-linear-to-b` / `bg-linear-to-t`).
 
-- Site footer (`Footer.tsx`): rendered inside the content wrapper right after `{children}` (`pb-20 lg:pb-0 lg:pl-76`), in normal document flow, so it inherits the mobile bottom-nav clearance and the desktop sidebar offset. A single `<footer>` (`contentinfo`, outside `<main>`) in the terminal style of the brand: the site logo with `~ eco-metrics.earth` in mono accent, a one-line tagline, one link shown as `$ cd data-sources/` (decorative `aria-hidden` prompt, accessible name "Data sources", `LINK_CLASS_NAME`), and a muted copyright/signature line under a `border-line-subtle` rule. Two columns from `sm`, stacked on mobile; tokens only (`border-line`, `text-accent`, `text-fg-secondary`, `text-fg-muted`). Mains are `min-h-screen`, so the footer sits at the end of the scroll, not in the first viewport.
+- Site footer (`Footer.tsx`): rendered inside the content wrapper right after the root `<main>` (`pb-20 lg:pb-0 lg:pl-76`), in normal document flow, so it inherits the mobile bottom-nav clearance and the desktop sidebar offset. A single `<footer>` (`contentinfo`, outside `<main>`) in the terminal style of the brand: the site logo with `~ eco-metrics.earth` in mono accent, a one-line tagline, one link shown as `$ cd data-sources/` (decorative `aria-hidden` prompt, accessible name "Data sources", `LINK_CLASS_NAME`), and a muted copyright/signature line under a `border-line-subtle` rule. Two columns from `sm`, stacked on mobile; tokens only (`border-line`, `text-accent`, `text-fg-secondary`, `text-fg-muted`). Mains are `min-h-screen`, so the footer sits at the end of the scroll, not in the first viewport.
 
 ### Source attribution
 
@@ -231,6 +228,13 @@ Pending — define and validate it in the first change that encodes polarity wit
 - **Tables follow the toggle.** The year table of a chart with a measure toggle shows the measure the chart shows, so it is always the text equivalent of what is visible; a small table that doubles as a donut legend (`EnergyLatestTable`) is visible rather than collapsed. Many columns use `YearDataTable`'s `wide` flag so the scroll region scrolls instead of squeezing them.
 - **`MeasureToggle`** is the one radio-group toggle between measures ("Total / Per capita", "Share (%) / Generation (TWh)").
 
+### Navigation and skeletons
+
+- **Skeletons mean "not here yet", on the client only.** A direct visit delivers the complete page, so the HTML never holds a fallback, except for the chart area (charts render in the browser). Do not add `loading.tsx` or a `<Suspense>` around page data: React moves a boundary over about 12.8 KB out of the visible document.
+- **Known content is never a skeleton.** While a category is pending, `NavigationContent` shows its real icon and `<h1>` from shared config, then `CategoryDataSkeleton` with the blocks declared in `CATEGORY_SKELETONS`. Placeholder categories have none.
+- **Shape and colour.** Blocks repeat the layout of the real content down to the first chart or list, and their text is sample copy drawn as bars (`text-transparent` over `bg-well`), so it wraps like the real text at any width and nothing above the fold moves when the page arrives. Change the page's layout or copy and update `CATEGORY_SKELETONS`: `category-navigation.spec.ts` measures the drift. Fills and strokes use only `well`, `well-active` and `hover`, on `surface-raised` cards with `line-strong` borders, so they work in both themes. Animation is `motion-safe`; assistive technology gets `aria-busy` on `<main>`, and the shapes are `aria-hidden`.
+- **Transition.** A 180 ms crossfade through React `<ViewTransition>`, and a thin `bg-accent-solid` bar only after 200 ms. The fixed navigation, header and theme toggle have their own `view-transition-name` above the page, or the page's snapshot would paint over them. `prefers-reduced-motion` disables both animations; without view transitions the page simply swaps.
+
 ### Degraded provider states
 
 A provider-backed category (OWID today) can be served from a stored snapshot when its provider is down. The page decides from `meta.stale` and `meta.fetchedAt` (`lib/providerFreshness.ts`), once, on the server:
@@ -252,7 +256,7 @@ Defaults are `silentDays: 7` and `noticeDays: 30` (`DEFAULT_FRESHNESS_THRESHOLDS
 1. **Colors come only from an ECharts theme built from the tokens.** ECharts parses neither `var(--x)` nor `oklch()` — a `var()` color even makes elements vanish on hover ([apache/echarts#19743](https://github.com/apache/echarts/issues/19743)) — so a shared adapter reads the tokens with `getComputedStyle`, resolves each one to `rgba()` by painting it into a 1×1 canvas and reading the pixel back, builds the ECharts theme (palette, axes, tooltip, legend, map fills) and re-applies it with `setTheme()` whenever the `dark` class on `<html>` changes. Chart options never name a color.
 2. **One shared wrapper component** owns the instance: `init` with the SVG renderer, resize on a `ResizeObserver`, `dispose` on unmount. It must call `setOption` before `setTheme`: `setTheme` is a no-op until the chart holds an option. No `echarts-for-react`.
 3. **Register modules where they are used.** The shared setup registers what every chart page needs (line, grid, tooltip, legend, aria, mark line, SVG renderer; bar registers where first used and the pie is registered by its own lazy entry, `EPieChart`, loaded through `LazyPieEChart`); heavier features (map, visualMap) register in the component that uses them, so they never ship to pages without them. Never the canvas renderer.
-4. **Load charts lazily.** ECharts renders in the browser only. Chart components are imported with `next/dynamic` (`ssr: false`, which is only allowed inside a Client Component — the page itself stays a Server Component) and a `loading` skeleton of the same height, so nothing shifts when the chart arrives.
+4. **Load charts lazily.** ECharts renders in the browser only. Chart components come from `lazyChart`, which imports the chunk on demand on the client and draws at once when it is already loaded (`next/dynamic` would add a Suspense boundary that delays the first chart). The page itself stays a Server Component, and `ChartSkeleton` holds the chart's height and shape (`series` or `donut`), so nothing shifts when the chart arrives. The entry animation lasts 300 ms, so a chart never feels slower than its data.
 5. **Keep pages light.** A static ECharts page with line + bar + pie adds ~220 KB gzipped of JS (deferred by rule 4), and four charts at once block the main thread for ~1.8 s on a throttled mobile profile. Keep few charts per page; when a page carries several, render those below the fold only when they scroll into view (`RenderWhenVisible`). The energy sources page is the example: two charts (stacked area and donut), the donut deferred.
 6. **Mobile-safe defaults** in every option: `legend.type: 'scroll'`, `tooltip.confine: true`, `axisLabel.hideOverlap: true`, truncated category labels.
 7. **Accessibility:** enable `aria` (ECharts generates a description, which prints `null` as "NaN": a chart that can hold `null` sets `aria.label.description` itself), but ECharts offers no keyboard navigation inside a chart — every chart is paired with a table or a text equivalent of its data, and multi-series charts always show a legend.

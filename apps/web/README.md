@@ -13,7 +13,7 @@ Environmental metrics dashboard — the user-facing app consuming the NestJS BFF
 
 ### Routing
 
-All routes use the **App Router** convention (`app/` directory). Category pages are served from the ISR cache (`revalidate = 86400`). Provider-backed categories show a stale notice (data older than 7 days) or an unavailable state (older than 30 days, or a provider `502` with no snapshot) instead of failing.
+All routes use the **App Router** convention (`app/` directory). Category pages are served from cache and refreshed at most once per day (`cacheLife` in `loadCategoryData`), and a direct visit always delivers the complete page. Provider-backed categories show a stale notice (data older than 7 days) or an unavailable state (older than 30 days, or a provider `502` with no snapshot) instead of failing.
 
 ```
 src/app/
@@ -21,8 +21,7 @@ src/app/
 ├── page.tsx          # Home — /
 ├── [category]/
 │   ├── layout.tsx    # Rejects unknown slugs with a real 404
-│   ├── loading.tsx   # Loading skeleton
-│   └── page.tsx      # Category page — /[slug]/ — ISR
+│   └── page.tsx      # Category page — /[slug]/ — cached, `ensureStatic`
 ├── not-found.tsx     # 404 — rendered for unknown slugs and missing routes
 ├── globals.css       # Tailwind base + custom global styles
 ├── manifest.ts       # PWA manifest → /manifest.webmanifest
@@ -32,7 +31,7 @@ src/app/
 └── sitemap.ts        # sitemap.xml — home + all 12 category pages
 ```
 
-Category pages use `generateStaticParams` to pre-render every `ECO_CATEGORIES` slug at build time except the categories with live data (the registry in `lib/categoryPages.tsx`: `water-footprint`, `co2-emissions`, `global-temperature` and `energy-sources`), which are generated on their first request after a deploy and then cached (`dynamicParams = true`), so `next build` never calls the API. `[category]/layout.tsx` calls `notFound()` for any slug not in `ECO_CATEGORIES`; it sits above the `loading.tsx` Suspense boundary, so the response is a real 404 instead of a streamed 200. If the API fetch fails twice (10 s per attempt), the page throws: during a revalidation the last good page keeps being served.
+Category pages use `generateStaticParams` to pre-render every `ECO_CATEGORIES` slug at build time except the categories with live data (the registry in `lib/categoryPages.tsx`: `water-footprint`, `co2-emissions`, `global-temperature` and `energy-sources`), which are generated on demand on their first request and then cached, so the build never needs the BFF. That first request waits for the complete page (`ensureStatic = 'navigation'`): there is no `loading.tsx` or `<Suspense>` around the data, so crawlers always get the content in the visible document. Client navigations show the header and skeletons from `NavigationContent` meanwhile. `[category]/layout.tsx` rejects unknown slugs with a real 404. If the API fetch fails twice (10 s per attempt), the page throws: during a revalidation the last good page keeps being served.
 
 ### Components
 

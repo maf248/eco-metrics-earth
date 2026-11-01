@@ -8,7 +8,7 @@ Site-wide footer in the root layout: brand, tagline, data-sources link and copyr
 
 ### Requirement: Site footer in the root layout
 
-The root layout SHALL render a `Footer` component (`apps/web/src/components/Footer.tsx`) as a semantic `<footer>` element (landmark `contentinfo`) inside the existing content wrapper (`pb-20 lg:pb-0 lg:pl-76`), immediately after `{children}`. The footer SHALL be in normal document flow (not `fixed`, not `sticky`), so it appears at the end of the scroll: on mobile above the fixed bottom nav (the wrapper's `pb-20` clears it) and on desktop below the content and to the right of the sidebar (the wrapper's `lg:pl-76` offsets it). It SHALL NOT be a descendant of `<main>`.
+The root layout SHALL render a `Footer` component (`apps/web/src/components/Footer.tsx`) as a semantic `<footer>` element (landmark `contentinfo`) inside the existing content wrapper (`pb-20 lg:pb-0 lg:pl-76`), immediately after the `<main>` that holds `{children}`. The footer SHALL be in normal document flow (not `fixed`, not `sticky`), so it appears at the end of the scroll: on mobile above the fixed bottom nav (the wrapper's `pb-20` clears it) and on desktop below the content and to the right of the sidebar (the wrapper's `lg:pl-76` offsets it). It SHALL NOT be a descendant of `<main>`.
 
 #### Scenario: Footer is a contentinfo landmark on every page
 

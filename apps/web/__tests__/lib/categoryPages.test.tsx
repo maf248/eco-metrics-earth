@@ -1,10 +1,14 @@
 import { render, screen } from '@testing-library/react';
+import { cacheLife } from 'next/cache';
 
+import { DEGRADED_REVALIDATE_SECONDS } from '@/lib/bffFetch';
 import {
   CATEGORY_PAGES,
   defineCategoryPage,
   defineProviderCategoryPage,
+  loadCategoryData,
 } from '@/lib/categoryPages';
+import { CATEGORY_SKELETONS } from '@/lib/categorySkeletons';
 import { getCo2Emissions } from '@/lib/co2Emissions';
 import { getEnergySources } from '@/lib/energySources';
 import { getGlobalTemperature } from '@/lib/globalTemperature';
@@ -24,6 +28,8 @@ jest.mock('@/components/charts/LazyPieEChart', () => ({
 jest.mock('@/components/charts/LazyEChart', () => ({
   LazyEChart: () => <div data-testid="chart-stub" />,
 }));
+
+jest.mock('next/cache', () => ({ cacheLife: jest.fn() }));
 
 describe('CATEGORY_PAGES', () => {
   it('should register exactly water-footprint, co2-emissions, global-temperature and energy-sources', () => {
@@ -252,5 +258,42 @@ describe('defineCategoryPage', () => {
     });
 
     await expect(definition.load()).resolves.toBe('data');
+  });
+});
+
+describe('loadCategoryData', () => {
+  const lastLifetime = () => jest.mocked(cacheLife).mock.lastCall?.[0];
+
+  beforeEach(() => jest.mocked(cacheLife).mockClear());
+
+  it('should keep a healthy read for a day', async () => {
+    jest.mocked(getCo2Emissions).mockResolvedValue({
+      kind: 'ok',
+      payload: { data: CO2_FIXTURE, meta: CO2_META },
+    });
+    await expect(loadCategoryData('co2-emissions')).resolves.toMatchObject({ kind: 'fresh' });
+    expect(lastLifetime()).toMatchObject({ revalidate: 86_400 });
+  });
+
+  it('should keep a read with the provider down only for minutes', async () => {
+    jest.mocked(getCo2Emissions).mockResolvedValue({ kind: 'provider-unavailable' });
+    await expect(loadCategoryData('co2-emissions')).resolves.toMatchObject({ kind: 'unavailable' });
+    expect(lastLifetime()).toMatchObject({ revalidate: DEGRADED_REVALIDATE_SECONDS });
+  });
+
+  it('should reject on a failed read, so nothing is stored', async () => {
+    jest.mocked(getCo2Emissions).mockRejectedValue(new Error('BFF down'));
+    await expect(loadCategoryData('co2-emissions')).rejects.toThrow('BFF down');
+    expect(cacheLife).not.toHaveBeenCalled();
+  });
+
+  it('should resolve to nothing for a category without an entry', async () => {
+    await expect(loadCategoryData('ocean-health')).resolves.toBeUndefined();
+  });
+});
+
+describe('CATEGORY_SKELETONS', () => {
+  it('should declare exactly the categories with live data', () => {
+    expect(Object.keys(CATEGORY_SKELETONS).sort()).toEqual(Object.keys(CATEGORY_PAGES).sort());
   });
 });

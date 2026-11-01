@@ -29,12 +29,9 @@ describe('HomePage', () => {
     expect(screen.queryByRole('img')).toBeNull();
   });
 
-  it('should render a <main> element with id="main-content" and tabIndex={-1}', () => {
+  it('should leave the <main> landmark to the root layout', () => {
     const { container } = render(<HomePage />);
-    const main = container.querySelector('main');
-    expect(main).not.toBeNull();
-    expect(main?.getAttribute('id')).toBe('main-content');
-    expect(main?.getAttribute('tabindex')).toBe('-1');
+    expect(container.querySelector('main')).toBeNull();
   });
 });
 
@@ -90,16 +87,16 @@ describe('HomePage snapshots', () => {
 });
 
 describe('HomePage — layout', () => {
-  it('should render the <main> with top-anchored layout (justify-start)', () => {
+  it('should render the content with top-anchored layout (justify-start)', () => {
     const { container } = render(<HomePage />);
-    const main = container.querySelector('main');
-    expect(main?.className).toContain('justify-start');
-    expect(main?.className).not.toContain('justify-center');
+    const content = container.firstElementChild;
+    expect(content?.className).toContain('justify-start');
+    expect(content?.className).not.toContain('justify-center');
   });
 
-  it('should render the <main> with pt-14 top padding', () => {
+  it('should render the content with pt-14 top padding', () => {
     const { container } = render(<HomePage />);
-    const main = container.querySelector('main');
-    expect(main?.className).toContain('pt-14');
+    const content = container.firstElementChild;
+    expect(content?.className).toContain('pt-14');
   });
 });

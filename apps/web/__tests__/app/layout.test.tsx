@@ -3,9 +3,10 @@ import { renderToString } from 'react-dom/server';
 import RootLayout, { metadata } from '@/app/layout';
 import { OG_IMAGE, SITE_DESCRIPTION } from '@/lib/socialMetadata';
 
-// Navbar uses NavLink which calls usePathname — mock it for SSR tests
+// Navbar and the navigation provider read the router — mock it for SSR tests
 jest.mock('next/navigation', () => ({
   usePathname: () => '/',
+  useRouter: () => ({ push: jest.fn() }),
 }));
 
 // MobileHeader calls window.matchMedia at render time — jsdom does not implement it
@@ -67,28 +68,28 @@ describe('RootLayout', () => {
     expect(html).toContain('Skip to main content');
   });
 
-  it('should NOT assign id="main-content" to the layout wrapper div', () => {
+  it('should render the only <main>, the target of the skip link', () => {
     const html = renderToString(
       <RootLayout>
         <div>test content</div>
       </RootLayout>,
     );
-    // id="main-content" belongs on the <main> inside each page, not the layout wrapper
-    expect(html).not.toContain('id="main-content"');
+    expect(html.match(/<main/g)).toHaveLength(1);
+    expect(html).toMatch(/<main[^>]*id="main-content"[^>]*tabindex="-1"/i);
   });
 });
 
 describe('RootLayout — Footer', () => {
   const html = renderToString(
     <RootLayout>
-      <main>test content</main>
+      <p>test content</p>
     </RootLayout>,
   );
 
   it('should render the footer inside the content wrapper, right after the children', () => {
     const wrapper = html.match(/<div class="pb-20 lg:pb-0 lg:pl-76">(.*)<\/div><\/body>/s)?.[1];
 
-    expect(wrapper).toMatch(/^<main>test content<\/main><footer/);
+    expect(wrapper).toMatch(/^<main.*test content.*<\/main><footer/s);
     expect(wrapper).toContain('href="/data-sources"');
   });
 
