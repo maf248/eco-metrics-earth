@@ -1,3 +1,9 @@
+## [2.17.0](https://github.com/maf248/eco-metrics-earth/compare/v2.16.1...v2.17.0) (2026-11-01)
+
+### Features
+
+* **web:** make category navigation instant with complete server HTML ([5ffb433](https://github.com/maf248/eco-metrics-earth/commit/5ffb4337cb5c0975498c88aaa5e4755bbbdfaefa))
+
 ## [2.16.1](https://github.com/maf248/eco-metrics-earth/compare/v2.16.0...v2.16.1) (2026-11-01)
 
 ### Bug Fixes
