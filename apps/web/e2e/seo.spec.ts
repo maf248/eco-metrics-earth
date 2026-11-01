@@ -247,4 +247,17 @@ test.describe('Complete HTML on direct visits', { tag: '@smoke' }, () => {
       expect(html.match(/<main[\s>]/g)).toHaveLength(1);
     });
   }
+
+  test('should deliver the 404 of an unknown slug complete without JavaScript', async ({
+    request,
+  }) => {
+    const response = await request.get('/unknown-category/');
+    const html = await response.text();
+
+    expect(response.status()).toBe(404);
+    expect(html).toContain('name="robots" content="noindex"');
+    expect(html).toContain('find that...');
+    expect(html.indexOf('find that...')).toBeLessThan(html.indexOf('<footer'));
+    expect(html).not.toContain('__next_error__');
+  });
 });

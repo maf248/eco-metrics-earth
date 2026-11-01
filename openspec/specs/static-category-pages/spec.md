@@ -2,7 +2,7 @@
 
 ## Purpose
 
-The 12 eco-category pages under the dynamic `[category]` route segment are served from the ISR cache with daily background revalidation (`revalidate = 86400`): the 11 placeholder categories are pre-rendered at build time from the `ECO_CATEGORIES` slugs and render their unchanged "coming soon" placeholder, the water-footprint page is generated on its first request so the build never depends on the BFF, and unknown slugs get a real 404 from the segment layout.
+The 12 eco-category pages under the dynamic `[category]` route segment are served from the ISR cache with daily background revalidation (`revalidate = 86400`): the 11 placeholder categories are pre-rendered at build time from the `ECO_CATEGORIES` slugs and render their unchanged "coming soon" placeholder, the water-footprint page is generated on its first request so the build never depends on the BFF, and unknown slugs get a real 404, with the complete not-found page when they are lowercase and single-segment, because a rewrite keeps those out of the `[category]` route.
 
 ## Requirements
 
@@ -29,6 +29,7 @@ The categories without a registry entry SHALL render the unchanged placeholder (
 - **WHEN** a request arrives for a slug not present in `ECO_CATEGORIES` (e.g., `/unknown-category/`)
 - **THEN** the response status is 404 Not Found (not a 200 with `noindex`), for browsers and crawlers alike
 - **THEN** no BFF request is made
+- **AND** for a lowercase slug, the HTML holds the complete not-found page, visible without JavaScript
 
 #### Scenario: Build pre-renders the placeholder categories without the BFF
 
