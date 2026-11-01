@@ -1,3 +1,9 @@
+## [2.16.1](https://github.com/maf248/eco-metrics-earth/compare/v2.16.0...v2.16.1) (2026-11-01)
+
+### Bug Fixes
+
+* **deps:** patch production advisories in nest, joi and follow-redirects ([a9ade52](https://github.com/maf248/eco-metrics-earth/commit/a9ade524f537f77998f6c1cb2750c1165e7cdca3))
+
 ## [2.16.0](https://github.com/maf248/eco-metrics-earth/compare/v2.15.0...v2.16.0) (2026-11-01)
 
 ### Features
