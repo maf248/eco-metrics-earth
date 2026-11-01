@@ -12,7 +12,7 @@ An environmental metrics dashboard monorepo — tracking air quality, CO₂ emis
 | **UI**         | [React](https://react.dev)                                               | 19.3.0  | [react.dev](https://react.dev/reference/react)                                               |
 | **Styling**    | [Tailwind CSS](https://tailwindcss.com)                                  | 4.3.3   | [tailwindcss.com/docs](https://tailwindcss.com/docs)                                         |
 | **Theming**    | React Context + localStorage                                             | —       | Light and dark mode support with persistent user preference via a theme toggle               |
-| **Backend**    | [NestJS](https://nestjs.com)                                             | 12.1.2  | [docs.nestjs.com](https://docs.nestjs.com)                                                   |
+| **Backend**    | [NestJS](https://nestjs.com)                                             | 12.3.2  | [docs.nestjs.com](https://docs.nestjs.com)                                                   |
 | **Language**   | [TypeScript](https://www.typescriptlang.org)                             | 5.9.3   | [typescriptlang.org/docs](https://www.typescriptlang.org/docs/)                              |
 | **Testing**    | [Jest](https://jestjs.io)                                                | 30.5.2  | [jestjs.io/docs](https://jestjs.io/docs/getting-started)                                     |
 | **Testing**    | [Testing Library](https://testing-library.com)                           | 16.3.3  | [testing-library.com/docs](https://testing-library.com/docs/)                                |
@@ -24,7 +24,7 @@ An environmental metrics dashboard monorepo — tracking air quality, CO₂ emis
 | **API Docs**   | [@nestjs/swagger](https://docs.nestjs.com/openapi/introduction)          | 12.0.2  | [docs.nestjs.com/openapi/introduction](https://docs.nestjs.com/openapi/introduction)         |
 | **Reactive**   | [RxJS](https://rxjs.dev)                                                 | 7.8.2   | [rxjs.dev/guide](https://rxjs.dev/guide/overview)                                            |
 | **Validation** | [class-validator](https://github.com/typestack/class-validator)          | 0.15.1  | [docs.nestjs.com/techniques/validation](https://docs.nestjs.com/techniques/validation)       |
-| **Env schema** | [Joi](https://joi.dev)                                                   | 18.2.9  | [joi.dev/api](https://joi.dev/api/)                                                          |
+| **Env schema** | [Joi](https://joi.dev)                                                   | 18.3.1  | [joi.dev/api](https://joi.dev/api/)                                                          |
 | **Security**   | [Helmet](https://helmetjs.github.io)                                     | 8.3.0   | [helmetjs.github.io](https://helmetjs.github.io/)                                            |
 | **Rate limit** | [@nestjs/throttler](https://docs.nestjs.com/security/rate-limiting)      | 6.7.1   | [docs.nestjs.com/security/rate-limiting](https://docs.nestjs.com/security/rate-limiting)     |
 | **Compiler**   | [SWC](https://swc.rs) (Jest transform)                                   | 1.16.13 | [swc.rs/docs](https://swc.rs/docs/getting-started)                                           |
