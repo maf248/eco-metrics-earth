@@ -1,3 +1,9 @@
+## [2.14.0](https://github.com/maf248/eco-metrics-earth/compare/api-v2.13.0...api-v2.14.0) (2026-11-01)
+
+### Features
+
+* **api:** serve the last good snapshot when a provider fails ([815ff3d](https://github.com/maf248/eco-metrics-earth/commit/815ff3de17277f0413602a7d70a7d372f41a7747))
+
 ## [2.13.0](https://github.com/maf248/eco-metrics-earth/compare/api-v2.12.0...api-v2.13.0) (2026-10-27)
 
 ### Features
