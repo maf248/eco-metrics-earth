@@ -2,7 +2,7 @@
 
 ## Purpose
 
-TBD - created by archiving change energy-sources. Update Purpose after archive.
+Define the energy sources page: server-rendered key figures, the stacked area and donut of a country's electricity mix, and its share and generation views.
 
 ## Requirements
 

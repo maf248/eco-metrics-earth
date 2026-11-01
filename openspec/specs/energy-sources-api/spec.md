@@ -2,7 +2,7 @@
 
 ## Purpose
 
-TBD - created by archiving change energy-sources. Update Purpose after archive.
+Define the endpoint that serves electricity generation by source per country from Our World in Data, in a compact year-aligned payload.
 
 ## Requirements
 
