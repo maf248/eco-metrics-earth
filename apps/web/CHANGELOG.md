@@ -1,3 +1,9 @@
+## [2.13.0](https://github.com/maf248/eco-metrics-earth/compare/web-v2.12.0...web-v2.13.0) (2026-11-01)
+
+### Features
+
+* **web:** show stale and unavailable states for provider data ([6b2bc93](https://github.com/maf248/eco-metrics-earth/commit/6b2bc9319a166ce4a183dbdef622e60bd7da5cd7))
+
 ## [2.12.0](https://github.com/maf248/eco-metrics-earth/compare/web-v2.11.0...web-v2.12.0) (2026-10-27)
 
 ### Features
