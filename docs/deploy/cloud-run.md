@@ -1,6 +1,6 @@
 # Deploy `apps/api` on Google Cloud Run
 
-This runbook configures the GCP project, GitHub Actions OIDC authentication, Artifact Registry, and two Cloud Run services so that the NestJS BFF is built and deployed automatically **after CI passes** (each deploy job `needs` the CI job; a red or cancelled CI never deploys):
+This runbook configures the GCP project, GitHub Actions OIDC authentication, Artifact Registry, and two Cloud Run services so that the NestJS BFF is built and deployed automatically **after CI passes** (each deploy job `needs` the CI job and the `Build API image (no push)` job; a red or cancelled run of either never deploys):
 
 | Target        | Cloud Run service     | Deployed from | Consumed by                                      |
 | ------------- | --------------------- | ------------- | ------------------------------------------------ |
@@ -235,11 +235,12 @@ If the variable is missing on either side, nothing breaks: the API simply thrott
 
 ## 15. Optional change-detection verification
 
-The `Detect api-affecting changes` step compares the commit being deployed with the commit of the image that is serving **on the target's own service** (the image tag is the commit SHA): production diffs against what `eco-metrics-api` runs, development against what `eco-metrics-api-dev` runs. It deploys when any file in the diff is one of `apps/api/**`, `packages/shared/**`, `Dockerfile`, `.dockerignore`, `.github/workflows/deploy-api.yml`, or a root build manifest (`package.json`, `package-lock.json`, `.npmrc`, `.nvmrc`, `nx.json`, `tsconfig.base.json`, `tsconfig.json`). It logs the deployed SHA, the target SHA, the matched files and the decision, and repeats them in the job summary.
+The `Detect api-affecting changes` step compares the commit being deployed with the commit of the image that is serving **on the target's own service** (the image tag is the commit SHA): production diffs against what `eco-metrics-api` runs, development against what `eco-metrics-api-dev` runs. The path list is read from `scripts/api-image-inputs.pattern`, shared with the CI image build check (`Build API image (no push)`). It deploys when any file in the diff is one of `apps/api/**`, `packages/shared/**`, `Dockerfile`, `.dockerignore`, `.github/workflows/deploy-api.yml`, or a root build manifest (`package.json`, `package-lock.json`, `.npmrc`, `.nvmrc`, `nx.json`, `tsconfig.base.json`, `tsconfig.json`). It logs the deployed SHA, the target SHA, the matched files and the decision, and repeats them in the job summary.
 
 - Push a change that touches only `apps/web/**` → CI passes, the `Deploy API` job runs but skips build and deploy (the job summary says no API inputs changed), and Vercel builds as usual.
 - Push a change that touches only `apps/api/**`, `packages/shared/**` or any other file listed above → CI passes, then the `Deploy API` job builds and deploys, and Vercel skips the build.
 - Push a commit that fails CI → the deploy job is skipped (it does not run at all) and no new revision is created.
+- Edits to `.github/workflows/ci.yml`, `scripts/api-image-inputs.pattern` or `scripts/detect-api-image-changes.sh` run the CI image build but do not deploy: they do not change the image.
 - Release commits on `main` (`[skip ci]`) never deploy by themselves. Because they touch `package.json`/`package-lock.json`, the next deploy of each target rebuilds even without API changes; this is expected.
 
 ## 16. Cost controls and free tier
@@ -506,7 +507,7 @@ End users only wait on a cold start for that first request after a deploy.
 
 **Symptom:** a push to `develop` (or `main`) shows `Deploy API (development)` (or `Deploy API (production)`) as skipped (grey) and no new revision exists.
 
-**Fix:** the job `needs` the CI job, so it is skipped when `Format, Lint, Typecheck, Build & Test` failed or was cancelled (a newer push to the same ref supersedes a running CI). Fix CI and push again; the next successful run deploys every change since the serving revision. The job for the other branch is always skipped (a push to `develop` never runs the production job, and vice versa), and neither runs for other branches or pull requests.
+**Fix:** the job `needs` both CI jobs, so it is skipped when `Format, Lint, Typecheck, Build & Test` or `Build API image (no push)` failed or was cancelled (a newer push to the same ref supersedes a running CI). The image job's step summary (`API image change detection`) shows whether it built and why. Fix CI and push again; the next successful run deploys every change since the serving revision. The job for the other branch is always skipped (a push to `develop` never runs the production job, and vice versa), and neither runs for other branches or pull requests.
 
 ### Production dispatch fails with "Production deploys only from main"
 

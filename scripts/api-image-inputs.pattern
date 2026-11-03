@@ -1,0 +1,1 @@
+^(apps/api/|packages/shared/)|^(Dockerfile|\.dockerignore|package\.json|package-lock\.json|\.npmrc|\.nvmrc|nx\.json|tsconfig\.base\.json|tsconfig\.json)$|^\.github/workflows/deploy-api\.yml$
