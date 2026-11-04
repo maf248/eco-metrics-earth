@@ -41,7 +41,7 @@ function textOf(html: string): string {
 }
 
 test.describe('Energy Sources page', () => {
-  test.describe('Core render', { tag: '@smoke' }, () => {
+  test.describe('Core render', () => {
     test('should show neither the stale notice nor the unavailable state while the provider is healthy', async ({
       page,
     }) => {
@@ -52,36 +52,38 @@ test.describe('Energy Sources page', () => {
       await expect(page.getByTestId('data-unavailable')).toHaveCount(0);
     });
 
-    test('should render the heading, key figures, chart and attribution with the Ember credit', async ({
-      page,
-    }) => {
-      const response = await page.goto(PAGE_URL);
-      expect(response?.status()).toBe(200);
+    test(
+      'should render the heading, key figures, chart and attribution with the Ember credit',
+      { tag: '@smoke' },
+      async ({ page }) => {
+        const response = await page.goto(PAGE_URL);
+        expect(response?.status()).toBe(200);
 
-      await expect(page.getByRole('heading', { name: 'Energy Sources', level: 1 })).toBeVisible();
-      await expect(page.getByTestId('energy-key-figures')).toContainText(KEY_FIGURES);
-      await expect(page.getByTestId('echart').locator('svg').first()).toBeVisible();
+        await expect(page.getByRole('heading', { name: 'Energy Sources', level: 1 })).toBeVisible();
+        await expect(page.getByTestId('energy-key-figures')).toContainText(KEY_FIGURES);
+        await expect(page.getByTestId('echart').locator('svg').first()).toBeVisible();
 
-      const attribution = page.getByTestId('energy-attribution');
-      await expect(attribution).toContainText('Data:');
-      await expect(attribution.getByRole('link', { name: 'Our World in Data' })).toHaveAttribute(
-        'href',
-        'https://ourworldindata.org',
-      );
-      await expect(attribution).toContainText('(CC BY 4.0)');
-      await expect(attribution).toContainText('Ember');
-      await expect(
-        attribution.getByRole('link', { name: 'Yearly Electricity Data' }),
-      ).toHaveAttribute('href', 'https://ember-energy.org/data/yearly-electricity-data/');
-      await expect(attribution.getByRole('link', { name: 'CC BY 4.0' }).last()).toHaveAttribute(
-        'href',
-        'https://ember-energy.org/creative-commons/',
-      );
-      await expect(attribution.getByRole('link', { name: 'All data sources' })).toHaveAttribute(
-        'href',
-        '/data-sources/',
-      );
-    });
+        const attribution = page.getByTestId('energy-attribution');
+        await expect(attribution).toContainText('Data:');
+        await expect(attribution.getByRole('link', { name: 'Our World in Data' })).toHaveAttribute(
+          'href',
+          'https://ourworldindata.org',
+        );
+        await expect(attribution).toContainText('(CC BY 4.0)');
+        await expect(attribution).toContainText('Ember');
+        await expect(
+          attribution.getByRole('link', { name: 'Yearly Electricity Data' }),
+        ).toHaveAttribute('href', 'https://ember-energy.org/data/yearly-electricity-data/');
+        await expect(attribution.getByRole('link', { name: 'CC BY 4.0' }).last()).toHaveAttribute(
+          'href',
+          'https://ember-energy.org/creative-commons/',
+        );
+        await expect(attribution.getByRole('link', { name: 'All data sources' })).toHaveAttribute(
+          'href',
+          '/data-sources/',
+        );
+      },
+    );
 
     test('should include the key figures, the latest-year table and the year table in the server-rendered HTML', async ({
       request,
@@ -155,33 +157,37 @@ test.describe('Energy Sources page', () => {
   });
 
   test.describe('Interaction', () => {
-    test('should select Argentina and Generation (TWh) and update chart, donut and year table', async ({
-      page,
-    }) => {
-      const errors = collectErrors(page);
-      await page.goto(PAGE_URL);
+    test(
+      'should select Argentina and Generation (TWh) and update chart, donut and year table',
+      { tag: '@smoke' },
+      async ({ page }) => {
+        const errors = collectErrors(page);
+        await page.goto(PAGE_URL);
 
-      await selectCountry(page, 'arg');
-      await measure(page, 'Generation (TWh)').click();
+        await selectCountry(page, 'arg');
+        await measure(page, 'Generation (TWh)').click();
 
-      await expect(country(page)).toHaveValue('Argentina');
-      await expect(
-        page.getByRole('heading', {
-          level: 3,
-          name: 'Argentina: electricity generation by source (TWh)',
-        }),
-      ).toBeVisible();
-      await expect(
-        page.getByRole('heading', { level: 3, name: /^Argentina: electricity mix in \d{4}$/ }),
-      ).toBeVisible();
-      await explorer(page).getByText('View data table').click();
-      await expect(explorer(page).getByRole('columnheader', { name: 'Coal (TWh)' })).toBeVisible();
+        await expect(country(page)).toHaveValue('Argentina');
+        await expect(
+          page.getByRole('heading', {
+            level: 3,
+            name: 'Argentina: electricity generation by source (TWh)',
+          }),
+        ).toBeVisible();
+        await expect(
+          page.getByRole('heading', { level: 3, name: /^Argentina: electricity mix in \d{4}$/ }),
+        ).toBeVisible();
+        await explorer(page).getByText('View data table').click();
+        await expect(
+          explorer(page).getByRole('columnheader', { name: 'Coal (TWh)' }),
+        ).toBeVisible();
 
-      await measure(page, 'Share (%)').click();
-      await expect(explorer(page).getByRole('columnheader', { name: 'Coal (%)' })).toBeVisible();
-      expect(new URL(page.url()).pathname).toBe(PAGE_URL);
-      expect(errors).toEqual([]);
-    });
+        await measure(page, 'Share (%)').click();
+        await expect(explorer(page).getByRole('columnheader', { name: 'Coal (%)' })).toBeVisible();
+        expect(new URL(page.url()).pathname).toBe(PAGE_URL);
+        expect(errors).toEqual([]);
+      },
+    );
 
     test('should use the entity latest year in the donut heading', async ({ page }) => {
       await page.goto(PAGE_URL);
@@ -256,24 +262,28 @@ test.describe('Energy Sources page', () => {
   test.describe('Narrow viewport (375 px)', () => {
     test.use({ viewport: { width: 375, height: 780 } });
 
-    test('should not scroll the page horizontally with the year table open', async ({ page }) => {
-      await page.goto(PAGE_URL);
-      await expect(page.getByTestId('echart').locator('svg').first()).toBeVisible();
+    test(
+      'should not scroll the page horizontally with the year table open',
+      { tag: '@smoke' },
+      async ({ page }) => {
+        await page.goto(PAGE_URL);
+        await expect(page.getByTestId('echart').locator('svg').first()).toBeVisible();
 
-      await explorer(page).getByText('View data table').click();
+        await explorer(page).getByText('View data table').click();
 
-      const region = explorer(page).getByRole('region', {
-        name: 'Data table for World, scrollable',
-      });
-      const scrolls = await region.evaluate((node) => node.scrollWidth > node.clientWidth);
-      expect(scrolls).toBe(true);
-      const overflow = await page.evaluate(
-        () => document.documentElement.scrollWidth - document.documentElement.clientWidth,
-      );
-      expect(overflow).toBeLessThanOrEqual(0);
-      const box = await country(page).boundingBox();
-      expect(box?.height ?? 0).toBeGreaterThanOrEqual(44);
-    });
+        const region = explorer(page).getByRole('region', {
+          name: 'Data table for World, scrollable',
+        });
+        const scrolls = await region.evaluate((node) => node.scrollWidth > node.clientWidth);
+        expect(scrolls).toBe(true);
+        const overflow = await page.evaluate(
+          () => document.documentElement.scrollWidth - document.documentElement.clientWidth,
+        );
+        expect(overflow).toBeLessThanOrEqual(0);
+        const box = await country(page).boundingBox();
+        expect(box?.height ?? 0).toBeGreaterThanOrEqual(44);
+      },
+    );
   });
 
   test.describe('API', () => {

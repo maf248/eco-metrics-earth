@@ -90,7 +90,7 @@ npm run build            # Build all apps and packages
 
 # Test
 npm run test             # Run all unit tests across all projects
-npm run e2e              # Run all E2E tests (full suite on chromium-desktop, @smoke on Firefox, WebKit and mobile)
+npm run e2e              # Run all E2E tests (full suite on chromium-desktop; @smoke, for browser or viewport sensitive checks, also on Firefox, WebKit and mobile)
 npm run update-snapshots # Re-run unit tests updating Jest snapshots
 
 # Lint
@@ -238,7 +238,7 @@ Releases are automated via `.github/workflows/release.yml` on every push to `mai
 
 ### CI
 
-`.github/workflows/ci.yml` runs on every push (any branch) and on PRs to `main`: format check → lint → typecheck → build → unit tests → E2E (Playwright). The job runs inside the official Playwright container (`mcr.microsoft.com/playwright:v<version>-noble`), so CI never installs browsers or OS packages; `scripts/check-playwright-image.mjs` fails the run early if the image tag differs from the installed `@playwright/test` version.
+`.github/workflows/ci.yml` runs on every push (any branch) and on PRs to `main`: format check → lint → typecheck → build → unit tests → E2E (Playwright). The job runs inside the official Playwright container (`mcr.microsoft.com/playwright:v<version>-noble`), so CI never installs browsers or OS packages; `scripts/check-playwright-image.mjs` fails the run early if the image tag differs from the installed `@playwright/test` version. A separate job, `Build API image (no push)`, builds the API `Dockerfile` without publishing it, only when an image input changes (`scripts/api-image-inputs.pattern`), with the GitHub Actions layer cache; the API deploy jobs wait for it.
 
 ---
 

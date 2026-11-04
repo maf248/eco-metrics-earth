@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 
 const API_BASE_URL = process.env['API_BASE_URL'] || 'http://localhost:3001/api/v1';
 
-test.describe('API health endpoint', { tag: '@smoke' }, () => {
+test.describe('API health endpoint', () => {
   test('should return 200 with status ok', async ({ request }) => {
     const response = await request.get(`${API_BASE_URL}/health`);
     expect(response.status()).toBe(200);
@@ -30,7 +30,7 @@ test.describe('API health endpoint', { tag: '@smoke' }, () => {
   });
 });
 
-test.describe('API error handling', { tag: '@smoke' }, () => {
+test.describe('API error handling', () => {
   test('should return 404 for nonexistent route', async ({ request }) => {
     const response = await request.get(`${API_BASE_URL}/nonexistent`);
     expect(response.status()).toBe(404);
@@ -46,7 +46,7 @@ test.describe('API error handling', { tag: '@smoke' }, () => {
   });
 });
 
-test.describe('API water-footprint — error format', { tag: '@smoke' }, () => {
+test.describe('API water-footprint — error format', () => {
   const PRODUCTS_URL = `${API_BASE_URL}/water-footprint/products`;
 
   test('should return 400 in the ApiResponse error format for an invalid category', async ({

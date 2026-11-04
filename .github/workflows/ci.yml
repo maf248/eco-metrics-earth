@@ -90,11 +90,55 @@ jobs:
         timeout-minutes: 20
         run: npm run e2e
 
+  # Builds the API image with the production Dockerfile, without publishing it,
+  # so a broken image fails here instead of at deploy time. Separate from `ci`:
+  # that job runs in the Playwright container, which has no Docker daemon.
+  # Gating is step-level on purpose: a job skipped by a job-level `if` would
+  # also skip the `deploy-api-*` jobs that need it.
+  api-image:
+    name: Build API image (no push)
+    runs-on: ubuntu-latest
+    # A cold build takes a few minutes; fail fast on a hung step.
+    timeout-minutes: 15
+    permissions:
+      contents: read
+    # Same policy as `ci`: a newer push supersedes the running check, except on `main`.
+    concurrency:
+      group: ${{ github.workflow }}-api-image-${{ github.ref }}
+      cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Detect api image changes
+        id: detect
+        env:
+          BASE_SHA: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.sha || github.event.before }}
+          HEAD_SHA: ${{ github.sha }}
+        run: bash scripts/detect-api-image-changes.sh
+
+      - name: Set up Docker Buildx
+        if: steps.detect.outputs.build == 'true'
+        uses: docker/setup-buildx-action@v4
+
+      - name: Build API image (no push)
+        if: steps.detect.outputs.build == 'true'
+        uses: docker/build-push-action@v7
+        with:
+          context: .
+          push: false
+          # Populate the layer cache only; no image is exported anywhere.
+          outputs: type=cacheonly
+          cache-from: type=gha,scope=api-image
+          cache-to: type=gha,mode=max,scope=api-image
+
   # Production follows `main`, like the web app on Vercel; `develop` feeds the
   # dev service that Vercel previews consume. Both deploy only after CI passes.
   deploy-api-production:
     name: Deploy API (production)
-    needs: ci
+    needs: [ci, api-image]
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     permissions:
       contents: read
@@ -105,7 +149,7 @@ jobs:
 
   deploy-api-development:
     name: Deploy API (development)
-    needs: ci
+    needs: [ci, api-image]
     if: github.event_name == 'push' && github.ref == 'refs/heads/develop'
     permissions:
       contents: read

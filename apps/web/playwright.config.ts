@@ -21,8 +21,8 @@ export default defineConfig({
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     baseURL,
-    /* Retain trace for failing tests. See https://playwright.dev/docs/trace-viewer */
-    trace: 'retain-on-failure',
+    /* Tracing every test costs ~28% of the run and CI never uploads traces: trace only retries there. */
+    trace: process.env.CI ? 'on-first-retry' : 'retain-on-failure',
   },
   /* Run your local dev server before starting the tests */
   webServer: {

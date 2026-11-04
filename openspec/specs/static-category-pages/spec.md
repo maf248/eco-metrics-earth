@@ -2,7 +2,7 @@
 
 ## Purpose
 
-The 12 eco-category pages under the dynamic `[category]` route segment are served from the ISR cache with daily background revalidation (`revalidate = 86400`): the 11 placeholder categories are pre-rendered at build time from the `ECO_CATEGORIES` slugs and render their unchanged "coming soon" placeholder, the water-footprint page is generated on its first request so the build never depends on the BFF, and unknown slugs get a real 404, with the complete not-found page when they are lowercase and single-segment, because a rewrite keeps those out of the `[category]` route.
+The 12 eco-category pages under `[category]` are served from cache and refreshed in the background. Categories in the category page registry are generated on their first request, so the build never depends on the BFF; the rest are pre-rendered with their "coming soon" placeholder. Unknown slugs get a real 404 with the complete not-found page, except percent-encoded unknown slugs and valid categories in another case.
 
 ## Requirements
 
@@ -12,7 +12,7 @@ The `[category]` route SHALL declare a static params function that returns every
 
 The categories without a registry entry SHALL render the unchanged placeholder (icon + title + "coming soon").
 
-#### Scenario: generateStaticParams returns every category except water-footprint
+#### Scenario: generateStaticParams returns every category outside the registry
 
 - **WHEN** `generateStaticParams()` is called
 - **THEN** it returns an array of objects with shape `{ category: string }` covering every value of `ECO_CATEGORIES` except `water-footprint`, `co2-emissions`, `global-temperature` and `energy-sources`
@@ -29,7 +29,7 @@ The categories without a registry entry SHALL render the unchanged placeholder (
 - **WHEN** a request arrives for a slug not present in `ECO_CATEGORIES` (e.g., `/unknown-category/`)
 - **THEN** the response status is 404 Not Found (not a 200 with `noindex`), for browsers and crawlers alike
 - **THEN** no BFF request is made
-- **AND** for a lowercase slug, the HTML holds the complete not-found page, visible without JavaScript
+- **AND** the HTML holds the complete not-found page, visible without JavaScript, unless the slug is percent-encoded or is a valid category in another case
 
 #### Scenario: Build pre-renders the placeholder categories without the BFF
 
@@ -49,7 +49,7 @@ The categories without a registry entry SHALL render the unchanged placeholder (
 - **WHEN** the page is requested
 - **THEN** the page is refreshed in the background and later requests receive the new content
 
-#### Scenario: The other 11 category pages are unchanged
+#### Scenario: The placeholder category pages are unchanged
 
 - **WHEN** any category page without a registry entry (the 8 remaining placeholders, formerly 9 before `energy-sources` was registered) is rendered (e.g., `/ocean-health/`)
 - **THEN** it shows the placeholder (icon, `<h1>` title, "{title} metrics — coming soon.")

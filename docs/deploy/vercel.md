@@ -6,7 +6,7 @@ This runbook makes the `apps/web` production deployment on Vercel wait for the C
 
 Vercel's Git integration builds `main` and promotes it to production independently of GitHub Actions, so a merge to `main` with red or unfinished CI could go live. The usual guard, GitHub branch protection or rulesets, is **not available**: the repository is private on GitHub Free and the API answers `403 Upgrade to GitHub Pro or make this repository public`. Nothing on GitHub prevents merging a PR with failing CI, so **Vercel Deployment Checks is the only server-side enforcement for the web app**. The local husky `pre-push` hook only blocks direct pushes to `main` from a developer machine.
 
-The API is gated differently: the `deploy-api-production` (`main`) and `deploy-api-development` (`develop`) jobs in `.github/workflows/ci.yml` each `needs` the CI job (see [`cloud-run.md`](./cloud-run.md)).
+The API is gated differently: the `deploy-api-production` (`main`) and `deploy-api-development` (`develop`) jobs in `.github/workflows/ci.yml` each `needs` the CI job and the `api-image` job (see [`cloud-run.md`](./cloud-run.md)). `api-image` is deliberately not a Vercel check: the web app does not depend on the API image.
 
 ## Which API each environment consumes
 

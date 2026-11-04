@@ -137,8 +137,9 @@ jobs:
           GCP_REGION: ${{ vars.GCP_REGION }}
           GCP_PROJECT_ID: ${{ vars.GCP_PROJECT_ID }}
         run: |
-          # Same list the former `paths:` filter used (root files match exactly).
-          PATTERN='^(apps/api/|packages/shared/)|^(Dockerfile|\.dockerignore|package\.json|package-lock\.json|\.npmrc|\.nvmrc|nx\.json|tsconfig\.base\.json|tsconfig\.json)$|^\.github/workflows/deploy-api\.yml$'
+          # Image inputs live in scripts/api-image-inputs.pattern (shared with the CI
+          # image build check); root files match exactly.
+          PATTERN=$(cat scripts/api-image-inputs.pattern)
           deployed_sha=""
           matched=""
 

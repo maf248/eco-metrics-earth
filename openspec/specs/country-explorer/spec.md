@@ -142,7 +142,7 @@ After the extraction, `/co2-emissions/` SHALL render the same DOM, texts, test i
 #### Scenario: Existing CO2 E2E passes
 
 - **WHEN** `npm run e2e` runs
-- **THEN** `co2-emissions.spec.ts` passes in all five projects unchanged
+- **THEN** `co2-emissions.spec.ts` passes unchanged in `chromium-desktop`, and its `@smoke` tests pass in the other four projects
 
 ### Requirement: A generic origin credit
 

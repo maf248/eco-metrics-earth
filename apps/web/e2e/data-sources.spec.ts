@@ -5,24 +5,26 @@ import { dataSourcesPage } from './utils/pages';
 const POORE_NEMECEK = 'Poore & Nemecek (2018), Science';
 
 test.describe('Data sources page', () => {
-  test.describe('Core render', { tag: '@smoke' }, () => {
-    test('should list the real water-footprint sources with publisher and license', async ({
-      page,
-    }) => {
-      const response = await page.goto(dataSourcesPage.url);
-      expect(response?.status()).toBe(200);
+  test.describe('Core render', () => {
+    test(
+      'should list the real water-footprint sources with publisher and license',
+      { tag: '@smoke' },
+      async ({ page }) => {
+        const response = await page.goto(dataSourcesPage.url);
+        expect(response?.status()).toBe(200);
 
-      await expect(page.getByRole('heading', { name: 'Data sources', level: 1 })).toBeVisible();
-      await expect(
-        page.getByRole('heading', { name: 'Water footprint of products' }),
-      ).toBeVisible();
-      await expect(page.getByRole('link', { name: POORE_NEMECEK })).toHaveCount(1);
-      await expect(page.locator('body')).toContainText('Published 2018');
-      await expect(page.locator('body')).toContainText(
-        'Republished by Our World in Data (CC BY 4.0)',
-      );
-      await expect(page.locator('body')).toContainText('CC BY 4.0');
-    });
+        await expect(page.getByRole('heading', { name: 'Data sources', level: 1 })).toBeVisible();
+        await expect(
+          page.getByRole('heading', { name: 'Water footprint of products' }),
+        ).toBeVisible();
+        await expect(page.getByRole('link', { name: POORE_NEMECEK })).toHaveCount(1);
+        await expect(page.locator('body')).toContainText('Published 2018');
+        await expect(page.locator('body')).toContainText(
+          'Republished by Our World in Data (CC BY 4.0)',
+        );
+        await expect(page.locator('body')).toContainText('CC BY 4.0');
+      },
+    );
 
     test('should list Our World in Data as a live provider for the CO2 emissions page', async ({
       page,

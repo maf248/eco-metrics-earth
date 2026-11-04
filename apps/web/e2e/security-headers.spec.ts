@@ -12,7 +12,7 @@ function assertSecurityHeaders(headers: Record<string, string>) {
   expect(headers['cross-origin-resource-policy']).toBe('same-origin');
 }
 
-test.describe('Security headers on home page', { tag: '@smoke' }, () => {
+test.describe('Security headers on home page', () => {
   test('should return all security headers', async ({ page }) => {
     const response = await page.goto('/');
     const headers = response?.headers() ?? {};
