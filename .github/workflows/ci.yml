@@ -12,10 +12,16 @@ permissions:
 jobs:
   ci:
     # CONTRACT: this exact name is selected in Vercel Deployment Checks and the
-    # `deploy-api-*` jobs depend on this job. Do not rename it without updating
-    # Vercel (see docs/deploy/vercel.md).
+    # `deploy-api-*` jobs depend on this job. It is also the CI_CHECK_NAME the
+    # E2E gate below looks up on the base commit. Do not rename it without
+    # updating Vercel (see docs/deploy/vercel.md) and CI_CHECK_NAME.
     name: Format, Lint, Typecheck, Build & Test
     runs-on: ubuntu-latest
+    # Job-level permissions replace the workflow-level block; `checks: read`
+    # lets the E2E gate read the check runs of the base commit.
+    permissions:
+      contents: read
+      checks: read
     # A full run takes ~7 min; fail fast on a hung step instead of GitHub's 6 h default.
     timeout-minutes: 30
     # Official Playwright image: ships Node, all browsers and all OS
@@ -85,8 +91,23 @@ jobs:
       - name: Test
         run: npm run test
 
+      # Decides whether E2E is redundant: docs-only diff AND a green CI check
+      # on the base commit. The job and every other step always run; an error
+      # or any doubt leaves the output unset or false, so E2E runs.
+      - name: Decide whether E2E can be skipped
+        id: e2e_gate
+        env:
+          BASE_SHA: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.sha || github.event.before }}
+          HEAD_SHA: ${{ github.sha }}
+          GITHUB_TOKEN: ${{ github.token }}
+          # Must equal the job `name` above (the CONTRACT comment); `job.name`
+          # is not available in expression contexts.
+          CI_CHECK_NAME: Format, Lint, Typecheck, Build & Test
+        run: node scripts/detect-e2e-skip.cjs
+
       # Browsers and OS dependencies come from the container image.
       - name: E2E
+        if: steps.e2e_gate.outputs.skip_e2e != 'true'
         timeout-minutes: 20
         run: npm run e2e
 

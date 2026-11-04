@@ -32,7 +32,7 @@ Only the project owner can do this; it is a Vercel dashboard setting, not code.
 
 ## Job-name coupling
 
-Checks are identified by the GitHub Actions **job name**. The job `ci` in `.github/workflows/ci.yml` carries a comment marking its name as a contract. The job runs inside the `mcr.microsoft.com/playwright` container; this does not affect the check name. If the job is renamed, update the Deployment Check in Vercel in the same change; otherwise Vercel waits for a check that never reports, or stops enforcing it.
+Checks are identified by the GitHub Actions **job name**. The job `ci` in `.github/workflows/ci.yml` carries a comment marking its name as a contract. The job runs inside the `mcr.microsoft.com/playwright` container; this does not affect the check name. If the job is renamed, update the Deployment Check in Vercel in the same change; otherwise Vercel waits for a check that never reports, or stops enforcing it. On docs-only commits whose base revision passed CI, the job `Format, Lint, Typecheck, Build & Test` still runs and reports; only its `E2E` step may be skipped.
 
 ## What is and is not gated
 
