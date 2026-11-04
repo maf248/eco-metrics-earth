@@ -197,7 +197,7 @@ The global `ValidationPipe` (`whitelist: true`, `forbidNonWhitelisted: true`, `t
 
 ### Requirement: E2E smoke covers API error format on a real route
 
-`apps/web/e2e/api-health.spec.ts` SHALL contain a `@smoke` describe block (using `test(...)`) that exercises `GET ${API_BASE_URL}/water-footprint/products?category=<invalid>` instead of any demo route. The block replaces the former demo-validation GET/POST blocks. Because that 400 originates from service-level validation (not the global `ValidationPipe`), the pipe itself is covered by the integration test above, not by E2E.
+`apps/web/e2e/api-health.spec.ts` SHALL contain a describe block (using `test(...)`, not tagged `@smoke`: it makes direct API requests and runs only in `chromium-desktop`) that exercises `GET ${API_BASE_URL}/water-footprint/products?category=<invalid>` instead of any demo route. The block replaces the former demo-validation GET/POST blocks. Because that 400 originates from service-level validation (not the global `ValidationPipe`), the pipe itself is covered by the integration test above, not by E2E.
 
 #### Scenario: Invalid category returns 400 in ApiResponse format
 

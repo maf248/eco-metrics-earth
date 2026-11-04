@@ -41,7 +41,7 @@ function textOf(html: string): string {
 }
 
 test.describe('Global Temperature page', () => {
-  test.describe('Core render', { tag: '@smoke' }, () => {
+  test.describe('Core render', () => {
     test('should show neither the stale notice nor the unavailable state while the provider is healthy', async ({
       page,
     }) => {
@@ -52,41 +52,43 @@ test.describe('Global Temperature page', () => {
       await expect(page.getByTestId('data-unavailable')).toHaveCount(0);
     });
 
-    test('should render the heading, key figures, chart and attribution with the Copernicus credit', async ({
-      page,
-    }) => {
-      const response = await page.goto(PAGE_URL);
-      expect(response?.status()).toBe(200);
+    test(
+      'should render the heading, key figures, chart and attribution with the Copernicus credit',
+      { tag: '@smoke' },
+      async ({ page }) => {
+        const response = await page.goto(PAGE_URL);
+        expect(response?.status()).toBe(200);
 
-      await expect(
-        page.getByRole('heading', { name: 'Global Temperature', level: 1 }),
-      ).toBeVisible();
-      const figures = page.getByTestId('global-temperature-key-figures');
-      await expect(figures).toContainText(KEY_FIGURES);
-      await expect(figures).toContainText(WARMEST_YEAR);
-      await expect(chart(page).locator('svg').first()).toBeVisible();
+        await expect(
+          page.getByRole('heading', { name: 'Global Temperature', level: 1 }),
+        ).toBeVisible();
+        const figures = page.getByTestId('global-temperature-key-figures');
+        await expect(figures).toContainText(KEY_FIGURES);
+        await expect(figures).toContainText(WARMEST_YEAR);
+        await expect(chart(page).locator('svg').first()).toBeVisible();
 
-      const attribution = page.getByTestId('global-temperature-attribution');
-      await expect(attribution).toContainText('Data:');
-      await expect(attribution.getByRole('link', { name: 'Our World in Data' })).toHaveAttribute(
-        'href',
-        'https://ourworldindata.org',
-      );
-      await expect(attribution).toContainText('(CC BY 4.0)');
-      await expect(attribution).not.toContainText('version 2026-10-12');
-      await expect(attribution).toContainText(
-        'Contains modified Copernicus Climate Change Service information',
-      );
-      await expect(attribution.getByRole('link', { name: 'CC BY 4.0' }).last()).toHaveAttribute(
-        'href',
-        'https://creativecommons.org/licenses/by/4.0/',
-      );
-      await expect(attribution).toContainText('Neither the European Commission nor ECMWF');
-      await expect(attribution.getByRole('link', { name: 'All data sources' })).toHaveAttribute(
-        'href',
-        '/data-sources/',
-      );
-    });
+        const attribution = page.getByTestId('global-temperature-attribution');
+        await expect(attribution).toContainText('Data:');
+        await expect(attribution.getByRole('link', { name: 'Our World in Data' })).toHaveAttribute(
+          'href',
+          'https://ourworldindata.org',
+        );
+        await expect(attribution).toContainText('(CC BY 4.0)');
+        await expect(attribution).not.toContainText('version 2026-10-12');
+        await expect(attribution).toContainText(
+          'Contains modified Copernicus Climate Change Service information',
+        );
+        await expect(attribution.getByRole('link', { name: 'CC BY 4.0' }).last()).toHaveAttribute(
+          'href',
+          'https://creativecommons.org/licenses/by/4.0/',
+        );
+        await expect(attribution).toContainText('Neither the European Commission nor ECMWF');
+        await expect(attribution.getByRole('link', { name: 'All data sources' })).toHaveAttribute(
+          'href',
+          '/data-sources/',
+        );
+      },
+    );
 
     test('should include the signed key figures and the default table in the server-rendered HTML', async ({
       request,
@@ -164,7 +166,7 @@ test.describe('Global Temperature page', () => {
       await expect(note).toContainText('land and ocean');
     });
 
-    test('should not overflow horizontally', async ({ page }) => {
+    test('should not overflow horizontally', { tag: '@smoke' }, async ({ page }) => {
       await page.goto(PAGE_URL);
       await expect(chart(page).locator('svg').first()).toBeVisible();
 
@@ -178,46 +180,54 @@ test.describe('Global Temperature page', () => {
   test.describe('Narrow viewport (360 px)', () => {
     test.use({ viewport: { width: 360, height: 780 } });
 
-    test('should not overflow and keep the controls at least 44 px tall', async ({ page }) => {
-      await page.goto(PAGE_URL);
-      await expect(chart(page).locator('svg').first()).toBeVisible();
+    test(
+      'should not overflow and keep the controls at least 44 px tall',
+      { tag: '@smoke' },
+      async ({ page }) => {
+        await page.goto(PAGE_URL);
+        await expect(chart(page).locator('svg').first()).toBeVisible();
 
-      const overflow = await page.evaluate(
-        () => document.documentElement.scrollWidth - document.documentElement.clientWidth,
-      );
-      expect(overflow).toBeLessThanOrEqual(0);
+        const overflow = await page.evaluate(
+          () => document.documentElement.scrollWidth - document.documentElement.clientWidth,
+        );
+        expect(overflow).toBeLessThanOrEqual(0);
 
-      const boxes = [
-        await country(page).boundingBox(),
-        await explorer(page).locator('details summary').boundingBox(),
-      ];
-      for (const box of boxes) {
-        expect(box?.height ?? 0).toBeGreaterThanOrEqual(44);
-      }
-    });
+        const boxes = [
+          await country(page).boundingBox(),
+          await explorer(page).locator('details summary').boundingBox(),
+        ];
+        for (const box of boxes) {
+          expect(box?.height ?? 0).toBeGreaterThanOrEqual(44);
+        }
+      },
+    );
   });
 
-  test.describe('Country selection', { tag: '@smoke' }, () => {
-    test('should select Argentina by typing, with its flag and chart title', async ({ page }) => {
-      const errors = collectErrors(page);
-      await page.goto(PAGE_URL);
+  test.describe('Country selection', () => {
+    test(
+      'should select Argentina by typing, with its flag and chart title',
+      { tag: '@smoke' },
+      async ({ page }) => {
+        const errors = collectErrors(page);
+        await page.goto(PAGE_URL);
 
-      await selectCountry(page, 'arg');
+        await selectCountry(page, 'arg');
 
-      await expect(country(page)).toHaveValue('Argentina');
-      await expect(
-        page.getByRole('heading', {
-          level: 3,
-          name: 'Argentina: annual temperature anomaly (°C, relative to the 1991–2020 average)',
-        }),
-      ).toBeVisible();
-      await expect(page.locator('.fi-ar')).toBeVisible();
-      expect(await page.locator('main').innerText()).not.toMatch(REGIONAL_INDICATORS);
-      await expect(
-        page.getByRole('status').filter({ hasText: 'Showing temperature anomaly' }),
-      ).toHaveText('Showing temperature anomaly for Argentina');
-      expect(errors).toEqual([]);
-    });
+        await expect(country(page)).toHaveValue('Argentina');
+        await expect(
+          page.getByRole('heading', {
+            level: 3,
+            name: 'Argentina: annual temperature anomaly (°C, relative to the 1991–2020 average)',
+          }),
+        ).toBeVisible();
+        await expect(page.locator('.fi-ar')).toBeVisible();
+        expect(await page.locator('main').innerText()).not.toMatch(REGIONAL_INDICATORS);
+        await expect(
+          page.getByRole('status').filter({ hasText: 'Showing temperature anomaly' }),
+        ).toHaveText('Showing temperature anomaly for Argentina');
+        expect(errors).toEqual([]);
+      },
+    );
 
     test('should not change the URL when the selection changes', async ({ page }) => {
       await page.goto(PAGE_URL);

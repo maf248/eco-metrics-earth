@@ -3,21 +3,27 @@ import { expect, test } from '@playwright/test';
 import { waterFootprintPage } from './utils/pages';
 
 test.describe('Water Footprint page', () => {
-  test.describe('Core render', { tag: '@smoke' }, () => {
-    test('should render the page with heading, product data, and filters', async ({ page }) => {
-      const response = await page.goto('/water-footprint/');
-      expect(response?.status()).toBe(200);
+  test.describe('Core render', () => {
+    test(
+      'should render the page with heading, product data, and filters',
+      { tag: '@smoke' },
+      async ({ page }) => {
+        const response = await page.goto('/water-footprint/');
+        expect(response?.status()).toBe(200);
 
-      await expect(page.getByRole('heading', { name: 'Water Footprint', level: 1 })).toBeVisible();
-      await expect(page.locator('body')).toContainText('Beef (beef herd)');
-      await expect(page.getByRole('radio', { name: 'Textiles' })).toBeVisible();
-      await expect(page.getByRole('radio', { name: 'All' })).toBeVisible();
-      await expect(page.getByRole('radio', { name: 'Digital & Computing' })).toBeVisible();
-      await expect(page.getByRole('radio', { name: 'Vehicles' })).toBeVisible();
-      await expect(page.locator('body')).toContainText(
-        'Values of different water types are not directly comparable',
-      );
-    });
+        await expect(
+          page.getByRole('heading', { name: 'Water Footprint', level: 1 }),
+        ).toBeVisible();
+        await expect(page.locator('body')).toContainText('Beef (beef herd)');
+        await expect(page.getByRole('radio', { name: 'Textiles' })).toBeVisible();
+        await expect(page.getByRole('radio', { name: 'All' })).toBeVisible();
+        await expect(page.getByRole('radio', { name: 'Digital & Computing' })).toBeVisible();
+        await expect(page.getByRole('radio', { name: 'Vehicles' })).toBeVisible();
+        await expect(page.locator('body')).toContainText(
+          'Values of different water types are not directly comparable',
+        );
+      },
+    );
 
     test('should include product names in server-rendered HTML', async ({ request }) => {
       const response = await request.get('/water-footprint/');
@@ -153,20 +159,28 @@ test.describe('Water Footprint page', () => {
   });
 
   test.describe('Responsive layout', () => {
-    test('should show the table on desktop and hide the card list', async ({ page }) => {
-      await page.setViewportSize({ width: 1280, height: 720 });
-      await page.goto('/water-footprint/');
+    test(
+      'should show the table on desktop and hide the card list',
+      { tag: '@smoke' },
+      async ({ page }) => {
+        await page.setViewportSize({ width: 1280, height: 720 });
+        await page.goto('/water-footprint/');
 
-      await expect(page.getByTestId('water-footprint-table')).toBeVisible();
-      await expect(page.getByTestId('water-footprint-cards')).toBeHidden();
-    });
+        await expect(page.getByTestId('water-footprint-table')).toBeVisible();
+        await expect(page.getByTestId('water-footprint-cards')).toBeHidden();
+      },
+    );
 
-    test('should show the card list on mobile and hide the table', async ({ page }) => {
-      await page.setViewportSize({ width: 375, height: 812 });
-      await page.goto('/water-footprint/');
+    test(
+      'should show the card list on mobile and hide the table',
+      { tag: '@smoke' },
+      async ({ page }) => {
+        await page.setViewportSize({ width: 375, height: 812 });
+        await page.goto('/water-footprint/');
 
-      await expect(page.getByTestId('water-footprint-cards')).toBeVisible();
-      await expect(page.getByTestId('water-footprint-table')).toBeHidden();
-    });
+        await expect(page.getByTestId('water-footprint-cards')).toBeVisible();
+        await expect(page.getByTestId('water-footprint-table')).toBeHidden();
+      },
+    );
   });
 });

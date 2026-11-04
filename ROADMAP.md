@@ -181,10 +181,6 @@ Solo seguimiento — el salto 5.9 → 7.0 es un rewrite del compilador. No upgra
 
 Lista de hallazgos del análisis de repositorio, ordenados por prioridad (más crítico primero). Cada ítem puede convertirse en una propuesta formal siguiendo el workflow SDD.
 
-### 🟡 CI/CD
-
-- **I12.** Reducir más la duración de los E2E en GitHub Actions. Diagnóstico (Nov 2026): no hubo regresión; la suite pasó de 342 a 574 tests (24 Oct → 2 Nov) con páginas más pesadas (ECharts, auditorías axe sobre charts), corría con 1 worker en un runner de 2 vCPU y la duración varía ±50 % según la máquina asignada por GitHub. Se probaron 2 workers en CI y se revirtieron: localmente con 2 núcleos físicos bajaba ~40 %, pero en el runner los tests de webkit/mobile-safari vencían por timeout y el paso superó los 20 min. Pendientes: los 4 proyectos `@smoke` (firefox, webkit, mobile) son ~56 % del tiempo — evaluar correr la matriz completa solo en `main` y PRs a `main`; sharding en jobs paralelos (target `e2e-ci`), a costa de más minutos del plan; y `category-navigation.spec.ts` (restaurar scroll con atrás/adelante) falla bajo carga porque la página aún no tiene altura al restaurar — vigilar si se vuelve flaky en CI o se nota en uso real. Descartado: correr contra `next start` (más lento y cambia el comportamiento).
-
 ### 🟡 Testing
 
 - **I01.** Tests de integración web→API con datos reales para las categorías eco — falta el equivalente a `water-footprint.spec.ts` (que ya arranca ambos servidores y valida contra datos reales del BFF) para el resto de las categorías cuando consuman datos de proveedores. Ya hay tres categorías con datos de proveedor, así que el hueco es real.

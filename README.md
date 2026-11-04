@@ -90,7 +90,7 @@ npm run build            # Build all apps and packages
 
 # Test
 npm run test             # Run all unit tests across all projects
-npm run e2e              # Run all E2E tests (full suite on chromium-desktop, @smoke on Firefox, WebKit and mobile)
+npm run e2e              # Run all E2E tests (full suite on chromium-desktop; @smoke, for browser or viewport sensitive checks, also on Firefox, WebKit and mobile)
 npm run update-snapshots # Re-run unit tests updating Jest snapshots
 
 # Lint

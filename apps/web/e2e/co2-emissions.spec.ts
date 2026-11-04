@@ -34,7 +34,7 @@ async function selectCountry(page: Page, query: string): Promise<void> {
 }
 
 test.describe('CO2 Emissions page', () => {
-  test.describe('Core render', { tag: '@smoke' }, () => {
+  test.describe('Core render', () => {
     test('should show neither the stale notice nor the unavailable state while the provider is healthy', async ({
       page,
     }) => {
@@ -45,28 +45,32 @@ test.describe('CO2 Emissions page', () => {
       await expect(page.getByTestId('data-unavailable')).toHaveCount(0);
     });
 
-    test('should render the heading, key figures, chart and attribution', async ({ page }) => {
-      const response = await page.goto(PAGE_URL);
-      expect(response?.status()).toBe(200);
+    test(
+      'should render the heading, key figures, chart and attribution',
+      { tag: '@smoke' },
+      async ({ page }) => {
+        const response = await page.goto(PAGE_URL);
+        expect(response?.status()).toBe(200);
 
-      await expect(page.getByRole('heading', { name: 'CO2 Emissions', level: 1 })).toBeVisible();
-      await expect(page.getByTestId('co2-key-figures')).toHaveText(KEY_FIGURES);
-      await expect(chart(page).locator('svg').first()).toBeVisible();
+        await expect(page.getByRole('heading', { name: 'CO2 Emissions', level: 1 })).toBeVisible();
+        await expect(page.getByTestId('co2-key-figures')).toHaveText(KEY_FIGURES);
+        await expect(chart(page).locator('svg').first()).toBeVisible();
 
-      const attribution = page.getByTestId('co2-attribution');
-      await expect(attribution).toContainText('Data:');
-      await expect(attribution.getByRole('link', { name: 'Our World in Data' })).toHaveAttribute(
-        'href',
-        'https://ourworldindata.org',
-      );
-      await expect(attribution).toContainText('(CC BY 4.0)');
-      await expect(attribution).toContainText('Global Carbon Budget');
-      await expect(attribution).not.toContainText('version');
-      await expect(attribution.getByRole('link', { name: 'All data sources' })).toHaveAttribute(
-        'href',
-        '/data-sources/',
-      );
-    });
+        const attribution = page.getByTestId('co2-attribution');
+        await expect(attribution).toContainText('Data:');
+        await expect(attribution.getByRole('link', { name: 'Our World in Data' })).toHaveAttribute(
+          'href',
+          'https://ourworldindata.org',
+        );
+        await expect(attribution).toContainText('(CC BY 4.0)');
+        await expect(attribution).toContainText('Global Carbon Budget');
+        await expect(attribution).not.toContainText('version');
+        await expect(attribution.getByRole('link', { name: 'All data sources' })).toHaveAttribute(
+          'href',
+          '/data-sources/',
+        );
+      },
+    );
 
     test('should credit the Global Carbon Project origin in the attribution', async ({ page }) => {
       await page.goto(PAGE_URL);
@@ -137,7 +141,7 @@ test.describe('CO2 Emissions page', () => {
       );
     });
 
-    test('should not overflow horizontally', async ({ page }) => {
+    test('should not overflow horizontally', { tag: '@smoke' }, async ({ page }) => {
       await page.goto(PAGE_URL);
       await expect(chart(page).locator('svg').first()).toBeVisible();
 
@@ -151,44 +155,52 @@ test.describe('CO2 Emissions page', () => {
   test.describe('Narrow viewport (360 px)', () => {
     test.use({ viewport: { width: 360, height: 780 } });
 
-    test('should not overflow and keep the controls at least 44 px tall', async ({ page }) => {
-      await page.goto(PAGE_URL);
-      await expect(chart(page).locator('svg').first()).toBeVisible();
+    test(
+      'should not overflow and keep the controls at least 44 px tall',
+      { tag: '@smoke' },
+      async ({ page }) => {
+        await page.goto(PAGE_URL);
+        await expect(chart(page).locator('svg').first()).toBeVisible();
 
-      const overflow = await page.evaluate(
-        () => document.documentElement.scrollWidth - document.documentElement.clientWidth,
-      );
-      expect(overflow).toBeLessThanOrEqual(0);
+        const overflow = await page.evaluate(
+          () => document.documentElement.scrollWidth - document.documentElement.clientWidth,
+        );
+        expect(overflow).toBeLessThanOrEqual(0);
 
-      const heights = [
-        await country(page).boundingBox(),
-        await page.getByText('Per capita', { exact: true }).boundingBox(),
-        await page.locator('details summary').boundingBox(),
-      ];
-      for (const box of heights) {
-        expect(box?.height ?? 0).toBeGreaterThanOrEqual(44);
-      }
-    });
+        const heights = [
+          await country(page).boundingBox(),
+          await page.getByText('Per capita', { exact: true }).boundingBox(),
+          await page.locator('details summary').boundingBox(),
+        ];
+        for (const box of heights) {
+          expect(box?.height ?? 0).toBeGreaterThanOrEqual(44);
+        }
+      },
+    );
   });
 
-  test.describe('Country selection', { tag: '@smoke' }, () => {
-    test('should select Argentina by typing, with its flag and chart title', async ({ page }) => {
-      const errors = collectErrors(page);
-      await page.goto(PAGE_URL);
+  test.describe('Country selection', () => {
+    test(
+      'should select Argentina by typing, with its flag and chart title',
+      { tag: '@smoke' },
+      async ({ page }) => {
+        const errors = collectErrors(page);
+        await page.goto(PAGE_URL);
 
-      await selectCountry(page, 'arg');
+        await selectCountry(page, 'arg');
 
-      await expect(country(page)).toHaveValue('Argentina');
-      await expect(
-        page.getByRole('heading', { level: 3, name: /^Argentina: total CO2 emissions/ }),
-      ).toBeVisible();
-      await expect(page.locator('.fi-ar')).toBeVisible();
-      expect(await page.locator('main').innerText()).not.toMatch(REGIONAL_INDICATORS);
-      await expect(page.getByRole('status').filter({ hasText: 'Showing total' })).toHaveText(
-        'Showing total CO2 emissions for Argentina',
-      );
-      expect(errors).toEqual([]);
-    });
+        await expect(country(page)).toHaveValue('Argentina');
+        await expect(
+          page.getByRole('heading', { level: 3, name: /^Argentina: total CO2 emissions/ }),
+        ).toBeVisible();
+        await expect(page.locator('.fi-ar')).toBeVisible();
+        expect(await page.locator('main').innerText()).not.toMatch(REGIONAL_INDICATORS);
+        await expect(page.getByRole('status').filter({ hasText: 'Showing total' })).toHaveText(
+          'Showing total CO2 emissions for Argentina',
+        );
+        expect(errors).toEqual([]);
+      },
+    );
 
     test('should show a globe, no flag, for World and request no flag images', async ({ page }) => {
       const flagRequests: string[] = [];
@@ -214,25 +226,29 @@ test.describe('CO2 Emissions page', () => {
     });
   });
 
-  test.describe('Metric toggle', { tag: '@smoke' }, () => {
-    test('should switch between total and per capita by click and arrow keys', async ({ page }) => {
-      await page.goto(PAGE_URL);
-      const total = page.getByRole('radio', { name: 'Total' });
-      const perCapita = page.getByRole('radio', { name: 'Per capita' });
-      await expect(total).toBeChecked();
+  test.describe('Metric toggle', () => {
+    test(
+      'should switch between total and per capita by click and arrow keys',
+      { tag: '@smoke' },
+      async ({ page }) => {
+        await page.goto(PAGE_URL);
+        const total = page.getByRole('radio', { name: 'Total' });
+        const perCapita = page.getByRole('radio', { name: 'Per capita' });
+        await expect(total).toBeChecked();
 
-      await page.getByText('Per capita', { exact: true }).click();
-      await expect(perCapita).toBeChecked();
-      await expect(
-        page.getByRole('heading', { level: 3, name: /CO2 emissions per capita/ }),
-      ).toBeVisible();
+        await page.getByText('Per capita', { exact: true }).click();
+        await expect(perCapita).toBeChecked();
+        await expect(
+          page.getByRole('heading', { level: 3, name: /CO2 emissions per capita/ }),
+        ).toBeVisible();
 
-      await perCapita.focus();
-      await perCapita.press('ArrowLeft');
-      await expect(total).toBeChecked();
-      await total.press('ArrowRight');
-      await expect(perCapita).toBeChecked();
-    });
+        await perCapita.focus();
+        await perCapita.press('ArrowLeft');
+        await expect(total).toBeChecked();
+        await total.press('ArrowRight');
+        await expect(perCapita).toBeChecked();
+      },
+    );
   });
 
   test.describe('Interaction', () => {

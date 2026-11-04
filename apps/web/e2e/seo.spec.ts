@@ -7,14 +7,14 @@ import {
   CATEGORY_DESCRIPTION_SAMPLES,
 } from './utils/pages';
 
-test.describe('Trailing slash enforcement', { tag: '@smoke' }, () => {
+test.describe('Trailing slash enforcement', () => {
   test('should add trailing slash when navigating without one', async ({ page }) => {
     await page.goto('/air-quality');
     await expect(page).toHaveURL('/air-quality/');
   });
 });
 
-test.describe('Home page metadata', { tag: '@smoke' }, () => {
+test.describe('Home page metadata', () => {
   test('should have correct <title>', async ({ page }) => {
     await page.goto('/');
     await expect(page).toHaveTitle(homePage.title);
@@ -113,7 +113,7 @@ const SOCIAL_CARD_PAGES = [
   { name: 'category page', url: categoryPage('air-quality').url },
 ];
 
-test.describe('Social card metadata', { tag: '@smoke' }, () => {
+test.describe('Social card metadata', () => {
   for (const { name, url } of SOCIAL_CARD_PAGES) {
     test(`should declare the shared Open Graph fields and social card on the ${name}`, async ({
       page,
@@ -166,7 +166,7 @@ test.describe('Social card metadata', { tag: '@smoke' }, () => {
   });
 });
 
-test.describe('Sitemap.xml', { tag: '@smoke' }, () => {
+test.describe('Sitemap.xml', () => {
   test('should return 200 with valid XML', async ({ request }) => {
     const response = await request.get('/sitemap.xml');
     expect(response.status()).toBe(200);
@@ -193,7 +193,7 @@ test.describe('Sitemap.xml', { tag: '@smoke' }, () => {
   });
 });
 
-test.describe('Robots.txt', { tag: '@smoke' }, () => {
+test.describe('Robots.txt', () => {
   test('should return 200 with correct directives', async ({ request }) => {
     const response = await request.get('/robots.txt');
     expect(response.status()).toBe(200);
@@ -205,7 +205,7 @@ test.describe('Robots.txt', { tag: '@smoke' }, () => {
   });
 });
 
-test.describe('PWA manifest', { tag: '@smoke' }, () => {
+test.describe('PWA manifest', () => {
   test('should return 200 with valid JSON', async ({ request }) => {
     const response = await request.get('/manifest.webmanifest');
     expect(response.status()).toBe(200);
@@ -229,7 +229,7 @@ test.describe('PWA manifest', { tag: '@smoke' }, () => {
   });
 });
 
-test.describe('Complete HTML on direct visits', { tag: '@smoke' }, () => {
+test.describe('Complete HTML on direct visits', () => {
   for (const { path, heading, content } of [
     { path: '/co2-emissions/', heading: 'CO2 Emissions', content: 'application/ld+json' },
     { path: '/energy-sources/', heading: 'Energy Sources', content: 'application/ld+json' },
