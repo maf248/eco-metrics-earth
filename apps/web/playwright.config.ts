@@ -16,8 +16,6 @@ const baseURL = process.env['BASE_URL'] || 'http://localhost:3000';
  */
 export default defineConfig({
   ...nxE2EPreset(__filename, { testDir: './e2e' }),
-  /* The preset runs CI serially; the 2-vCPU runner finishes ~40% sooner with one worker per core. */
-  workers: process.env.CI ? 2 : undefined,
   /* Show each test name in console output */
   reporter: 'list',
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
