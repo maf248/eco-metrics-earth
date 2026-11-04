@@ -1,3 +1,9 @@
+## [2.17.2](https://github.com/maf248/eco-metrics-earth/compare/v2.17.1...v2.17.2) (2026-11-04)
+
+### Bug Fixes
+
+* **ci:** run e2e serially in ci again ([eca7c4f](https://github.com/maf248/eco-metrics-earth/commit/eca7c4f2aba4e3a2916a968115ad6765e5425393))
+
 ## [2.17.1](https://github.com/maf248/eco-metrics-earth/compare/v2.17.0...v2.17.1) (2026-11-01)
 
 ### Bug Fixes
