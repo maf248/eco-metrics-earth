@@ -31,7 +31,15 @@ interface RunResult {
 function git(cwd: string, args: string[]): string {
   const result = spawnSync(
     'git',
-    ['-c', 'user.name=test', '-c', 'user.email=test@example.com', ...args],
+    [
+      '-c',
+      'user.name=test',
+      '-c',
+      'user.email=test@example.com',
+      '-c',
+      'commit.gpgsign=false',
+      ...args,
+    ],
     { cwd, encoding: 'utf8' },
   );
   if (result.status !== 0) {
@@ -60,6 +68,23 @@ function createRepo(changedFiles: string[]): Repo {
   writeFiles(dir, changedFiles, 'changed');
   git(dir, ['add', '-A']);
   git(dir, ['commit', '--quiet', '-m', 'change']);
+  const headSha = git(dir, ['rev-parse', 'HEAD']);
+
+  return { dir, baseSha, headSha };
+}
+
+/** Creates a repo whose second commit moves `from` to `to` with `git mv`. */
+function createRenameRepo(from: string, to: string): Repo {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'detect-api-image-'));
+  git(dir, ['init', '--quiet']);
+  writeFiles(dir, [from], 'export const value = 1;\n');
+  git(dir, ['add', '-A']);
+  git(dir, ['commit', '--quiet', '-m', 'base']);
+  const baseSha = git(dir, ['rev-parse', 'HEAD']);
+
+  fs.mkdirSync(path.dirname(path.join(dir, to)), { recursive: true });
+  git(dir, ['mv', from, to]);
+  git(dir, ['commit', '--quiet', '-m', 'move']);
   const headSha = git(dir, ['rev-parse', 'HEAD']);
 
   return { dir, baseSha, headSha };
@@ -175,6 +200,25 @@ describe('scripts/detect-api-image-changes.sh', () => {
     });
   });
 
+  describe('renames', () => {
+    it('should build when a file is moved out of an image input', () => {
+      repo = createRenameRepo('apps/api/src/legacy.ts', 'tools/legacy.ts');
+
+      const result = runScript(repo, { baseSha: repo.baseSha });
+
+      expect(result.build).toBe('true');
+      expect(result.stdout).toContain('apps/api/src/legacy.ts');
+    });
+
+    it('should build when a file is moved into an image input', () => {
+      repo = createRenameRepo('tools/helper.ts', 'apps/api/src/helper.ts');
+
+      const result = runScript(repo, { baseSha: repo.baseSha });
+
+      expect(result.build).toBe('true');
+    });
+  });
+
   describe('fail-safe to build', () => {
     it('should build when the base SHA is missing', () => {
       repo = createRepo(['docs/guide.md']);
@@ -267,5 +311,11 @@ describe('.github/workflows/deploy-api.yml', () => {
 
   it('should not inline the image input list', () => {
     expect(workflow).not.toContain("PATTERN='");
+  });
+
+  it('should list both paths of a rename when diffing against the deployed SHA', () => {
+    expect(workflow).toContain(
+      'git -c core.quotePath=false diff --no-renames --name-only "$deployed_sha" "$TARGET_SHA"',
+    );
   });
 });

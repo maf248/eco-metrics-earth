@@ -180,7 +180,10 @@ jobs:
             decide true "deployed SHA is not in the repository history"
           fi
 
-          if ! changed=$(git diff --name-only "$deployed_sha" "$TARGET_SHA"); then
+          # core.quotePath=false: non-ASCII paths are not quoted, so they can match.
+          # --no-renames: a rename lists both paths, so moving a file out of an
+          # API input still deploys.
+          if ! changed=$(git -c core.quotePath=false diff --no-renames --name-only "$deployed_sha" "$TARGET_SHA"); then
             decide true "git diff failed"
           fi
 

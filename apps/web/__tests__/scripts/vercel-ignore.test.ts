@@ -21,7 +21,15 @@ interface Repo {
 function git(cwd: string, args: string[]): string {
   const result = spawnSync(
     'git',
-    ['-c', 'user.name=test', '-c', 'user.email=test@example.com', ...args],
+    [
+      '-c',
+      'user.name=test',
+      '-c',
+      'user.email=test@example.com',
+      '-c',
+      'commit.gpgsign=false',
+      ...args,
+    ],
     { cwd, encoding: 'utf8' },
   );
   if (result.status !== 0) {
@@ -50,6 +58,23 @@ function createRepo(changedFiles: string[]): Repo {
   writeFiles(dir, changedFiles, 'changed');
   git(dir, ['add', '-A']);
   git(dir, ['commit', '--quiet', '-m', 'change']);
+  const commitSha = git(dir, ['rev-parse', 'HEAD']);
+
+  return { dir, previousSha, commitSha };
+}
+
+/** Creates a repo whose second commit moves `from` to `to` with `git mv`. */
+function createRenameRepo(from: string, to: string): Repo {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'vercel-ignore-'));
+  git(dir, ['init', '--quiet']);
+  writeFiles(dir, [from], 'export const value = 1;\n');
+  git(dir, ['add', '-A']);
+  git(dir, ['commit', '--quiet', '-m', 'base']);
+  const previousSha = git(dir, ['rev-parse', 'HEAD']);
+
+  fs.mkdirSync(path.dirname(path.join(dir, to)), { recursive: true });
+  git(dir, ['mv', from, to]);
+  git(dir, ['commit', '--quiet', '-m', 'move']);
   const commitSha = git(dir, ['rev-parse', 'HEAD']);
 
   return { dir, previousSha, commitSha };
@@ -195,6 +220,56 @@ describe('scripts/vercel-ignore.sh', () => {
       });
 
       expect(status).toBe(BUILD);
+    });
+
+    it('should build when the diff fails', () => {
+      repo = createRepo(['docs/guide.md']);
+
+      const status = runScript(
+        { ...repo, commitSha: '0123456789abcdef0123456789abcdef01234567' },
+        { message: 'docs: update guide', previousSha: repo.previousSha },
+      );
+
+      expect(status).toBe(BUILD);
+    });
+
+    it('should skip the build when nothing changed', () => {
+      repo = createRepo(['docs/guide.md']);
+
+      // Previous and current SHA are the same commit, so the diff is empty.
+      const status = runScript(repo, {
+        message: 'chore: empty change',
+        previousSha: repo.commitSha,
+      });
+
+      expect(status).toBe(SKIP);
+    });
+  });
+
+  describe('renames', () => {
+    it.each(['apps/api/src/legacy.ts', 'docs/legacy.md'])(
+      'should build when a web file is moved to %s',
+      (destination) => {
+        repo = createRenameRepo('apps/web/src/lib/legacy.ts', destination);
+
+        const status = runScript(repo, {
+          message: 'refactor: move legacy helper',
+          previousSha: repo.previousSha,
+        });
+
+        expect(status).toBe(BUILD);
+      },
+    );
+
+    it('should skip the build when a denylisted file is moved within the denylist', () => {
+      repo = createRenameRepo('apps/api/src/legacy.ts', 'apps/api/src/core/legacy.ts');
+
+      const status = runScript(repo, {
+        message: 'refactor(api): move legacy helper',
+        previousSha: repo.previousSha,
+      });
+
+      expect(status).toBe(SKIP);
     });
   });
 });
