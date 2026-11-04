@@ -1,3 +1,5 @@
+## [2.14.2](https://github.com/maf248/eco-metrics-earth/compare/web-v2.14.1...web-v2.14.2) (2026-11-04)
+
 ## [2.14.1](https://github.com/maf248/eco-metrics-earth/compare/web-v2.14.0...web-v2.14.1) (2026-11-01)
 
 ### Bug Fixes
