@@ -183,7 +183,7 @@ Lista de hallazgos del análisis de repositorio, ordenados por prioridad (más c
 
 ### 🟡 CI/CD
 
-- **I12.** Estudiar por qué se alargaron los E2E y reducir la duración de los GitHub Actions. El paso `E2E` pasó de 9,7–10,6 min a 12,7–15,4 min (Oct 2026) sumando solo 3 tests, y la lentitud fue pareja en todos los specs (≈1,4×), incluso los que no usan el código nuevo; la causa sigue sin confirmar. Se subió su timeout a 20 min para no cortar corridas sanas, pero eso no reduce la duración. La suite corre 518 tests con 1 worker en 5 proyectos de navegador: medir workers en paralelo, sharding (el target `e2e-ci` ya existe), y correr la matriz completa solo en `main`, con un subconjunto en `develop`.
+- **I12.** Reducir más la duración de los E2E en GitHub Actions. Diagnóstico (Nov 2026): no hubo regresión; la suite pasó de 342 a 574 tests (24 Oct → 2 Nov) con páginas más pesadas (ECharts, auditorías axe sobre charts), corría con 1 worker en un runner de 2 vCPU y la duración varía ±50 % según la máquina asignada por GitHub. Ya se pasó a 2 workers en CI (−40 % medido localmente). Pendientes: los 4 proyectos `@smoke` (firefox, webkit, mobile) son ~56 % del tiempo — evaluar correr la matriz completa solo en `main` y PRs a `main`; sharding en jobs paralelos (target `e2e-ci`), a costa de más minutos del plan; y `category-navigation.spec.ts` (restaurar scroll con atrás/adelante) falla bajo carga porque la página aún no tiene altura al restaurar — vigilar si se vuelve flaky en CI o se nota en uso real. Descartado: correr contra `next start` (más lento y cambia el comportamiento).
 
 ### 🟡 Testing
 
