@@ -1,10 +1,22 @@
+import { APP_GUARD } from '@nestjs/core';
 import { Test, TestingModule } from '@nestjs/testing';
-import { getOptionsToken, ThrottlerModuleOptions } from '@nestjs/throttler';
+import { getOptionsToken, ThrottlerGuard, ThrottlerModuleOptions } from '@nestjs/throttler';
 
 import { AppModule } from '../../src/app/app.module';
+import { InternalKeyGuard } from '../../src/common/internal-key/internal-key.guard';
 import { DataSourcesService } from '../../src/modules/data-sources/data-sources.service';
 
 describe('AppModule', () => {
+  it('should register ThrottlerGuard before InternalKeyGuard as global guards', () => {
+    const providers: Array<{ provide?: unknown; useClass?: unknown }> =
+      Reflect.getMetadata('providers', AppModule) ?? [];
+    const globalGuards = providers
+      .filter((provider) => provider.provide === APP_GUARD)
+      .map((provider) => provider.useClass);
+
+    expect(globalGuards).toEqual([ThrottlerGuard, InternalKeyGuard]);
+  });
+
   it('should compile successfully', async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
@@ -13,7 +25,7 @@ describe('AppModule', () => {
     expect(module).toBeDefined();
   });
 
-  it('should configure a single throttler entry of 60 requests per 60 seconds', async () => {
+  it('should configure two throttler entries: default 300 and anonymous 30 per 60 seconds', async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
     }).compile();
@@ -22,8 +34,10 @@ describe('AppModule', () => {
 
     expect(options).toEqual(
       expect.objectContaining({
-        throttlers: [{ ttl: 60_000, limit: 60 }],
-        skipIf: expect.any(Function),
+        throttlers: [
+          { name: 'default', ttl: 60_000, limit: 300, skipIf: expect.any(Function) },
+          { name: 'anonymous', ttl: 60_000, limit: 30, skipIf: expect.any(Function) },
+        ],
       }),
     );
   });

@@ -1,5 +1,6 @@
 import { expect, test, type Page } from '@playwright/test';
 
+import { apiHeaders } from './utils/api-env.ts';
 import {
   CATEGORY_DESCRIPTION_SAMPLES,
   CATEGORY_METADATA_TITLES,
@@ -347,7 +348,9 @@ test.describe('CO2 Emissions page', () => {
 
   test.describe('Dependencies health', () => {
     test('should report the provider up against the fixture server', async ({ request }) => {
-      const response = await request.get(`${API_BASE_URL}/health/dependencies`);
+      const response = await request.get(`${API_BASE_URL}/health/dependencies`, {
+        headers: apiHeaders(),
+      });
 
       expect(response.status()).toBe(200);
       const body = await response.json();

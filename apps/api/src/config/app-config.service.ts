@@ -51,7 +51,7 @@ export class AppConfigService {
     return this.configService.get<number>('TRUST_PROXY_HOPS') ?? 0;
   }
 
-  /** Shared secret that lets trusted first-party traffic skip throttling. Undefined when unset or empty. */
+  /** Secret required in `X-Internal-Api-Key` on every request. Undefined when unset or empty. */
   get internalApiKey(): string | undefined {
     const key = this.configService.get<string>('INTERNAL_API_KEY');
     return key ? key : undefined;

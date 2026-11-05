@@ -1,9 +1,6 @@
 import { ExecutionContext } from '@nestjs/common';
 
-import {
-  createInternalKeyBypass,
-  isValidInternalKey,
-} from '../../../src/common/throttler/internal-key-bypass';
+import { isKeyedRequest, isValidInternalKey } from '../../../src/common/internal-key/internal-key';
 
 const SECRET = 's'.repeat(32);
 
@@ -45,25 +42,31 @@ describe('isValidInternalKey', () => {
   });
 });
 
-describe('createInternalKeyBypass', () => {
-  it('should skip throttling when the header carries the valid key', () => {
-    const skipIf = createInternalKeyBypass(SECRET);
-    expect(skipIf(contextWithHeaders({ 'x-internal-api-key': SECRET }))).toBe(true);
+describe('isKeyedRequest', () => {
+  it('should return true for a request carrying the valid key', () => {
+    expect(isKeyedRequest(contextWithHeaders({ 'x-internal-api-key': SECRET }), SECRET)).toBe(true);
   });
 
-  it('should not skip when the header is missing', () => {
-    const skipIf = createInternalKeyBypass(SECRET);
-    expect(skipIf(contextWithHeaders({}))).toBe(false);
+  it('should return false for a request without the header', () => {
+    expect(isKeyedRequest(contextWithHeaders({}), SECRET)).toBe(false);
   });
 
-  it('should not skip when the header holds multiple values', () => {
-    const skipIf = createInternalKeyBypass(SECRET);
-    expect(skipIf(contextWithHeaders({ 'x-internal-api-key': [SECRET, SECRET] }))).toBe(false);
+  it('should return false for a wrong key', () => {
+    expect(isKeyedRequest(contextWithHeaders({ 'x-internal-api-key': 'wrong' }), SECRET)).toBe(
+      false,
+    );
   });
 
-  it('should never skip when no secret is configured', () => {
-    const skipIf = createInternalKeyBypass(undefined);
-    expect(skipIf(contextWithHeaders({ 'x-internal-api-key': '' }))).toBe(false);
-    expect(skipIf(contextWithHeaders({ 'x-internal-api-key': 'anything' }))).toBe(false);
+  it('should return false for a header holding multiple values', () => {
+    expect(
+      isKeyedRequest(contextWithHeaders({ 'x-internal-api-key': [SECRET, SECRET] }), SECRET),
+    ).toBe(false);
+  });
+
+  it('should return true for every request when no secret is configured', () => {
+    expect(isKeyedRequest(contextWithHeaders({}), undefined)).toBe(true);
+    expect(
+      isKeyedRequest(contextWithHeaders({ 'x-internal-api-key': 'anything' }), undefined),
+    ).toBe(true);
   });
 });

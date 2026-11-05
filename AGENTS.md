@@ -263,7 +263,7 @@ eco-metrics-earth/
 │   │       ├── app/             # AppModule, global pipeline helper
 │   │       ├── health/          # Liveness (GET /api/v1/health) + dependencies check (GET /api/v1/health/dependencies, one Terminus indicator per provider)
 │   │       ├── modules/         # Per-category eco modules (`water-footprint`, `co2-emissions`, `global-temperature`, `energy-sources`) + `providers/owid` client and `OwidProviderStatus` + `data-sources` catalog
-│   │       ├── common/          # Outbound HTTP client, `errors/` (`ProviderError` -> 502), `series/` (`buildYearAlignedEntities`, `roundTo`), `snapshots/` (`ProviderSnapshotService.resolve`, `SnapshotStore` port with GCS and disabled stores; `SNAPSHOT_BUCKET` / `SNAPSHOT_PREFIX`), catch-all 404 fallback, global exception filter, throttler internal-key bypass, publisher resolver
+│   │       ├── common/          # Outbound HTTP client, `errors/` (`ProviderError` -> 502), `series/` (`buildYearAlignedEntities`, `roundTo`), `snapshots/` (`ProviderSnapshotService.resolve`, `SnapshotStore` port with GCS and disabled stores; `SNAPSHOT_BUCKET` / `SNAPSHOT_PREFIX`), catch-all 404 fallback, global exception filter, `internal-key/` (`InternalKeyGuard`, `@AllowKeyless()`, `isKeyedRequest` + `buildThrottlerOptions` for the two throttler tiers), publisher resolver
 │   │       ├── config/          # AppConfigService (typed env vars)
 │   │       └── main.ts          # Bootstrap — port 3001, prefix /api/v1
 │   └── web/                     # Next.js App Router

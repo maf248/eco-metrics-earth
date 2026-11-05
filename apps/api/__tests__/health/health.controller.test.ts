@@ -6,8 +6,10 @@ import supertest from 'supertest';
 
 import { AppModule } from '../../src/app/app.module';
 import { applyGlobalPipeline } from '../../src/app/global-pipeline';
+import { ALLOW_KEYLESS_KEY } from '../../src/common/internal-key/allow-keyless.decorator';
 import { ProviderSnapshotService } from '../../src/common/snapshots/provider-snapshot.service';
 import { SNAPSHOT_STORE } from '../../src/common/snapshots/snapshot-store';
+import { DependenciesHealthController } from '../../src/health/dependencies-health.controller';
 import { HealthController } from '../../src/health/health.controller';
 import { StubSnapshotStore } from '../common/snapshots/stub-snapshot-store';
 
@@ -32,7 +34,12 @@ describe('HealthController rate-limit exemption', () => {
 
   beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [ThrottlerModule.forRoot([{ ttl: 60_000, limit: 3 }])],
+      imports: [
+        ThrottlerModule.forRoot([
+          { name: 'default', ttl: 60_000, limit: 3 },
+          { name: 'anonymous', ttl: 60_000, limit: 3 },
+        ]),
+      ],
       controllers: [HealthController],
       providers: [{ provide: APP_GUARD, useClass: ThrottlerGuard }],
     }).compile();
@@ -52,6 +59,16 @@ describe('HealthController rate-limit exemption', () => {
       const response = await agent.get('/health').expect(200);
       expect(response.body).toEqual({ status: 'ok' });
     }
+  });
+});
+
+describe('HealthController access metadata', () => {
+  it('should mark only the liveness handler as allowed without a key', () => {
+    expect(Reflect.getMetadata(ALLOW_KEYLESS_KEY, HealthController.prototype.check)).toBe(true);
+    expect(
+      Reflect.getMetadata(ALLOW_KEYLESS_KEY, DependenciesHealthController.prototype.check),
+    ).toBeUndefined();
+    expect(Reflect.getMetadata(ALLOW_KEYLESS_KEY, DependenciesHealthController)).toBeUndefined();
   });
 });
 

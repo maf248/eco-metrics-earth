@@ -24,10 +24,10 @@ The **runtime stage** SHALL copy only `apps/api/dist` from the builder (as `/app
 #### Scenario: Self-contained runtime boots without the workspace
 
 - **GIVEN** the built runtime image (or an equivalent extraction of `apps/api/dist` with its `node_modules`) placed in isolation, with no parent `node_modules` and no workspace files
-- **WHEN** `PORT=8080 NODE_ENV=production CORS_ORIGIN=<url> SWAGGER_ENABLED=false node main.js` runs
+- **WHEN** `PORT=8080 NODE_ENV=production CORS_ORIGIN=<url> SWAGGER_ENABLED=false INTERNAL_API_KEY=<32+ chars> node main.js` runs
 - **THEN** the NestJS app starts and listens on the injected `PORT`
 - **AND** `GET /api/v1/health` returns `200` with `{ "status": "ok" }`
-- **AND** `GET /api/v1/water-footprint/products` returns `200` with `success: true` and 60 products
+- **AND** `GET /api/v1/water-footprint/products` with the `X-Internal-Api-Key` header returns `200` with `success: true` and 60 products
 
 #### Scenario: Security pins are preserved in the image
 
@@ -199,7 +199,7 @@ The workflow SHALL build the image as `<GCP_REGION>-docker.pkg.dev/<GCP_PROJECT_
 
 ### Requirement: Cloud Run service is configured for scale-to-zero with a health startup probe
 
-The workflow SHALL deploy with `google-github-actions/deploy-cloudrun@v3` to the target's service (`eco-metrics-api` for `production`, `eco-metrics-api-dev` for `development`) in the region from `GCP_REGION`. Both services SHALL receive the same configuration, differing only in the CORS values: a startup probe on `GET /api/v1/health` (container port 8080, e.g. `--startup-probe=httpGet.path=/api/v1/health,httpGet.port=8080,periodSeconds=2,timeoutSeconds=2,failureThreshold=15`); `--min-instances=0` (explicit scale-to-zero); `--allow-unauthenticated` (the BFF is an intentionally public API consumed server-side by Vercel without credentials); explicit resource defaults (`--cpu=1 --memory=512Mi`, free-tier-safe); and env vars `NODE_ENV=production`, `CORS_ORIGIN` (from the target's origin variable — `CORS_ORIGIN` for `production`, `CORS_ORIGIN_DEV` for `development` — a comma-separated list of allowed origins; the workflow escapes `\` and `,` per the deploy action's documented `env_vars` escaping rules so a multi-origin list reaches the service intact instead of being split into bogus entries), `CORS_ORIGIN_PATTERN` (from the target's optional pattern variable — `CORS_ORIGIN_PATTERN` or `CORS_ORIGIN_PATTERN_DEV` — escaped the same way, passed only when the variable is set), `SWAGGER_ENABLED=false`. The workflow SHALL NEVER set a `PORT` env var (Cloud Run injects `PORT=8080`; the app reads it via `AppConfigService.port` and Joi coerces the string). The deploy step's built-in deploy health check (default on) SHALL be relied upon: if the startup probe fails, the workflow fails and traffic stays on the last healthy revision.
+The workflow SHALL deploy with `google-github-actions/deploy-cloudrun@v3` to the target's service (`eco-metrics-api` for `production`, `eco-metrics-api-dev` for `development`) in the region from `GCP_REGION`. Both services SHALL receive the same configuration, differing only in the CORS values: a startup probe on `GET /api/v1/health` (container port 8080, e.g. `--startup-probe=httpGet.path=/api/v1/health,httpGet.port=8080,periodSeconds=2,timeoutSeconds=2,failureThreshold=15`); `--min-instances=0` (explicit scale-to-zero); `--allow-unauthenticated` (access control is at the application level: the API rejects requests without a valid `X-Internal-Api-Key`, see `api-security-hardening`); a hard instance cap `--max-instances=<n>` resolved in the same single target mapping as the service name (`2` for `production`, `1` for `development`); explicit resource defaults (`--cpu=1 --memory=512Mi`, free-tier-safe); and env vars `NODE_ENV=production`, `CORS_ORIGIN` (from the target's origin variable — `CORS_ORIGIN` for `production`, `CORS_ORIGIN_DEV` for `development` — a comma-separated list of allowed origins; the workflow escapes `\` and `,` per the deploy action's documented `env_vars` escaping rules so a multi-origin list reaches the service intact instead of being split into bogus entries), `CORS_ORIGIN_PATTERN` (from the target's optional pattern variable — `CORS_ORIGIN_PATTERN` or `CORS_ORIGIN_PATTERN_DEV` — escaped the same way, passed only when the variable is set), `SWAGGER_ENABLED=false`. The workflow SHALL NEVER set a `PORT` env var (Cloud Run injects `PORT=8080`; the app reads it via `AppConfigService.port` and Joi coerces the string). The deploy step's built-in deploy health check (default on) SHALL be relied upon: if the startup probe fails, the workflow fails and traffic stays on the last healthy revision.
 
 #### Scenario: PORT is injected, never configured
 
@@ -244,6 +244,12 @@ The workflow SHALL deploy with `google-github-actions/deploy-cloudrun@v3` to the
 - **GIVEN** different values in `CORS_ORIGIN` and `CORS_ORIGIN_DEV`
 - **WHEN** each target deploys
 - **THEN** `eco-metrics-api` receives only the production values and `eco-metrics-api-dev` receives only the `_DEV` values
+
+#### Scenario: Both services have a hard instance cap
+
+- **WHEN** the deploy for each target runs
+- **THEN** `eco-metrics-api` is deployed with `--max-instances=2` and `eco-metrics-api-dev` with `--max-instances=1`
+- **AND** load beyond the cap degrades (`429`/`503`) instead of scaling further
 
 ### Requirement: Required GitHub variables are documented and fail fast
 
@@ -518,3 +524,12 @@ The list of paths that are inputs of the API image SHALL live only in `scripts/a
 
 - **WHEN** Vercel Deployment Checks evaluate a commit
 - **THEN** they still depend only on the job `Format, Lint, Typecheck, Build & Test`
+
+### Requirement: Production backend URL is not in tracked files
+
+No tracked file (excluding `openspec/changes/archive/`) SHALL contain the production Cloud Run URL. `README.md` SHALL NOT present an API base URL as public, `apps/api/src/main.ts` SHALL NOT add the production URL as a Swagger server, and documentation examples SHALL use generic placeholders. The real URL lives only in deploy-time configuration (Vercel `API_BASE_URL`).
+
+#### Scenario: No occurrences of the production URL
+
+- **WHEN** the repository is searched for a Cloud Run service URL (regex `eco-metrics-api(-dev)?-[a-z0-9]+-[a-z]+\.a\.run\.app`)
+- **THEN** there are no matches outside `openspec/changes/archive/` and `.git`

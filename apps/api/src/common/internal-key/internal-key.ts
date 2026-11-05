@@ -2,7 +2,7 @@ import { createHash, timingSafeEqual } from 'node:crypto';
 
 import { ExecutionContext } from '@nestjs/common';
 
-const INTERNAL_KEY_HEADER = 'x-internal-api-key';
+export const INTERNAL_KEY_HEADER = 'x-internal-api-key';
 
 function digest(value: string): Buffer {
   return createHash('sha256').update(value).digest();
@@ -21,19 +21,18 @@ export function isValidInternalKey(provided: unknown, secret: string | undefined
   return timingSafeEqual(digest(provided), digest(secret));
 }
 
-/** Builds a throttler `skipIf` callback that skips requests carrying the valid internal key. */
-export function createInternalKeyBypass(
-  secret: string | undefined,
-): (context: ExecutionContext) => boolean {
-  return (context: ExecutionContext): boolean => {
-    if (!secret) {
-      return false;
-    }
+/**
+ * True when the request carries the valid key, or when no key is configured (local development
+ * stays open). Decides both the access check and the throttle tier.
+ */
+export function isKeyedRequest(context: ExecutionContext, secret: string | undefined): boolean {
+  if (!secret) {
+    return true;
+  }
 
-    const request = context
-      .switchToHttp()
-      .getRequest<{ headers: Record<string, string | string[] | undefined> }>();
+  const request = context
+    .switchToHttp()
+    .getRequest<{ headers: Record<string, string | string[] | undefined> }>();
 
-    return isValidInternalKey(request.headers[INTERNAL_KEY_HEADER], secret);
-  };
+  return isValidInternalKey(request.headers[INTERNAL_KEY_HEADER], secret);
 }

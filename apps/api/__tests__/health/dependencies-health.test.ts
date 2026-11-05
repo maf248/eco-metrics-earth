@@ -4,12 +4,15 @@ import { join } from 'path';
 import { HttpService } from '@nestjs/axios';
 import { ConsoleLogger, INestApplication } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import { APP_GUARD } from '@nestjs/core';
 import { Test, TestingModule } from '@nestjs/testing';
 import { Observable, of, throwError } from 'rxjs';
 import supertest from 'supertest';
 
 import { applyGlobalPipeline } from '../../src/app/global-pipeline';
 import { OUTBOUND_FETCH } from '../../src/common/http/outbound-http-client.service';
+import { InternalKeyGuard } from '../../src/common/internal-key/internal-key.guard';
+import { AppConfigService } from '../../src/config/app-config.service';
 import { envValidationSchema } from '../../src/config/env-validation.schema';
 import { HealthController } from '../../src/health/health.controller';
 import { HealthModule } from '../../src/health/health.module';
@@ -173,5 +176,74 @@ describe('liveness independence from providers', () => {
 
     expect(workflow).toContain('httpGet.path=/api/v1/health,');
     expect(workflow).not.toContain('httpGet.path=/api/v1/health/dependencies');
+  });
+
+  it('should cap each Cloud Run target at its instance limit through the single target mapping', () => {
+    const workflow = readFileSync(
+      join(__dirname, '../../../../.github/workflows/deploy-api.yml'),
+      'utf-8',
+    );
+
+    expect(workflow).toContain('max_instances="2"');
+    expect(workflow).toContain('max_instances="1"');
+    expect(workflow).toContain('--max-instances=${{ steps.target.outputs.max_instances }}');
+  });
+});
+
+describe('GET /health/dependencies behind the global InternalKeyGuard', () => {
+  const SECRET = 's'.repeat(32);
+  let guardedApp: INestApplication;
+  const request = jest.fn(() => of({ status: 200, data: {} }));
+
+  beforeAll(async () => {
+    const moduleRef: TestingModule = await Test.createTestingModule({
+      imports: [
+        ConfigModule.forRoot({ isGlobal: true, validationSchema: envValidationSchema }),
+        HealthModule,
+      ],
+      providers: [
+        { provide: AppConfigService, useValue: { internalApiKey: SECRET } },
+        { provide: APP_GUARD, useClass: InternalKeyGuard },
+      ],
+    })
+      .overrideProvider(HttpService)
+      .useValue({ request })
+      .compile();
+    guardedApp = moduleRef.createNestApplication({ logger: false });
+    applyGlobalPipeline(guardedApp);
+    await guardedApp.init();
+  });
+
+  beforeEach(() => {
+    request.mockClear();
+  });
+
+  afterAll(async () => {
+    await guardedApp.close();
+  });
+
+  it('should answer 401 without a provider call when the key is missing', async () => {
+    const response = await supertest(guardedApp.getHttpServer()).get('/health/dependencies');
+
+    expect(response.status).toBe(401);
+    expect(request).not.toHaveBeenCalled();
+  });
+
+  it('should answer 401 without a provider call when the key is wrong', async () => {
+    const response = await supertest(guardedApp.getHttpServer())
+      .get('/health/dependencies')
+      .set('X-Internal-Api-Key', 'w'.repeat(32));
+
+    expect(response.status).toBe(401);
+    expect(request).not.toHaveBeenCalled();
+  });
+
+  it('should call the provider and answer 200 with the valid key', async () => {
+    const response = await supertest(guardedApp.getHttpServer())
+      .get('/health/dependencies')
+      .set('X-Internal-Api-Key', SECRET);
+
+    expect(response.status).toBe(200);
+    expect(request).toHaveBeenCalledTimes(1);
   });
 });
