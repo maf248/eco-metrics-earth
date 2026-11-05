@@ -892,7 +892,7 @@
             "header": [
               {
                 "key": "User-Agent",
-                "value": "(eco-metrics.earth, mafmaggot@gmail.com)",
+                "value": "(eco-metrics.earth, {{contactEmail}})",
                 "description": "Obligatorio — NWS rechaza requests sin User-Agent descriptivo"
               }
             ],
@@ -913,7 +913,7 @@
             "header": [
               {
                 "key": "User-Agent",
-                "value": "(eco-metrics.earth, mafmaggot@gmail.com)"
+                "value": "(eco-metrics.earth, {{contactEmail}})"
               }
             ],
             "url": {
@@ -933,7 +933,7 @@
             "header": [
               {
                 "key": "User-Agent",
-                "value": "(eco-metrics.earth, mafmaggot@gmail.com)"
+                "value": "(eco-metrics.earth, {{contactEmail}})"
               }
             ],
             "url": {
@@ -960,7 +960,7 @@
             "header": [
               {
                 "key": "User-Agent",
-                "value": "(eco-metrics.earth, mafmaggot@gmail.com)"
+                "value": "(eco-metrics.earth, {{contactEmail}})"
               }
             ],
             "url": {
@@ -991,7 +991,7 @@
             "header": [
               {
                 "key": "User-Agent",
-                "value": "(eco-metrics.earth, mafmaggot@gmail.com)"
+                "value": "(eco-metrics.earth, {{contactEmail}})"
               }
             ],
             "url": {
@@ -1022,7 +1022,7 @@
             "header": [
               {
                 "key": "User-Agent",
-                "value": "(eco-metrics.earth, mafmaggot@gmail.com)"
+                "value": "(eco-metrics.earth, {{contactEmail}})"
               }
             ],
             "url": {
@@ -1049,7 +1049,7 @@
             "header": [
               {
                 "key": "User-Agent",
-                "value": "(eco-metrics.earth, mafmaggot@gmail.com)"
+                "value": "(eco-metrics.earth, {{contactEmail}})"
               }
             ],
             "url": {
@@ -1331,6 +1331,11 @@
       "key": "CDO_TOKEN",
       "value": "YOUR_FREE_TOKEN_HERE",
       "description": "Token gratuito NCEI CDO → https://www.ncdc.noaa.gov/cdo-web/token"
+    },
+    {
+      "key": "contactEmail",
+      "value": "YOUR_CONTACT_EMAIL_HERE",
+      "description": "Email de contacto para el User-Agent que exige NWS"
     },
     {
       "key": "TIDES_STATION_NYC",

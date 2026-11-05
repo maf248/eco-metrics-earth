@@ -6,6 +6,11 @@
       "key": "CDO_TOKEN",
       "value": "REPLACE_WITH_YOUR_TOKEN",
       "enabled": true
+    },
+    {
+      "key": "contactEmail",
+      "value": "REPLACE_WITH_YOUR_EMAIL",
+      "enabled": true
     }
   ],
   "_postman_variable_scope": "environment"
