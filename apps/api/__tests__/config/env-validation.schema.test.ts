@@ -306,6 +306,19 @@ describe('envValidationSchema', () => {
         expect(error?.message).toContain('INTERNAL_API_KEY');
       });
 
+      it('should reject a whitespace-only key', () => {
+        const { error } = validate({ NODE_ENV: 'production', INTERNAL_API_KEY: ' '.repeat(40) });
+        expect(error).toBeDefined();
+        expect(error?.message).toContain('INTERNAL_API_KEY');
+      });
+
+      it('should accept a key with a trailing newline and trim it', () => {
+        const key = 'k'.repeat(64);
+        const { error, value } = validate({ NODE_ENV: 'production', INTERNAL_API_KEY: `${key}\n` });
+        expect(error).toBeUndefined();
+        expect(value.INTERNAL_API_KEY).toBe(key);
+      });
+
       it('should reject a 31-character key without echoing the value', () => {
         const shortKey = 'k'.repeat(31);
         const { error } = validate({ NODE_ENV: 'production', INTERNAL_API_KEY: shortKey });

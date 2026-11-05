@@ -145,7 +145,7 @@ The deploy workflow mounts `INTERNAL_API_KEY` from Secret Manager (`INTERNAL_API
 gcloud services enable secretmanager.googleapis.com --project=<GCP_PROJECT_ID>
 
 # Create the secret with a random 64-character hex value (the value is never printed or stored in a file)
-openssl rand -hex 32 | gcloud secrets create internal-api-key \
+openssl rand -hex 32 | tr -d '\n' | gcloud secrets create internal-api-key \
   --data-file=- \
   --replication-policy=automatic \
   --project=<GCP_PROJECT_ID>
@@ -235,7 +235,7 @@ curl -s -H "X-Internal-Api-Key: $INTERNAL_API_KEY" "$RUN_URL/api/v1/water-footpr
 2. In **Settings → Environment Variables**, add `INTERNAL_API_KEY` with that value for **Production**, **Preview** and any custom environment that deploys a branch (e.g. `develop`). Both Cloud Run services mount the same secret, so one value serves both. Leave **Development** unchecked: local development talks to the local API, and `vercel env pull` would otherwise copy the production key to disk. It is server-only: never prefix it with `NEXT_PUBLIC_` and never expose it to the browser.
 3. Redeploy the web app so server-side fetches send `X-Internal-Api-Key` (the API requires it and applies the keyed rate-limit tier to the Next.js server).
 
-If the variable is missing in Vercel, the web server's fetches get `401` and pages fall back to their cached or unavailable state. In production the API does not start without the secret.
+If the variable is missing or wrong in Vercel, the web server's fetches get `401` and pages that need fresh data show the error page. In production the API does not start without the secret.
 
 ## 15. Optional change-detection verification
 
@@ -331,12 +331,12 @@ and update the `TRUST_PROXY_HOPS` value in `.github/workflows/deploy-api.yml` so
 
 ## 19. Rotating `INTERNAL_API_KEY`
 
-1. Add a new secret version: `openssl rand -hex 32 | gcloud secrets versions add internal-api-key --data-file=- --project=<GCP_PROJECT_ID>`.
+1. Add a new secret version: `openssl rand -hex 32 | tr -d '\n' | gcloud secrets versions add internal-api-key --data-file=- --project=<GCP_PROJECT_ID>`.
 2. Redeploy **both** services (Run workflow once per target, or `gcloud run services update <SERVICE> --region=<GCP_REGION> --project=<GCP_PROJECT_ID>` for `eco-metrics-api` and `eco-metrics-api-dev`): `latest` is resolved when a revision starts.
 3. Update `INTERNAL_API_KEY` in Vercel (Production and Preview) and redeploy the web app.
 4. Disable the old version: `gcloud secrets versions disable <OLD_VERSION> --secret=internal-api-key --project=<GCP_PROJECT_ID>`.
 
-Between steps 2 and 3 the web server's requests get `401` (the old key no longer matches); pages keep serving from the web cache. Keep the window short.
+Between steps 2 and 3 the web server's requests get `401` (the old key no longer matches) and pages that need fresh data show the error page. Keep the window short.
 
 ## 20. Graceful shutdown
 

@@ -53,7 +53,8 @@ export class AppConfigService {
 
   /** Secret required in `X-Internal-Api-Key` on every request. Undefined when unset or empty. */
   get internalApiKey(): string | undefined {
-    const key = this.configService.get<string>('INTERNAL_API_KEY');
+    // Trimmed like the web side does: a secret created with `openssl rand | gcloud` ends in '\n'.
+    const key = this.configService.get<string>('INTERNAL_API_KEY')?.trim();
     return key ? key : undefined;
   }
 

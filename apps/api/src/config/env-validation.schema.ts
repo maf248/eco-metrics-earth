@@ -135,8 +135,8 @@ export const envValidationSchema = Joi.object({
   }),
   INTERNAL_API_KEY: Joi.when('NODE_ENV', {
     is: 'production',
-    then: Joi.string().min(32).required(),
-    otherwise: Joi.string().min(32).optional().allow(''),
+    then: Joi.string().trim().min(32).required(),
+    otherwise: Joi.string().trim().min(32).optional().allow(''),
   }).messages({
     'string.base': 'INTERNAL_API_KEY must be a string.',
     'string.min': 'INTERNAL_API_KEY must be at least 32 characters long.',
