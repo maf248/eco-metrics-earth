@@ -176,7 +176,7 @@ Pre-PR checklist: `npm run lint`, `npm run build`, `npm run test`, and `npm run 
 ### Push workflow — husky pre-push hook & local E2E
 
 - `.husky/pre-push` blocks direct pushes to `main` and runs `npx nx affected --target=test --base=origin/develop` (fast, NX-cached). E2E is not push-time: CI runs the full suite on every push; locally use `npm run e2e` (deterministic — the webServer wrapper brings up both servers and cleans up their process trees).
-- SSH keep-alive hygiene: set `ServerAliveInterval` for the `github-mafmaggot` host in `~/.ssh/config` so long pushes don't die with `Connection closed by remote host`.
+- SSH keep-alive hygiene: set `ServerAliveInterval` for your GitHub SSH host in `~/.ssh/config` so long pushes don't die with `Connection closed by remote host`.
 - If you start dev servers manually: `next dev` spawns a `next-server` worker that survives its parent and holds `:3000` — kill it by PID (`ss -tlnp | grep :3000`), never `pkill -f` with a self-matching pattern.
 ```
 
