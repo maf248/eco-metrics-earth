@@ -27,6 +27,7 @@ interface OptionShape {
   xAxis: { data: string[] };
   legend: Record<string, unknown>;
   grid: Record<string, unknown>;
+  media: { query?: { maxWidth: number }; option: { grid: { bottom: number } } }[];
   aria: { enabled: boolean; label: { description: string } };
   tooltip: {
     trigger: string;
@@ -130,16 +131,22 @@ describe('buildEnergyAreaOption', () => {
     }
   });
 
-  it('should show a scrollable legend under the axis with room in the grid, and an axis tooltip', () => {
+  it('should show a wrapped legend under the axis with room in the grid at every width, and an axis tooltip', () => {
     const option = asRecord(buildEnergyAreaOption(world, 'share', range));
+    const { media } = option;
 
     expect(option.legend).toMatchObject({
-      type: 'scroll',
+      type: 'plain',
       show: true,
       bottom: 0,
       icon: 'roundRect',
     });
-    expect(option.grid).toMatchObject({ bottom: 40, containLabel: true });
+    // One legend row (24 px) plus the gap to the axis labels.
+    expect(option.grid).toMatchObject({ bottom: 41, containLabel: true });
+    // The query-less default reverts a widened chart to one row; narrower widths reserve more.
+    expect(media[0]).toEqual({ option: { grid: { bottom: 41 } } });
+    expect(media.length).toBeGreaterThan(1);
+    expect(media[1].option.grid.bottom).toBeGreaterThan(41);
     expect(option.tooltip).toMatchObject({ trigger: 'axis', confine: true });
     expect(option.xAxis.data).toEqual(['2023', '2024', '2025']);
   });
@@ -180,6 +187,21 @@ describe('buildEnergyDonutOption', () => {
       data: { name: string; value: number | null; generation: number | null }[];
     };
 
+  it('should keep the ring 14 px from the top and 17 px above the wrapped legend at every width', () => {
+    const option = buildEnergyDonutOption(energyEntity('OWID_WRL'), 2025, 2023) as {
+      series: { top: number; bottom: number }[];
+      media: { option: { series: { bottom: number }[] } }[];
+    };
+
+    expect(option.series[0]).toMatchObject({ top: 14, bottom: 41 });
+    const [fallback, ...narrower] = option.media;
+    expect(fallback.option.series[0].bottom).toBe(41);
+    expect(narrower.length).toBeGreaterThan(0);
+    for (const { option: narrow } of narrower) {
+      expect(narrow.series[0].bottom).toBeGreaterThan(41);
+    }
+  });
+
   it('should emit one pie series with an inner radius and eight items in the fixed order', () => {
     const pie = series(buildEnergyDonutOption(energyEntity('OWID_WRL'), 2025, 2023));
 
@@ -213,7 +235,7 @@ describe('buildEnergyDonutOption', () => {
 
     expect(text).toBe('Coal: 33.0% (10,472 TWh)');
     expect(option.tooltip).toMatchObject({ trigger: 'item', confine: true });
-    expect(option.legend).toMatchObject({ type: 'scroll', show: true });
+    expect(option.legend).toMatchObject({ type: 'plain', show: true, bottom: 0 });
   });
 
   it('should print No data for a source without a value', () => {

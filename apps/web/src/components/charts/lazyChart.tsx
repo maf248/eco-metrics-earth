@@ -4,7 +4,7 @@ import type { EChartsCoreOption } from 'echarts/core';
 import { useSyncExternalStore } from 'react';
 import type { ComponentType } from 'react';
 
-import { ChartSkeleton, CHART_HEIGHT_CLASS_NAME, type ChartSkeletonVariant } from './ChartSkeleton';
+import { ChartSkeleton, chartBoxClassName, type ChartSkeletonVariant } from './ChartSkeleton';
 import type { ChartPalette } from './chartTokens';
 
 export interface LazyChartProps {
@@ -72,9 +72,7 @@ export function lazyChart(
     if (!Loaded) {
       return <ChartSkeleton variant={variant} />;
     }
-    return (
-      <Loaded option={option} palette={palette} className={`${CHART_HEIGHT_CLASS_NAME} w-full`} />
-    );
+    return <Loaded option={option} palette={palette} className={chartBoxClassName(variant)} />;
   }
 
   return { Chart, preload: () => void ensureLoaded() };

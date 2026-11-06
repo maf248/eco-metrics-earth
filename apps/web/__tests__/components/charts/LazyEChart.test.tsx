@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 
 import { baseChartOption } from '@/components/charts/baseChartOption';
-import { ChartSkeleton, CHART_HEIGHT_CLASS_NAME } from '@/components/charts/ChartSkeleton';
+import { ChartSkeleton, chartBoxClassName } from '@/components/charts/ChartSkeleton';
 import { LazyEChart } from '@/components/charts/LazyEChart';
 
 // The real chart needs layout and a canvas; this suite only checks the lazy hand-over.
@@ -20,7 +20,7 @@ describe('LazyEChart', () => {
     expect(skeleton).toHaveAttribute('aria-hidden', 'true');
 
     const chart = await screen.findByTestId('chart-loaded');
-    expect(chart).toHaveClass('h-72', 'sm:h-96');
+    expect(chart).toHaveClass(...chartBoxClassName('series').split(' '));
     expect(screen.queryByTestId('chart-skeleton')).not.toBeInTheDocument();
   });
 });
@@ -34,11 +34,21 @@ describe('LazyEChart palette', () => {
 });
 
 describe('ChartSkeleton', () => {
-  it('should use the same height classes as the chart container', () => {
+  it('should use the same box classes as the chart container', () => {
     render(<ChartSkeleton />);
 
-    expect(CHART_HEIGHT_CLASS_NAME).toBe('h-72 sm:h-96');
-    expect(screen.getByTestId('chart-skeleton')).toHaveClass(...CHART_HEIGHT_CLASS_NAME.split(' '));
+    expect(chartBoxClassName('series')).toBe('h-72 sm:h-96 -mx-3 sm:mx-0');
+    expect(screen.getByTestId('chart-skeleton')).toHaveClass(
+      ...chartBoxClassName('series').split(' '),
+    );
+  });
+
+  it('should give the donut the full height at every width and the same mobile bleed', () => {
+    render(<ChartSkeleton variant="donut" />);
+
+    expect(chartBoxClassName('donut')).toBe('h-96 -mx-3 sm:mx-0');
+    expect(screen.getByTestId('chart-skeleton')).toHaveClass('h-96', '-mx-3', 'sm:mx-0');
+    expect(screen.getByTestId('chart-skeleton')).not.toHaveClass('h-72');
   });
 });
 
@@ -55,7 +65,7 @@ describe('baseChartOption', () => {
 
     expect(option.tooltip.confine).toBe(true);
     expect(option.aria.enabled).toBe(true);
-    expect(option.legend.type).toBe('scroll');
+    expect(option.legend.type).toBe('plain');
     expect(option.grid.containLabel).toBe(true);
     expect(option.xAxis.axisLabel.hideOverlap).toBe(true);
     expect(option.yAxis.axisLabel.hideOverlap).toBe(true);

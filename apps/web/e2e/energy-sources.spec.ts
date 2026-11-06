@@ -285,6 +285,98 @@ test.describe('Energy Sources page', () => {
         expect(box?.height ?? 0).toBeGreaterThanOrEqual(44);
       },
     );
+
+    test(
+      'should wrap both legends below their plots, all eight sources visible and no pager',
+      { tag: '@smoke' },
+      async ({ page }) => {
+        await page.goto(PAGE_URL);
+        await donut(page).scrollIntoViewIfNeeded();
+        // The donut mounts on scroll and fetches the pie chunk, which the dev server compiles
+        // on first request: slower than the default under a full parallel run.
+        await expect(page.getByTestId('echart')).toHaveCount(2, { timeout: 15_000 });
+
+        for (const chart of await page.getByTestId('echart').all()) {
+          await expect(chart.locator('svg text', { hasText: 'Solar' })).toBeVisible();
+          const layout = await chart.evaluate((node) => {
+            const legendNames = [
+              'Coal',
+              'Gas',
+              'Oil',
+              'Nuclear',
+              'Hydro',
+              'Wind',
+              'Solar',
+              'Bioenergy & other renewables',
+            ];
+            const svg = node.querySelector('svg') as SVGSVGElement;
+            const svgBox = svg.getBoundingClientRect();
+            const texts = [...svg.querySelectorAll('text')];
+            const legend = texts.filter((text) => legendNames.includes(text.textContent ?? ''));
+            const legendTop = Math.min(...legend.map((text) => text.getBoundingClientRect().top));
+            // The plot: year labels, and the areas or the ring (large paths). The legend's own
+            // background box is a large path too, so paths starting inside the legend are not.
+            const plotBottoms = [
+              ...texts.filter((text) => /^\d{4}$/.test(text.textContent ?? '')),
+              ...[...svg.querySelectorAll('path')].filter((path) => {
+                const box = path.getBoundingClientRect();
+                return box.height > 40 && box.top < legendTop - 20;
+              }),
+            ].map((element) => element.getBoundingClientRect().bottom);
+            return {
+              names: legend.map((text) => text.textContent),
+              rows: new Set(legend.map((text) => Math.round(text.getBoundingClientRect().top)))
+                .size,
+              gap: legendTop - Math.max(...plotBottoms),
+              inside: legend.every((text) => {
+                const box = text.getBoundingClientRect();
+                return (
+                  box.left >= svgBox.left &&
+                  box.right <= svgBox.right &&
+                  box.bottom <= svgBox.bottom
+                );
+              }),
+              pager: texts.some((text) => /^\d+\/\d+$/.test(text.textContent ?? '')),
+            };
+          });
+
+          expect(new Set(layout.names).size).toBe(8);
+          expect(layout.rows).toBeGreaterThan(1);
+          expect(layout.inside).toBe(true);
+          expect(layout.pager).toBe(false);
+          expect(layout.gap).toBeGreaterThanOrEqual(8);
+        }
+      },
+    );
+
+    test(
+      'should give back the extra legend room when the chart widens',
+      { tag: '@smoke' },
+      async ({ page }) => {
+        await page.goto(PAGE_URL);
+        const chart = page.getByTestId('echart').first();
+        await expect(chart.locator('svg text', { hasText: 'Solar' })).toBeVisible();
+
+        // Rows of the legend and the space between the year labels and its first row.
+        const legendLayout = () =>
+          chart.evaluate((node) => {
+            const texts = [...node.querySelectorAll('svg text')];
+            const year = texts.find((text) => /^\d{4}$/.test(text.textContent ?? ''));
+            const names = ['Coal', 'Gas', 'Wind', 'Bioenergy & other renewables'];
+            const tops = texts
+              .filter((text) => names.includes(text.textContent ?? ''))
+              .map((text) => Math.round(text.getBoundingClientRect().top));
+            const yearBottom = year?.getBoundingClientRect().bottom ?? 0;
+            return { rows: new Set(tops).size, gap: Math.min(...tops) - yearBottom };
+          });
+        expect((await legendLayout()).rows).toBeGreaterThan(1);
+
+        await page.setViewportSize({ width: 1440, height: 780 });
+        // One row now; a reserve left over from the narrow width would leave a ~50 px blank strip.
+        await expect.poll(async () => (await legendLayout()).rows).toBe(1);
+        expect((await legendLayout()).gap).toBeLessThan(40);
+      },
+    );
   });
 
   test.describe('API', () => {

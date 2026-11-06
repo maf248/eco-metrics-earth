@@ -7,15 +7,16 @@ export function baseTooltipOption(): { confine: boolean; trigger: 'axis' } {
 
 /**
  * Defaults every chart option starts from: mobile-safe tooltip and labels, a
- * scrollable legend for the multi-series case, and ECharts' generated `aria`
- * description. Colors are never named here: they come from the chart theme.
+ * legend that wraps onto rows (never scrolls) for the multi-series case, and
+ * ECharts' generated `aria` description. Colors are never named here: they
+ * come from the chart theme.
  */
 export function baseChartOption(): EChartsCoreOption {
   return {
     aria: { enabled: true },
     grid: { containLabel: true, left: 8, right: 16, top: 16, bottom: 8 },
     tooltip: baseTooltipOption(),
-    legend: { type: 'scroll' },
+    legend: { type: 'plain' },
     xAxis: { axisLabel: { hideOverlap: true } },
     yAxis: { axisLabel: { hideOverlap: true } },
   };

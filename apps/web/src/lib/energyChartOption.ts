@@ -1,6 +1,7 @@
 import type { EChartsCoreOption } from 'echarts/core';
 
 import { baseChartOption, baseTooltipOption } from '@/components/charts/baseChartOption';
+import { wrappedLegend } from '@/components/charts/wrappedLegend';
 import {
   ENERGY_SOURCE_LABELS,
   generationAt,
@@ -15,6 +16,26 @@ import type { EnergySourcesEntity } from '@eco-metrics/shared';
 
 const STACK = 'mix';
 const NO_DATA = 'No data';
+const SOURCE_LABELS = ENERGY_SOURCE_IDS.map((id) => ENERGY_SOURCE_LABELS[id]);
+/**
+ * Space between a plot and its legend, matching the ~22 px between the chart title and the plot
+ * so the chart breathes the same above and below: with the legend's own 5 px padding for the
+ * area, and above the ring, which fills its box, for the donut.
+ */
+const AXIS_LEGEND_GAP = 17;
+const DONUT_LEGEND_GAP = 17;
+/** Space above the ring; with the title's 8 px margin it comes to the same ~22 px. */
+const DONUT_TOP = 14;
+
+// The labels never change, so each chart's legend and its reserved room are built once.
+// The area legend sits under the year axis; the grid leaves it room at every width.
+const AREA_LEGEND = wrappedLegend(SOURCE_LABELS, (height) => ({
+  grid: { bottom: height + AXIS_LEGEND_GAP },
+}));
+// The ring is laid out in a box that ends above the legend at every width.
+const DONUT_LEGEND = wrappedLegend(SOURCE_LABELS, (height) => ({
+  series: [{ bottom: height + DONUT_LEGEND_GAP }],
+}));
 
 interface AxisTooltipParam {
   axisValueLabel: string;
@@ -52,6 +73,7 @@ export function buildEnergyAreaOption(
 ): EChartsCoreOption {
   const base = baseChartOption();
   const values = metric === 'share' ? shareSeries(entity) : entity.generation;
+  const { legend, reserved, media } = AREA_LEGEND;
 
   return {
     ...base,
@@ -64,9 +86,9 @@ export function buildEnergyAreaOption(
           `${range.endYear}. The data table below lists every year.`,
       },
     },
-    // The legend sits under the year axis; the grid leaves it room so they never overlap.
-    grid: { ...(base.grid as object), bottom: 40 },
-    legend: { type: 'scroll', show: true, bottom: 0, icon: 'roundRect' },
+    grid: { ...(base.grid as object), ...reserved.grid },
+    legend,
+    media,
     tooltip: {
       ...baseTooltipOption(),
       formatter: (params: AxisTooltipParam[]): string => areaTooltip(metric, params),
@@ -138,6 +160,8 @@ export function buildEnergyDonutOption(
   const summary = data
     .map(({ name, value }) => `${name} ${value === null ? 'no data' : `${formatShare(value)}%`}`)
     .join('; ');
+  const { legend, reserved, media } = DONUT_LEGEND;
+  const [pieBox] = reserved.series;
 
   return {
     // The generated description would print `null` as "NaN".
@@ -145,7 +169,8 @@ export function buildEnergyDonutOption(
       enabled: true,
       label: { description: `${entity.name}: electricity mix in ${year}. ${summary}.` },
     },
-    legend: { type: 'scroll', show: true },
+    legend,
+    media,
     tooltip: {
       confine: true,
       trigger: 'item',
@@ -160,7 +185,9 @@ export function buildEnergyDonutOption(
     series: [
       {
         type: 'pie',
-        radius: ['45%', '72%'],
+        ...pieBox,
+        top: DONUT_TOP,
+        radius: ['56%', '100%'],
         label: { show: false },
         labelLine: { show: false },
         emphasis: { focus: 'self' },
