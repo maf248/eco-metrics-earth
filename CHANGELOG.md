@@ -1,3 +1,9 @@
+## [2.19.0](https://github.com/maf248/eco-metrics-earth/compare/v2.18.0...v2.19.0) (2026-11-06)
+
+### Features
+
+* **web:** wrap chart legends and give charts more room on mobile ([4c5bf82](https://github.com/maf248/eco-metrics-earth/commit/4c5bf82eff7a315205612cc030d7a808ab8b6ee1))
+
 ## [2.18.0](https://github.com/maf248/eco-metrics-earth/compare/v2.17.2...v2.18.0) (2026-11-06)
 
 ### Features
