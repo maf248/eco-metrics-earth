@@ -1,3 +1,16 @@
+## [2.18.0](https://github.com/maf248/eco-metrics-earth/compare/v2.17.2...v2.18.0) (2026-11-06)
+
+### Features
+
+* **api:** restrict the api to the web app with a required key and instance caps ([e8d6a4a](https://github.com/maf248/eco-metrics-earth/commit/e8d6a4a8d72f2ea471e78a451cd439fbfb0ee593))
+
+### Bug Fixes
+
+* **api:** trim the internal api key so a trailing newline still matches ([17f190a](https://github.com/maf248/eco-metrics-earth/commit/17f190adf5fe85241d70999eb900a9e823710973))
+* **ci:** count both paths of a rename in change detection ([6631a09](https://github.com/maf248/eco-metrics-earth/commit/6631a09f26205b3461fd6f10a54fc5ae220211cc))
+* **tooling:** track root files read by tests as nx test inputs ([1b3311d](https://github.com/maf248/eco-metrics-earth/commit/1b3311d1d2f1cfb77133c0f9e030d2b0d92a4c5b))
+* **tooling:** trust the workspace so the e2e gate can read git history ([a887794](https://github.com/maf248/eco-metrics-earth/commit/a8877945a90cc214ab489a6d3dd2f9e2ec4cf4c5))
+
 ## [2.17.2](https://github.com/maf248/eco-metrics-earth/compare/v2.17.1...v2.17.2) (2026-11-04)
 
 ### Bug Fixes
