@@ -51,6 +51,13 @@ jobs:
         with:
           fetch-depth: 0
 
+      # The job runs as root in the container while the runner user owns the
+      # workspace, so git refuses it ("dubious ownership") once checkout drops
+      # its temporary safe.directory entry. The E2E gate reads git history, so
+      # trust the workspace in the job's own global config (HOME=/root).
+      - name: Mark the workspace as a safe git directory
+        run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
+
       - name: Setup Node.js
         uses: actions/setup-node@v7
         with:

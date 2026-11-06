@@ -21,6 +21,13 @@ const API_TIMEOUT_MS = 10000;
 
 const isZeroSha = (sha) => /^0+$/.test(sha);
 
+/** First non-empty line of a failed git call's stderr, so the reason names the real cause. */
+const gitErrorLine = (result) =>
+  (result.stderr || '')
+    .split('\n')
+    .map((line) => line.trim())
+    .find(Boolean) || `exit code ${result.status}`;
+
 /**
  * Pure decision over facts collected by `run`.
  * @param {object} inputs
@@ -132,46 +139,60 @@ async function fetchBaseCheck({ env, fetch, baseSha }) {
   }
 }
 
+/**
+ * Reads the diff and the base pattern from git, or a doubt when git cannot prove them.
+ * The repository is checked first so a repository git refuses to read (e.g. "dubious
+ * ownership" when the job runs as another user than the workspace owner) is reported
+ * as such, not mistaken for a base SHA that is missing from the history.
+ */
+function collectGitFacts({ git, baseSha, headSha }) {
+  if (!baseSha || isZeroSha(baseSha)) {
+    return { doubt: 'no base revision to compare against' };
+  }
+  const repository = git(['rev-parse', '--git-dir']);
+  if (repository.status !== 0) {
+    return { doubt: `git cannot read the repository (${gitErrorLine(repository)})` };
+  }
+  if (git(['cat-file', '-e', `${baseSha}^{commit}`]).status !== 0) {
+    return { doubt: 'base SHA is not in the repository history' };
+  }
+  // core.quotePath=false: otherwise non-ASCII paths are quoted and never match.
+  // --no-renames: a rename lists both its old and new path.
+  const diff = git([
+    '-c',
+    'core.quotePath=false',
+    'diff',
+    '--no-renames',
+    '--name-only',
+    baseSha,
+    headSha,
+  ]);
+  if (diff.status !== 0) {
+    return { doubt: 'git diff failed' };
+  }
+  const changedFiles = diff.stdout.split('\n').filter(Boolean);
+  // The pattern comes from the base revision, so a push cannot widen its own skip.
+  const shown = git(['show', `${baseSha}:${PATTERN_PATH}`]);
+  try {
+    if (shown.status !== 0) {
+      throw new Error('missing');
+    }
+    return { changedFiles, patterns: parsePatterns(shown.stdout) };
+  } catch {
+    return {
+      changedFiles,
+      doubt: 'the docs-only pattern is missing or invalid at the base revision',
+    };
+  }
+}
+
 /** Collects the facts in order, stopping at the first doubt, then reports. */
 async function run(deps) {
   const { env, git, fetch, stdout, appendFile } = deps;
   const baseSha = (env.BASE_SHA || '').trim();
   const headSha = (env.HEAD_SHA || '').trim();
-  const facts = {};
+  const facts = collectGitFacts({ git, baseSha, headSha });
   let baseCheck;
-
-  if (!baseSha || isZeroSha(baseSha)) {
-    facts.doubt = 'no base revision to compare against';
-  } else if (git(['cat-file', '-e', `${baseSha}^{commit}`]).status !== 0) {
-    facts.doubt = 'base SHA is not in the repository history';
-  } else {
-    // core.quotePath=false: otherwise non-ASCII paths are quoted and never match.
-    // --no-renames: a rename lists both its old and new path.
-    const diff = git([
-      '-c',
-      'core.quotePath=false',
-      'diff',
-      '--no-renames',
-      '--name-only',
-      baseSha,
-      headSha,
-    ]);
-    if (diff.status !== 0) {
-      facts.doubt = 'git diff failed';
-    } else {
-      facts.changedFiles = diff.stdout.split('\n').filter(Boolean);
-      // The pattern comes from the base revision, so a push cannot widen its own skip.
-      const shown = git(['show', `${baseSha}:${PATTERN_PATH}`]);
-      try {
-        if (shown.status !== 0) {
-          throw new Error('missing');
-        }
-        facts.patterns = parsePatterns(shown.stdout);
-      } catch {
-        facts.doubt = 'the docs-only pattern is missing or invalid at the base revision';
-      }
-    }
-  }
 
   let decision = decide(facts);
   if (decision.needsBaseCheck) {
@@ -228,7 +249,7 @@ const realDeps = () => ({
   env: process.env,
   git: (args) => {
     const result = spawnSync('git', args, { encoding: 'utf8' });
-    return { status: result.status ?? 1, stdout: result.stdout ?? '' };
+    return { status: result.status ?? 1, stdout: result.stdout ?? '', stderr: result.stderr ?? '' };
   },
   fetch: (url, init) => fetch(url, init),
   stdout: (line) => console.log(line),

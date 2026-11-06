@@ -30,7 +30,7 @@ interface DecideInputs {
 
 interface RunDeps {
   env: Record<string, string | undefined>;
-  git: (args: string[]) => { status: number; stdout: string };
+  git: (args: string[]) => { status: number; stdout: string; stderr?: string };
   fetch: (url: string, init: RequestInit) => Promise<FetchResponse>;
   stdout: (line: string) => void;
   appendFile: (file: string, text: string) => void;
@@ -478,6 +478,45 @@ describe('scripts/detect-e2e-skip.cjs', () => {
       expect(result.fetchCalls).toHaveLength(0);
     });
 
+    it('should run E2E and name the git error when git cannot read the repository', async () => {
+      const gitCalls: string[][] = [];
+      const fetchCalls: string[] = [];
+      const stdoutLines: string[] = [];
+      const dubious = "fatal: detected dubious ownership in repository at '/__w/repo/repo'";
+
+      const decision = await run({
+        env: { BASE_SHA: UNKNOWN_SHA, HEAD_SHA: UNKNOWN_SHA, GITHUB_TOKEN: 'token' },
+        git: (args: string[]) => {
+          gitCalls.push(args);
+          return { status: 128, stdout: '', stderr: `${dubious}\nTo add an exception...\n` };
+        },
+        fetch: async (url: string) => {
+          fetchCalls.push(url);
+          return { ok: true, status: 200, json: async () => ({ check_runs: [] }) };
+        },
+        stdout: (line: string) => stdoutLines.push(line),
+        appendFile: () => undefined,
+      });
+
+      expect(decision.skip).toBe(false);
+      expect(decision.reason).toBe(`git cannot read the repository (${dubious})`);
+      expect(gitCalls).toEqual([['rev-parse', '--git-dir']]);
+      expect(fetchCalls).toHaveLength(0);
+      expect(stdoutLines).toContain(`Decision: skip_e2e=false (${decision.reason})`);
+    });
+
+    it('should name the exit code when a failing git call writes no stderr', async () => {
+      const decision = await run({
+        env: { BASE_SHA: UNKNOWN_SHA, HEAD_SHA: UNKNOWN_SHA },
+        git: () => ({ status: 128, stdout: '' }),
+        fetch: async () => ({ ok: true, status: 200, json: async () => ({}) }),
+        stdout: () => undefined,
+        appendFile: () => undefined,
+      });
+
+      expect(decision.reason).toBe('git cannot read the repository (exit code 128)');
+    });
+
     it('should run E2E when git diff fails', async () => {
       repo = createRepo([DOCS_FILES]);
 
@@ -703,6 +742,20 @@ describe('.github/workflows/ci.yml E2E gate', () => {
 
     expect(jobName).toBe(CHECK_NAME);
     expect(checkName).toBe(jobName);
+  });
+
+  it('should trust the workspace as a git safe.directory right after checkout', () => {
+    const checkout = steps.findIndex((step) => step.startsWith('name: Checkout\n'));
+    const safe = steps.findIndex((step) =>
+      step.startsWith('name: Mark the workspace as a safe git directory\n'),
+    );
+    const gate = steps.findIndex((step) => step.includes('id: e2e_gate'));
+
+    expect(safe).toBe(checkout + 1);
+    expect(safe).toBeLessThan(gate);
+    expect(steps[safe]).toContain(
+      'run: git config --global --add safe.directory "$GITHUB_WORKSPACE"',
+    );
   });
 
   it('should not use paths-ignore', () => {
