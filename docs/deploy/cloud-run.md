@@ -138,14 +138,14 @@ In the GitHub repo, go to **Settings → Secrets and variables → Actions → V
 
 ## 9. Create the internal API key secret (before the first deploy of this change)
 
-The deploy workflow mounts `INTERNAL_API_KEY` from Secret Manager (`INTERNAL_API_KEY=internal-api-key:latest`). The key lets the Vercel server skip the API's per-IP rate limit; it is a throttle bypass, not authentication. Create the secret and grant access **before** merging to `develop`, otherwise the new revision fails to start (the previous healthy revision keeps serving).
+The deploy workflow mounts `INTERNAL_API_KEY` from Secret Manager (`INTERNAL_API_KEY=internal-api-key:latest`). Every request except `GET /api/v1/health` must send it in `X-Internal-Api-Key` (otherwise `401`), and the API refuses to start in production without it. A valid key also selects the generous rate-limit tier. Create the secret and grant access **before** merging to `develop`, otherwise the new revision fails to start (the previous healthy revision keeps serving).
 
 ```bash
 # Enable the Secret Manager API
 gcloud services enable secretmanager.googleapis.com --project=<GCP_PROJECT_ID>
 
 # Create the secret with a random 64-character hex value (the value is never printed or stored in a file)
-openssl rand -hex 32 | gcloud secrets create internal-api-key \
+openssl rand -hex 32 | tr -d '\n' | gcloud secrets create internal-api-key \
   --data-file=- \
   --replication-policy=automatic \
   --project=<GCP_PROJECT_ID>
@@ -200,13 +200,17 @@ Save both URLs. They are needed for the Vercel `API_BASE_URL` in the next steps.
 ## 13. Verify the deployed API
 
 ```bash
-export RUN_URL=https://eco-metrics-api-abcdefghij-klm.<GCP_REGION>.run.app
+export RUN_URL=<service-url>   # https://<service>-<hash>-<region-code>.a.run.app
+export INTERNAL_API_KEY=<value of the internal-api-key secret>
 
-# Health check (should return {"status":"ok"})
+# Health check, no key needed (should return {"status":"ok"})
 curl -s "$RUN_URL/api/v1/health"
 
-# Product dataset (should return success:true with 60 products)
-curl -s "$RUN_URL/api/v1/water-footprint/products" | head -c 300
+# Any other route without the key must answer 401
+curl -s -o /dev/null -w '%{http_code}\n' "$RUN_URL/api/v1/water-footprint/products"
+
+# Product dataset with the key (should return success:true with 60 products)
+curl -s -H "X-Internal-Api-Key: $INTERNAL_API_KEY" "$RUN_URL/api/v1/water-footprint/products" | head -c 300
 ```
 
 ## 14. Wire up Vercel
@@ -229,9 +233,9 @@ curl -s "$RUN_URL/api/v1/water-footprint/products" | head -c 300
    ```
 
 2. In **Settings → Environment Variables**, add `INTERNAL_API_KEY` with that value for **Production**, **Preview** and any custom environment that deploys a branch (e.g. `develop`). Both Cloud Run services mount the same secret, so one value serves both. Leave **Development** unchecked: local development talks to the local API, and `vercel env pull` would otherwise copy the production key to disk. It is server-only: never prefix it with `NEXT_PUBLIC_` and never expose it to the browser.
-3. Redeploy the web app so server-side fetches send `X-Internal-Api-Key` (the API then skips throttling for the Next.js server).
+3. Redeploy the web app so server-side fetches send `X-Internal-Api-Key` (the API requires it and applies the keyed rate-limit tier to the Next.js server).
 
-If the variable is missing on either side, nothing breaks: the API simply throttles the web server per client IP.
+If the variable is missing or wrong in Vercel, the web server's fetches get `401` and pages that need fresh data show the error page. In production the API does not start without the secret.
 
 ## 15. Optional change-detection verification
 
@@ -251,7 +255,7 @@ Cloud Run request-based billing free tier (Tier 1 regions):
 - **180,000 vCPU-seconds/month**
 - **360,000 GiB-seconds/month**
 
-At this project's volume (hundreds of requests/month), the bill stays at **US$0**. Scale-to-zero (`--min-instances=0`) means no idle billing.
+At this project's volume (hundreds of requests/month), the bill stays at **US$0**. Scale-to-zero (`--min-instances=0`) means no idle billing, and `--max-instances` (`2` for `eco-metrics-api`, `1` for `eco-metrics-api-dev`, set per target in `deploy-api.yml`) bounds the burn rate: excess load degrades to `429`/`503` instead of scaling. It does not bound a monthly total.
 
 Recommended safeguards:
 
@@ -294,26 +298,21 @@ Recommended safeguards:
 
 ## 17. Post-deploy follow-up (done)
 
-The production Swagger server entry is already in place in `apps/api/src/main.ts`:
-
-```typescript
-.addServer('https://eco-metrics-api-fexi2yqv2q-uc.a.run.app', 'production (Cloud Run)')
-```
-
-It was task 10.1 of the original OpenSpec change and is cosmetic only (Swagger is disabled in production by `SWAGGER_ENABLED=false`).
+`apps/api/src/main.ts` registers only the local Swagger server. The production URL is deliberately not hard-coded in any tracked file (Swagger is disabled in production by `SWAGGER_ENABLED=false`).
 
 ## 18. Rate limiting, client IP and hop verification
 
-- The API limits each client to **60 requests per 60 seconds**. The limit is **per Cloud Run instance and in-memory**: the effective per-client limit scales with the number of running instances and resets when an instance is recycled or scales to zero. This is accepted (abuse dampening, not a quota; the first-party consumer bypasses it).
+- The API limits each client in two tiers: **300 requests per 60 seconds** with a valid `X-Internal-Api-Key` and **30 per 60 seconds** without (those get `401`, then `429`). The limits are **per Cloud Run instance and in-memory**: the effective per-client limit scales with the number of running instances (capped at 2 in production) and resets when an instance is recycled or scales to zero. This is accepted (abuse dampening, not a quota).
 - The client is identified by Express `req.ip`. The workflow sets `TRUST_PROXY_HOPS=1`, i.e. exactly one trusted proxy hop: the **rightmost** `X-Forwarded-For` entry (appended by Google's front end) is the client. Entries to its left are client-supplied and ignored.
 
 ### Post-deploy hop verification (manual)
 
 ```bash
-export RUN_URL=https://eco-metrics-api-abcdefghij-klm.<GCP_REGION>.run.app
+export RUN_URL=<service-url>   # https://<service>-<hash>-<region-code>.a.run.app
+export INTERNAL_API_KEY=<value of the internal-api-key secret>
 
 # Run from two different networks (e.g. home Wi-Fi and a phone hotspot) and compare the counters
-curl -s -D - -o /dev/null -H 'X-Forwarded-For: 198.51.100.1' "$RUN_URL/api/v1/water-footprint/products" | grep -i x-ratelimit-remaining
+curl -s -D - -o /dev/null -H "X-Internal-Api-Key: $INTERNAL_API_KEY" -H 'X-Forwarded-For: 198.51.100.1' "$RUN_URL/api/v1/water-footprint/products" | grep -i x-ratelimit-remaining
 ```
 
 Expected:
@@ -332,12 +331,12 @@ and update the `TRUST_PROXY_HOPS` value in `.github/workflows/deploy-api.yml` so
 
 ## 19. Rotating `INTERNAL_API_KEY`
 
-1. Add a new secret version: `openssl rand -hex 32 | gcloud secrets versions add internal-api-key --data-file=- --project=<GCP_PROJECT_ID>`.
+1. Add a new secret version: `openssl rand -hex 32 | tr -d '\n' | gcloud secrets versions add internal-api-key --data-file=- --project=<GCP_PROJECT_ID>`.
 2. Redeploy **both** services (Run workflow once per target, or `gcloud run services update <SERVICE> --region=<GCP_REGION> --project=<GCP_PROJECT_ID>` for `eco-metrics-api` and `eco-metrics-api-dev`): `latest` is resolved when a revision starts.
 3. Update `INTERNAL_API_KEY` in Vercel (Production and Preview) and redeploy the web app.
 4. Disable the old version: `gcloud secrets versions disable <OLD_VERSION> --secret=internal-api-key --project=<GCP_PROJECT_ID>`.
 
-Between steps 2 and 3 the web server is throttled per IP like any other client; this is harmless.
+Between steps 2 and 3 the web server's requests get `401` (the old key no longer matches) and pages that need fresh data show the error page. Keep the window short.
 
 ## 20. Graceful shutdown
 
@@ -419,7 +418,7 @@ By default the alerts go by email to the billing account administrators. A budge
 
 1. Run the commands above and set the `SNAPSHOT_BUCKET` variable.
 2. Push to `develop`; wait for `Deploy API (development)`.
-3. Call each endpoint once on the dev service: `curl -s <DEV_API_URL>/api/v1/co2-emissions >/dev/null`, then `global-temperature` and `energy-sources`.
+3. Call each endpoint once on the dev service: `curl -s <DEV_API_URL>/api/v1/co2-emissions -H "X-Internal-Api-Key: $INTERNAL_API_KEY" >/dev/null`, then `global-temperature` and `energy-sources` (each with the same header).
 4. Check the objects: `gcloud storage ls gs://<SNAPSHOT_BUCKET>/development/` should list `co2-emissions.json`, `energy-sources.json` and `global-temperature.json`.
 5. Open the `develop` → `main` pull request. Production creates `production/*.json` on its first requests.
 
@@ -531,7 +530,7 @@ End users only wait on a cold start for that first request after a deploy.
 
 **Symptom:** the detection log says the deployed SHA is not in the repository history.
 
-**Fix:** none needed. `develop` may be force-pushed, so the serving commit can disappear from history; in that case, as in any case where the serving image cannot be read or its tag is not a commit SHA, the workflow deploys. Skipping is never the fallback.
+**Fix:** none needed. Rulesets block force pushes to `develop` and `main`, so this is rare (a ruleset disabled temporarily, or a commit deployed before the rulesets existed); in that case, as in any case where the serving image cannot be read or its tag is not a commit SHA, the workflow deploys. Skipping is never the fallback.
 
 ### `vars` are empty in the called workflow
 

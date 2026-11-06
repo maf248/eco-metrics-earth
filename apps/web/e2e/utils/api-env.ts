@@ -7,6 +7,11 @@
  */
 export const E2E_INTERNAL_API_KEY = 'e2e-non-secret-internal-api-key-0123456789';
 
+/** Headers for E2E calls made straight to the API: every route but `GET /health` needs the key. */
+export function apiHeaders(extra: Record<string, string> = {}): Record<string, string> {
+  return { 'X-Internal-Api-Key': E2E_INTERNAL_API_KEY, ...extra };
+}
+
 /** One trusted proxy hop: the rightmost X-Forwarded-For entry identifies the client. */
 export const E2E_TRUST_PROXY_HOPS = '1';
 

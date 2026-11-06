@@ -19,9 +19,20 @@ esac
 [ -z "$VERCEL_GIT_PREVIOUS_SHA" ] && exit 1
 git cat-file -e "$VERCEL_GIT_PREVIOUS_SHA" 2>/dev/null || exit 1
 
+# List the changed files first: inside a pipe a failed diff would print nothing
+# and read as "only denylisted files", skipping the build. Failed diff → build.
+# core.quotePath=false: non-ASCII paths are not quoted, so they can match.
+# --no-renames: a rename lists both paths, so moving a web file into a
+# denylisted path still builds.
+changed=$(git -c core.quotePath=false diff --no-renames --name-only \
+  "$VERCEL_GIT_PREVIOUS_SHA" "$VERCEL_GIT_COMMIT_SHA") || exit 1
+
+# Nothing changed → skip (exit 0)
+[ -z "$changed" ] && exit 0
+
 # If any changed file is outside denylist → build (exit 1)
 # Otherwise → skip (exit 0)
-if git diff --name-only $VERCEL_GIT_PREVIOUS_SHA $VERCEL_GIT_COMMIT_SHA | grep -qv \
+if printf '%s\n' "$changed" | grep -qv \
   -e '^apps/api/' \
   -e '^openspec/' \
   -e '\.md$' \

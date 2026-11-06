@@ -176,6 +176,7 @@ npx nx build api
 - **Smoke tagging.** Tag an E2E test `@smoke` (`test('...', { tag: '@smoke' }, ...)`) only when its result can differ by browser engine or viewport: render, layout, keyboard and pointer interaction. Tagged tests run in all five projects; untagged ones run only in `chromium-desktop`. Headers, SEO/HTML, metadata, provider-state and API checks are never tagged. Apply the rule by moving tags; never delete tests to apply it.
 - Test files use `*.test.ts` or `*.test.tsx` inside `__tests__/`, mirroring `src/` structure (e.g., `src/foo.ts` → `__tests__/foo.test.ts`).
 - Test descriptions must be written in English and describe the expected behavior (e.g., `it('should return 404 when resource is not found')`).
+- **A test that reads files outside its project** (e.g. `scripts/`, `.github/workflows/`) must list them in that project's `test` target `inputs` (`nx.targets.test.inputs` in its `package.json`, which replaces the `targetDefaults.test.inputs` of `nx.json`, so keep those entries too). Otherwise Nx serves a stale cached pass when only those files change, and `nx affected` (the `pre-push` hook) skips the test.
 - **Tests must produce zero errors and zero warnings.** A passing test that emits `console.error` or `console.warn` is not acceptable — the warning is a symptom of a real problem and must be fixed at the root.
 - If a test warning or error appears, investigate the cause and apply the cleanest, most idiomatic fix (e.g., use the right render strategy, fix the component structure, use proper async handling). Do **not** suppress or silence output as a workaround.
 - If the correct fix is unclear or multiple approaches exist, **ask before implementing** — prefer the most standard/best-practice solution.
@@ -215,6 +216,7 @@ npx nx test api -- --updateSnapshot   # updates only api snapshots
 - Format: `type(scope): description`
   - Types: `feat`, `fix`, `docs`, `style`, `refactor`, `test`, `chore`
 - Examples: `feat(metrics): add new chart widget`, `fix(api): resolve data fetch error`
+- Use scope `tooling` for CI, Nx, scripts and hooks (not `ci`): `.releaserc.mjs` skips it, so it does not cut web/api releases.
 - Rules commitlint enforces:
   - **Header** (`type(scope): description`) ≤ 100 characters; scope expected (a missing one warns); description starts lowercase and has no trailing period.
   - **Body** optional, separated from the header by one blank line; **every line ≤ 100 characters** — wrap prose at ~72. The same limit applies to footers.
@@ -228,8 +230,8 @@ feature/* ──► develop ⇄ main (production)
 #                      ▲        back-merge auto: syncs versions + changelogs (release.yml)
 ```
 
-- **`main`** — production. All changes enter via PR from `develop`; never push to it directly and never force-push it. **There is no server-side protection on the current plan** (private repo on GitHub Free: branch protection and rulesets return `403 Upgrade to GitHub Pro or make this repository public`), so the rule is enforced by convention plus the husky `pre-push` hook, which blocks direct pushes to `main` from a local machine. Production safety comes from the CI gates, not from GitHub: the API deploys `need` the CI job and the `api-image` build check (production from `main`, dev from `develop`), and Vercel Deployment Checks hold the web production deployment until CI passes (see [`docs/deploy/vercel.md`](./docs/deploy/vercel.md)).
-- **`develop`** — integration branch. Work happens here or in short-lived `feature/*` branches off `develop`. Force push allowed for history cleanup before opening a PR.
+- **`main`** — production. All changes enter via PR from `develop`; never push to it directly and never force-push it. The repository is public, and a GitHub branch ruleset on `main` blocks deletion and force pushes. It does **not** require a pull request or status checks, on purpose: `release.yml` pushes release commits and the lockfile sync straight to `main` with `GITHUB_TOKEN`, and those rules would reject them. "PRs only" is therefore enforced by convention plus the husky `pre-push` hook, which blocks direct pushes to `main` from a local machine. Production safety comes from the CI gates: the API deploys `need` the CI job and the `api-image` build check (production from `main`, dev from `develop`), and Vercel Deployment Checks hold the web production deployment until CI passes (see [`docs/deploy/vercel.md`](./docs/deploy/vercel.md)).
+- **`develop`** — integration branch. Work happens here or in short-lived `feature/*` branches off `develop`. A branch ruleset blocks its deletion and force pushes, so history is never rewritten: fix mistakes with new commits (e.g. `git revert`).
 - **`feature/*`** — optional, for large or parallel work. Branch off `develop`, PR back into `develop`.
 
 #### CI/CD gates
@@ -237,6 +239,7 @@ feature/* ──► develop ⇄ main (production)
 - The CI job name `Format, Lint, Typecheck, Build & Test` is a contract with Vercel Deployment Checks: renaming it requires updating the Vercel setting in the same change.
 - The CI job runs in the official Playwright container (`container.image: mcr.microsoft.com/playwright:v<version>-noble` in `ci.yml`). The tag is a literal (workflow `env` is unavailable in `container.image`) and must equal the installed `@playwright/test` version; Dependabot does not update it. The `Verify Playwright image matches @playwright/test` step runs `node scripts/check-playwright-image.mjs` (also runnable locally after `npm ci`) and fails with the tag to use. When `@playwright/test` changes, bump the image tag in `ci.yml` in the same change.
 - The `api-image` job in `ci.yml` (`Build API image (no push)`) builds the `Dockerfile` without publishing it, only when an image input changed, and gates at step level, never with a job-level `if` (a skipped job would also skip the `deploy-api-*` jobs, which `need` it). The image-input paths live only in `scripts/api-image-inputs.pattern`, read by `deploy-api.yml` and `scripts/detect-api-image-changes.sh`; edit them there, never inline. It is not part of the Vercel check.
+- The `E2E` step of the `ci` job is skipped only when both hold: every path changed between the base and head revisions matches `scripts/docs-only-paths.pattern` (edit the pattern there, never inline), and every latest check run named `CI_CHECK_NAME` (the job name, set in `ci.yml`) on the base SHA concluded `success`. `scripts/detect-e2e-skip.cjs` decides in the `e2e_gate` step and the gate is step-level only, never a job-level `if` or `paths-ignore`, so the job always runs and reports. The pattern is read from the base revision (`git show BASE:scripts/docs-only-paths.pattern`), so a pattern change takes effect from the next push; the pattern file, the detector and `ci.yml` always count as non-docs; the diff uses `--no-renames`, so a rename counts on both sides. It reads the base check (GitHub Actions app only) with the job's `checks: read` permission; any doubt (no base, API error, missing token, empty diff, git unable to read the repository) runs E2E. The step right after checkout adds `$GITHUB_WORKSPACE` to git's global `safe.directory`: the job runs as root over a runner-owned workspace, and without it every later git call fails with "dubious ownership", so E2E always runs.
 - The API deploys only through the CI-gated jobs in `ci.yml` that call `deploy-api.yml` — `deploy-api-production` (`main` → Cloud Run `eco-metrics-api`) and `deploy-api-development` (`develop` → `eco-metrics-api-dev`, consumed by Vercel previews) — or a deliberate `workflow_dispatch` with a `target` (`production` only from `main`). Never add a deploy trigger that bypasses CI.
 - The deploy concurrency group is `deploy-api-${{ inputs.target }}` — a literal prefix per target, never `${{ github.workflow }}` (which resolves to the caller's name in a reusable workflow).
 - The target → service/CORS-variable mapping lives only in the `Resolve deploy target and pre-flight checks` step of `deploy-api.yml`. Dev variables use a `_DEV` suffix (`CORS_ORIGIN_DEV`, `CORS_ORIGIN_PATTERN_DEV`): GitHub Environments are unavailable on this plan.
@@ -244,7 +247,7 @@ feature/* ──► develop ⇄ main (production)
 #### Rules — for humans and AI agents alike
 
 1. **Never commit without explicit request** — do not create a commit unless the user explicitly asks for it.
-2. **Never push to `main` directly** — all changes must go through a PR from `develop`. GitHub does not enforce this on the current plan; the husky `pre-push` hook blocks it locally.
+2. **Never push to `main` directly** — all changes must go through a PR from `develop`. The `main` ruleset does not require a pull request (release automation pushes there), so the husky `pre-push` hook blocks it locally.
 3. **Never push without confirmation** — always ask the user before running `git push`, regardless of the branch.
 4. **Always run tests before pushing** — run `npm run test` before any push. If all tests pass and the push has been authorized, proceed. If any test fails, show a summary of the failing suites and do not push until they are fixed.
 5. **Always use Conventional Commits format** — every commit message must follow `type(scope): description` and pass commitlint (see Git/Commit Conventions). Free-form messages are not allowed.
@@ -262,7 +265,7 @@ eco-metrics-earth/
 │   │       ├── app/             # AppModule, global pipeline helper
 │   │       ├── health/          # Liveness (GET /api/v1/health) + dependencies check (GET /api/v1/health/dependencies, one Terminus indicator per provider)
 │   │       ├── modules/         # Per-category eco modules (`water-footprint`, `co2-emissions`, `global-temperature`, `energy-sources`) + `providers/owid` client and `OwidProviderStatus` + `data-sources` catalog
-│   │       ├── common/          # Outbound HTTP client, `errors/` (`ProviderError` -> 502), `series/` (`buildYearAlignedEntities`, `roundTo`), `snapshots/` (`ProviderSnapshotService.resolve`, `SnapshotStore` port with GCS and disabled stores; `SNAPSHOT_BUCKET` / `SNAPSHOT_PREFIX`), catch-all 404 fallback, global exception filter, throttler internal-key bypass, publisher resolver
+│   │       ├── common/          # Outbound HTTP client, `errors/` (`ProviderError` -> 502), `series/` (`buildYearAlignedEntities`, `roundTo`), `snapshots/` (`ProviderSnapshotService.resolve`, `SnapshotStore` port with GCS and disabled stores; `SNAPSHOT_BUCKET` / `SNAPSHOT_PREFIX`), catch-all 404 fallback, global exception filter, `internal-key/` (`InternalKeyGuard`, `@AllowKeyless()`, `isKeyedRequest` + `buildThrottlerOptions` for the two throttler tiers), publisher resolver
 │   │       ├── config/          # AppConfigService (typed env vars)
 │   │       └── main.ts          # Bootstrap — port 3001, prefix /api/v1
 │   └── web/                     # Next.js App Router
@@ -483,7 +486,7 @@ The user must **explicitly authorize** every `git commit` and every `git push`. 
 ### Push workflow — husky pre-push hook & local E2E
 
 - `.husky/pre-push` blocks direct pushes to `main` and runs `npx nx affected --target=test --base=origin/develop` (fast, NX-cached). E2E is not push-time: CI runs the full suite on every push; locally use `npm run e2e` (deterministic — the webServer wrapper brings up both servers and cleans up their process trees).
-- SSH keep-alive hygiene: set `ServerAliveInterval` for the `github-mafmaggot` host in `~/.ssh/config` so long pushes don't die with `Connection closed by remote host`.
+- SSH keep-alive hygiene: set `ServerAliveInterval` for your GitHub SSH host in `~/.ssh/config` so long pushes don't die with `Connection closed by remote host`.
 - If you start dev servers manually: `next dev` spawns a `next-server` worker that survives its parent and holds `:3000` — kill it by PID (`ss -tlnp | grep :3000`), never `pkill -f` with a self-matching pattern.
 
 ### Category pages must not stream their data

@@ -37,8 +37,8 @@ Only one real API key is required: **CDO_TOKEN** for the NOAA Climate Data Onlin
 1. Register for a free NOAA CDO token at https://ncdc.noaa.gov/cdo-web/token
 2. Copy `environments/eco-metrics.environment.template.json`
 3. Rename it to `eco-metrics.environment.json` (gitignored — never commit this)
-4. Replace `REPLACE_WITH_YOUR_TOKEN` with your real CDO token
+4. Replace `REPLACE_WITH_YOUR_TOKEN` with your real CDO token and `REPLACE_WITH_YOUR_EMAIL` with the contact email the NOAA NWS `User-Agent` header requires
 5. Import into Postman: Environments → Import
 6. Select the `eco-metrics` environment in the Postman environment dropdown
 
-The environment-level `CDO_TOKEN` overrides the placeholder variable of the same name in the NOAA collection. All other collections (World Bank, Open-Meteo, Our World in Data) work without any API keys.
+The environment-level `CDO_TOKEN` and `contactEmail` override the placeholder variables of the same name in the NOAA collection. All other collections (World Bank, Open-Meteo, Our World in Data) work without any API keys.

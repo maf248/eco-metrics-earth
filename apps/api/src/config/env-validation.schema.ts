@@ -102,7 +102,15 @@ export const envValidationSchema = Joi.object({
       [corsOriginPatternErrorCodes.invalidRegex]:
         'CORS_ORIGIN_PATTERN is not a valid regular expression.',
     }),
-  SWAGGER_ENABLED: Joi.string().valid('true', 'false').default('false'),
+  // Swagger's Express routes bypass the global guards, so production must keep it off.
+  SWAGGER_ENABLED: Joi.when('NODE_ENV', {
+    is: 'production',
+    then: Joi.string().valid('false').default('false'),
+    otherwise: Joi.string().valid('true', 'false').default('false'),
+  }).messages({
+    'any.only':
+      'SWAGGER_ENABLED must be "false" when NODE_ENV=production (and "true" or "false" otherwise).',
+  }),
   OWID_GRAPHER_BASE_URL: owidBaseUrlValidator('https://ourworldindata.org/grapher'),
   OWID_API_BASE_URL: owidBaseUrlValidator('https://api.ourworldindata.org/v1'),
   OWID_HTTP_TIMEOUT_MS: Joi.number().integer().min(1000).max(60000).default(10000),
@@ -125,8 +133,14 @@ export const envValidationSchema = Joi.object({
     'string.empty': 'SNAPSHOT_PREFIX is required when SNAPSHOT_BUCKET is set.',
     'any.required': 'SNAPSHOT_PREFIX is required when SNAPSHOT_BUCKET is set.',
   }),
-  INTERNAL_API_KEY: Joi.string().min(32).optional().allow('').messages({
+  INTERNAL_API_KEY: Joi.when('NODE_ENV', {
+    is: 'production',
+    then: Joi.string().trim().min(32).required(),
+    otherwise: Joi.string().trim().min(32).optional().allow(''),
+  }).messages({
     'string.base': 'INTERNAL_API_KEY must be a string.',
     'string.min': 'INTERNAL_API_KEY must be at least 32 characters long.',
+    'string.empty': 'INTERNAL_API_KEY is required when NODE_ENV=production.',
+    'any.required': 'INTERNAL_API_KEY is required when NODE_ENV=production.',
   }),
 });

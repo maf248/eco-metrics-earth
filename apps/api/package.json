@@ -78,7 +78,13 @@
       "test": {
         "options": {
           "passWithNoTests": true
-        }
+        },
+        "inputs": [
+          "default",
+          "^production",
+          "{workspaceRoot}/jest.preset.js",
+          "{workspaceRoot}/.github/workflows/deploy-api.yml"
+        ]
       }
     }
   },

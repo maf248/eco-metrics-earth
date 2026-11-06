@@ -41,10 +41,10 @@ An environmental metrics dashboard monorepo — tracking air quality, CO₂ emis
 
 ### Deploy Targets
 
-| App        | Platform                                         | Trigger                                                                                                                                 | Details                                                                                                                                                                                   |
-| ---------- | ------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `apps/web` | [Vercel](https://vercel.com)                     | Auto-deploy from GitHub (`vercel.json`, `scripts/vercel-ignore.sh`); production waits for the CI check                                  | See [`docs/deploy/vercel.md`](./docs/deploy/vercel.md)                                                                                                                                    |
-| `apps/api` | [Google Cloud Run](https://cloud.google.com/run) | `.github/workflows/deploy-api.yml`, called by `ci.yml` after CI passes (API-related changes only): `main` → production, `develop` → dev | Services `eco-metrics-api` (`https://eco-metrics-api-fexi2yqv2q-uc.a.run.app`) and `eco-metrics-api-dev` (Vercel previews) — see [`docs/deploy/cloud-run.md`](./docs/deploy/cloud-run.md) |
+| App        | Platform                                         | Trigger                                                                                                                                 | Details                                                                                                                               |
+| ---------- | ------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| `apps/web` | [Vercel](https://vercel.com)                     | Auto-deploy from GitHub (`vercel.json`, `scripts/vercel-ignore.sh`); production waits for the CI check                                  | See [`docs/deploy/vercel.md`](./docs/deploy/vercel.md)                                                                                |
+| `apps/api` | [Google Cloud Run](https://cloud.google.com/run) | `.github/workflows/deploy-api.yml`, called by `ci.yml` after CI passes (API-related changes only): `main` → production, `develop` → dev | Services `eco-metrics-api` and `eco-metrics-api-dev` (Vercel previews) — see [`docs/deploy/cloud-run.md`](./docs/deploy/cloud-run.md) |
 
 ---
 
@@ -200,7 +200,7 @@ eco-metrics-earth/
 
 Base URL (development): `http://localhost:3001`
 
-Base URL (production): `https://eco-metrics-api-fexi2yqv2q-uc.a.run.app`
+The deployed API is private: every request except `GET /api/v1/health` needs a valid `X-Internal-Api-Key` (`401` otherwise). Its URL lives only in the Vercel `API_BASE_URL` variable.
 
 Swagger UI (when `SWAGGER_ENABLED=true`, disabled in production): `http://localhost:3001/api/docs`
 
@@ -267,16 +267,16 @@ cp apps/web/.env.example apps/web/.env.local
 | `TRUST_PROXY_HOPS`       | `0`                                  | Trusted reverse-proxy hops in front of the API (Express `trust proxy`). Cloud Run uses `1` (set by the deploy workflow)                                                                                                                                     |
 | `SNAPSHOT_BUCKET`        | —                                    | Optional GCS bucket for provider snapshots (empty/unset disables persistence). When OWID is down the API serves the last stored payload with `meta.stale: true` instead of a 502. Set by the deploy workflow from the `SNAPSHOT_BUCKET` repository variable |
 | `SNAPSHOT_PREFIX`        | —                                    | Object prefix of the environment inside the bucket (kebab-case, `production` or `development`); required when `SNAPSHOT_BUCKET` is set, set by the deploy workflow                                                                                          |
-| `INTERNAL_API_KEY`       | —                                    | Optional shared secret (min 32 chars); requests with a matching `X-Internal-Api-Key` header skip rate limiting. Mounted from Secret Manager in production                                                                                                   |
+| `INTERNAL_API_KEY`       | —                                    | Shared secret (min 32 chars), **required when `NODE_ENV=production`**; every request except `GET /api/v1/health` needs a matching `X-Internal-Api-Key` header (`401` otherwise). Mounted from Secret Manager in production                                  |
 
 ### `apps/web/.env.example`
 
-| Variable               | Default                        | Description                                                                                                                        |
-| ---------------------- | ------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------- |
-| `NEXT_PUBLIC_SITE_URL` | `http://localhost:3000`        | Canonical base URL for SEO metadata (Open Graph, canonical links)                                                                  |
-| `API_BASE_URL`         | `http://localhost:3001/api/v1` | Base URL of the NestJS BFF (server-side only). On Vercel: Production → `eco-metrics-api`, Preview → `eco-metrics-api-dev`          |
-| `INTERNAL_API_KEY`     | —                              | Server-only shared secret sent as `X-Internal-Api-Key` so the API skips rate limiting for the Next.js server. Never `NEXT_PUBLIC_` |
-| `ANALYZE`              | `false`                        | Set to `true` to generate bundle analysis report on build (webpack only)                                                           |
+| Variable               | Default                        | Description                                                                                                               |
+| ---------------------- | ------------------------------ | ------------------------------------------------------------------------------------------------------------------------- |
+| `NEXT_PUBLIC_SITE_URL` | `http://localhost:3000`        | Canonical base URL for SEO metadata (Open Graph, canonical links)                                                         |
+| `API_BASE_URL`         | `http://localhost:3001/api/v1` | Base URL of the NestJS BFF (server-side only). On Vercel: Production → `eco-metrics-api`, Preview → `eco-metrics-api-dev` |
+| `INTERNAL_API_KEY`     | —                              | Server-only secret sent as `X-Internal-Api-Key`; the API answers `401` without it. Never `NEXT_PUBLIC_`                   |
+| `ANALYZE`              | `false`                        | Set to `true` to generate bundle analysis report on build (webpack only)                                                  |
 
 ---
 
@@ -351,7 +351,7 @@ interface WaterFootprintProduct {
 
 - **Language:** all code, comments, and commit messages in English.
 - **Commits:** [Conventional Commits](https://www.conventionalcommits.org/) — `type(scope): description`
-- **Branches:** `develop` is the integration branch; work lands there or in short-lived `feature/*` branches off it. `main` is protected — changes reach it only through Pull Requests.
+- **Branches:** `develop` is the integration branch; work lands there or in short-lived `feature/*` branches off it. `main` and `develop` are protected against deletion and force pushes; changes reach `main` through Pull Requests by convention, enforced locally by the husky `pre-push` hook.
 - **Specs:** non-trivial changes follow the Spec-Driven Development workflow with [OpenSpec](./openspec/) (proposal → approval → implementation → archive).
 - **Tests:** always use `it('...')`, group with `describe('...')`; Playwright E2E tests use `test('...')`.
 - **TypeScript:** strict mode enabled across all projects

@@ -45,7 +45,9 @@ if ! git cat-file -e "${BASE_SHA}^{commit}" 2>/dev/null; then
 fi
 
 # core.quotePath=false: otherwise non-ASCII paths are quoted and never match.
-if ! changed=$(git -c core.quotePath=false diff --name-only "$BASE_SHA" "$HEAD_SHA"); then
+# --no-renames: a rename lists both its old and new path, so moving a file out
+# of an image input still counts as an image input change.
+if ! changed=$(git -c core.quotePath=false diff --no-renames --name-only "$BASE_SHA" "$HEAD_SHA"); then
   decide true "git diff failed"
 fi
 

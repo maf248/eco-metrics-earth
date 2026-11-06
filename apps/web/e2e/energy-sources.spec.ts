@@ -1,5 +1,6 @@
 import { expect, test, type Page } from '@playwright/test';
 
+import { apiHeaders } from './utils/api-env.ts';
 import {
   CATEGORY_DESCRIPTION_SAMPLES,
   CATEGORY_METADATA_TITLES,
@@ -288,7 +289,9 @@ test.describe('Energy Sources page', () => {
 
   test.describe('API', () => {
     test('should serve nothing before 2000 and aligned arrays', async ({ request }) => {
-      const response = await request.get(`${API_BASE_URL}/energy-sources`);
+      const response = await request.get(`${API_BASE_URL}/energy-sources`, {
+        headers: apiHeaders(),
+      });
 
       expect(response.status()).toBe(200);
       const { data } = await response.json();

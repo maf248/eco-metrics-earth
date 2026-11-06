@@ -4,7 +4,7 @@ This runbook makes the `apps/web` production deployment on Vercel wait for the C
 
 ## Why the gate exists
 
-Vercel's Git integration builds `main` and promotes it to production independently of GitHub Actions, so a merge to `main` with red or unfinished CI could go live. The usual guard, GitHub branch protection or rulesets, is **not available**: the repository is private on GitHub Free and the API answers `403 Upgrade to GitHub Pro or make this repository public`. Nothing on GitHub prevents merging a PR with failing CI, so **Vercel Deployment Checks is the only server-side enforcement for the web app**. The local husky `pre-push` hook only blocks direct pushes to `main` from a developer machine.
+Vercel's Git integration builds `main` and promotes it to production independently of GitHub Actions, so a merge to `main` with red or unfinished CI could go live. The repository's `main` ruleset only blocks deletion and force pushes; it does not require status checks, because `release.yml` pushes release commits straight to `main` and a required check would reject them. Nothing on GitHub prevents merging a PR with failing CI, so **Vercel Deployment Checks is the only server-side enforcement for the web app**. The local husky `pre-push` hook only blocks direct pushes to `main` from a developer machine.
 
 The API is gated differently: the `deploy-api-production` (`main`) and `deploy-api-development` (`develop`) jobs in `.github/workflows/ci.yml` each `needs` the CI job and the `api-image` job (see [`cloud-run.md`](./cloud-run.md)). `api-image` is deliberately not a Vercel check: the web app does not depend on the API image.
 
@@ -32,7 +32,7 @@ Only the project owner can do this; it is a Vercel dashboard setting, not code.
 
 ## Job-name coupling
 
-Checks are identified by the GitHub Actions **job name**. The job `ci` in `.github/workflows/ci.yml` carries a comment marking its name as a contract. The job runs inside the `mcr.microsoft.com/playwright` container; this does not affect the check name. If the job is renamed, update the Deployment Check in Vercel in the same change; otherwise Vercel waits for a check that never reports, or stops enforcing it.
+Checks are identified by the GitHub Actions **job name**. The job `ci` in `.github/workflows/ci.yml` carries a comment marking its name as a contract. The job runs inside the `mcr.microsoft.com/playwright` container; this does not affect the check name. If the job is renamed, update the Deployment Check in Vercel in the same change; otherwise Vercel waits for a check that never reports, or stops enforcing it. On docs-only commits whose base revision passed CI, the job `Format, Lint, Typecheck, Build & Test` still runs and reports; only its `E2E` step may be skipped.
 
 ## What is and is not gated
 

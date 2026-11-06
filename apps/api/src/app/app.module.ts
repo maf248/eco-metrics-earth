@@ -4,7 +4,8 @@ import { APP_GUARD } from '@nestjs/core';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 
 import { FallbackModule } from '../common/fallback/fallback.module';
-import { createInternalKeyBypass } from '../common/throttler/internal-key-bypass';
+import { InternalKeyGuard } from '../common/internal-key/internal-key.guard';
+import { buildThrottlerOptions } from '../common/internal-key/throttler-options';
 import { AppConfigModule } from '../config/app-config.module';
 import { AppConfigService } from '../config/app-config.service';
 import { envValidationSchema } from '../config/env-validation.schema';
@@ -31,10 +32,7 @@ import { WaterFootprintModule } from '../modules/water-footprint/water-footprint
     }),
     ThrottlerModule.forRootAsync({
       inject: [AppConfigService],
-      useFactory: (appConfig: AppConfigService) => ({
-        throttlers: [{ ttl: 60_000, limit: 60 }],
-        skipIf: createInternalKeyBypass(appConfig.internalApiKey),
-      }),
+      useFactory: (appConfig: AppConfigService) => buildThrottlerOptions(appConfig),
     }),
     AppConfigModule,
     HealthModule,
@@ -46,6 +44,10 @@ import { WaterFootprintModule } from '../modules/water-footprint/water-footprint
     DataSourcesModule,
     FallbackModule,
   ],
-  providers: [{ provide: APP_GUARD, useClass: ThrottlerGuard }],
+  // Order matters: the throttler runs first so rejected anonymous requests are counted too.
+  providers: [
+    { provide: APP_GUARD, useClass: ThrottlerGuard },
+    { provide: APP_GUARD, useClass: InternalKeyGuard },
+  ],
 })
 export class AppModule {}

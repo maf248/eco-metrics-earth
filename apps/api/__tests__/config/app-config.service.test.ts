@@ -179,6 +179,16 @@ describe('AppConfigService', () => {
       expect(service.internalApiKey).toBeUndefined();
     });
 
+    it('should trim surrounding whitespace such as a trailing newline', () => {
+      const service = buildService({ INTERNAL_API_KEY: `${'k'.repeat(32)}\n` });
+      expect(service.internalApiKey).toBe('k'.repeat(32));
+    });
+
+    it('should return undefined when the key is only whitespace', () => {
+      const service = buildService({ INTERNAL_API_KEY: ' \n' });
+      expect(service.internalApiKey).toBeUndefined();
+    });
+
     it('should return undefined when the key is an empty string', () => {
       const service = buildService({ INTERNAL_API_KEY: '' });
       expect(service.internalApiKey).toBeUndefined();

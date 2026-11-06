@@ -234,6 +234,32 @@ describe('envValidationSchema', () => {
     });
   });
 
+  describe('SWAGGER_ENABLED', () => {
+    it('should accept true outside production', () => {
+      expect(validate({ NODE_ENV: 'development', SWAGGER_ENABLED: 'true' }).error).toBeUndefined();
+    });
+
+    it('should accept false in production', () => {
+      const { error } = validate({
+        NODE_ENV: 'production',
+        INTERNAL_API_KEY: 'k'.repeat(32),
+        SWAGGER_ENABLED: 'false',
+      });
+      expect(error).toBeUndefined();
+    });
+
+    it('should reject true in production naming the variable', () => {
+      const { error } = validate({
+        NODE_ENV: 'production',
+        INTERNAL_API_KEY: 'k'.repeat(32),
+        SWAGGER_ENABLED: 'true',
+      });
+      expect(error).toBeDefined();
+      expect(error?.message).toContain('SWAGGER_ENABLED');
+      expect(error?.message).not.toContain('[true]');
+    });
+  });
+
   describe('INTERNAL_API_KEY', () => {
     it('should accept an unset key', () => {
       const { error, value } = validate({});
@@ -258,6 +284,53 @@ describe('envValidationSchema', () => {
       const { error, value } = validate({ INTERNAL_API_KEY: 'k'.repeat(32) });
       expect(error).toBeUndefined();
       expect(value.INTERNAL_API_KEY).toBe('k'.repeat(32));
+    });
+
+    describe.each(['development', 'test'])('when NODE_ENV is %s', (nodeEnv) => {
+      it('should not require the key', () => {
+        const { error } = validate({ NODE_ENV: nodeEnv });
+        expect(error).toBeUndefined();
+      });
+    });
+
+    describe('when NODE_ENV is production', () => {
+      it('should reject an unset key naming the variable', () => {
+        const { error } = validate({ NODE_ENV: 'production' });
+        expect(error).toBeDefined();
+        expect(error?.message).toContain('INTERNAL_API_KEY');
+      });
+
+      it('should reject an empty key naming the variable', () => {
+        const { error } = validate({ NODE_ENV: 'production', INTERNAL_API_KEY: '' });
+        expect(error).toBeDefined();
+        expect(error?.message).toContain('INTERNAL_API_KEY');
+      });
+
+      it('should reject a whitespace-only key', () => {
+        const { error } = validate({ NODE_ENV: 'production', INTERNAL_API_KEY: ' '.repeat(40) });
+        expect(error).toBeDefined();
+        expect(error?.message).toContain('INTERNAL_API_KEY');
+      });
+
+      it('should accept a key with a trailing newline and trim it', () => {
+        const key = 'k'.repeat(64);
+        const { error, value } = validate({ NODE_ENV: 'production', INTERNAL_API_KEY: `${key}\n` });
+        expect(error).toBeUndefined();
+        expect(value.INTERNAL_API_KEY).toBe(key);
+      });
+
+      it('should reject a 31-character key without echoing the value', () => {
+        const shortKey = 'k'.repeat(31);
+        const { error } = validate({ NODE_ENV: 'production', INTERNAL_API_KEY: shortKey });
+        expect(error).toBeDefined();
+        expect(error?.message).toContain('INTERNAL_API_KEY');
+        expect(error?.message).not.toContain(shortKey);
+      });
+
+      it('should accept a 32-character key', () => {
+        const { error } = validate({ NODE_ENV: 'production', INTERNAL_API_KEY: 'k'.repeat(32) });
+        expect(error).toBeUndefined();
+      });
     });
   });
 

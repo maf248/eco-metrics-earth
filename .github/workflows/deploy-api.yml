@@ -71,12 +71,14 @@ jobs:
               package="api-production"
               origin_var="CORS_ORIGIN"
               pattern_var="CORS_ORIGIN_PATTERN"
+              max_instances="2"
               ;;
             development)
               service="eco-metrics-api-dev"
               package="api-development"
               origin_var="CORS_ORIGIN_DEV"
               pattern_var="CORS_ORIGIN_PATTERN_DEV"
+              max_instances="1"
               ;;
             *)
               echo "Unknown deploy target '$DEPLOY_TARGET' (expected 'production' or 'development')."
@@ -104,6 +106,7 @@ jobs:
 
           {
             echo "service=$service"
+            echo "max_instances=$max_instances"
             echo "image=${GCP_REGION}-docker.pkg.dev/${GCP_PROJECT_ID}/eco-metrics/${package}:${COMMIT_SHA}"
             echo "origin=${!origin_var}"
             echo "pattern=${!pattern_var}"
@@ -180,7 +183,10 @@ jobs:
             decide true "deployed SHA is not in the repository history"
           fi
 
-          if ! changed=$(git diff --name-only "$deployed_sha" "$TARGET_SHA"); then
+          # core.quotePath=false: non-ASCII paths are not quoted, so they can match.
+          # --no-renames: a rename lists both paths, so moving a file out of an
+          # API input still deploys.
+          if ! changed=$(git -c core.quotePath=false diff --no-renames --name-only "$deployed_sha" "$TARGET_SHA"); then
             decide true "git diff failed"
           fi
 
@@ -265,6 +271,7 @@ jobs:
           flags: >-
             --allow-unauthenticated
             --min-instances=0
+            --max-instances=${{ steps.target.outputs.max_instances }}
             --cpu=1
             --memory=512Mi
             --startup-probe=httpGet.path=/api/v1/health,httpGet.port=8080,periodSeconds=2,timeoutSeconds=2,failureThreshold=15

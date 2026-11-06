@@ -8,7 +8,7 @@ Defines how the Next.js server calls the BFF API: the server-only helper that at
 
 ### Requirement: Next.js server sends the internal API key on BFF fetches
 
-A server-only helper (`apps/web/src/lib/internalApiHeaders.ts`) SHALL return request headers for calls from the Next.js server to the API. It SHALL read `process.env.INTERNAL_API_KEY` and, when it is a non-empty trimmed string, return `{ 'X-Internal-Api-Key': <value> }`; otherwise it SHALL return an empty object (the API then simply throttles per IP). The module SHALL `import 'server-only'` so that importing it from a Client Component fails the build. The variable SHALL NEVER be prefixed `NEXT_PUBLIC_`. The generic BFF fetch helper `fetchFromBff` (and therefore `getWaterFootprintProducts()` and `getDataSources()`, which are built on it) SHALL include these headers on every `fetch` attempt. The key SHALL NOT be logged.
+A server-only helper (`apps/web/src/lib/internalApiHeaders.ts`) SHALL return request headers for calls from the Next.js server to the API. It SHALL read `process.env.INTERNAL_API_KEY` and, when it is a non-empty trimmed string, return `{ 'X-Internal-Api-Key': <value> }`; otherwise it SHALL return an empty object (local development only; the production API answers `401` without the key). The module SHALL `import 'server-only'` so that importing it from a Client Component fails the build. The variable SHALL NEVER be prefixed `NEXT_PUBLIC_`. The generic BFF fetch helper `fetchFromBff` (and therefore `getWaterFootprintProducts()` and `getDataSources()`, which are built on it) SHALL include these headers on every `fetch` attempt. The key SHALL NOT be logged.
 
 #### Scenario: Header sent when configured
 
