@@ -56,7 +56,7 @@ Classify every request before choosing a workflow (full criteria in `AGENTS.md` 
 8. **Always `git pull` (default merge) before pushing** — the remote may carry new release tags. Prefer merge over rebase: rewriting commit SHAs breaks Vercel deployments and can drop merge-commit content.
 9. **"Commitea y pushea" authorizes both, once** — treat it as approval for that commit and that push in sequence. It does not carry over to later tasks.
 
-**Branches:** `develop` is the integration branch — work lands there or in short-lived `feature/*` branches off it. Force-push on `develop` is allowed to clean up history before opening a PR; `main` is protected and is never force-pushed.
+**Branches:** `develop` is the integration branch — work lands there or in short-lived `feature/*` branches off it. GitHub rulesets block deletion and force pushes on both `develop` and `main`: never rewrite pushed history, fix it with new commits.
 
 ### File Writing (hard rules)
 

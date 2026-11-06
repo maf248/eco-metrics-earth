@@ -229,8 +229,8 @@ feature/* ──► develop ⇄ main (production)
 #                      ▲        back-merge auto: syncs versions + changelogs (release.yml)
 ```
 
-- **`main`** — production. All changes enter via PR from `develop`; never push to it directly and never force-push it. **There is no server-side protection on the current plan** (private repo on GitHub Free: branch protection and rulesets return `403 Upgrade to GitHub Pro or make this repository public`), so the rule is enforced by convention plus the husky `pre-push` hook, which blocks direct pushes to `main` from a local machine. Production safety comes from the CI gates, not from GitHub: the API deploys `need` the CI job and the `api-image` build check (production from `main`, dev from `develop`), and Vercel Deployment Checks hold the web production deployment until CI passes (see [`docs/deploy/vercel.md`](./docs/deploy/vercel.md)).
-- **`develop`** — integration branch. Work happens here or in short-lived `feature/*` branches off `develop`. Force push allowed for history cleanup before opening a PR.
+- **`main`** — production. All changes enter via PR from `develop`; never push to it directly and never force-push it. The repository is public, and a GitHub branch ruleset on `main` blocks deletion and force pushes. It does **not** require a pull request or status checks, on purpose: `release.yml` pushes release commits and the lockfile sync straight to `main` with `GITHUB_TOKEN`, and those rules would reject them. "PRs only" is therefore enforced by convention plus the husky `pre-push` hook, which blocks direct pushes to `main` from a local machine. Production safety comes from the CI gates: the API deploys `need` the CI job and the `api-image` build check (production from `main`, dev from `develop`), and Vercel Deployment Checks hold the web production deployment until CI passes (see [`docs/deploy/vercel.md`](./docs/deploy/vercel.md)).
+- **`develop`** — integration branch. Work happens here or in short-lived `feature/*` branches off `develop`. A branch ruleset blocks its deletion and force pushes, so history is never rewritten: fix mistakes with new commits (e.g. `git revert`).
 - **`feature/*`** — optional, for large or parallel work. Branch off `develop`, PR back into `develop`.
 
 #### CI/CD gates
@@ -246,7 +246,7 @@ feature/* ──► develop ⇄ main (production)
 #### Rules — for humans and AI agents alike
 
 1. **Never commit without explicit request** — do not create a commit unless the user explicitly asks for it.
-2. **Never push to `main` directly** — all changes must go through a PR from `develop`. GitHub does not enforce this on the current plan; the husky `pre-push` hook blocks it locally.
+2. **Never push to `main` directly** — all changes must go through a PR from `develop`. The `main` ruleset does not require a pull request (release automation pushes there), so the husky `pre-push` hook blocks it locally.
 3. **Never push without confirmation** — always ask the user before running `git push`, regardless of the branch.
 4. **Always run tests before pushing** — run `npm run test` before any push. If all tests pass and the push has been authorized, proceed. If any test fails, show a summary of the failing suites and do not push until they are fixed.
 5. **Always use Conventional Commits format** — every commit message must follow `type(scope): description` and pass commitlint (see Git/Commit Conventions). Free-form messages are not allowed.

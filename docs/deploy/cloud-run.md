@@ -530,7 +530,7 @@ End users only wait on a cold start for that first request after a deploy.
 
 **Symptom:** the detection log says the deployed SHA is not in the repository history.
 
-**Fix:** none needed. `develop` may be force-pushed, so the serving commit can disappear from history; in that case, as in any case where the serving image cannot be read or its tag is not a commit SHA, the workflow deploys. Skipping is never the fallback.
+**Fix:** none needed. Rulesets block force pushes to `develop` and `main`, so this is rare (a ruleset disabled temporarily, or a commit deployed before the rulesets existed); in that case, as in any case where the serving image cannot be read or its tag is not a commit SHA, the workflow deploys. Skipping is never the fallback.
 
 ### `vars` are empty in the called workflow
 

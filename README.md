@@ -351,7 +351,7 @@ interface WaterFootprintProduct {
 
 - **Language:** all code, comments, and commit messages in English.
 - **Commits:** [Conventional Commits](https://www.conventionalcommits.org/) — `type(scope): description`
-- **Branches:** `develop` is the integration branch; work lands there or in short-lived `feature/*` branches off it. `main` is protected — changes reach it only through Pull Requests.
+- **Branches:** `develop` is the integration branch; work lands there or in short-lived `feature/*` branches off it. `main` and `develop` are protected against deletion and force pushes; changes reach `main` through Pull Requests by convention, enforced locally by the husky `pre-push` hook.
 - **Specs:** non-trivial changes follow the Spec-Driven Development workflow with [OpenSpec](./openspec/) (proposal → approval → implementation → archive).
 - **Tests:** always use `it('...')`, group with `describe('...')`; Playwright E2E tests use `test('...')`.
 - **TypeScript:** strict mode enabled across all projects
