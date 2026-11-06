@@ -189,6 +189,7 @@ Lista de hallazgos del análisis de repositorio, ordenados por prioridad (más c
 ### 🟢 CI/CD
 
 - **I12.** Sharding de los E2E en GitHub Actions — hoy el E2E tarda ~12,5 min en CI y crece ~1,5–2 min por cada categoría con datos (quedan 8 de 12: ≈25–28 min con todas). El repo es privado: 2000 min/mes gratis a $0,006/min; octubre consumió ~1300 min. Partir en 2 shards bajaría el job de ~17 a ~11–13 min (no a la mitad: cada shard repite contenedor, `npm ci`, arranque de servidores y compilación de páginas en `next dev`) y suma ~4–5 min de consumo por corrida, así que primero ahorrar minutos: (1) evitar la corrida doble del CI en los PR `develop → main` (hoy corre por `push` y por `pull_request`); (2) recién entonces 2 shards. `cancel-in-progress` ya está activo fuera de `main`. Disparador: E2E > 15 min o consumo mensual > 1600 min.
+- **I13.** Analizar GitHub Environments (`production` / `development`) para el deploy de la API, disponibles gratis desde que el repo es público. Ventajas posibles: que GitHub restrinja el deploy a producción a `main`, aprobación manual opcional antes de producción, variables por entorno en vez del sufijo `_DEV` e historial de deploys en el repo. Solo evaluar; adoptarlo requiere spec.
 
 ### 🟢 Arquitectura / Deuda técnica
 

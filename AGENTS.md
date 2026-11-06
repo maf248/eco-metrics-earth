@@ -216,6 +216,7 @@ npx nx test api -- --updateSnapshot   # updates only api snapshots
 - Format: `type(scope): description`
   - Types: `feat`, `fix`, `docs`, `style`, `refactor`, `test`, `chore`
 - Examples: `feat(metrics): add new chart widget`, `fix(api): resolve data fetch error`
+- Use scope `tooling` for CI, Nx, scripts and hooks (not `ci`): `.releaserc.mjs` skips it, so it does not cut web/api releases.
 - Rules commitlint enforces:
   - **Header** (`type(scope): description`) ≤ 100 characters; scope expected (a missing one warns); description starts lowercase and has no trailing period.
   - **Body** optional, separated from the header by one blank line; **every line ≤ 100 characters** — wrap prose at ~72. The same limit applies to footers.
