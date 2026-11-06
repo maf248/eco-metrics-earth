@@ -40,6 +40,15 @@
           "command": "ANALYZE=true npx nx build web -- --webpack",
           "cwd": "."
         }
+      },
+      "test": {
+        "inputs": [
+          "default",
+          "^production",
+          "{workspaceRoot}/jest.preset.js",
+          "{workspaceRoot}/scripts/**/*",
+          "{workspaceRoot}/.github/workflows/**/*"
+        ]
       }
     }
   },
