@@ -1,3 +1,13 @@
+## [2.15.0](https://github.com/maf248/eco-metrics-earth/compare/api-v2.14.2...api-v2.15.0) (2026-11-06)
+
+### Features
+
+* **api:** restrict the api to the web app with a required key and instance caps ([e8d6a4a](https://github.com/maf248/eco-metrics-earth/commit/e8d6a4a8d72f2ea471e78a451cd439fbfb0ee593))
+
+### Bug Fixes
+
+* **api:** trim the internal api key so a trailing newline still matches ([17f190a](https://github.com/maf248/eco-metrics-earth/commit/17f190adf5fe85241d70999eb900a9e823710973))
+
 ## [2.14.2](https://github.com/maf248/eco-metrics-earth/compare/api-v2.14.1...api-v2.14.2) (2026-11-04)
 
 ## [2.14.1](https://github.com/maf248/eco-metrics-earth/compare/api-v2.14.0...api-v2.14.1) (2026-11-01)
