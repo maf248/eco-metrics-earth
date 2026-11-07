@@ -6,38 +6,38 @@ An environmental metrics dashboard monorepo — tracking air quality, CO₂ emis
 
 | Layer          | Technology                                                               | Version | Docs                                                                                         |
 | -------------- | ------------------------------------------------------------------------ | ------- | -------------------------------------------------------------------------------------------- |
-| **Monorepo**   | [NX](https://nx.dev)                                                     | 23.2.1  | [nx.dev/docs](https://nx.dev/getting-started/intro)                                          |
+| **Monorepo**   | [NX](https://nx.dev)                                                     | 23.3.1  | [nx.dev/docs](https://nx.dev/getting-started/intro)                                          |
 | **Runtime**    | [Node.js](https://nodejs.org) LTS                                        | 24.x    | [nodejs.org/docs](https://nodejs.org/docs/latest-v24.x/api/)                                 |
-| **Frontend**   | [Next.js](https://nextjs.org) (App Router)                               | 16.4.2  | [nextjs.org/docs](https://nextjs.org/docs)                                                   |
-| **UI**         | [React](https://react.dev)                                               | 19.3.0  | [react.dev](https://react.dev/reference/react)                                               |
-| **Styling**    | [Tailwind CSS](https://tailwindcss.com)                                  | 4.3.3   | [tailwindcss.com/docs](https://tailwindcss.com/docs)                                         |
+| **Frontend**   | [Next.js](https://nextjs.org) (App Router)                               | 16.4.5  | [nextjs.org/docs](https://nextjs.org/docs)                                                   |
+| **UI**         | [React](https://react.dev)                                               | 19.3.1  | [react.dev](https://react.dev/reference/react)                                               |
+| **Styling**    | [Tailwind CSS](https://tailwindcss.com)                                  | 4.3.5   | [tailwindcss.com/docs](https://tailwindcss.com/docs)                                         |
 | **Theming**    | React Context + localStorage                                             | —       | Light and dark mode support with persistent user preference via a theme toggle               |
-| **Backend**    | [NestJS](https://nestjs.com)                                             | 12.3.2  | [docs.nestjs.com](https://docs.nestjs.com)                                                   |
+| **Backend**    | [NestJS](https://nestjs.com)                                             | 12.4.0  | [docs.nestjs.com](https://docs.nestjs.com)                                                   |
 | **Language**   | [TypeScript](https://www.typescriptlang.org)                             | 5.9.3   | [typescriptlang.org/docs](https://www.typescriptlang.org/docs/)                              |
 | **Testing**    | [Jest](https://jestjs.io)                                                | 30.5.2  | [jestjs.io/docs](https://jestjs.io/docs/getting-started)                                     |
 | **Testing**    | [Testing Library](https://testing-library.com)                           | 16.3.3  | [testing-library.com/docs](https://testing-library.com/docs/)                                |
-| **E2E**        | [Playwright](https://playwright.dev)                                     | 1.63.0  | [playwright.dev/docs](https://playwright.dev/docs/intro)                                     |
+| **E2E**        | [Playwright](https://playwright.dev)                                     | 1.65.0  | [playwright.dev/docs](https://playwright.dev/docs/intro)                                     |
 | **A11y**       | [axe-core](https://github.com/dequelabs/axe-core-npm) (Playwright)       | 4.13.0  | [github.com/dequelabs/axe-core-npm](https://github.com/dequelabs/axe-core-npm)               |
-| **Linting**    | [ESLint](https://eslint.org)                                             | 10.12.0 | [eslint.org/docs](https://eslint.org/docs/latest/)                                           |
-| **Formatting** | [Prettier](https://prettier.io)                                          | 3.9.9   | [prettier.io/docs](https://prettier.io/docs/en/)                                             |
-| **Config**     | [@nestjs/config](https://docs.nestjs.com/techniques/configuration)       | 12.0.1  | [docs.nestjs.com/techniques/configuration](https://docs.nestjs.com/techniques/configuration) |
-| **API Docs**   | [@nestjs/swagger](https://docs.nestjs.com/openapi/introduction)          | 12.0.2  | [docs.nestjs.com/openapi/introduction](https://docs.nestjs.com/openapi/introduction)         |
+| **Linting**    | [ESLint](https://eslint.org)                                             | 10.14.0 | [eslint.org/docs](https://eslint.org/docs/latest/)                                           |
+| **Formatting** | [Prettier](https://prettier.io)                                          | 3.9.10  | [prettier.io/docs](https://prettier.io/docs/en/)                                             |
+| **Config**     | [@nestjs/config](https://docs.nestjs.com/techniques/configuration)       | 12.1.1  | [docs.nestjs.com/techniques/configuration](https://docs.nestjs.com/techniques/configuration) |
+| **API Docs**   | [@nestjs/swagger](https://docs.nestjs.com/openapi/introduction)          | 12.1.1  | [docs.nestjs.com/openapi/introduction](https://docs.nestjs.com/openapi/introduction)         |
 | **Reactive**   | [RxJS](https://rxjs.dev)                                                 | 7.8.2   | [rxjs.dev/guide](https://rxjs.dev/guide/overview)                                            |
 | **Validation** | [class-validator](https://github.com/typestack/class-validator)          | 0.15.1  | [docs.nestjs.com/techniques/validation](https://docs.nestjs.com/techniques/validation)       |
-| **Env schema** | [Joi](https://joi.dev)                                                   | 18.3.1  | [joi.dev/api](https://joi.dev/api/)                                                          |
+| **Env schema** | [Joi](https://joi.dev)                                                   | 18.3.2  | [joi.dev/api](https://joi.dev/api/)                                                          |
 | **Security**   | [Helmet](https://helmetjs.github.io)                                     | 8.3.0   | [helmetjs.github.io](https://helmetjs.github.io/)                                            |
 | **Rate limit** | [@nestjs/throttler](https://docs.nestjs.com/security/rate-limiting)      | 6.7.1   | [docs.nestjs.com/security/rate-limiting](https://docs.nestjs.com/security/rate-limiting)     |
-| **Compiler**   | [SWC](https://swc.rs) (Jest transform)                                   | 1.16.13 | [swc.rs/docs](https://swc.rs/docs/getting-started)                                           |
+| **Compiler**   | [SWC](https://swc.rs) (Jest transform)                                   | 1.16.22 | [swc.rs/docs](https://swc.rs/docs/getting-started)                                           |
 | **Releases**   | [semantic-release](https://semantic-release.gitbook.io/semantic-release) | 25.0.9  | [semantic-release docs](https://semantic-release.gitbook.io/semantic-release)                |
 | **Git hooks**  | [Husky](https://typicode.github.io/husky)                                | 9.1.7   | [typicode.github.io/husky](https://typicode.github.io/husky/)                                |
 | **Git hooks**  | [lint-staged](https://github.com/lint-staged/lint-staged)                | 17.6.0  | [github.com/lint-staged/lint-staged](https://github.com/lint-staged/lint-staged)             |
-| **Commits**    | [commitlint](https://commitlint.js.org)                                  | 21.2.3  | [commitlint.js.org](https://commitlint.js.org/)                                              |
+| **Commits**    | [commitlint](https://commitlint.js.org)                                  | 21.2.4  | [commitlint.js.org](https://commitlint.js.org/)                                              |
 
 ### Packages
 
-| Package           | Name                  | Description                                                                                                                                                                                                     |
-| ----------------- | --------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `packages/shared` | `@eco-metrics/shared` | Shared TypeScript types: `ApiResponse<T>`, `ApiResponseMeta`, `EcoCategory`, `ECO_CATEGORIES`, `MetricPoint`, `MetricSeries`, `DataSourceAttribution`, data sources catalog types, water-footprint domain types |
+| Package           | Name                  | Description                                                                                                                                                                                                                                                                                                                   |
+| ----------------- | --------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `packages/shared` | `@eco-metrics/shared` | Shared TypeScript types: `ApiResponse<T>`, `ApiResponseMeta`, `EcoCategory`, `ECO_CATEGORIES`, `MetricPoint`, `MetricSeries`, `DataSourceAttribution`, data sources catalog types, country codes and year-aligned series types, and the domain types of water footprint, CO₂ emissions, global temperature and energy sources |
 
 ### Deploy Targets
 
