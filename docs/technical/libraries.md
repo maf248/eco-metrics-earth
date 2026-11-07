@@ -2,9 +2,9 @@
 
 Reference notes for choosing the chart, map, and table libraries for `apps/web`.
 
-**Status: research catalogue — decisions live in the Presentation Stack section of `docs/design-system.md`.** The decision this research informed is Apache ECharts 6 for charts and maps (installed with the CO2 emissions page, which is the first real chart); tables are still open. This document keeps the candidates, the spike evidence, and what is still to verify — The gate left for the first real chart — interaction across all five Playwright projects — is recorded under Remaining gates below.
+**Status: research catalogue — decisions live in the Presentation Stack section of `docs/design-system.md`.** The decisions this research informed are Apache ECharts 6 for charts and maps (installed with the CO2 emissions page, which is the first real chart) and hand-rolled tables with no table library. This document keeps the candidates, the spike evidence, and what is still to verify — The gate left for the first real chart — interaction across all five Playwright projects — is recorded under Remaining gates below.
 
-_Screening: 16 Sep 2026. Spike (Recharts vs ECharts, disposable, never merged): 24 Oct 2026._ Version numbers and project-health claims were accurate then and should be re-checked before acting on them.
+_Screening: 16 Sep 2026. Spike (Recharts vs ECharts, disposable, never merged): 24 Oct 2026. Spike (tables: hand-rolled vs TanStack Table 8 and 9, disposable, never merged): 7 Nov 2026._ Version numbers and project-health claims were accurate then and should be re-checked before acting on them.
 
 ## Current stack
 
@@ -84,16 +84,18 @@ Country flags appear in the country combobox. Flags are images, so they are outs
 
 ## Tables
 
-Still open — the hand-rolled `WaterFootprintTable` is enough today; a library earns its place once country × year tables with search and sorting repeat across categories.
+**Decided: hand-rolled tables, no table library.** In the spike, the planned world map's country × year table (216 countries, search, year selector, three sortable columns) built by hand and with TanStack Table 8.21.3 and 9.3.1 behaved identically, with no axe violations in any of them.
 
-| Candidate                | License | Read                                                                                                                                                                   |
-| ------------------------ | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **TanStack Table v9**    | MIT     | Front-runner. Headless, ~10–15KB gz, stable since Aug 2026, maps 1:1 onto the ARIA patterns `WaterFootprintTable` already uses. `8.21.3` is the battle-tested fallback |
-| **AG Grid Community 36** | MIT     | License verified — the relicensing rumor is false. But ~150–300KB gz and its DOM competes with hand-rolled Tailwind tables                                             |
+- **No gain:** markup, `aria-sort`, the live status and the comparators (locale name order, search ignoring diacritics) are ours either way; a library would only replace the sort and filter state.
+- **Cost:** the route ships 3.2 KB of JS gzipped by hand, against 14.3 KB with v9 and 16.2 KB with v8, for the same behavior.
+- **Friction:** TanStack's `sortUndefined` only handles `undefined`, while a missing value here is `null`.
+- **v8 ruled out:** no release since Apr 2025, and it calls `Date.now()` during render in development, which Next 16 reports as an error.
 
-**Ruled out:** MUI X DataGrid (drags MUI Core + emotion into a Tailwind-only app), Glide Data Grid (canvas, peers not published for React 19), react-data-grid (perpetual beta since 2022).
+**When to reconsider** (TanStack Table v9 first): pagination or virtualization, multi-column sorting, column visibility or resizing, grouping, row selection, or server-side sorting and filtering.
 
-Spike to run when the item is picked up: TanStack v9 against the v8.21.3 fallback and against hand-rolled markup, on a country × year table — whether the headless hooks map cleanly onto the ARIA patterns `WaterFootprintTable` already uses, and the measured bundle delta.
+**Not spiked:** AG Grid Community 36 (~150–300 KB gzipped, and its DOM competes with hand-rolled Tailwind tables).
+
+**Ruled out at screening:** MUI X DataGrid (drags MUI Core + emotion into a Tailwind-only app), Glide Data Grid (canvas, peers not published for React 19), react-data-grid (perpetual beta since 2022).
 
 ## Remaining gates
 
