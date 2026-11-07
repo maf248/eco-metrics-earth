@@ -7,10 +7,17 @@ import { selectors } from './utils/selectors';
 // Axe samples computed colors, so a `transition-colors` still running after load
 // (e.g. on the nav links) yields intermediate, low-contrast values. Freeze
 // transitions and animations so the audit sees the final colors.
+// BrandText also types the brand out over ~1 s, and axe's
+// label-content-name-mismatch compares the link's visible text with its
+// accessible name word by word, so a scan mid-typing sees a partial word.
+// Wait for the full brand text before scanning.
 async function analyzeSettled(page: Page): ReturnType<AxeBuilder['analyze']> {
   await page.addStyleTag({
     content: '*, *::before, *::after { transition: none !important; animation: none !important; }',
   });
+  await expect(page.locator(selectors.brandLink).filter({ visible: true })).toContainText(
+    '~ eco-metrics.earth',
+  );
   return new AxeBuilder({ page }).analyze();
 }
 
