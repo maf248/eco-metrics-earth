@@ -17,7 +17,7 @@ An environmental metrics dashboard monorepo — tracking air quality, CO₂ emis
 | **Testing**    | [Jest](https://jestjs.io)                                                | 30.5.2  | [jestjs.io/docs](https://jestjs.io/docs/getting-started)                                     |
 | **Testing**    | [Testing Library](https://testing-library.com)                           | 16.3.3  | [testing-library.com/docs](https://testing-library.com/docs/)                                |
 | **E2E**        | [Playwright](https://playwright.dev)                                     | 1.65.0  | [playwright.dev/docs](https://playwright.dev/docs/intro)                                     |
-| **A11y**       | [axe-core](https://github.com/dequelabs/axe-core-npm) (Playwright)       | 4.13.0  | [github.com/dequelabs/axe-core-npm](https://github.com/dequelabs/axe-core-npm)               |
+| **A11y**       | [axe-core](https://github.com/dequelabs/axe-core-npm) (Playwright)       | 4.14.0  | [github.com/dequelabs/axe-core-npm](https://github.com/dequelabs/axe-core-npm)               |
 | **Linting**    | [ESLint](https://eslint.org)                                             | 10.14.0 | [eslint.org/docs](https://eslint.org/docs/latest/)                                           |
 | **Formatting** | [Prettier](https://prettier.io)                                          | 3.9.10  | [prettier.io/docs](https://prettier.io/docs/en/)                                             |
 | **Config**     | [@nestjs/config](https://docs.nestjs.com/techniques/configuration)       | 12.1.1  | [docs.nestjs.com/techniques/configuration](https://docs.nestjs.com/techniques/configuration) |
