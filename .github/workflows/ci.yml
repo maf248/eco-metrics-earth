@@ -3,8 +3,6 @@ name: CI
 on:
   push:
     branches: ['**']
-  pull_request:
-    branches: [main]
 
 permissions:
   contents: read
@@ -104,7 +102,9 @@ jobs:
       - name: Decide whether E2E can be skipped
         id: e2e_gate
         env:
-          BASE_SHA: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.sha || github.event.before }}
+          # Push-only workflow: `before` is the previous tip (all zeros on a new
+          # branch); the detector treats a zero or unknown base as doubt and runs E2E.
+          BASE_SHA: ${{ github.event.before }}
           HEAD_SHA: ${{ github.sha }}
           GITHUB_TOKEN: ${{ github.token }}
           # Must equal the job `name` above (the CONTRACT comment); `job.name`
@@ -143,7 +143,9 @@ jobs:
       - name: Detect api image changes
         id: detect
         env:
-          BASE_SHA: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.sha || github.event.before }}
+          # Push-only workflow: `before` is the previous tip (all zeros on a new
+          # branch); the script treats a zero or unknown base as doubt and builds.
+          BASE_SHA: ${{ github.event.before }}
           HEAD_SHA: ${{ github.sha }}
         run: bash scripts/detect-api-image-changes.sh
 

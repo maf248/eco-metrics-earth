@@ -45,7 +45,7 @@ The `.husky/pre-push` hook SHALL run `npx nx affected --target=test --base=origi
 
 ### Requirement: E2E coverage on push is provided by CI, not the local hook
 
-Removing E2E from the local hook SHALL NOT reduce E2E coverage of pushed code: the CI workflow (`.github/workflows/ci.yml`) runs the full Playwright suite (`npm run e2e`) on every push to every branch (`on: push: branches: ['**']`) and on every pull request to `main`. This requirement records the safety-net contract the slimmed hook relies on — if CI's E2E step is ever removed or made conditional, this requirement is violated and the hook design must be revisited.
+Removing E2E from the local hook SHALL NOT reduce E2E coverage of pushed code: the CI workflow (`.github/workflows/ci.yml`) runs the full Playwright suite (`npm run e2e`) on every push to every branch (`on: push: branches: ['**']`); a pull request shows the checks of the push run on its head commit. This requirement records the safety-net contract the slimmed hook relies on — if CI's E2E step is ever removed or made conditional, this requirement is violated and the hook design must be revisited.
 
 #### Scenario: A push to develop triggers full E2E in CI
 
@@ -56,8 +56,8 @@ Removing E2E from the local hook SHALL NOT reduce E2E coverage of pushed code: t
 #### Scenario: A PR from develop to main is gated by CI including E2E
 
 - **GIVEN** a pull request from `develop` to `main`
-- **WHEN** CI runs on the PR
-- **THEN** the full E2E suite is part of the required checks before the PR can merge
+- **WHEN** the CI run triggered by pushing its head commit completes
+- **THEN** the pull request shows that run's checks, including the full E2E suite, before it is merged
 
 ### Requirement: Change validation is guaranteed by the SDD flow
 
