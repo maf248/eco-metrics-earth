@@ -1,3 +1,15 @@
+## [2.16.0](https://github.com/maf248/eco-metrics-earth/compare/web-v2.15.0...web-v2.16.0) (2026-11-10)
+
+### Features
+
+* **web:** add co2 per capita world map with sortable country ranking ([94d51e3](https://github.com/maf248/eco-metrics-earth/commit/94d51e39fd7eacf5bc5bef3548b7bf07400012b1))
+* **web:** move the co2 world map below the country explorer ([30c0672](https://github.com/maf248/eco-metrics-earth/commit/30c0672bd5808cf71f13991b5b46a75936befebb))
+
+### Bug Fixes
+
+* **web:** keep year table header borders and fit the energy table in the card ([75d7835](https://github.com/maf248/eco-metrics-earth/commit/75d78356f635122f94cdc8337a05ab4f3a423ae4))
+* **web:** register the world map geometry through the map chart entry ([a3b349b](https://github.com/maf248/eco-metrics-earth/commit/a3b349b68f266ba74779bc209b9686fc9fc9dc6e))
+
 ## [2.15.0](https://github.com/maf248/eco-metrics-earth/compare/web-v2.14.3...web-v2.15.0) (2026-11-06)
 
 ### Features
