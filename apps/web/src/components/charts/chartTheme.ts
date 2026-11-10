@@ -1,4 +1,10 @@
-import { CHART_PALETTE_TOKENS, CHART_UI_TOKENS, type ChartPalette } from './chartTokens';
+import {
+  CHART_NO_DATA_TOKEN,
+  CHART_PALETTE_TOKENS,
+  CHART_SEQUENTIAL_TOKENS,
+  CHART_UI_TOKENS,
+  type ChartPalette,
+} from './chartTokens';
 
 /** Turns any CSS color (hex, `oklch()`, `var()`-free) into an `rgba()` string. */
 export type ColorResolver = (cssColor: string) => string;
@@ -16,7 +22,29 @@ export interface ChartTheme {
   };
   legend: { textStyle: { color: string } };
   markLine: { lineStyle: { color: string }; label: { color: string } };
+  /** Choropleth classes, low to high: the default colors of every visual map. */
+  visualMap: { inRange: { color: string[] } };
+  /** Map series defaults: a region without a value keeps the no-data area color. */
+  map: MapTheme;
 }
+
+interface MapRegionStyle {
+  /** `null` (with `color: null`) keeps the region's own fill: ECharts' documented opt-out. */
+  areaColor: string | null;
+  color?: null;
+  borderColor: string;
+  borderWidth: number;
+}
+
+interface MapTheme {
+  itemStyle: Omit<MapRegionStyle, 'color'> & { areaColor: string };
+  emphasis: { label: { show: false }; itemStyle: MapRegionStyle };
+  select: { label: { show: false }; itemStyle: MapRegionStyle };
+}
+
+/** Region outline: thin, so small countries keep their fill; hover and selection thicken it. */
+const MAP_BORDER_WIDTH = 0.5;
+const MAP_EMPHASIS_BORDER_WIDTH = 1.5;
 
 interface AxisTheme {
   axisLine: { lineStyle: { color: string } };
@@ -95,5 +123,31 @@ export function buildChartTheme(
       lineStyle: { color: ui('referenceLine') },
       label: { color: ui('referenceLabel') },
     },
+    visualMap: {
+      inRange: { color: CHART_SEQUENTIAL_TOKENS.map((token) => resolve(readToken(token))) },
+    },
+    map: buildMapTheme(
+      resolve(readToken(CHART_NO_DATA_TOKEN)),
+      ui('mapBorder'),
+      ui('mapEmphasisBorder'),
+    ),
+  };
+}
+
+/**
+ * Hover and selection keep the region's own fill (the class color) and only draw a stronger
+ * outline: ECharts' default emphasis and select fills would hide the value being pointed at.
+ */
+function buildMapTheme(noData: string, border: string, emphasisBorder: string): MapTheme {
+  const highlighted: MapRegionStyle = {
+    areaColor: null,
+    color: null,
+    borderColor: emphasisBorder,
+    borderWidth: MAP_EMPHASIS_BORDER_WIDTH,
+  };
+  return {
+    itemStyle: { areaColor: noData, borderColor: border, borderWidth: MAP_BORDER_WIDTH },
+    emphasis: { label: { show: false }, itemStyle: highlighted },
+    select: { label: { show: false }, itemStyle: highlighted },
   };
 }

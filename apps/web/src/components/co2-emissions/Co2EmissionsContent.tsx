@@ -1,5 +1,6 @@
 import { Co2Explorer } from '@/components/co2-emissions/Co2Explorer';
 import { Co2KeyFigures } from '@/components/co2-emissions/Co2KeyFigures';
+import { Co2WorldMap } from '@/components/co2-emissions/Co2WorldMap';
 import { DataAttribution } from '@/components/DataAttribution';
 import { JsonLd } from '@/components/JsonLd';
 import { OriginCredit } from '@/components/OriginCredit';
@@ -35,6 +36,8 @@ export function Co2EmissionsContent({ data: { data, meta } }: Co2EmissionsConten
         How much CO2 does each country emit? Explore annual emissions since {data.startYear}, in
         total and per person.
       </p>
+
+      <Co2WorldMap data={data} />
 
       <div className="mb-8 rounded-2xl bg-well px-5 py-5 text-center sm:px-8">
         <Co2KeyFigures data={data} />

@@ -75,6 +75,15 @@
   --energy-wind: #00c4c6; /* teal / cyan */
   --energy-solar: #e9a400; /* amber */
   --energy-bio: #26771e; /* green */
+
+  /* Sequential palette (choropleth classes, low to high) and the no-data fill: read by name by
+   * the chart theme adapter and by the map legend (var()), not Tailwind utilities. */
+  --chart-seq-1: #f5af20; /* yellow */
+  --chart-seq-2: #ec8300; /* amber */
+  --chart-seq-3: #de5300; /* orange */
+  --chart-seq-4: #c1291b; /* red */
+  --chart-seq-5: #8a161b; /* dark red */
+  --chart-no-data: #e5e5e5; /* neutral */
 }
 
 .dark {
@@ -139,6 +148,14 @@
   --energy-wind: #33cbea; /* teal / cyan */
   --energy-solar: #ffd347; /* amber */
   --energy-bio: #11b254; /* green */
+
+  /* Sequential palette and no-data fill (dark) */
+  --chart-seq-1: #fed25f; /* yellow */
+  --chart-seq-2: #f9a129; /* amber */
+  --chart-seq-3: #f16a00; /* orange */
+  --chart-seq-4: #da3b21; /* red */
+  --chart-seq-5: #b32322; /* dark red */
+  --chart-no-data: #262626; /* neutral */
 }
 
 @theme inline {

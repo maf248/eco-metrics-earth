@@ -132,6 +132,56 @@ describe('presentation docs', () => {
     });
   });
 
+  describe('design-system.md world map', () => {
+    const sequential = sectionFrom(designSystem, '### Sequential (light / dark)');
+    const globalsCss = readRepoFile('apps/web/src/app/globals.css');
+    const [lightBlock, darkBlock] = [
+      globalsCss.slice(globalsCss.indexOf('\n:root {'), globalsCss.indexOf('\n.dark {')),
+      globalsCss.slice(globalsCss.indexOf('\n.dark {')),
+    ];
+    const tokenValue = (block: string, token: string): string | undefined =>
+      new RegExp(`--${token}:\\s*(#[0-9a-f]{6})`, 'i').exec(block)?.[1];
+
+    it.each([
+      'chart-seq-1',
+      'chart-seq-2',
+      'chart-seq-3',
+      'chart-seq-4',
+      'chart-seq-5',
+      'chart-no-data',
+    ])('should list %s with the light and dark values declared in globals.css', (token) => {
+      const row = sequential.split('\n').find((line) => line.startsWith(`| \`${token}\``));
+
+      expect(row).toBeDefined();
+      expect(row).toContain(tokenValue(lightBlock, token));
+      expect(row).toContain(tokenValue(darkBlock, token));
+    });
+
+    it('should record the ramp validation and its exceptions, and nothing pending', () => {
+      expect(sequential).toMatch(/Yellow → red/);
+      expect(sequential).toMatch(/1\.90:1/);
+      expect(sequential).toMatch(/Hue spread/);
+      expect(sequential).not.toMatch(/pending/i);
+    });
+
+    it('should leave nothing about map geometry pending in the Presentation Stack', () => {
+      const geometry = presentationStack
+        .split('\n')
+        .find((line) => line.startsWith('- **Map geometry:**'));
+
+      expect(geometry).toBeDefined();
+      expect(geometry).not.toMatch(/pending/i);
+    });
+
+    it('should state that the map box takes the map aspect because ECharts stretches it', () => {
+      const rule9 = designSystem.split('\n').find((line) => line.startsWith('9. **Maps:**'));
+
+      expect(rule9).toMatch(/stretches a map/);
+      expect(rule9).toMatch(/aspect-\[2238\/1000\]/);
+      expect(rule9).toMatch(/npm run geo:world/);
+    });
+  });
+
   describe('libraries.md', () => {
     it('should record the measured gzipped size added by the mark line component', () => {
       const markLineCost = sectionFrom(libraries, '### Reference line (mark line) cost');

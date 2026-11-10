@@ -47,7 +47,8 @@
           "^production",
           "{workspaceRoot}/jest.preset.js",
           "{workspaceRoot}/scripts/**/*",
-          "{workspaceRoot}/.github/workflows/**/*"
+          "{workspaceRoot}/.github/workflows/**/*",
+          "{workspaceRoot}/docs/**/*"
         ]
       }
     }

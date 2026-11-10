@@ -15,13 +15,24 @@ describe('CategoryDataSkeleton', () => {
   });
 
   it('should render one chart skeleton for an explorer', () => {
-    render(<CategoryDataSkeleton category="co2-emissions" />);
+    render(<CategoryDataSkeleton category="global-temperature" />);
     expect(screen.getAllByTestId('chart-skeleton')).toHaveLength(1);
   });
 
   it('should draw its text as bars with the copy hidden', () => {
+    render(<CategoryDataSkeleton category="global-temperature" />);
+    expect(screen.getByText('Explore temperature by country')).toHaveClass('text-transparent');
+  });
+
+  it('should draw the world map card for co2-emissions: title, map and six legend swatches', () => {
     render(<CategoryDataSkeleton category="co2-emissions" />);
-    expect(screen.getByText('Explore emissions by country')).toHaveClass('text-transparent');
+    expect(screen.getByText('CO2 emissions per capita, 2024 (tonnes per person)')).toHaveClass(
+      'text-transparent',
+    );
+    const [map] = screen.getAllByTestId('chart-skeleton');
+    expect(map).toHaveClass('aspect-[2238/1000]');
+    expect(map.className).toContain('url(/geo/world-silhouette.svg)');
+    expect(screen.getByTestId('world-map-skeleton-legend').children).toHaveLength(6);
   });
 
   it('should render a stacked chart and a donut for the energy explorer', () => {
@@ -50,5 +61,10 @@ describe('ChartSkeleton', () => {
   it('should draw a ring for the donut variant', () => {
     render(<ChartSkeleton variant="donut" />);
     expect(screen.getByTestId('chart-skeleton').querySelector('circle')).not.toBeNull();
+  });
+
+  it('should keep the map aspect ratio for the map variant', () => {
+    render(<ChartSkeleton variant="map" />);
+    expect(screen.getByTestId('chart-skeleton')).toHaveClass('aspect-[2238/1000]');
   });
 });

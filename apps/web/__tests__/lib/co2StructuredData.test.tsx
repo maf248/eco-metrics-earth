@@ -27,6 +27,13 @@ describe('buildCo2DatasetJsonLd', () => {
     expect(jsonLd.name).toBe('CO2 emissions by country, 2020–2024');
   });
 
+  it('should describe the map and ranking views of the same data, in one block', () => {
+    const { description, keywords } = build();
+
+    expect(description).toContain('world map and a ranking of countries');
+    expect(keywords).toEqual(expect.arrayContaining(['world map', 'country ranking']));
+  });
+
   it('should keep the description within the 50-5000 characters Google requires', () => {
     const { description } = build();
 

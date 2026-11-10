@@ -86,8 +86,22 @@ test.describe('Accessibility audit — CO2 emissions page', () => {
     page,
   }) => {
     await page.goto('/co2-emissions/');
-    await page.getByText('View data table').click();
-    await expect(page.getByRole('table')).toBeVisible();
+    const explorer = page.getByRole('region', { name: 'Explore emissions by country' });
+    await explorer.getByText('View data table').click();
+    await expect(explorer.getByRole('table')).toBeVisible();
+
+    expect(criticalAndSerious(await analyzeSettled(page))).toEqual([]);
+  });
+
+  test('should have zero critical and serious violations with the ranking table open and sorted', async ({
+    page,
+  }) => {
+    await page.goto('/co2-emissions/');
+    const card = page.getByRole('region', { name: /^CO2 emissions per capita, \d{4}/ });
+    await card.getByText('View data table').click();
+    await card.getByRole('button', { name: /^Total/ }).click();
+    await card.getByRole('button', { name: 'Argentina' }).click();
+    await expect(card.locator('tr[aria-current="true"]')).toBeVisible();
 
     expect(criticalAndSerious(await analyzeSettled(page))).toEqual([]);
   });

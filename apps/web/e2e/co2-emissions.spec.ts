@@ -14,7 +14,17 @@ const KEY_FIGURES =
 const REGIONAL_INDICATORS = /[\u{1F1E6}-\u{1F1FF}]/u;
 const MAX_FLAG_REQUESTS = 40;
 
-const chart = (page: Page) => page.getByTestId('echart');
+/** The country explorer below the world map: its chart mounts once scrolled into view. */
+const explorer = (page: Page) => page.getByRole('region', { name: 'Explore emissions by country' });
+const chart = (page: Page) => explorer(page).getByTestId('echart');
+const perCapitaToggle = (page: Page) => explorer(page).getByText('Per capita', { exact: true });
+
+/** Scrolls the explorer into view and waits for its chart to draw. */
+async function showExplorerChart(page: Page): Promise<void> {
+  await explorer(page).getByRole('heading', { level: 2 }).scrollIntoViewIfNeeded();
+  // Deferred (RenderWhenVisible) and lazily loaded: allow for the chunk on a cold dev server.
+  await expect(chart(page).locator('svg').first()).toBeVisible({ timeout: 20_000 });
+}
 const country = (page: Page) => page.getByRole('combobox', { name: 'Country' });
 
 /** Collects console errors and uncaught page errors for the lifetime of the page. */
@@ -27,11 +37,17 @@ function collectErrors(page: Page): string[] {
   return errors;
 }
 
-/** Selects a country through the combobox by typing and pressing Enter. */
-async function selectCountry(page: Page, query: string): Promise<void> {
-  await country(page).click();
-  await country(page).fill(query);
-  await country(page).press('Enter');
+/**
+ * Selects a country through the combobox by typing and pressing Enter, retrying until the
+ * selection sticks: typing before hydration (slower under parallel load) is lost.
+ */
+async function selectCountry(page: Page, query: string, expected = 'Argentina'): Promise<void> {
+  await expect(async () => {
+    await country(page).click();
+    await country(page).fill(query);
+    await country(page).press('Enter');
+    await expect(country(page)).toHaveValue(expected, { timeout: 1_000 });
+  }).toPass({ timeout: 20_000 });
 }
 
 test.describe('CO2 Emissions page', () => {
@@ -41,7 +57,7 @@ test.describe('CO2 Emissions page', () => {
     }) => {
       await page.goto(PAGE_URL);
 
-      await expect(chart(page).locator('svg').first()).toBeVisible();
+      await showExplorerChart(page);
       await expect(page.getByTestId('stale-data-notice')).toHaveCount(0);
       await expect(page.getByTestId('data-unavailable')).toHaveCount(0);
     });
@@ -55,7 +71,7 @@ test.describe('CO2 Emissions page', () => {
 
         await expect(page.getByRole('heading', { name: 'CO2 Emissions', level: 1 })).toBeVisible();
         await expect(page.getByTestId('co2-key-figures')).toHaveText(KEY_FIGURES);
-        await expect(chart(page).locator('svg').first()).toBeVisible();
+        await showExplorerChart(page);
 
         const attribution = page.getByTestId('co2-attribution');
         await expect(attribution).toContainText('Data:');
@@ -96,6 +112,20 @@ test.describe('CO2 Emissions page', () => {
       expect(html).toMatch(/the world emitted/);
       expect(html).toContain('World: total CO2 emissions');
       expect(html).toContain('View data table');
+    });
+
+    test('should server-render the map card and the ranking, but no map drawing', async ({
+      request,
+    }) => {
+      const html = await (await request.get(PAGE_URL)).text();
+
+      expect(html).toMatch(/CO2 emissions per capita, \d{4} \(tonnes per person\)/);
+      expect(html).toContain('type="range"');
+      expect(html).toContain('data-testid="chart-skeleton"');
+      // React separates the caption's text and year with an empty comment.
+      expect(html).toMatch(/Countries ranked by CO2 emissions per capita, (<!-- -->)?\d{4}/);
+      expect(html).toMatch(/data-testid="co2-ranking-region"[\s\S]*<tbody><tr/);
+      expect(html).not.toContain('data-testid="echart"');
     });
 
     test('should declare a schema.org Dataset in the server-rendered HTML', async ({ request }) => {
@@ -144,7 +174,7 @@ test.describe('CO2 Emissions page', () => {
 
     test('should not overflow horizontally', { tag: '@smoke' }, async ({ page }) => {
       await page.goto(PAGE_URL);
-      await expect(chart(page).locator('svg').first()).toBeVisible();
+      await showExplorerChart(page);
 
       const overflow = await page.evaluate(
         () => document.documentElement.scrollWidth - document.documentElement.clientWidth,
@@ -161,7 +191,7 @@ test.describe('CO2 Emissions page', () => {
       { tag: '@smoke' },
       async ({ page }) => {
         await page.goto(PAGE_URL);
-        await expect(chart(page).locator('svg').first()).toBeVisible();
+        await showExplorerChart(page);
 
         const overflow = await page.evaluate(
           () => document.documentElement.scrollWidth - document.documentElement.clientWidth,
@@ -170,8 +200,8 @@ test.describe('CO2 Emissions page', () => {
 
         const heights = [
           await country(page).boundingBox(),
-          await page.getByText('Per capita', { exact: true }).boundingBox(),
-          await page.locator('details summary').boundingBox(),
+          await perCapitaToggle(page).boundingBox(),
+          await explorer(page).locator('details summary').boundingBox(),
         ];
         for (const box of heights) {
           expect(box?.height ?? 0).toBeGreaterThanOrEqual(44);
@@ -194,7 +224,7 @@ test.describe('CO2 Emissions page', () => {
         await expect(
           page.getByRole('heading', { level: 3, name: /^Argentina: total CO2 emissions/ }),
         ).toBeVisible();
-        await expect(page.locator('.fi-ar')).toBeVisible();
+        await expect(explorer(page).locator('.fi-ar')).toBeVisible();
         expect(await page.locator('main').innerText()).not.toMatch(REGIONAL_INDICATORS);
         await expect(page.getByRole('status').filter({ hasText: 'Showing total' })).toHaveText(
           'Showing total CO2 emissions for Argentina',
@@ -203,24 +233,19 @@ test.describe('CO2 Emissions page', () => {
       },
     );
 
-    test('should show a globe, no flag, for World and request no flag images', async ({ page }) => {
-      const flagRequests: string[] = [];
-      page.on('request', (request) => {
-        if (/\/_next\/static\/media\/.*\.svg/.test(request.url())) flagRequests.push(request.url());
-      });
+    test('should show a globe, no flag, for World in the explorer', async ({ page }) => {
       await page.goto(PAGE_URL);
-      await expect(chart(page).locator('svg').first()).toBeVisible();
+      await showExplorerChart(page);
 
       await expect(country(page)).toHaveValue('World');
-      await expect(page.locator('[class*="fi-"]')).toHaveCount(0);
-      expect(flagRequests).toEqual([]);
+      await expect(explorer(page).locator('[class*="fi-"]')).toHaveCount(0);
     });
 
     test('should not change the URL when the selection changes', async ({ page }) => {
       await page.goto(PAGE_URL);
 
       await selectCountry(page, 'arg');
-      await page.getByText('Per capita', { exact: true }).click();
+      await perCapitaToggle(page).click();
 
       expect(new URL(page.url()).pathname).toBe(PAGE_URL);
       expect(new URL(page.url()).search).toBe('');
@@ -237,7 +262,7 @@ test.describe('CO2 Emissions page', () => {
         const perCapita = page.getByRole('radio', { name: 'Per capita' });
         await expect(total).toBeChecked();
 
-        await page.getByText('Per capita', { exact: true }).click();
+        await perCapitaToggle(page).click();
         await expect(perCapita).toBeChecked();
         await expect(
           page.getByRole('heading', { level: 3, name: /CO2 emissions per capita/ }),
@@ -289,18 +314,19 @@ test.describe('CO2 Emissions page', () => {
       await page.goto(PAGE_URL);
       await selectCountry(page, 'arg');
 
-      const details = page.locator('details');
+      const details = explorer(page).locator('details');
       await expect(details).not.toHaveAttribute('open', '');
-      await page.getByText('View data table').click();
+      await explorer(page).getByText('View data table').click();
 
-      await expect(page.getByRole('table')).toContainText('Argentina: annual CO2 emissions');
-      const firstYear = page.getByRole('table').locator('tbody tr').first().locator('th');
+      const table = explorer(page).getByRole('table');
+      await expect(table).toContainText('Argentina: annual CO2 emissions');
+      const firstYear = table.locator('tbody tr').first().locator('th');
       await expect(firstYear).toHaveText('2024');
     });
 
     test('should repaint the chart when the theme changes', async ({ page }) => {
       await page.goto(PAGE_URL);
-      await expect(chart(page).locator('svg').first()).toBeVisible();
+      await showExplorerChart(page);
       const strokes = (): Promise<string> =>
         chart(page)
           .locator('svg')
@@ -336,13 +362,203 @@ test.describe('CO2 Emissions page', () => {
     test('should log no console errors or hydration warnings', async ({ page }) => {
       const errors = collectErrors(page);
       await page.goto(PAGE_URL);
-      await expect(chart(page).locator('svg').first()).toBeVisible();
+      await showExplorerChart(page);
 
       await selectCountry(page, 'arg');
-      await page.getByText('Per capita', { exact: true }).click();
+      await perCapitaToggle(page).click();
       await page.getByRole('button', { name: 'Toggle light/dark mode' }).click();
 
       expect(errors).toEqual([]);
+    });
+  });
+
+  test.describe('World map', () => {
+    const MAP_TITLE = /^CO2 emissions per capita, (\d{4}) \(tonnes per person\)$/;
+    const card = (page: Page) => page.getByRole('region', { name: MAP_TITLE });
+    const mapSvg = (page: Page) => card(page).getByTestId('echart').locator('svg').first();
+    const ranking = (page: Page) => page.getByTestId('co2-ranking-region');
+    const firstRanked = (page: Page) =>
+      ranking(page).locator('tbody tr').first().getByRole('button');
+
+    /** Opens the ranking, collapsed under "View data table" in the map card. */
+    async function openRanking(page: Page): Promise<void> {
+      await card(page).getByText('View data table').click();
+      await expect(ranking(page)).toBeVisible();
+    }
+
+    /** Waits for the map to draw its countries. */
+    async function showMap(page: Page): Promise<void> {
+      // Geometry fetch plus the lazy map chunk: allow for a cold dev server.
+      await expect(mapSvg(page)).toBeVisible({ timeout: 20_000 });
+      await expect.poll(() => mapSvg(page).locator('path').count()).toBeGreaterThan(100);
+    }
+
+    test(
+      'should draw the map above the key figures, with legend, year slider and ranking',
+      { tag: '@smoke' },
+      async ({ page }) => {
+        const errors = collectErrors(page);
+        await page.goto(PAGE_URL);
+        await showMap(page);
+
+        const title = await card(page).getByRole('heading', { level: 2 }).innerText();
+        const year = MAP_TITLE.exec(title)?.[1];
+        await expect(page.getByRole('slider', { name: /^Year shown on the map/ })).toHaveValue(
+          year ?? '',
+        );
+        await expect(card(page).getByRole('list', { name: /^Legend/ })).toContainText('No data');
+        await expect(ranking(page)).toBeHidden();
+        await openRanking(page);
+        await expect(ranking(page).getByRole('table')).toContainText(
+          `Countries ranked by CO2 emissions per capita, ${year}`,
+        );
+
+        const mapBox = await card(page).boundingBox();
+        const figuresBox = await page.getByTestId('co2-key-figures').boundingBox();
+        expect(mapBox?.y ?? 0).toBeLessThan(figuresBox?.y ?? 0);
+        expect(errors).toEqual([]);
+      },
+    );
+
+    test('should show another year on the map and in the ranking', async ({ page }) => {
+      await page.goto(PAGE_URL);
+      await showMap(page);
+      const slider = page.getByRole('slider', { name: /^Year shown on the map/ });
+      const min = await slider.getAttribute('min');
+
+      await openRanking(page);
+      await slider.focus();
+      await slider.press('Home');
+
+      await expect(card(page).getByRole('heading', { level: 2 })).toContainText(`, ${min} (`);
+      await expect(page.getByTestId('year-slider-value')).toHaveText(min ?? '');
+      await expect(ranking(page).getByRole('table')).toContainText(`per capita, ${min}`);
+    });
+
+    test('should reverse the ranking from the per-capita header', async ({ page }) => {
+      await page.goto(PAGE_URL);
+      await openRanking(page);
+      const sort = ranking(page).getByRole('button', { name: /^Per capita/ });
+      const highest = await firstRanked(page).innerText();
+
+      await sort.click();
+
+      await expect(sort.locator('xpath=..')).toHaveAttribute('aria-sort', 'ascending');
+      await expect(firstRanked(page)).not.toHaveText(highest);
+      await sort.click();
+      await expect(firstRanked(page)).toHaveText(highest);
+    });
+
+    test('should sort the ranking by total, both ways', async ({ page }) => {
+      await page.goto(PAGE_URL);
+      await openRanking(page);
+      const total = ranking(page).getByRole('button', { name: /^Total/ });
+      const totals = () =>
+        ranking(page)
+          .locator('tbody tr td:last-child')
+          .allInnerTexts()
+          .then((cells) => cells.map((cell) => Number(cell.replace(/,/g, ''))));
+
+      await total.click();
+      await expect(total.locator('xpath=..')).toHaveAttribute('aria-sort', 'descending');
+      await expect(ranking(page).getByRole('table')).toContainText('ranked by total CO2 emissions');
+      const descending = await totals();
+      expect(descending).toEqual([...descending].sort((a, b) => b - a));
+
+      await total.click();
+      await expect(total.locator('xpath=..')).toHaveAttribute('aria-sort', 'ascending');
+      await expect.poll(totals).toEqual([...descending].reverse());
+    });
+
+    test('should outline the country selected in the table on the map', async ({ page }) => {
+      await page.goto(PAGE_URL);
+      await showMap(page);
+      const outlined = () => mapSvg(page).locator('path[stroke-width="1.5"]').count();
+      expect(await outlined()).toBe(0);
+      await openRanking(page);
+
+      const argentina = ranking(page).getByRole('button', { name: 'Argentina' });
+      await argentina.click();
+
+      await expect(argentina).toHaveAttribute('aria-pressed', 'true');
+      await expect(argentina.locator('xpath=ancestor::tr')).toHaveAttribute('aria-current', 'true');
+      await expect.poll(outlined).toBeGreaterThan(0);
+
+      await argentina.click();
+      await expect(argentina).toHaveAttribute('aria-pressed', 'false');
+      await expect.poll(outlined).toBe(0);
+    });
+
+    test('should zoom with the map controls and reset the view', async ({ page }) => {
+      await page.goto(PAGE_URL);
+      await showMap(page);
+      // Width of the widest drawn region: it grows with the zoom.
+      const regionWidth = () =>
+        mapSvg(page).evaluate((svg) =>
+          Math.round(
+            Math.max(
+              ...[...svg.querySelectorAll('path')].map((p) => p.getBoundingClientRect().width),
+            ),
+          ),
+        );
+      // Measure once the entry animation has settled: two equal reads in a row.
+      let previous = -1;
+      await expect
+        .poll(async () => {
+          const width = await regionWidth();
+          const settled = width === previous;
+          previous = width;
+          return settled;
+        })
+        .toBe(true);
+      const initial = previous;
+
+      await card(page).getByRole('button', { name: 'Zoom in' }).click();
+      await expect.poll(regionWidth).toBeGreaterThan(initial);
+
+      await card(page).getByRole('button', { name: 'Reset view' }).click();
+      await expect.poll(regionWidth).toBe(initial);
+    });
+
+    test.describe('Narrow viewport (360 px)', () => {
+      test.use({ viewport: { width: 360, height: 780 }, hasTouch: true });
+
+      test(
+        'should offer no zoom buttons and fit the ranking without overflow',
+        { tag: '@smoke' },
+        async ({ page }) => {
+          await page.goto(PAGE_URL);
+          await showMap(page);
+
+          await expect(card(page).getByRole('button', { name: 'Zoom in' })).toHaveCount(0);
+          await expect(card(page).getByRole('button', { name: 'Reset view' })).toHaveCount(0);
+          await openRanking(page);
+          await expect(ranking(page).locator('tbody .fi').first()).toBeVisible();
+          const overflow = await ranking(page).evaluate((el) => el.scrollWidth - el.clientWidth);
+          expect(overflow).toBeLessThanOrEqual(0);
+        },
+      );
+
+      test('should show "Reset view" after the map is dragged and hide it after a reset', async ({
+        page,
+      }) => {
+        await page.goto(PAGE_URL);
+        await showMap(page);
+        const reset = card(page).getByRole('button', { name: 'Reset view' });
+        await expect(reset).toHaveCount(0);
+
+        const box = await card(page).getByTestId('echart').boundingBox();
+        if (!box) throw new Error('map box not found');
+        const [x, y] = [box.x + box.width / 2, box.y + box.height / 2];
+        await page.mouse.move(x, y);
+        await page.mouse.down();
+        await page.mouse.move(x + 60, y + 10, { steps: 5 });
+        await page.mouse.up();
+
+        await expect(reset).toBeVisible();
+        await reset.click();
+        await expect(reset).toHaveCount(0);
+      });
     });
   });
 

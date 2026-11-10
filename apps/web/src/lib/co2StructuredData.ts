@@ -11,7 +11,8 @@ interface StructuredDataInput {
 }
 
 /**
- * schema.org `Dataset` describing the data behind the CO2 chart. Built from the
+ * schema.org `Dataset` describing the data behind the CO2 page (map, ranking and explorer): one
+ * block for the page, never one per chart or table. Built from the
  * same payload as the page, so names, years, units and attribution never drift
  * from what is displayed.
  */
@@ -33,12 +34,16 @@ export function buildCo2DatasetJsonLd({
       description:
         `Annual CO2 emissions from fossil fuels and industry for every country and the world, ` +
         `${startYear}–${endYear}, in total (million tonnes) and per person (tonnes). ` +
-        `Land-use change is not included. Republished from ${provider} ` +
+        `Land-use change is not included. Shown as a world map and a ranking of countries by ` +
+        `emissions per person or in total for any year, and as a yearly series per country. ` +
+        `Republished from ${provider} ` +
         `(${dataset.name}, version ${dataset.version}).`,
       keywords: [
         'CO2 emissions',
         'carbon dioxide',
         'emissions per capita',
+        'world map',
+        'country ranking',
         'greenhouse gases',
         'climate change',
         'countries',

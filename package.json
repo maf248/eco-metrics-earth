@@ -16,7 +16,8 @@
     "typecheck": "nx run-many --target=typecheck --all",
     "clean:reports": "rm -rf coverage apps/api/test-output packages/shared/test-output",
     "update-snapshots": "NX_NATIVE_COMMAND_RUNNER=false nx run-many --target=test --all -- --updateSnapshot",
-    "e2e": "nx e2e web"
+    "e2e": "nx e2e web",
+    "geo:world": "node scripts/generate-world-geometry.mjs"
   },
   "private": true,
   "devDependencies": {
@@ -56,6 +57,8 @@
     "babel-jest": "30.5.2",
     "concurrently": "10.0.7",
     "conventional-changelog-conventionalcommits": "9.3.1",
+    "d3-geo": "3.1.2",
+    "d3-geo-projection": "4.0.0",
     "eslint": "10.14.0",
     "eslint-config-prettier": "10.1.8",
     "eslint-import-resolver-typescript": "4.4.5",
@@ -64,6 +67,7 @@
     "eslint-plugin-react-hooks": "7.1.1",
     "globals": "17.14.0",
     "husky": "9.1.7",
+    "i18n-iso-countries": "7.14.0",
     "jest": "30.5.2",
     "jest-environment-jsdom": "30.5.2",
     "jest-environment-node": "30.5.2",
@@ -74,13 +78,15 @@
     "prettier": "3.9.10",
     "semantic-release": "25.0.9",
     "sharp": "0.35.5",
+    "topojson-client": "3.1.0",
     "ts-jest": "29.4.15",
     "ts-node": "10.9.2",
     "tslib": "2.9.1",
     "typescript": "5.9.3",
     "typescript-eslint": "8.72.1",
     "webpack": "5.112.2",
-    "webpack-cli": "7.3.1"
+    "webpack-cli": "7.3.1",
+    "world-atlas": "2.0.2"
   },
   "workspaces": [
     "packages/*",

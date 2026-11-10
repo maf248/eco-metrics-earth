@@ -407,7 +407,12 @@ describe('CategoryPage — co2-emissions branch', () => {
 
     expect(screen.getByRole('heading', { level: 1, name: 'CO2 Emissions' })).toBeInTheDocument();
     expect(screen.getByTestId('co2-key-figures')).toHaveTextContent('In 2023 the world emitted');
-    expect(screen.getByRole('heading', { level: 2 })).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { level: 2, name: /^CO2 emissions per capita, \d{4}/ }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { level: 2, name: 'Explore emissions by country' }),
+    ).toBeInTheDocument();
     expect(screen.queryByText(/coming soon/)).not.toBeInTheDocument();
   });
 

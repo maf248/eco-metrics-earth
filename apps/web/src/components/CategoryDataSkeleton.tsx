@@ -8,6 +8,7 @@ import type { EcoCategory } from '@eco-metrics/shared';
 const PULSE_CLASS_NAME = 'bg-well motion-safe:animate-pulse';
 const PRODUCT_CHIPS = ['All', ...Object.values(waterFootprintCategorySlugMap)];
 const PRODUCT_ITEMS = ['first', 'second', 'third'];
+const LEGEND_SWATCHES = ['1', '2', '3', '4', '5', 'none'];
 
 /** Text drawn as bars, so its lines break exactly where the real copy does. */
 function Bars({ children }: { children: ReactNode }) {
@@ -89,6 +90,32 @@ function Explorer({
   );
 }
 
+/** Same boxes as `Co2WorldMap`: title, `YearSlider` (bubble room, track, scale), map, legend. */
+function WorldMap({ title }: Extract<SkeletonBlock, { kind: 'worldMap' }>) {
+  return (
+    <div className="mb-8 rounded-2xl border border-line-strong bg-surface-raised p-4 sm:p-6">
+      <p className="text-base font-semibold leading-snug sm:text-lg">
+        <Bars>{title}</Bars>
+      </p>
+      <div className="px-1 pt-9">
+        <div className={`h-6 rounded-full ${PULSE_CLASS_NAME}`} />
+        <div className="mt-0.5 h-5" />
+      </div>
+      <div className="mt-2">
+        <ChartSkeleton variant="map" />
+      </div>
+      <div
+        data-testid="world-map-skeleton-legend"
+        className="mt-3 flex justify-center gap-x-3 sm:gap-x-4"
+      >
+        {LEGEND_SWATCHES.map((swatch) => (
+          <div key={swatch} className={`h-2.5 w-7 rounded-sm ${PULSE_CLASS_NAME}`} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function ProductList({ status }: { status: string }) {
   return (
     <>
@@ -125,6 +152,8 @@ function Block({ block }: { block: SkeletonBlock }) {
       return <Explorer {...block} />;
     case 'productList':
       return <ProductList {...block} />;
+    case 'worldMap':
+      return <WorldMap {...block} />;
   }
 }
 

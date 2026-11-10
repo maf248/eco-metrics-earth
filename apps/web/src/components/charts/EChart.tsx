@@ -15,6 +15,8 @@ interface EChartProps {
   initSize?: { width: number; height: number };
   /** Series colours (read at mount; changing it later is not supported). Categorical by default. */
   palette?: ChartPalette;
+  /** Called once with the instance, after the first option and theme (read at mount). */
+  onReady?: (chart: EChartsType) => void;
 }
 
 /** Short enough that a line reads as arriving, not as being drawn while the user waits. */
@@ -33,12 +35,19 @@ function prefersReducedMotion(): boolean {
  * `dark` class on `<html>` changes) and disposed. It knows nothing about any
  * particular chart: the option arrives as a prop.
  */
-export function EChart({ option, className, initSize, palette = 'categorical' }: EChartProps) {
+export function EChart({
+  option,
+  className,
+  initSize,
+  palette = 'categorical',
+  onReady,
+}: EChartProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const chartRef = useRef<EChartsType | null>(null);
   const resolverRef = useRef<ColorResolver | null>(null);
   const optionRef = useRef(option);
   const paletteRef = useRef(palette);
+  const onReadyRef = useRef(onReady);
   const isFirstOptionRun = useRef(true);
 
   const applyTheme = (chart: EChartsType): void => {
@@ -65,6 +74,7 @@ export function EChart({ option, className, initSize, palette = 'categorical' }:
     applyOption(chart);
     // setTheme is a no-op until the chart holds an option, so it always comes second.
     applyTheme(chart);
+    onReadyRef.current?.(chart);
 
     const resizeObserver = new ResizeObserver(() => chart.resize());
     resizeObserver.observe(element);

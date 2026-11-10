@@ -81,6 +81,24 @@ describe('EChart', () => {
     expect(calls.indexOf('setTheme')).toBeGreaterThan(calls.indexOf('setOption'));
   });
 
+  it('should hand the instance to onReady once, after the option and theme', () => {
+    const onReady = jest.fn(() => calls.push('ready'));
+    const { rerender } = render(
+      <EChart option={OPTION} onReady={onReady} initSize={{ width: 400, height: 300 }} />,
+    );
+    rerender(
+      <EChart
+        option={{ ...OPTION, series: [{ type: 'line', data: [3, 4] }] }}
+        onReady={onReady}
+        initSize={{ width: 400, height: 300 }}
+      />,
+    );
+
+    expect(onReady).toHaveBeenCalledTimes(1);
+    expect(onReady).toHaveBeenCalledWith(chartInstance);
+    expect(calls.indexOf('ready')).toBeGreaterThan(calls.indexOf('setTheme'));
+  });
+
   it('should re-apply the theme when the dark class is added to the html element', async () => {
     render(<EChart option={OPTION} initSize={{ width: 400, height: 300 }} />);
     const before = calls.filter((call) => call === 'setTheme').length;

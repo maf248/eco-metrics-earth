@@ -12,7 +12,9 @@ export type SkeletonBlock =
       hasMeasureToggle?: boolean;
       hasDonut?: boolean;
     }
-  | { kind: 'productList'; status: string };
+  | { kind: 'productList'; status: string }
+  /** A world map card: title, year slider, map box and legend. */
+  | { kind: 'worldMap'; title: string };
 
 /**
  * The data region of each category with live data, top to bottom, down to the first chart or
@@ -37,17 +39,7 @@ export const CATEGORY_SKELETONS: Partial<Record<EcoCategory, readonly SkeletonBl
       kind: 'intro',
       text: 'How much CO2 does each country emit? Explore annual emissions since 1750, in total and per person.',
     },
-    {
-      kind: 'keyFigures',
-      lead: 'In 2024 the world emitted 38,599 million tonnes of CO2, 4.73 tonnes per person.',
-      details: [],
-    },
-    {
-      kind: 'explorer',
-      heading: 'Explore emissions by country',
-      chartTitle: 'World: total CO2 emissions (million tonnes per year)',
-      hasMeasureToggle: true,
-    },
+    { kind: 'worldMap', title: 'CO2 emissions per capita, 2024 (tonnes per person)' },
   ],
   [ECO_CATEGORIES.GLOBAL_TEMPERATURE]: [
     {

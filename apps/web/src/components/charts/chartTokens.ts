@@ -29,6 +29,22 @@ export const CHART_ENERGY_TOKENS = [
   'energy-bio',
 ] as const;
 
+/**
+ * Sequential (choropleth) classes, low to high, in the order they were validated
+ * (docs/design-system.md, Color Palettes). Declared as `--chart-seq-N` in `globals.css`;
+ * the theme adapter gives them to the visual map, the map legend reads them with `var()`.
+ */
+export const CHART_SEQUENTIAL_TOKENS = [
+  'chart-seq-1',
+  'chart-seq-2',
+  'chart-seq-3',
+  'chart-seq-4',
+  'chart-seq-5',
+] as const;
+
+/** Fill of a map region without a value. Declared as `--chart-no-data` in `globals.css`. */
+export const CHART_NO_DATA_TOKEN = 'chart-no-data';
+
 /** Which colour palette a chart takes its series colours from. */
 export type ChartPalette = 'categorical' | 'energyMix';
 
@@ -50,6 +66,8 @@ export const CHART_UI_TOKENS = {
   legendText: 'fg-secondary',
   referenceLine: 'fg-muted',
   referenceLabel: 'fg-secondary',
+  mapBorder: 'line-strong',
+  mapEmphasisBorder: 'fg',
 } as const;
 
 export type ChartUiTokenRole = keyof typeof CHART_UI_TOKENS;
