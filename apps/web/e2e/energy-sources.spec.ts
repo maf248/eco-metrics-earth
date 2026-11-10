@@ -219,6 +219,33 @@ test.describe('Energy Sources page', () => {
       );
     });
 
+    test('should fit the year table in the card at 1280 px, with two-line headers', async ({
+      page,
+    }) => {
+      await page.setViewportSize({ width: 1280, height: 720 });
+      await page.goto(PAGE_URL);
+      await explorer(page).getByText('View data table').click();
+
+      const region = explorer(page).getByRole('region', { name: /^Data table for/ });
+      const {
+        table,
+        region: regionWidth,
+        header,
+        line,
+      } = await region.evaluate((element) => {
+        const th = element.querySelector('thead th:last-child') as HTMLElement;
+        return {
+          table: (element.querySelector('table') as HTMLElement).offsetWidth,
+          region: element.clientWidth,
+          header: th.offsetHeight,
+          line: Number.parseFloat(getComputedStyle(th).lineHeight),
+        };
+      });
+      expect(table).toBeLessThanOrEqual(regionWidth);
+      // "Bioenergy & other renewables (%)": two lines of text plus the cell padding.
+      expect(header).toBeLessThan(line * 3);
+    });
+
     test('should mount the donut only after it scrolls into view', async ({ page }) => {
       await page.goto(PAGE_URL);
       await expect(page.getByTestId('echart').locator('svg').first()).toBeVisible();

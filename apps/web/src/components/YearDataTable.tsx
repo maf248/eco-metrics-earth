@@ -1,5 +1,4 @@
 export interface YearDataColumn {
-  /** Column header text. */
   header: string;
   /** Year-aligned values: index `i` is the year `startYear + i`. */
   values: (number | null)[];
@@ -14,13 +13,14 @@ interface YearDataTableProps {
   startYear: number;
   endYear: number;
   columns: YearDataColumn[];
-  /** Many columns: a larger minimum width so the region scrolls. */
+  /** Many columns: narrow two-line headers, and the region scrolls below the minimum width. */
   wide?: boolean;
 }
 
 const EMPTY_CELL = '—';
 const DEFAULT_MIN_WIDTH_CLASS_NAME = 'min-w-72';
-const WIDE_MIN_WIDTH_CLASS_NAME = 'min-w-208';
+// Fits the desktop card, and keeps the wide headers on two lines when the region scrolls.
+const WIDE_MIN_WIDTH_CLASS_NAME = 'min-w-3xl';
 
 /**
  * The text equivalent of a chart: every year of the selected entity, newest
@@ -57,30 +57,35 @@ export function YearDataTable({
       <div
         role="region"
         aria-label={`Data table for ${entityName}, scrollable`}
-        // A scrollable region must be keyboard-focusable so its rows can be scrolled by keyboard.
+        // Focusable so the scroll region can be scrolled by keyboard.
         // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
         tabIndex={0}
         className="mt-2 max-h-96 overflow-auto rounded-lg border border-line-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2 ring-offset-focus-offset"
       >
+        {/* Borders on the cells: a collapsed border scrolls away from the sticky header. */}
         <table
-          className={`w-full ${wide ? WIDE_MIN_WIDTH_CLASS_NAME : DEFAULT_MIN_WIDTH_CLASS_NAME} border-collapse text-sm tabular-nums`}
+          className={`w-full ${wide ? WIDE_MIN_WIDTH_CLASS_NAME : DEFAULT_MIN_WIDTH_CLASS_NAME} border-separate border-spacing-0 text-sm tabular-nums`}
         >
           <caption className="px-3 py-2 text-left font-medium text-fg">{caption}</caption>
           <thead className="sticky top-0 bg-surface-raised">
-            <tr className="border-b border-line-strong text-fg">
+            <tr className="text-fg *:border-b *:border-line-strong">
               <th scope="col" className="px-3 py-2 text-left font-semibold">
                 Year
               </th>
               {columns.map(({ header }) => (
                 <th key={header} scope="col" className="px-3 py-2 text-right font-semibold">
-                  {header}
+                  {wide ? (
+                    <span className="inline-block max-w-32 text-balance">{header}</span>
+                  ) : (
+                    header
+                  )}
                 </th>
               ))}
             </tr>
           </thead>
           <tbody>
             {years.map((year) => (
-              <tr key={year} className="border-b border-line-subtle last:border-b-0">
+              <tr key={year} className="*:border-b *:border-line-subtle last:*:border-b-0">
                 <th scope="row" className="px-3 py-2 text-left font-medium text-fg">
                   {year}
                 </th>
