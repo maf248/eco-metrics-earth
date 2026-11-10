@@ -54,6 +54,6 @@ describe('ChartSkeleton', () => {
 
   it('should keep the map aspect ratio for the map variant', () => {
     render(<ChartSkeleton variant="map" />);
-    expect(screen.getByTestId('chart-skeleton')).toHaveClass('aspect-[2238/1000]');
+    expect(screen.getByTestId('chart-skeleton')).toHaveClass('aspect-2238/1000');
   });
 });

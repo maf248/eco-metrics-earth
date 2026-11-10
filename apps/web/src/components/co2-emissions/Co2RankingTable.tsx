@@ -169,7 +169,7 @@ export function Co2RankingTable({
       <div
         role="region"
         aria-label={`Countries ranked by ${measure} in ${year}, scrollable`}
-        // A scrollable region must be keyboard-focusable so its rows can be scrolled by keyboard.
+        // Focusable so the scroll region can be scrolled by keyboard.
         // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
         tabIndex={0}
         ref={regionRef}
@@ -177,14 +177,13 @@ export function Co2RankingTable({
         // Below `sm` it bleeds into the card padding like the charts, so four columns fit.
         className="relative -mx-3 mt-2 max-h-96 overflow-auto rounded-lg border border-line-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2 ring-offset-focus-offset sm:mx-0"
       >
-        {/* Separate borders on the cells: a collapsed border under a sticky header scrolls away
-            and leaves a gap the rows show through. */}
+        {/* Borders on the cells: a collapsed border scrolls away from the sticky header. */}
         <table className="w-full border-separate border-spacing-0 text-[13px] tabular-nums sm:text-sm">
           <caption className="px-3 py-2 text-left font-medium text-fg">
             {`Countries ranked by ${measure}, ${year}`}
           </caption>
           <thead className="sticky top-0 z-10 bg-surface-raised">
-            <tr className="text-fg [&>th]:border-b [&>th]:border-line-strong">
+            <tr className="text-fg *:border-b *:border-line-strong">
               <th scope="col" className="w-7 px-1 py-2 text-right font-semibold sm:w-12 sm:px-3">
                 <span aria-hidden="true" className="sm:hidden">
                   #
@@ -212,7 +211,7 @@ export function Co2RankingTable({
                   key={entity.code}
                   ref={selected ? selectedRowRef : undefined}
                   aria-current={selected ? 'true' : undefined}
-                  className={`[&>*]:border-b [&>*]:border-line-subtle last:[&>*]:border-b-0 ${selected ? 'bg-hover' : ''}`}
+                  className={`*:border-b *:border-line-subtle last:*:border-b-0 ${selected ? 'bg-hover' : ''}`}
                 >
                   <td
                     className={`${CELL_CLASS_NAME} ${selected ? 'font-semibold text-accent' : 'text-fg-muted'}`}

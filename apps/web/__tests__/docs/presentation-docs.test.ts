@@ -177,7 +177,7 @@ describe('presentation docs', () => {
       const rule9 = designSystem.split('\n').find((line) => line.startsWith('9. **Maps:**'));
 
       expect(rule9).toMatch(/stretches a map/);
-      expect(rule9).toMatch(/aspect-\[2238\/1000\]/);
+      expect(rule9).toMatch(/aspect-2238\/1000/);
       expect(rule9).toMatch(/npm run geo:world/);
     });
   });

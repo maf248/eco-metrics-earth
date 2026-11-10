@@ -52,7 +52,7 @@ describe('world geometry asset', () => {
   });
 
   it('should match the aspect ratio of the map box, which ECharts would otherwise stretch to', () => {
-    const [, width, height] = /aspect-\[(\d+)\/(\d+)\]/.exec(chartBoxClassName('map')) ?? [];
+    const [, width, height] = /aspect-(\d+)\/(\d+)/.exec(chartBoxClassName('map')) ?? [];
     expect(asset.aspect).toBeCloseTo(Number(width) / Number(height), 3);
   });
 });

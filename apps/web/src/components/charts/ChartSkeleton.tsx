@@ -10,7 +10,7 @@ const CHART_HEIGHT_CLASS_NAMES: Record<ChartSkeletonVariant, string> = {
   donut: 'h-96',
   // The world geometry's own aspect ratio (`aspect` in public/geo/world-countries.json): ECharts
   // stretches a map to its box, so the box must keep the map's proportions.
-  map: 'aspect-[2238/1000]',
+  map: 'aspect-2238/1000',
 };
 
 /**
