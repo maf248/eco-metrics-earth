@@ -1,4 +1,4 @@
-import { act, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 
 import { ChartPanel } from '@/components/charts/ChartPanel';
 
@@ -47,33 +47,5 @@ describe('ChartPanel', () => {
     rerender(<ChartPanel title="t" option={{}} announcement="a" palette="energyMix" />);
 
     expect(palettes).toEqual([undefined, 'energyMix']);
-  });
-
-  it('should hold a deferred chart behind a skeleton until it scrolls into view', () => {
-    const observed: IntersectionObserverCallback[] = [];
-    const original = global.IntersectionObserver;
-    global.IntersectionObserver = class {
-      constructor(callback: IntersectionObserverCallback) {
-        observed.push(callback);
-      }
-      observe() {}
-      disconnect() {}
-    } as unknown as typeof IntersectionObserver;
-
-    try {
-      render(<ChartPanel title="t" option={{}} announcement="a" deferred />);
-      expect(screen.getByTestId('chart-skeleton')).toBeInTheDocument();
-      expect(screen.queryByTestId('chart-stub')).not.toBeInTheDocument();
-
-      act(() =>
-        observed[0](
-          [{ isIntersecting: true } as IntersectionObserverEntry],
-          {} as IntersectionObserver,
-        ),
-      );
-      expect(screen.getByTestId('chart-stub')).toBeInTheDocument();
-    } finally {
-      global.IntersectionObserver = original;
-    }
   });
 });

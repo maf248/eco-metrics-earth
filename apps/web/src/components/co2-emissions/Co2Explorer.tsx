@@ -46,8 +46,6 @@ function Co2Chart({ entity, metric, data }: Co2ChartProps) {
       title={CHART_TITLES[metric](entity.name)}
       option={option}
       announcement={ANNOUNCEMENTS[metric](entity.name)}
-      // The world map above is the page's first chart.
-      deferred
     />
   );
 }

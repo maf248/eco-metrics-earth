@@ -156,8 +156,7 @@ test.describe('Client navigation between categories', () => {
         const expected = await page.getByTestId(skeleton).first().boundingBox();
         await expect(page).toHaveURL(new RegExp(`/${slug}/$`), { timeout: 30_000 });
         await expect(page.getByTestId('pending-category')).toHaveCount(0);
-        // A chart arrives with its lazy chunk (and a map with its geometry): allow for a cold dev
-        // server under parallel load.
+        // A chart arrives with its lazy chunk: allow for a cold dev server under parallel load.
         await expect(page.getByTestId(content).first()).toBeVisible({ timeout: 20_000 });
 
         const actual = await page.getByTestId(content).first().boundingBox();

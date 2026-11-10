@@ -14,15 +14,14 @@ const KEY_FIGURES =
 const REGIONAL_INDICATORS = /[\u{1F1E6}-\u{1F1FF}]/u;
 const MAX_FLAG_REQUESTS = 40;
 
-/** The country explorer below the world map: its chart mounts once scrolled into view. */
+/** The country explorer, scoped so the world map's chart below never matches. */
 const explorer = (page: Page) => page.getByRole('region', { name: 'Explore emissions by country' });
 const chart = (page: Page) => explorer(page).getByTestId('echart');
 const perCapitaToggle = (page: Page) => explorer(page).getByText('Per capita', { exact: true });
 
-/** Scrolls the explorer into view and waits for its chart to draw. */
+/** Waits for the explorer's chart to draw. */
 async function showExplorerChart(page: Page): Promise<void> {
-  await explorer(page).getByRole('heading', { level: 2 }).scrollIntoViewIfNeeded();
-  // Deferred (RenderWhenVisible) and lazily loaded: allow for the chunk on a cold dev server.
+  // Lazily loaded: allow for the chunk on a cold dev server.
   await expect(chart(page).locator('svg').first()).toBeVisible({ timeout: 20_000 });
 }
 const country = (page: Page) => page.getByRole('combobox', { name: 'Country' });
@@ -388,13 +387,15 @@ test.describe('CO2 Emissions page', () => {
 
     /** Waits for the map to draw its countries. */
     async function showMap(page: Page): Promise<void> {
-      // Geometry fetch plus the lazy map chunk: allow for a cold dev server.
+      // The map mounts once scrolled into view, then loads its geometry and lazy chunk: allow
+      // for a cold dev server.
+      await card(page).scrollIntoViewIfNeeded();
       await expect(mapSvg(page)).toBeVisible({ timeout: 20_000 });
       await expect.poll(() => mapSvg(page).locator('path').count()).toBeGreaterThan(100);
     }
 
     test(
-      'should draw the map above the key figures, with legend, year slider and ranking',
+      'should draw the map below the explorer, with legend, year slider and ranking',
       { tag: '@smoke' },
       async ({ page }) => {
         const errors = collectErrors(page);
@@ -414,8 +415,10 @@ test.describe('CO2 Emissions page', () => {
         );
 
         const mapBox = await card(page).boundingBox();
-        const figuresBox = await page.getByTestId('co2-key-figures').boundingBox();
-        expect(mapBox?.y ?? 0).toBeLessThan(figuresBox?.y ?? 0);
+        const explorerBox = await page
+          .getByRole('region', { name: 'Explore emissions by country' })
+          .boundingBox();
+        expect(mapBox?.y ?? 0).toBeGreaterThan(explorerBox?.y ?? Infinity);
         expect(errors).toEqual([]);
       },
     );

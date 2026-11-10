@@ -4,6 +4,7 @@ import { useCallback, useDeferredValue, useMemo, useState } from 'react';
 
 import { ChoroplethMap } from '@/components/charts/ChoroplethMap';
 import { MapLegend } from '@/components/charts/MapLegend';
+import { RenderWhenVisible } from '@/components/charts/RenderWhenVisible';
 import { Co2RankingTable } from '@/components/co2-emissions/Co2RankingTable';
 import { YearSlider } from '@/components/YearSlider';
 import { buildCo2MapOption, CO2_MAP_CLASS_LABELS } from '@/lib/co2MapOption';
@@ -57,7 +58,7 @@ export function Co2WorldMap({ data }: Co2WorldMapProps) {
   return (
     <section
       aria-labelledby="co2-world-map-title"
-      className="mb-8 rounded-2xl border border-line-strong bg-surface-raised p-4 sm:p-6"
+      className="mt-8 rounded-2xl border border-line-strong bg-surface-raised p-4 sm:p-6"
     >
       <h2
         id="co2-world-map-title"
@@ -73,7 +74,10 @@ export function Co2WorldMap({ data }: Co2WorldMapProps) {
         label="Year shown on the map and in the ranking"
       />
       <div className="mt-2">
-        <ChoroplethMap buildOption={buildOption} onRegionClick={toggle} />
+        {/* Below the explorer's chart, so it loads when it scrolls into view (chart rule 5). */}
+        <RenderWhenVisible variant="map">
+          <ChoroplethMap buildOption={buildOption} onRegionClick={toggle} />
+        </RenderWhenVisible>
       </div>
       <MapLegend classLabels={CO2_MAP_CLASS_LABELS} label="Legend: tonnes of CO2 per person" />
       <p role="status" className="sr-only">

@@ -37,13 +37,13 @@ export function Co2EmissionsContent({ data: { data, meta } }: Co2EmissionsConten
         total and per person.
       </p>
 
-      <Co2WorldMap data={data} />
-
       <div className="mb-8 rounded-2xl bg-well px-5 py-5 text-center sm:px-8">
         <Co2KeyFigures data={data} />
       </div>
 
       <Co2Explorer data={data} attribution={attribution} />
+
+      <Co2WorldMap data={data} />
 
       <p className="mt-6 text-sm text-fg-muted">
         Figures are annual CO2 emissions from fossil fuels and industry. Land-use change is not
