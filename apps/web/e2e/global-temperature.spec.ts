@@ -35,11 +35,6 @@ async function selectCountry(page: Page, query: string): Promise<void> {
   await country(page).press('Enter');
 }
 
-/** Visible text of the server-rendered HTML: tags removed, the apostrophe entity decoded. */
-function textOf(html: string): string {
-  return html.replace(/<[^>]+>/g, '').replace(/&#x27;/g, "'");
-}
-
 test.describe('Global Temperature page', () => {
   test.describe('Core render', () => {
     test('should show neither the stale notice nor the unavailable state while the provider is healthy', async ({
@@ -90,16 +85,23 @@ test.describe('Global Temperature page', () => {
       },
     );
 
-    test('should include the signed key figures and the default table in the server-rendered HTML', async ({
-      request,
-    }) => {
-      const html = await (await request.get(PAGE_URL)).text();
-      const text = textOf(html);
+    test.describe('without JavaScript', () => {
+      test.use({ javaScriptEnabled: false });
 
-      expect(text).toMatch(KEY_FIGURES);
-      expect(text).toMatch(WARMEST_YEAR);
-      expect(html).toContain('World: annual temperature anomaly');
-      expect(html).toContain('View data table');
+      test('should include the signed key figures and the default table in the server-rendered HTML', async ({
+        page,
+      }) => {
+        const response = await page.goto(PAGE_URL);
+        expect(response?.ok()).toBe(true);
+        const html = (await response?.text()) ?? '';
+
+        const figures = page.getByTestId('global-temperature-key-figures');
+        await expect(figures).toBeVisible();
+        await expect(figures).toContainText(KEY_FIGURES);
+        await expect(figures).toContainText(WARMEST_YEAR);
+        expect(html).toContain('World: annual temperature anomaly');
+        expect(html).toContain('View data table');
+      });
     });
 
     test('should declare a single schema.org Dataset based on three datasets', async ({
@@ -336,13 +338,19 @@ test.describe('Global Temperature page', () => {
         has: page.getByRole('heading', { level: 2, name: /Global temperature since 1850/ }),
       });
 
-    test('should include the pre-industrial figure in the server-rendered HTML', async ({
-      request,
-    }) => {
-      const text = textOf(await (await request.get(PAGE_URL)).text());
+    test.describe('without JavaScript', () => {
+      test.use({ javaScriptEnabled: false });
 
-      expect(text).toMatch(PRE_INDUSTRIAL);
-      expect(text).toContain('1861–1890 (pre-industrial)');
+      test('should include the pre-industrial figure in the server-rendered HTML', async ({
+        page,
+      }) => {
+        await page.goto(PAGE_URL);
+
+        const figure = page.getByTestId('global-temperature-preindustrial-figure');
+        await expect(figure).toBeVisible();
+        await expect(figure).toContainText(PRE_INDUSTRIAL);
+        await expect(figure).toContainText('1861–1890 (pre-industrial)');
+      });
     });
 
     test('should show both baselines in the key figures', async ({ page }) => {

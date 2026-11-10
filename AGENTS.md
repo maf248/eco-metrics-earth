@@ -269,10 +269,11 @@ eco-metrics-earth/
 │   │       ├── config/          # AppConfigService (typed env vars)
 │   │       └── main.ts          # Bootstrap — port 3001, prefix /api/v1
 │   └── web/                     # Next.js App Router
+│       ├── public/geo/          # world-countries.json (pre-projected world geometry) and world-silhouette.svg (map skeleton mask), generated, never hand-edited
 │       └── src/
 │           ├── app/             # Routes, layouts, pages (App Router)
-│           ├── components/      # Reusable UI components (`charts/`: ECharts wrapper, theme adapter, lazy loading, `ChartPanel`; `co2-emissions/`; `global-temperature/`; `energy-sources/`; generic `CountryExplorer`, `MeasureToggle`, `YearDataTable`, `DataAttribution`; `CountryCombobox`, `CountryFlag`; `ProviderBackedContent`, `StaleDataNotice`, `DataUnavailable` for provider outages; `NavigationContent`, `PendingNavigation`, `NavigationLink`, `CategoryHeader`, `CategoryDataSkeleton` for client navigation)
-│           └── lib/             # Utilities and helpers (`bffFetch.ts`: server-side BFF reads with retry and shape validation; `categoryPages.tsx`: per-category page registry with `defineProviderCategoryPage`; `categorySkeletons.ts`: skeleton blocks per category; `categoryFromHref.ts`: category of a link; `providerFreshness.ts`: stale/unavailable thresholds)
+│           ├── components/      # Reusable UI components (`charts/`: ECharts wrapper, theme adapter, lazy loading, `ChartPanel`, world choropleth `ChoroplethMap` + `MapLegend` on the lazy `LazyMapEChart` entry,  `YearSlider`; `co2-emissions/`; `global-temperature/`; `energy-sources/`; generic `CountryExplorer`, `MeasureToggle`, `YearDataTable`, `DataAttribution`; `CountryCombobox`, `CountryFlag`; `ProviderBackedContent`, `StaleDataNotice`, `DataUnavailable` for provider outages; `NavigationContent`, `PendingNavigation`, `NavigationLink`, `CategoryHeader`, `CategoryDataSkeleton` for client navigation)
+│           └── lib/             # Utilities and helpers (`bffFetch.ts`: server-side BFF reads with retry and shape validation; `categoryPages.tsx`: per-category page registry with `defineProviderCategoryPage`; `categorySkeletons.ts`: skeleton blocks per category; `categoryFromHref.ts`: category of a link; `providerFreshness.ts`: stale/unavailable thresholds; `worldGeometry.ts`: fetch and register the world map once; `co2MapOption.ts` / `co2Ranking.ts`: CO2 map option and ranking)
 ├── packages/
 │   └── shared/                  # @eco-metrics/shared
 │       └── src/lib/
@@ -287,6 +288,7 @@ eco-metrics-earth/
 │           ├── global-temperature.ts       # Global temperature wire types (anomaly, baseline, upstream origin)
 │           ├── metric-series.ts            # MetricPoint + MetricSeries time-series shapes
 │           └── water-footprint.ts          # Water-footprint product, category and water-type types
+├── scripts/                     # Repo scripts: CI helpers, `generate-world-geometry.mjs` (`npm run geo:world`, regenerates apps/web/public/geo/)
 ├── .nvmrc                       # Node.js v24
 ├── nx.json                      # NX workspace config (cache, targets)
 ├── tsconfig.base.json           # Root TS config + path aliases

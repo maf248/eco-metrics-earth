@@ -1,5 +1,6 @@
 import { Co2Explorer } from '@/components/co2-emissions/Co2Explorer';
 import { Co2KeyFigures } from '@/components/co2-emissions/Co2KeyFigures';
+import { Co2WorldMap } from '@/components/co2-emissions/Co2WorldMap';
 import { DataAttribution } from '@/components/DataAttribution';
 import { JsonLd } from '@/components/JsonLd';
 import { OriginCredit } from '@/components/OriginCredit';
@@ -41,6 +42,8 @@ export function Co2EmissionsContent({ data: { data, meta } }: Co2EmissionsConten
       </div>
 
       <Co2Explorer data={data} attribution={attribution} />
+
+      <Co2WorldMap data={data} />
 
       <p className="mt-6 text-sm text-fg-muted">
         Figures are annual CO2 emissions from fossil fuels and industry. Land-use change is not

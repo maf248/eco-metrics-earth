@@ -91,10 +91,17 @@ describe('YearDataTable', () => {
       const wide = renderWide(true).container.querySelector('table');
       const regular = renderWide().container.querySelector('table');
 
-      expect(wide).toHaveClass('min-w-208');
+      expect(wide).toHaveClass('min-w-3xl');
       expect(wide).not.toHaveClass('min-w-72');
       expect(regular).toHaveClass('min-w-72');
-      expect(regular).not.toHaveClass('min-w-208');
+      expect(regular).not.toHaveClass('min-w-3xl');
+    });
+
+    it('should cap the width of the header text so a long header wraps', () => {
+      renderWide(true);
+      const header = screen.getByRole('columnheader', { hidden: true, name: 'Source 1 (%)' });
+
+      expect(header.querySelector('span')).toHaveClass('max-w-32');
     });
 
     it('should keep the collapsed, labelled and focusable behavior with nine headers', () => {

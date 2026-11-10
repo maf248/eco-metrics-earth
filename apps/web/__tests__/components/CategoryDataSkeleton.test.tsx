@@ -51,4 +51,9 @@ describe('ChartSkeleton', () => {
     render(<ChartSkeleton variant="donut" />);
     expect(screen.getByTestId('chart-skeleton').querySelector('circle')).not.toBeNull();
   });
+
+  it('should keep the map aspect ratio for the map variant', () => {
+    render(<ChartSkeleton variant="map" />);
+    expect(screen.getByTestId('chart-skeleton')).toHaveClass('aspect-2238/1000');
+  });
 });

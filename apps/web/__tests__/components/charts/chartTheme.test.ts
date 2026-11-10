@@ -97,6 +97,34 @@ describe('chart theme adapter', () => {
     expect(dark.markLine.label.color).not.toBe(light.markLine.label.color);
   });
 
+  it('should give the visual map the five sequential tokens, low to high', () => {
+    expect(buildChartTheme().visualMap.inRange.color).toEqual([
+      'rgba(245, 175, 32, 1)',
+      'rgba(236, 131, 0, 1)',
+      'rgba(222, 83, 0, 1)',
+      'rgba(193, 41, 27, 1)',
+      'rgba(138, 22, 27, 1)',
+    ]);
+  });
+
+  it('should fill map regions with the no-data token and outline them', () => {
+    const { map } = buildChartTheme();
+    expect(map.itemStyle).toEqual({
+      areaColor: 'rgba(229, 229, 229, 1)',
+      borderColor: 'rgba(229, 231, 235, 1)',
+      borderWidth: 0.5,
+    });
+  });
+
+  it('should keep the region fill on hover and selection, with a stronger outline only', () => {
+    const { map } = buildChartTheme();
+    for (const state of [map.emphasis, map.select]) {
+      expect(state.label.show).toBe(false);
+      expect(state.itemStyle).toMatchObject({ areaColor: null, color: null, borderWidth: 1.5 });
+      expect(state.itemStyle.borderColor).toBe('rgba(17, 24, 39, 1)');
+    }
+  });
+
   it('should accept an injected resolver', () => {
     const theme = buildChartTheme((value) => `resolved(${value})`);
 

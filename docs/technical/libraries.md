@@ -8,16 +8,16 @@ _Screening: 16 Sep 2026. Spike (Recharts vs ECharts, disposable, never merged): 
 
 ## Current stack
 
-|                        |                                                                                                                                                                                                                                                              |
-| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Framework              | Next.js 16 (App Router), React 19                                                                                                                                                                                                                            |
-| Styling                | Tailwind CSS v4                                                                                                                                                                                                                                              |
-| Dark mode              | Class-based — `@custom-variant dark (&:where(.dark, .dark *))` in `apps/web/src/app/globals.css`, `dark` class toggled on `<html>`                                                                                                                           |
-| Design tokens          | Semantic color tokens: `:root` / `.dark` values mapped through `@theme inline`; no palette colors in UI components. See `docs/design-system.md`                                                                                                              |
-| Charts / maps / tables | ECharts 6.1 installed (line chart, reference lines and a stacked-line confidence band; two chart pages: CO2 emissions and global temperature, the latter with two charts); no map or table library; the existing `WaterFootprintTable` is hand-rolled markup |
-| Unit tests             | Jest + React Testing Library (jsdom); `jest.setup.ts` already polyfills `ResizeObserver`                                                                                                                                                                     |
-| E2E                    | Playwright, 5 projects: `chromium-desktop`, `firefox-desktop`, `webkit-desktop`, `mobile-chrome`, `mobile-safari`                                                                                                                                            |
-| Bundle analysis        | `analyze` target on `web`                                                                                                                                                                                                                                    |
+|                        |                                                                                                                                                                                                                                                                                                                                                   |
+| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Framework              | Next.js 16 (App Router), React 19                                                                                                                                                                                                                                                                                                                 |
+| Styling                | Tailwind CSS v4                                                                                                                                                                                                                                                                                                                                   |
+| Dark mode              | Class-based — `@custom-variant dark (&:where(.dark, .dark *))` in `apps/web/src/app/globals.css`, `dark` class toggled on `<html>`                                                                                                                                                                                                                |
+| Design tokens          | Semantic color tokens: `:root` / `.dark` values mapped through `@theme inline`; no palette colors in UI components. See `docs/design-system.md`                                                                                                                                                                                                   |
+| Charts / maps / tables | ECharts 6.1 installed (line chart, reference lines and a stacked-line confidence band; two chart pages: CO2 emissions and global temperature, the latter with two charts); ECharts `map` series for the CO2 per-capita world map, with a pre-projected geometry asset; no table library; the existing `WaterFootprintTable` is hand-rolled markup |
+| Unit tests             | Jest + React Testing Library (jsdom); `jest.setup.ts` already polyfills `ResizeObserver`                                                                                                                                                                                                                                                          |
+| E2E                    | Playwright, 5 projects: `chromium-desktop`, `firefox-desktop`, `webkit-desktop`, `mobile-chrome`, `mobile-safari`                                                                                                                                                                                                                                 |
+| Bundle analysis        | `analyze` target on `web`                                                                                                                                                                                                                                                                                                                         |
 
 ## Charts
 
@@ -57,17 +57,23 @@ The global temperature page is the second chart page and the first to need a hor
 
 ## Maps — interactive world choropleth
 
-| Candidate                    | License    | Outcome                                                                                         |
-| ---------------------------- | ---------- | ----------------------------------------------------------------------------------------------- |
-| **ECharts geo** (`map`)      | Apache-2.0 | **Chosen** with the charts: `visualMap` classes, hover/select, tooltip, zoom/pan built in       |
-| **react-simple-maps 5.0**    | MIT        | Not needed. Revived 28 Aug 2026 after ~3 years dormant — would have required its own POC        |
-| **d3-geo + topojson-client** | ISC        | Kept as **geometry preparation only**: TopoJSON → GeoJSON, then projection before `registerMap` |
+| Candidate                    | License    | Outcome                                                                                            |
+| ---------------------------- | ---------- | -------------------------------------------------------------------------------------------------- |
+| **ECharts geo** (`map`)      | Apache-2.0 | **Chosen** with the charts: `visualMap` classes, hover/select, tooltip, zoom/pan built in          |
+| **react-simple-maps 5.0**    | MIT        | Not needed. Revived 28 Aug 2026 after ~3 years dormant — would have required its own POC           |
+| **d3-geo + topojson-client** | ISC        | **Build-time only** (root devDependencies): TopoJSON → GeoJSON → Equal Earth, never in the browser |
 
 **Ruled out:** react-leaflet (Hippocratic-2.1 — not commercial-safe; wrapper inactive since Dec 2024), MapLibre GL v6 (WebGL untestable in jsdom, 251KB gz, overkill for per-country fills).
 
 **Spike findings:** `world-atlas` 110m renders well in ECharts once projected with `d3-geo` (Equal Earth); unprojected, antimeridian-crossing countries smear across the map. A map page adds ~74 KB gzipped over a chart page (map module + visualMap ~30 KB, 110m geometry ~37 KB, `d3-geo` ~6 KB).
 
-**Still open:** Natural Earth (public domain) vs `world-atlas` (ISC), both commercial-safe; `world-atlas` uses numeric ISO 3166-1 codes while OWID uses alpha-3, so a crosswalk is needed — including at least one disputed/former territory as a test case; 110m vs 50m resolution; geometry bundled vs fetched as a static asset.
+**Closed (map spike, Nov 2026; shipped with the CO2 per-capita world map):**
+
+- **Source and licence:** `world-atlas` 2.0.2 (ISC packaging of Natural Earth, public domain), pinned as a root devDependency with `topojson-client`, `d3-geo`, `d3-geo-projection` and `i18n-iso-countries`. None of them reaches the browser.
+- **Resolution — hybrid.** Measured gzipped as projected GeoJSON: 110m alone 44 KB (drops ~60 small territories: Singapore, Bahrain, Malta, Caribbean and Pacific islands…), an algorithmically simplified "50m lite" 51 KB (rejected: visibly jagged coastlines), full 50m 303 KB. Shipped: 110m plus the 63 territories only 50m has, Antarctica removed — 239 regions, 51.6 KB gzipped.
+- **Crosswalk:** resolved at generation time, not at runtime. ISO numeric → alpha-3 with `i18n-iso-countries`, `OWID_KOS` for Kosovo; four regions have no code (N. Cyprus, Somaliland, Indian Ocean Ter., Siachen Glacier) and render as no data. Each feature has a unique `key` the series matches by: matching by a shared `null` code left all but one code-less region with ECharts' default fill. French Guiana is part of France's feature (Natural Earth), so it shows France's value.
+- **Delivery:** a static asset (`apps/web/public/geo/world-countries.json`, regenerated with `npm run geo:world`), fetched once per page load and registered once; projecting in the browser would ship `d3-geo` + `topojson-client` (~10 KB gzipped) and CPU work for an output that never changes.
+- **Measured cost (production build):** the map series and piecewise `visualMap` add two lazy chunks of 23.3 KB and 13.1 KB gzipped, loaded only by a page with a map, plus the 51.6 KB geometry — about 88 KB gzipped, all after first paint (the map card shows its skeleton meanwhile).
 
 ## Flags
 

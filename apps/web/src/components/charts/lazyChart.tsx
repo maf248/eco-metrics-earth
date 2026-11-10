@@ -1,6 +1,6 @@
 'use client';
 
-import type { EChartsCoreOption } from 'echarts/core';
+import type { EChartsCoreOption, EChartsType } from 'echarts/core';
 import { useSyncExternalStore } from 'react';
 import type { ComponentType } from 'react';
 
@@ -11,6 +11,8 @@ export interface LazyChartProps {
   option: EChartsCoreOption;
   /** Series colours; the categorical palette when omitted. */
   palette?: ChartPalette;
+  /** Called once with the ECharts instance when the loaded chart mounts. */
+  onReady?: (chart: EChartsType) => void;
 }
 
 interface ChartProps extends LazyChartProps {
@@ -60,7 +62,7 @@ export function lazyChart(
     };
   };
 
-  function Chart({ option, palette }: LazyChartProps) {
+  function Chart({ option, palette, onReady }: LazyChartProps) {
     // The server snapshot keeps hydration on the skeleton the HTML holds, even if the chunk
     // arrived first; a client navigation reads the loaded chart directly and draws at once.
     const Loaded = useSyncExternalStore(
@@ -72,7 +74,14 @@ export function lazyChart(
     if (!Loaded) {
       return <ChartSkeleton variant={variant} />;
     }
-    return <Loaded option={option} palette={palette} className={chartBoxClassName(variant)} />;
+    return (
+      <Loaded
+        option={option}
+        palette={palette}
+        onReady={onReady}
+        className={chartBoxClassName(variant)}
+      />
+    );
   }
 
   return { Chart, preload: () => void ensureLoaded() };

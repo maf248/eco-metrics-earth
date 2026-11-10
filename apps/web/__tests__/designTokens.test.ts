@@ -11,7 +11,12 @@
 import fs from 'node:fs';
 import path from 'node:path';
 
-import { CHART_COLOR_TOKENS, CHART_ENERGY_TOKENS } from '../src/components/charts/chartTokens';
+import {
+  CHART_COLOR_TOKENS,
+  CHART_ENERGY_TOKENS,
+  CHART_NO_DATA_TOKEN,
+  CHART_SEQUENTIAL_TOKENS,
+} from '../src/components/charts/chartTokens';
 
 const SRC_DIR = path.resolve(__dirname, '../src');
 const GLOBALS_CSS = path.join(SRC_DIR, 'app/globals.css');
@@ -64,11 +69,13 @@ function declaredProperties(css: string, selector: string): string[] {
 
 const css = fs.readFileSync(GLOBALS_CSS, 'utf8');
 // Chart tokens are a separate group: hex values read by name by the chart theme adapter,
-// never exposed as Tailwind utilities (docs/design-system.md, Color Palettes). Two palettes:
-// the categorical `--chart-*` and the energy mix `--energy-*`.
-const isCategoricalToken = (token: string): boolean => token.startsWith('chart-');
+// never exposed as Tailwind utilities (docs/design-system.md, Color Palettes): the categorical
+// `--chart-N`, the sequential `--chart-seq-N` with `--chart-no-data`, and the energy mix `--energy-*`.
+const isCategoricalToken = (token: string): boolean => /^chart-\d+$/.test(token);
+const isSequentialToken = (token: string): boolean =>
+  token.startsWith('chart-seq-') || token === CHART_NO_DATA_TOKEN;
 const isEnergyToken = (token: string): boolean => token.startsWith('energy-');
-const isChartToken = (token: string): boolean => isCategoricalToken(token) || isEnergyToken(token);
+const isChartToken = (token: string): boolean => token.startsWith('chart-') || isEnergyToken(token);
 const lightTokens = declaredProperties(css, ':root');
 const darkTokens = declaredProperties(css, '.dark');
 const lightUiTokens = lightTokens.filter((token) => !isChartToken(token));
@@ -76,6 +83,7 @@ const lightChartTokens = lightTokens.filter(isChartToken);
 const darkChartTokens = darkTokens.filter(isChartToken);
 const lightCategoricalTokens = lightTokens.filter(isCategoricalToken);
 const lightEnergyTokens = lightTokens.filter(isEnergyToken);
+const lightSequentialTokens = lightTokens.filter(isSequentialToken);
 
 const themeMappings = [
   ...css
@@ -148,8 +156,16 @@ describe('design tokens — chart tokens', () => {
     }
   });
 
-  it('should not declare sequential tokens before a change uses them', () => {
-    expect(css).not.toContain('--chart-seq-');
+  it('should declare exactly the sequential and no-data names the chart theme adapter reads', () => {
+    expect([...lightSequentialTokens].sort()).toEqual(
+      [...CHART_SEQUENTIAL_TOKENS, CHART_NO_DATA_TOKEN].sort(),
+    );
+  });
+
+  it('should only declare chart tokens of a known palette', () => {
+    const known = (token: string): boolean =>
+      isCategoricalToken(token) || isSequentialToken(token) || isEnergyToken(token);
+    expect(lightChartTokens.filter((token) => !known(token))).toEqual([]);
   });
 });
 

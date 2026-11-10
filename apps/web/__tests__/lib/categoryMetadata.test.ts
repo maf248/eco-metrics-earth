@@ -32,7 +32,7 @@ describe('CATEGORY_DESCRIPTIONS', () => {
 
   it('should describe the live CO2 emissions content', () => {
     expect(CATEGORY_DESCRIPTIONS['co2-emissions']).toBe(
-      'CO2 emissions by country since 1950: total annual emissions and emissions per person for every country and the world. Data from Our World in Data.',
+      'CO2 emissions by country since 1950: a world map and ranking of emissions per person, and yearly totals for every country. Data from Our World in Data.',
     );
     expect(CATEGORY_DESCRIPTIONS['co2-emissions']).not.toMatch(/coming/);
   });

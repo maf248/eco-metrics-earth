@@ -12,7 +12,7 @@ import { getCategoryTitle } from './categoryTitle';
  */
 export const CATEGORY_DESCRIPTIONS: Record<EcoCategory, string> = {
   'co2-emissions':
-    'CO2 emissions by country since 1950: total annual emissions and emissions per person for every country and the world. Data from Our World in Data.',
+    'CO2 emissions by country since 1950: a world map and ranking of emissions per person, and yearly totals for every country. Data from Our World in Data.',
   'global-temperature':
     "Global temperature by country since 1940: how far each year's surface temperature is from the 1991–2020 average. Data from Our World in Data.",
   'air-quality':

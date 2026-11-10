@@ -181,7 +181,7 @@ describe('energy sources components', () => {
         'Solar (%)',
         'Bioenergy & other renewables (%)',
       ]);
-      expect(container.querySelector('table')).toHaveClass('min-w-208');
+      expect(container.querySelector('table')).toHaveClass('min-w-3xl');
     });
 
     it('should show generation with TWh headers when the measure is generation', () => {

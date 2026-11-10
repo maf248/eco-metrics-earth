@@ -1,10 +1,16 @@
-/** The silhouette of a chart: `series` for lines and stacked areas, `donut` for pies. */
-export type ChartSkeletonVariant = 'series' | 'donut';
+/**
+ * The silhouette of a chart: `series` for lines and stacked areas, `donut` for pies, `map` for
+ * the world choropleth.
+ */
+export type ChartSkeletonVariant = 'series' | 'donut' | 'map';
 
 /** A donut and its wrapped legend need the full height on mobile too. */
 const CHART_HEIGHT_CLASS_NAMES: Record<ChartSkeletonVariant, string> = {
   series: 'h-72 sm:h-96',
   donut: 'h-96',
+  // The world geometry's own aspect ratio (`aspect` in public/geo/world-countries.json): ECharts
+  // stretches a map to its box, so the box must keep the map's proportions.
+  map: 'aspect-2238/1000',
 };
 
 /**
@@ -16,11 +22,26 @@ export function chartBoxClassName(variant: ChartSkeletonVariant): string {
   return `${CHART_HEIGHT_CLASS_NAMES[variant]} -mx-3 sm:mx-0`;
 }
 
+const MAP_SILHOUETTE_CLASS_NAME = '[mask:url(/geo/world-silhouette.svg)_center/contain_no-repeat]';
+
 const GRID_LINES = [40, 90, 140, 190];
 const SERIES_LINE = 'M0 165 L60 150 L120 158 L180 118 L240 128 L300 84 L360 92 L420 48';
 
 /** Placeholder shown while a chart loads, shaped like the chart it stands for. */
 export function ChartSkeleton({ variant = 'series' }: { variant?: ChartSkeletonVariant }) {
+  if (variant === 'map') {
+    // The map draws on the card itself (no plot box), so its placeholder is the land outline
+    // alone, in the frame of the map that replaces it: a token fill masked by the outline that
+    // `npm run geo:world` writes next to the geometry (a static file, so no page ships it as JS).
+    return (
+      <div
+        data-testid="chart-skeleton"
+        aria-hidden="true"
+        className={`${chartBoxClassName(variant)} ${MAP_SILHOUETTE_CLASS_NAME} bg-well-active motion-safe:animate-pulse`}
+      />
+    );
+  }
+
   return (
     <div
       data-testid="chart-skeleton"
