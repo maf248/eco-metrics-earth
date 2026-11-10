@@ -36,11 +36,6 @@ async function selectCountry(page: Page, query: string): Promise<void> {
   await country(page).press('Enter');
 }
 
-/** Visible text of the server-rendered HTML: tags removed, the apostrophe entity decoded. */
-function textOf(html: string): string {
-  return html.replace(/<[^>]+>/g, '').replace(/&#x27;/g, "'");
-}
-
 test.describe('Energy Sources page', () => {
   test.describe('Core render', () => {
     test('should show neither the stale notice nor the unavailable state while the provider is healthy', async ({
@@ -86,16 +81,24 @@ test.describe('Energy Sources page', () => {
       },
     );
 
-    test('should include the key figures, the latest-year table and the year table in the server-rendered HTML', async ({
-      request,
-    }) => {
-      const html = await (await request.get(PAGE_URL)).text();
+    test.describe('without JavaScript', () => {
+      test.use({ javaScriptEnabled: false });
 
-      expect(textOf(html)).toMatch(KEY_FIGURES);
-      expect(html).toContain('World: electricity mix in 2025');
-      expect(html).toContain('World: electricity share by source, 2000–2025');
-      expect(html).toContain('View data table');
-      expect(html).toContain('Coal (%)');
+      test('should include the key figures, the latest-year table and the year table in the server-rendered HTML', async ({
+        page,
+      }) => {
+        const response = await page.goto(PAGE_URL);
+        expect(response?.ok()).toBe(true);
+        const html = (await response?.text()) ?? '';
+
+        const figures = page.getByTestId('energy-key-figures');
+        await expect(figures).toBeVisible();
+        await expect(figures).toContainText(KEY_FIGURES);
+        expect(html).toContain('World: electricity mix in 2025');
+        expect(html).toContain('World: electricity share by source, 2000–2025');
+        expect(html).toContain('View data table');
+        expect(html).toContain('Coal (%)');
+      });
     });
 
     test('should declare a single schema.org Dataset based on two datasets', async ({
