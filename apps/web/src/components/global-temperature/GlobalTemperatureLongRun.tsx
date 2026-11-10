@@ -6,6 +6,7 @@ import type { ReactNode } from 'react';
 import { LazyEChart } from '@/components/charts/LazyEChart';
 import { RenderWhenVisible } from '@/components/charts/RenderWhenVisible';
 import { YearDataTable } from '@/components/YearDataTable';
+import { CARD_CLASS_NAME } from '@/lib/cardClassNames';
 import { formatAnomaly } from '@/lib/formatNumber';
 import { buildGlobalSeriesChartOption, PARIS_LIMIT_CELSIUS } from '@/lib/globalSeriesChartOption';
 import type { GlobalTemperatureGlobal } from '@eco-metrics/shared';
@@ -34,10 +35,7 @@ export function GlobalTemperatureLongRun({
   const option = useMemo(() => buildGlobalSeriesChartOption(global, unit), [global, unit]);
 
   return (
-    <section
-      aria-labelledby={headingId}
-      className="mt-8 rounded-2xl border border-line-strong bg-surface-raised p-4 sm:p-6"
-    >
+    <section aria-labelledby={headingId} className={`mt-8 ${CARD_CLASS_NAME}`}>
       <h2 id={headingId} className="mb-4 text-xl font-semibold text-fg">
         Global temperature since {startYear}, relative to {period}
       </h2>

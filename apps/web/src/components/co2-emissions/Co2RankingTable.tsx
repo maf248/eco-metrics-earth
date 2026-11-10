@@ -3,6 +3,7 @@
 import { useEffect, useRef } from 'react';
 
 import { CountryFlag } from '@/components/CountryFlag';
+import { TABLE_REGION_CLASS_NAME } from '@/lib/cardClassNames';
 import type { Co2RankingRow, RankingKey, RankingOrder, RankingSort } from '@/lib/co2Ranking';
 import { formatPerCapita, formatTotal } from '@/lib/formatNumber';
 
@@ -30,7 +31,8 @@ const COLUMNS: { key: RankingKey; label: string; unit: string; unitTitle: string
   { key: 'perCapita', label: 'Per capita', unit: 't/person', unitTitle: 'tonnes per person' },
   { key: 'total', label: 'Total', unit: 'Mt', unitTitle: 'million tonnes' },
 ];
-const CELL_CLASS_NAME = 'px-1 py-1.5 text-right sm:px-3';
+// The last column keeps sm's 12 px at the right: the region reaches the screen edge below sm.
+const CELL_CLASS_NAME = 'px-1 py-1.5 text-right last:pr-3 sm:px-3';
 
 /** Keeps `row` visible inside `region` by scrolling the region only, never the page. */
 function scrollRowIntoRegion(region: HTMLElement | null, row: HTMLElement | null): void {
@@ -88,7 +90,7 @@ function SortHeader({
     <th
       scope="col"
       aria-sort={active ? sort.order : undefined}
-      className="px-1 py-1 text-right font-semibold sm:px-3"
+      className="px-1 py-1 text-right font-semibold last:pr-3 sm:px-3"
     >
       <button
         type="button"
@@ -174,15 +176,15 @@ export function Co2RankingTable({
         tabIndex={0}
         ref={regionRef}
         data-testid="co2-ranking-region"
-        // Below `sm` it bleeds into the card padding like the charts, so four columns fit.
-        className="relative -mx-3 mt-2 max-h-96 overflow-auto rounded-lg border border-line-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2 ring-offset-focus-offset sm:mx-0"
+        // Below `sm` it spans the card edge to edge like the charts, so four columns fit.
+        className={`relative mt-2 max-h-96 overflow-auto ${TABLE_REGION_CLASS_NAME}`}
       >
         {/* Borders on the cells: a collapsed border scrolls away from the sticky header. */}
         <table className="w-full border-separate border-spacing-0 text-[13px] tabular-nums sm:text-sm">
           <caption className="px-3 py-2 text-left font-medium text-fg">
             {`Countries ranked by ${measure}, ${year}`}
           </caption>
-          <thead className="sticky top-0 z-10 bg-surface-raised">
+          <thead className="sticky top-0 z-10 bg-surface-card">
             <tr className="text-fg *:border-b *:border-line-strong">
               <th scope="col" className="w-7 px-1 py-2 text-right font-semibold sm:w-12 sm:px-3">
                 <span aria-hidden="true" className="sm:hidden">

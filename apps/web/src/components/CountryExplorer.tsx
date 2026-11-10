@@ -5,6 +5,7 @@ import type { ReactNode } from 'react';
 
 import { CountryCombobox } from '@/components/CountryCombobox';
 import type { CountryOption } from '@/components/CountryCombobox';
+import { CARD_CLASS_NAME } from '@/lib/cardClassNames';
 import { WORLD_ENTITY_CODE } from '@eco-metrics/shared';
 import type { CountryEntity } from '@eco-metrics/shared';
 
@@ -41,10 +42,7 @@ export function CountryExplorer<T extends CountryEntity>({
   const entity = entities.find((candidate) => candidate.code === code) ?? entities[0];
 
   return (
-    <section
-      aria-labelledby={headingId}
-      className="rounded-2xl border border-line-strong bg-surface-raised p-4 sm:p-6"
-    >
+    <section aria-labelledby={headingId} className={CARD_CLASS_NAME}>
       <h2 id={headingId} className="mb-4 text-xl font-semibold text-fg">
         {heading}
       </h2>

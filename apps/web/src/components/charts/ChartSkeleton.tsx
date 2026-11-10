@@ -1,5 +1,7 @@
+import { CARD_BLEED_CLASS_NAME } from '@/lib/cardClassNames';
+
 /**
- * The silhouette of a chart: `series` for lines and stacked areas, `donut` for pies, `map` for
+ * The silhouette of a chart:`series` for lines and stacked areas, `donut` for pies, `map` for
  * the world choropleth.
  */
 export type ChartSkeletonVariant = 'series' | 'donut' | 'map';
@@ -15,11 +17,11 @@ const CHART_HEIGHT_CLASS_NAMES: Record<ChartSkeletonVariant, string> = {
 
 /**
  * Box of a chart container; the skeleton uses the same classes so nothing shifts. Below `sm`
- * it bleeds 12 px into each side of the card's 16 px padding, so the plot gets the width.
+ * it bleeds through the card's 16 px padding to the card edges, so the plot gets the width.
  * The box is a block with auto width: `w-full` would cancel the bleed.
  */
 export function chartBoxClassName(variant: ChartSkeletonVariant): string {
-  return `${CHART_HEIGHT_CLASS_NAMES[variant]} -mx-3 sm:mx-0`;
+  return `${CHART_HEIGHT_CLASS_NAMES[variant]} ${CARD_BLEED_CLASS_NAME}`;
 }
 
 const MAP_SILHOUETTE_CLASS_NAME = '[mask:url(/geo/world-silhouette.svg)_center/contain_no-repeat]';

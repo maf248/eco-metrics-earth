@@ -4,7 +4,7 @@ exports[`Navbar snapshots should match snapshot with an active route 1`] = `
 <DocumentFragment>
   <nav
     aria-label="Main navigation"
-    class="site-nav fixed z-50 bottom-0 left-0 right-0 h-20 flex flex-row border-t border-line lg:top-0 lg:right-auto lg:bottom-auto lg:h-screen lg:w-76 lg:flex-col lg:border-t-0 lg:border-r lg:border-line bg-nav-surface"
+    class="site-nav fixed z-50 bottom-0 left-0 right-0 h-bottom-nav pb-safe px-safe flex flex-row border-t border-line lg:top-0 lg:right-auto lg:bottom-auto lg:h-screen lg:w-76 lg:flex-col lg:border-t-0 lg:border-r lg:border-line bg-nav-surface"
   >
     <a
       aria-label="eco-metrics earth — go to home"
@@ -1366,7 +1366,7 @@ exports[`Navbar snapshots should match snapshot with no active route 1`] = `
 <DocumentFragment>
   <nav
     aria-label="Main navigation"
-    class="site-nav fixed z-50 bottom-0 left-0 right-0 h-20 flex flex-row border-t border-line lg:top-0 lg:right-auto lg:bottom-auto lg:h-screen lg:w-76 lg:flex-col lg:border-t-0 lg:border-r lg:border-line bg-nav-surface"
+    class="site-nav fixed z-50 bottom-0 left-0 right-0 h-bottom-nav pb-safe px-safe flex flex-row border-t border-line lg:top-0 lg:right-auto lg:bottom-auto lg:h-screen lg:w-76 lg:flex-col lg:border-t-0 lg:border-r lg:border-line bg-nav-surface"
   >
     <a
       aria-label="eco-metrics earth — go to home"

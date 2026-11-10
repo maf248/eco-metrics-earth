@@ -1,3 +1,5 @@
+import { TABLE_REGION_CLASS_NAME } from '@/lib/cardClassNames';
+
 export interface YearDataColumn {
   header: string;
   /** Year-aligned values: index `i` is the year `startYear + i`. */
@@ -60,14 +62,14 @@ export function YearDataTable({
         // Focusable so the scroll region can be scrolled by keyboard.
         // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
         tabIndex={0}
-        className="mt-2 max-h-96 overflow-auto rounded-lg border border-line-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2 ring-offset-focus-offset"
+        className={`mt-2 max-h-96 overflow-auto ${TABLE_REGION_CLASS_NAME}`}
       >
         {/* Borders on the cells: a collapsed border scrolls away from the sticky header. */}
         <table
           className={`w-full ${wide ? WIDE_MIN_WIDTH_CLASS_NAME : DEFAULT_MIN_WIDTH_CLASS_NAME} border-separate border-spacing-0 text-sm tabular-nums`}
         >
           <caption className="px-3 py-2 text-left font-medium text-fg">{caption}</caption>
-          <thead className="sticky top-0 bg-surface-raised">
+          <thead className="sticky top-0 bg-surface-card">
             <tr className="text-fg *:border-b *:border-line-strong">
               <th scope="col" className="px-3 py-2 text-left font-semibold">
                 Year

@@ -19,7 +19,7 @@ import BrandText from './BrandText';
  * Animation: delegated to <BrandText /> (typewriter + cursor + [↵]).
  *
  * Layout contract:
- *  - Height: h-14 (56px). All <main> elements must use pt-14 to clear this header.
+ *  - Height: h-header (h-14 / 56px plus the top safe area). Pages use pt-header to clear it.
  *  - z-index: z-50 — above page content, consistent with the bottom nav z-index.
  */
 export default function MobileHeader() {
@@ -30,7 +30,7 @@ export default function MobileHeader() {
         // Visibility: mobile only
         'lg:hidden',
         // Position: fixed top, full width, above content
-        'site-header fixed top-0 left-0 right-0 z-50 h-14',
+        'site-header fixed top-0 left-0 right-0 z-50 h-header pt-safe px-safe',
         // Style: dark background with subtle blur + bottom border
         'bg-surface/95 backdrop-blur-sm border-b border-line',
       ].join(' ')}

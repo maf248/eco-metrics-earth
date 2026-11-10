@@ -13,10 +13,10 @@ describe('LazyPieEChart', () => {
   it('should show a skeleton with the chart height, then the pie in a container of the same height', async () => {
     render(<LazyPieEChart option={{}} palette="energyMix" />);
 
-    expect(screen.getByTestId('chart-skeleton')).toHaveClass('h-96', '-mx-3', 'sm:mx-0');
+    expect(screen.getByTestId('chart-skeleton')).toHaveClass('h-96', '-mx-4', 'sm:mx-0');
 
     const pie = await screen.findByTestId('pie-loaded');
-    expect(pie).toHaveClass('h-96', '-mx-3', 'sm:mx-0');
+    expect(pie).toHaveClass('h-96', '-mx-4', 'sm:mx-0');
     expect(pie).toHaveAttribute('data-palette', 'energyMix');
     expect(screen.queryByTestId('chart-skeleton')).not.toBeInTheDocument();
   });

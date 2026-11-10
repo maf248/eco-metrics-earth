@@ -39,7 +39,8 @@ export default function Navbar() {
       className={[
         'site-nav fixed z-50',
         // Mobile / tablet: bottom bar
-        'bottom-0 left-0 right-0 h-20',
+        // h-20 bar plus the bottom safe area (gesture bar / home indicator), filled by the nav
+        'bottom-0 left-0 right-0 h-bottom-nav pb-safe px-safe',
         'flex flex-row',
         'border-t border-line',
         // Desktop: left sidebar

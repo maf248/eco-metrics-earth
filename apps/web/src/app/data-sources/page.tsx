@@ -45,7 +45,7 @@ export default async function DataSourcesPage() {
   const { providers, datasets } = await getDataSources();
 
   return (
-    <div className="mx-auto w-full max-w-3xl px-4 pt-14">
+    <div className="mx-auto w-full max-w-3xl px-4 pt-header">
       <div className="mt-14 space-y-10 pb-8 lg:mt-0">
         <header>
           <h1 className="text-4xl font-bold text-fg">Data sources</h1>

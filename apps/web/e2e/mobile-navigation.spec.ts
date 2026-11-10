@@ -39,7 +39,7 @@ test.describe('Bottom navigation bar on mobile', { tag: '@smoke' }, () => {
     const nav = page.locator(selectors.nav);
     await expect(nav).toBeVisible();
 
-    // The bottom bar has bottom-0 and h-20 classes
+    // The bottom bar is pinned with bottom-0 (height h-bottom-nav)
     const navClass = await nav.getAttribute('class');
     expect(navClass).toContain('bottom-0');
   });
@@ -103,12 +103,12 @@ test.describe('Desktop viewport — bottom bar absent', { tag: '@smoke' }, () =>
     await page.goto('/');
 
     // The Navbar is visible as a sidebar on desktop (not hidden).
-    // But the bottom-bar positioning (bottom-0, h-20) should not be
+    // But the bottom-bar positioning (bottom-0, h-bottom-nav) should not be
     // the active layout on desktop.
     // The nav still exists but as a left sidebar.
     const nav = page.locator(selectors.nav);
     await expect(nav).toBeVisible();
-    // Sidebar has lg:w-76, not h-20
+    // Sidebar has lg:h-screen, not the bottom-bar height
     const navClass = await nav.getAttribute('class');
     expect(navClass).toContain('lg:h-screen');
   });

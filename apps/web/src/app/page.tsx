@@ -26,7 +26,7 @@ export const metadata: Metadata = {
 
 export default function HomePage() {
   return (
-    <div className="flex flex-col items-center justify-start pt-14 px-4">
+    <div className="flex flex-col items-center justify-start pt-header px-4">
       <div className="flex flex-col items-center gap-6 mt-14 lg:mt-0">
         <div className="flex items-center justify-center w-48 h-48 rounded-2xl bg-well p-4">
           <SiteLogoIcon aria-hidden className="w-32 h-32" />

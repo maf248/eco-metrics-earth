@@ -44,9 +44,9 @@ describe('MobileHeader — landmark semantics', () => {
     expect(header?.className).toContain('top-0');
   });
 
-  it('should have h-14 height', () => {
+  it('should have the header height plus the top safe area', () => {
     const { container } = render(<MobileHeader />);
-    expect(container.querySelector('header')?.className).toContain('h-14');
+    expect(container.querySelector('header')?.className).toContain('h-header');
   });
 });
 

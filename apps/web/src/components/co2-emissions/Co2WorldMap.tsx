@@ -7,6 +7,7 @@ import { MapLegend } from '@/components/charts/MapLegend';
 import { RenderWhenVisible } from '@/components/charts/RenderWhenVisible';
 import { Co2RankingTable } from '@/components/co2-emissions/Co2RankingTable';
 import { YearSlider } from '@/components/YearSlider';
+import { CARD_CLASS_NAME } from '@/lib/cardClassNames';
 import { buildCo2MapOption, CO2_MAP_CLASS_LABELS } from '@/lib/co2MapOption';
 import { DEFAULT_RANKING_SORT, rankCo2Countries, type RankingSort } from '@/lib/co2Ranking';
 import type { WorldRegion } from '@/lib/worldGeometry';
@@ -56,10 +57,7 @@ export function Co2WorldMap({ data }: Co2WorldMapProps) {
   );
 
   return (
-    <section
-      aria-labelledby="co2-world-map-title"
-      className="mt-8 rounded-2xl border border-line-strong bg-surface-raised p-4 sm:p-6"
-    >
+    <section aria-labelledby="co2-world-map-title" className={`mt-8 ${CARD_CLASS_NAME}`}>
       <h2
         id="co2-world-map-title"
         className="text-base font-semibold leading-snug text-fg sm:text-lg"

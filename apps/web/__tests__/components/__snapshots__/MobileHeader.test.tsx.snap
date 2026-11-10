@@ -4,7 +4,7 @@ exports[`MobileHeader snapshots should match snapshot 1`] = `
 <DocumentFragment>
   <header
     aria-label="Site header"
-    class="lg:hidden site-header fixed top-0 left-0 right-0 z-50 h-14 bg-surface/95 backdrop-blur-sm border-b border-line"
+    class="lg:hidden site-header fixed top-0 left-0 right-0 z-50 h-header pt-safe px-safe bg-surface/95 backdrop-blur-sm border-b border-line"
   >
     <a
       aria-label="eco-metrics earth — go to home"
