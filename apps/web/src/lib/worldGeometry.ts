@@ -60,8 +60,9 @@ export function loadWorldGeometry(): Promise<WorldRegion[]> {
       if (!isWorldGeometry(geometry)) {
         throw new Error('World geometry has an unexpected shape');
       }
-      // Imported here, not at the top: ECharts stays in the lazily loaded chart chunk.
-      const { echarts } = await import('@/components/charts/echartsSetup');
+      // The lazy map entry, not `echartsSetup`: it registers the map chart, without which
+      // `registerMap` fails (the line chart may have loaded `echartsSetup` first).
+      const { echarts } = await import('@/components/charts/EMapChart');
       echarts.registerMap(
         WORLD_MAP_NAME,
         geometry as unknown as Parameters<typeof echarts.registerMap>[1],

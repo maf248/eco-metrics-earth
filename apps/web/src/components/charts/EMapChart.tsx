@@ -10,3 +10,5 @@ import { echarts } from './echartsSetup';
 echarts.use([MapChart, VisualMapPiecewiseComponent]);
 
 export { EChart } from './EChart';
+// `registerMap` only works once the map chart is registered, so the geometry registers through here.
+export { echarts };

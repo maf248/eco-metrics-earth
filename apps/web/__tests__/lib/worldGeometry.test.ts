@@ -5,7 +5,7 @@ import { chartBoxClassName } from '@/components/charts/ChartSkeleton';
 import type * as WorldGeometryModule from '@/lib/worldGeometry';
 
 const registerMap = jest.fn();
-jest.mock('@/components/charts/echartsSetup', () => ({ echarts: { registerMap } }));
+jest.mock('@/components/charts/EMapChart', () => ({ echarts: { registerMap } }));
 
 const ASSET_PATH = join(__dirname, '../../public/geo/world-countries.json');
 
