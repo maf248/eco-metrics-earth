@@ -1,3 +1,9 @@
+## [2.16.1](https://github.com/maf248/eco-metrics-earth/compare/web-v2.16.0...web-v2.16.1) (2026-11-11)
+
+### Bug Fixes
+
+* **web:** span data cards edge to edge on mobile and fill the system safe areas ([3fe9d75](https://github.com/maf248/eco-metrics-earth/commit/3fe9d75faaf68c54b3b788c23aab96119da1dfd8))
+
 ## [2.16.0](https://github.com/maf248/eco-metrics-earth/compare/web-v2.15.0...web-v2.16.0) (2026-11-10)
 
 ### Features
