@@ -1,3 +1,9 @@
+## [2.21.0](https://github.com/maf248/eco-metrics-earth/compare/v2.20.1...v2.21.0) (2026-11-11)
+
+### Features
+
+* **web:** add a landing home page listing the categories with live data ([ff0db4e](https://github.com/maf248/eco-metrics-earth/commit/ff0db4e81bdbaec4126eaee11e8367b6f5948227))
+
 ## [2.20.1](https://github.com/maf248/eco-metrics-earth/compare/v2.20.0...v2.20.1) (2026-11-11)
 
 ### Bug Fixes
