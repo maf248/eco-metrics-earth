@@ -1,6 +1,7 @@
 import { getCategoryIcon } from '@/lib/categoryIcon';
-import { CATEGORY_SKELETONS } from '@/lib/categorySkeletons';
 import { getCategoryTitle } from '@/lib/categoryTitle';
+import { isLiveCategory } from '@/lib/liveCategories';
+import { PAGE_TITLE_CLASS_NAME } from '@/lib/pageTitleClassName';
 import type { EcoCategory } from '@eco-metrics/shared';
 
 /** Classes of the content of a category page, shared with its pending view. */
@@ -22,8 +23,8 @@ export function CategoryHeader({ category }: { category: EcoCategory }) {
         <Icon aria-hidden className="w-16 h-16 drop-shadow-icon-lg" />
       </div>
       <div className="text-center">
-        <h1 className="text-4xl font-bold text-fg">{title}</h1>
-        {!CATEGORY_SKELETONS[category] && (
+        <h1 className={PAGE_TITLE_CLASS_NAME}>{title}</h1>
+        {!isLiveCategory(category) && (
           <p className="mt-4 text-fg-secondary">{title} metrics — coming soon.</p>
         )}
       </div>

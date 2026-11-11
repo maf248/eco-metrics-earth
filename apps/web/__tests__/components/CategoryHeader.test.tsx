@@ -16,4 +16,13 @@ describe('CategoryHeader', () => {
     expect(screen.getByRole('heading', { level: 1, name: 'Ocean Health' })).toBeInTheDocument();
     expect(screen.getByText('Ocean Health metrics — coming soon.')).toBeInTheDocument();
   });
+
+  it('should show the title in the brand style, static and with no cursor', () => {
+    render(<CategoryHeader category="co2-emissions" />);
+    const title = screen.getByRole('heading', { level: 1 });
+
+    expect(title).toHaveClass('font-mono', 'text-accent', 'text-4xl');
+    expect(title).toHaveTextContent(/^CO2 Emissions$/);
+    expect(title.querySelector('.typewriter-char, .typewriter-cursor')).toBeNull();
+  });
 });

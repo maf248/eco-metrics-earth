@@ -178,6 +178,21 @@ describe('generateMetadata', () => {
     expect(metadata.title).toBe('Ocean Health');
   });
 
+  it('should mark a placeholder category as noindex, follow', async () => {
+    const metadata = await generateMetadata({
+      params: Promise.resolve({ category: 'ocean-health' }),
+    });
+    expect(metadata.robots).toEqual({ index: false, follow: true });
+    expect(metadata.alternates?.canonical).toMatch(/\/ocean-health\/$/);
+  });
+
+  it('should leave a category with live data indexable', async () => {
+    const metadata = await generateMetadata({
+      params: Promise.resolve({ category: 'co2-emissions' }),
+    });
+    expect(metadata.robots).toBeUndefined();
+  });
+
   it('should return the description from the category map', async () => {
     const metadata = await generateMetadata({
       params: Promise.resolve({ category: 'air-quality' }),

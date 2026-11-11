@@ -81,7 +81,7 @@ exports[`CategoryPage snapshots should match snapshot for endangered-species 1`]
         class="text-center"
       >
         <h1
-          class="text-4xl font-bold text-fg"
+          class="font-mono text-4xl font-bold tracking-tight text-balance text-accent"
         >
           Endangered Species
         </h1>
@@ -207,7 +207,7 @@ exports[`CategoryPage snapshots should match snapshot for ocean-health 1`] = `
         class="text-center"
       >
         <h1
-          class="text-4xl font-bold text-fg"
+          class="font-mono text-4xl font-bold tracking-tight text-balance text-accent"
         >
           Ocean Health
         </h1>

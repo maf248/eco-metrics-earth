@@ -11,7 +11,7 @@ Defines the sitemap route and its home and category URL entries.
 `apps/web/src/app/sitemap.ts` SHALL export a default function returning a `MetadataRoute.Sitemap` array that includes:
 
 - One entry for the home page (`siteUrl() + "/"`), with `changeFrequency: 'weekly'` and `priority: 1.0`.
-- One entry for each of the 12 `ECO_CATEGORIES` slugs (`siteUrl() + "/" + slug + "/"`), each with `changeFrequency: 'weekly'` and `priority: 0.8`.
+- One entry for each `ECO_CATEGORIES` slug with live data (`siteUrl() + "/" + slug + "/"`), each with `changeFrequency: 'weekly'` and `priority: 0.8`. Placeholder categories SHALL NOT be listed: their pages declare `noindex` (see `page-metadata`).
 - One entry for the data sources page (`siteUrl() + "/data-sources/"`), with `changeFrequency: 'monthly'` and `priority: 0.5`.
 
 All URLs SHALL end with a trailing slash.
@@ -24,7 +24,12 @@ All URLs SHALL end with a trailing slash.
 #### Scenario: Sitemap includes all category URLs
 
 - **WHEN** the sitemap function is called
-- **THEN** the result contains exactly 12 category entries, one per slug in `ECO_CATEGORIES`
+- **THEN** the result contains exactly one category entry per category with live data (currently 4: `global-temperature`, `co2-emissions`, `energy-sources`, `water-footprint`)
+
+#### Scenario: Sitemap excludes placeholder categories
+
+- **WHEN** the sitemap function is called
+- **THEN** no entry points to a category without live data (e.g. `/ocean-health/`)
 
 #### Scenario: Category entries have correct priority and frequency
 

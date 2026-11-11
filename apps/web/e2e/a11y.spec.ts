@@ -22,14 +22,19 @@ async function analyzeSettled(page: Page): ReturnType<AxeBuilder['analyze']> {
 }
 
 test.describe('Accessibility audit — home page', { tag: '@smoke' }, () => {
-  test('should have zero critical and serious violations', async ({ page }) => {
-    await page.goto('/');
-    const results = await analyzeSettled(page);
-    const violations = results.violations.filter(
-      (v) => v.impact === 'critical' || v.impact === 'serious',
-    );
-    expect(violations).toEqual([]);
-  });
+  for (const theme of ['light', 'dark'] as const) {
+    test(`should have zero critical and serious violations in the ${theme} theme`, async ({
+      page,
+    }) => {
+      await page.addInitScript((value) => localStorage.setItem('eco-metrics-theme', value), theme);
+      await page.goto('/');
+      const results = await analyzeSettled(page);
+      const violations = results.violations.filter(
+        (v) => v.impact === 'critical' || v.impact === 'serious',
+      );
+      expect(violations).toEqual([]);
+    });
+  }
 });
 
 test.describe('Accessibility audit — category pages', () => {

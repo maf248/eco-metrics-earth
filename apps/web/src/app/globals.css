@@ -229,6 +229,11 @@
   padding-top: calc(3.5rem + env(safe-area-inset-top, 0px));
 }
 
+@utility scroll-mt-header {
+  /* An anchor target clears the fixed mobile header (insets included) with 1rem of air. */
+  scroll-margin-top: calc(4.5rem + env(safe-area-inset-top, 0px));
+}
+
 @utility pt-safe {
   padding-top: env(safe-area-inset-top, 0px);
 }
@@ -269,6 +274,71 @@
 @media (prefers-reduced-motion: no-preference) {
   .animate-cursor-blink {
     animation: cursor-blink 1.1s step-end infinite;
+  }
+}
+
+/* ─── Typewriter text ──────────────────────────────────────────────────────────
+ * `TypewriterText` renders every character in place; each one stays hidden until its
+ * turn (`--typewriter-index` × the step) and carries the cursor for one step. That
+ * cursor is out of flow and the closing one holds its place from the start, so the text
+ * never moves. With reduced motion nothing here runs: the
+ * text and the closing cursor are simply visible.
+ */
+.typewriter-char,
+.typewriter-cursor {
+  /* Air between the last typed character and the cursor, as in the header brand. */
+  --typewriter-cursor-gap: 0.2em;
+}
+
+.typewriter-char {
+  position: relative;
+}
+
+.typewriter-char::after {
+  content: '▋';
+  position: absolute;
+  top: 0;
+  left: 100%;
+  margin-left: var(--typewriter-cursor-gap);
+  opacity: 0;
+}
+
+.typewriter-cursor {
+  margin-left: var(--typewriter-cursor-gap);
+}
+
+@keyframes typewriter-hidden {
+  from,
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes typewriter-shown {
+  from,
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .typewriter-char,
+  .typewriter-cursor {
+    animation: typewriter-hidden calc(var(--typewriter-index) * 45ms) step-end;
+  }
+
+  .typewriter-char::after {
+    animation: typewriter-shown 45ms step-end calc(var(--typewriter-index) * 45ms);
+  }
+}
+
+/* ─── In-page anchors ──────────────────────────────────────────────────────────
+ * `SmoothAnchor` sets this class on <html> for the length of its own scroll. Smooth
+ * scrolling is never on site-wide: it would animate the browser's scroll restoration.
+ */
+@media (prefers-reduced-motion: no-preference) {
+  html.anchor-scrolling {
+    scroll-behavior: smooth;
   }
 }
 

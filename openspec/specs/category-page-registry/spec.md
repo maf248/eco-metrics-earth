@@ -8,7 +8,7 @@ Dispatch category pages with live data through a registry, so new categories onl
 
 ### Requirement: Per-category page registry
 
-`apps/web/src/lib/categoryPages.tsx` SHALL export `CATEGORY_PAGES`, a partial record keyed by `EcoCategory` whose values define `load: () => Promise<T>` (the server-side data fetch) and `Content: ComponentType<{ data: T }>` (the category's content), built with a type-safe helper that avoids `any`. `[category]/page.tsx` SHALL look the category up in the registry instead of testing for a specific category: with an entry it awaits `load()` through a cached loader and renders `Content` with the data under the common header (icon and `<h1>`); without one it renders the unchanged placeholder. The page SHALL NOT catch errors from `load()`. Adding a category with live data SHALL require only a registry entry plus its own files. Each registered category SHALL also have an entry in `CATEGORY_SKELETONS`, a client-safe record that lists the skeleton blocks of its data region, so a pending navigation can show them without importing server code.
+`apps/web/src/lib/categoryPages.tsx` SHALL export `CATEGORY_PAGES`, a partial record keyed by `EcoCategory` whose values define `load: () => Promise<T>` (the server-side data fetch) and `Content: ComponentType<{ data: T }>` (the category's content), built with a type-safe helper that avoids `any`. `[category]/page.tsx` SHALL look the category up in the registry instead of testing for a specific category: with an entry it awaits `load()` through a cached loader and renders `Content` with the data under the common header (icon and `<h1>`); without one it renders the unchanged placeholder. The page SHALL NOT catch errors from `load()`. Adding a category with live data SHALL require only a registry entry plus its own files and its home card summary (see `home-page`). Each registered category SHALL also have an entry in `CATEGORY_SKELETONS`, a client-safe record that lists the skeleton blocks of its data region, so a pending navigation can show them without importing server code.
 
 #### Scenario: Registered category renders its content
 
@@ -47,6 +47,11 @@ Dispatch category pages with live data through a registry, so new categories onl
 #### Scenario: Every registered category has its skeleton
 
 - **WHEN** the keys of `CATEGORY_PAGES` and `CATEGORY_SKELETONS` are compared in a unit test
+- **THEN** they are the same set
+
+#### Scenario: Every registered category has its home card summary
+
+- **WHEN** the categories with a home card summary are compared in a unit test with the categories that have a skeleton
 - **THEN** they are the same set
 
 ### Requirement: Water-footprint is migrated without behavior change

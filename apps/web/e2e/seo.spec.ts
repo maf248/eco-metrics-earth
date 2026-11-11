@@ -4,6 +4,7 @@ import {
   homePage,
   categoryPage,
   CATEGORY_SLUGS,
+  LIVE_CATEGORY_SLUGS,
   CATEGORY_DESCRIPTION_SAMPLES,
 } from './utils/pages';
 
@@ -177,19 +178,49 @@ test.describe('Sitemap.xml', () => {
     expect(text).toContain('<urlset');
   });
 
-  test('should contain 14 <url> entries with trailing slashes', async ({ request }) => {
+  test('should list the home, the live categories and data sources', async ({ request }) => {
     const response = await request.get('/sitemap.xml');
     const text = await response.text();
-    // Home page + 12 category pages + data sources = 14 entries
+    // Home page + 4 live category pages + data sources = 6 entries
     const urlCount = (text.match(/<url>/g) || []).length;
-    expect(urlCount).toBe(14);
-    // All category URLs should end with a trailing slash
+    expect(urlCount).toBe(2 + LIVE_CATEGORY_SLUGS.length);
+    // Placeholder categories are noindex, so only live ones are listed, with a trailing slash
     for (const slug of CATEGORY_SLUGS) {
-      expect(text).toContain(`/${slug}/`);
+      const listed = text.includes(`/${slug}/</loc>`);
+      expect(listed).toBe(LIVE_CATEGORY_SLUGS.includes(slug));
     }
     // Home page entry
     expect(text).toContain('<loc>http://localhost:3000/</loc>');
     expect(text).toContain('<loc>http://localhost:3000/data-sources/</loc>');
+  });
+});
+
+test.describe('Robots meta', () => {
+  test('should mark a placeholder category as noindex, follow', async ({ request }) => {
+    const html = await (await request.get('/ocean-health/')).text();
+    expect(html).toContain('name="robots" content="noindex, follow"');
+    expect(html).toContain('rel="canonical"');
+  });
+
+  for (const path of ['/', '/co2-emissions/', '/data-sources/']) {
+    test(`should leave ${path} indexable`, async ({ request }) => {
+      const html = await (await request.get(path)).text();
+      expect(html).not.toContain('name="robots"');
+    });
+  }
+});
+
+test.describe('Home page structured data', () => {
+  test('should declare the WebSite and its Organization', async ({ request }) => {
+    const html = await (await request.get('/')).text();
+    const json = /<script type="application\/ld\+json">(.*?)<\/script>/s.exec(html)?.[1] ?? '{}';
+    const graph = JSON.parse(json)['@graph'] as Record<string, unknown>[];
+    const website = graph.find((node) => node['@type'] === 'WebSite');
+    const organization = graph.find((node) => node['@type'] === 'Organization');
+
+    expect(website).toMatchObject({ name: 'eco-metrics earth', url: 'http://localhost:3000/' });
+    expect(organization?.logo).toMatch(/^http:\/\/localhost:3000\/.+\.png$/);
+    expect(website?.publisher).toEqual({ '@id': organization?.['@id'] });
   });
 });
 
@@ -231,6 +262,7 @@ test.describe('PWA manifest', () => {
 
 test.describe('Complete HTML on direct visits', () => {
   for (const { path, heading, content } of [
+    { path: '/', heading: 'Environmental data, made readable', content: 'href="/data-sources/"' },
     { path: '/co2-emissions/', heading: 'CO2 Emissions', content: 'application/ld+json' },
     { path: '/energy-sources/', heading: 'Energy Sources', content: 'application/ld+json' },
     { path: '/ocean-health/', heading: 'Ocean Health', content: 'coming soon' },
