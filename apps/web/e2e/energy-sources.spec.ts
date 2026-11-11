@@ -89,15 +89,26 @@ test.describe('Energy Sources page', () => {
       }) => {
         const response = await page.goto(PAGE_URL);
         expect(response?.ok()).toBe(true);
-        const html = (await response?.text()) ?? '';
 
         const figures = page.getByTestId('energy-key-figures');
         await expect(figures).toBeVisible();
         await expect(figures).toContainText(KEY_FIGURES);
-        expect(html).toContain('World: electricity mix in 2025');
-        expect(html).toContain('World: electricity share by source, 2000–2025');
-        expect(html).toContain('View data table');
-        expect(html).toContain('Coal (%)');
+
+        const region = explorer(page);
+        await expect(
+          region.getByRole('table', { name: 'World: electricity mix in 2025' }),
+        ).toBeVisible();
+
+        // The year table is collapsed by default: in the document, not on screen.
+        await expect(region.getByText('View data table')).toBeVisible();
+        const yearTable = region.getByRole('table', {
+          name: 'World: electricity share by source, 2000–2025',
+          includeHidden: true,
+        });
+        await expect(yearTable).toBeAttached();
+        await expect(
+          yearTable.getByRole('columnheader', { name: 'Coal (%)', includeHidden: true }),
+        ).toBeAttached();
       });
     });
 
