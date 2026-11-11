@@ -4,6 +4,7 @@ import { Co2WorldMap } from '@/components/co2-emissions/Co2WorldMap';
 import { DataAttribution } from '@/components/DataAttribution';
 import { JsonLd } from '@/components/JsonLd';
 import { OriginCredit } from '@/components/OriginCredit';
+import { CATEGORY_CONTENT_CLASS_NAME, KEY_FIGURES_CLASS_NAME } from '@/lib/cardClassNames';
 import { buildCo2DatasetJsonLd } from '@/lib/co2StructuredData';
 import { siteUrl } from '@/lib/siteUrl';
 import { ECO_CATEGORIES } from '@eco-metrics/shared';
@@ -30,14 +31,14 @@ export function Co2EmissionsContent({ data: { data, meta } }: Co2EmissionsConten
   });
 
   return (
-    <div className="w-full max-w-4xl px-4 pb-12">
+    <div className={CATEGORY_CONTENT_CLASS_NAME}>
       <JsonLd data={jsonLd} />
       <p className="mb-6 text-center text-fg-secondary">
         How much CO2 does each country emit? Explore annual emissions since {data.startYear}, in
         total and per person.
       </p>
 
-      <div className="mb-8 rounded-2xl bg-well px-5 py-5 text-center sm:px-8">
+      <div className={KEY_FIGURES_CLASS_NAME}>
         <Co2KeyFigures data={data} />
       </div>
 

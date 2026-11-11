@@ -14,6 +14,8 @@
   /* Core */
   --surface: oklch(100% 0 0); /* white */
   --surface-raised: oklch(100% 0 0); /* white */
+  /* Data cards and key figures: a tone barely off the page. */
+  --surface-card: oklch(98.5% 0.002 247.839); /* gray-50 */
   /* Keep opaque: page content scrolls behind the fixed nav. */
   --nav-surface: oklch(94.24% 0.0046 258.325); /* #eaecef */
   --well: oklch(87.2% 0.01 258.338); /* gray-300 */
@@ -90,6 +92,7 @@
   /* Core */
   --surface: oklch(0% 0 0); /* black */
   --surface-raised: oklch(27.8% 0.033 256.848); /* gray-800 */
+  --surface-card: oklch(17.76% 0 0); /* #111111 */
   --nav-surface: oklch(21.78% 0 0); /* #1a1a1a */
   --well: oklch(100% 0 0 / 0.1); /* white/10 */
   --well-active: oklch(100% 0 0 / 0.15); /* white/15 */
@@ -161,6 +164,7 @@
 @theme inline {
   --color-surface: var(--surface);
   --color-surface-raised: var(--surface-raised);
+  --color-surface-card: var(--surface-card);
   --color-nav-surface: var(--nav-surface);
   --color-well: var(--well);
   --color-well-active: var(--well-active);
@@ -197,6 +201,54 @@
   --drop-shadow-icon-sm: var(--icon-shadow-sm);
   --drop-shadow-icon-lg: var(--icon-shadow-lg);
   --drop-shadow-icon-xl: var(--icon-shadow-xl);
+}
+
+/* ─── Safe areas ───────────────────────────────────────────────────────────────
+ * The viewport is `viewport-fit=cover`, so the page may draw under the system
+ * bars: the Android gesture bar and the iOS home indicator (bottom), the notch in
+ * landscape (sides) and, where a browser overlays it, the status bar (top). The fixed chrome pads itself by the insets, so its own
+ * background fills that area; every inset is 0 where there is no such bar.
+ * ─────────────────────────────────────────────────────────────────────────── */
+@utility h-bottom-nav {
+  /* The 5rem (h-20) bottom bar plus the area under it. */
+  height: calc(5rem + env(safe-area-inset-bottom, 0px));
+}
+
+@utility pb-bottom-nav {
+  /* Content clearance for the fixed bottom bar, insets included. */
+  padding-bottom: calc(5rem + env(safe-area-inset-bottom, 0px));
+}
+
+@utility h-header {
+  /* The 3.5rem (h-14) mobile header plus the area above it. */
+  height: calc(3.5rem + env(safe-area-inset-top, 0px));
+}
+
+@utility pt-header {
+  /* Page clearance for the fixed mobile header, insets included. */
+  padding-top: calc(3.5rem + env(safe-area-inset-top, 0px));
+}
+
+@utility pt-safe {
+  padding-top: env(safe-area-inset-top, 0px);
+}
+
+@utility top-toggle {
+  /* The mobile theme toggle sits 0.5rem below the top inset. */
+  top: calc(0.5rem + env(safe-area-inset-top, 0px));
+}
+
+@utility pb-safe {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+@utility px-safe {
+  padding-left: env(safe-area-inset-left, 0px);
+  padding-right: env(safe-area-inset-right, 0px);
+}
+
+@utility mr-safe {
+  margin-right: env(safe-area-inset-right, 0px);
 }
 
 /* ─── Terminal cursor blink animation ───────────────────────────────────────

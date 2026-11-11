@@ -37,7 +37,7 @@ describe('ChartSkeleton', () => {
   it('should use the same box classes as the chart container', () => {
     render(<ChartSkeleton />);
 
-    expect(chartBoxClassName('series')).toBe('h-72 sm:h-96 -mx-3 sm:mx-0');
+    expect(chartBoxClassName('series')).toBe('h-72 sm:h-96 -mx-4 sm:mx-0');
     expect(screen.getByTestId('chart-skeleton')).toHaveClass(
       ...chartBoxClassName('series').split(' '),
     );
@@ -46,8 +46,8 @@ describe('ChartSkeleton', () => {
   it('should give the donut the full height at every width and the same mobile bleed', () => {
     render(<ChartSkeleton variant="donut" />);
 
-    expect(chartBoxClassName('donut')).toBe('h-96 -mx-3 sm:mx-0');
-    expect(screen.getByTestId('chart-skeleton')).toHaveClass('h-96', '-mx-3', 'sm:mx-0');
+    expect(chartBoxClassName('donut')).toBe('h-96 -mx-4 sm:mx-0');
+    expect(screen.getByTestId('chart-skeleton')).toHaveClass('h-96', '-mx-4', 'sm:mx-0');
     expect(screen.getByTestId('chart-skeleton')).not.toHaveClass('h-72');
   });
 });

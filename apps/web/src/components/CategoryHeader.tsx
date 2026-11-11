@@ -4,7 +4,7 @@ import { getCategoryTitle } from '@/lib/categoryTitle';
 import type { EcoCategory } from '@eco-metrics/shared';
 
 /** Classes of the content of a category page, shared with its pending view. */
-export const CATEGORY_PAGE_CLASS_NAME = 'flex flex-col items-center justify-start pt-14 px-4';
+export const CATEGORY_PAGE_CLASS_NAME = 'flex flex-col items-center justify-start pt-header px-4';
 
 /**
  * Icon and `<h1>` of a category. Everything here comes from config, so the server renders it

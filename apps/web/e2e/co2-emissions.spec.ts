@@ -542,6 +542,25 @@ test.describe('CO2 Emissions page', () => {
         },
       );
 
+      test(
+        'should span the card, the map and the ranking across the whole screen width',
+        { tag: '@smoke' },
+        async ({ page }) => {
+          await page.goto(PAGE_URL);
+          await showMap(page);
+          await openRanking(page);
+
+          // Below `sm` the card bleeds through the page gutter and the map and the ranking
+          // through the card padding, so all three run from one screen edge to the other.
+          for (const locator of [card(page), card(page).getByTestId('echart'), ranking(page)]) {
+            const box = await locator.boundingBox();
+            if (!box) throw new Error('element box not found');
+            expect(box.x).toBeCloseTo(0, 0);
+            expect(box.width).toBeCloseTo(360, 0);
+          }
+        },
+      );
+
       test('should show "Reset view" after the map is dragged and hide it after a reset', async ({
         page,
       }) => {

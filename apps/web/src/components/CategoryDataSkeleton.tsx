@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 
 import { ChartSkeleton } from '@/components/charts/ChartSkeleton';
+import { CARD_CLASS_NAME, KEY_FIGURES_CLASS_NAME } from '@/lib/cardClassNames';
 import { CATEGORY_SKELETONS, type SkeletonBlock } from '@/lib/categorySkeletons';
 import { waterFootprintCategorySlugMap } from '@eco-metrics/shared';
 import type { EcoCategory } from '@eco-metrics/shared';
@@ -37,7 +38,7 @@ function Intro({ text, note }: { text: string; note?: string }) {
 
 function KeyFigures({ lead, details }: { lead: string; details: readonly string[] }) {
   return (
-    <div className="mb-8 rounded-2xl bg-well px-5 py-5 text-center sm:px-8">
+    <div className={KEY_FIGURES_CLASS_NAME}>
       <p className="text-xl leading-relaxed sm:text-2xl">
         <Bars>{lead}</Bars>
       </p>
@@ -68,7 +69,7 @@ function Explorer({
   hasDonut,
 }: Extract<SkeletonBlock, { kind: 'explorer' }>) {
   return (
-    <div className="rounded-2xl border border-line-strong bg-surface-raised p-4 sm:p-6">
+    <div className={CARD_CLASS_NAME}>
       <p className="mb-4 text-xl font-semibold">
         <Bars>{heading}</Bars>
       </p>
@@ -142,7 +143,7 @@ export function CategoryDataSkeleton({ category }: { category: EcoCategory }) {
       aria-hidden="true"
       className="mt-8 flex w-full justify-center"
     >
-      <div className={`w-full px-4 pb-12 ${isList ? 'max-w-6xl' : 'max-w-4xl'}`}>
+      <div className={`w-full pb-12 sm:px-4 ${isList ? 'max-w-6xl' : 'max-w-4xl'}`}>
         {blocks.map((block) => (
           <Block key={block.kind} block={block} />
         ))}

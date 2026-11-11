@@ -3,6 +3,7 @@ import { EnergyExplorer } from '@/components/energy-sources/EnergyExplorer';
 import { EnergyKeyFigures } from '@/components/energy-sources/EnergyKeyFigures';
 import { JsonLd } from '@/components/JsonLd';
 import { OriginCredit } from '@/components/OriginCredit';
+import { CATEGORY_CONTENT_CLASS_NAME, KEY_FIGURES_CLASS_NAME } from '@/lib/cardClassNames';
 import { buildEnergyDatasetJsonLd } from '@/lib/energyStructuredData';
 import { siteUrl } from '@/lib/siteUrl';
 import { ECO_CATEGORIES } from '@eco-metrics/shared';
@@ -21,14 +22,14 @@ export function EnergySourcesContent({ data: { data, meta } }: EnergySourcesCont
   });
 
   return (
-    <div className="w-full max-w-4xl px-4 pb-12">
+    <div className={CATEGORY_CONTENT_CLASS_NAME}>
       <JsonLd data={jsonLd} />
       <p className="mb-6 text-center text-fg-secondary">
         Where does a country&rsquo;s electricity come from? Explore how much is generated from coal,
         gas, oil, nuclear, hydro, wind, solar and bioenergy since {data.startYear}.
       </p>
 
-      <div className="mb-8 rounded-2xl bg-well px-5 py-5 text-center sm:px-8">
+      <div className={KEY_FIGURES_CLASS_NAME}>
         <EnergyKeyFigures data={data} />
       </div>
 

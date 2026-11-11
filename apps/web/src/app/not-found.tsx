@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 export default function NotFound() {
   return (
-    <div className="flex flex-col items-center justify-start pt-14 px-4">
+    <div className="flex flex-col items-center justify-start pt-header px-4">
       <div className="flex flex-col items-center gap-6 mt-14 lg:mt-0">
         <Link href="/" aria-label="Go back to home">
           <div

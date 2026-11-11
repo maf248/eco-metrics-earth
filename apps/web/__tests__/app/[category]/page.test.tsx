@@ -332,11 +332,11 @@ describe('CategoryPage — layout', () => {
     expect(content?.className).not.toContain('justify-center');
   });
 
-  it('should render the content with pt-14 top padding', async () => {
+  it('should clear the mobile header with pt-header top padding', async () => {
     const element = await CategoryPage({ params: Promise.resolve({ category: 'ocean-health' }) });
     const { container } = render(element);
     const content = container.firstElementChild;
-    expect(content?.className).toContain('pt-14');
+    expect(content?.className).toContain('pt-header');
   });
 });
 

@@ -14,6 +14,9 @@ import { SITE_DESCRIPTION, buildOpenGraph, buildTwitter } from '@/lib/socialMeta
 import './globals.css';
 
 export const viewport: Viewport = {
+  // Draw under the system bars (gesture bar, home indicator, notch): the fixed chrome pads
+  // itself by the safe-area insets (globals.css), so no strip of another color shows below it.
+  viewportFit: 'cover',
   themeColor: [
     { media: '(prefers-color-scheme: dark)', color: '#0a0a0a' },
     { media: '(prefers-color-scheme: light)', color: '#ffffff' },
@@ -38,7 +41,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" className="dark" suppressHydrationWarning>
-      <body className="bg-surface text-fg">
+      <body className="bg-surface px-safe text-fg">
         {/*
          * Blocking script — runs synchronously before paint.
          * SSR defaults to dark mode; this script only removes the `dark`
@@ -75,9 +78,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
               Skip to main content
             </a>
             {/*
-             * Mobile-only top header (h-14 / 56px) — site brand + home link.
+             * Mobile-only top header (h-header: h-14 / 56px plus the top safe area) — site brand + home link.
              * Hidden on desktop (lg:hidden) where the sidebar brand covers this.
-             * Dependency: page content uses pt-14 to clear this fixed header.
+             * Dependency: page content uses pt-header to clear this fixed header.
              */}
             <MobileHeader />
             {/*
@@ -90,11 +93,11 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             <ThemeToggle />
             {/*
              * Content offset — three fixed UI zones:
-             *  - Mobile top:    pt-14 on each page clears the MobileHeader
-             *  - Mobile bottom: pb-20 clears the fixed bottom nav (h-20)
+             *  - Mobile top:    pt-header on each page clears the MobileHeader
+             *  - Mobile bottom: pb-bottom-nav clears the fixed bottom nav (h-20 + bottom safe area)
              *  - Desktop left:  lg:pl-76 clears the fixed left sidebar (w-76)
              */}
-            <div className="pb-20 lg:pb-0 lg:pl-76">
+            <div className="pb-bottom-nav lg:pb-safe lg:pl-76">
               <NavigationContent>{children}</NavigationContent>
               <Footer />
             </div>

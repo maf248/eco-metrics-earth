@@ -18,7 +18,7 @@ export default function ErrorPage({ error, reset }: ErrorPageProps) {
   }, [error]);
 
   return (
-    <div className="flex flex-col items-center justify-start pt-14 px-4">
+    <div className="flex flex-col items-center justify-start pt-header px-4">
       <div className="flex flex-col items-center gap-6 mt-14 lg:mt-0">
         <div
           data-testid="error-icon"

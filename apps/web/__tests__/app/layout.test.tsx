@@ -54,7 +54,7 @@ describe('RootLayout', () => {
         <div>test content</div>
       </RootLayout>,
     );
-    expect(html).toContain('pb-20');
+    expect(html).toContain('pb-bottom-nav');
     expect(html).toContain('lg:pl-76');
   });
 
@@ -87,14 +87,16 @@ describe('RootLayout — Footer', () => {
   );
 
   it('should render the footer inside the content wrapper, right after the children', () => {
-    const wrapper = html.match(/<div class="pb-20 lg:pb-0 lg:pl-76">(.*)<\/div><\/body>/s)?.[1];
+    const wrapper = html.match(
+      /<div class="pb-bottom-nav lg:pb-safe lg:pl-76">(.*)<\/div><\/body>/s,
+    )?.[1];
 
     expect(wrapper).toMatch(/^<main.*test content.*<\/main><footer/s);
     expect(wrapper).toContain('href="/data-sources"');
   });
 
   it('should keep the wrapper offsets intact', () => {
-    expect(html).toContain('class="pb-20 lg:pb-0 lg:pl-76"');
+    expect(html).toContain('class="pb-bottom-nav lg:pb-safe lg:pl-76"');
   });
 });
 

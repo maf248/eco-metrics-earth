@@ -23,7 +23,7 @@ export function WaterFootprintContent({ products }: WaterFootprintContentProps) 
   const publishers = distinctPublishers(products);
 
   return (
-    <div className="w-full max-w-6xl px-4">
+    <div className="w-full max-w-6xl sm:px-4">
       <p className="mb-3 text-center text-fg-secondary">
         Compare the water footprint of everyday products — from food and textiles to technology,
         manufactured goods and computing.

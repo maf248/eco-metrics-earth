@@ -2,6 +2,11 @@ import { render, screen } from '@testing-library/react';
 
 import { CategoryDataSkeleton } from '@/components/CategoryDataSkeleton';
 import { ChartSkeleton } from '@/components/charts/ChartSkeleton';
+import {
+  CARD_CLASS_NAME,
+  CATEGORY_CONTENT_CLASS_NAME,
+  KEY_FIGURES_CLASS_NAME,
+} from '@/lib/cardClassNames';
 
 describe('CategoryDataSkeleton', () => {
   it('should render nothing for a category without live data', () => {
@@ -12,6 +17,16 @@ describe('CategoryDataSkeleton', () => {
   it('should hide the shapes from assistive technology', () => {
     render(<CategoryDataSkeleton category="co2-emissions" />);
     expect(screen.getByTestId('category-data-skeleton')).toHaveAttribute('aria-hidden', 'true');
+  });
+
+  it('should lay out its column and cards with the classes of the real content', () => {
+    render(<CategoryDataSkeleton category="co2-emissions" />);
+    const column = screen.getByTestId('category-data-skeleton').firstElementChild;
+    expect(column).toHaveClass(...CATEGORY_CONTENT_CLASS_NAME.split(' '));
+    const explorer = screen.getByTestId('chart-skeleton').parentElement;
+    expect(explorer).toHaveClass(...CARD_CLASS_NAME.split(' '));
+    const keyFigures = column?.querySelector(':scope > .text-center.bg-surface-card');
+    expect(keyFigures).toHaveClass(...KEY_FIGURES_CLASS_NAME.split(' '));
   });
 
   it('should render one chart skeleton for an explorer', () => {
