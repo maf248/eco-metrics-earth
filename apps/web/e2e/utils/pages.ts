@@ -21,6 +21,14 @@ export const CATEGORY_TITLES: Record<EcoCategory, string> = {
 
 export const CATEGORY_SLUGS: EcoCategory[] = Object.values(ECO_CATEGORIES);
 
+/** The categories with live data, in navigation order, mirroring `LIVE_CATEGORIES`. */
+export const LIVE_CATEGORY_SLUGS: EcoCategory[] = [
+  'global-temperature',
+  'co2-emissions',
+  'energy-sources',
+  'water-footprint',
+];
+
 export const homePage = {
   url: '/',
   title: 'eco-metrics earth | CO2, Climate, Energy & Water Data',

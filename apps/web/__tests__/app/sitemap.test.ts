@@ -1,10 +1,27 @@
 import sitemap from '@/app/sitemap';
+import { LIVE_CATEGORIES, isLiveCategory } from '@/lib/liveCategories';
 import { ECO_CATEGORIES } from '@eco-metrics/shared';
 
 describe('sitemap', () => {
-  it('should return one entry for home, each category and data sources', () => {
+  it('should return one entry for home, each live category and data sources', () => {
     const result = sitemap();
-    expect(result).toHaveLength(2 + Object.keys(ECO_CATEGORIES).length);
+    expect(result).toHaveLength(2 + LIVE_CATEGORIES.length);
+  });
+
+  it('should list every category with live data', () => {
+    const urls = sitemap().map(({ url }) => url);
+    for (const category of LIVE_CATEGORIES) {
+      expect(urls.some((url) => url.endsWith(`/${category}/`))).toBe(true);
+    }
+  });
+
+  it('should not list any placeholder category', () => {
+    const urls = sitemap().map(({ url }) => url);
+    for (const category of Object.values(ECO_CATEGORIES)) {
+      if (!isLiveCategory(category)) {
+        expect(urls.some((url) => url.endsWith(`/${category}/`))).toBe(false);
+      }
+    }
   });
 
   it('should have home entry with priority 1.0', () => {

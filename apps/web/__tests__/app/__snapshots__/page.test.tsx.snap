@@ -3,17 +3,22 @@
 exports[`HomePage snapshots should match the full page snapshot 1`] = `
 <DocumentFragment>
   <div
-    class="flex flex-col items-center justify-start pt-header px-4"
+    class="flex flex-col items-center justify-start px-4 pt-header"
   >
+    <script
+      type="application/ld+json"
+    >
+      {"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"http://localhost:3000/#organization","name":"eco-metrics earth","url":"http://localhost:3000/","logo":"http://localhost:3000/icons/apple-touch-icon.png"},{"@type":"WebSite","@id":"http://localhost:3000/#website","name":"eco-metrics earth","url":"http://localhost:3000/","description":"Explore environmental data on CO2 emissions, global temperature, energy sources and water footprint. Open sources, free to use, built in the open.","inLanguage":"en","publisher":{"@id":"http://localhost:3000/#organization"}}]}
+    </script>
     <div
-      class="flex flex-col items-center gap-6 mt-14 lg:mt-0"
+      class="mt-14 flex max-w-3xl flex-col items-center gap-6 text-center lg:mt-0"
     >
       <div
-        class="flex items-center justify-center w-48 h-48 rounded-2xl bg-well p-4"
+        class="flex h-24 w-24 items-center justify-center rounded-2xl bg-well p-4"
       >
         <svg
           aria-hidden="true"
-          class="w-32 h-32"
+          class="h-16 w-16 drop-shadow-icon-lg"
           viewBox="0 0 511.874 511.874"
           xmlns="http://www.w3.org/2000/svg"
         >
@@ -81,20 +86,749 @@ exports[`HomePage snapshots should match the full page snapshot 1`] = `
           </g>
         </svg>
       </div>
-      <div
-        class="text-center"
-      >
+      <div>
         <h1
-          class="text-4xl font-bold text-fg"
+          aria-label="Environmental data, made readable"
+          class="font-mono text-4xl font-bold tracking-tight text-balance text-accent"
         >
-          eco-metrics earth
+          <span
+            aria-hidden="true"
+          >
+            <span
+              class="typewriter-char"
+              style="--typewriter-index: 0;"
+            >
+              E
+            </span>
+            <span
+              class="typewriter-char"
+              style="--typewriter-index: 1;"
+            >
+              n
+            </span>
+            <span
+              class="typewriter-char"
+              style="--typewriter-index: 2;"
+            >
+              v
+            </span>
+            <span
+              class="typewriter-char"
+              style="--typewriter-index: 3;"
+            >
+              i
+            </span>
+            <span
+              class="typewriter-char"
+              style="--typewriter-index: 4;"
+            >
+              r
+            </span>
+            <span
+              class="typewriter-char"
+              style="--typewriter-index: 5;"
+            >
+              o
+            </span>
+            <span
+              class="typewriter-char"
+              style="--typewriter-index: 6;"
+            >
+              n
+            </span>
+            <span
+              class="typewriter-char"
+              style="--typewriter-index: 7;"
+            >
+              m
+            </span>
+            <span
+              class="typewriter-char"
+              style="--typewriter-index: 8;"
+            >
+              e
+            </span>
+            <span
+              class="typewriter-char"
+              style="--typewriter-index: 9;"
+            >
+              n
+            </span>
+            <span
+              class="typewriter-char"
+              style="--typewriter-index: 10;"
+            >
+              t
+            </span>
+            <span
+              class="typewriter-char"
+              style="--typewriter-index: 11;"
+            >
+              a
+            </span>
+            <span
+              class="typewriter-char"
+              style="--typewriter-index: 12;"
+            >
+              l
+            </span>
+            <span
+              class="typewriter-char"
+              style="--typewriter-index: 13;"
+            >
+               
+            </span>
+            <span
+              class="typewriter-char"
+              style="--typewriter-index: 14;"
+            >
+              d
+            </span>
+            <span
+              class="typewriter-char"
+              style="--typewriter-index: 15;"
+            >
+              a
+            </span>
+            <span
+              class="typewriter-char"
+              style="--typewriter-index: 16;"
+            >
+              t
+            </span>
+            <span
+              class="typewriter-char"
+              style="--typewriter-index: 17;"
+            >
+              a
+            </span>
+            <span
+              class="typewriter-char"
+              style="--typewriter-index: 18;"
+            >
+              ,
+            </span>
+            <span
+              class="typewriter-char"
+              style="--typewriter-index: 19;"
+            >
+               
+            </span>
+            <span
+              class="typewriter-char"
+              style="--typewriter-index: 20;"
+            >
+              m
+            </span>
+            <span
+              class="typewriter-char"
+              style="--typewriter-index: 21;"
+            >
+              a
+            </span>
+            <span
+              class="typewriter-char"
+              style="--typewriter-index: 22;"
+            >
+              d
+            </span>
+            <span
+              class="typewriter-char"
+              style="--typewriter-index: 23;"
+            >
+              e
+            </span>
+            <span
+              class="typewriter-char"
+              style="--typewriter-index: 24;"
+            >
+               
+            </span>
+            <span
+              class="typewriter-char"
+              style="--typewriter-index: 25;"
+            >
+              r
+            </span>
+            <span
+              class="typewriter-char"
+              style="--typewriter-index: 26;"
+            >
+              e
+            </span>
+            <span
+              class="typewriter-char"
+              style="--typewriter-index: 27;"
+            >
+              a
+            </span>
+            <span
+              class="typewriter-char"
+              style="--typewriter-index: 28;"
+            >
+              d
+            </span>
+            <span
+              class="typewriter-char"
+              style="--typewriter-index: 29;"
+            >
+              a
+            </span>
+            <span
+              class="typewriter-char"
+              style="--typewriter-index: 30;"
+            >
+              b
+            </span>
+            <span
+              class="typewriter-char"
+              style="--typewriter-index: 31;"
+            >
+              l
+            </span>
+            <span
+              class="typewriter-char"
+              style="--typewriter-index: 32;"
+            >
+              e
+            </span>
+            <span
+              class="typewriter-cursor select-none"
+              style="--typewriter-index: 33;"
+            >
+              <span
+                class="animate-cursor-blink"
+              >
+                ▋
+              </span>
+            </span>
+          </span>
         </h1>
         <p
-          class="mt-4 text-fg-secondary"
+          class="mx-auto mt-4 max-w-2xl text-pretty text-fg-secondary"
         >
-          Environmental metrics dashboard — coming soon.
+          Explore environmental data on CO2 emissions, global temperature, energy sources and water footprint. Open sources, free to use, built in the open.
         </p>
       </div>
+      <a
+        class="rounded-lg bg-accent-solid-strong px-6 py-3 font-medium text-on-accent underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2 ring-offset-focus-offset"
+        href="#topics"
+      >
+        Explore the data
+        <span
+          aria-hidden="true"
+        >
+           ↓
+        </span>
+      </a>
+    </div>
+    <div
+      class="mt-12 w-full max-w-4xl space-y-12 pb-12"
+    >
+      <section
+        aria-labelledby="topics-heading"
+        class="scroll-mt-header"
+        id="topics"
+      >
+        <h2
+          class="text-2xl font-semibold text-fg"
+          id="topics-heading"
+        >
+          Explore the data
+        </h2>
+        <ul
+          class="mt-6 grid gap-4 sm:grid-cols-2"
+        >
+          <li
+            class="group relative flex flex-col rounded-2xl border border-line-strong bg-surface-card p-5 transition-colors duration-150 hover:bg-hover has-focus-visible:ring-2 has-focus-visible:ring-focus-ring has-focus-visible:ring-offset-2 ring-offset-focus-offset sm:p-6"
+          >
+            <div
+              class="flex items-center gap-4"
+            >
+              <div
+                class="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-well p-2.5"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="h-full w-full drop-shadow-icon-sm"
+                  viewBox="-120 0 512 512"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <g>
+                    <g>
+                      <g>
+                        <g>
+                          <rect
+                            fill="#787878"
+                            height="8.744"
+                            width="52.326"
+                            x="209.445"
+                            y="21.061"
+                          />
+                          <rect
+                            fill="#787878"
+                            height="8.744"
+                            width="52.326"
+                            x="209.445"
+                            y="93.246"
+                          />
+                          <rect
+                            fill="#787878"
+                            height="8.744"
+                            width="24.531"
+                            x="209.445"
+                            y="45.123"
+                          />
+                          <rect
+                            fill="#787878"
+                            height="8.744"
+                            width="24.531"
+                            x="209.445"
+                            y="69.185"
+                          />
+                          <rect
+                            fill="#787878"
+                            height="8.744"
+                            width="24.531"
+                            x="209.445"
+                            y="117.308"
+                          />
+                          <rect
+                            fill="#787878"
+                            height="8.744"
+                            width="24.531"
+                            x="209.445"
+                            y="141.37"
+                          />
+                          <rect
+                            fill="#787878"
+                            height="8.744"
+                            width="52.326"
+                            x="209.445"
+                            y="165.432"
+                          />
+                          <rect
+                            fill="#787878"
+                            height="8.744"
+                            width="52.326"
+                            x="209.445"
+                            y="237.617"
+                          />
+                          <rect
+                            fill="#787878"
+                            height="8.744"
+                            width="24.531"
+                            x="209.445"
+                            y="189.494"
+                          />
+                          <rect
+                            fill="#787878"
+                            height="8.744"
+                            width="24.531"
+                            x="209.445"
+                            y="213.555"
+                          />
+                          <rect
+                            fill="#787878"
+                            height="8.744"
+                            width="24.531"
+                            x="209.445"
+                            y="261.679"
+                          />
+                          <rect
+                            fill="#787878"
+                            height="8.744"
+                            width="24.531"
+                            x="209.445"
+                            y="285.741"
+                          />
+                        </g>
+                      </g>
+                      <g>
+                        <path
+                          d="M235.804,394.098c0,65.138-52.765,117.902-117.902,117.902V0c9.898,0,19.238,2.395,27.54,6.706
+              c11.495,5.827,20.834,15.246,26.662,26.661c4.23,8.222,6.625,17.562,6.625,27.46v232.292
+              C212.894,313.714,235.804,351.232,235.804,394.098z"
+                          fill="#787878"
+                        />
+                        <path
+                          d="M117.902,0v512c-13.889,0-27.22-2.395-39.593-6.785c-33.288-11.894-59.63-38.236-71.524-71.523
+              C2.395,421.319,0,407.987,0,394.098c0-42.866,22.91-80.384,57.075-100.979V60.827C57.075,27.38,84.455,0,117.902,0z"
+                          fill="#999999"
+                        />
+                        <path
+                          d="M117.909,489.471c-52.585,0-95.365-42.78-95.365-95.365c0-33.716,17.265-64.264,46.181-81.717
+              l10.887-6.571V60.844c0-21.117,17.179-38.296,38.296-38.296c21.117,0,38.296,17.179,38.296,38.296v244.975l10.887,6.571
+              c28.918,17.454,46.183,48.003,46.183,81.717C213.276,446.691,170.494,489.471,117.909,489.471z"
+                          fill="#C55F5E"
+                        />
+                        <path
+                          d="M156.206,60.844v102.882H79.613V60.844c0-21.108,17.165-38.296,38.296-38.296
+              C139.018,22.547,156.206,39.736,156.206,60.844z"
+                          fill="#F4F9F4"
+                        />
+                        <circle
+                          cx="76.509"
+                          cy="358.733"
+                          fill="#D18B8B"
+                          r="29.013"
+                        />
+                      </g>
+                    </g>
+                    <circle
+                      cx="262.954"
+                      cy="96.968"
+                      fill="#787878"
+                      r="9.943"
+                    />
+                    <circle
+                      cx="262.954"
+                      cy="241.402"
+                      fill="#787878"
+                      r="9.943"
+                    />
+                  </g>
+                </svg>
+              </div>
+              <h3
+                class="text-lg font-semibold text-fg"
+              >
+                Global Temperature Anomalies by Country
+              </h3>
+            </div>
+            <p
+              class="mt-4 grow text-fg-body"
+            >
+              How far each year’s temperature is from the recent average, for every country since 1940.
+            </p>
+            <p
+              class="mt-4"
+            >
+              <a
+                class="font-medium text-accent underline underline-offset-4 after:absolute after:inset-0 after:rounded-2xl focus-visible:outline-none group-hover:text-accent-hover"
+                href="/global-temperature"
+              >
+                Explore Global Temperature
+                <span
+                  aria-hidden="true"
+                >
+                   →
+                </span>
+              </a>
+            </p>
+          </li>
+          <li
+            class="group relative flex flex-col rounded-2xl border border-line-strong bg-surface-card p-5 transition-colors duration-150 hover:bg-hover has-focus-visible:ring-2 has-focus-visible:ring-focus-ring has-focus-visible:ring-offset-2 ring-offset-focus-offset sm:p-6"
+          >
+            <div
+              class="flex items-center gap-4"
+            >
+              <div
+                class="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-well p-2.5"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="h-full w-full drop-shadow-icon-sm"
+                  viewBox="0 0 512 512"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <g>
+                    <path
+                      d="M479.299,137.6c-7.293-2.02-14.293-1.616-20.495,0.521c-4.229,1.457-8.647-1.146-10.437-5.245
+          c-7.909-18.123-25.955-30.798-46.993-30.798c-22.438,0-41.464,14.428-48.432,34.495l0,0c-0.964-0.081-1.891-0.29-2.875-0.29
+          c-19.999,0-35.99,17.163-34.045,37.565c1.695,17.784,17.649,30.845,35.514,30.845h118.248c21.429,0,38.254-19.704,33.348-41.982
+          C500.495,150.743,491.108,140.872,479.299,137.6z"
+                      fill="#E4EAF8"
+                    />
+                    <path
+                      d="M261.065,230.346c17.436-10.462,29.143-29.493,29.143-51.307c0-33.059-26.8-59.859-59.859-59.859
+          c-3.559,0-7.027,0.369-10.415,0.964l0.004-0.026c-3.519,0.634-7.191-0.876-9.134-3.877
+          c-12.187-18.808-33.336-31.265-57.416-31.265c-28.387,0-52.672,17.314-63.014,41.944c-1.819,4.334-6.693,6.744-11.017,4.899
+          c-9.651-4.117-20.812-5.371-32.453-2.615c-18.81,4.454-33.802,19.89-37.739,38.815c-6.897,33.152,18.224,62.329,50.159,62.329
+          h201.741V230.346z"
+                      fill="#E4EAF8"
+                    />
+                  </g>
+                  <g>
+                    <path
+                      d="M358.617,179.039c0-18.891,15.313-34.205,34.205-34.205c0.986,0,1.912,0.208,2.875,0.29
+          c5.645-16.257,19.263-28.664,36.141-32.845c-8.527-6.345-19.014-10.201-30.465-10.201c-22.438,0-41.464,14.428-48.432,34.495
+          c-0.964-0.081-1.891-0.29-2.875-0.29c-18.891,0-34.205,15.314-34.205,34.205s15.314,34.205,34.205,34.205
+          c5.385,0,12.419,0,20.348,0C363.242,198.423,358.617,189.313,358.617,179.039z"
+                      fill="#D5DCED"
+                    />
+                    <path
+                      d="M60.472,185.119c3.937-18.924,18.929-34.361,37.739-38.815c11.643-2.757,22.802-1.503,32.453,2.615
+          c4.324,1.845,9.198-0.564,11.017-4.899c9.633-22.943,31.422-39.344,57.298-41.51c-12.101-10.868-28.044-17.536-45.592-17.536
+          c-28.387,0-52.672,17.314-63.014,41.944c-1.819,4.334-6.693,6.744-11.017,4.899c-9.651-4.117-20.812-5.371-32.453-2.615
+          c-18.81,4.454-33.802,19.89-37.739,38.815c-6.897,33.152,18.224,62.329,50.159,62.329h13.16
+          C62.105,218.78,56.852,202.522,60.472,185.119z"
+                      fill="#D5DCED"
+                    />
+                    <path
+                      d="M427.804,256.523c-10.521-1.182-20.637-0.315-30.14,2.109c-4.332,1.105-8.833-1.381-10.049-5.684
+          c-16.226-57.446-68.974-99.563-131.613-99.563c-49.744,0-93.288,26.547-117.236,66.246c-1.904,3.156-5.501,4.729-9.12,4.029
+          c-16.969-3.284-35.317-2.625-54.76,5.171c-38.705,15.522-66.207,52.247-66.856,93.944
+          c-0.894,57.422,45.385,104.25,102.602,104.25h304.826c37.596,0,72.326-23.087,84.159-58.773
+          C517.244,315.09,479.204,262.296,427.804,256.523z"
+                      fill="#D5DCED"
+                    />
+                  </g>
+                  <path
+                    d="M93.542,339.877c0.649-41.697,28.151-78.422,66.857-93.944c19.442-7.797,37.79-8.455,54.76-5.171
+        c3.619,0.7,7.215-0.872,9.12-4.029c21.1-34.977,57.419-59.719,99.779-65.116c-20.049-11.545-43.249-18.232-68.054-18.232
+        c-49.745,0-93.288,26.546-117.236,66.246c-1.904,3.156-5.501,4.729-9.12,4.029c-16.969-3.284-35.318-2.626-54.76,5.171
+        c-38.705,15.522-66.207,52.247-66.856,93.944c-0.894,57.422,45.385,104.25,102.602,104.25h28.876
+        C111.396,408.367,92.974,376.274,93.542,339.877z"
+                    fill="#C7CFE2"
+                  />
+                  <path
+                    d="M290.208,239.432c-27.996,0-50.773,22.777-50.773,50.773v34.205c0,27.996,22.777,50.773,50.773,50.773s50.773-22.777,50.773-50.773v-34.205C340.981,262.208,318.203,239.432,290.208,239.432z M324.947,324.409c0,19.155-15.585,34.739-34.739,34.739s-34.739-15.585-34.739-34.739v-34.205c0-19.155,15.585-34.739,34.739-34.739s34.739,15.585,34.739,34.739V324.409z"
+                  />
+                  <path
+                    d="M226.613,343.656c-3.54-2.658-8.565-1.944-11.225,1.595c-6.636,8.833-16.768,13.899-27.797,13.899c-19.155,0-34.739-15.585-34.739-34.739v-34.205c0-19.155,15.585-34.739,34.739-34.739c11.018,0,21.143,5.057,27.779,13.875c2.662,3.538,7.686,4.248,11.226,1.585c3.538-2.663,4.248-7.689,1.585-11.226c-9.693-12.88-24.488-20.267-40.591-20.267c-27.996,0-50.773,22.777-50.773,50.773v34.205c0,27.996,22.777,50.773,50.773,50.773c16.119,0,30.923-7.4,40.616-20.302C230.866,351.34,230.152,346.315,226.613,343.656z"
+                  />
+                  <path
+                    d="M400.839,341.511c0-13.851-11.268-25.119-25.119-25.119c-13.851,0-25.119,11.268-25.119,25.119c0,4.427,3.589,8.017,8.017,8.017s8.017-3.589,8.017-8.017c0-5.01,4.076-9.086,9.086-9.086c5.01,0,9.086,4.076,9.086,9.086c0,2.844-1.359,5.562-3.634,7.269l-23.943,17.958c-4.149,3.113-6.627,8.067-6.627,13.254v4.276c0,4.427,3.589,8.017,8.017,8.017h34.205c4.427,0,8.017-3.589,8.017-8.017c0-4.427-3.589-8.017-8.017-8.017h-21.557l19.526-14.644C397.083,356.889,400.839,349.376,400.839,341.511z"
+                  />
+                </svg>
+              </div>
+              <h3
+                class="text-lg font-semibold text-fg"
+              >
+                CO2 Emissions by Country
+              </h3>
+            </div>
+            <p
+              class="mt-4 grow text-fg-body"
+            >
+              How much CO2 each country emits, in total and per person, on a world map and a ranking.
+            </p>
+            <p
+              class="mt-4"
+            >
+              <a
+                class="font-medium text-accent underline underline-offset-4 after:absolute after:inset-0 after:rounded-2xl focus-visible:outline-none group-hover:text-accent-hover"
+                href="/co2-emissions"
+              >
+                Explore CO2 Emissions
+                <span
+                  aria-hidden="true"
+                >
+                   →
+                </span>
+              </a>
+            </p>
+          </li>
+          <li
+            class="group relative flex flex-col rounded-2xl border border-line-strong bg-surface-card p-5 transition-colors duration-150 hover:bg-hover has-focus-visible:ring-2 has-focus-visible:ring-focus-ring has-focus-visible:ring-offset-2 ring-offset-focus-offset sm:p-6"
+          >
+            <div
+              class="flex items-center gap-4"
+            >
+              <div
+                class="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-well p-2.5"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="h-full w-full drop-shadow-icon-sm"
+                  viewBox="0 0 512 512"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M372.981,205.913h-83.478V89.043c0-16.473-21.482-22.929-30.609-9.238L125.329,280.153
+        c-7.346,11.13,0.668,25.934,13.913,25.934h83.478v116.87c0,16.584,21.482,22.929,30.609,9.238l2.671-4.007l130.894-196.341
+        C394.24,220.717,386.226,205.913,372.981,205.913z"
+                    fill="#FFE477"
+                  />
+                  <path
+                    d="M512,256c0,141.134-114.867,256-256,256c-68.674,0-133.677-27.603-181.315-75.464v19.812
+        c0,9.238-7.456,16.696-16.696,16.696c-9.238,0-16.696-7.457-16.696-16.696v-63.221c-2.226-11.02,6.679-20.257,16.696-20.257h66.783
+        c9.239,0,16.696,7.457,16.696,16.696c0,9.238-7.456,16.696-16.696,16.696H92.049c41.85,45.746,101.064,72.348,163.951,72.348
+        c122.769,0,222.609-99.84,222.609-222.609c0-21.148-3.005-42.073-8.793-62.108c-2.56-8.904,2.449-18.143,11.353-20.703
+        c8.793-2.56,18.143,2.56,20.704,11.353C508.548,207.694,512,231.736,512,256z"
+                    fill="#7CCC92"
+                  />
+                  <path
+                    d="M473.043,55.652v66.783c0,8.904-6.568,16.696-18.475,16.696c-0.111,0-0.111,0-0.111,0h-64.892
+        c-9.239,0-16.696-7.457-16.696-16.696s7.456-16.696,16.696-16.696h30.386C378.101,59.993,318.887,33.391,256,33.391
+        c-122.769,0-222.609,99.84-222.609,222.609c0,21.148,3.005,42.073,8.793,62.108c2.56,8.904-2.449,18.143-11.353,20.703
+        c-1.558,0.445-3.117,0.668-4.675,0.668c-7.235,0-13.913-4.786-16.029-12.021C3.452,304.306,0,280.264,0,256
+        C0,114.866,114.867,0,256,0c69.899,0,135.791,28.494,183.652,77.913V55.652c0-9.238,7.456-16.696,16.696-16.696
+        C465.587,38.957,473.043,46.414,473.043,55.652z"
+                    fill="#7CCC92"
+                  />
+                  <path
+                    d="M512,256c0,141.134-114.867,256-256,256v-33.391c122.769,0,222.609-99.84,222.609-222.609
+        c0-21.148-3.005-42.073-8.793-62.108c-2.56-8.904,2.449-18.143,11.353-20.703c8.793-2.56,18.143,2.56,20.704,11.353
+        C508.548,207.694,512,231.736,512,256z"
+                    fill="#34B772"
+                  />
+                  <path
+                    d="M473.043,55.652v66.783c0,8.904-6.568,16.696-18.475,16.696c-0.111,0-0.111,0-0.111,0h-64.892
+        c-9.239,0-16.696-7.457-16.696-16.696s7.456-16.696,16.696-16.696h30.386C378.101,59.993,318.887,33.391,256,33.391V0
+        c69.899,0,135.791,28.494,183.652,77.913V55.652c0-9.238,7.456-16.696,16.696-16.696C465.587,38.957,473.043,46.414,473.043,55.652
+        z"
+                    fill="#34B772"
+                  />
+                  <path
+                    d="M386.894,231.847L256,428.188V84.146l2.894-4.341c9.127-13.69,30.609-7.235,30.609,9.238v116.87
+        h83.478C386.226,205.913,394.24,220.717,386.894,231.847z"
+                    fill="#FFB655"
+                  />
+                </svg>
+              </div>
+              <h3
+                class="text-lg font-semibold text-fg"
+              >
+                Electricity Mix by Country
+              </h3>
+            </div>
+            <p
+              class="mt-4 grow text-fg-body"
+            >
+              Where each country’s electricity comes from: coal, gas, nuclear, hydro, wind, solar and more.
+            </p>
+            <p
+              class="mt-4"
+            >
+              <a
+                class="font-medium text-accent underline underline-offset-4 after:absolute after:inset-0 after:rounded-2xl focus-visible:outline-none group-hover:text-accent-hover"
+                href="/energy-sources"
+              >
+                Explore Energy Sources
+                <span
+                  aria-hidden="true"
+                >
+                   →
+                </span>
+              </a>
+            </p>
+          </li>
+          <li
+            class="group relative flex flex-col rounded-2xl border border-line-strong bg-surface-card p-5 transition-colors duration-150 hover:bg-hover has-focus-visible:ring-2 has-focus-visible:ring-focus-ring has-focus-visible:ring-offset-2 ring-offset-focus-offset sm:p-6"
+          >
+            <div
+              class="flex items-center gap-4"
+            >
+              <div
+                class="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-well p-2.5"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="h-full w-full drop-shadow-icon-sm"
+                  viewBox="0 0 512 512"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M270.47,80.696c-3.228-5.565-8.904-8.348-14.47-8.348c-5.565,0-11.242,2.783-14.47,8.348
+        l-86.817,150.372c-10.24,17.586-15.583,37.843-15.583,58.323c0,64.445,52.424,116.87,116.87,116.87s116.87-52.424,116.87-116.87
+        C372.87,248.877,363.63,241.976,270.47,80.696z"
+                    style="fill: #9DF1FD;"
+                  />
+                  <path
+                    d="M372.87,289.391c0,64.445-52.424,116.87-116.87,116.87V72.348c5.565,0,11.242,2.783,14.47,8.348
+        C363.63,241.976,372.87,248.877,372.87,289.391z"
+                    style="fill: #87D7E4;"
+                  />
+                  <path
+                    d="M272.696,322.783c0,9.238-7.456,16.696-16.696,16.696c-27.603,0-50.087-22.483-50.087-50.087
+        c0-8.904,2.226-17.363,6.678-24.932c4.563-8.014,14.803-10.685,22.817-6.122c7.903,4.564,10.685,14.803,6.009,22.817
+        c-1.446,2.56-2.114,5.231-2.114,8.237c0,9.238,7.456,16.696,16.696,16.696S272.696,313.544,272.696,322.783z"
+                    style="fill: #E7ECFD;"
+                  />
+                  <g>
+                    <path
+                      d="M512,256c0,141.134-114.867,256-256,256c-68.674,0-133.677-27.603-181.315-75.464v19.812
+          c0,9.238-7.456,16.696-16.696,16.696c-9.238,0-16.696-7.457-16.696-16.696v-63.221c-2.226-11.02,6.679-20.257,16.696-20.257h66.783
+          c9.239,0,16.696,7.457,16.696,16.696c0,9.238-7.456,16.696-16.696,16.696H92.049c41.85,45.746,101.064,72.348,163.951,72.348
+          c122.769,0,222.609-99.84,222.609-222.609c0-21.148-3.005-42.073-8.793-62.108c-2.56-8.904,2.449-18.143,11.353-20.703
+          c8.793-2.56,18.143,2.56,20.704,11.353C508.548,207.694,512,231.736,512,256z"
+                      style="fill: #7CCC92;"
+                    />
+                    <path
+                      d="M473.043,55.652v66.783c0,8.904-6.568,16.696-18.475,16.696c-0.111,0-0.111,0-0.111,0h-64.892
+          c-9.239,0-16.696-7.457-16.696-16.696s7.456-16.696,16.696-16.696h30.386C378.101,59.993,318.887,33.391,256,33.391
+          c-122.769,0-222.609,99.84-222.609,222.609c0,21.148,3.005,42.073,8.793,62.108c2.56,8.904-2.449,18.143-11.353,20.703
+          c-1.558,0.445-3.117,0.668-4.675,0.668c-7.235,0-13.913-4.786-16.029-12.021C3.452,304.306,0,280.264,0,256
+          C0,114.866,114.867,0,256,0c69.899,0,135.791,28.494,183.652,77.913V55.652c0-9.238,7.456-16.696,16.696-16.696
+          C465.587,38.957,473.043,46.414,473.043,55.652z"
+                      style="fill: #7CCC92;"
+                    />
+                  </g>
+                  <path
+                    d="M272.696,322.783c0,9.238-7.456,16.696-16.696,16.696v-33.391
+        C265.239,306.087,272.696,313.544,272.696,322.783z"
+                    style="fill: #DADFF0;"
+                  />
+                  <g>
+                    <path
+                      d="M512,256c0,141.134-114.867,256-256,256v-33.391c122.769,0,222.609-99.84,222.609-222.609
+          c0-21.148-3.005-42.073-8.793-62.108c-2.56-8.904,2.449-18.143,11.353-20.703c8.793-2.56,18.143,2.56,20.704,11.353
+          C508.548,207.694,512,231.736,512,256z"
+                      style="fill: #34B772;"
+                    />
+                    <path
+                      d="M473.043,55.652v66.783c0,8.904-6.568,16.696-18.475,16.696c-0.111,0-0.111,0-0.111,0h-64.892
+          c-9.239,0-16.696-7.457-16.696-16.696s7.456-16.696,16.696-16.696h30.386C378.101,59.993,318.887,33.391,256,33.391V0
+          c69.899,0,135.791,28.494,183.652,77.913V55.652c0-9.238,7.456-16.696,16.696-16.696C465.587,38.957,473.043,46.414,473.043,55.652
+          z"
+                      style="fill: #34B772;"
+                    />
+                  </g>
+                </svg>
+              </div>
+              <h3
+                class="text-lg font-semibold text-fg"
+              >
+                Water Footprint of Food & Products
+              </h3>
+            </div>
+            <p
+              class="mt-4 grow text-fg-body"
+            >
+              How much water it takes to make everyday products, from food and textiles to technology.
+            </p>
+            <p
+              class="mt-4"
+            >
+              <a
+                class="font-medium text-accent underline underline-offset-4 after:absolute after:inset-0 after:rounded-2xl focus-visible:outline-none group-hover:text-accent-hover"
+                href="/water-footprint"
+              >
+                Explore Water Footprint
+                <span
+                  aria-hidden="true"
+                >
+                   →
+                </span>
+              </a>
+            </p>
+          </li>
+        </ul>
+      </section>
+      <section
+        aria-labelledby="sources-heading"
+      >
+        <h2
+          class="text-2xl font-semibold text-fg"
+          id="sources-heading"
+        >
+          Where the data comes from
+        </h2>
+        <p
+          class="mt-4 text-fg-body"
+        >
+          Every figure on this site comes from an open, cited source, with its publisher, license and date. See the 
+          <a
+            class="rounded-sm text-accent underline hover:text-accent-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2 ring-offset-focus-offset"
+            href="/data-sources"
+          >
+            data sources
+          </a>
+           behind each topic.
+        </p>
+      </section>
     </div>
   </div>
 </DocumentFragment>

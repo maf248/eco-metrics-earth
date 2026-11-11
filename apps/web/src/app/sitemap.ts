@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next';
 
+import { LIVE_CATEGORIES } from '@/lib/liveCategories';
 import { siteUrl } from '@/lib/siteUrl';
-import { ECO_CATEGORIES } from '@eco-metrics/shared';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const base = siteUrl();
@@ -13,7 +13,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 1.0,
   };
 
-  const categoryEntries: MetadataRoute.Sitemap = Object.values(ECO_CATEGORIES).map((slug) => ({
+  // Placeholder categories are `noindex`, so they are not listed.
+  const categoryEntries: MetadataRoute.Sitemap = LIVE_CATEGORIES.map((slug) => ({
     url: `${base}/${slug}/`,
     lastModified: new Date(),
     changeFrequency: 'weekly',

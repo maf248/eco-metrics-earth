@@ -18,7 +18,7 @@ All routes use the **App Router** convention (`app/` directory). Category pages 
 ```
 src/app/
 ├── layout.tsx        # Root layout — <html>, Navbar/MobileHeader, skip-to-content, theme script, global CSS, metadata base
-├── page.tsx          # Home — /
+├── page.tsx          # Home — / — static landing: typed headline, one card per category with live data, site JSON-LD
 ├── [category]/
 │   └── page.tsx      # Category page — /[slug]/ — cached, `ensureStatic`
 ├── not-found.tsx     # 404 — rendered for unknown slugs and missing routes
@@ -27,7 +27,7 @@ src/app/
 ├── og-image.png/
 │   └── route.tsx     # Social card (1200×630 PNG) → /og-image.png — prerendered at build
 ├── robots.ts         # robots.txt — single `User-agent: *` group, allows /
-└── sitemap.ts        # sitemap.xml — home + all 12 category pages
+└── sitemap.ts        # sitemap.xml — home + the categories with live data + data sources
 ```
 
 Category pages use `generateStaticParams` to pre-render every `ECO_CATEGORIES` slug at build time except the categories with live data (the registry in `lib/categoryPages.tsx`: `water-footprint`, `co2-emissions`, `global-temperature` and `energy-sources`), which are generated on demand on their first request and then cached, so the build never needs the BFF. That first request waits for the complete page (`ensureStatic = 'navigation'`): there is no `loading.tsx` or `<Suspense>` around the data, so crawlers always get the content in the visible document. Client navigations show the header and skeletons from `NavigationContent` meanwhile. A rewrite in `next.config.ts` gives unknown slugs a real 404 with the complete not-found page; percent-encoded unknown slugs and valid categories in another case skip it and get a real 404 drawn by JavaScript. If the API fetch fails twice (10 s per attempt), the page throws: during a revalidation the last good page keeps being served.
@@ -38,6 +38,8 @@ Category pages use `generateStaticParams` to pre-render every `ECO_CATEGORIES` s
 src/components/
 ├── BrandText.tsx          # Terminal-style animated brand text — used in Navbar and MobileHeader
 ├── MobileHeader.tsx       # Mobile-only fixed top header (< lg) — site identity + home link
+├── TypewriterText.tsx     # Server-rendered, CSS-only typed text with the brand cursor — the home headline
+├── SmoothAnchor.tsx       # In-page anchor whose scroll is animated for that click only — the home call to action
 ├── Navbar.tsx             # Responsive nav: bottom bar (mobile) / left sidebar (≥ lg)
 ├── NavLink.tsx            # Individual nav item — applies aria-current="page" when active
 ├── NavScrollContainer.tsx # Horizontal scroll wrapper with fade-edge gradients (mobile)
@@ -97,7 +99,8 @@ Additional SEO outputs:
 
 - `robots.ts` — a single `User-agent: *` group allowing `/`; no disallow rules (the API lives on its own domain)
 - `og-image.png/route.tsx` — site-wide 1200×630 social card, referenced as `og:image`/`twitter:image` by every page
-- `sitemap.ts` — home (`priority: 1.0`) + all 12 category pages (`priority: 0.8`), `changeFrequency: weekly`
+- `sitemap.ts` — home (`priority: 1.0`) + the category pages with live data (`priority: 0.8`), `changeFrequency: weekly`, + data sources (`0.5`, monthly). Placeholder categories are left out and declare `robots: noindex, follow` in their metadata; both follow `isLiveCategory` (`lib/liveCategories.ts`)
+- Structured data — `WebSite` + `Organization` on the home (`lib/siteStructuredData.ts`), `Dataset` on each provider-backed category page
 - `manifest.ts` — PWA manifest; `display: standalone`, `theme_color: #10b981`
 
 ### Security headers (`next.config.ts`)

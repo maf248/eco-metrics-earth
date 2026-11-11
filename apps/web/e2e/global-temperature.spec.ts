@@ -93,14 +93,21 @@ test.describe('Global Temperature page', () => {
       }) => {
         const response = await page.goto(PAGE_URL);
         expect(response?.ok()).toBe(true);
-        const html = (await response?.text()) ?? '';
 
         const figures = page.getByTestId('global-temperature-key-figures');
         await expect(figures).toBeVisible();
         await expect(figures).toContainText(KEY_FIGURES);
         await expect(figures).toContainText(WARMEST_YEAR);
-        expect(html).toContain('World: annual temperature anomaly');
-        expect(html).toContain('View data table');
+
+        // The year table is collapsed by default: in the document, not on screen.
+        const region = explorer(page);
+        await expect(region.getByText('View data table')).toBeVisible();
+        await expect(
+          region.getByRole('table', {
+            name: /^World: annual temperature anomaly relative to /,
+            includeHidden: true,
+          }),
+        ).toBeAttached();
       });
     });
 

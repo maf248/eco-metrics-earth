@@ -5,6 +5,7 @@ import { CATEGORY_PAGE_CLASS_NAME, CategoryHeader } from '@/components/CategoryH
 import { CATEGORY_DESCRIPTIONS, getCategoryMetadataTitle } from '@/lib/categoryMetadata';
 import { CATEGORY_PAGES, loadCategoryData } from '@/lib/categoryPages';
 import { isEcoCategory } from '@/lib/isEcoCategory';
+import { isLiveCategory } from '@/lib/liveCategories';
 import { siteUrl } from '@/lib/siteUrl';
 import { buildOpenGraph, buildTwitter } from '@/lib/socialMetadata';
 import { ECO_CATEGORIES } from '@eco-metrics/shared';
@@ -46,6 +47,8 @@ export async function generateMetadata({ params }: CategoryPageProps): Promise<M
     alternates: {
       canonical: canonicalUrl,
     },
+    // A "coming soon" page is not worth indexing; its links still are.
+    ...(!isLiveCategory(category) && { robots: { index: false, follow: true } }),
     openGraph: buildOpenGraph({
       title,
       description,
