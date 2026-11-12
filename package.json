@@ -17,7 +17,8 @@
     "clean:reports": "rm -rf coverage apps/api/test-output packages/shared/test-output",
     "update-snapshots": "NX_NATIVE_COMMAND_RUNNER=false nx run-many --target=test --all -- --updateSnapshot",
     "e2e": "nx e2e web",
-    "geo:world": "node scripts/generate-world-geometry.mjs"
+    "geo:world": "node scripts/generate-world-geometry.mjs",
+    "data:waste-recycling": "node scripts/generate-waste-recycling-data.mjs"
   },
   "private": true,
   "devDependencies": {
@@ -65,6 +66,7 @@
     "eslint-plugin-import-x": "4.18.0",
     "eslint-plugin-jsx-a11y": "6.10.2",
     "eslint-plugin-react-hooks": "7.1.1",
+    "fflate": "0.8.3",
     "globals": "17.14.0",
     "husky": "9.1.7",
     "i18n-iso-countries": "7.14.0",

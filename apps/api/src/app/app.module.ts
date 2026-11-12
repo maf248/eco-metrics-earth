@@ -15,6 +15,7 @@ import { DataSourcesModule } from '../modules/data-sources/data-sources.module';
 import { EnergySourcesModule } from '../modules/energy-sources/energy-sources.module';
 import { GlobalTemperatureModule } from '../modules/global-temperature/global-temperature.module';
 import { OwidModule } from '../modules/providers/owid/owid.module';
+import { WasteRecyclingModule } from '../modules/waste-recycling/waste-recycling.module';
 import { WaterFootprintModule } from '../modules/water-footprint/water-footprint.module';
 
 @Module({
@@ -37,6 +38,7 @@ import { WaterFootprintModule } from '../modules/water-footprint/water-footprint
     AppConfigModule,
     HealthModule,
     WaterFootprintModule,
+    WasteRecyclingModule,
     OwidModule,
     Co2EmissionsModule,
     GlobalTemperatureModule,

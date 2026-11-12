@@ -11,6 +11,16 @@ import {
 
 const byId = (a: { id: string }, b: { id: string }): number => a.id.localeCompare(b.id);
 
+/** A publication's license is its publisher's when it has one: both together are ambiguous. */
+function rejectPublisherWithLicense({ id, publications }: StaticDataSource): void {
+  const ambiguous = publications.find(({ publisher, license }) => publisher && license);
+  if (ambiguous) {
+    throw new Error(
+      `Data source "${id}": publication "${ambiguous.citation}" has both a publisher and a license`,
+    );
+  }
+}
+
 @Injectable()
 export class DataSourcesService implements OnApplicationBootstrap {
   constructor(private readonly discovery: DiscoveryService) {}
@@ -35,6 +45,7 @@ export class DataSourcesService implements OnApplicationBootstrap {
       if (kind === 'provider') {
         providers.push(source);
       } else {
+        rejectPublisherWithLicense(source);
         datasets.push({
           ...source,
           publications: [...source.publications].sort((a, b) =>

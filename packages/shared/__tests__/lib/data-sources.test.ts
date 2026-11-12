@@ -1,5 +1,6 @@
 import type {
   DataSourceAttribution,
+  DataSourceLicense,
   DataSourceOrigin,
   DataSourcePublication,
   DataSourcePublisher,
@@ -10,6 +11,8 @@ import type {
   StaticDataSource,
   WaterFootprintProduct,
 } from '../../src/index';
+import * as dataSourcesModule from '../../src/lib/data-sources';
+import * as wasteRecyclingModule from '../../src/lib/waste-recycling';
 
 const attribution: DataSourceAttribution = {
   provider: 'Example Provider',
@@ -78,6 +81,33 @@ describe('data sources catalog types', () => {
 
     expect(base.publisher).toBeUndefined();
     expect(withPublisher.publisher?.provider).toBe('Example Provider');
+  });
+
+  it('should compile a DataSourcePublication with and without a license', () => {
+    const base: DataSourcePublication = {
+      citation: 'Author (2026), Dataset',
+      url: 'https://data.example/dataset',
+      publishedYear: 2026,
+      entryCount: 217,
+    };
+    const license: DataSourceLicense = {
+      name: 'CC BY 4.0',
+      url: 'https://creativecommons.org/licenses/by/4.0/',
+    };
+    const withLicense: DataSourcePublication = { ...base, license };
+
+    expect(base.license).toBeUndefined();
+    expect(withLicense.license?.name).toBe('CC BY 4.0');
+  });
+});
+
+describe('data sources types-only modules', () => {
+  it('should export no runtime value from the data sources module', () => {
+    expect(Object.keys(dataSourcesModule)).toEqual([]);
+  });
+
+  it('should export no runtime value from the waste and recycling module', () => {
+    expect(Object.keys(wasteRecyclingModule)).toEqual([]);
   });
 });
 

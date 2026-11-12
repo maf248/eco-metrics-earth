@@ -42,14 +42,20 @@ describe('AppModule', () => {
     );
   });
 
-  it('should register the data sources module, the water-footprint dataset and the OWID provider', async () => {
+  it('should register the data sources module, the static datasets and the OWID provider', async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
     }).compile();
 
     const catalog = await module.get(DataSourcesService).getCatalog();
 
-    expect(catalog.datasets.map(({ id }) => id)).toEqual(['water-footprint']);
+    expect(catalog.datasets.map(({ id }) => id)).toEqual(['waste-recycling', 'water-footprint']);
+    expect(catalog.datasets[0].publications).toEqual([
+      expect.objectContaining({
+        publishedYear: 2026,
+        license: { name: 'CC BY 4.0', url: 'https://creativecommons.org/licenses/by/4.0/' },
+      }),
+    ]);
     expect(catalog.providers.map(({ id, categories }) => ({ id, categories }))).toEqual([
       { id: 'owid', categories: ['co2-emissions', 'energy-sources', 'global-temperature'] },
     ]);

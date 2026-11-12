@@ -11,12 +11,12 @@ module.exports = {
   preset: '../../jest.preset.js',
   testEnvironment: 'node',
   transform: {
-    '^.+\\.[tj]s$': ['@swc/jest', swcJestConfig],
+    '^.+\\.(?:[tj]s|mjs)$': ['@swc/jest', swcJestConfig],
   },
   // NestJS 12 publishes @nestjs/* as ESM; @swc/jest must transform those
   // packages so the CJS test runner can require() them.
   transformIgnorePatterns: ['node_modules/(?!(@nestjs)/)'],
-  moduleFileExtensions: ['ts', 'js', 'html'],
+  moduleFileExtensions: ['ts', 'js', 'mjs', 'html'],
   coverageDirectory: 'test-output/jest/coverage',
   coverageReporters: ['text', 'lcov'],
   // Branch coverage is intentionally omitted: NestJS class decorators (@Controller,

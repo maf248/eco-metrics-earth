@@ -15,6 +15,12 @@ export type DataSourceTimestampBasis = 'provider' | 'retrieval';
  */
 export type DataSourcePublisher = Pick<DataSourceAttribution, 'provider' | 'license' | 'sourceUrl'>;
 
+/** An open license: its name and the page with its text. */
+export interface DataSourceLicense {
+  name: string;
+  url: string;
+}
+
 /**
  * The organization that produced data a live provider republishes (for example
  * the Global Carbon Project behind an OWID chart), with the license and the
@@ -26,7 +32,7 @@ export interface DataSourceOrigin {
   title: string;
   /** Page of the upstream dataset. */
   url: string;
-  license: { name: string; url: string };
+  license: DataSourceLicense;
   /** Credit line the license asks to show with the data. */
   notice?: string;
   /** How to cite the upstream work. */
@@ -76,6 +82,12 @@ export interface DataSourcePublication {
 
   /** Present when the data is republished by a licensor (e.g. Our World in Data). */
   publisher?: DataSourcePublisher;
+
+  /**
+   * License of a publication that has no `publisher` but is published under an
+   * open license. Never set together with `publisher`: that license is the publisher's.
+   */
+  license?: DataSourceLicense;
 }
 
 /**
