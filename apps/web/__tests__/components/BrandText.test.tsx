@@ -1,4 +1,6 @@
 import { act, render } from '@testing-library/react';
+import { hydrateRoot } from 'react-dom/client';
+import { renderToString } from 'react-dom/server';
 
 import BrandText from '@/components/BrandText';
 
@@ -104,6 +106,29 @@ describe('BrandText — prefers-reduced-motion: reduce', () => {
     const spans = container.querySelectorAll('span[aria-hidden="true"]');
     const enterSpan = spans[spans.length - 1];
     expect(enterSpan.className).toContain('opacity-100');
+  });
+
+  it('should drop the [↵] fade transition so it shows without any transition', () => {
+    const { container } = render(<BrandText />);
+    const spans = container.querySelectorAll('span[aria-hidden="true"]');
+    expect(spans[spans.length - 1].className).toContain('motion-reduce:transition-none');
+  });
+
+  it('should hydrate the server markup without a hydration error and show the full text', async () => {
+    const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => undefined);
+    const container = document.createElement('div');
+    document.body.appendChild(container);
+    container.innerHTML = renderToString(<BrandText />);
+
+    await act(async () => {
+      hydrateRoot(container, <BrandText />);
+    });
+
+    expect(errorSpy).not.toHaveBeenCalled();
+    expect(container.textContent).toContain('~ eco-metrics.earth');
+    expect(container.textContent).toContain('[↵]');
+    errorSpy.mockRestore();
+    container.remove();
   });
 });
 
