@@ -12,16 +12,25 @@ import { CATEGORY_SKELETONS } from '@/lib/categorySkeletons';
 import { getCo2Emissions } from '@/lib/co2Emissions';
 import { getEnergySources } from '@/lib/energySources';
 import { getGlobalTemperature } from '@/lib/globalTemperature';
+import { getWasteRecycling } from '@/lib/wasteRecycling';
 import { getWaterFootprintProducts } from '@/lib/waterFootprint';
 
 import { CO2_FIXTURE, CO2_META } from '../fixtures/co2Emissions';
 import { ENERGY_FIXTURE, ENERGY_META } from '../fixtures/energySources';
 import { TEMPERATURE_FIXTURE, TEMPERATURE_META } from '../fixtures/globalTemperature';
+import { WASTE_FIXTURE, WASTE_META } from '../fixtures/wasteRecycling';
 
 jest.mock('@/lib/waterFootprint', () => ({ getWaterFootprintProducts: jest.fn() }));
 jest.mock('@/lib/co2Emissions', () => ({ getCo2Emissions: jest.fn() }));
 jest.mock('@/lib/globalTemperature', () => ({ getGlobalTemperature: jest.fn() }));
 jest.mock('@/lib/energySources', () => ({ getEnergySources: jest.fn() }));
+jest.mock('@/lib/wasteRecycling', () => ({ getWasteRecycling: jest.fn() }));
+jest.mock('@/components/charts/LazyBarEChart', () => ({
+  LazyBarEChart: () => <div data-testid="bar-stub" />,
+}));
+jest.mock('@/components/charts/ChoroplethMap', () => ({
+  ChoroplethMap: () => <div data-testid="map-stub" />,
+}));
 jest.mock('@/components/charts/LazyPieEChart', () => ({
   LazyPieEChart: () => <div data-testid="pie-stub" />,
 }));
@@ -32,11 +41,12 @@ jest.mock('@/components/charts/LazyEChart', () => ({
 jest.mock('next/cache', () => ({ cacheLife: jest.fn() }));
 
 describe('CATEGORY_PAGES', () => {
-  it('should register exactly water-footprint, co2-emissions, global-temperature and energy-sources', () => {
+  it('should register exactly the five categories with live data', () => {
     expect(Object.keys(CATEGORY_PAGES).sort()).toEqual([
       'co2-emissions',
       'energy-sources',
       'global-temperature',
+      'waste-recycling',
       'water-footprint',
     ]);
   });
@@ -46,6 +56,18 @@ describe('CATEGORY_PAGES', () => {
       expect(typeof definition.load).toBe('function');
       expect(typeof definition.Content).toBe('function');
     }
+  });
+
+  it('should render waste-recycling content inside the centered container', async () => {
+    jest.mocked(getWasteRecycling).mockResolvedValue({ data: WASTE_FIXTURE, meta: WASTE_META });
+    const definition = CATEGORY_PAGES['waste-recycling'];
+    if (!definition) throw new Error('missing entry');
+
+    const { container } = render(<definition.Content data={await definition.load()} />);
+
+    expect(container.firstElementChild).toHaveClass('mt-8', 'w-full', 'flex', 'justify-center');
+    expect(screen.getByTestId('waste-key-figures')).toHaveTextContent('2.33 billion tonnes');
+    expect(definition.isDegraded).toBeUndefined();
   });
 
   it('should render water-footprint content inside the centered container', () => {

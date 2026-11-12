@@ -1,9 +1,10 @@
 import {
   CHART_NO_DATA_TOKEN,
   CHART_PALETTE_TOKENS,
-  CHART_SEQUENTIAL_TOKENS,
+  CHART_RAMP_TOKENS,
   CHART_UI_TOKENS,
   type ChartPalette,
+  type ChartRamp,
 } from './chartTokens';
 
 /** Turns any CSS color (hex, `oklch()`, `var()`-free) into an `rgba()` string. */
@@ -88,14 +89,13 @@ function readToken(name: string): string {
 }
 
 /**
- * Builds the ECharts theme from the design tokens currently in effect (light or
- * dark, whichever the `dark` class on `<html>` selects). Chart options never
- * name a color: they inherit everything from this theme. `palette` swaps only the
- * series colours; axes, tooltip, legend and reference lines are the same.
+ * Builds the ECharts theme from the design tokens in effect, so chart options never name a color.
+ * `palette` swaps the series colours and `ramp` the choropleth classes.
  */
 export function buildChartTheme(
   resolve: ColorResolver = createCanvasColorResolver(),
   palette: ChartPalette = 'categorical',
+  ramp: ChartRamp = 'heat',
 ): ChartTheme {
   const ui = (role: keyof typeof CHART_UI_TOKENS): string =>
     resolve(readToken(CHART_UI_TOKENS[role]));
@@ -124,7 +124,7 @@ export function buildChartTheme(
       label: { color: ui('referenceLabel') },
     },
     visualMap: {
-      inRange: { color: CHART_SEQUENTIAL_TOKENS.map((token) => resolve(readToken(token))) },
+      inRange: { color: CHART_RAMP_TOKENS[ramp].map((token) => resolve(readToken(token))) },
     },
     map: buildMapTheme(
       resolve(readToken(CHART_NO_DATA_TOKEN)),

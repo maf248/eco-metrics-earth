@@ -1,10 +1,12 @@
-import { CHART_NO_DATA_TOKEN, CHART_SEQUENTIAL_TOKENS } from './chartTokens';
+import { CHART_NO_DATA_TOKEN, CHART_RAMP_TOKENS, type ChartRamp } from './chartTokens';
 
 interface MapLegendProps {
   /** One label per class of the sequential palette, low to high. */
   classLabels: readonly string[];
   /** Names the list for assistive technology (the quantity and unit). */
   label: string;
+  /** The ramp the map colors its classes with; heat when omitted. */
+  ramp?: ChartRamp;
 }
 
 const SWATCH_CLASS_NAME = 'block h-2.5 w-7 rounded-sm ring-1 ring-line-strong';
@@ -13,9 +15,9 @@ const SWATCH_CLASS_NAME = 'block h-2.5 w-7 rounded-sm ring-1 ring-line-strong';
  * HTML legend of a choropleth: a small swatch per class with its label underneath, then
  * "No data". Swatches read the same tokens the theme adapter gives the map.
  */
-export function MapLegend({ classLabels, label }: MapLegendProps) {
+export function MapLegend({ classLabels, label, ramp = 'heat' }: Readonly<MapLegendProps>) {
   const items = [
-    ...classLabels.map((text, index) => ({ text, token: CHART_SEQUENTIAL_TOKENS[index] })),
+    ...classLabels.map((text, index) => ({ text, token: CHART_RAMP_TOKENS[ramp][index] })),
     { text: 'No data', token: CHART_NO_DATA_TOKEN },
   ];
 

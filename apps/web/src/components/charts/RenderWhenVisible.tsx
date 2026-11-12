@@ -9,6 +9,8 @@ interface RenderWhenVisibleProps {
   children: ReactNode;
   /** Silhouette of the chart it stands for. */
   variant?: ChartSkeletonVariant;
+  /** Number of placeholder bars of the `bars` variant. */
+  rows?: number;
 }
 
 // Start a little before the chart enters the viewport so it is ready when it arrives.
@@ -21,7 +23,7 @@ const ROOT_MARGIN = '200px';
  * The first chart of a page should not use it. Without `IntersectionObserver`
  * the children mount immediately.
  */
-export function RenderWhenVisible({ children, variant }: RenderWhenVisibleProps) {
+export function RenderWhenVisible({ children, variant, rows }: Readonly<RenderWhenVisibleProps>) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
 
@@ -45,5 +47,9 @@ export function RenderWhenVisible({ children, variant }: RenderWhenVisibleProps)
     return () => observer.disconnect();
   }, []);
 
-  return <div ref={containerRef}>{visible ? children : <ChartSkeleton variant={variant} />}</div>;
+  return (
+    <div ref={containerRef}>
+      {visible ? children : <ChartSkeleton variant={variant} rows={rows} />}
+    </div>
+  );
 }

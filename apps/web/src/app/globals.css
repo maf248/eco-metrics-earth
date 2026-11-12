@@ -85,6 +85,12 @@
   --chart-seq-3: #de5300; /* orange */
   --chart-seq-4: #c1291b; /* red */
   --chart-seq-5: #8a161b; /* dark red */
+  /* Good-is-high sequential ramp (a share where more is better): one green family. */
+  --chart-seq-good-1: #58c69b; /* mint */
+  --chart-seq-good-2: #36a980; /* green */
+  --chart-seq-good-3: #148c66; /* emerald */
+  --chart-seq-good-4: #126e50; /* deep green */
+  --chart-seq-good-5: #0f513b; /* forest */
   --chart-no-data: #e5e5e5; /* neutral */
 }
 
@@ -158,6 +164,11 @@
   --chart-seq-3: #f16a00; /* orange */
   --chart-seq-4: #da3b21; /* red */
   --chart-seq-5: #b32322; /* dark red */
+  --chart-seq-good-1: #94f6cc; /* mint */
+  --chart-seq-good-2: #5ed8a9; /* green */
+  --chart-seq-good-3: #37b78a; /* emerald */
+  --chart-seq-good-4: #2d9570; /* deep green */
+  --chart-seq-good-5: #237356; /* forest */
   --chart-no-data: #262626; /* neutral */
 }
 

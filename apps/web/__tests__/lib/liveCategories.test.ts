@@ -1,3 +1,4 @@
+import { CATEGORY_SKELETONS } from '@/lib/categorySkeletons';
 import {
   LIVE_CATEGORIES,
   LIVE_CATEGORY_SUMMARIES,
@@ -19,6 +20,7 @@ describe('isLiveCategory', () => {
 describe('LIVE_CATEGORIES', () => {
   it('should list the categories with live data in navigation order', () => {
     expect(LIVE_CATEGORIES).toEqual([
+      'waste-recycling',
       'global-temperature',
       'co2-emissions',
       'energy-sources',
@@ -37,6 +39,12 @@ describe('LIVE_CATEGORIES', () => {
 describe('LIVE_CATEGORY_SUMMARIES', () => {
   it('should hold a summary for every live category and for no other', () => {
     expect(Object.keys(LIVE_CATEGORY_SUMMARIES).sort()).toEqual([...LIVE_CATEGORIES].sort());
+  });
+
+  it('should hold a summary for exactly the categories that have a skeleton', () => {
+    expect(Object.keys(LIVE_CATEGORY_SUMMARIES).sort()).toEqual(
+      Object.keys(CATEGORY_SKELETONS).sort(),
+    );
   });
 
   it('should keep every summary short enough for a card', () => {

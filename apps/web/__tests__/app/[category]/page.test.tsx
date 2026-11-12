@@ -13,12 +13,14 @@ import { getDataSources } from '@/lib/dataSources';
 import { getEnergySources } from '@/lib/energySources';
 import { getGlobalTemperature } from '@/lib/globalTemperature';
 import { OG_IMAGE } from '@/lib/socialMetadata';
+import { getWasteRecycling } from '@/lib/wasteRecycling';
 import { getWaterFootprintProducts } from '@/lib/waterFootprint';
 import { ECO_CATEGORIES } from '@eco-metrics/shared';
 
 import { CO2_FIXTURE, CO2_META } from '../../fixtures/co2Emissions';
 import { ENERGY_FIXTURE, ENERGY_META } from '../../fixtures/energySources';
 import { TEMPERATURE_FIXTURE, TEMPERATURE_META } from '../../fixtures/globalTemperature';
+import { WASTE_FIXTURE, WASTE_META } from '../../fixtures/wasteRecycling';
 
 jest.mock('@/lib/waterFootprint', () => ({
   getWaterFootprintProducts: jest.fn().mockResolvedValue([
@@ -47,6 +49,18 @@ jest.mock('@/lib/energySources', () => ({
   getEnergySources: jest.fn(),
 }));
 
+jest.mock('@/lib/wasteRecycling', () => ({
+  getWasteRecycling: jest.fn(),
+}));
+
+jest.mock('@/components/charts/LazyBarEChart', () => ({
+  LazyBarEChart: () => <div data-testid="bar-stub" />,
+}));
+
+jest.mock('@/components/charts/ChoroplethMap', () => ({
+  ChoroplethMap: () => <div data-testid="map-stub" />,
+}));
+
 // ECharts is loaded lazily in the browser; the page test only needs the surrounding markup.
 jest.mock('@/components/charts/LazyEChart', () => ({
   LazyEChart: () => <div data-testid="chart-stub" />,
@@ -69,6 +83,7 @@ beforeEach(() => {
   jest
     .mocked(getEnergySources)
     .mockResolvedValue({ kind: 'ok', payload: { data: ENERGY_FIXTURE, meta: ENERGY_META } });
+  jest.mocked(getWasteRecycling).mockResolvedValue({ data: WASTE_FIXTURE, meta: WASTE_META });
 });
 
 jest.mock('next/cache', () => ({ cacheLife: jest.fn() }));
@@ -128,7 +143,7 @@ describe('CategoryPage', () => {
       params: Promise.resolve({ category: 'waste-recycling' }),
     });
     render(element);
-    expect(screen.getByText('Waste & Recycling')).toBeTruthy();
+    expect(screen.getByRole('heading', { level: 1, name: 'Waste & Recycling' })).toBeTruthy();
   });
 
   it('should display the correct title for reforestation', async () => {
@@ -230,7 +245,21 @@ describe('generateMetadata', () => {
     const metadata = await generateMetadata({
       params: Promise.resolve({ category: 'waste-recycling' }),
     });
-    expect(metadata.title).toBe('Waste & Recycling');
+    expect(metadata.title).toBe('Waste Generation & Recycling by Country');
+    expect(metadata.openGraph?.title).toBe('Waste Generation & Recycling by Country');
+    expect(metadata.twitter?.title).toBe('Waste Generation & Recycling by Country');
+    expect(metadata.robots).toBeUndefined();
+  });
+
+  it('should give waste-recycling a canonical URL with trailing slash matching its Open Graph URL', async () => {
+    const metadata = await generateMetadata({
+      params: Promise.resolve({ category: 'waste-recycling' }),
+    });
+    const canonical = metadata.alternates?.canonical as string;
+
+    expect(canonical).toMatch(/\/waste-recycling\/$/);
+    expect(metadata.openGraph?.url).toBe(canonical);
+    expect(metadata.description).toBe(CATEGORY_DESCRIPTIONS['waste-recycling']);
   });
 
   it('should generate metadata for all ECO_CATEGORY slugs without throwing', async () => {
@@ -306,12 +335,34 @@ describe('notFound behavior', () => {
     expect(notFound).toHaveBeenCalled();
   });
 
+  it('should make no data request for an unknown category slug', async () => {
+    await CategoryPage({ params: Promise.resolve({ category: 'papa' }) });
+
+    expect(getWasteRecycling).not.toHaveBeenCalled();
+    expect(getCo2Emissions).not.toHaveBeenCalled();
+    expect(getGlobalTemperature).not.toHaveBeenCalled();
+    expect(getEnergySources).not.toHaveBeenCalled();
+    expect(getWaterFootprintProducts).not.toHaveBeenCalled();
+  });
+
   it('should call notFound() from generateMetadata for an unknown category slug', async () => {
     const { notFound } = jest.requireMock('next/navigation') as {
       notFound: jest.Mock;
     };
     await generateMetadata({ params: Promise.resolve({ category: 'papa' }) });
     expect(notFound).toHaveBeenCalled();
+  });
+});
+
+describe('CategoryPage — placeholder without a registry entry', () => {
+  it('should call no registered loader for ocean-health', async () => {
+    await CategoryPage({ params: Promise.resolve({ category: 'ocean-health' }) });
+
+    expect(getWasteRecycling).not.toHaveBeenCalled();
+    expect(getCo2Emissions).not.toHaveBeenCalled();
+    expect(getGlobalTemperature).not.toHaveBeenCalled();
+    expect(getEnergySources).not.toHaveBeenCalled();
+    expect(getWaterFootprintProducts).not.toHaveBeenCalled();
   });
 });
 
@@ -326,11 +377,12 @@ describe('generateStaticParams', () => {
 
   it('should return every category except the ones with a registry entry', async () => {
     const params = await generateStaticParams();
-    expect(params).toHaveLength(8);
+    expect(params).toHaveLength(7);
     expect(params).not.toContainEqual({ category: ECO_CATEGORIES.WATER_FOOTPRINT });
     expect(params).not.toContainEqual({ category: ECO_CATEGORIES.CO2_EMISSIONS });
     expect(params).not.toContainEqual({ category: ECO_CATEGORIES.GLOBAL_TEMPERATURE });
     expect(params).not.toContainEqual({ category: ECO_CATEGORIES.ENERGY_SOURCES });
+    expect(params).not.toContainEqual({ category: ECO_CATEGORIES.WASTE_RECYCLING });
   });
 
   it('should never be empty, because the route needs one param to pre-render without the BFF', async () => {
@@ -530,6 +582,37 @@ describe('CategoryPage — energy-sources branch', () => {
     expect(metadata.description).toBe(CATEGORY_DESCRIPTIONS['energy-sources']);
     expect(metadata.description).not.toMatch(/coming/);
     expect(metadata.title).toBe('Electricity Mix by Country');
+  });
+});
+
+describe('CategoryPage — waste-recycling branch', () => {
+  it('should render the waste content from the loader below the header', async () => {
+    const element = await CategoryPage({
+      params: Promise.resolve({ category: 'waste-recycling' }),
+    });
+    const { container } = render(element);
+
+    expect(screen.getByTestId('waste-key-figures')).toHaveTextContent('2.33 billion tonnes');
+    expect(container.querySelector('.mt-8.w-full.flex.justify-center')).not.toBeNull();
+    expect(screen.queryByText(/coming soon/)).not.toBeInTheDocument();
+  });
+
+  it('should propagate a loader failure instead of rendering the page', async () => {
+    const failure = new Error('Waste and recycling data could not be fetched from the BFF');
+    jest.mocked(getWasteRecycling).mockRejectedValueOnce(failure);
+
+    await expect(
+      CategoryPage({ params: Promise.resolve({ category: 'waste-recycling' }) }),
+    ).rejects.toBe(failure);
+  });
+
+  it('should publish the live description in the metadata', async () => {
+    const metadata = await generateMetadata({
+      params: Promise.resolve({ category: 'waste-recycling' }),
+    });
+
+    expect(metadata.description).toBe(CATEGORY_DESCRIPTIONS['waste-recycling']);
+    expect(metadata.description).not.toMatch(/coming/);
   });
 });
 

@@ -50,6 +50,24 @@ const datasets: DataSourcesCatalog['datasets'] = [
   },
 ];
 
+const wasteDataset: DataSourcesCatalog['datasets'][number] = {
+  id: 'waste-recycling',
+  name: 'Municipal waste by country',
+  description: 'World Bank dataset',
+  categories: ['waste-recycling'],
+  publications: [
+    {
+      citation: 'Cook, Ed et al. 2026. What a Waste 3.0',
+      url: 'https://datacatalog.worldbank.org/x',
+      publishedYear: 2026,
+      entryCount: 217,
+      license: { name: 'CC BY 4.0', url: 'https://creativecommons.org/licenses/by/4.0/' },
+    },
+  ],
+};
+
+const datasetsWithLicense = (): DataSourcesCatalog['datasets'] => [datasets[0], wasteDataset];
+
 const renderPage = async (catalog: DataSourcesCatalog) => {
   jest.mocked(getDataSources).mockResolvedValueOnce(catalog);
   render(await DataSourcesPage());
@@ -214,5 +232,23 @@ describe('DataSourcesPage upstream origins', () => {
     await renderPage({ providers: [provider], datasets: [] });
 
     expect(screen.queryByText('Data produced by')).not.toBeInTheDocument();
+  });
+});
+
+describe('DataSourcesPage publication license', () => {
+  it('should show the license of a publication as an external link after its entry count', async () => {
+    await renderPage({ providers: [], datasets: datasetsWithLicense() });
+
+    const link = screen.getByRole('link', { name: 'CC BY 4.0' });
+    expect(link).toHaveAttribute('href', 'https://creativecommons.org/licenses/by/4.0/');
+    expect(link).toHaveAttribute('target', '_blank');
+    expect(link).toHaveAttribute('rel', 'noopener noreferrer');
+    expect(link.closest('p')).toHaveTextContent('217 entries · License CC BY 4.0');
+  });
+
+  it('should show no License text for a publication without a license', async () => {
+    await renderPage({ providers: [], datasets: datasetsWithLicense().slice(0, 1) });
+
+    expect(screen.queryByText(/License/)).not.toBeInTheDocument();
   });
 });

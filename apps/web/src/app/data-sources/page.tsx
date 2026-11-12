@@ -189,7 +189,7 @@ function Dataset({ dataset }: { dataset: StaticDataSource }) {
 }
 
 function Publication({ publication }: { publication: DataSourcePublication }) {
-  const { citation, url, publishedYear, entryCount, publisher } = publication;
+  const { citation, url, publishedYear, entryCount, publisher, license } = publication;
 
   return (
     <li className="text-sm text-fg-body">
@@ -199,6 +199,20 @@ function Publication({ publication }: { publication: DataSourcePublication }) {
       <p className="text-fg-muted">
         Published {publishedYear} · {entryCount} {entryCount === 1 ? 'entry' : 'entries'}
       </p>
+      {license && (
+        <>
+          {' '}
+          · License{' '}
+          <a
+            href={license.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={LINK_CLASS_NAME}
+          >
+            {license.name}
+          </a>
+        </>
+      )}
       {publisher && (
         <p className="text-fg-muted">
           Republished by <SourceAttribution source={publisher} />

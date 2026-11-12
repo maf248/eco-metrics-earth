@@ -1,4 +1,5 @@
-import { TABLE_REGION_CLASS_NAME } from '@/lib/cardClassNames';
+import { DataTableDisclosure } from '@/components/DataTableDisclosure';
+import { ScrollRegion } from '@/components/ScrollRegion';
 
 export interface YearDataColumn {
   header: string;
@@ -39,31 +40,8 @@ export function YearDataTable({
   const years = Array.from({ length: endYear - startYear + 1 }, (_, index) => endYear - index);
 
   return (
-    <details className="group mt-4 border-t border-line-subtle pt-2">
-      <summary className="flex min-h-11 cursor-pointer list-none items-center gap-2 rounded-lg px-1 font-medium text-accent hover:text-accent-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2 ring-offset-focus-offset [&::-webkit-details-marker]:hidden">
-        <svg
-          aria-hidden="true"
-          viewBox="0 0 20 20"
-          className="h-4 w-4 shrink-0 transition-transform group-open:rotate-90 motion-reduce:transition-none"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth={2}
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <path d="M7 4l6 6-6 6" />
-        </svg>
-        View data table
-      </summary>
-
-      <div
-        role="region"
-        aria-label={`Data table for ${entityName}, scrollable`}
-        // Focusable so the scroll region can be scrolled by keyboard.
-        // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
-        tabIndex={0}
-        className={`mt-2 max-h-96 overflow-auto ${TABLE_REGION_CLASS_NAME}`}
-      >
+    <DataTableDisclosure>
+      <ScrollRegion label={`Data table for ${entityName}`} className="mt-2 max-h-96">
         {/* Borders on the cells: a collapsed border scrolls away from the sticky header. */}
         <table
           className={`w-full ${wide ? WIDE_MIN_WIDTH_CLASS_NAME : DEFAULT_MIN_WIDTH_CLASS_NAME} border-separate border-spacing-0 text-sm tabular-nums`}
@@ -103,7 +81,7 @@ export function YearDataTable({
             ))}
           </tbody>
         </table>
-      </div>
-    </details>
+      </ScrollRegion>
+    </DataTableDisclosure>
   );
 }

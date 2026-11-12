@@ -4,6 +4,7 @@ import type { EChartsCoreOption, EChartsType } from 'echarts/core';
 import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
 
 import { ChartSkeleton } from '@/components/charts/ChartSkeleton';
+import type { ChartRamp } from '@/components/charts/chartTokens';
 import { LazyMapEChart, preloadMapEChart } from '@/components/charts/LazyMapEChart';
 import { loadWorldGeometry, WORLD_MAP_SCALE_LIMIT, type WorldRegion } from '@/lib/worldGeometry';
 
@@ -15,6 +16,8 @@ interface ChoroplethMapProps {
    * are silent, so they never reach it.
    */
   onRegionClick: (code: string) => void;
+  /** Sequential ramp of the classes; heat when omitted. May change while mounted. */
+  ramp?: ChartRamp;
 }
 
 /** Zoom factor of one press of "Zoom in" / "Zoom out". */
@@ -53,11 +56,11 @@ function ControlButton({
   label,
   icon,
   onClick,
-}: {
+}: Readonly<{
   label: string;
   icon: keyof typeof ICON_PATHS;
   onClick: () => void;
-}) {
+}>) {
   return (
     <button
       type="button"
@@ -95,7 +98,7 @@ function readZoom(chart: EChartsType): number {
  * map entry and owns the view controls. Wider screens get a vertical zoom in / zoom out / reset
  * group; narrow screens pinch to zoom and get "Reset view" once the view has moved.
  */
-export function ChoroplethMap({ buildOption, onRegionClick }: ChoroplethMapProps) {
+export function ChoroplethMap({ buildOption, onRegionClick, ramp }: Readonly<ChoroplethMapProps>) {
   const [regions, setRegions] = useState<readonly WorldRegion[] | null>(null);
   const [chart, setChart] = useState<EChartsType | null>(null);
   const [moved, setMoved] = useState(false);
@@ -152,7 +155,7 @@ export function ChoroplethMap({ buildOption, onRegionClick }: ChoroplethMapProps
   return (
     <div className="relative">
       {option ? (
-        <LazyMapEChart option={option} onReady={handleReady} />
+        <LazyMapEChart option={option} ramp={ramp} onReady={handleReady} />
       ) : (
         <ChartSkeleton variant="map" />
       )}

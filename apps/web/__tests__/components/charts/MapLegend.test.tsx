@@ -20,4 +20,12 @@ describe('MapLegend', () => {
     expect(swatches[0]).toHaveStyle({ background: 'var(--chart-seq-1)' });
     expect(swatches[0]).toHaveAttribute('aria-hidden', 'true');
   });
+
+  it('should paint the swatches from the good-is-high ramp when asked', () => {
+    const { container } = render(<MapLegend classLabels={['a', 'b']} label="Legend" ramp="good" />);
+
+    expect(
+      [...container.querySelectorAll('[data-token]')].map((el) => el.getAttribute('data-token')),
+    ).toEqual(['chart-seq-good-1', 'chart-seq-good-2', 'chart-no-data']);
+  });
 });

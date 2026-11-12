@@ -8,6 +8,13 @@ describe('sitemap', () => {
     expect(result).toHaveLength(2 + LIVE_CATEGORIES.length);
   });
 
+  it('should list each category with live data exactly once', () => {
+    const urls = sitemap().map(({ url }) => url);
+    for (const category of LIVE_CATEGORIES) {
+      expect(urls.filter((url) => url.endsWith(`/${category}/`))).toHaveLength(1);
+    }
+  });
+
   it('should list every category with live data', () => {
     const urls = sitemap().map(({ url }) => url);
     for (const category of LIVE_CATEGORIES) {

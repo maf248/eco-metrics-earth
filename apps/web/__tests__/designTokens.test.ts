@@ -15,6 +15,7 @@ import {
   CHART_COLOR_TOKENS,
   CHART_ENERGY_TOKENS,
   CHART_NO_DATA_TOKEN,
+  CHART_SEQUENTIAL_GOOD_TOKENS,
   CHART_SEQUENTIAL_TOKENS,
 } from '../src/components/charts/chartTokens';
 
@@ -70,7 +71,7 @@ function declaredProperties(css: string, selector: string): string[] {
 const css = fs.readFileSync(GLOBALS_CSS, 'utf8');
 // Chart tokens are a separate group: hex values read by name by the chart theme adapter,
 // never exposed as Tailwind utilities (docs/design-system.md, Color Palettes): the categorical
-// `--chart-N`, the sequential `--chart-seq-N` with `--chart-no-data`, and the energy mix `--energy-*`.
+// `--chart-N`, the sequential `--chart-seq-N` and `--chart-seq-good-N` with `--chart-no-data`, and the energy mix `--energy-*`.
 const isCategoricalToken = (token: string): boolean => /^chart-\d+$/.test(token);
 const isSequentialToken = (token: string): boolean =>
   token.startsWith('chart-seq-') || token === CHART_NO_DATA_TOKEN;
@@ -158,7 +159,7 @@ describe('design tokens — chart tokens', () => {
 
   it('should declare exactly the sequential and no-data names the chart theme adapter reads', () => {
     expect([...lightSequentialTokens].sort()).toEqual(
-      [...CHART_SEQUENTIAL_TOKENS, CHART_NO_DATA_TOKEN].sort(),
+      [...CHART_SEQUENTIAL_TOKENS, ...CHART_SEQUENTIAL_GOOD_TOKENS, CHART_NO_DATA_TOKEN].sort(),
     );
   });
 

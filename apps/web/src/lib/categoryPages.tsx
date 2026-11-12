@@ -9,12 +9,14 @@ import {
   type ProviderPageState,
   type ProviderPayload,
 } from '@/components/ProviderBackedContent';
+import { WasteRecyclingContent } from '@/components/waste-recycling/WasteRecyclingContent';
 import { WaterFootprintContent } from '@/components/water-footprint/WaterFootprintContent';
 import { DEGRADED_REVALIDATE_SECONDS, type ProviderPayloadResult } from '@/lib/bffFetch';
 import { getCo2Emissions } from '@/lib/co2Emissions';
 import { getEnergySources } from '@/lib/energySources';
 import { getGlobalTemperature } from '@/lib/globalTemperature';
 import { evaluateFreshness, type FreshnessThresholds } from '@/lib/providerFreshness';
+import { getWasteRecycling } from '@/lib/wasteRecycling';
 import { getWaterFootprintProducts } from '@/lib/waterFootprint';
 import { ECO_CATEGORIES } from '@eco-metrics/shared';
 import type { EcoCategory } from '@eco-metrics/shared';
@@ -102,6 +104,14 @@ const OWID_PROVIDER_NAME = 'Our World in Data';
  * to move it to on-demand ISR.
  */
 export const CATEGORY_PAGES: Partial<Record<EcoCategory, CategoryPageDefinition>> = {
+  [ECO_CATEGORIES.WASTE_RECYCLING]: defineCategoryPage({
+    load: getWasteRecycling,
+    Content: ({ data }) => (
+      <div className="mt-8 w-full flex justify-center">
+        <WasteRecyclingContent data={data} />
+      </div>
+    ),
+  }),
   [ECO_CATEGORIES.WATER_FOOTPRINT]: defineCategoryPage({
     load: getWaterFootprintProducts,
     Content: ({ data }) => (
