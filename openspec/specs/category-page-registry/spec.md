@@ -30,13 +30,19 @@ Dispatch category pages with live data through a registry, so new categories onl
 #### Scenario: Water-footprint and CO2 are registered
 
 - **WHEN** `CATEGORY_PAGES` is inspected
-- **THEN** it has entries for exactly `water-footprint`, `co2-emissions`, `global-temperature` and `energy-sources`
+- **THEN** it has entries for exactly `water-footprint`, `co2-emissions`, `global-temperature`, `energy-sources` and `waste-recycling`
 
 #### Scenario: Energy sources renders through the registry
 
 - **GIVEN** the `energy-sources` entry whose `load` is `getEnergySources`
 - **WHEN** the page renders `energy-sources`
 - **THEN** `EnergySourcesContent` is rendered with the fetched payload inside the container `mt-8 w-full flex justify-center`, below the common header
+
+#### Scenario: Waste and recycling renders through the registry
+
+- **GIVEN** the `waste-recycling` entry whose `load` is `getWasteRecycling`
+- **WHEN** the page renders `waste-recycling`
+- **THEN** `WasteRecyclingContent` is rendered with the fetched payload below the common header
 
 #### Scenario: Declared skeleton blocks shape the data region
 

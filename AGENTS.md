@@ -264,7 +264,7 @@ eco-metrics-earth/
 │   │   └── src/
 │   │       ├── app/             # AppModule, global pipeline helper
 │   │       ├── health/          # Liveness (GET /api/v1/health) + dependencies check (GET /api/v1/health/dependencies, one Terminus indicator per provider)
-│   │       ├── modules/         # Per-category eco modules (`water-footprint`, `co2-emissions`, `global-temperature`, `energy-sources`) + `providers/owid` client and `OwidProviderStatus` + `data-sources` catalog
+│   │       ├── modules/         # Per-category eco modules (`water-footprint`, `co2-emissions`, `global-temperature`, `energy-sources`, `waste-recycling`: a static World Bank dataset bundled as JSON) + `providers/owid` client and `OwidProviderStatus` + `data-sources` catalog
 │   │       ├── common/          # Outbound HTTP client, `errors/` (`ProviderError` -> 502), `series/` (`buildYearAlignedEntities`, `roundTo`), `snapshots/` (`ProviderSnapshotService.resolve`, `SnapshotStore` port with GCS and disabled stores; `SNAPSHOT_BUCKET` / `SNAPSHOT_PREFIX`), catch-all 404 fallback, global exception filter, `internal-key/` (`InternalKeyGuard`, `@AllowKeyless()`, `isKeyedRequest` + `buildThrottlerOptions` for the two throttler tiers), publisher resolver
 │   │       ├── config/          # AppConfigService (typed env vars)
 │   │       └── main.ts          # Bootstrap — port 3001, prefix /api/v1
@@ -287,8 +287,9 @@ eco-metrics-earth/
 │           ├── energy-sources.ts           # Energy sources wire types (ENERGY_SOURCE_IDS, generation by source, shares derived by the web)
 │           ├── global-temperature.ts       # Global temperature wire types (anomaly, baseline, upstream origin)
 │           ├── metric-series.ts            # MetricPoint + MetricSeries time-series shapes
+│           ├── waste-recycling.ts          # Waste and recycling wire types (treatment and composition groups, `null` = not reported, world summary)
 │           └── water-footprint.ts          # Water-footprint product, category and water-type types
-├── scripts/                     # Repo scripts: CI helpers, `generate-world-geometry.mjs` (`npm run geo:world`, regenerates apps/web/public/geo/)
+├── scripts/                     # Repo scripts: CI helpers, `generate-world-geometry.mjs` (`npm run geo:world`, regenerates apps/web/public/geo/), `generate-waste-recycling-data.mjs` (`npm run data:waste-recycling`, regenerates the bundled World Bank waste dataset from the downloaded workbook)
 ├── .nvmrc                       # Node.js v24
 ├── nx.json                      # NX workspace config (cache, targets)
 ├── tsconfig.base.json           # Root TS config + path aliases

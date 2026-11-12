@@ -24,7 +24,7 @@ All URLs SHALL end with a trailing slash.
 #### Scenario: Sitemap includes all category URLs
 
 - **WHEN** the sitemap function is called
-- **THEN** the result contains exactly one category entry per category with live data (currently 4: `global-temperature`, `co2-emissions`, `energy-sources`, `water-footprint`)
+- **THEN** the result contains exactly one category entry per category with live data (currently 5: `waste-recycling`, `global-temperature`, `co2-emissions`, `energy-sources`, `water-footprint`)
 
 #### Scenario: Sitemap excludes placeholder categories
 

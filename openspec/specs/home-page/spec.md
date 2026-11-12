@@ -66,7 +66,7 @@ through that single link.
 #### Scenario: Only live categories have a card
 
 - **WHEN** the home page is rendered
-- **THEN** it has one card for each of `global-temperature`, `co2-emissions`, `energy-sources` and `water-footprint`, in that order
+- **THEN** it has one card for each of `waste-recycling`, `global-temperature`, `co2-emissions`, `energy-sources` and `water-footprint`, in that order
 - **AND** no card or link for any placeholder category inside the page content
 
 #### Scenario: Card content and link
