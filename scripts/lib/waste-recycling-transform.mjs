@@ -4,8 +4,9 @@
  * `scripts/generate-waste-recycling-data.mjs` wraps it with the workbook and the output file.
  */
 
-/** Last update of the World Bank files (catalog page), constant next to the workbook URL. */
-const SOURCE_LAST_UPDATED = '2026-03-11';
+import { WASTE_SOURCE } from './waste-recycling-source.mjs';
+
+const SOURCE_LAST_UPDATED = WASTE_SOURCE.lastUpdated;
 const KOSOVO_WORKBOOK_CODE = 'XKX';
 const KOSOVO_ENTITY_CODE = 'OWID_KOS';
 const KOSOVO_ISO2 = 'XK';

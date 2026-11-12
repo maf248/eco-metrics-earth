@@ -84,6 +84,7 @@
           "^production",
           "{workspaceRoot}/jest.preset.js",
           "{workspaceRoot}/.github/workflows/deploy-api.yml",
+          "{workspaceRoot}/scripts/lib/waste-recycling-source.mjs",
           "{workspaceRoot}/scripts/lib/waste-recycling-transform.mjs",
           "{workspaceRoot}/scripts/generate-waste-recycling-data.mjs"
         ]

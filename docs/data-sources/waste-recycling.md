@@ -24,6 +24,18 @@ Tracks municipal solid waste generation, recycling rates, landfill usage, and wa
 | Update frequency | Every ~8 years (major report editions)                    |
 | Format           | Excel, CSV                                                |
 
+#### Updating the dataset
+
+The bundled dataset (`apps/api/src/modules/waste-recycling/data/waste-recycling.json`) is refreshed by hand:
+
+1. Download the country workbook from the [catalog page](https://datacatalog.worldbank.org/search/dataset/0039597/what-a-waste-global-database), or from `WASTE_SOURCE.workbookUrl` in `scripts/lib/waste-recycling-source.mjs` while it still works.
+2. From the repo root run `npm run data:waste-recycling -- <path-to-workbook.xlsx> --retrieved YYYY-MM-DD` (today's date).
+3. Review the JSON diff: country count, new or missing countries, the `world` totals and the `treatment` / `composition` years, and that unreported groups stay `null`, never 0.
+4. Update `WASTE_SOURCE` in `scripts/lib/waste-recycling-source.mjs` (`edition`, `workbookUrl`, `workbookLastModified` from the `Last-Modified` header, `lastUpdated` from the catalog page) and any `lastUpdated` expectation in the API tests.
+5. Run the tests and commit the dataset and the source identity together.
+
+`.github/workflows/waste-data-check.yml` runs `scripts/check-waste-recycling-source.mjs` monthly and opens an issue when the portal mentions a newer edition or the workbook is revised or moved.
+
 ---
 
 ### 2. World Bank Open Data API

@@ -5,7 +5,7 @@
  *
  *   npm run data:waste-recycling -- <workbook.xlsx> --retrieved YYYY-MM-DD
  *
- * Workbook: https://datacatalogfiles.worldbank.org/ddh-published/0039597/DR0095901/What_a_Waste_3.0_COUNTRY_Dataset_&_Codebook.xlsx
+ * Workbook URL and source identity: `WASTE_SOURCE` in `scripts/lib/waste-recycling-source.mjs`.
  *
  * The retrieval date is an argument, never the clock, so the same workbook always gives the same
  * bytes. The transform itself is in `scripts/lib/waste-recycling-transform.mjs`.

@@ -218,4 +218,6 @@ npm run data:waste-recycling -- <path-to-workbook.xlsx> --retrieved YYYY-MM-DD
 The script reads the `Country dataset` and `Codebook` sheets by machine key (never by column letter) and fails when one
 is missing. A blank group is `null`, reported groups are scaled to 100 and rounded with the largest-remainder method,
 and the same workbook always gives byte-identical output. When the World Bank publishes a new release, update
-`SOURCE_LAST_UPDATED` in the script and the `lastUpdated` in the API tests.
+`WASTE_SOURCE` in `scripts/lib/waste-recycling-source.mjs` and the `lastUpdated` in the API tests. A monthly workflow
+(`.github/workflows/waste-data-check.yml`) opens an issue when a new edition or a revised workbook appears; see
+[Updating the dataset](../../docs/data-sources/waste-recycling.md#updating-the-dataset).
