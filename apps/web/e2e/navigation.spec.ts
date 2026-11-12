@@ -59,11 +59,14 @@ test.describe('Home page content', () => {
     await expect(typing).toHaveCSS('animation-name', 'typewriter-hidden');
     expect(await scrollBehavior()).toBe('auto');
 
-    await page
-      .locator(selectors.mainContent)
-      .getByRole('link', { name: /^Explore the data/ })
-      .click();
-    expect(await scrollBehavior()).toBe('smooth');
+    // A click before hydration (slower under parallel load) is a plain jump: retry until animated.
+    await expect(async () => {
+      await page
+        .locator(selectors.mainContent)
+        .getByRole('link', { name: /^Explore the data/ })
+        .click();
+      expect(await scrollBehavior()).toBe('smooth');
+    }).toPass({ timeout: 20_000 });
     // The class is dropped once the scroll is over, so no other scroll is animated.
     await expect.poll(scrollBehavior).toBe('auto');
   });

@@ -504,20 +504,25 @@ test.describe('CO2 Emissions page', () => {
             ),
           ),
         );
-      // Measure once the entry animation has settled: two equal reads in a row.
-      let previous = -1;
-      await expect
-        .poll(async () => {
-          const width = await regionWidth();
-          const settled = width === previous;
-          previous = width;
-          return settled;
-        })
-        .toBe(true);
-      const initial = previous;
+      // Read once an animation has settled (two equal reads in a row): a reset pressed while the
+      // zoom still animates is overwritten when that animation ends.
+      const settledWidth = async (): Promise<number> => {
+        let previous = -1;
+        await expect
+          .poll(async () => {
+            const width = await regionWidth();
+            const settled = width === previous;
+            previous = width;
+            return settled;
+          })
+          .toBe(true);
+        return previous;
+      };
+      const initial = await settledWidth();
 
       await card(page).getByRole('button', { name: 'Zoom in' }).click();
       await expect.poll(regionWidth).toBeGreaterThan(initial);
+      await settledWidth();
 
       await card(page).getByRole('button', { name: 'Reset view' }).click();
       await expect.poll(regionWidth).toBe(initial);
