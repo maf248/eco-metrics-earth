@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useEffect } from 'react';
 
 import { NotFoundIcon } from '@/components/icons';
+import { PAGE_TITLE_CLASS_NAME } from '@/lib/pageTitleClassName';
 
 interface ErrorPageProps {
   error: Error & { digest?: string };
@@ -28,7 +29,7 @@ export default function ErrorPage({ error, reset }: ErrorPageProps) {
           <NotFoundIcon aria-hidden className="w-32 h-32 drop-shadow-icon-xl" />
         </div>
         <div className="text-center" role="alert">
-          <h1 className="text-4xl font-bold text-fg">Oops! Something went wrong…</h1>
+          <h1 className={PAGE_TITLE_CLASS_NAME}>Oops! Something went wrong…</h1>
           <p className="mt-4 text-fg-secondary">
             An unexpected error occurred while loading this page.
           </p>
@@ -36,7 +37,7 @@ export default function ErrorPage({ error, reset }: ErrorPageProps) {
             <button
               type="button"
               onClick={reset}
-              className="px-6 py-3 rounded-lg bg-accent-solid text-on-accent font-medium hover:bg-accent-solid-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2 ring-offset-focus-offset transition-colors duration-150"
+              className="px-6 py-3 rounded-lg bg-accent-solid-strong text-on-accent font-medium hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2 ring-offset-focus-offset transition-colors duration-150"
             >
               Try again
             </button>

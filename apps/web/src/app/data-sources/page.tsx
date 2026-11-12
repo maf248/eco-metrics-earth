@@ -7,6 +7,7 @@ import { getCategoryTitle } from '@/lib/categoryTitle';
 import { getDataSources } from '@/lib/dataSources';
 import { formatUtcDate } from '@/lib/formatUtcDate';
 import { LINK_CLASS_NAME } from '@/lib/linkClassName';
+import { PAGE_TITLE_CLASS_NAME } from '@/lib/pageTitleClassName';
 import { siteUrl } from '@/lib/siteUrl';
 import { buildOpenGraph, buildTwitter } from '@/lib/socialMetadata';
 import type {
@@ -48,7 +49,7 @@ export default async function DataSourcesPage() {
     <div className="mx-auto w-full max-w-3xl px-4 pt-header">
       <div className="mt-14 space-y-10 pb-8 lg:mt-0">
         <header>
-          <h1 className="text-4xl font-bold text-fg">Data sources</h1>
+          <h1 className={PAGE_TITLE_CLASS_NAME}>Data sources</h1>
           <p className="mt-4 text-fg-secondary">
             Every figure on this site comes from a source listed here, with its publisher, license
             and date.
@@ -198,21 +199,21 @@ function Publication({ publication }: { publication: DataSourcePublication }) {
       </a>
       <p className="text-fg-muted">
         Published {publishedYear} · {entryCount} {entryCount === 1 ? 'entry' : 'entries'}
+        {license && (
+          <>
+            {' '}
+            · License{' '}
+            <a
+              href={license.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={LINK_CLASS_NAME}
+            >
+              {license.name}
+            </a>
+          </>
+        )}
       </p>
-      {license && (
-        <>
-          {' '}
-          · License{' '}
-          <a
-            href={license.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={LINK_CLASS_NAME}
-          >
-            {license.name}
-          </a>
-        </>
-      )}
       {publisher && (
         <p className="text-fg-muted">
           Republished by <SourceAttribution source={publisher} />

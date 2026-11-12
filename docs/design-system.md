@@ -38,8 +38,8 @@ Declared in `apps/web/src/app/globals.css`. Values are Tailwind 4.3.3 palette en
 | `fg-muted`            | Units, footnotes                                         | gray-500    | gray-400    |
 | `accent`              | Brand text, active nav, links, chip focus ring           | emerald-700 | emerald-400 |
 | `accent-hover`        | Link hover                                               | emerald-800 | emerald-300 |
-| `accent-solid`        | Solid accent background (primary button, skip link)      | emerald-600 | emerald-600 |
-| `accent-solid-strong` | Hover/selected solid accent (button hover, checked chip) | emerald-700 | emerald-700 |
+| `accent-solid`        | Solid accent fill (progress bar, large bold labels only) | emerald-600 | emerald-600 |
+| `accent-solid-strong` | Primary button, skip link, checked chip                  | emerald-700 | emerald-700 |
 | `on-accent`           | Text on a solid accent background                        | white       | white       |
 | `focus-ring`          | Focus ring                                               | emerald-400 | emerald-400 |
 | `focus-offset`        | Gap between element and focus ring                       | white       | gray-950    |
@@ -246,9 +246,8 @@ Pending — define and validate it in the first change that encodes polarity wit
 
 ### Page titles
 
-- The `<h1>` of the home and of every category page shares `PAGE_TITLE_CLASS_NAME` (`lib/pageTitleClassName.ts`): the brand's terminal style, `font-mono tracking-tight text-accent`, at `text-4xl font-bold` with `text-balance`. It is the only heading in `accent`: `<h2>`/`<h3>` stay `text-fg`.
+- The `<h1>` of the home, every category page, the data sources page and the not-found and error pages shares `PAGE_TITLE_CLASS_NAME` (`lib/pageTitleClassName.ts`): the brand's terminal style, `font-mono tracking-tight text-accent`, at `text-4xl font-bold` with `text-balance`. It is the only heading in `accent`: `<h2>`/`<h3>` stay `text-fg`.
 - Only the home title is animated (`TypewriterText`). Category titles are static and have no cursor: their header also renders in the pending-navigation view, and a title that types itself on every navigation delays reading it.
-- The not-found and data sources titles keep `text-4xl font-bold text-fg`.
 
 ### Home page
 
