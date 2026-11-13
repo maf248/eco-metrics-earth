@@ -1,3 +1,13 @@
+## [2.18.0](https://github.com/maf248/eco-metrics-earth/compare/web-v2.17.0...web-v2.18.0) (2026-11-13)
+
+### Features
+
+* **web:** add the waste and recycling page with a world map, country comparison and projection ([a187756](https://github.com/maf248/eco-metrics-earth/commit/a1877568676f6de5b9fc3351288308d81d05bd79))
+
+### Bug Fixes
+
+* **web:** render the brand text the same on server and client under reduced motion ([2d3d451](https://github.com/maf248/eco-metrics-earth/commit/2d3d4511b25cf652aca8d753e7ad0fdee2342040))
+
 ## [2.17.0](https://github.com/maf248/eco-metrics-earth/compare/web-v2.16.1...web-v2.17.0) (2026-11-11)
 
 ### Features
