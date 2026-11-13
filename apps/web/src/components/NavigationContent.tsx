@@ -68,25 +68,27 @@ export function NavigationContent({ children }: { children: ReactNode }) {
   }, [category]);
 
   return (
-    <main
-      ref={mainRef}
-      id="main-content"
-      tabIndex={-1}
-      aria-busy={category && CATEGORY_SKELETONS[category] ? true : undefined}
-      className="min-h-screen"
-    >
+    <>
       <NavigationProgress active={isLeaving} />
-      {category && (
-        <div data-testid="pending-category" className={CATEGORY_PAGE_CLASS_NAME}>
-          <CategoryHeader category={category} />
-          <CategoryDataSkeleton category={category} />
-        </div>
-      )}
-      <ViewTransition>
-        <div hidden={Boolean(category)}>
-          <Activity mode={category ? 'hidden' : 'visible'}>{children}</Activity>
-        </div>
-      </ViewTransition>
-    </main>
+      <main
+        ref={mainRef}
+        id="main-content"
+        tabIndex={-1}
+        aria-busy={category && CATEGORY_SKELETONS[category] ? true : undefined}
+        className="isolate min-h-screen"
+      >
+        {category && (
+          <div data-testid="pending-category" className={CATEGORY_PAGE_CLASS_NAME}>
+            <CategoryHeader category={category} />
+            <CategoryDataSkeleton category={category} />
+          </div>
+        )}
+        <ViewTransition>
+          <div hidden={Boolean(category)}>
+            <Activity mode={category ? 'hidden' : 'visible'}>{children}</Activity>
+          </div>
+        </ViewTransition>
+      </main>
+    </>
   );
 }

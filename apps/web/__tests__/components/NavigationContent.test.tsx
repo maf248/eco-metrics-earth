@@ -61,6 +61,14 @@ describe('NavigationContent', () => {
     expect(screen.queryByTestId('pending-category')).not.toBeInTheDocument();
   });
 
+  // ECharts gives its HTML tooltip `z-index: 9999999`. Without a stacking context of its own,
+  // that z-index competed with the fixed header and bottom nav (`z-50`) and tooltips painted
+  // over them. `isolate` ranks every z-index inside the page only against the page itself.
+  it('should isolate the page so nothing in it paints over the fixed header and nav', () => {
+    renderPendingOn(null);
+    expect(screen.getByRole('main')).toHaveClass('isolate');
+  });
+
   it('should replace the page with the header and skeletons of a pending category', () => {
     renderPendingOn('/co2-emissions/');
     expect(screen.getByRole('main')).toHaveAttribute('aria-busy', 'true');
@@ -127,6 +135,17 @@ describe('NavigationContent', () => {
         jest.advanceTimersByTime(1);
       });
       expect(screen.getByTestId('navigation-progress')).toHaveAttribute('aria-hidden', 'true');
+    });
+
+    // The bar sits over the header, so it must live outside main's isolated stacking context.
+    it('should render outside main so it paints above the header', () => {
+      renderPendingOn('/co2-emissions/');
+      act(() => {
+        jest.advanceTimersByTime(200);
+      });
+      expect(screen.getByRole('main')).not.toContainElement(
+        screen.getByTestId('navigation-progress'),
+      );
     });
 
     it('should disappear when the navigation completes', () => {
