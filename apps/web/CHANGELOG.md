@@ -1,3 +1,9 @@
+## [2.18.1](https://github.com/maf248/eco-metrics-earth/compare/web-v2.18.0...web-v2.18.1) (2026-11-13)
+
+### Bug Fixes
+
+* **web:** declare dataset sources as creativework so google does not flag them ([10c16e5](https://github.com/maf248/eco-metrics-earth/commit/10c16e50437edfb8bddc4de174eb99e10b83a478))
+
 ## [2.18.0](https://github.com/maf248/eco-metrics-earth/compare/web-v2.17.0...web-v2.18.0) (2026-11-13)
 
 ### Features
