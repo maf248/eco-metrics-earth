@@ -13,7 +13,7 @@ interface JsonLd {
   license: string;
   creator: Record<string, string>;
   variableMeasured: { unitText: string }[];
-  isBasedOn: { name: string; publisher: { name: string } }[];
+  isBasedOn: Record<string, unknown>[];
 }
 
 function build() {
@@ -43,16 +43,22 @@ describe('buildEnergyDatasetJsonLd', () => {
     const basedOn = build().isBasedOn;
 
     expect(basedOn).toHaveLength(2);
-    expect(basedOn[0]).toMatchObject({
-      name: 'Electricity mix',
-      version: '2026-06-30',
-      publisher: { name: 'Our World in Data' },
-    });
-    expect(basedOn[1]).toMatchObject({
-      name: 'Yearly Electricity Data',
-      publisher: { name: 'Ember' },
-      url: 'https://ember-energy.org/data/yearly-electricity-data/',
-    });
+    const { provider, sourceUrl } = ENERGY_META.source;
+    expect(basedOn).toEqual([
+      {
+        '@type': 'CreativeWork',
+        name: 'Electricity mix',
+        version: '2026-06-30',
+        publisher: { '@type': 'Organization', name: provider, url: sourceUrl },
+        url: sourceUrl,
+      },
+      {
+        '@type': 'CreativeWork',
+        name: 'Yearly Electricity Data',
+        publisher: { '@type': 'Organization', name: 'Ember' },
+        url: 'https://ember-energy.org/data/yearly-electricity-data/',
+      },
+    ]);
   });
 
   it('should state electricity only and the grouping in the description', () => {

@@ -1,4 +1,4 @@
-import { buildDatasetJsonLd } from '@/lib/datasetJsonLd';
+import { buildDatasetJsonLd, buildSourceWork } from '@/lib/datasetJsonLd';
 import type { ApiResponseMeta, Co2EmissionsData } from '@eco-metrics/shared';
 
 interface StructuredDataInput {
@@ -57,13 +57,12 @@ export function buildCo2DatasetJsonLd({
           unitText: units.perCapita,
         },
       ],
-      isBasedOn: {
-        '@type': 'Dataset',
+      isBasedOn: buildSourceWork({
         name: dataset.name,
         version: dataset.version,
-        publisher: { '@type': 'Organization', name: provider, url: sourceUrl },
+        publisher: { name: provider, url: sourceUrl },
         url: sourceUrl,
-      },
+      }),
     },
   });
 }

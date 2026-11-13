@@ -1,4 +1,4 @@
-import { buildDatasetJsonLd } from '@/lib/datasetJsonLd';
+import { buildDatasetJsonLd, buildSourceWork } from '@/lib/datasetJsonLd';
 import type { ApiResponseMeta, EnergySourcesData } from '@eco-metrics/shared';
 
 interface StructuredDataInput {
@@ -55,19 +55,17 @@ export function buildEnergyDatasetJsonLd({
         },
       ],
       isBasedOn: [
-        {
-          '@type': 'Dataset',
+        buildSourceWork({
           name: dataset.name,
           version: dataset.version,
-          publisher: { '@type': 'Organization', name: provider, url: sourceUrl },
+          publisher: { name: provider, url: sourceUrl },
           url: sourceUrl,
-        },
-        {
-          '@type': 'Dataset',
+        }),
+        buildSourceWork({
           name: origin.title,
-          publisher: { '@type': 'Organization', name: origin.producer },
+          publisher: { name: origin.producer },
           url: origin.url,
-        },
+        }),
       ],
     },
   });

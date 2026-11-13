@@ -65,28 +65,31 @@ describe('buildGlobalTemperatureDatasetJsonLd', () => {
   });
 
   it('should credit the OWID dataset and both upstream datasets', () => {
-    const basedOn = build().isBasedOn as {
-      publisher: { name: string };
-      name: string;
-      url: string;
-    }[];
+    const basedOn = build().isBasedOn as Record<string, unknown>[];
+    const { provider, sourceUrl } = TEMPERATURE_META.source;
 
     expect(basedOn).toHaveLength(3);
-    expect(basedOn[0]).toMatchObject({
-      name: 'Annual surface temperatures and anomalies by country',
-      version: '2026-10-12',
-      publisher: { name: 'Our World in Data' },
-    });
-    expect(basedOn[1]).toMatchObject({
-      name: TEMPERATURE_FIXTURE.origin.title,
-      url: TEMPERATURE_FIXTURE.origin.url,
-      publisher: { name: 'Copernicus Climate Change Service (C3S)' },
-    });
-    expect(basedOn[2]).toMatchObject({
-      name: 'HadCRUT5',
-      url: 'https://www.metoffice.gov.uk/hadobs/hadcrut5/',
-      publisher: { name: 'Met Office Hadley Centre' },
-    });
+    expect(basedOn).toEqual([
+      {
+        '@type': 'CreativeWork',
+        name: 'Annual surface temperatures and anomalies by country',
+        version: '2026-10-12',
+        publisher: { '@type': 'Organization', name: provider, url: sourceUrl },
+        url: sourceUrl,
+      },
+      {
+        '@type': 'CreativeWork',
+        name: TEMPERATURE_FIXTURE.origin.title,
+        publisher: { '@type': 'Organization', name: 'Copernicus Climate Change Service (C3S)' },
+        url: TEMPERATURE_FIXTURE.origin.url,
+      },
+      {
+        '@type': 'CreativeWork',
+        name: 'HadCRUT5',
+        publisher: { '@type': 'Organization', name: 'Met Office Hadley Centre' },
+        url: 'https://www.metoffice.gov.uk/hadobs/hadcrut5/',
+      },
+    ]);
   });
 
   it('should derive the license from the API license name and declare no distribution', () => {

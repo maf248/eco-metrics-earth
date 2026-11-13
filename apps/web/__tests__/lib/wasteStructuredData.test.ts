@@ -37,9 +37,13 @@ describe('buildWasteDatasetJsonLd source text', () => {
       dataSourcesUrl: 'https://example.org/data-sources/',
     });
 
-    expect(jsonLd.isBasedOn).toMatchObject({
+    const { provider, sourceUrl } = WASTE_META.source;
+    expect(jsonLd.isBasedOn).toEqual({
+      '@type': 'CreativeWork',
       name: 'Another Title',
       citation: 'Another citation 2030.',
+      publisher: { '@type': 'Organization', name: provider, url: sourceUrl },
+      url: sourceUrl,
     });
     expect(jsonLd.description).toContain('Another Title');
     expect(JSON.stringify(jsonLd)).not.toContain('What a Waste');

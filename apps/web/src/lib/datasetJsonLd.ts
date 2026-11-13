@@ -19,6 +19,40 @@ export function licenseUrl(license: string): string {
 /** schema.org `GeoShape` box ("south west north east") covering the whole Earth. */
 const WHOLE_EARTH_BOX = '-90 -180 90 180';
 
+/** A source the page's data is derived from, published elsewhere. */
+export interface SourceWorkInput {
+  name: string;
+  url: string;
+  publisher: { name: string; url?: string };
+  version?: string;
+  citation?: string;
+}
+
+/** A source as `buildSourceWork` returns it, for `isBasedOn`. */
+export type SourceWork = Record<string, unknown>;
+
+/**
+ * A source of the page's data, for `isBasedOn`. Typed `CreativeWork`, not `Dataset`: a nested
+ * `Dataset` is validated by Google as a Dataset item of the page and needs its own description,
+ * and the sources are other sites' datasets, which this page does not publish.
+ */
+export function buildSourceWork({
+  name,
+  url,
+  publisher,
+  version,
+  citation,
+}: SourceWorkInput): SourceWork {
+  return {
+    '@type': 'CreativeWork',
+    name,
+    ...(version === undefined ? {} : { version }),
+    ...(citation === undefined ? {} : { citation }),
+    publisher: { '@type': 'Organization', ...publisher },
+    url,
+  };
+}
+
 /** The parts of a `Dataset` that differ per category; passed through unchanged. */
 export interface DatasetJsonLdFields {
   name: string;
@@ -27,8 +61,8 @@ export interface DatasetJsonLdFields {
   /** `startYear/endYear`. */
   temporalCoverage: string;
   variableMeasured: Record<string, unknown>[];
-  /** The dataset(s) this one is derived from: one object or a list. */
-  isBasedOn: Record<string, unknown> | Record<string, unknown>[];
+  /** The source(s) this dataset is derived from, built with `buildSourceWork`. */
+  isBasedOn: SourceWork | SourceWork[];
 }
 
 interface DatasetJsonLdInput {
