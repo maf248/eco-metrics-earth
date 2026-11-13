@@ -47,21 +47,29 @@ test.describe('Waste & Recycling page', () => {
       expect(response.status()).toBe(200);
       const raw = await response.text();
       const html = raw.replaceAll('<!-- -->', '');
-      // The text a visitor reads: React's text markers and the tags (the key figures wrap numbers in
-      // <strong>) removed, so the sentences can be matched whole.
-      const text = html.replace(/<[^>]+>/g, '');
       const footer = html.indexOf('<footer');
 
       expect(html.indexOf('2.33 billion tonnes')).toBeGreaterThan(-1);
       expect(html.indexOf('2.33 billion tonnes')).toBeLessThan(footer);
-      expect(text).toContain('3.49 billion tonnes');
-      expect(text).toContain('0.80 kg per person per day');
-      expect(text).toContain('Among the 130 countries that report recycling');
-      expect(text).toContain('about 46% of the world');
-      expect(text).toContain('about 18% of municipal waste is recycled');
       expect(html).not.toContain('coming soon');
       expect(html).not.toContain('name="robots"');
       expect(html.match(/"@context":"https:\/\/schema.org","@type":"Dataset"/g)).toHaveLength(1);
+    });
+
+    test.describe('without JavaScript', () => {
+      test.use({ javaScriptEnabled: false });
+
+      test('should show the key figures as whole sentences', async ({ page }) => {
+        await page.goto(PAGE_URL);
+        // The key figures wrap numbers in <strong>: the rendered text reads them as one sentence.
+        const text = await page.locator('main').innerText();
+
+        expect(text).toContain('3.49 billion tonnes');
+        expect(text).toContain('0.80 kg per person per day');
+        expect(text).toContain('Among the 130 countries that report recycling');
+        expect(text).toContain('about 46% of the world');
+        expect(text).toContain('about 18% of municipal waste is recycled');
+      });
     });
 
     test('should have the live title, description and canonical URL', async ({ page }) => {

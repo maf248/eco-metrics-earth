@@ -8,6 +8,8 @@ describe('escapeHtml', () => {
   });
 
   it('should leave plain text untouched', () => {
-    expect(escapeHtml("Côte d'Ivoire".replace("'", ''))).toBe('Côte dIvoire');
+    // The dataset spells this name with a typographic apostrophe, which is not markup.
+    const plain = 'Côte d’Ivoire, 12.5 kg (2020)';
+    expect(escapeHtml(plain)).toBe(plain);
   });
 });
