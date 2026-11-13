@@ -1,4 +1,4 @@
-import { buildDatasetJsonLd } from '@/lib/datasetJsonLd';
+import { buildDatasetJsonLd, buildSourceWork } from '@/lib/datasetJsonLd';
 import type { ApiResponseMeta, GlobalTemperatureData } from '@eco-metrics/shared';
 
 interface StructuredDataInput {
@@ -29,12 +29,6 @@ export function buildGlobalTemperatureDatasetJsonLd({
   const { provider, sourceUrl } = meta.source;
   const period = `${baseline.startYear}–${baseline.endYear}`;
   const preIndustrialPeriod = `${global.baseline.startYear}–${global.baseline.endYear}`;
-  const upstream = (title: string, url: string, producer: string): Record<string, unknown> => ({
-    '@type': 'Dataset',
-    name: title,
-    publisher: { '@type': 'Organization', name: producer },
-    url,
-  });
 
   return buildDatasetJsonLd({
     meta,
@@ -74,15 +68,22 @@ export function buildGlobalTemperatureDatasetJsonLd({
         },
       ],
       isBasedOn: [
-        {
-          '@type': 'Dataset',
+        buildSourceWork({
           name: dataset.name,
           version: dataset.version,
-          publisher: { '@type': 'Organization', name: provider, url: sourceUrl },
+          publisher: { name: provider, url: sourceUrl },
           url: sourceUrl,
-        },
-        upstream(origin.title, origin.url, origin.producer),
-        upstream(global.origin.title, global.origin.url, global.origin.producer),
+        }),
+        buildSourceWork({
+          name: origin.title,
+          publisher: { name: origin.producer },
+          url: origin.url,
+        }),
+        buildSourceWork({
+          name: global.origin.title,
+          publisher: { name: global.origin.producer },
+          url: global.origin.url,
+        }),
       ],
     },
   });

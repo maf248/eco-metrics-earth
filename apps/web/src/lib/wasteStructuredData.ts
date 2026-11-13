@@ -1,4 +1,4 @@
-import { buildDatasetJsonLd } from '@/lib/datasetJsonLd';
+import { buildDatasetJsonLd, buildSourceWork } from '@/lib/datasetJsonLd';
 import type { ApiResponseMeta, WasteRecyclingData } from '@eco-metrics/shared';
 
 interface StructuredDataInput {
@@ -67,13 +67,12 @@ export function buildWasteDatasetJsonLd({
           unitText: 'percent',
         },
       ],
-      isBasedOn: {
-        '@type': 'Dataset',
+      isBasedOn: buildSourceWork({
         name: title,
         citation,
-        publisher: { '@type': 'Organization', name: provider, url: sourceUrl },
+        publisher: { name: provider, url: sourceUrl },
         url: sourceUrl,
-      },
+      }),
     },
   });
 }

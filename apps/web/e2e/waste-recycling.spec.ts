@@ -54,6 +54,8 @@ test.describe('Waste & Recycling page', () => {
       expect(html).not.toContain('coming soon');
       expect(html).not.toContain('name="robots"');
       expect(html.match(/"@context":"https:\/\/schema.org","@type":"Dataset"/g)).toHaveLength(1);
+      // Sources are CreativeWork: a nested Dataset would be validated as a Dataset item of its own.
+      expect(html.match(/"@type":"Dataset"/g)).toHaveLength(1);
     });
 
     test.describe('without JavaScript', () => {

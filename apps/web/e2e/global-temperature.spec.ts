@@ -133,6 +133,11 @@ test.describe('Global Temperature page', () => {
       expect(dataset.isBasedOn[0].publisher.name).toBe('Our World in Data');
       expect(dataset.isBasedOn[1].publisher.name).toBe('Copernicus Climate Change Service (C3S)');
       expect(dataset.isBasedOn[2].publisher.name).toBe('Met Office Hadley Centre');
+      // Sources are CreativeWork: a nested Dataset would be validated as a Dataset item of its own.
+      expect(blocks[0][1].match(/"@type":"Dataset"/g)).toHaveLength(1);
+      for (const source of [dataset.isBasedOn].flat()) {
+        expect(source['@type']).toBe('CreativeWork');
+      }
     });
 
     test('should have the correct title, description and canonical URL', async ({ page }) => {

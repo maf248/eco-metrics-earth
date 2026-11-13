@@ -142,6 +142,11 @@ test.describe('CO2 Emissions page', () => {
       expect(dataset.temporalCoverage).toMatch(/^1950\/\d{4}$/);
       expect(dataset.license).toBe('https://creativecommons.org/licenses/by/4.0/');
       expect(dataset.variableMeasured).toHaveLength(2);
+      // Sources are CreativeWork: a nested Dataset would be validated as a Dataset item of its own.
+      expect(blocks[0][1].match(/"@type":"Dataset"/g)).toHaveLength(1);
+      for (const source of [dataset.isBasedOn].flat()) {
+        expect(source['@type']).toBe('CreativeWork');
+      }
     });
 
     test('should have the correct title, description and canonical URL', async ({ page }) => {

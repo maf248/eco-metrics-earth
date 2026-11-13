@@ -1,4 +1,4 @@
-import { buildDatasetJsonLd, licenseUrl } from '@/lib/datasetJsonLd';
+import { buildDatasetJsonLd, buildSourceWork, licenseUrl } from '@/lib/datasetJsonLd';
 
 import { CO2_META } from '../fixtures/co2Emissions';
 
@@ -8,7 +8,7 @@ const fields = {
   keywords: ['one', 'two'],
   temporalCoverage: '1950/2025',
   variableMeasured: [{ '@type': 'PropertyValue', name: 'Thing', unitText: 'u' }],
-  isBasedOn: [{ '@type': 'Dataset', name: 'Upstream A' }],
+  isBasedOn: [{ '@type': 'CreativeWork', name: 'Upstream A' }],
 };
 
 function build(meta = CO2_META) {
@@ -57,6 +57,42 @@ describe('buildDatasetJsonLd', () => {
 
   it('should not declare a distribution', () => {
     expect(build()).not.toHaveProperty('distribution');
+  });
+});
+
+describe('buildSourceWork', () => {
+  it('should build a CreativeWork with the name, publisher and URL', () => {
+    expect(
+      buildSourceWork({
+        name: 'Upstream A',
+        url: 'https://example.org/a/',
+        publisher: { name: 'Producer' },
+      }),
+    ).toEqual({
+      '@type': 'CreativeWork',
+      name: 'Upstream A',
+      publisher: { '@type': 'Organization', name: 'Producer' },
+      url: 'https://example.org/a/',
+    });
+  });
+
+  it('should add the version, citation and publisher URL only when given', () => {
+    expect(
+      buildSourceWork({
+        name: 'Upstream B',
+        url: 'https://example.org/b/',
+        publisher: { name: 'Publisher', url: 'https://example.org/' },
+        version: '2026-01-01',
+        citation: 'Someone (2026).',
+      }),
+    ).toEqual({
+      '@type': 'CreativeWork',
+      name: 'Upstream B',
+      version: '2026-01-01',
+      citation: 'Someone (2026).',
+      publisher: { '@type': 'Organization', name: 'Publisher', url: 'https://example.org/' },
+      url: 'https://example.org/b/',
+    });
   });
 });
 

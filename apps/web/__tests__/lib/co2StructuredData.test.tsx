@@ -72,10 +72,16 @@ describe('buildCo2DatasetJsonLd', () => {
       name: 'Our World in Data',
       url: 'https://ourworldindata.org',
     });
-    expect(jsonLd.isBasedOn).toMatchObject({
-      '@type': 'Dataset',
+    expect(jsonLd.isBasedOn).toEqual({
+      '@type': 'CreativeWork',
       name: 'Global Carbon Budget',
       version: '2025-11-13',
+      publisher: {
+        '@type': 'Organization',
+        name: 'Our World in Data',
+        url: 'https://ourworldindata.org',
+      },
+      url: 'https://ourworldindata.org',
     });
     expect(jsonLd.includedInDataCatalog).toEqual({
       '@type': 'DataCatalog',
