@@ -1,3 +1,9 @@
+## [2.18.2](https://github.com/maf248/eco-metrics-earth/compare/web-v2.18.1...web-v2.18.2) (2026-11-13)
+
+### Bug Fixes
+
+* **web:** keep chart tooltips below the fixed header and bottom nav ([e70cd77](https://github.com/maf248/eco-metrics-earth/commit/e70cd774fb5745be8bf38e377aa53eada6b60d22))
+
 ## [2.18.1](https://github.com/maf248/eco-metrics-earth/compare/web-v2.18.0...web-v2.18.1) (2026-11-13)
 
 ### Bug Fixes
