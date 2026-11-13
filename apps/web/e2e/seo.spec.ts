@@ -76,6 +76,7 @@ test.describe('Category page metadata', () => {
       'co2-emissions',
       'global-temperature',
       'energy-sources',
+      'waste-recycling',
     ] as const) {
       await page.goto(categoryPage(slug).url);
       const meta = page.locator('meta[name="description"]');
@@ -181,7 +182,7 @@ test.describe('Sitemap.xml', () => {
   test('should list the home, the live categories and data sources', async ({ request }) => {
     const response = await request.get('/sitemap.xml');
     const text = await response.text();
-    // Home page + 4 live category pages + data sources = 6 entries
+    // Home page + 5 live category pages + data sources = 7 entries
     const urlCount = (text.match(/<url>/g) || []).length;
     expect(urlCount).toBe(2 + LIVE_CATEGORY_SLUGS.length);
     // Placeholder categories are noindex, so only live ones are listed, with a trailing slash
@@ -265,6 +266,7 @@ test.describe('Complete HTML on direct visits', () => {
     { path: '/', heading: 'Environmental data, made readable', content: 'href="/data-sources/"' },
     { path: '/co2-emissions/', heading: 'CO2 Emissions', content: 'application/ld+json' },
     { path: '/energy-sources/', heading: 'Energy Sources', content: 'application/ld+json' },
+    { path: '/waste-recycling/', heading: 'Waste &amp; Recycling', content: 'application/ld+json' },
     { path: '/ocean-health/', heading: 'Ocean Health', content: 'coming soon' },
   ]) {
     test(`should deliver ${path} complete and visible without JavaScript`, async ({ request }) => {

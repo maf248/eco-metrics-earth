@@ -1,3 +1,4 @@
+import { WASTE_INTRO } from '@/lib/wasteCopy';
 import { ECO_CATEGORIES } from '@eco-metrics/shared';
 import type { EcoCategory } from '@eco-metrics/shared';
 
@@ -12,6 +13,7 @@ export type SkeletonBlock =
       hasMeasureToggle?: boolean;
       hasDonut?: boolean;
     }
+  | { kind: 'map'; title: string; hasMeasureToggle?: boolean }
   | { kind: 'productList'; status: string };
 
 /**
@@ -21,6 +23,18 @@ export type SkeletonBlock =
  * the client. A category absent here is a placeholder: it has no data region and no skeleton.
  */
 export const CATEGORY_SKELETONS: Partial<Record<EcoCategory, readonly SkeletonBlock[]>> = {
+  [ECO_CATEGORIES.WASTE_RECYCLING]: [
+    { kind: 'intro', text: WASTE_INTRO },
+    {
+      kind: 'keyFigures',
+      lead: 'In the latest year the world generated billions of tonnes of municipal waste, measured in kilograms per person per day.',
+      details: [
+        'By the middle of the century it is projected to grow by around a half.',
+        'Among the countries that report recycling, home to about half of the world’s population, a share of municipal waste is recycled.',
+      ],
+    },
+    { kind: 'map', title: 'Share of municipal waste recycled', hasMeasureToggle: true },
+  ],
   [ECO_CATEGORIES.WATER_FOOTPRINT]: [
     {
       kind: 'intro',

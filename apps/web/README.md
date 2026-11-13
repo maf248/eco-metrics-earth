@@ -30,7 +30,7 @@ src/app/
 └── sitemap.ts        # sitemap.xml — home + the categories with live data + data sources
 ```
 
-Category pages use `generateStaticParams` to pre-render every `ECO_CATEGORIES` slug at build time except the categories with live data (the registry in `lib/categoryPages.tsx`: `water-footprint`, `co2-emissions`, `global-temperature` and `energy-sources`), which are generated on demand on their first request and then cached, so the build never needs the BFF. That first request waits for the complete page (`ensureStatic = 'navigation'`): there is no `loading.tsx` or `<Suspense>` around the data, so crawlers always get the content in the visible document. Client navigations show the header and skeletons from `NavigationContent` meanwhile. A rewrite in `next.config.ts` gives unknown slugs a real 404 with the complete not-found page; percent-encoded unknown slugs and valid categories in another case skip it and get a real 404 drawn by JavaScript. If the API fetch fails twice (10 s per attempt), the page throws: during a revalidation the last good page keeps being served.
+Category pages use `generateStaticParams` to pre-render every `ECO_CATEGORIES` slug at build time except the categories with live data (the registry in `lib/categoryPages.tsx`: `water-footprint`, `co2-emissions`, `global-temperature`, `energy-sources` and `waste-recycling`), which are generated on demand on their first request and then cached, so the build never needs the BFF. That first request waits for the complete page (`ensureStatic = 'navigation'`): there is no `loading.tsx` or `<Suspense>` around the data, so crawlers always get the content in the visible document. Client navigations show the header and skeletons from `NavigationContent` meanwhile. A rewrite in `next.config.ts` gives unknown slugs a real 404 with the complete not-found page; percent-encoded unknown slugs and valid categories in another case skip it and get a real 404 drawn by JavaScript. If the API fetch fails twice (10 s per attempt), the page throws: during a revalidation the last good page keeps being served.
 
 ### Components
 
@@ -54,6 +54,7 @@ src/components/
 ├── OriginCredit.tsx       # Credit of an upstream origin (producer, linked title and license, notice, citation)
 ├── co2-emissions/         # CO2 page: key figures, explorer, data table, content
 ├── energy-sources/        # Energy sources page: key figures, explorer (stacked area + toggle, donut), year and latest-year tables, content
+├── waste-recycling/       # Waste & Recycling page: key figures, world map with measure selector and country table, treatment and composition bars, projection chart, content
 ├── global-temperature/    # Global temperature page: key figures, country explorer, long-run pre-industrial section, content
 ├── ThemeProvider.tsx      # React Context theme provider — light/dark + localStorage persistence
 ├── ThemeToggle.tsx        # Lamp-style theme toggle — zero-flash via blocking script in layout

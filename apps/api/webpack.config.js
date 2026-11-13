@@ -18,6 +18,7 @@ module.exports = {
       assets: [
         './src/assets',
         { input: './src/modules/water-footprint/data', output: 'data', glob: '**/*' },
+        { input: './src/modules/waste-recycling/data', output: 'data', glob: '**/*' },
       ],
       optimization: false,
       outputHashing: 'none',

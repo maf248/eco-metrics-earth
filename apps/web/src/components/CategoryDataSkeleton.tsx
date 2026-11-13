@@ -11,7 +11,7 @@ const PRODUCT_CHIPS = ['All', ...Object.values(waterFootprintCategorySlugMap)];
 const PRODUCT_ITEMS = ['first', 'second', 'third'];
 
 /** Text drawn as bars, so its lines break exactly where the real copy does. */
-function Bars({ children }: { children: ReactNode }) {
+function Bars({ children }: Readonly<{ children: ReactNode }>) {
   return (
     <span
       className={`select-none rounded-md box-decoration-clone text-transparent ${PULSE_CLASS_NAME}`}
@@ -21,7 +21,7 @@ function Bars({ children }: { children: ReactNode }) {
   );
 }
 
-function Intro({ text, note }: { text: string; note?: string }) {
+function Intro({ text, note }: Readonly<{ text: string; note?: string }>) {
   return (
     <>
       <p className={`text-center ${note ? 'mb-3' : 'mb-6'}`}>
@@ -36,7 +36,7 @@ function Intro({ text, note }: { text: string; note?: string }) {
   );
 }
 
-function KeyFigures({ lead, details }: { lead: string; details: readonly string[] }) {
+function KeyFigures({ lead, details }: Readonly<{ lead: string; details: readonly string[] }>) {
   return (
     <div className={KEY_FIGURES_CLASS_NAME}>
       <p className="text-xl leading-relaxed sm:text-2xl">
@@ -51,7 +51,11 @@ function KeyFigures({ lead, details }: { lead: string; details: readonly string[
   );
 }
 
-function Control({ label, className, box }: { label: string; className: string; box: string }) {
+function Control({
+  label,
+  className,
+  box,
+}: Readonly<{ label: string; className: string; box: string }>) {
   return (
     <div className={className}>
       <p className="mb-1 text-sm">
@@ -67,7 +71,7 @@ function Explorer({
   chartTitle,
   hasMeasureToggle,
   hasDonut,
-}: Extract<SkeletonBlock, { kind: 'explorer' }>) {
+}: Readonly<Extract<SkeletonBlock, { kind: 'explorer' }>>) {
   return (
     <div className={CARD_CLASS_NAME}>
       <p className="mb-4 text-xl font-semibold">
@@ -90,7 +94,25 @@ function Explorer({
   );
 }
 
-function ProductList({ status }: { status: string }) {
+function MapCard({ title, hasMeasureToggle }: Readonly<Extract<SkeletonBlock, { kind: 'map' }>>) {
+  return (
+    <div className={`mt-8 ${CARD_CLASS_NAME}`}>
+      <p className="text-base font-semibold leading-snug sm:text-lg">
+        <Bars>{title}</Bars>
+      </p>
+      {hasMeasureToggle && (
+        <div className="mt-3">
+          <Control label="Measure" className="w-full sm:w-lg" box="h-25.5 sm:h-13.5" />
+        </div>
+      )}
+      <div className="mt-3">
+        <ChartSkeleton variant="map" />
+      </div>
+    </div>
+  );
+}
+
+function ProductList({ status }: Readonly<{ status: string }>) {
   return (
     <>
       <div className="mb-6 flex flex-wrap gap-2">
@@ -116,7 +138,7 @@ function ProductList({ status }: { status: string }) {
   );
 }
 
-function Block({ block }: { block: SkeletonBlock }) {
+function Block({ block }: Readonly<{ block: SkeletonBlock }>) {
   switch (block.kind) {
     case 'intro':
       return <Intro {...block} />;
@@ -124,13 +146,15 @@ function Block({ block }: { block: SkeletonBlock }) {
       return <KeyFigures {...block} />;
     case 'explorer':
       return <Explorer {...block} />;
+    case 'map':
+      return <MapCard {...block} />;
     case 'productList':
       return <ProductList {...block} />;
   }
 }
 
 /** The data region of a category while it loads: its declared blocks, or nothing. */
-export function CategoryDataSkeleton({ category }: { category: EcoCategory }) {
+export function CategoryDataSkeleton({ category }: Readonly<{ category: EcoCategory }>) {
   const blocks = CATEGORY_SKELETONS[category];
   if (!blocks) {
     return null;

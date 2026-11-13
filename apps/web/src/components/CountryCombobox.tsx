@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useId, useMemo, useRef, useState } from 'react';
-import type { KeyboardEvent } from 'react';
+import type { KeyboardEvent, RefObject } from 'react';
 
 import { CountryFlag } from '@/components/CountryFlag';
 
@@ -19,6 +19,17 @@ interface CountryComboboxProps {
   value: string;
   onChange: (code: string) => void;
   label: string;
+  /** Placeholder of the input. */
+  placeholder?: string;
+  /**
+   * Makes the search unavailable: the input stays focusable but read-only (`aria-disabled`), the
+   * list never opens and the clear button is hidden.
+   */
+  disabled?: boolean;
+  /** `id` of the element that describes the input, set as `aria-describedby`. */
+  describedBy?: string;
+  /** Lets the parent move focus to the input. */
+  inputRef?: RefObject<HTMLInputElement | null>;
 }
 
 const FOCUS_RING =
@@ -65,13 +76,23 @@ function describeMatches(count: number): string {
  * Searchable country selector following the WAI-ARIA 1.2 editable combobox
  * pattern with list autocomplete. Hand-built: no UI library.
  */
-export function CountryCombobox({ options, value, onChange, label }: CountryComboboxProps) {
+export function CountryCombobox({
+  options,
+  value,
+  onChange,
+  label,
+  placeholder = 'Search countries',
+  disabled = false,
+  describedBy,
+  inputRef: externalInputRef,
+}: Readonly<CountryComboboxProps>) {
   const id = useId();
   const inputId = `${id}-input`;
   const listboxId = `${id}-listbox`;
   const optionId = (index: number): string => `${id}-option-${index}`;
 
-  const inputRef = useRef<HTMLInputElement>(null);
+  const ownInputRef = useRef<HTMLInputElement>(null);
+  const inputRef = externalInputRef ?? ownInputRef;
   const listboxRef = useRef<HTMLUListElement>(null);
   // `null` means "not editing": the input shows the selected name and the list is unfiltered.
   const [query, setQuery] = useState<string | null>(null);
@@ -84,6 +105,8 @@ export function CountryCombobox({ options, value, onChange, label }: CountryComb
   const results = useMemo(() => filterCountryOptions(options, query ?? ''), [options, query]);
   const hasResults = results.length > 0;
   const activeOption = activeIndex >= 0 ? results[activeIndex] : undefined;
+  // A disabled combobox never shows its list, whatever the state says.
+  const listOpen = open && !disabled;
 
   useEffect(() => {
     if (!open || activeIndex < 0) {
@@ -109,60 +132,81 @@ export function CountryCombobox({ options, value, onChange, label }: CountryComb
   };
 
   const openAt = (index: number): void => {
+    if (disabled) {
+      return;
+    }
     setOpen(true);
     setActiveIndex(hasResults ? index : -1);
   };
 
-  const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>): void => {
-    const last = results.length - 1;
+  const moveActive = (index: number): void => {
+    if (hasResults) {
+      setActiveIndex(index);
+    }
+  };
 
-    switch (event.key) {
-      case 'ArrowDown':
-        event.preventDefault();
-        if (!open) {
-          openAt(0);
-        } else if (hasResults) {
-          setActiveIndex(activeIndex >= last ? 0 : activeIndex + 1);
-        }
-        break;
-      case 'ArrowUp':
-        event.preventDefault();
-        if (!open) {
-          openAt(last);
-        } else if (hasResults) {
-          setActiveIndex(activeIndex <= 0 ? last : activeIndex - 1);
-        }
-        break;
-      case 'Home':
-        if (open && hasResults) {
-          event.preventDefault();
-          setActiveIndex(0);
-        }
-        break;
-      case 'End':
-        if (open && hasResults) {
-          event.preventDefault();
-          setActiveIndex(last);
-        }
-        break;
-      case 'Enter':
-        if (open && activeOption) {
-          event.preventDefault();
-          select(activeOption);
-        }
-        break;
-      case 'Escape':
-        if (open) {
-          event.preventDefault();
-          close();
-        } else {
-          setQuery(null);
-        }
-        break;
-      case 'Tab':
-        restore();
-        break;
-      default:
+  const arrow = (direction: 1 | -1): void => {
+    const last = results.length - 1;
+    if (!listOpen) {
+      openAt(direction === 1 ? 0 : last);
+    } else if (direction === 1) {
+      moveActive(activeIndex >= last ? 0 : activeIndex + 1);
+    } else {
+      moveActive(activeIndex <= 0 ? last : activeIndex - 1);
+    }
+  };
+
+  // Each key maps to a handler that returns whether it consumed the event.
+  const keyActions: Record<string, () => boolean> = {
+    ArrowDown: () => {
+      arrow(1);
+      return true;
+    },
+    ArrowUp: () => {
+      arrow(-1);
+      return true;
+    },
+    Home: () => {
+      const handled = listOpen && hasResults;
+      if (handled) {
+        setActiveIndex(0);
+      }
+      return handled;
+    },
+    End: () => {
+      const handled = listOpen && hasResults;
+      if (handled) {
+        setActiveIndex(results.length - 1);
+      }
+      return handled;
+    },
+    Enter: () => {
+      if (!listOpen || !activeOption) {
+        return false;
+      }
+      select(activeOption);
+      return true;
+    },
+    Escape: () => {
+      if (listOpen) {
+        close();
+        return true;
+      }
+      setQuery(null);
+      return false;
+    },
+    Tab: () => {
+      restore();
+      return false;
+    },
+  };
+
+  const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>): void => {
+    if (disabled && event.key !== 'Tab') {
+      return;
+    }
+    if (keyActions[event.key]?.()) {
+      event.preventDefault();
     }
   };
 
@@ -181,13 +225,16 @@ export function CountryCombobox({ options, value, onChange, label }: CountryComb
           id={inputId}
           type="text"
           role="combobox"
-          aria-expanded={open}
-          aria-controls={open && !hasResults ? undefined : listboxId}
+          aria-expanded={listOpen}
+          aria-describedby={describedBy}
+          aria-disabled={disabled ? true : undefined}
+          readOnly={disabled}
+          aria-controls={listOpen && !hasResults ? undefined : listboxId}
           aria-autocomplete="list"
-          aria-activedescendant={open && activeOption ? optionId(activeIndex) : undefined}
+          aria-activedescendant={listOpen && activeOption ? optionId(activeIndex) : undefined}
           autoComplete="off"
           spellCheck={false}
-          placeholder="Search countries"
+          placeholder={placeholder}
           value={inputValue}
           onChange={(event) => {
             setQuery(event.target.value);
@@ -201,9 +248,13 @@ export function CountryCombobox({ options, value, onChange, label }: CountryComb
               openAt(-1);
             }
           }}
-          className={`min-h-11 w-full rounded-lg border border-line-strong bg-surface-raised pl-11 pr-11 text-base text-fg placeholder:text-fg-muted ${FOCUS_RING}`}
+          className={`min-h-11 w-full rounded-lg border pl-11 text-base ${
+            disabled
+              ? 'cursor-not-allowed pr-3 border-line bg-surface-raised text-fg-muted placeholder:text-fg-secondary'
+              : 'pr-11 border-line-strong bg-surface-raised text-fg placeholder:text-fg-muted'
+          } ${FOCUS_RING}`}
         />
-        {inputValue !== '' && (
+        {inputValue !== '' && !disabled && (
           <button
             type="button"
             aria-label="Clear search"
@@ -232,7 +283,7 @@ export function CountryCombobox({ options, value, onChange, label }: CountryComb
         )}
       </div>
 
-      {open && !hasResults && (
+      {listOpen && !hasResults && (
         <div className="absolute z-20 mt-1 w-full rounded-lg border border-line-strong bg-surface-raised px-3 py-3 text-base text-fg-secondary shadow-lg">
           No countries found
         </div>
@@ -242,12 +293,12 @@ export function CountryCombobox({ options, value, onChange, label }: CountryComb
         id={listboxId}
         role="listbox"
         aria-label={label}
-        hidden={!open || !hasResults}
+        hidden={!listOpen || !hasResults}
         // Keep focus in the input while an option is pressed.
         onMouseDown={(event) => event.preventDefault()}
         className="absolute z-20 mt-1 max-h-60 w-full overflow-y-auto rounded-lg border border-line-strong bg-surface-raised py-1 shadow-lg"
       >
-        {open &&
+        {listOpen &&
           results.map((option, index) => {
             const active = index === activeIndex;
             return (
@@ -288,7 +339,7 @@ export function CountryCombobox({ options, value, onChange, label }: CountryComb
       </ul>
 
       <div role="status" aria-live="polite" className="sr-only">
-        {open ? describeMatches(results.length) : ''}
+        {listOpen ? describeMatches(results.length) : ''}
       </div>
     </div>
   );

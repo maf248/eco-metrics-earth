@@ -166,6 +166,51 @@ describe('DataSourcesService', () => {
     await expect(service.getCatalog()).rejects.toThrow('Duplicate data source id "x"');
   });
 
+  it('should reject a publication that has both a publisher and a license, naming it', async () => {
+    const both: StaticDataSource = {
+      ...dataset('both'),
+      publications: [
+        {
+          citation: 'Author (2020), Dataset',
+          url: 'https://example.org/dataset',
+          publishedYear: 2020,
+          entryCount: 1,
+          publisher: {
+            provider: 'Publisher',
+            license: 'CC BY 4.0',
+            sourceUrl: 'https://publisher.example',
+          },
+          license: { name: 'CC BY 4.0', url: 'https://creativecommons.org/licenses/by/4.0/' },
+        },
+      ],
+    };
+    const { service } = await createService(contributorModule({ kind: 'dataset', source: both }));
+
+    await expect(service.getCatalog()).rejects.toThrow(
+      'Data source "both": publication "Author (2020), Dataset" has both a publisher and a license',
+    );
+  });
+
+  it('should accept a publication with only a license', async () => {
+    const licensed: StaticDataSource = {
+      ...dataset('licensed'),
+      publications: [
+        {
+          citation: 'Author (2020), Dataset',
+          url: 'https://example.org/dataset',
+          publishedYear: 2020,
+          entryCount: 1,
+          license: { name: 'CC BY 4.0', url: 'https://creativecommons.org/licenses/by/4.0/' },
+        },
+      ],
+    };
+    const { service } = await createService(
+      contributorModule({ kind: 'dataset', source: licensed }),
+    );
+
+    expect((await service.getCatalog()).datasets).toEqual([licensed]);
+  });
+
   it('should fail application bootstrap on a duplicate id', async () => {
     const module = await Test.createTestingModule({
       imports: [

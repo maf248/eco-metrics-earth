@@ -48,4 +48,38 @@ describe('MeasureToggle', () => {
     expect(new Set(names).size).toBe(1);
     expect(screen.getByText('First')).toHaveClass('min-h-11', 'text-base');
   });
+
+  it('should lay the options out as a two-column grid below sm only when asked to', () => {
+    const { rerender } = render(
+      <MeasureToggle legend="Measure" options={OPTIONS} value="first" onChange={jest.fn()} />,
+    );
+    const track = (): Element | null => screen.getByRole('group').lastElementChild;
+    expect(track()).toHaveClass('inline-flex');
+    expect(track()).not.toHaveClass('grid-cols-2');
+
+    rerender(
+      <MeasureToggle legend="Measure" options={OPTIONS} value="first" onChange={jest.fn()} grid />,
+    );
+    expect(track()).toHaveClass('grid', 'grid-cols-2', 'sm:inline-flex');
+  });
+
+  it('should show a short label below sm while the radio keeps the full accessible name', () => {
+    render(
+      <MeasureToggle
+        legend="Measure"
+        options={[
+          { value: 'first', label: 'First measure', shortLabel: 'First' },
+          { value: 'second', label: 'Second' },
+        ]}
+        value="first"
+        onChange={jest.fn()}
+        grid
+      />,
+    );
+
+    expect(screen.getByRole('radio', { name: 'First measure' })).toBeChecked();
+    expect(screen.getByText('First')).toHaveAttribute('aria-hidden', 'true');
+    expect(screen.getByText('First measure')).toHaveClass('sr-only', 'sm:not-sr-only');
+    expect(screen.getByText('Second').closest('label')).toHaveClass('max-sm:text-sm');
+  });
 });

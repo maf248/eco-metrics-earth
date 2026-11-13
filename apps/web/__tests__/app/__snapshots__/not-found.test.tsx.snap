@@ -46,7 +46,7 @@ exports[`NotFound page should match snapshot 1`] = `
         class="text-center"
       >
         <h1
-          class="text-4xl font-bold text-fg"
+          class="font-mono text-4xl font-bold tracking-tight text-balance text-accent"
         >
           Oops! We couldn't find that...
         </h1>

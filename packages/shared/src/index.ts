@@ -3,6 +3,7 @@ export { ECO_CATEGORIES } from './lib/eco-category';
 export type { EcoCategory } from './lib/eco-category';
 export type { DataSourceAttribution } from './lib/data-source-attribution';
 export type {
+  DataSourceLicense,
   DataSourceOrigin,
   DataSourcePublication,
   DataSourcePublisher,
@@ -38,3 +39,15 @@ export type {
 } from './lib/global-temperature';
 export { ENERGY_SOURCE_IDS, RENEWABLE_SOURCE_IDS } from './lib/energy-sources';
 export type { EnergySourceId, EnergySourcesData, EnergySourcesEntity } from './lib/energy-sources';
+export type {
+  WasteComposition,
+  WasteCompositionGroup,
+  WasteCountry,
+  WasteDatasetInfo,
+  WasteGeneration,
+  WasteRecyclingData,
+  WasteRecyclingSummary,
+  WasteTreatment,
+  WasteTreatmentGroup,
+  WasteWorldGeneration,
+} from './lib/waste-recycling';

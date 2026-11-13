@@ -1,59 +1,53 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useSyncExternalStore } from 'react';
 
 const BRAND_TEXT = '~ eco-metrics.earth';
 const TYPING_INTERVAL_MS = 60;
+const REDUCED_MOTION_QUERY = '(prefers-reduced-motion: reduce)';
 
-/**
- * Returns true if the user prefers reduced motion.
- * Safe to call on client only — returns false on SSR.
- */
-function prefersReducedMotion(): boolean {
-  if (typeof window === 'undefined') return false;
-  return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+function subscribeToReducedMotion(onChange: () => void): () => void {
+  const query = window.matchMedia(REDUCED_MOTION_QUERY);
+  query.addEventListener('change', onChange);
+  return () => query.removeEventListener('change', onChange);
 }
 
+const prefersReducedMotion = (): boolean => window.matchMedia(REDUCED_MOTION_QUERY).matches;
+/** The server cannot know the preference: it renders the animated start, like the first paint. */
+const prefersReducedMotionOnServer = (): boolean => false;
+
 /**
- * Terminal-style animated brand text used in both MobileHeader and the
- * desktop Navbar sidebar brand.
+ * Terminal-style brand text of the mobile header and the desktop sidebar: '~ eco-metrics.earth'
+ * types itself in, then a blinking cursor and a [↵] affordance (it fades in once typing ends)
+ * signal that the parent link is interactive. With reduced motion the full text shows at once.
  *
- * Renders '~ eco-metrics.earth' with a typewriter reveal on mount,
- * followed by a blinking cursor (▋) and a [↵] affordance that fades in
- * after typing completes to signal that the parent link is interactive.
- *
- * Accessibility: all spans are aria-hidden — the parent link provides
- * the accessible name via aria-label.
- *
- * Animation:
- *  - Characters revealed at 60ms intervals via setInterval
- *  - Cursor blinks via CSS class (animate-cursor-blink in globals.css)
- *  - [↵] fades in with transition-opacity duration-500
- *  - prefers-reduced-motion: full text shown immediately, no animation
+ * Every span is aria-hidden: the parent link names itself with aria-label.
  */
 export default function BrandText() {
-  const [displayedText, setDisplayedText] = useState<string>(() =>
-    prefersReducedMotion() ? BRAND_TEXT : '',
+  const reducedMotion = useSyncExternalStore(
+    subscribeToReducedMotion,
+    prefersReducedMotion,
+    prefersReducedMotionOnServer,
   );
-  const [isTypingDone, setIsTypingDone] = useState<boolean>(() => prefersReducedMotion());
+  const [typedText, setTypedText] = useState('');
 
   useEffect(() => {
-    if (isTypingDone) return;
-
+    if (reducedMotion) {
+      return;
+    }
     let charIndex = 0;
     const interval = setInterval(() => {
       charIndex += 1;
-      setDisplayedText(BRAND_TEXT.slice(0, charIndex));
+      setTypedText(BRAND_TEXT.slice(0, charIndex));
       if (charIndex >= BRAND_TEXT.length) {
         clearInterval(interval);
-        setIsTypingDone(true);
       }
     }, TYPING_INTERVAL_MS);
-
     return () => clearInterval(interval);
-    // isTypingDone intentionally omitted: used only as a one-time gate on mount.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [reducedMotion]);
+
+  const displayedText = reducedMotion ? BRAND_TEXT : typedText;
+  const isTypingDone = displayedText === BRAND_TEXT;
 
   return (
     <>
@@ -78,7 +72,7 @@ export default function BrandText() {
         aria-hidden="true"
         className={[
           'font-mono text-sm font-medium text-accent select-none',
-          'transition-opacity duration-500',
+          'transition-opacity duration-500 motion-reduce:transition-none',
           isTypingDone ? 'opacity-100' : 'opacity-0',
         ].join(' ')}
       >

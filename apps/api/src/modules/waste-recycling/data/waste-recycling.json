@@ -1,0 +1,7376 @@
+{
+  "lastUpdated": "2026-03-11",
+  "retrieved": "2026-11-11",
+  "world": {
+    "generation": {
+      "kgPerPersonPerDay2022": 0.8,
+      "tonnes2022": 2334815694,
+      "tonnes2030": 2653945099,
+      "tonnes2040": 3077089434,
+      "tonnes2050": 3490500999
+    },
+    "recycling": { "sharePercent": 17.63, "countries": 130, "populationSharePercent": 46.47 }
+  },
+  "countries": [
+    {
+      "code": "AFG",
+      "iso2": "AF",
+      "name": "Afghanistan",
+      "population": 40292816,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.22,
+        "tonnes2022": 3268836,
+        "tonnes2030": 4125553,
+        "tonnes2040": 5922888,
+        "tonnes2050": 8015088,
+        "reportedYear": 2017
+      },
+      "treatment": {
+        "year": 2017,
+        "shares": {
+          "recycling": 18.9,
+          "composting": 6.5,
+          "incineration": 7.7,
+          "sanitaryLandfill": null,
+          "otherLandfill": 23.1,
+          "openDump": null,
+          "uncollected": 40.7,
+          "other": 3.1
+        }
+      },
+      "composition": {
+        "year": 2021,
+        "shares": {
+          "foodOrganic": 54.3,
+          "paperCardboard": 4.6,
+          "plastic": 11.7,
+          "glass": 1.3,
+          "metal": 0.4,
+          "other": 27.7
+        }
+      }
+    },
+    {
+      "code": "ALB",
+      "iso2": "AL",
+      "name": "Albania",
+      "population": 2833567,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.74,
+        "tonnes2022": 768006,
+        "tonnes2030": 870315,
+        "tonnes2040": 929617,
+        "tonnes2050": 931066,
+        "reportedYear": 2021
+      },
+      "treatment": {
+        "year": 2022,
+        "shares": {
+          "recycling": 17.3,
+          "composting": null,
+          "incineration": 4.1,
+          "sanitaryLandfill": null,
+          "otherLandfill": 70.3,
+          "openDump": 0.1,
+          "uncollected": 8.2,
+          "other": null
+        }
+      },
+      "composition": {
+        "year": 2022,
+        "shares": {
+          "foodOrganic": 58.1,
+          "paperCardboard": 8.9,
+          "plastic": 9.2,
+          "glass": 4.9,
+          "metal": 2.2,
+          "other": 16.7
+        }
+      }
+    },
+    {
+      "code": "DZA",
+      "iso2": "DZ",
+      "name": "Algeria",
+      "population": 45123436,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.87,
+        "tonnes2022": 14286747,
+        "tonnes2030": 16600806,
+        "tonnes2040": 19433867,
+        "tonnes2050": 23020603,
+        "reportedYear": 2020
+      },
+      "treatment": {
+        "year": 2012,
+        "shares": {
+          "recycling": 7,
+          "composting": 1,
+          "incineration": null,
+          "sanitaryLandfill": null,
+          "otherLandfill": 32,
+          "openDump": 60,
+          "uncollected": null,
+          "other": null
+        }
+      },
+      "composition": {
+        "year": 2018,
+        "shares": {
+          "foodOrganic": 53.6,
+          "paperCardboard": 6.8,
+          "plastic": 15.3,
+          "glass": 1,
+          "metal": 1.7,
+          "other": 21.6
+        }
+      }
+    },
+    {
+      "code": "ASM",
+      "iso2": "AS",
+      "name": "American Samoa",
+      "population": 48782,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.95,
+        "tonnes2022": 16894,
+        "tonnes2030": 15427,
+        "tonnes2040": 14414,
+        "tonnes2050": 13950,
+        "reportedYear": 2019
+      },
+      "composition": {
+        "year": 2011,
+        "shares": {
+          "foodOrganic": 19.7,
+          "paperCardboard": 26.4,
+          "plastic": 12.8,
+          "glass": 3.4,
+          "metal": 7.9,
+          "other": 29.8
+        }
+      }
+    },
+    {
+      "code": "AND",
+      "iso2": "AD",
+      "name": "Andorra",
+      "population": 79116,
+      "generation": {
+        "kgPerPersonPerDay2022": 1.37,
+        "tonnes2022": 39552,
+        "tonnes2030": 44067,
+        "tonnes2040": 45007,
+        "tonnes2050": 43923,
+        "reportedYear": 2021
+      },
+      "treatment": {
+        "year": 2014,
+        "shares": {
+          "recycling": 39.9,
+          "composting": null,
+          "incineration": 57.6,
+          "sanitaryLandfill": null,
+          "otherLandfill": 2.5,
+          "openDump": null,
+          "uncollected": null,
+          "other": null
+        }
+      },
+      "composition": {
+        "year": 2016,
+        "shares": {
+          "foodOrganic": 20.8,
+          "paperCardboard": 24.7,
+          "plastic": null,
+          "glass": 8,
+          "metal": null,
+          "other": 46.5
+        }
+      }
+    },
+    {
+      "code": "AGO",
+      "iso2": "AO",
+      "name": "Angola",
+      "population": 35083102,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.63,
+        "tonnes2022": 8090355,
+        "tonnes2030": 10328835,
+        "tonnes2040": 15201525,
+        "tonnes2050": 22788288,
+        "reportedYear": 2014
+      },
+      "composition": {
+        "year": 2008,
+        "shares": {
+          "foodOrganic": 51.9,
+          "paperCardboard": 11.9,
+          "plastic": 13.5,
+          "glass": 6.7,
+          "metal": 4.5,
+          "other": 11.5
+        }
+      }
+    },
+    {
+      "code": "ATG",
+      "iso2": "AG",
+      "name": "Antigua and Barbuda",
+      "population": 92598,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.99,
+        "tonnes2022": 33623,
+        "tonnes2030": 38575,
+        "tonnes2040": 42536,
+        "tonnes2050": 44782,
+        "reportedYear": 2012
+      },
+      "treatment": {
+        "year": 2012,
+        "shares": {
+          "recycling": null,
+          "composting": null,
+          "incineration": null,
+          "sanitaryLandfill": null,
+          "otherLandfill": 49.5,
+          "openDump": 49.5,
+          "uncollected": 1,
+          "other": null
+        }
+      },
+      "composition": {
+        "year": 2006,
+        "shares": {
+          "foodOrganic": 25.3,
+          "paperCardboard": 18.8,
+          "plastic": 19.5,
+          "glass": 13.7,
+          "metal": 7.9,
+          "other": 14.8
+        }
+      }
+    },
+    {
+      "code": "ARG",
+      "iso2": "AR",
+      "name": "Argentina",
+      "population": 45356784,
+      "generation": {
+        "kgPerPersonPerDay2022": 1.17,
+        "tonnes2022": 19345000,
+        "tonnes2030": 20900587,
+        "tonnes2040": 23028380,
+        "tonnes2050": 25033508,
+        "reportedYear": 2022
+      },
+      "treatment": {
+        "year": 2020,
+        "shares": {
+          "recycling": null,
+          "composting": null,
+          "incineration": null,
+          "sanitaryLandfill": 64.7,
+          "otherLandfill": 24.6,
+          "openDump": 9.9,
+          "uncollected": null,
+          "other": 0.8
+        }
+      },
+      "composition": {
+        "year": 2023,
+        "shares": {
+          "foodOrganic": 39,
+          "paperCardboard": 13.7,
+          "plastic": 18.6,
+          "glass": 4.4,
+          "metal": 2,
+          "other": 22.3
+        }
+      }
+    },
+    {
+      "code": "ARM",
+      "iso2": "AM",
+      "name": "Armenia",
+      "population": 2859401,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.51,
+        "tonnes2022": 532699,
+        "tonnes2030": 548994,
+        "tonnes2040": 591665,
+        "tonnes2050": 595568,
+        "reportedYear": 2022
+      },
+      "treatment": {
+        "year": 2019,
+        "shares": {
+          "recycling": 0.2,
+          "composting": null,
+          "incineration": null,
+          "sanitaryLandfill": null,
+          "otherLandfill": null,
+          "openDump": 68.5,
+          "uncollected": null,
+          "other": 31.3
+        }
+      },
+      "composition": {
+        "year": 2019,
+        "shares": {
+          "foodOrganic": 56,
+          "paperCardboard": 6,
+          "plastic": 13,
+          "glass": 4,
+          "metal": 2,
+          "other": 19
+        }
+      }
+    },
+    {
+      "code": "ABW",
+      "iso2": "AW",
+      "name": "Aruba",
+      "population": 107696,
+      "generation": {
+        "kgPerPersonPerDay2022": 1.78,
+        "tonnes2022": 70122,
+        "tonnes2030": 76080,
+        "tonnes2040": 76452,
+        "tonnes2050": 75321,
+        "reportedYear": 2019
+      },
+      "treatment": {
+        "year": 2019,
+        "shares": {
+          "recycling": 13,
+          "composting": null,
+          "incineration": null,
+          "sanitaryLandfill": null,
+          "otherLandfill": 84.9,
+          "openDump": null,
+          "uncollected": null,
+          "other": 2.1
+        }
+      }
+    },
+    {
+      "code": "AUS",
+      "iso2": "AU",
+      "name": "Australia",
+      "population": 26081167,
+      "generation": {
+        "kgPerPersonPerDay2022": 1.49,
+        "tonnes2022": 14201100,
+        "tonnes2030": 15860054,
+        "tonnes2040": 17827020,
+        "tonnes2050": 19743820,
+        "reportedYear": 2021
+      },
+      "treatment": {
+        "year": 2020,
+        "shares": {
+          "recycling": 36.2,
+          "composting": 5.7,
+          "incineration": 0,
+          "sanitaryLandfill": 57.9,
+          "otherLandfill": null,
+          "openDump": null,
+          "uncollected": null,
+          "other": 0.2
+        }
+      },
+      "composition": {
+        "year": 2020,
+        "shares": {
+          "foodOrganic": 73.4,
+          "paperCardboard": 4.2,
+          "plastic": 1.8,
+          "glass": 7.7,
+          "metal": 9.8,
+          "other": 3.1
+        }
+      }
+    },
+    {
+      "code": "AUT",
+      "iso2": "AT",
+      "name": "Austria",
+      "population": 8993251,
+      "generation": {
+        "kgPerPersonPerDay2022": 2.21,
+        "tonnes2022": 7261357,
+        "tonnes2030": 7531005,
+        "tonnes2040": 7615285,
+        "tonnes2050": 7603304,
+        "reportedYear": 2022
+      },
+      "treatment": {
+        "year": 2021,
+        "shares": {
+          "recycling": 51.5,
+          "composting": 17.1,
+          "incineration": 29.2,
+          "sanitaryLandfill": 1.7,
+          "otherLandfill": null,
+          "openDump": null,
+          "uncollected": null,
+          "other": 0.5
+        }
+      }
+    },
+    {
+      "code": "AZE",
+      "iso2": "AZ",
+      "name": "Azerbaijan",
+      "population": 10258983,
+      "generation": {
+        "kgPerPersonPerDay2022": 1.1,
+        "tonnes2022": 4136467,
+        "tonnes2030": 4676030,
+        "tonnes2040": 5234402,
+        "tonnes2050": 5750108,
+        "reportedYear": 2020
+      },
+      "treatment": {
+        "year": 2022,
+        "shares": {
+          "recycling": null,
+          "composting": null,
+          "incineration": 14.4,
+          "sanitaryLandfill": null,
+          "otherLandfill": 53.3,
+          "openDump": null,
+          "uncollected": 32,
+          "other": 0.3
+        }
+      },
+      "composition": {
+        "year": 2020,
+        "shares": {
+          "foodOrganic": 43.4,
+          "paperCardboard": 14.5,
+          "plastic": 9.1,
+          "glass": 5.9,
+          "metal": 2.5,
+          "other": 24.6
+        }
+      }
+    },
+    {
+      "code": "BHS",
+      "iso2": "BS",
+      "name": "Bahamas, The",
+      "population": 396562,
+      "generation": {
+        "kgPerPersonPerDay2022": 3.59,
+        "tonnes2022": 519298,
+        "tonnes2030": 580631,
+        "tonnes2040": 620734,
+        "tonnes2050": 653623,
+        "reportedYear": 2021
+      },
+      "treatment": {
+        "year": 2021,
+        "shares": {
+          "recycling": null,
+          "composting": null,
+          "incineration": null,
+          "sanitaryLandfill": null,
+          "otherLandfill": null,
+          "openDump": 79,
+          "uncollected": 21,
+          "other": null
+        }
+      }
+    },
+    {
+      "code": "BHR",
+      "iso2": "BH",
+      "name": "Bahrain",
+      "population": 1515391,
+      "generation": {
+        "kgPerPersonPerDay2022": 2.83,
+        "tonnes2022": 1563487,
+        "tonnes2030": 1870901,
+        "tonnes2040": 2135192,
+        "tonnes2050": 2387032,
+        "reportedYear": 2022
+      },
+      "treatment": {
+        "year": 2022,
+        "shares": {
+          "recycling": 27.8,
+          "composting": 0,
+          "incineration": null,
+          "sanitaryLandfill": null,
+          "otherLandfill": 70.7,
+          "openDump": null,
+          "uncollected": null,
+          "other": 1.5
+        }
+      },
+      "composition": {
+        "year": 2022,
+        "shares": {
+          "foodOrganic": 41.3,
+          "paperCardboard": 6.9,
+          "plastic": 30,
+          "glass": 3.5,
+          "metal": 2.2,
+          "other": 16.1
+        }
+      }
+    },
+    {
+      "code": "BGD",
+      "iso2": "BD",
+      "name": "Bangladesh",
+      "population": 168343283,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.52,
+        "tonnes2022": 31644329,
+        "tonnes2030": 35834221,
+        "tonnes2040": 40265156,
+        "tonnes2050": 50663364,
+        "reportedYear": 2021
+      },
+      "treatment": {
+        "year": 2021,
+        "shares": {
+          "recycling": 3.2,
+          "composting": null,
+          "incineration": 0.3,
+          "sanitaryLandfill": null,
+          "otherLandfill": 55.2,
+          "openDump": 1,
+          "uncollected": 19.4,
+          "other": 20.9
+        }
+      },
+      "composition": {
+        "year": 2020,
+        "shares": {
+          "foodOrganic": 23.5,
+          "paperCardboard": 18.4,
+          "plastic": 17.6,
+          "glass": 5.6,
+          "metal": 9.5,
+          "other": 25.4
+        }
+      }
+    },
+    {
+      "code": "BRB",
+      "iso2": "BB",
+      "name": "Barbados",
+      "population": 282340,
+      "generation": {
+        "kgPerPersonPerDay2022": 3.95,
+        "tonnes2022": 407564,
+        "tonnes2030": 458588,
+        "tonnes2040": 500360,
+        "tonnes2050": 532955,
+        "reportedYear": 2021
+      },
+      "treatment": {
+        "year": 2021,
+        "shares": {
+          "recycling": 4.3,
+          "composting": null,
+          "incineration": null,
+          "sanitaryLandfill": null,
+          "otherLandfill": 80.2,
+          "openDump": null,
+          "uncollected": 10,
+          "other": 5.5
+        }
+      },
+      "composition": {
+        "year": 2015,
+        "shares": {
+          "foodOrganic": 32.3,
+          "paperCardboard": 19,
+          "plastic": 13,
+          "glass": 5,
+          "metal": 4.7,
+          "other": 26
+        }
+      }
+    },
+    {
+      "code": "BLR",
+      "iso2": "BY",
+      "name": "Belarus",
+      "population": 9201012,
+      "generation": {
+        "kgPerPersonPerDay2022": 1.19,
+        "tonnes2022": 3994300,
+        "tonnes2030": 3995934,
+        "tonnes2040": 3934084,
+        "tonnes2050": 3843350,
+        "reportedYear": 2022
+      },
+      "treatment": {
+        "year": 2022,
+        "shares": {
+          "recycling": 33.9,
+          "composting": null,
+          "incineration": null,
+          "sanitaryLandfill": null,
+          "otherLandfill": 66.1,
+          "openDump": null,
+          "uncollected": null,
+          "other": null
+        }
+      }
+    },
+    {
+      "code": "BEL",
+      "iso2": "BE",
+      "name": "Belgium",
+      "population": 11585536,
+      "generation": {
+        "kgPerPersonPerDay2022": 1.87,
+        "tonnes2022": 7915113,
+        "tonnes2030": 8325041,
+        "tonnes2040": 8574185,
+        "tonnes2050": 8707284,
+        "reportedYear": 2022
+      },
+      "treatment": {
+        "year": 2022,
+        "shares": {
+          "recycling": 33.3,
+          "composting": 18.5,
+          "incineration": 46.1,
+          "sanitaryLandfill": 0.2,
+          "otherLandfill": null,
+          "openDump": null,
+          "uncollected": null,
+          "other": 1.9
+        }
+      },
+      "composition": {
+        "year": 2020,
+        "shares": {
+          "foodOrganic": 39.2,
+          "paperCardboard": 14.8,
+          "plastic": 12.4,
+          "glass": 1.8,
+          "metal": 2.4,
+          "other": 29.4
+        }
+      }
+    },
+    {
+      "code": "BLZ",
+      "iso2": "BZ",
+      "name": "Belize",
+      "population": 397352,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.78,
+        "tonnes2022": 113814,
+        "tonnes2030": 145063,
+        "tonnes2040": 183718,
+        "tonnes2050": 225532,
+        "reportedYear": 2015
+      },
+      "treatment": {
+        "year": 2021,
+        "shares": {
+          "recycling": null,
+          "composting": null,
+          "incineration": null,
+          "sanitaryLandfill": null,
+          "otherLandfill": null,
+          "openDump": 72.8,
+          "uncollected": 27.2,
+          "other": null
+        }
+      },
+      "composition": {
+        "year": 2019,
+        "shares": {
+          "foodOrganic": 39.9,
+          "paperCardboard": 8,
+          "plastic": 16.9,
+          "glass": 6,
+          "metal": 3,
+          "other": 26.2
+        }
+      }
+    },
+    {
+      "code": "BEN",
+      "iso2": "BJ",
+      "name": "Benin",
+      "population": 13584835,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.3,
+        "tonnes2022": 1492998,
+        "tonnes2030": 1860609,
+        "tonnes2040": 2360735,
+        "tonnes2050": 3599344,
+        "reportedYear": null
+      },
+      "treatment": {
+        "year": 2022,
+        "shares": {
+          "recycling": 25,
+          "composting": null,
+          "incineration": null,
+          "sanitaryLandfill": null,
+          "otherLandfill": null,
+          "openDump": null,
+          "uncollected": null,
+          "other": 75
+        }
+      },
+      "composition": {
+        "year": 2002,
+        "shares": {
+          "foodOrganic": 52.1,
+          "paperCardboard": 3.1,
+          "plastic": 7.3,
+          "glass": 1.6,
+          "metal": 1.6,
+          "other": 34.3
+        }
+      }
+    },
+    {
+      "code": "BMU",
+      "iso2": "BM",
+      "name": "Bermuda",
+      "population": 64773,
+      "generation": {
+        "kgPerPersonPerDay2022": 3.15,
+        "tonnes2022": 74404,
+        "tonnes2030": 74406,
+        "tonnes2040": 72055,
+        "tonnes2050": 67665,
+        "reportedYear": 2021
+      },
+      "treatment": {
+        "year": 2021,
+        "shares": {
+          "recycling": 1.6,
+          "composting": 19.2,
+          "incineration": 65.5,
+          "sanitaryLandfill": null,
+          "otherLandfill": 13.7,
+          "openDump": null,
+          "uncollected": null,
+          "other": null
+        }
+      },
+      "composition": {
+        "year": 2021,
+        "shares": {
+          "foodOrganic": 24,
+          "paperCardboard": 27,
+          "plastic": 19,
+          "glass": 13,
+          "metal": 5,
+          "other": 12
+        }
+      }
+    },
+    {
+      "code": "BTN",
+      "iso2": "BT",
+      "name": "Bhutan",
+      "population": 778165,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.21,
+        "tonnes2022": 60388,
+        "tonnes2030": 72459,
+        "tonnes2040": 87345,
+        "tonnes2050": 100123,
+        "reportedYear": 2019
+      },
+      "treatment": {
+        "year": 2019,
+        "shares": {
+          "recycling": 23.8,
+          "composting": null,
+          "incineration": null,
+          "sanitaryLandfill": null,
+          "otherLandfill": 42.3,
+          "openDump": null,
+          "uncollected": 32.8,
+          "other": 1.1
+        }
+      },
+      "composition": {
+        "year": 2019,
+        "shares": {
+          "foodOrganic": 44.6,
+          "paperCardboard": 12.3,
+          "plastic": 18.7,
+          "glass": 6.9,
+          "metal": 4.4,
+          "other": 13.1
+        }
+      }
+    },
+    {
+      "code": "BOL",
+      "iso2": "BO",
+      "name": "Bolivia",
+      "population": 11994813,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.69,
+        "tonnes2022": 3024025,
+        "tonnes2030": 3593408,
+        "tonnes2040": 4617630,
+        "tonnes2050": 6035129,
+        "reportedYear": 2022
+      },
+      "treatment": {
+        "year": 2022,
+        "shares": {
+          "recycling": 3.6,
+          "composting": 7.4,
+          "incineration": null,
+          "sanitaryLandfill": 31.4,
+          "otherLandfill": 30.2,
+          "openDump": null,
+          "uncollected": 27.4,
+          "other": null
+        }
+      },
+      "composition": {
+        "year": 2022,
+        "shares": {
+          "foodOrganic": 59.5,
+          "paperCardboard": 4.8,
+          "plastic": 10.1,
+          "glass": 2.5,
+          "metal": 1.8,
+          "other": 21.3
+        }
+      }
+    },
+    {
+      "code": "BIH",
+      "iso2": "BA",
+      "name": "Bosnia and Herzegovina",
+      "population": 3215138,
+      "generation": {
+        "kgPerPersonPerDay2022": 1.01,
+        "tonnes2022": 1184449,
+        "tonnes2030": 1296961,
+        "tonnes2040": 1327918,
+        "tonnes2050": 1263161,
+        "reportedYear": 2022
+      },
+      "treatment": {
+        "year": 2021,
+        "shares": {
+          "recycling": null,
+          "composting": null,
+          "incineration": null,
+          "sanitaryLandfill": null,
+          "otherLandfill": 78.4,
+          "openDump": null,
+          "uncollected": 21.6,
+          "other": null
+        }
+      }
+    },
+    {
+      "code": "BWA",
+      "iso2": "BW",
+      "name": "Botswana",
+      "population": 2419846,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.3,
+        "tonnes2022": 267425,
+        "tonnes2030": 341266,
+        "tonnes2040": 430645,
+        "tonnes2050": 514120,
+        "reportedYear": 2017
+      },
+      "treatment": {
+        "year": 2017,
+        "shares": {
+          "recycling": 0.6,
+          "composting": null,
+          "incineration": null,
+          "sanitaryLandfill": null,
+          "otherLandfill": 75.7,
+          "openDump": null,
+          "uncollected": 23.7,
+          "other": null
+        }
+      },
+      "composition": {
+        "year": 2017,
+        "shares": {
+          "foodOrganic": 12.8,
+          "paperCardboard": 0,
+          "plastic": null,
+          "glass": null,
+          "metal": 0.2,
+          "other": 87
+        }
+      }
+    },
+    {
+      "code": "BRA",
+      "iso2": "BR",
+      "name": "Brazil",
+      "population": 209905829,
+      "generation": {
+        "kgPerPersonPerDay2022": 1.07,
+        "tonnes2022": 81811506,
+        "tonnes2030": 90464116,
+        "tonnes2040": 104004516,
+        "tonnes2050": 117564893,
+        "reportedYear": 2022
+      },
+      "treatment": {
+        "year": 2022,
+        "shares": {
+          "recycling": 1.6,
+          "composting": null,
+          "incineration": null,
+          "sanitaryLandfill": 67.4,
+          "otherLandfill": 10.9,
+          "openDump": 13.1,
+          "uncollected": 7,
+          "other": null
+        }
+      },
+      "composition": {
+        "year": 2020,
+        "shares": {
+          "foodOrganic": 45.3,
+          "paperCardboard": 10.4,
+          "plastic": 16.8,
+          "glass": 2.7,
+          "metal": 2.3,
+          "other": 22.5
+        }
+      }
+    },
+    {
+      "code": "VGB",
+      "iso2": "VG",
+      "name": "British Virgin Islands",
+      "population": 37995,
+      "generation": {
+        "kgPerPersonPerDay2022": 4.18,
+        "tonnes2022": 57952,
+        "tonnes2030": 63906,
+        "tonnes2040": 67701,
+        "tonnes2050": 68938,
+        "reportedYear": 2019
+      },
+      "treatment": {
+        "year": 2005,
+        "shares": {
+          "recycling": null,
+          "composting": null,
+          "incineration": 80.3,
+          "sanitaryLandfill": null,
+          "otherLandfill": null,
+          "openDump": 19.7,
+          "uncollected": null,
+          "other": null
+        }
+      },
+      "composition": {
+        "year": 2019,
+        "shares": {
+          "foodOrganic": 31.6,
+          "paperCardboard": 12.5,
+          "plastic": 20.1,
+          "glass": 16.8,
+          "metal": 5.3,
+          "other": 13.7
+        }
+      }
+    },
+    {
+      "code": "BRN",
+      "iso2": "BN",
+      "name": "Brunei Darussalam",
+      "population": 453711,
+      "generation": {
+        "kgPerPersonPerDay2022": 1.83,
+        "tonnes2022": 303148,
+        "tonnes2030": 329097,
+        "tonnes2040": 354665,
+        "tonnes2050": 367509,
+        "reportedYear": 2019
+      },
+      "treatment": {
+        "year": 2019,
+        "shares": {
+          "recycling": 11.3,
+          "composting": null,
+          "incineration": null,
+          "sanitaryLandfill": null,
+          "otherLandfill": 88.7,
+          "openDump": null,
+          "uncollected": null,
+          "other": null
+        }
+      },
+      "composition": {
+        "year": 2019,
+        "shares": {
+          "foodOrganic": 43,
+          "paperCardboard": 10,
+          "plastic": 29,
+          "glass": null,
+          "metal": null,
+          "other": 18
+        }
+      }
+    },
+    {
+      "code": "BGR",
+      "iso2": "BG",
+      "name": "Bulgaria",
+      "population": 6838344,
+      "generation": {
+        "kgPerPersonPerDay2022": 1.35,
+        "tonnes2022": 3358340,
+        "tonnes2030": 3550658,
+        "tonnes2040": 3530484,
+        "tonnes2050": 3398913,
+        "reportedYear": 2018
+      },
+      "treatment": {
+        "year": 2020,
+        "shares": {
+          "recycling": 28.2,
+          "composting": 2.8,
+          "incineration": 4,
+          "sanitaryLandfill": null,
+          "otherLandfill": 59.1,
+          "openDump": null,
+          "uncollected": null,
+          "other": 5.9
+        }
+      },
+      "composition": {
+        "year": 2019,
+        "shares": {
+          "foodOrganic": 23,
+          "paperCardboard": 8.5,
+          "plastic": 11.5,
+          "glass": 4.4,
+          "metal": 3.1,
+          "other": 49.5
+        }
+      }
+    },
+    {
+      "code": "BFA",
+      "iso2": "BF",
+      "name": "Burkina Faso",
+      "population": 22252441,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.06,
+        "tonnes2022": 465240,
+        "tonnes2030": 669174,
+        "tonnes2040": 831575,
+        "tonnes2050": 994434,
+        "reportedYear": 2021
+      },
+      "treatment": {
+        "year": 2009,
+        "shares": {
+          "recycling": null,
+          "composting": null,
+          "incineration": null,
+          "sanitaryLandfill": null,
+          "otherLandfill": 17,
+          "openDump": 9,
+          "uncollected": 54,
+          "other": 20
+        }
+      },
+      "composition": {
+        "year": 2019,
+        "shares": {
+          "foodOrganic": 28.4,
+          "paperCardboard": 7.9,
+          "plastic": 13.4,
+          "glass": 5.3,
+          "metal": 0.8,
+          "other": 44.2
+        }
+      }
+    },
+    {
+      "code": "BDI",
+      "iso2": "BI",
+      "name": "Burundi",
+      "population": 13138197,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.08,
+        "tonnes2022": 374735,
+        "tonnes2030": 548268,
+        "tonnes2040": 703339,
+        "tonnes2050": 870741,
+        "reportedYear": null
+      },
+      "composition": {
+        "year": 2011,
+        "shares": {
+          "foodOrganic": 57,
+          "paperCardboard": 6,
+          "plastic": 8,
+          "glass": 15,
+          "metal": 5,
+          "other": 9
+        }
+      }
+    },
+    {
+      "code": "CPV",
+      "iso2": "CV",
+      "name": "Cabo Verde",
+      "population": 518435,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.95,
+        "tonnes2022": 180233,
+        "tonnes2030": 192453,
+        "tonnes2040": 242748,
+        "tonnes2050": 281093,
+        "reportedYear": 2015
+      },
+      "treatment": {
+        "year": 2013,
+        "shares": {
+          "recycling": null,
+          "composting": null,
+          "incineration": null,
+          "sanitaryLandfill": 5.1,
+          "otherLandfill": null,
+          "openDump": 94.9,
+          "uncollected": null,
+          "other": null
+        }
+      },
+      "composition": {
+        "year": 2015,
+        "shares": {
+          "foodOrganic": 17.4,
+          "paperCardboard": 10.1,
+          "plastic": 9.7,
+          "glass": 13.2,
+          "metal": 3.6,
+          "other": 46
+        }
+      }
+    },
+    {
+      "code": "KHM",
+      "iso2": "KH",
+      "name": "Cambodia",
+      "population": 17088769,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.83,
+        "tonnes2022": 5168117,
+        "tonnes2030": 5835819,
+        "tonnes2040": 6565439,
+        "tonnes2050": 7228626,
+        "reportedYear": 2020
+      },
+      "treatment": {
+        "year": 2018,
+        "shares": {
+          "recycling": 4,
+          "composting": 2,
+          "incineration": 4,
+          "sanitaryLandfill": null,
+          "otherLandfill": 44,
+          "openDump": null,
+          "uncollected": 46,
+          "other": null
+        }
+      },
+      "composition": {
+        "year": 2012,
+        "shares": {
+          "foodOrganic": 55,
+          "paperCardboard": 3,
+          "plastic": 10,
+          "glass": 8,
+          "metal": 7,
+          "other": 17
+        }
+      }
+    },
+    {
+      "code": "CMR",
+      "iso2": "CM",
+      "name": "Cameroon",
+      "population": 27267710,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.6,
+        "tonnes2022": 6000000,
+        "tonnes2030": 8389554,
+        "tonnes2040": 13509373,
+        "tonnes2050": 20780825,
+        "reportedYear": 2022
+      },
+      "composition": {
+        "year": 2008,
+        "shares": {
+          "foodOrganic": 83.4,
+          "paperCardboard": 2.1,
+          "plastic": 3.3,
+          "glass": 0.1,
+          "metal": 0.7,
+          "other": 10.4
+        }
+      }
+    },
+    {
+      "code": "CAN",
+      "iso2": "CA",
+      "name": "Canada",
+      "population": 38582793,
+      "generation": {
+        "kgPerPersonPerDay2022": 2.26,
+        "tonnes2022": 31783357,
+        "tonnes2030": 35191790,
+        "tonnes2040": 38843770,
+        "tonnes2050": 41771056,
+        "reportedYear": 2018
+      },
+      "treatment": {
+        "year": 2022,
+        "shares": {
+          "recycling": 35.5,
+          "composting": null,
+          "incineration": 1.9,
+          "sanitaryLandfill": null,
+          "otherLandfill": 62.6,
+          "openDump": null,
+          "uncollected": null,
+          "other": null
+        }
+      },
+      "composition": {
+        "year": 2016,
+        "shares": {
+          "foodOrganic": 30.1,
+          "paperCardboard": 14.1,
+          "plastic": 11.8,
+          "glass": 2.4,
+          "metal": 3.3,
+          "other": 38.3
+        }
+      }
+    },
+    {
+      "code": "CYM",
+      "iso2": "KY",
+      "name": "Cayman Islands",
+      "population": 70863,
+      "generation": {
+        "kgPerPersonPerDay2022": 3.23,
+        "tonnes2022": 83590,
+        "tonnes2030": 92427,
+        "tonnes2040": 102348,
+        "tonnes2050": 108732,
+        "reportedYear": 2022
+      },
+      "treatment": {
+        "year": 2022,
+        "shares": {
+          "recycling": 1.8,
+          "composting": null,
+          "incineration": 0.3,
+          "sanitaryLandfill": null,
+          "otherLandfill": 97.9,
+          "openDump": null,
+          "uncollected": null,
+          "other": null
+        }
+      }
+    },
+    {
+      "code": "CAF",
+      "iso2": "CF",
+      "name": "Central African Republic",
+      "population": 5131487,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.73,
+        "tonnes2022": 1364647,
+        "tonnes2030": 1735029,
+        "tonnes2040": 2360458,
+        "tonnes2050": 3032409,
+        "reportedYear": 2014
+      }
+    },
+    {
+      "code": "TCD",
+      "iso2": "TD",
+      "name": "Chad",
+      "population": 18142947,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.15,
+        "tonnes2022": 1022677,
+        "tonnes2030": 1393639,
+        "tonnes2040": 1861515,
+        "tonnes2050": 2383192,
+        "reportedYear": null
+      },
+      "composition": {
+        "year": 2006,
+        "shares": {
+          "foodOrganic": 70,
+          "paperCardboard": 3,
+          "plastic": 6,
+          "glass": 1,
+          "metal": 2,
+          "other": 18
+        }
+      }
+    },
+    {
+      "code": "CHI",
+      "iso2": null,
+      "name": "Channel Islands",
+      "population": 166984,
+      "generation": {
+        "kgPerPersonPerDay2022": 1,
+        "tonnes2022": 60949,
+        "tonnes2030": 63892,
+        "tonnes2040": 66656,
+        "tonnes2050": 68442,
+        "reportedYear": 2023
+      },
+      "treatment": {
+        "year": 2022,
+        "shares": {
+          "recycling": 23.4,
+          "composting": 4.3,
+          "incineration": 32.2,
+          "sanitaryLandfill": 40.1,
+          "otherLandfill": null,
+          "openDump": null,
+          "uncollected": null,
+          "other": null
+        }
+      }
+    },
+    {
+      "code": "CHL",
+      "iso2": "CL",
+      "name": "Chile",
+      "population": 19502834,
+      "generation": {
+        "kgPerPersonPerDay2022": 1.22,
+        "tonnes2022": 8685826,
+        "tonnes2030": 9450049,
+        "tonnes2040": 10306455,
+        "tonnes2050": 10932700,
+        "reportedYear": 2022
+      },
+      "treatment": {
+        "year": 2022,
+        "shares": {
+          "recycling": 0.7,
+          "composting": 0,
+          "incineration": null,
+          "sanitaryLandfill": 80,
+          "otherLandfill": 12,
+          "openDump": 1.4,
+          "uncollected": 4,
+          "other": 1.9
+        }
+      },
+      "composition": {
+        "year": 2017,
+        "shares": {
+          "foodOrganic": 57.5,
+          "paperCardboard": 10.3,
+          "plastic": 10.8,
+          "glass": 3.2,
+          "metal": 2,
+          "other": 16.2
+        }
+      }
+    },
+    {
+      "code": "CHN",
+      "iso2": "CN",
+      "name": "China",
+      "population": 1426098192,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.97,
+        "tonnes2022": 502607448,
+        "tonnes2030": 579314130,
+        "tonnes2040": 621774239,
+        "tonnes2050": 630002818,
+        "reportedYear": 2022
+      },
+      "treatment": {
+        "year": 2022,
+        "shares": {
+          "recycling": null,
+          "composting": null,
+          "incineration": 74.6,
+          "sanitaryLandfill": 18.4,
+          "otherLandfill": null,
+          "openDump": null,
+          "uncollected": 0.3,
+          "other": 6.7
+        }
+      },
+      "composition": {
+        "year": 2023,
+        "shares": {
+          "foodOrganic": 59.3,
+          "paperCardboard": 9.1,
+          "plastic": 12.1,
+          "glass": 3.2,
+          "metal": 0.7,
+          "other": 15.6
+        }
+      }
+    },
+    {
+      "code": "COL",
+      "iso2": "CO",
+      "name": "Colombia",
+      "population": 51443283,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.77,
+        "tonnes2022": 14423330,
+        "tonnes2030": 17172106,
+        "tonnes2040": 20804469,
+        "tonnes2050": 23842622,
+        "reportedYear": 2022
+      },
+      "treatment": {
+        "year": 2023,
+        "shares": {
+          "recycling": 16.9,
+          "composting": null,
+          "incineration": null,
+          "sanitaryLandfill": 67,
+          "otherLandfill": 0.9,
+          "openDump": 1.4,
+          "uncollected": 13.8,
+          "other": null
+        }
+      },
+      "composition": {
+        "year": 2015,
+        "shares": {
+          "foodOrganic": 61.5,
+          "paperCardboard": 6.6,
+          "plastic": 10.8,
+          "glass": 2.4,
+          "metal": 1,
+          "other": 17.7
+        }
+      }
+    },
+    {
+      "code": "COM",
+      "iso2": "KM",
+      "name": "Comoros",
+      "population": 826109,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.36,
+        "tonnes2022": 107779,
+        "tonnes2030": 142123,
+        "tonnes2040": 172275,
+        "tonnes2050": 204865,
+        "reportedYear": 2023
+      },
+      "composition": {
+        "year": 2009,
+        "shares": {
+          "foodOrganic": 50,
+          "paperCardboard": 7,
+          "plastic": 5,
+          "glass": 2,
+          "metal": 4,
+          "other": 32
+        }
+      }
+    },
+    {
+      "code": "COD",
+      "iso2": "CD",
+      "name": "Congo, Dem. Rep.",
+      "population": 100730624,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.62,
+        "tonnes2022": 22832037,
+        "tonnes2030": 35846243,
+        "tonnes2040": 48559142,
+        "tonnes2050": 63347409,
+        "reportedYear": 2012
+      },
+      "treatment": {
+        "year": 2012,
+        "shares": {
+          "recycling": 4.9,
+          "composting": null,
+          "incineration": null,
+          "sanitaryLandfill": null,
+          "otherLandfill": 19.7,
+          "openDump": null,
+          "uncollected": null,
+          "other": 75.4
+        }
+      }
+    },
+    {
+      "code": "COG",
+      "iso2": "CG",
+      "name": "Congo, Rep.",
+      "population": 5962066,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.39,
+        "tonnes2022": 853424,
+        "tonnes2030": 1105318,
+        "tonnes2040": 1606141,
+        "tonnes2050": 2329404,
+        "reportedYear": 2012
+      },
+      "treatment": {
+        "year": 2012,
+        "shares": {
+          "recycling": 26.2,
+          "composting": null,
+          "incineration": null,
+          "sanitaryLandfill": null,
+          "otherLandfill": null,
+          "openDump": null,
+          "uncollected": 56.9,
+          "other": 16.9
+        }
+      }
+    },
+    {
+      "code": "CRI",
+      "iso2": "CR",
+      "name": "Costa Rica",
+      "population": 5070553,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.89,
+        "tonnes2022": 1653778,
+        "tonnes2030": 1900126,
+        "tonnes2040": 2168186,
+        "tonnes2050": 2348975,
+        "reportedYear": 2021
+      },
+      "treatment": {
+        "year": 2021,
+        "shares": {
+          "recycling": 3.9,
+          "composting": 2.7,
+          "incineration": 3,
+          "sanitaryLandfill": null,
+          "otherLandfill": 79.2,
+          "openDump": null,
+          "uncollected": 11.2,
+          "other": null
+        }
+      },
+      "composition": {
+        "year": 2018,
+        "shares": {
+          "foodOrganic": 51.5,
+          "paperCardboard": 12.9,
+          "plastic": 12.8,
+          "glass": 2,
+          "metal": 1,
+          "other": 19.8
+        }
+      }
+    },
+    {
+      "code": "CIV",
+      "iso2": "CI",
+      "name": "Côte d’Ivoire",
+      "population": 30006484,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.48,
+        "tonnes2022": 5269506,
+        "tonnes2030": 6563924,
+        "tonnes2040": 10523625,
+        "tonnes2050": 15408669,
+        "reportedYear": 2021
+      }
+    },
+    {
+      "code": "HRV",
+      "iso2": "HR",
+      "name": "Croatia",
+      "population": 3911342,
+      "generation": {
+        "kgPerPersonPerDay2022": 1.29,
+        "tonnes2022": 1844382,
+        "tonnes2030": 1945882,
+        "tonnes2040": 1923367,
+        "tonnes2050": 1834419,
+        "reportedYear": 2022
+      },
+      "treatment": {
+        "year": 2022,
+        "shares": {
+          "recycling": 26.1,
+          "composting": 4.5,
+          "incineration": null,
+          "sanitaryLandfill": 50.4,
+          "otherLandfill": null,
+          "openDump": null,
+          "uncollected": null,
+          "other": 19
+        }
+      },
+      "composition": {
+        "year": 2015,
+        "shares": {
+          "foodOrganic": 37,
+          "paperCardboard": 23.2,
+          "plastic": 22.9,
+          "glass": 3.7,
+          "metal": 2.1,
+          "other": 11.1
+        }
+      }
+    },
+    {
+      "code": "CUB",
+      "iso2": "CU",
+      "name": "Cuba",
+      "population": 11080372,
+      "generation": {
+        "kgPerPersonPerDay2022": 1.14,
+        "tonnes2022": 4612957,
+        "tonnes2030": 4996764,
+        "tonnes2040": 5260903,
+        "tonnes2050": 5290499,
+        "reportedYear": 2021
+      },
+      "treatment": {
+        "year": 2020,
+        "shares": {
+          "recycling": 8.2,
+          "composting": null,
+          "incineration": null,
+          "sanitaryLandfill": null,
+          "otherLandfill": null,
+          "openDump": 91.8,
+          "uncollected": null,
+          "other": null
+        }
+      },
+      "composition": {
+        "year": 2005,
+        "shares": {
+          "foodOrganic": 68.9,
+          "paperCardboard": 12.3,
+          "plastic": 9.6,
+          "glass": 4.6,
+          "metal": 1.6,
+          "other": 3
+        }
+      }
+    },
+    {
+      "code": "CUW",
+      "iso2": "CW",
+      "name": "Curaçao",
+      "population": 185295,
+      "generation": {
+        "kgPerPersonPerDay2022": 3.21,
+        "tonnes2022": 216765,
+        "tonnes2030": 201015,
+        "tonnes2040": 177665,
+        "tonnes2050": 149033,
+        "reportedYear": 2023
+      },
+      "treatment": {
+        "year": 2023,
+        "shares": {
+          "recycling": 37.4,
+          "composting": null,
+          "incineration": null,
+          "sanitaryLandfill": null,
+          "otherLandfill": 58.1,
+          "openDump": null,
+          "uncollected": 4.5,
+          "other": null
+        }
+      },
+      "composition": {
+        "year": 2023,
+        "shares": {
+          "foodOrganic": 28.3,
+          "paperCardboard": 15.5,
+          "plastic": 14.9,
+          "glass": 7.7,
+          "metal": 4.1,
+          "other": 29.5
+        }
+      }
+    },
+    {
+      "code": "CYP",
+      "iso2": "CY",
+      "name": "Cyprus",
+      "population": 1324626,
+      "generation": {
+        "kgPerPersonPerDay2022": 1.27,
+        "tonnes2022": 614620,
+        "tonnes2030": 694677,
+        "tonnes2040": 763685,
+        "tonnes2050": 802968,
+        "reportedYear": 2022
+      },
+      "treatment": {
+        "year": 2022,
+        "shares": {
+          "recycling": 13.1,
+          "composting": 1.7,
+          "incineration": 2.4,
+          "sanitaryLandfill": null,
+          "otherLandfill": 59.1,
+          "openDump": null,
+          "uncollected": null,
+          "other": 23.7
+        }
+      },
+      "composition": {
+        "year": 2012,
+        "shares": {
+          "foodOrganic": 41.6,
+          "paperCardboard": 24.3,
+          "plastic": 14.7,
+          "glass": 3.9,
+          "metal": 3.3,
+          "other": 12.2
+        }
+      }
+    },
+    {
+      "code": "CZE",
+      "iso2": "CZ",
+      "name": "Czech Republic",
+      "population": 10518548,
+      "generation": {
+        "kgPerPersonPerDay2022": 1.54,
+        "tonnes2022": 5905029,
+        "tonnes2030": 6038028,
+        "tonnes2040": 6128995,
+        "tonnes2050": 6152359,
+        "reportedYear": 2021
+      },
+      "treatment": {
+        "year": 2021,
+        "shares": {
+          "recycling": 30.1,
+          "composting": 12.5,
+          "incineration": 11.9,
+          "sanitaryLandfill": 45.5,
+          "otherLandfill": null,
+          "openDump": null,
+          "uncollected": null,
+          "other": null
+        }
+      },
+      "composition": {
+        "year": 2019,
+        "shares": {
+          "foodOrganic": 37.1,
+          "paperCardboard": 28.8,
+          "plastic": 12.7,
+          "glass": 6.8,
+          "metal": 8.6,
+          "other": 6
+        }
+      }
+    },
+    {
+      "code": "DNK",
+      "iso2": "DK",
+      "name": "Denmark",
+      "population": 5873437,
+      "generation": {
+        "kgPerPersonPerDay2022": 2.12,
+        "tonnes2022": 4549906,
+        "tonnes2030": 4832683,
+        "tonnes2040": 4989511,
+        "tonnes2050": 5088255,
+        "reportedYear": 2021
+      },
+      "treatment": {
+        "year": 2022,
+        "shares": {
+          "recycling": 31.2,
+          "composting": 26.3,
+          "incineration": 41.4,
+          "sanitaryLandfill": 1.1,
+          "otherLandfill": null,
+          "openDump": null,
+          "uncollected": 0,
+          "other": null
+        }
+      },
+      "composition": {
+        "year": 2022,
+        "shares": {
+          "foodOrganic": 47.4,
+          "paperCardboard": 23.1,
+          "plastic": 7.1,
+          "glass": 4.5,
+          "metal": 5.1,
+          "other": 12.8
+        }
+      }
+    },
+    {
+      "code": "DJI",
+      "iso2": "DJ",
+      "name": "Djibouti",
+      "population": 1129177,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.46,
+        "tonnes2022": 189510,
+        "tonnes2030": 216922,
+        "tonnes2040": 249105,
+        "tonnes2050": 327618,
+        "reportedYear": null
+      },
+      "treatment": {
+        "year": 2004,
+        "shares": {
+          "recycling": null,
+          "composting": null,
+          "incineration": null,
+          "sanitaryLandfill": null,
+          "otherLandfill": 62,
+          "openDump": null,
+          "uncollected": null,
+          "other": 38
+        }
+      }
+    },
+    {
+      "code": "DMA",
+      "iso2": "DM",
+      "name": "Dominica",
+      "population": 66985,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.53,
+        "tonnes2022": 13000,
+        "tonnes2030": 13916,
+        "tonnes2040": 14536,
+        "tonnes2050": 15079,
+        "reportedYear": 2022
+      }
+    },
+    {
+      "code": "DOM",
+      "iso2": "DO",
+      "name": "Dominican Republic",
+      "population": 11178924,
+      "generation": {
+        "kgPerPersonPerDay2022": 1.08,
+        "tonnes2022": 4420106,
+        "tonnes2030": 5412753,
+        "tonnes2040": 6459805,
+        "tonnes2050": 7234371,
+        "reportedYear": 2021
+      },
+      "treatment": {
+        "year": 2021,
+        "shares": {
+          "recycling": 6,
+          "composting": null,
+          "incineration": null,
+          "sanitaryLandfill": null,
+          "otherLandfill": 28.3,
+          "openDump": 55.3,
+          "uncollected": 10.4,
+          "other": null
+        }
+      },
+      "composition": {
+        "year": 2015,
+        "shares": {
+          "foodOrganic": 60,
+          "paperCardboard": 16,
+          "plastic": 6,
+          "glass": 6,
+          "metal": 4,
+          "other": 8
+        }
+      }
+    },
+    {
+      "code": "ECU",
+      "iso2": "EC",
+      "name": "Ecuador",
+      "population": 17745785,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.81,
+        "tonnes2022": 5253810,
+        "tonnes2030": 6065350,
+        "tonnes2040": 7340727,
+        "tonnes2050": 8687241,
+        "reportedYear": 2022
+      },
+      "treatment": {
+        "year": 2021,
+        "shares": {
+          "recycling": 0.1,
+          "composting": 0.6,
+          "incineration": null,
+          "sanitaryLandfill": null,
+          "otherLandfill": 7.1,
+          "openDump": 73.1,
+          "uncollected": 19.1,
+          "other": null
+        }
+      },
+      "composition": {
+        "year": 2020,
+        "shares": {
+          "foodOrganic": 56.4,
+          "paperCardboard": 9.3,
+          "plastic": 11.1,
+          "glass": 2.9,
+          "metal": 1.8,
+          "other": 18.5
+        }
+      }
+    },
+    {
+      "code": "EGY",
+      "iso2": "EG",
+      "name": "Egypt, Arab Rep.",
+      "population": 111743365,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.66,
+        "tonnes2022": 26957734,
+        "tonnes2030": 35470303,
+        "tonnes2040": 48587288,
+        "tonnes2050": 61610200,
+        "reportedYear": 2021
+      },
+      "treatment": {
+        "year": 2016,
+        "shares": {
+          "recycling": 12.5,
+          "composting": 7,
+          "incineration": null,
+          "sanitaryLandfill": 7,
+          "otherLandfill": null,
+          "openDump": 38.5,
+          "uncollected": 35,
+          "other": null
+        }
+      },
+      "composition": {
+        "year": 2017,
+        "shares": {
+          "foodOrganic": 56,
+          "paperCardboard": 10,
+          "plastic": 13,
+          "glass": 4,
+          "metal": 2,
+          "other": 15
+        }
+      }
+    },
+    {
+      "code": "SLV",
+      "iso2": "SV",
+      "name": "El Salvador",
+      "population": 6265375,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.69,
+        "tonnes2022": 1572087,
+        "tonnes2030": 1841099,
+        "tonnes2040": 2214393,
+        "tonnes2050": 2633186,
+        "reportedYear": 2021
+      },
+      "treatment": {
+        "year": 2021,
+        "shares": {
+          "recycling": null,
+          "composting": 0.6,
+          "incineration": null,
+          "sanitaryLandfill": null,
+          "otherLandfill": 71.4,
+          "openDump": null,
+          "uncollected": 28,
+          "other": null
+        }
+      },
+      "composition": {
+        "year": 2021,
+        "shares": {
+          "foodOrganic": 39.3,
+          "paperCardboard": 8.6,
+          "plastic": 25.7,
+          "glass": 2.4,
+          "metal": 1.2,
+          "other": 22.8
+        }
+      }
+    },
+    {
+      "code": "GNQ",
+      "iso2": "GQ",
+      "name": "Equatorial Guinea",
+      "population": 1781610,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.3,
+        "tonnes2022": 198324,
+        "tonnes2030": 195785,
+        "tonnes2040": 264437,
+        "tonnes2050": 354756,
+        "reportedYear": 2016
+      }
+    },
+    {
+      "code": "ERI",
+      "iso2": "ER",
+      "name": "Eritrea",
+      "population": 3379895,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.18,
+        "tonnes2022": 219099,
+        "tonnes2030": 278247,
+        "tonnes2040": 371119,
+        "tonnes2050": 472175,
+        "reportedYear": null
+      }
+    },
+    {
+      "code": "EST",
+      "iso2": "EE",
+      "name": "Estonia",
+      "population": 1333017,
+      "generation": {
+        "kgPerPersonPerDay2022": 1.02,
+        "tonnes2022": 495000,
+        "tonnes2030": 513188,
+        "tonnes2040": 516310,
+        "tonnes2050": 503331,
+        "reportedYear": 2022
+      },
+      "treatment": {
+        "year": 2022,
+        "shares": {
+          "recycling": 32.9,
+          "composting": 4.5,
+          "incineration": 47.7,
+          "sanitaryLandfill": null,
+          "otherLandfill": 14.9,
+          "openDump": null,
+          "uncollected": null,
+          "other": null
+        }
+      },
+      "composition": {
+        "year": 2020,
+        "shares": {
+          "foodOrganic": 32,
+          "paperCardboard": 17,
+          "plastic": 18,
+          "glass": 6,
+          "metal": 2,
+          "other": 25
+        }
+      }
+    },
+    {
+      "code": "SWZ",
+      "iso2": "SZ",
+      "name": "Eswatini",
+      "population": 1213127,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.61,
+        "tonnes2022": 268654,
+        "tonnes2030": 333728,
+        "tonnes2040": 426701,
+        "tonnes2050": 525040,
+        "reportedYear": 2017
+      },
+      "treatment": {
+        "year": 2017,
+        "shares": {
+          "recycling": 29.4,
+          "composting": null,
+          "incineration": null,
+          "sanitaryLandfill": null,
+          "otherLandfill": 26,
+          "openDump": null,
+          "uncollected": null,
+          "other": 44.6
+        }
+      },
+      "composition": {
+        "year": 2017,
+        "shares": {
+          "foodOrganic": 52.5,
+          "paperCardboard": null,
+          "plastic": null,
+          "glass": null,
+          "metal": null,
+          "other": 47.5
+        }
+      }
+    },
+    {
+      "code": "ETH",
+      "iso2": "ET",
+      "name": "Ethiopia",
+      "population": 123740213,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.11,
+        "tonnes2022": 4936316,
+        "tonnes2030": 6208372,
+        "tonnes2040": 7899021,
+        "tonnes2050": 9729919,
+        "reportedYear": 2020
+      },
+      "treatment": {
+        "year": 2022,
+        "shares": {
+          "recycling": 3.8,
+          "composting": null,
+          "incineration": 1.8,
+          "sanitaryLandfill": null,
+          "otherLandfill": 34.4,
+          "openDump": null,
+          "uncollected": 60,
+          "other": null
+        }
+      },
+      "composition": {
+        "year": 2024,
+        "shares": {
+          "foodOrganic": 70,
+          "paperCardboard": 6,
+          "plastic": 8,
+          "glass": 3,
+          "metal": null,
+          "other": 13
+        }
+      }
+    },
+    {
+      "code": "FRO",
+      "iso2": "FO",
+      "name": "Faroe Islands",
+      "population": 53672,
+      "generation": {
+        "kgPerPersonPerDay2022": 3.27,
+        "tonnes2022": 64157,
+        "tonnes2030": 71585,
+        "tonnes2040": 77623,
+        "tonnes2050": 82210,
+        "reportedYear": 2014
+      },
+      "treatment": {
+        "year": 2023,
+        "shares": {
+          "recycling": 29.6,
+          "composting": null,
+          "incineration": 63.6,
+          "sanitaryLandfill": null,
+          "otherLandfill": 6.8,
+          "openDump": null,
+          "uncollected": null,
+          "other": null
+        }
+      }
+    },
+    {
+      "code": "FJI",
+      "iso2": "FJ",
+      "name": "Fiji",
+      "population": 917097,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.55,
+        "tonnes2022": 182735,
+        "tonnes2030": 228509,
+        "tonnes2040": 277102,
+        "tonnes2050": 325496,
+        "reportedYear": 2021
+      },
+      "treatment": {
+        "year": 2021,
+        "shares": {
+          "recycling": 5.4,
+          "composting": null,
+          "incineration": null,
+          "sanitaryLandfill": null,
+          "otherLandfill": 84.8,
+          "openDump": null,
+          "uncollected": null,
+          "other": 9.8
+        }
+      },
+      "composition": {
+        "year": 2023,
+        "shares": {
+          "foodOrganic": 37.2,
+          "paperCardboard": 17.4,
+          "plastic": 18.3,
+          "glass": 2.7,
+          "metal": 4.1,
+          "other": 20.3
+        }
+      }
+    },
+    {
+      "code": "FIN",
+      "iso2": "FI",
+      "name": "Finland",
+      "population": 5548271,
+      "generation": {
+        "kgPerPersonPerDay2022": 1.43,
+        "tonnes2022": 2898043,
+        "tonnes2030": 2995284,
+        "tonnes2040": 3027034,
+        "tonnes2050": 3031301,
+        "reportedYear": 2022
+      },
+      "treatment": {
+        "year": 2022,
+        "shares": {
+          "recycling": 29.1,
+          "composting": 14.7,
+          "incineration": 55.8,
+          "sanitaryLandfill": 0.4,
+          "otherLandfill": null,
+          "openDump": null,
+          "uncollected": null,
+          "other": null
+        }
+      },
+      "composition": {
+        "year": 2023,
+        "shares": {
+          "foodOrganic": 32.2,
+          "paperCardboard": 25,
+          "plastic": 12,
+          "glass": 4.6,
+          "metal": 2.8,
+          "other": 23.4
+        }
+      }
+    },
+    {
+      "code": "FRA",
+      "iso2": "FR",
+      "name": "France",
+      "population": 66173332,
+      "generation": {
+        "kgPerPersonPerDay2022": 1.52,
+        "tonnes2022": 36606000,
+        "tonnes2030": 38289008,
+        "tonnes2040": 39846427,
+        "tonnes2050": 41010826,
+        "reportedYear": 2022
+      },
+      "treatment": {
+        "year": 2021,
+        "shares": {
+          "recycling": 23.6,
+          "composting": 18.2,
+          "incineration": 32.7,
+          "sanitaryLandfill": 23.7,
+          "otherLandfill": null,
+          "openDump": null,
+          "uncollected": null,
+          "other": 1.8
+        }
+      },
+      "composition": {
+        "year": 2017,
+        "shares": {
+          "foodOrganic": 25.3,
+          "paperCardboard": 22,
+          "plastic": 13.4,
+          "glass": 13,
+          "metal": 3.3,
+          "other": 23
+        }
+      }
+    },
+    {
+      "code": "PYF",
+      "iso2": "PF",
+      "name": "French Polynesia",
+      "population": 279985,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.84,
+        "tonnes2022": 85785,
+        "tonnes2030": 90193,
+        "tonnes2040": 93975,
+        "tonnes2050": 94953,
+        "reportedYear": 2020
+      },
+      "treatment": {
+        "year": 2014,
+        "shares": {
+          "recycling": 39,
+          "composting": null,
+          "incineration": null,
+          "sanitaryLandfill": null,
+          "otherLandfill": null,
+          "openDump": 61,
+          "uncollected": null,
+          "other": null
+        }
+      },
+      "composition": {
+        "year": 2012,
+        "shares": {
+          "foodOrganic": 47,
+          "paperCardboard": 16,
+          "plastic": 2,
+          "glass": 3,
+          "metal": 3,
+          "other": 29
+        }
+      }
+    },
+    {
+      "code": "GAB",
+      "iso2": "GA",
+      "name": "Gabon",
+      "population": 2403779,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.49,
+        "tonnes2022": 427477,
+        "tonnes2030": 525156,
+        "tonnes2040": 701737,
+        "tonnes2050": 901996,
+        "reportedYear": 2017
+      },
+      "treatment": {
+        "year": 2017,
+        "shares": {
+          "recycling": null,
+          "composting": null,
+          "incineration": null,
+          "sanitaryLandfill": null,
+          "otherLandfill": 56,
+          "openDump": 14,
+          "uncollected": 30,
+          "other": null
+        }
+      }
+    },
+    {
+      "code": "GMB",
+      "iso2": "GM",
+      "name": "Gambia, The",
+      "population": 2606154,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.41,
+        "tonnes2022": 387305,
+        "tonnes2030": 570829,
+        "tonnes2040": 702422,
+        "tonnes2050": 835216,
+        "reportedYear": 2014
+      },
+      "treatment": {
+        "year": 2014,
+        "shares": {
+          "recycling": null,
+          "composting": null,
+          "incineration": null,
+          "sanitaryLandfill": null,
+          "otherLandfill": null,
+          "openDump": null,
+          "uncollected": null,
+          "other": 100
+        }
+      }
+    },
+    {
+      "code": "GEO",
+      "iso2": "GE",
+      "name": "Georgia",
+      "population": 3782422,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.87,
+        "tonnes2022": 1202057,
+        "tonnes2030": 1241520,
+        "tonnes2040": 1432041,
+        "tonnes2050": 1501729,
+        "reportedYear": 2019
+      },
+      "treatment": {
+        "year": 2019,
+        "shares": {
+          "recycling": null,
+          "composting": null,
+          "incineration": null,
+          "sanitaryLandfill": null,
+          "otherLandfill": 87.9,
+          "openDump": null,
+          "uncollected": 12.1,
+          "other": null
+        }
+      },
+      "composition": {
+        "year": 2019,
+        "shares": {
+          "foodOrganic": 46,
+          "paperCardboard": 12.3,
+          "plastic": 14.9,
+          "glass": 3.6,
+          "metal": 1.6,
+          "other": 21.6
+        }
+      }
+    },
+    {
+      "code": "DEU",
+      "iso2": "DE",
+      "name": "Germany",
+      "population": 83771555,
+      "generation": {
+        "kgPerPersonPerDay2022": 1.63,
+        "tonnes2022": 49699000,
+        "tonnes2030": 50108356,
+        "tonnes2040": 50239145,
+        "tonnes2050": 50172423,
+        "reportedYear": 2022
+      },
+      "treatment": {
+        "year": 2022,
+        "shares": {
+          "recycling": 47,
+          "composting": 22.1,
+          "incineration": 29.5,
+          "sanitaryLandfill": 1.4,
+          "otherLandfill": null,
+          "openDump": null,
+          "uncollected": null,
+          "other": null
+        }
+      },
+      "composition": {
+        "year": 2018,
+        "shares": {
+          "foodOrganic": 35.5,
+          "paperCardboard": 20.1,
+          "plastic": 8.5,
+          "glass": 7.6,
+          "metal": 1.9,
+          "other": 26.4
+        }
+      }
+    },
+    {
+      "code": "GHA",
+      "iso2": "GH",
+      "name": "Ghana",
+      "population": 32830933,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.33,
+        "tonnes2022": 3976074,
+        "tonnes2030": 5298152,
+        "tonnes2040": 7694741,
+        "tonnes2050": 10537762,
+        "reportedYear": 2017
+      }
+    },
+    {
+      "code": "GIB",
+      "iso2": "GI",
+      "name": "Gibraltar",
+      "population": 37197,
+      "generation": {
+        "kgPerPersonPerDay2022": 1.24,
+        "tonnes2022": 16878,
+        "tonnes2030": 20254,
+        "tonnes2040": 23303,
+        "tonnes2050": 25227,
+        "reportedYear": 2021
+      },
+      "composition": {
+        "year": 2006,
+        "shares": {
+          "foodOrganic": 27.5,
+          "paperCardboard": 34.2,
+          "plastic": 16.1,
+          "glass": 4.4,
+          "metal": 4.2,
+          "other": 13.6
+        }
+      }
+    },
+    {
+      "code": "GRC",
+      "iso2": "GR",
+      "name": "Greece",
+      "population": 10475664,
+      "generation": {
+        "kgPerPersonPerDay2022": 1.42,
+        "tonnes2022": 5421551,
+        "tonnes2030": 5478861,
+        "tonnes2040": 5538468,
+        "tonnes2050": 5506192,
+        "reportedYear": 2021
+      },
+      "treatment": {
+        "year": 2019,
+        "shares": {
+          "recycling": 16,
+          "composting": 5,
+          "incineration": null,
+          "sanitaryLandfill": null,
+          "otherLandfill": 77.7,
+          "openDump": null,
+          "uncollected": null,
+          "other": 1.3
+        }
+      },
+      "composition": {
+        "year": 2019,
+        "shares": {
+          "foodOrganic": 43,
+          "paperCardboard": 24.4,
+          "plastic": 14,
+          "glass": 4.3,
+          "metal": 3.7,
+          "other": 10.6
+        }
+      }
+    },
+    {
+      "code": "GRL",
+      "iso2": "GL",
+      "name": "Greenland",
+      "population": 56019,
+      "generation": {
+        "kgPerPersonPerDay2022": 2.05,
+        "tonnes2022": 41958,
+        "tonnes2030": 42529,
+        "tonnes2040": 41938,
+        "tonnes2050": 40642,
+        "reportedYear": 2022
+      },
+      "treatment": {
+        "year": 2022,
+        "shares": {
+          "recycling": null,
+          "composting": null,
+          "incineration": 87.3,
+          "sanitaryLandfill": null,
+          "otherLandfill": 12.7,
+          "openDump": null,
+          "uncollected": null,
+          "other": null
+        }
+      }
+    },
+    {
+      "code": "GRD",
+      "iso2": "GD",
+      "name": "Grenada",
+      "population": 116819,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.8,
+        "tonnes2022": 34000,
+        "tonnes2030": 39245,
+        "tonnes2040": 44642,
+        "tonnes2050": 48428,
+        "reportedYear": 2022
+      },
+      "treatment": {
+        "year": 2011,
+        "shares": {
+          "recycling": null,
+          "composting": 0.2,
+          "incineration": null,
+          "sanitaryLandfill": null,
+          "otherLandfill": 98.3,
+          "openDump": null,
+          "uncollected": 1.4,
+          "other": 0.1
+        }
+      },
+      "composition": {
+        "year": 2009,
+        "shares": {
+          "foodOrganic": 27.1,
+          "paperCardboard": 13.6,
+          "plastic": 16.4,
+          "glass": 3.1,
+          "metal": 2.4,
+          "other": 37.4
+        }
+      }
+    },
+    {
+      "code": "GUM",
+      "iso2": "GU",
+      "name": "Guam",
+      "population": 164502,
+      "generation": {
+        "kgPerPersonPerDay2022": 2.43,
+        "tonnes2022": 145824,
+        "tonnes2030": 159139,
+        "tonnes2040": 171070,
+        "tonnes2050": 181371,
+        "reportedYear": 2012
+      },
+      "treatment": {
+        "year": 2022,
+        "shares": {
+          "recycling": 38.2,
+          "composting": null,
+          "incineration": null,
+          "sanitaryLandfill": null,
+          "otherLandfill": null,
+          "openDump": null,
+          "uncollected": null,
+          "other": 61.8
+        }
+      },
+      "composition": {
+        "year": 2012,
+        "shares": {
+          "foodOrganic": 27.3,
+          "paperCardboard": 28.5,
+          "plastic": 12.4,
+          "glass": 4.6,
+          "metal": 9,
+          "other": 18.2
+        }
+      }
+    },
+    {
+      "code": "GTM",
+      "iso2": "GT",
+      "name": "Guatemala",
+      "population": 17711271,
+      "generation": {
+        "kgPerPersonPerDay2022": 1.04,
+        "tonnes2022": 6730814,
+        "tonnes2030": 8541308,
+        "tonnes2040": 11242859,
+        "tonnes2050": 14214445,
+        "reportedYear": 2021
+      },
+      "treatment": {
+        "year": 2018,
+        "shares": {
+          "recycling": null,
+          "composting": null,
+          "incineration": null,
+          "sanitaryLandfill": null,
+          "otherLandfill": 41.9,
+          "openDump": null,
+          "uncollected": 58.1,
+          "other": null
+        }
+      },
+      "composition": {
+        "year": 2021,
+        "shares": {
+          "foodOrganic": 56,
+          "paperCardboard": 6,
+          "plastic": 13,
+          "glass": 3,
+          "metal": 2,
+          "other": 20
+        }
+      }
+    },
+    {
+      "code": "GIN",
+      "iso2": "GN",
+      "name": "Guinea",
+      "population": 13880879,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.31,
+        "tonnes2022": 1568192,
+        "tonnes2030": 1935833,
+        "tonnes2040": 2396090,
+        "tonnes2050": 2870004,
+        "reportedYear": null
+      },
+      "treatment": {
+        "year": 2005,
+        "shares": {
+          "recycling": 5,
+          "composting": null,
+          "incineration": null,
+          "sanitaryLandfill": null,
+          "otherLandfill": null,
+          "openDump": null,
+          "uncollected": null,
+          "other": 95
+        }
+      },
+      "composition": {
+        "year": 2007,
+        "shares": {
+          "foodOrganic": 58,
+          "paperCardboard": 9,
+          "plastic": 4,
+          "glass": 1,
+          "metal": 1,
+          "other": 27
+        }
+      }
+    },
+    {
+      "code": "GNB",
+      "iso2": "GW",
+      "name": "Guinea-Bissau",
+      "population": 2081768,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.2,
+        "tonnes2022": 151577,
+        "tonnes2030": 218231,
+        "tonnes2040": 268630,
+        "tonnes2050": 320819,
+        "reportedYear": null
+      }
+    },
+    {
+      "code": "GUY",
+      "iso2": "GY",
+      "name": "Guyana",
+      "population": 819200,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.87,
+        "tonnes2022": 260226,
+        "tonnes2030": 280879,
+        "tonnes2040": 318156,
+        "tonnes2050": 334236,
+        "reportedYear": 2021
+      },
+      "treatment": {
+        "year": 2021,
+        "shares": {
+          "recycling": null,
+          "composting": null,
+          "incineration": null,
+          "sanitaryLandfill": null,
+          "otherLandfill": 55,
+          "openDump": null,
+          "uncollected": 45,
+          "other": null
+        }
+      },
+      "composition": {
+        "year": 2010,
+        "shares": {
+          "foodOrganic": 50.1,
+          "paperCardboard": 10.7,
+          "plastic": 14.2,
+          "glass": 4.7,
+          "metal": 4.2,
+          "other": 16.1
+        }
+      }
+    },
+    {
+      "code": "HTI",
+      "iso2": "HT",
+      "name": "Haiti",
+      "population": 11437610,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.66,
+        "tonnes2022": 2759482,
+        "tonnes2030": 2967926,
+        "tonnes2040": 3348304,
+        "tonnes2050": 3698040,
+        "reportedYear": 2021
+      },
+      "treatment": {
+        "year": 2021,
+        "shares": {
+          "recycling": null,
+          "composting": null,
+          "incineration": null,
+          "sanitaryLandfill": null,
+          "otherLandfill": null,
+          "openDump": 43,
+          "uncollected": 57,
+          "other": null
+        }
+      },
+      "composition": {
+        "year": 2016,
+        "shares": {
+          "foodOrganic": 61.3,
+          "paperCardboard": 4.1,
+          "plastic": 12.7,
+          "glass": 1.6,
+          "metal": 2.5,
+          "other": 17.8
+        }
+      }
+    },
+    {
+      "code": "HND",
+      "iso2": "HN",
+      "name": "Honduras",
+      "population": 10373434,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.89,
+        "tonnes2022": 3354538,
+        "tonnes2030": 4467472,
+        "tonnes2040": 6330488,
+        "tonnes2050": 8836047,
+        "reportedYear": 2021
+      },
+      "treatment": {
+        "year": 2021,
+        "shares": {
+          "recycling": null,
+          "composting": null,
+          "incineration": null,
+          "sanitaryLandfill": 7.6,
+          "otherLandfill": 14.7,
+          "openDump": 30.3,
+          "uncollected": 47.4,
+          "other": null
+        }
+      },
+      "composition": {
+        "year": 2022,
+        "shares": {
+          "foodOrganic": 59,
+          "paperCardboard": 18,
+          "plastic": 15,
+          "glass": 1,
+          "metal": 2,
+          "other": 5
+        }
+      }
+    },
+    {
+      "code": "HKG",
+      "iso2": "HK",
+      "name": "Hong Kong SAR, China",
+      "population": 7479439,
+      "generation": {
+        "kgPerPersonPerDay2022": 2.19,
+        "tonnes2022": 5975150,
+        "tonnes2030": 6061341,
+        "tonnes2040": 5840948,
+        "tonnes2050": 5232811,
+        "reportedYear": 2022
+      },
+      "treatment": {
+        "year": 2022,
+        "shares": {
+          "recycling": 32,
+          "composting": null,
+          "incineration": null,
+          "sanitaryLandfill": 68,
+          "otherLandfill": null,
+          "openDump": null,
+          "uncollected": null,
+          "other": null
+        }
+      },
+      "composition": {
+        "year": 2022,
+        "shares": {
+          "foodOrganic": 22.7,
+          "paperCardboard": 23.5,
+          "plastic": 16.5,
+          "glass": 1.6,
+          "metal": 18.6,
+          "other": 17.1
+        }
+      }
+    },
+    {
+      "code": "HUN",
+      "iso2": "HU",
+      "name": "Hungary",
+      "population": 9685406,
+      "generation": {
+        "kgPerPersonPerDay2022": 1.11,
+        "tonnes2022": 3911000,
+        "tonnes2030": 4103447,
+        "tonnes2040": 4183959,
+        "tonnes2050": 4170527,
+        "reportedYear": 2022
+      },
+      "treatment": {
+        "year": 2022,
+        "shares": {
+          "recycling": 23.8,
+          "composting": 8.8,
+          "incineration": 14.1,
+          "sanitaryLandfill": 50.5,
+          "otherLandfill": null,
+          "openDump": null,
+          "uncollected": null,
+          "other": 2.8
+        }
+      },
+      "composition": {
+        "year": 2018,
+        "shares": {
+          "foodOrganic": 18.6,
+          "paperCardboard": 12.6,
+          "plastic": 15,
+          "glass": 3.8,
+          "metal": 3.3,
+          "other": 46.7
+        }
+      }
+    },
+    {
+      "code": "ISL",
+      "iso2": "IS",
+      "name": "Iceland",
+      "population": 376336,
+      "generation": {
+        "kgPerPersonPerDay2022": 1.65,
+        "tonnes2022": 227000,
+        "tonnes2030": 260309,
+        "tonnes2040": 280514,
+        "tonnes2050": 290157,
+        "reportedYear": 2022
+      },
+      "treatment": {
+        "year": 2022,
+        "shares": {
+          "recycling": 20.7,
+          "composting": 2.7,
+          "incineration": 15.4,
+          "sanitaryLandfill": null,
+          "otherLandfill": 33,
+          "openDump": null,
+          "uncollected": null,
+          "other": 28.2
+        }
+      }
+    },
+    {
+      "code": "IND",
+      "iso2": "IN",
+      "name": "India",
+      "population": 1419143477,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.4,
+        "tonnes2022": 209781997,
+        "tonnes2030": 231333564,
+        "tonnes2040": 308820831,
+        "tonnes2050": 376163172,
+        "reportedYear": 2021
+      },
+      "treatment": {
+        "year": 2020,
+        "shares": {
+          "recycling": null,
+          "composting": null,
+          "incineration": null,
+          "sanitaryLandfill": null,
+          "otherLandfill": 18.4,
+          "openDump": null,
+          "uncollected": 4.6,
+          "other": 77
+        }
+      },
+      "composition": {
+        "year": 2021,
+        "shares": {
+          "foodOrganic": 44.9,
+          "paperCardboard": 7.4,
+          "plastic": 16,
+          "glass": 1.1,
+          "metal": 1.1,
+          "other": 29.5
+        }
+      }
+    },
+    {
+      "code": "IDN",
+      "iso2": "ID",
+      "name": "Indonesia",
+      "population": 277634568,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.53,
+        "tonnes2022": 53546427,
+        "tonnes2030": 68020062,
+        "tonnes2040": 83503910,
+        "tonnes2050": 95755530,
+        "reportedYear": 2023
+      },
+      "treatment": {
+        "year": 2023,
+        "shares": {
+          "recycling": 8.8,
+          "composting": 3.1,
+          "incineration": null,
+          "sanitaryLandfill": 6.9,
+          "otherLandfill": 31.6,
+          "openDump": 12.1,
+          "uncollected": 37.5,
+          "other": null
+        }
+      },
+      "composition": {
+        "year": 2023,
+        "shares": {
+          "foodOrganic": 39.7,
+          "paperCardboard": 10.8,
+          "plastic": 19.2,
+          "glass": 2.5,
+          "metal": 3.2,
+          "other": 24.6
+        }
+      }
+    },
+    {
+      "code": "IRN",
+      "iso2": "IR",
+      "name": "Iran, Islamic Rep.",
+      "population": 88945856,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.63,
+        "tonnes2022": 20453100,
+        "tonnes2030": 23946594,
+        "tonnes2040": 27049897,
+        "tonnes2050": 29358466,
+        "reportedYear": 2022
+      },
+      "treatment": {
+        "year": 2023,
+        "shares": {
+          "recycling": 4.3,
+          "composting": 7.3,
+          "incineration": null,
+          "sanitaryLandfill": null,
+          "otherLandfill": 22.5,
+          "openDump": 65.6,
+          "uncollected": null,
+          "other": 0.3
+        }
+      },
+      "composition": {
+        "year": 2004,
+        "shares": {
+          "foodOrganic": 72.1,
+          "paperCardboard": 6.4,
+          "plastic": 7.8,
+          "glass": 2,
+          "metal": 2.5,
+          "other": 9.2
+        }
+      }
+    },
+    {
+      "code": "IRQ",
+      "iso2": "IQ",
+      "name": "Iraq",
+      "population": 43550907,
+      "generation": {
+        "kgPerPersonPerDay2022": 1.13,
+        "tonnes2022": 18034279,
+        "tonnes2030": 21262695,
+        "tonnes2040": 26270576,
+        "tonnes2050": 37835198,
+        "reportedYear": 2019
+      },
+      "treatment": {
+        "year": 2019,
+        "shares": {
+          "recycling": 0.1,
+          "composting": null,
+          "incineration": null,
+          "sanitaryLandfill": null,
+          "otherLandfill": 58.6,
+          "openDump": null,
+          "uncollected": 41.3,
+          "other": null
+        }
+      },
+      "composition": {
+        "year": 2008,
+        "shares": {
+          "foodOrganic": 69.1,
+          "paperCardboard": 9.6,
+          "plastic": 6.7,
+          "glass": 2.3,
+          "metal": 1.4,
+          "other": 10.9
+        }
+      }
+    },
+    {
+      "code": "IRL",
+      "iso2": "IE",
+      "name": "Ireland",
+      "population": 5054196,
+      "generation": {
+        "kgPerPersonPerDay2022": 1.76,
+        "tonnes2022": 3240493,
+        "tonnes2030": 3595845,
+        "tonnes2040": 3872486,
+        "tonnes2050": 4066576,
+        "reportedYear": 2021
+      },
+      "treatment": {
+        "year": 2021,
+        "shares": {
+          "recycling": 26,
+          "composting": 15.4,
+          "incineration": 41.4,
+          "sanitaryLandfill": 15.9,
+          "otherLandfill": null,
+          "openDump": null,
+          "uncollected": null,
+          "other": 1.3
+        }
+      },
+      "composition": {
+        "year": 2021,
+        "shares": {
+          "foodOrganic": 30,
+          "paperCardboard": 16,
+          "plastic": 16,
+          "glass": 2,
+          "metal": 4,
+          "other": 32
+        }
+      }
+    },
+    {
+      "code": "IMN",
+      "iso2": "IM",
+      "name": "Isle of Man",
+      "population": 84106,
+      "generation": {
+        "kgPerPersonPerDay2022": 1.61,
+        "tonnes2022": 49453,
+        "tonnes2030": 50861,
+        "tonnes2040": 51693,
+        "tonnes2050": 51393,
+        "reportedYear": 2023
+      },
+      "treatment": {
+        "year": 2023,
+        "shares": {
+          "recycling": 12.9,
+          "composting": null,
+          "incineration": 81.3,
+          "sanitaryLandfill": 2.3,
+          "otherLandfill": null,
+          "openDump": null,
+          "uncollected": null,
+          "other": 3.5
+        }
+      }
+    },
+    {
+      "code": "ISR",
+      "iso2": "IL",
+      "name": "Israel",
+      "population": 9015491,
+      "generation": {
+        "kgPerPersonPerDay2022": 1.88,
+        "tonnes2022": 6189622,
+        "tonnes2030": 7304420,
+        "tonnes2040": 8728313,
+        "tonnes2050": 10203505,
+        "reportedYear": 2022
+      },
+      "treatment": {
+        "year": 2020,
+        "shares": {
+          "recycling": 24.3,
+          "composting": null,
+          "incineration": null,
+          "sanitaryLandfill": null,
+          "otherLandfill": 75.7,
+          "openDump": null,
+          "uncollected": null,
+          "other": null
+        }
+      },
+      "composition": {
+        "year": 2020,
+        "shares": {
+          "foodOrganic": 43,
+          "paperCardboard": 20,
+          "plastic": 19,
+          "glass": null,
+          "metal": null,
+          "other": 18
+        }
+      }
+    },
+    {
+      "code": "ITA",
+      "iso2": "IT",
+      "name": "Italy",
+      "population": 59674464,
+      "generation": {
+        "kgPerPersonPerDay2022": 1.33,
+        "tonnes2022": 29051310,
+        "tonnes2030": 29397916,
+        "tonnes2040": 29080596,
+        "tonnes2050": 28197192,
+        "reportedYear": 2022
+      },
+      "treatment": {
+        "year": 2022,
+        "shares": {
+          "recycling": 21.9,
+          "composting": 18.2,
+          "incineration": 14.8,
+          "sanitaryLandfill": 13.6,
+          "otherLandfill": null,
+          "openDump": null,
+          "uncollected": null,
+          "other": 31.5
+        }
+      },
+      "composition": {
+        "year": 2022,
+        "shares": {
+          "foodOrganic": 34.7,
+          "paperCardboard": 21.8,
+          "plastic": 12.7,
+          "glass": 8.2,
+          "metal": 2.4,
+          "other": 20.2
+        }
+      }
+    },
+    {
+      "code": "JAM",
+      "iso2": "JM",
+      "name": "Jamaica",
+      "population": 2838538,
+      "generation": {
+        "kgPerPersonPerDay2022": 1.22,
+        "tonnes2022": 1267178,
+        "tonnes2030": 1385885,
+        "tonnes2040": 1500759,
+        "tonnes2050": 1617324,
+        "reportedYear": 2021
+      },
+      "treatment": {
+        "year": 2021,
+        "shares": {
+          "recycling": null,
+          "composting": null,
+          "incineration": null,
+          "sanitaryLandfill": null,
+          "otherLandfill": null,
+          "openDump": 70,
+          "uncollected": 30,
+          "other": null
+        }
+      },
+      "composition": {
+        "year": 2014,
+        "shares": {
+          "foodOrganic": 54.4,
+          "paperCardboard": 18.8,
+          "plastic": 17.8,
+          "glass": 3,
+          "metal": 2,
+          "other": 4
+        }
+      }
+    },
+    {
+      "code": "JPN",
+      "iso2": "JP",
+      "name": "Japan",
+      "population": 125324442,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.88,
+        "tonnes2022": 40344000,
+        "tonnes2030": 40214642,
+        "tonnes2040": 39244461,
+        "tonnes2050": 38088783,
+        "reportedYear": 2022
+      },
+      "treatment": {
+        "year": 2022,
+        "shares": {
+          "recycling": 15.7,
+          "composting": 0.8,
+          "incineration": 78.4,
+          "sanitaryLandfill": 0.8,
+          "otherLandfill": null,
+          "openDump": null,
+          "uncollected": 0,
+          "other": 4.3
+        }
+      },
+      "composition": {
+        "year": 2022,
+        "shares": {
+          "foodOrganic": 28.3,
+          "paperCardboard": 33.3,
+          "plastic": 14.8,
+          "glass": 4.7,
+          "metal": 4.4,
+          "other": 14.5
+        }
+      }
+    },
+    {
+      "code": "JOR",
+      "iso2": "JO",
+      "name": "Jordan",
+      "population": 11165043,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.92,
+        "tonnes2022": 3768839,
+        "tonnes2030": 4465561,
+        "tonnes2040": 5901859,
+        "tonnes2050": 7850315,
+        "reportedYear": 2020
+      },
+      "treatment": {
+        "year": 2012,
+        "shares": {
+          "recycling": 7,
+          "composting": null,
+          "incineration": null,
+          "sanitaryLandfill": null,
+          "otherLandfill": 48,
+          "openDump": 45,
+          "uncollected": null,
+          "other": null
+        }
+      },
+      "composition": {
+        "year": 2015,
+        "shares": {
+          "foodOrganic": 52,
+          "paperCardboard": 14,
+          "plastic": 15,
+          "glass": 4,
+          "metal": 4,
+          "other": 11
+        }
+      }
+    },
+    {
+      "code": "KAZ",
+      "iso2": "KZ",
+      "name": "Kazakhstan",
+      "population": 19873218,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.55,
+        "tonnes2022": 4018397,
+        "tonnes2030": 4759978,
+        "tonnes2040": 5582618,
+        "tonnes2050": 6338734,
+        "reportedYear": 2023
+      },
+      "treatment": {
+        "year": 2019,
+        "shares": {
+          "recycling": 11.1,
+          "composting": null,
+          "incineration": null,
+          "sanitaryLandfill": null,
+          "otherLandfill": 68.6,
+          "openDump": null,
+          "uncollected": null,
+          "other": 20.3
+        }
+      },
+      "composition": {
+        "year": 2023,
+        "shares": {
+          "foodOrganic": 30,
+          "paperCardboard": 25,
+          "plastic": 25,
+          "glass": 5,
+          "metal": 3,
+          "other": 12
+        }
+      }
+    },
+    {
+      "code": "KEN",
+      "iso2": "KE",
+      "name": "Kenya",
+      "population": 53711410,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.18,
+        "tonnes2022": 3596047,
+        "tonnes2030": 5163261,
+        "tonnes2040": 7661733,
+        "tonnes2050": 10671917,
+        "reportedYear": 2021
+      },
+      "treatment": {
+        "year": 2021,
+        "shares": {
+          "recycling": null,
+          "composting": null,
+          "incineration": null,
+          "sanitaryLandfill": null,
+          "otherLandfill": 68.2,
+          "openDump": null,
+          "uncollected": 31.8,
+          "other": null
+        }
+      },
+      "composition": {
+        "year": 2010,
+        "shares": {
+          "foodOrganic": 58.8,
+          "paperCardboard": 11.3,
+          "plastic": 13.8,
+          "glass": null,
+          "metal": null,
+          "other": 16.1
+        }
+      }
+    },
+    {
+      "code": "KIR",
+      "iso2": "KI",
+      "name": "Kiribati",
+      "population": 129403,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.31,
+        "tonnes2022": 14747,
+        "tonnes2030": 18442,
+        "tonnes2040": 21433,
+        "tonnes2050": 24498,
+        "reportedYear": 2021
+      },
+      "treatment": {
+        "year": 2021,
+        "shares": {
+          "recycling": 0.3,
+          "composting": null,
+          "incineration": null,
+          "sanitaryLandfill": null,
+          "otherLandfill": 52.8,
+          "openDump": null,
+          "uncollected": 46.9,
+          "other": null
+        }
+      },
+      "composition": {
+        "year": 2021,
+        "shares": {
+          "foodOrganic": 66.8,
+          "paperCardboard": 8.6,
+          "plastic": 5.7,
+          "glass": 2.4,
+          "metal": 10.4,
+          "other": 6.1
+        }
+      }
+    },
+    {
+      "code": "KOR",
+      "iso2": "KR",
+      "name": "Korea, Rep.",
+      "population": 51805631,
+      "generation": {
+        "kgPerPersonPerDay2022": 1.22,
+        "tonnes2022": 23038561,
+        "tonnes2030": 23955080,
+        "tonnes2040": 23826400,
+        "tonnes2050": 22596402,
+        "reportedYear": 2022
+      },
+      "treatment": {
+        "year": 2022,
+        "shares": {
+          "recycling": 38.5,
+          "composting": 21.4,
+          "incineration": 24,
+          "sanitaryLandfill": 10.2,
+          "otherLandfill": null,
+          "openDump": null,
+          "uncollected": null,
+          "other": 5.9
+        }
+      },
+      "composition": {
+        "year": 2022,
+        "shares": {
+          "foodOrganic": 24.2,
+          "paperCardboard": 12.7,
+          "plastic": 24.2,
+          "glass": 2.3,
+          "metal": 1.8,
+          "other": 34.8
+        }
+      }
+    },
+    {
+      "code": "OWID_KOS",
+      "iso2": "XK",
+      "name": "Kosovo",
+      "population": 1726752,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.79,
+        "tonnes2022": 501000,
+        "tonnes2030": 546705,
+        "tonnes2040": 626051,
+        "tonnes2050": 676936,
+        "reportedYear": 2022
+      },
+      "treatment": {
+        "year": 2022,
+        "shares": {
+          "recycling": 2.6,
+          "composting": null,
+          "incineration": null,
+          "sanitaryLandfill": null,
+          "otherLandfill": 97.4,
+          "openDump": null,
+          "uncollected": null,
+          "other": null
+        }
+      },
+      "composition": {
+        "year": 2012,
+        "shares": {
+          "foodOrganic": 42,
+          "paperCardboard": 8,
+          "plastic": 11,
+          "glass": 6.6,
+          "metal": 5.6,
+          "other": 26.8
+        }
+      }
+    },
+    {
+      "code": "KWT",
+      "iso2": "KW",
+      "name": "Kuwait",
+      "population": 4385601,
+      "generation": {
+        "kgPerPersonPerDay2022": 2.21,
+        "tonnes2022": 3536173,
+        "tonnes2030": 4384475,
+        "tonnes2040": 5027566,
+        "tonnes2050": 5681269,
+        "reportedYear": 2023
+      },
+      "treatment": {
+        "year": 2022,
+        "shares": {
+          "recycling": null,
+          "composting": null,
+          "incineration": null,
+          "sanitaryLandfill": null,
+          "otherLandfill": 100,
+          "openDump": null,
+          "uncollected": null,
+          "other": null
+        }
+      },
+      "composition": {
+        "year": 2021,
+        "shares": {
+          "foodOrganic": 47,
+          "paperCardboard": 20,
+          "plastic": 20,
+          "glass": 3.5,
+          "metal": 1.5,
+          "other": 8
+        }
+      }
+    },
+    {
+      "code": "KGZ",
+      "iso2": "KG",
+      "name": "Kyrgyz Republic",
+      "population": 6895139,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.79,
+        "tonnes2022": 1981456,
+        "tonnes2030": 2657947,
+        "tonnes2040": 3626102,
+        "tonnes2050": 4723673,
+        "reportedYear": 2023
+      },
+      "treatment": {
+        "year": 2022,
+        "shares": {
+          "recycling": null,
+          "composting": null,
+          "incineration": null,
+          "sanitaryLandfill": null,
+          "otherLandfill": 47,
+          "openDump": null,
+          "uncollected": 53,
+          "other": null
+        }
+      },
+      "composition": {
+        "year": 2018,
+        "shares": {
+          "foodOrganic": 32,
+          "paperCardboard": 1,
+          "plastic": 21,
+          "glass": 10,
+          "metal": 0.5,
+          "other": 35.5
+        }
+      }
+    },
+    {
+      "code": "LAO",
+      "iso2": "LA",
+      "name": "Lao PDR",
+      "population": 7505704,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.17,
+        "tonnes2022": 455561,
+        "tonnes2030": 592601,
+        "tonnes2040": 811925,
+        "tonnes2050": 1040193,
+        "reportedYear": 2015
+      },
+      "treatment": {
+        "year": 2020,
+        "shares": {
+          "recycling": null,
+          "composting": null,
+          "incineration": null,
+          "sanitaryLandfill": null,
+          "otherLandfill": null,
+          "openDump": 55,
+          "uncollected": 45,
+          "other": null
+        }
+      }
+    },
+    {
+      "code": "LVA",
+      "iso2": "LV",
+      "name": "Latvia",
+      "population": 1877027,
+      "generation": {
+        "kgPerPersonPerDay2022": 1.27,
+        "tonnes2022": 871625,
+        "tonnes2030": 892770,
+        "tonnes2040": 877650,
+        "tonnes2050": 839934,
+        "reportedYear": 2021
+      },
+      "treatment": {
+        "year": 2021,
+        "shares": {
+          "recycling": 36.1,
+          "composting": 7.9,
+          "incineration": 3.5,
+          "sanitaryLandfill": 52.4,
+          "otherLandfill": null,
+          "openDump": null,
+          "uncollected": null,
+          "other": 0.1
+        }
+      },
+      "composition": {
+        "year": 2021,
+        "shares": {
+          "foodOrganic": 33.1,
+          "paperCardboard": 16.3,
+          "plastic": 11.5,
+          "glass": 11.3,
+          "metal": 3,
+          "other": 24.8
+        }
+      }
+    },
+    {
+      "code": "LBN",
+      "iso2": "LB",
+      "name": "Lebanon",
+      "population": 5727783,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.99,
+        "tonnes2022": 2067615,
+        "tonnes2030": 2208717,
+        "tonnes2040": 2679217,
+        "tonnes2050": 3262484,
+        "reportedYear": 2021
+      },
+      "treatment": {
+        "year": 2022,
+        "shares": {
+          "recycling": null,
+          "composting": null,
+          "incineration": null,
+          "sanitaryLandfill": null,
+          "otherLandfill": 57,
+          "openDump": 42,
+          "uncollected": null,
+          "other": 1
+        }
+      },
+      "composition": {
+        "year": 2021,
+        "shares": {
+          "foodOrganic": 70.5,
+          "paperCardboard": 4.5,
+          "plastic": 12.5,
+          "glass": 3.5,
+          "metal": 2,
+          "other": 7
+        }
+      }
+    },
+    {
+      "code": "LSO",
+      "iso2": "LS",
+      "name": "Lesotho",
+      "population": 2273725,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.21,
+        "tonnes2022": 178344,
+        "tonnes2030": 211696,
+        "tonnes2040": 301423,
+        "tonnes2050": 420312,
+        "reportedYear": null
+      }
+    },
+    {
+      "code": "LBR",
+      "iso2": "LR",
+      "name": "Liberia",
+      "population": 5313918,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.14,
+        "tonnes2022": 274347,
+        "tonnes2030": 335467,
+        "tonnes2040": 417197,
+        "tonnes2050": 499655,
+        "reportedYear": null
+      },
+      "treatment": {
+        "year": 2024,
+        "shares": {
+          "recycling": null,
+          "composting": null,
+          "incineration": null,
+          "sanitaryLandfill": null,
+          "otherLandfill": null,
+          "openDump": 64,
+          "uncollected": 20.4,
+          "other": 15.6
+        }
+      }
+    },
+    {
+      "code": "LBY",
+      "iso2": "LY",
+      "name": "Libya",
+      "population": 7178831,
+      "generation": {
+        "kgPerPersonPerDay2022": 1.57,
+        "tonnes2022": 4123954,
+        "tonnes2030": 4938199,
+        "tonnes2040": 5713122,
+        "tonnes2050": 6985901,
+        "reportedYear": 2014
+      },
+      "treatment": {
+        "year": 2023,
+        "shares": {
+          "recycling": null,
+          "composting": null,
+          "incineration": null,
+          "sanitaryLandfill": null,
+          "otherLandfill": null,
+          "openDump": 67,
+          "uncollected": null,
+          "other": 33
+        }
+      },
+      "composition": {
+        "year": 2023,
+        "shares": {
+          "foodOrganic": 70.1,
+          "paperCardboard": 5.5,
+          "plastic": 7.5,
+          "glass": 3.1,
+          "metal": 4.3,
+          "other": 9.5
+        }
+      }
+    },
+    {
+      "code": "LIE",
+      "iso2": "LI",
+      "name": "Liechtenstein",
+      "population": 39174,
+      "generation": {
+        "kgPerPersonPerDay2022": 2.27,
+        "tonnes2022": 32424,
+        "tonnes2030": 34767,
+        "tonnes2040": 36496,
+        "tonnes2050": 37347,
+        "reportedYear": 2022
+      },
+      "treatment": {
+        "year": 2022,
+        "shares": {
+          "recycling": 52.2,
+          "composting": 23.5,
+          "incineration": 24.3,
+          "sanitaryLandfill": null,
+          "otherLandfill": null,
+          "openDump": null,
+          "uncollected": null,
+          "other": 0
+        }
+      },
+      "composition": {
+        "year": 2021,
+        "shares": {
+          "foodOrganic": 32.4,
+          "paperCardboard": 20.5,
+          "plastic": 4.9,
+          "glass": 6.9,
+          "metal": 26.7,
+          "other": 8.6
+        }
+      }
+    },
+    {
+      "code": "LTU",
+      "iso2": "LT",
+      "name": "Lithuania",
+      "population": 2792454,
+      "generation": {
+        "kgPerPersonPerDay2022": 1.29,
+        "tonnes2022": 1317000,
+        "tonnes2030": 1373050,
+        "tonnes2040": 1325033,
+        "tonnes2050": 1236233,
+        "reportedYear": 2022
+      },
+      "treatment": {
+        "year": 2022,
+        "shares": {
+          "recycling": 26.5,
+          "composting": 21.9,
+          "incineration": 38,
+          "sanitaryLandfill": null,
+          "otherLandfill": 13.6,
+          "openDump": null,
+          "uncollected": null,
+          "other": 0
+        }
+      },
+      "composition": {
+        "year": 2018,
+        "shares": {
+          "foodOrganic": 34.8,
+          "paperCardboard": 6.3,
+          "plastic": 12.7,
+          "glass": 4.5,
+          "metal": 1.7,
+          "other": 40
+        }
+      }
+    },
+    {
+      "code": "LUX",
+      "iso2": "LU",
+      "name": "Luxembourg",
+      "population": 645633,
+      "generation": {
+        "kgPerPersonPerDay2022": 1.98,
+        "tonnes2022": 465501,
+        "tonnes2030": 519508,
+        "tonnes2040": 561085,
+        "tonnes2050": 583120,
+        "reportedYear": 2022
+      },
+      "treatment": {
+        "year": 2021,
+        "shares": {
+          "recycling": 30.7,
+          "composting": 22,
+          "incineration": 41.3,
+          "sanitaryLandfill": null,
+          "otherLandfill": null,
+          "openDump": null,
+          "uncollected": null,
+          "other": 6
+        }
+      },
+      "composition": {
+        "year": 2020,
+        "shares": {
+          "foodOrganic": 31.6,
+          "paperCardboard": 22,
+          "plastic": 8.7,
+          "glass": 6.6,
+          "metal": 1.6,
+          "other": 29.5
+        }
+      }
+    },
+    {
+      "code": "MAC",
+      "iso2": "MO",
+      "name": "Macao SAR, China",
+      "population": 699757,
+      "generation": {
+        "kgPerPersonPerDay2022": 1.73,
+        "tonnes2022": 443039,
+        "tonnes2030": 559758,
+        "tonnes2040": 562128,
+        "tonnes2050": 540195,
+        "reportedYear": 2022
+      },
+      "treatment": {
+        "year": 2022,
+        "shares": {
+          "recycling": 1.3,
+          "composting": 0.1,
+          "incineration": 98.6,
+          "sanitaryLandfill": null,
+          "otherLandfill": null,
+          "openDump": null,
+          "uncollected": null,
+          "other": null
+        }
+      },
+      "composition": {
+        "year": 2022,
+        "shares": {
+          "foodOrganic": 37.9,
+          "paperCardboard": 25,
+          "plastic": 21.8,
+          "glass": 3.7,
+          "metal": 3.9,
+          "other": 7.7
+        }
+      }
+    },
+    {
+      "code": "MDG",
+      "iso2": "MG",
+      "name": "Madagascar",
+      "population": 30061046,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.33,
+        "tonnes2022": 3652904,
+        "tonnes2030": 5229833,
+        "tonnes2040": 6594788,
+        "tonnes2050": 8067134,
+        "reportedYear": 2019
+      },
+      "composition": {
+        "year": 2009,
+        "shares": {
+          "foodOrganic": 45.4,
+          "paperCardboard": 3.5,
+          "plastic": 5.8,
+          "glass": 0.8,
+          "metal": 1.3,
+          "other": 43.2
+        }
+      }
+    },
+    {
+      "code": "MWI",
+      "iso2": "MW",
+      "name": "Malawi",
+      "population": 20304623,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.46,
+        "tonnes2022": 3420595,
+        "tonnes2030": 4584250,
+        "tonnes2040": 5888165,
+        "tonnes2050": 7251331,
+        "reportedYear": 2018
+      },
+      "treatment": {
+        "year": 2022,
+        "shares": {
+          "recycling": 4,
+          "composting": null,
+          "incineration": null,
+          "sanitaryLandfill": null,
+          "otherLandfill": null,
+          "openDump": null,
+          "uncollected": null,
+          "other": 96
+        }
+      },
+      "composition": {
+        "year": 2022,
+        "shares": {
+          "foodOrganic": 82,
+          "paperCardboard": 4,
+          "plastic": 7,
+          "glass": 3,
+          "metal": 1,
+          "other": 3
+        }
+      }
+    },
+    {
+      "code": "MYS",
+      "iso2": "MY",
+      "name": "Malaysia",
+      "population": 34482632,
+      "generation": {
+        "kgPerPersonPerDay2022": 1.47,
+        "tonnes2022": 18451975,
+        "tonnes2030": 22216703,
+        "tonnes2040": 26081975,
+        "tonnes2050": 28959095,
+        "reportedYear": 2012
+      },
+      "treatment": {
+        "year": 2022,
+        "shares": {
+          "recycling": 0.1,
+          "composting": null,
+          "incineration": 0.2,
+          "sanitaryLandfill": 2.5,
+          "otherLandfill": 14.1,
+          "openDump": null,
+          "uncollected": null,
+          "other": 83.1
+        }
+      },
+      "composition": {
+        "year": 2021,
+        "shares": {
+          "foodOrganic": 40,
+          "paperCardboard": 9,
+          "plastic": 24,
+          "glass": 2,
+          "metal": 2,
+          "other": 23
+        }
+      }
+    },
+    {
+      "code": "MDV",
+      "iso2": "MV",
+      "name": "Maldives",
+      "population": 523069,
+      "generation": {
+        "kgPerPersonPerDay2022": 1.18,
+        "tonnes2022": 225022,
+        "tonnes2030": 284072,
+        "tonnes2040": 330774,
+        "tonnes2050": 366728,
+        "reportedYear": 2019
+      },
+      "treatment": {
+        "year": 2016,
+        "shares": {
+          "recycling": null,
+          "composting": null,
+          "incineration": null,
+          "sanitaryLandfill": null,
+          "otherLandfill": null,
+          "openDump": 79,
+          "uncollected": 21,
+          "other": null
+        }
+      },
+      "composition": {
+        "year": 2019,
+        "shares": {
+          "foodOrganic": 62.9,
+          "paperCardboard": 7.4,
+          "plastic": 10,
+          "glass": 2.3,
+          "metal": 2.9,
+          "other": 14.5
+        }
+      }
+    },
+    {
+      "code": "MLI",
+      "iso2": "ML",
+      "name": "Mali",
+      "population": 22729371,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.21,
+        "tonnes2022": 1709133,
+        "tonnes2030": 2490584,
+        "tonnes2040": 3316197,
+        "tonnes2050": 4222595,
+        "reportedYear": null
+      },
+      "composition": {
+        "year": 1995,
+        "shares": {
+          "foodOrganic": 17.5,
+          "paperCardboard": 3.5,
+          "plastic": 2,
+          "glass": 1,
+          "metal": 3.5,
+          "other": 72.5
+        }
+      }
+    },
+    {
+      "code": "MLT",
+      "iso2": "MT",
+      "name": "Malta",
+      "population": 526866,
+      "generation": {
+        "kgPerPersonPerDay2022": 1.59,
+        "tonnes2022": 306109,
+        "tonnes2030": 346875,
+        "tonnes2040": 363414,
+        "tonnes2050": 361506,
+        "reportedYear": 2022
+      },
+      "treatment": {
+        "year": 2022,
+        "shares": {
+          "recycling": 12.1,
+          "composting": null,
+          "incineration": 1.3,
+          "sanitaryLandfill": null,
+          "otherLandfill": 83.2,
+          "openDump": null,
+          "uncollected": null,
+          "other": 3.4
+        }
+      },
+      "composition": {
+        "year": 2019,
+        "shares": {
+          "foodOrganic": 36.7,
+          "paperCardboard": 15.7,
+          "plastic": 17,
+          "glass": 6.9,
+          "metal": 4.4,
+          "other": 19.3
+        }
+      }
+    },
+    {
+      "code": "MHL",
+      "iso2": "MH",
+      "name": "Marshall Islands",
+      "population": 40682,
+      "generation": {
+        "kgPerPersonPerDay2022": 1.35,
+        "tonnes2022": 20051,
+        "tonnes2030": 14567,
+        "tonnes2040": 13418,
+        "tonnes2050": 13678,
+        "reportedYear": 2019
+      },
+      "treatment": {
+        "year": 2021,
+        "shares": {
+          "recycling": null,
+          "composting": null,
+          "incineration": null,
+          "sanitaryLandfill": null,
+          "otherLandfill": 38.8,
+          "openDump": null,
+          "uncollected": 17.3,
+          "other": 43.9
+        }
+      },
+      "composition": {
+        "year": 2021,
+        "shares": {
+          "foodOrganic": 8.3,
+          "paperCardboard": 23.3,
+          "plastic": 20.4,
+          "glass": 1.5,
+          "metal": 11.4,
+          "other": 35.1
+        }
+      }
+    },
+    {
+      "code": "MRT",
+      "iso2": "MR",
+      "name": "Mauritania",
+      "population": 4802913,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.32,
+        "tonnes2022": 562644,
+        "tonnes2030": 797048,
+        "tonnes2040": 1247222,
+        "tonnes2050": 1842978,
+        "reportedYear": 2016
+      },
+      "treatment": {
+        "year": 2013,
+        "shares": {
+          "recycling": 8,
+          "composting": null,
+          "incineration": null,
+          "sanitaryLandfill": null,
+          "otherLandfill": 37.3,
+          "openDump": 54.7,
+          "uncollected": null,
+          "other": null
+        }
+      }
+    },
+    {
+      "code": "MUS",
+      "iso2": "MU",
+      "name": "Mauritius",
+      "population": 1277600,
+      "generation": {
+        "kgPerPersonPerDay2022": 1.02,
+        "tonnes2022": 473983,
+        "tonnes2030": 535303,
+        "tonnes2040": 569499,
+        "tonnes2050": 570096,
+        "reportedYear": 2022
+      },
+      "treatment": {
+        "year": 2022,
+        "shares": {
+          "recycling": 4,
+          "composting": 0,
+          "incineration": null,
+          "sanitaryLandfill": null,
+          "otherLandfill": 96,
+          "openDump": null,
+          "uncollected": null,
+          "other": null
+        }
+      },
+      "composition": {
+        "year": 2021,
+        "shares": {
+          "foodOrganic": 48,
+          "paperCardboard": 17,
+          "plastic": 14,
+          "glass": 5,
+          "metal": 4,
+          "other": 12
+        }
+      }
+    },
+    {
+      "code": "MEX",
+      "iso2": "MX",
+      "name": "Mexico",
+      "population": 128055116,
+      "generation": {
+        "kgPerPersonPerDay2022": 1.04,
+        "tonnes2022": 48785541,
+        "tonnes2030": 56540908,
+        "tonnes2040": 65533481,
+        "tonnes2050": 73466075,
+        "reportedYear": 2021
+      },
+      "treatment": {
+        "year": 2021,
+        "shares": {
+          "recycling": 7.5,
+          "composting": 0.6,
+          "incineration": 0.6,
+          "sanitaryLandfill": 28.9,
+          "otherLandfill": 39.2,
+          "openDump": 3.1,
+          "uncollected": 16.2,
+          "other": 3.9
+        }
+      },
+      "composition": {
+        "year": 2020,
+        "shares": {
+          "foodOrganic": 43.9,
+          "paperCardboard": 9.6,
+          "plastic": 12.4,
+          "glass": 4.8,
+          "metal": 2.4,
+          "other": 26.9
+        }
+      }
+    },
+    {
+      "code": "FSM",
+      "iso2": "FM",
+      "name": "Micronesia, Fed. Sts.",
+      "population": 111859,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.67,
+        "tonnes2022": 27375,
+        "tonnes2030": 29403,
+        "tonnes2040": 39316,
+        "tonnes2050": 42074,
+        "reportedYear": 2022
+      },
+      "treatment": {
+        "year": 2023,
+        "shares": {
+          "recycling": null,
+          "composting": null,
+          "incineration": null,
+          "sanitaryLandfill": null,
+          "otherLandfill": null,
+          "openDump": null,
+          "uncollected": 64.5,
+          "other": 35.5
+        }
+      },
+      "composition": {
+        "year": 2023,
+        "shares": {
+          "foodOrganic": 17.8,
+          "paperCardboard": 18,
+          "plastic": 20.9,
+          "glass": 2.9,
+          "metal": 14.8,
+          "other": 25.6
+        }
+      }
+    },
+    {
+      "code": "MDA",
+      "iso2": "MD",
+      "name": "Moldova",
+      "population": 2999245,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.87,
+        "tonnes2022": 948657,
+        "tonnes2030": 931713,
+        "tonnes2040": 1017793,
+        "tonnes2050": 1020489,
+        "reportedYear": 2020
+      },
+      "treatment": {
+        "year": 2021,
+        "shares": {
+          "recycling": 6.1,
+          "composting": null,
+          "incineration": null,
+          "sanitaryLandfill": null,
+          "otherLandfill": 35.1,
+          "openDump": 58.8,
+          "uncollected": null,
+          "other": null
+        }
+      },
+      "composition": {
+        "year": 2016,
+        "shares": {
+          "foodOrganic": 45.7,
+          "paperCardboard": 10.1,
+          "plastic": 11.3,
+          "glass": 5.7,
+          "metal": 1.6,
+          "other": 25.6
+        }
+      }
+    },
+    {
+      "code": "MCO",
+      "iso2": "MC",
+      "name": "Monaco",
+      "population": 38727,
+      "generation": {
+        "kgPerPersonPerDay2022": 3.23,
+        "tonnes2022": 45613,
+        "tonnes2030": 45498,
+        "tonnes2040": 45796,
+        "tonnes2050": 46990,
+        "reportedYear": 2024
+      },
+      "treatment": {
+        "year": 2009,
+        "shares": {
+          "recycling": 8.3,
+          "composting": null,
+          "incineration": 91.7,
+          "sanitaryLandfill": null,
+          "otherLandfill": null,
+          "openDump": null,
+          "uncollected": null,
+          "other": null
+        }
+      }
+    },
+    {
+      "code": "MNG",
+      "iso2": "MN",
+      "name": "Mongolia",
+      "population": 3362435,
+      "generation": {
+        "kgPerPersonPerDay2022": 1.35,
+        "tonnes2022": 1662827,
+        "tonnes2030": 2075425,
+        "tonnes2040": 2607961,
+        "tonnes2050": 3168242,
+        "reportedYear": 2019
+      },
+      "treatment": {
+        "year": 2019,
+        "shares": {
+          "recycling": 8.7,
+          "composting": null,
+          "incineration": null,
+          "sanitaryLandfill": null,
+          "otherLandfill": 70.3,
+          "openDump": null,
+          "uncollected": 20.9,
+          "other": 0.1
+        }
+      },
+      "composition": {
+        "year": 2016,
+        "shares": {
+          "foodOrganic": 29.2,
+          "paperCardboard": 17.2,
+          "plastic": 18.5,
+          "glass": 4.7,
+          "metal": 3.3,
+          "other": 27.1
+        }
+      }
+    },
+    {
+      "code": "MNE",
+      "iso2": "ME",
+      "name": "Montenegro",
+      "population": 601626,
+      "generation": {
+        "kgPerPersonPerDay2022": 1.53,
+        "tonnes2022": 335798,
+        "tonnes2030": 392029,
+        "tonnes2040": 397960,
+        "tonnes2050": 385879,
+        "reportedYear": 2022
+      },
+      "treatment": {
+        "year": 2022,
+        "shares": {
+          "recycling": 0.3,
+          "composting": null,
+          "incineration": null,
+          "sanitaryLandfill": null,
+          "otherLandfill": 89.1,
+          "openDump": null,
+          "uncollected": null,
+          "other": 10.6
+        }
+      },
+      "composition": {
+        "year": 2013,
+        "shares": {
+          "foodOrganic": 37.2,
+          "paperCardboard": 13,
+          "plastic": 17.5,
+          "glass": 8.5,
+          "metal": 2.8,
+          "other": 21
+        }
+      }
+    },
+    {
+      "code": "MAR",
+      "iso2": "MA",
+      "name": "Morocco",
+      "population": 37134402,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.55,
+        "tonnes2022": 7517551,
+        "tonnes2030": 9269387,
+        "tonnes2040": 11792472,
+        "tonnes2050": 14453285,
+        "reportedYear": 2021
+      },
+      "treatment": {
+        "year": 2021,
+        "shares": {
+          "recycling": 8.1,
+          "composting": null,
+          "incineration": null,
+          "sanitaryLandfill": null,
+          "otherLandfill": 55,
+          "openDump": 32.9,
+          "uncollected": 4,
+          "other": null
+        }
+      },
+      "composition": {
+        "year": 2022,
+        "shares": {
+          "foodOrganic": 70,
+          "paperCardboard": 10,
+          "plastic": 10,
+          "glass": 2,
+          "metal": 4,
+          "other": 4
+        }
+      }
+    },
+    {
+      "code": "MOZ",
+      "iso2": "MZ",
+      "name": "Mozambique",
+      "population": 32171866,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.34,
+        "tonnes2022": 3997445,
+        "tonnes2030": 5158733,
+        "tonnes2040": 6794983,
+        "tonnes2050": 8549979,
+        "reportedYear": 2023
+      },
+      "treatment": {
+        "year": 2017,
+        "shares": {
+          "recycling": 1.5,
+          "composting": null,
+          "incineration": null,
+          "sanitaryLandfill": null,
+          "otherLandfill": null,
+          "openDump": 98.5,
+          "uncollected": null,
+          "other": null
+        }
+      },
+      "composition": {
+        "year": 2012,
+        "shares": {
+          "foodOrganic": 60,
+          "paperCardboard": 25,
+          "plastic": null,
+          "glass": null,
+          "metal": null,
+          "other": 15
+        }
+      }
+    },
+    {
+      "code": "MMR",
+      "iso2": "MM",
+      "name": "Myanmar",
+      "population": 53566461,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.33,
+        "tonnes2022": 6487192,
+        "tonnes2030": 7258857,
+        "tonnes2040": 9536284,
+        "tonnes2050": 12011262,
+        "reportedYear": 2019
+      },
+      "treatment": {
+        "year": 2019,
+        "shares": {
+          "recycling": 11,
+          "composting": null,
+          "incineration": null,
+          "sanitaryLandfill": 3,
+          "otherLandfill": 30,
+          "openDump": 18,
+          "uncollected": 38,
+          "other": null
+        }
+      },
+      "composition": {
+        "year": 2019,
+        "shares": {
+          "foodOrganic": 72.3,
+          "paperCardboard": 5.4,
+          "plastic": 10.5,
+          "glass": 2.9,
+          "metal": 0.9,
+          "other": 8
+        }
+      }
+    },
+    {
+      "code": "NAM",
+      "iso2": "NA",
+      "name": "Namibia",
+      "population": 2851288,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.71,
+        "tonnes2022": 740297,
+        "tonnes2030": 942410,
+        "tonnes2040": 1266172,
+        "tonnes2050": 1670303,
+        "reportedYear": null
+      }
+    },
+    {
+      "code": "NRU",
+      "iso2": "NR",
+      "name": "Nauru",
+      "population": 11757,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.14,
+        "tonnes2022": 603,
+        "tonnes2030": 752,
+        "tonnes2040": 953,
+        "tonnes2050": 1178,
+        "reportedYear": 2020
+      },
+      "treatment": {
+        "year": 2020,
+        "shares": {
+          "recycling": null,
+          "composting": null,
+          "incineration": null,
+          "sanitaryLandfill": null,
+          "otherLandfill": null,
+          "openDump": null,
+          "uncollected": 14,
+          "other": 86
+        }
+      },
+      "composition": {
+        "year": 2020,
+        "shares": {
+          "foodOrganic": 12.5,
+          "paperCardboard": 12.7,
+          "plastic": 12.9,
+          "glass": 8.8,
+          "metal": 8.1,
+          "other": 45
+        }
+      }
+    },
+    {
+      "code": "NPL",
+      "iso2": "NP",
+      "name": "Nepal",
+      "population": 29715593,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.18,
+        "tonnes2022": 1950376,
+        "tonnes2030": 2053306,
+        "tonnes2040": 2284380,
+        "tonnes2050": 2479602,
+        "reportedYear": 2020
+      },
+      "treatment": {
+        "year": 2013,
+        "shares": {
+          "recycling": null,
+          "composting": null,
+          "incineration": null,
+          "sanitaryLandfill": null,
+          "otherLandfill": 23.1,
+          "openDump": null,
+          "uncollected": 37.7,
+          "other": 39.2
+        }
+      },
+      "composition": {
+        "year": 2012,
+        "shares": {
+          "foodOrganic": 56,
+          "paperCardboard": 16,
+          "plastic": 16,
+          "glass": 3,
+          "metal": 2,
+          "other": 7
+        }
+      }
+    },
+    {
+      "code": "NLD",
+      "iso2": "NL",
+      "name": "Netherlands",
+      "population": 17789347,
+      "generation": {
+        "kgPerPersonPerDay2022": 1.29,
+        "tonnes2022": 8370000,
+        "tonnes2030": 9056911,
+        "tonnes2040": 9459456,
+        "tonnes2050": 9607509,
+        "reportedYear": 2022
+      },
+      "treatment": {
+        "year": 2022,
+        "shares": {
+          "recycling": 28.1,
+          "composting": 29.4,
+          "incineration": 41.1,
+          "sanitaryLandfill": 1.4,
+          "otherLandfill": null,
+          "openDump": null,
+          "uncollected": null,
+          "other": null
+        }
+      },
+      "composition": {
+        "year": 2021,
+        "shares": {
+          "foodOrganic": 33.8,
+          "paperCardboard": 19.9,
+          "plastic": 12.5,
+          "glass": 4.5,
+          "metal": 3.7,
+          "other": 25.6
+        }
+      }
+    },
+    {
+      "code": "NCL",
+      "iso2": "NC",
+      "name": "New Caledonia",
+      "population": 285776,
+      "generation": {
+        "kgPerPersonPerDay2022": 1.06,
+        "tonnes2022": 111072,
+        "tonnes2030": 122807,
+        "tonnes2040": 133751,
+        "tonnes2050": 141542,
+        "reportedYear": 2023
+      }
+    },
+    {
+      "code": "NZL",
+      "iso2": "NZ",
+      "name": "New Zealand",
+      "population": 5112112,
+      "generation": {
+        "kgPerPersonPerDay2022": 1.93,
+        "tonnes2022": 3601300,
+        "tonnes2030": 3941444,
+        "tonnes2040": 4277401,
+        "tonnes2050": 4534129,
+        "reportedYear": 2022
+      },
+      "treatment": {
+        "year": 2023,
+        "shares": {
+          "recycling": 9.2,
+          "composting": null,
+          "incineration": null,
+          "sanitaryLandfill": null,
+          "otherLandfill": 90.8,
+          "openDump": null,
+          "uncollected": null,
+          "other": null
+        }
+      },
+      "composition": {
+        "year": 2018,
+        "shares": {
+          "foodOrganic": 14.7,
+          "paperCardboard": 5.9,
+          "plastic": 8.3,
+          "glass": 1.8,
+          "metal": 3.5,
+          "other": 65.8
+        }
+      }
+    },
+    {
+      "code": "NIC",
+      "iso2": "NI",
+      "name": "Nicaragua",
+      "population": 6684151,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.64,
+        "tonnes2022": 1563209,
+        "tonnes2030": 2030345,
+        "tonnes2040": 2792458,
+        "tonnes2050": 3774333,
+        "reportedYear": 2021
+      },
+      "treatment": {
+        "year": 2021,
+        "shares": {
+          "recycling": null,
+          "composting": null,
+          "incineration": null,
+          "sanitaryLandfill": null,
+          "otherLandfill": null,
+          "openDump": null,
+          "uncollected": 42,
+          "other": 58
+        }
+      }
+    },
+    {
+      "code": "NER",
+      "iso2": "NE",
+      "name": "Niger",
+      "population": 24896651,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.2,
+        "tonnes2022": 1856517,
+        "tonnes2030": 2836326,
+        "tonnes2040": 3812354,
+        "tonnes2050": 4882819,
+        "reportedYear": 2019
+      },
+      "composition": {
+        "year": 2019,
+        "shares": {
+          "foodOrganic": 65,
+          "paperCardboard": null,
+          "plastic": null,
+          "glass": null,
+          "metal": null,
+          "other": 35
+        }
+      }
+    },
+    {
+      "code": "NGA",
+      "iso2": "NG",
+      "name": "Nigeria",
+      "population": 220807042,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.57,
+        "tonnes2022": 45737275,
+        "tonnes2030": 57316754,
+        "tonnes2040": 82516989,
+        "tonnes2050": 113768450,
+        "reportedYear": 2021
+      },
+      "composition": {
+        "year": 2015,
+        "shares": {
+          "foodOrganic": 50.7,
+          "paperCardboard": 13,
+          "plastic": 8.5,
+          "glass": 3.8,
+          "metal": 5.6,
+          "other": 18.4
+        }
+      }
+    },
+    {
+      "code": "MKD",
+      "iso2": "MK",
+      "name": "North Macedonia",
+      "population": 1844375,
+      "generation": {
+        "kgPerPersonPerDay2022": 1.3,
+        "tonnes2022": 873083,
+        "tonnes2030": 940452,
+        "tonnes2040": 971369,
+        "tonnes2050": 967846,
+        "reportedYear": 2023
+      },
+      "treatment": {
+        "year": 2020,
+        "shares": {
+          "recycling": 0.3,
+          "composting": null,
+          "incineration": null,
+          "sanitaryLandfill": null,
+          "otherLandfill": 66.7,
+          "openDump": null,
+          "uncollected": 33,
+          "other": null
+        }
+      },
+      "composition": {
+        "year": 2021,
+        "shares": {
+          "foodOrganic": 45.3,
+          "paperCardboard": 12.8,
+          "plastic": 13.9,
+          "glass": 4.1,
+          "metal": 2.5,
+          "other": 21.4
+        }
+      }
+    },
+    {
+      "code": "MNP",
+      "iso2": "MP",
+      "name": "Northern Mariana Islands",
+      "population": 46538,
+      "generation": {
+        "kgPerPersonPerDay2022": 1.73,
+        "tonnes2022": 29340,
+        "tonnes2030": 27209,
+        "tonnes2040": 27978,
+        "tonnes2050": 28883,
+        "reportedYear": 2022
+      },
+      "treatment": {
+        "year": 2022,
+        "shares": {
+          "recycling": null,
+          "composting": null,
+          "incineration": 0.1,
+          "sanitaryLandfill": null,
+          "otherLandfill": 85,
+          "openDump": null,
+          "uncollected": null,
+          "other": 14.9
+        }
+      },
+      "composition": {
+        "year": 2023,
+        "shares": {
+          "foodOrganic": 15.5,
+          "paperCardboard": 28.2,
+          "plastic": 17.9,
+          "glass": 4.9,
+          "metal": 6.2,
+          "other": 27.3
+        }
+      }
+    },
+    {
+      "code": "NOR",
+      "iso2": "NO",
+      "name": "Norway",
+      "population": 5425048,
+      "generation": {
+        "kgPerPersonPerDay2022": 2.12,
+        "tonnes2022": 4189000,
+        "tonnes2030": 4496190,
+        "tonnes2040": 4693756,
+        "tonnes2050": 4814640,
+        "reportedYear": 2022
+      },
+      "treatment": {
+        "year": 2023,
+        "shares": {
+          "recycling": 27.5,
+          "composting": 17.8,
+          "incineration": 50.4,
+          "sanitaryLandfill": 3.6,
+          "otherLandfill": null,
+          "openDump": null,
+          "uncollected": null,
+          "other": 0.7
+        }
+      },
+      "composition": {
+        "year": 2021,
+        "shares": {
+          "foodOrganic": 32.2,
+          "paperCardboard": 15.6,
+          "plastic": 8.8,
+          "glass": 4.7,
+          "metal": 5.7,
+          "other": 33
+        }
+      }
+    },
+    {
+      "code": "OMN",
+      "iso2": "OM",
+      "name": "Oman",
+      "population": 4527058,
+      "generation": {
+        "kgPerPersonPerDay2022": 2,
+        "tonnes2022": 3307951,
+        "tonnes2030": 4605128,
+        "tonnes2040": 5544119,
+        "tonnes2050": 6552467,
+        "reportedYear": 2022
+      },
+      "treatment": {
+        "year": 2022,
+        "shares": {
+          "recycling": 30,
+          "composting": 20.4,
+          "incineration": 0.1,
+          "sanitaryLandfill": null,
+          "otherLandfill": 49.5,
+          "openDump": null,
+          "uncollected": null,
+          "other": null
+        }
+      },
+      "composition": {
+        "year": 2022,
+        "shares": {
+          "foodOrganic": 37.8,
+          "paperCardboard": 14.5,
+          "plastic": 25.7,
+          "glass": 3.1,
+          "metal": 3.6,
+          "other": 15.3
+        }
+      }
+    },
+    {
+      "code": "PAK",
+      "iso2": "PK",
+      "name": "Pakistan",
+      "population": 241727933,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.55,
+        "tonnes2022": 48500000,
+        "tonnes2030": 62101107,
+        "tonnes2040": 92718583,
+        "tonnes2050": 136137316,
+        "reportedYear": 2022
+      },
+      "composition": {
+        "year": 2022,
+        "shares": {
+          "foodOrganic": 57,
+          "paperCardboard": 7.4,
+          "plastic": 9.7,
+          "glass": 2.1,
+          "metal": 0.5,
+          "other": 23.3
+        }
+      }
+    },
+    {
+      "code": "PLW",
+      "iso2": "PW",
+      "name": "Palau",
+      "population": 17770,
+      "generation": {
+        "kgPerPersonPerDay2022": 1.76,
+        "tonnes2022": 11425,
+        "tonnes2030": 12564,
+        "tonnes2040": 12276,
+        "tonnes2050": 11726,
+        "reportedYear": 2017
+      },
+      "treatment": {
+        "year": 2017,
+        "shares": {
+          "recycling": 8.2,
+          "composting": null,
+          "incineration": null,
+          "sanitaryLandfill": null,
+          "otherLandfill": 82.6,
+          "openDump": null,
+          "uncollected": 8.8,
+          "other": 0.4
+        }
+      },
+      "composition": {
+        "year": 2014,
+        "shares": {
+          "foodOrganic": 55,
+          "paperCardboard": 6,
+          "plastic": 8,
+          "glass": 6,
+          "metal": 5,
+          "other": 20
+        }
+      }
+    },
+    {
+      "code": "PAN",
+      "iso2": "PA",
+      "name": "Panama",
+      "population": 4371516,
+      "generation": {
+        "kgPerPersonPerDay2022": 1.29,
+        "tonnes2022": 2054578,
+        "tonnes2030": 2536122,
+        "tonnes2040": 2964306,
+        "tonnes2050": 3297915,
+        "reportedYear": 2021
+      },
+      "treatment": {
+        "year": 2021,
+        "shares": {
+          "recycling": null,
+          "composting": null,
+          "incineration": null,
+          "sanitaryLandfill": null,
+          "otherLandfill": null,
+          "openDump": null,
+          "uncollected": 35.8,
+          "other": 64.2
+        }
+      },
+      "composition": {
+        "year": 2017,
+        "shares": {
+          "foodOrganic": 33,
+          "paperCardboard": 13.7,
+          "plastic": 17.2,
+          "glass": 3,
+          "metal": 4.5,
+          "other": 28.6
+        }
+      }
+    },
+    {
+      "code": "PNG",
+      "iso2": "PG",
+      "name": "Papua New Guinea",
+      "population": 10110130,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.45,
+        "tonnes2022": 1661790,
+        "tonnes2030": 2084980,
+        "tonnes2040": 3095739,
+        "tonnes2050": 3558295,
+        "reportedYear": 2019
+      },
+      "treatment": {
+        "year": 2021,
+        "shares": {
+          "recycling": null,
+          "composting": null,
+          "incineration": null,
+          "sanitaryLandfill": null,
+          "otherLandfill": 12.3,
+          "openDump": null,
+          "uncollected": 87.7,
+          "other": null
+        }
+      },
+      "composition": {
+        "year": 2021,
+        "shares": {
+          "foodOrganic": 40.2,
+          "paperCardboard": 13.6,
+          "plastic": 12.8,
+          "glass": 5.4,
+          "metal": 10.7,
+          "other": 17.3
+        }
+      }
+    },
+    {
+      "code": "PRY",
+      "iso2": "PY",
+      "name": "Paraguay",
+      "population": 6719402,
+      "generation": {
+        "kgPerPersonPerDay2022": 1.2,
+        "tonnes2022": 2943098,
+        "tonnes2030": 3594109,
+        "tonnes2040": 4431584,
+        "tonnes2050": 5259094,
+        "reportedYear": 2022
+      },
+      "treatment": {
+        "year": 2021,
+        "shares": {
+          "recycling": null,
+          "composting": null,
+          "incineration": null,
+          "sanitaryLandfill": null,
+          "otherLandfill": 58,
+          "openDump": null,
+          "uncollected": 42,
+          "other": null
+        }
+      }
+    },
+    {
+      "code": "PER",
+      "iso2": "PE",
+      "name": "Peru",
+      "population": 33294532,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.86,
+        "tonnes2022": 10405827,
+        "tonnes2030": 12369343,
+        "tonnes2040": 15051272,
+        "tonnes2050": 17693488,
+        "reportedYear": 2021
+      },
+      "treatment": {
+        "year": 2022,
+        "shares": {
+          "recycling": 0.9,
+          "composting": 0.8,
+          "incineration": null,
+          "sanitaryLandfill": null,
+          "otherLandfill": 61.2,
+          "openDump": null,
+          "uncollected": 5.8,
+          "other": 31.3
+        }
+      },
+      "composition": {
+        "year": 2023,
+        "shares": {
+          "foodOrganic": 53.8,
+          "paperCardboard": 7.8,
+          "plastic": 13.1,
+          "glass": 3.1,
+          "metal": 4,
+          "other": 18.2
+        }
+      }
+    },
+    {
+      "code": "PHL",
+      "iso2": "PH",
+      "name": "Philippines",
+      "population": 113517326,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.42,
+        "tonnes2022": 17440185,
+        "tonnes2030": 19140800,
+        "tonnes2040": 25446097,
+        "tonnes2050": 30275595,
+        "reportedYear": 2020
+      },
+      "treatment": {
+        "year": 2025,
+        "shares": {
+          "recycling": null,
+          "composting": null,
+          "incineration": null,
+          "sanitaryLandfill": null,
+          "otherLandfill": null,
+          "openDump": null,
+          "uncollected": 45,
+          "other": 55
+        }
+      },
+      "composition": {
+        "year": 2013,
+        "shares": {
+          "foodOrganic": 52.3,
+          "paperCardboard": 8.7,
+          "plastic": 10.6,
+          "glass": 2.3,
+          "metal": 4.2,
+          "other": 21.9
+        }
+      }
+    },
+    {
+      "code": "POL",
+      "iso2": "PL",
+      "name": "Poland",
+      "population": 37957529,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.97,
+        "tonnes2022": 13474923,
+        "tonnes2030": 14324017,
+        "tonnes2040": 14431633,
+        "tonnes2050": 13883674,
+        "reportedYear": 2022
+      },
+      "treatment": {
+        "year": 2022,
+        "shares": {
+          "recycling": 26.8,
+          "composting": 14,
+          "incineration": 21,
+          "sanitaryLandfill": 38.2,
+          "otherLandfill": null,
+          "openDump": null,
+          "uncollected": null,
+          "other": null
+        }
+      },
+      "composition": {
+        "year": 2008,
+        "shares": {
+          "foodOrganic": 34.1,
+          "paperCardboard": 19,
+          "plastic": 15.1,
+          "glass": 10,
+          "metal": 2.6,
+          "other": 19.2
+        }
+      }
+    },
+    {
+      "code": "PRT",
+      "iso2": "PT",
+      "name": "Portugal",
+      "population": 10403320,
+      "generation": {
+        "kgPerPersonPerDay2022": 1.39,
+        "tonnes2022": 5274483,
+        "tonnes2030": 5586252,
+        "tonnes2040": 5776494,
+        "tonnes2050": 5840534,
+        "reportedYear": 2022
+      },
+      "treatment": {
+        "year": 2022,
+        "shares": {
+          "recycling": 16,
+          "composting": 8,
+          "incineration": 15,
+          "sanitaryLandfill": 57,
+          "otherLandfill": null,
+          "openDump": null,
+          "uncollected": null,
+          "other": 4
+        }
+      },
+      "composition": {
+        "year": 2022,
+        "shares": {
+          "foodOrganic": 41,
+          "paperCardboard": 8.8,
+          "plastic": 10.2,
+          "glass": 7.2,
+          "metal": 1.5,
+          "other": 31.3
+        }
+      }
+    },
+    {
+      "code": "PRI",
+      "iso2": "PR",
+      "name": "Puerto Rico",
+      "population": 3241925,
+      "generation": {
+        "kgPerPersonPerDay2022": 2.21,
+        "tonnes2022": 2616935,
+        "tonnes2030": 2663630,
+        "tonnes2040": 2547779,
+        "tonnes2050": 2320697,
+        "reportedYear": 2007
+      },
+      "treatment": {
+        "year": 2020,
+        "shares": {
+          "recycling": 14,
+          "composting": null,
+          "incineration": null,
+          "sanitaryLandfill": null,
+          "otherLandfill": null,
+          "openDump": 86,
+          "uncollected": null,
+          "other": null
+        }
+      },
+      "composition": {
+        "year": 2003,
+        "shares": {
+          "foodOrganic": 34.7,
+          "paperCardboard": 19.1,
+          "plastic": 10.1,
+          "glass": 2,
+          "metal": 10,
+          "other": 24.1
+        }
+      }
+    },
+    {
+      "code": "QAT",
+      "iso2": "QA",
+      "name": "Qatar",
+      "population": 2839198,
+      "generation": {
+        "kgPerPersonPerDay2022": 1.28,
+        "tonnes2022": 1328224,
+        "tonnes2030": 1581399,
+        "tonnes2040": 1766590,
+        "tonnes2050": 1979564,
+        "reportedYear": 2020
+      },
+      "treatment": {
+        "year": 2020,
+        "shares": {
+          "recycling": 0.3,
+          "composting": null,
+          "incineration": null,
+          "sanitaryLandfill": null,
+          "otherLandfill": 99.7,
+          "openDump": null,
+          "uncollected": null,
+          "other": null
+        }
+      },
+      "composition": {
+        "year": 2016,
+        "shares": {
+          "foodOrganic": 57,
+          "paperCardboard": 11,
+          "plastic": 14,
+          "glass": 4,
+          "metal": 9,
+          "other": 5
+        }
+      }
+    },
+    {
+      "code": "ROU",
+      "iso2": "RO",
+      "name": "Romania",
+      "population": 19164426,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.82,
+        "tonnes2022": 5742000,
+        "tonnes2030": 6014334,
+        "tonnes2040": 6020037,
+        "tonnes2050": 5816034,
+        "reportedYear": 2022
+      },
+      "treatment": {
+        "year": 2022,
+        "shares": {
+          "recycling": 7.4,
+          "composting": 5.4,
+          "incineration": 8,
+          "sanitaryLandfill": null,
+          "otherLandfill": 78.8,
+          "openDump": null,
+          "uncollected": null,
+          "other": 0.4
+        }
+      },
+      "composition": {
+        "year": 2018,
+        "shares": {
+          "foodOrganic": 56.5,
+          "paperCardboard": 14.5,
+          "plastic": 13.3,
+          "glass": 5.9,
+          "metal": 4.5,
+          "other": 5.3
+        }
+      }
+    },
+    {
+      "code": "RUS",
+      "iso2": "RU",
+      "name": "Russian Federation",
+      "population": 145484378,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.86,
+        "tonnes2022": 45867400,
+        "tonnes2030": 47288998,
+        "tonnes2040": 49134500,
+        "tonnes2050": 50687762,
+        "reportedYear": 2022
+      },
+      "treatment": {
+        "year": 2022,
+        "shares": {
+          "recycling": 6.6,
+          "composting": null,
+          "incineration": 2.5,
+          "sanitaryLandfill": null,
+          "otherLandfill": 80.2,
+          "openDump": null,
+          "uncollected": 10.7,
+          "other": null
+        }
+      },
+      "composition": {
+        "year": 2018,
+        "shares": {
+          "foodOrganic": 40,
+          "paperCardboard": 19,
+          "plastic": 14,
+          "glass": 12,
+          "metal": 4,
+          "other": 11
+        }
+      }
+    },
+    {
+      "code": "RWA",
+      "iso2": "RW",
+      "name": "Rwanda",
+      "population": 13499464,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.24,
+        "tonnes2022": 1186145,
+        "tonnes2030": 1447811,
+        "tonnes2040": 1795169,
+        "tonnes2050": 2730685,
+        "reportedYear": null
+      }
+    },
+    {
+      "code": "WSM",
+      "iso2": "WS",
+      "name": "Samoa",
+      "population": 214537,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.23,
+        "tonnes2022": 17711,
+        "tonnes2030": 20453,
+        "tonnes2040": 27156,
+        "tonnes2050": 38047,
+        "reportedYear": 2020
+      },
+      "treatment": {
+        "year": 2017,
+        "shares": {
+          "recycling": 2.7,
+          "composting": null,
+          "incineration": 0.6,
+          "sanitaryLandfill": null,
+          "otherLandfill": 23.3,
+          "openDump": null,
+          "uncollected": 70.2,
+          "other": 3.2
+        }
+      },
+      "composition": {
+        "year": 2017,
+        "shares": {
+          "foodOrganic": 72.6,
+          "paperCardboard": 6.4,
+          "plastic": 7.6,
+          "glass": 1.9,
+          "metal": 3.4,
+          "other": 8.1
+        }
+      }
+    },
+    {
+      "code": "SMR",
+      "iso2": "SM",
+      "name": "San Marino",
+      "population": 34322,
+      "generation": {
+        "kgPerPersonPerDay2022": 1.4,
+        "tonnes2022": 17585,
+        "tonnes2030": 16538,
+        "tonnes2040": 15438,
+        "tonnes2050": 13633,
+        "reportedYear": 2019
+      },
+      "treatment": {
+        "year": 2019,
+        "shares": {
+          "recycling": 43,
+          "composting": null,
+          "incineration": null,
+          "sanitaryLandfill": null,
+          "otherLandfill": null,
+          "openDump": null,
+          "uncollected": null,
+          "other": 57
+        }
+      }
+    },
+    {
+      "code": "STP",
+      "iso2": "ST",
+      "name": "São Tomé and Príncipe",
+      "population": 224052,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.36,
+        "tonnes2022": 29105,
+        "tonnes2030": 35969,
+        "tonnes2040": 52417,
+        "tonnes2050": 75635,
+        "reportedYear": 2015
+      },
+      "composition": {
+        "year": 2015,
+        "shares": {
+          "foodOrganic": 50,
+          "paperCardboard": 6,
+          "plastic": 3,
+          "glass": 5,
+          "metal": 2,
+          "other": 34
+        }
+      }
+    },
+    {
+      "code": "SAU",
+      "iso2": "SA",
+      "name": "Saudi Arabia",
+      "population": 31483360,
+      "generation": {
+        "kgPerPersonPerDay2022": 1.81,
+        "tonnes2022": 20751133,
+        "tonnes2030": 25759542,
+        "tonnes2040": 30731532,
+        "tonnes2050": 35303414,
+        "reportedYear": 2022
+      },
+      "treatment": {
+        "year": 2022,
+        "shares": {
+          "recycling": 3.7,
+          "composting": null,
+          "incineration": 0.3,
+          "sanitaryLandfill": 88.3,
+          "otherLandfill": null,
+          "openDump": null,
+          "uncollected": null,
+          "other": 7.7
+        }
+      },
+      "composition": {
+        "year": 2022,
+        "shares": {
+          "foodOrganic": 41.8,
+          "paperCardboard": 8.3,
+          "plastic": 10.5,
+          "glass": 3,
+          "metal": 4.3,
+          "other": 32.1
+        }
+      }
+    },
+    {
+      "code": "SEN",
+      "iso2": "SN",
+      "name": "Senegal",
+      "population": 17435133,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.49,
+        "tonnes2022": 3106279,
+        "tonnes2030": 4565085,
+        "tonnes2040": 5742830,
+        "tonnes2050": 8368204,
+        "reportedYear": 2021
+      },
+      "treatment": {
+        "year": 2014,
+        "shares": {
+          "recycling": null,
+          "composting": null,
+          "incineration": null,
+          "sanitaryLandfill": null,
+          "otherLandfill": 5.1,
+          "openDump": 43.8,
+          "uncollected": null,
+          "other": 51.1
+        }
+      },
+      "composition": {
+        "year": 2016,
+        "shares": {
+          "foodOrganic": 12,
+          "paperCardboard": 5,
+          "plastic": 9,
+          "glass": 2,
+          "metal": 2,
+          "other": 70
+        }
+      }
+    },
+    {
+      "code": "SRB",
+      "iso2": "RS",
+      "name": "Serbia",
+      "population": 6794359,
+      "generation": {
+        "kgPerPersonPerDay2022": 1.17,
+        "tonnes2022": 2907618,
+        "tonnes2030": 3211316,
+        "tonnes2040": 3346698,
+        "tonnes2050": 3312714,
+        "reportedYear": 2021
+      },
+      "treatment": {
+        "year": 2022,
+        "shares": {
+          "recycling": 18.1,
+          "composting": 0.3,
+          "incineration": 0.4,
+          "sanitaryLandfill": null,
+          "otherLandfill": 80.6,
+          "openDump": null,
+          "uncollected": null,
+          "other": 0.6
+        }
+      },
+      "composition": {
+        "year": 2020,
+        "shares": {
+          "foodOrganic": 40,
+          "paperCardboard": 13,
+          "plastic": 12.1,
+          "glass": 4.1,
+          "metal": 5.2,
+          "other": 25.6
+        }
+      }
+    },
+    {
+      "code": "SYC",
+      "iso2": "SC",
+      "name": "Seychelles",
+      "population": 124351,
+      "generation": {
+        "kgPerPersonPerDay2022": 1.46,
+        "tonnes2022": 66240,
+        "tonnes2030": 82912,
+        "tonnes2040": 91730,
+        "tonnes2050": 96773,
+        "reportedYear": 2012
+      },
+      "treatment": {
+        "year": 2017,
+        "shares": {
+          "recycling": 4.8,
+          "composting": null,
+          "incineration": null,
+          "sanitaryLandfill": null,
+          "otherLandfill": 79.2,
+          "openDump": 6.1,
+          "uncollected": 9.9,
+          "other": null
+        }
+      },
+      "composition": {
+        "year": 2017,
+        "shares": {
+          "foodOrganic": 31,
+          "paperCardboard": 18,
+          "plastic": 13,
+          "glass": 4,
+          "metal": 5,
+          "other": 29
+        }
+      }
+    },
+    {
+      "code": "SLE",
+      "iso2": "SL",
+      "name": "Sierra Leone",
+      "population": 8185494,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.15,
+        "tonnes2022": 433435,
+        "tonnes2030": 602932,
+        "tonnes2040": 731259,
+        "tonnes2050": 857220,
+        "reportedYear": null
+      }
+    },
+    {
+      "code": "SGP",
+      "iso2": "SG",
+      "name": "Singapore",
+      "population": 5534051,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.89,
+        "tonnes2022": 1787655,
+        "tonnes2030": 1974930,
+        "tonnes2040": 2063438,
+        "tonnes2050": 2033048,
+        "reportedYear": 2023
+      },
+      "treatment": {
+        "year": 2023,
+        "shares": {
+          "recycling": 52,
+          "composting": null,
+          "incineration": 43,
+          "sanitaryLandfill": null,
+          "otherLandfill": 5,
+          "openDump": null,
+          "uncollected": null,
+          "other": null
+        }
+      },
+      "composition": {
+        "year": 2023,
+        "shares": {
+          "foodOrganic": 14,
+          "paperCardboard": 14.4,
+          "plastic": 13.5,
+          "glass": 1,
+          "metal": 19.4,
+          "other": 37.7
+        }
+      }
+    },
+    {
+      "code": "SXM",
+      "iso2": "SX",
+      "name": "Sint Maarten (Dutch)",
+      "population": 41835,
+      "generation": {
+        "kgPerPersonPerDay2022": 1.02,
+        "tonnes2022": 15510,
+        "tonnes2030": 15561,
+        "tonnes2040": 14665,
+        "tonnes2050": 11961,
+        "reportedYear": 2020
+      },
+      "treatment": {
+        "year": 2019,
+        "shares": {
+          "recycling": 10,
+          "composting": null,
+          "incineration": null,
+          "sanitaryLandfill": null,
+          "otherLandfill": null,
+          "openDump": 90,
+          "uncollected": null,
+          "other": null
+        }
+      },
+      "composition": {
+        "year": 2019,
+        "shares": {
+          "foodOrganic": 45.9,
+          "paperCardboard": 16.3,
+          "plastic": 11.7,
+          "glass": 11.7,
+          "metal": 9.6,
+          "other": 4.8
+        }
+      }
+    },
+    {
+      "code": "SVK",
+      "iso2": "SK",
+      "name": "Slovak Republic",
+      "population": 5429857,
+      "generation": {
+        "kgPerPersonPerDay2022": 1.31,
+        "tonnes2022": 2597457,
+        "tonnes2030": 2746883,
+        "tonnes2040": 2815916,
+        "tonnes2050": 2796405,
+        "reportedYear": 2022
+      },
+      "treatment": {
+        "year": 2022,
+        "shares": {
+          "recycling": 20.5,
+          "composting": 29.1,
+          "incineration": 7.8,
+          "sanitaryLandfill": null,
+          "otherLandfill": 39.3,
+          "openDump": null,
+          "uncollected": null,
+          "other": 3.3
+        }
+      },
+      "composition": {
+        "year": 2013,
+        "shares": {
+          "foodOrganic": 57.5,
+          "paperCardboard": 15,
+          "plastic": 12.8,
+          "glass": 10.3,
+          "metal": 2.9,
+          "other": 1.5
+        }
+      }
+    },
+    {
+      "code": "SVN",
+      "iso2": "SI",
+      "name": "Slovenia",
+      "population": 2112888,
+      "generation": {
+        "kgPerPersonPerDay2022": 1.38,
+        "tonnes2022": 1064576,
+        "tonnes2030": 1124361,
+        "tonnes2040": 1143998,
+        "tonnes2050": 1135431,
+        "reportedYear": 2022
+      },
+      "treatment": {
+        "year": 2022,
+        "shares": {
+          "recycling": 46.1,
+          "composting": 15.9,
+          "incineration": 12.6,
+          "sanitaryLandfill": null,
+          "otherLandfill": 7.8,
+          "openDump": null,
+          "uncollected": 1.7,
+          "other": 15.9
+        }
+      },
+      "composition": {
+        "year": 2022,
+        "shares": {
+          "foodOrganic": 22.5,
+          "paperCardboard": 21.6,
+          "plastic": 6.7,
+          "glass": 5.1,
+          "metal": 5.6,
+          "other": 38.5
+        }
+      }
+    },
+    {
+      "code": "SLB",
+      "iso2": "SB",
+      "name": "Solomon Islands",
+      "population": 771660,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.82,
+        "tonnes2022": 229828,
+        "tonnes2030": 282898,
+        "tonnes2040": 353593,
+        "tonnes2050": 420594,
+        "reportedYear": 2017
+      },
+      "treatment": {
+        "year": 2019,
+        "shares": {
+          "recycling": null,
+          "composting": null,
+          "incineration": null,
+          "sanitaryLandfill": null,
+          "otherLandfill": 9.5,
+          "openDump": null,
+          "uncollected": null,
+          "other": 90.5
+        }
+      },
+      "composition": {
+        "year": 2019,
+        "shares": {
+          "foodOrganic": 62.1,
+          "paperCardboard": 3.7,
+          "plastic": 10.3,
+          "glass": 2.9,
+          "metal": 12.9,
+          "other": 8.1
+        }
+      }
+    },
+    {
+      "code": "SOM",
+      "iso2": "SO",
+      "name": "Somalia, Fed. Rep.",
+      "population": 17572390,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.13,
+        "tonnes2022": 828484,
+        "tonnes2030": 1137903,
+        "tonnes2040": 1532679,
+        "tonnes2050": 1969714,
+        "reportedYear": null
+      }
+    },
+    {
+      "code": "ZAF",
+      "iso2": "ZA",
+      "name": "South Africa",
+      "population": 61959937,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.35,
+        "tonnes2022": 7901976,
+        "tonnes2030": 8975477,
+        "tonnes2040": 11181286,
+        "tonnes2050": 13932026,
+        "reportedYear": 2023
+      },
+      "treatment": {
+        "year": 2023,
+        "shares": {
+          "recycling": 8.4,
+          "composting": null,
+          "incineration": null,
+          "sanitaryLandfill": null,
+          "otherLandfill": 60.1,
+          "openDump": null,
+          "uncollected": 31.4,
+          "other": 0.1
+        }
+      },
+      "composition": {
+        "year": 2017,
+        "shares": {
+          "foodOrganic": 30.1,
+          "paperCardboard": 9.9,
+          "plastic": 4.9,
+          "glass": 12.3,
+          "metal": 18,
+          "other": 24.8
+        }
+      }
+    },
+    {
+      "code": "SSD",
+      "iso2": "SS",
+      "name": "South Sudan",
+      "population": 10895460,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.1,
+        "tonnes2022": 383354,
+        "tonnes2030": 467452,
+        "tonnes2040": 560389,
+        "tonnes2050": 639934,
+        "reportedYear": null
+      }
+    },
+    {
+      "code": "ESP",
+      "iso2": "ES",
+      "name": "Spain",
+      "population": 47749421,
+      "generation": {
+        "kgPerPersonPerDay2022": 1.64,
+        "tonnes2022": 28570221,
+        "tonnes2030": 29818195,
+        "tonnes2040": 30593327,
+        "tonnes2050": 30697701,
+        "reportedYear": 2021
+      },
+      "treatment": {
+        "year": 2020,
+        "shares": {
+          "recycling": 17.4,
+          "composting": 2.6,
+          "incineration": 10.1,
+          "sanitaryLandfill": null,
+          "otherLandfill": 49.4,
+          "openDump": null,
+          "uncollected": null,
+          "other": 20.5
+        }
+      },
+      "composition": {
+        "year": 2010,
+        "shares": {
+          "foodOrganic": 49,
+          "paperCardboard": 15,
+          "plastic": 9,
+          "glass": 8,
+          "metal": 3,
+          "other": 16
+        }
+      }
+    },
+    {
+      "code": "LKA",
+      "iso2": "LK",
+      "name": "Sri Lanka",
+      "population": 22765133,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.34,
+        "tonnes2022": 2847754,
+        "tonnes2030": 3155837,
+        "tonnes2040": 3797571,
+        "tonnes2050": 4362360,
+        "reportedYear": 2021
+      },
+      "treatment": {
+        "year": 2016,
+        "shares": {
+          "recycling": null,
+          "composting": 13.9,
+          "incineration": 8.6,
+          "sanitaryLandfill": 0.1,
+          "otherLandfill": null,
+          "openDump": 24.8,
+          "uncollected": 52.6,
+          "other": null
+        }
+      },
+      "composition": {
+        "year": 2018,
+        "shares": {
+          "foodOrganic": 62,
+          "paperCardboard": 7,
+          "plastic": 6,
+          "glass": 2,
+          "metal": null,
+          "other": 23
+        }
+      }
+    },
+    {
+      "code": "KNA",
+      "iso2": "KN",
+      "name": "St. Kitts and Nevis",
+      "population": 46706,
+      "generation": {
+        "kgPerPersonPerDay2022": 1.94,
+        "tonnes2022": 33000,
+        "tonnes2030": 35904,
+        "tonnes2040": 37248,
+        "tonnes2050": 37176,
+        "reportedYear": 2022
+      },
+      "composition": {
+        "year": 2002,
+        "shares": {
+          "foodOrganic": 27.2,
+          "paperCardboard": 20.5,
+          "plastic": 23.2,
+          "glass": 8.1,
+          "metal": 8.8,
+          "other": 12.2
+        }
+      }
+    },
+    {
+      "code": "LCA",
+      "iso2": "LC",
+      "name": "St. Lucia",
+      "population": 178516,
+      "generation": {
+        "kgPerPersonPerDay2022": 1.25,
+        "tonnes2022": 81705,
+        "tonnes2030": 91776,
+        "tonnes2040": 97945,
+        "tonnes2050": 102898,
+        "reportedYear": 2022
+      },
+      "composition": {
+        "year": 2018,
+        "shares": {
+          "foodOrganic": 54.1,
+          "paperCardboard": 12.2,
+          "plastic": 20.4,
+          "glass": 4.1,
+          "metal": 3.1,
+          "other": 6.1
+        }
+      }
+    },
+    {
+      "code": "MAF",
+      "iso2": "MF",
+      "name": "St. Martin (French)",
+      "population": 29484,
+      "generation": {
+        "kgPerPersonPerDay2022": 1.24,
+        "tonnes2022": 13319,
+        "tonnes2030": 9955,
+        "tonnes2040": 9223,
+        "tonnes2050": 9492,
+        "reportedYear": 2020
+      },
+      "composition": {
+        "year": 2022,
+        "shares": {
+          "foodOrganic": 31.3,
+          "paperCardboard": 12.3,
+          "plastic": 18.5,
+          "glass": 11.6,
+          "metal": 3.6,
+          "other": 22.7
+        }
+      }
+    },
+    {
+      "code": "VCT",
+      "iso2": "VC",
+      "name": "St. Vincent and the Grenadines",
+      "population": 102413,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.85,
+        "tonnes2022": 31886,
+        "tonnes2030": 35428,
+        "tonnes2040": 38364,
+        "tonnes2050": 40838,
+        "reportedYear": 2022
+      },
+      "treatment": {
+        "year": 2020,
+        "shares": {
+          "recycling": null,
+          "composting": 0,
+          "incineration": null,
+          "sanitaryLandfill": null,
+          "otherLandfill": 100,
+          "openDump": null,
+          "uncollected": null,
+          "other": null
+        }
+      },
+      "composition": {
+        "year": 2019,
+        "shares": {
+          "foodOrganic": 30.7,
+          "paperCardboard": 18.5,
+          "plastic": 23.8,
+          "glass": 4.5,
+          "metal": 5.2,
+          "other": 17.3
+        }
+      }
+    },
+    {
+      "code": "SDN",
+      "iso2": "SD",
+      "name": "Sudan",
+      "population": 48729683,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.42,
+        "tonnes2022": 7501320,
+        "tonnes2030": 7705402,
+        "tonnes2040": 11158593,
+        "tonnes2050": 15616747,
+        "reportedYear": 2018
+      },
+      "treatment": {
+        "year": 2018,
+        "shares": {
+          "recycling": null,
+          "composting": null,
+          "incineration": null,
+          "sanitaryLandfill": null,
+          "otherLandfill": 27.1,
+          "openDump": null,
+          "uncollected": 67,
+          "other": 5.9
+        }
+      },
+      "composition": {
+        "year": 2015,
+        "shares": {
+          "foodOrganic": 40,
+          "paperCardboard": 27,
+          "plastic": 4,
+          "glass": 5,
+          "metal": 3,
+          "other": 21
+        }
+      }
+    },
+    {
+      "code": "SUR",
+      "iso2": "SR",
+      "name": "Suriname",
+      "population": 620300,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.62,
+        "tonnes2022": 140000,
+        "tonnes2030": 159808,
+        "tonnes2040": 190311,
+        "tonnes2050": 219938,
+        "reportedYear": 2022
+      },
+      "treatment": {
+        "year": 2022,
+        "shares": {
+          "recycling": 5,
+          "composting": null,
+          "incineration": null,
+          "sanitaryLandfill": null,
+          "otherLandfill": null,
+          "openDump": 95,
+          "uncollected": null,
+          "other": null
+        }
+      },
+      "composition": {
+        "year": 2002,
+        "shares": {
+          "foodOrganic": 57,
+          "paperCardboard": null,
+          "plastic": 11,
+          "glass": 6,
+          "metal": 3,
+          "other": 23
+        }
+      }
+    },
+    {
+      "code": "SWE",
+      "iso2": "SE",
+      "name": "Sweden",
+      "population": 10452766,
+      "generation": {
+        "kgPerPersonPerDay2022": 1.08,
+        "tonnes2022": 4139000,
+        "tonnes2030": 4436213,
+        "tonnes2040": 4674206,
+        "tonnes2050": 4859498,
+        "reportedYear": 2022
+      },
+      "treatment": {
+        "year": 2022,
+        "shares": {
+          "recycling": 24.1,
+          "composting": 15.5,
+          "incineration": 55.4,
+          "sanitaryLandfill": null,
+          "otherLandfill": 1.6,
+          "openDump": null,
+          "uncollected": 0,
+          "other": 3.4
+        }
+      },
+      "composition": {
+        "year": 2021,
+        "shares": {
+          "foodOrganic": 37.9,
+          "paperCardboard": 14.1,
+          "plastic": 7.7,
+          "glass": 6,
+          "metal": 4.1,
+          "other": 30.2
+        }
+      }
+    },
+    {
+      "code": "CHE",
+      "iso2": "CH",
+      "name": "Switzerland",
+      "population": 8741311,
+      "generation": {
+        "kgPerPersonPerDay2022": 1.86,
+        "tonnes2022": 5940000,
+        "tonnes2030": 6283264,
+        "tonnes2040": 6473654,
+        "tonnes2050": 6585031,
+        "reportedYear": 2022
+      },
+      "treatment": {
+        "year": 2022,
+        "shares": {
+          "recycling": 28.5,
+          "composting": 23.7,
+          "incineration": 47.8,
+          "sanitaryLandfill": null,
+          "otherLandfill": null,
+          "openDump": null,
+          "uncollected": null,
+          "other": null
+        }
+      },
+      "composition": {
+        "year": 2022,
+        "shares": {
+          "foodOrganic": 41.1,
+          "paperCardboard": 26.9,
+          "plastic": 7,
+          "glass": 7.3,
+          "metal": 1.8,
+          "other": 15.9
+        }
+      }
+    },
+    {
+      "code": "SYR",
+      "iso2": "SY",
+      "name": "Syrian Arab Republic",
+      "population": 21909727,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.53,
+        "tonnes2022": 4203269,
+        "tonnes2030": 5110793,
+        "tonnes2040": 5324684,
+        "tonnes2050": 5029304,
+        "reportedYear": 2018
+      },
+      "treatment": {
+        "year": 2016,
+        "shares": {
+          "recycling": 1.8,
+          "composting": 1,
+          "incineration": null,
+          "sanitaryLandfill": null,
+          "otherLandfill": 13.9,
+          "openDump": 55.8,
+          "uncollected": 27.5,
+          "other": null
+        }
+      },
+      "composition": {
+        "year": 2010,
+        "shares": {
+          "foodOrganic": 57,
+          "paperCardboard": 7,
+          "plastic": 7,
+          "glass": 3,
+          "metal": 4,
+          "other": 22
+        }
+      }
+    },
+    {
+      "code": "TWN",
+      "iso2": "TW",
+      "name": "Taiwan, China",
+      "population": 23470220,
+      "generation": {
+        "kgPerPersonPerDay2022": 1.36,
+        "tonnes2022": 11671925,
+        "tonnes2030": 11599440,
+        "tonnes2040": 11711797,
+        "tonnes2050": 11297975,
+        "reportedYear": 2023
+      },
+      "treatment": {
+        "year": 2023,
+        "shares": {
+          "recycling": 54.2,
+          "composting": 4.1,
+          "incineration": 38.2,
+          "sanitaryLandfill": 1.4,
+          "otherLandfill": null,
+          "openDump": null,
+          "uncollected": null,
+          "other": 2.1
+        }
+      },
+      "composition": {
+        "year": 2023,
+        "shares": {
+          "foodOrganic": 21.2,
+          "paperCardboard": 39.7,
+          "plastic": 25.9,
+          "glass": 0.6,
+          "metal": 0.5,
+          "other": 12.1
+        }
+      }
+    },
+    {
+      "code": "TJK",
+      "iso2": "TJ",
+      "name": "Tajikistan",
+      "population": 10076553,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.46,
+        "tonnes2022": 1692923,
+        "tonnes2030": 2014195,
+        "tonnes2040": 2954290,
+        "tonnes2050": 4146881,
+        "reportedYear": 2018
+      },
+      "treatment": {
+        "year": 2024,
+        "shares": {
+          "recycling": null,
+          "composting": null,
+          "incineration": null,
+          "sanitaryLandfill": null,
+          "otherLandfill": null,
+          "openDump": 100,
+          "uncollected": null,
+          "other": null
+        }
+      }
+    },
+    {
+      "code": "TZA",
+      "iso2": "TZ",
+      "name": "Tanzania",
+      "population": 63766638,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.66,
+        "tonnes2022": 15450695,
+        "tonnes2030": 19924912,
+        "tonnes2040": 26420028,
+        "tonnes2050": 41484750,
+        "reportedYear": 2021
+      },
+      "treatment": {
+        "year": 2020,
+        "shares": {
+          "recycling": 7.5,
+          "composting": null,
+          "incineration": null,
+          "sanitaryLandfill": null,
+          "otherLandfill": null,
+          "openDump": 14.4,
+          "uncollected": 78.1,
+          "other": null
+        }
+      },
+      "composition": {
+        "year": 2021,
+        "shares": {
+          "foodOrganic": 37,
+          "paperCardboard": 11,
+          "plastic": 7,
+          "glass": 4,
+          "metal": 1,
+          "other": 40
+        }
+      }
+    },
+    {
+      "code": "THA",
+      "iso2": "TH",
+      "name": "Thailand",
+      "population": 71754996,
+      "generation": {
+        "kgPerPersonPerDay2022": 1.02,
+        "tonnes2022": 26723550,
+        "tonnes2030": 29470299,
+        "tonnes2040": 32162021,
+        "tonnes2050": 33360260,
+        "reportedYear": 2023
+      },
+      "treatment": {
+        "year": 2023,
+        "shares": {
+          "recycling": 34.8,
+          "composting": null,
+          "incineration": null,
+          "sanitaryLandfill": null,
+          "otherLandfill": null,
+          "openDump": null,
+          "uncollected": 27.9,
+          "other": 37.3
+        }
+      },
+      "composition": {
+        "year": 2017,
+        "shares": {
+          "foodOrganic": 65,
+          "paperCardboard": 8,
+          "plastic": 17.6,
+          "glass": 3,
+          "metal": 2,
+          "other": 4.4
+        }
+      }
+    },
+    {
+      "code": "TLS",
+      "iso2": "TL",
+      "name": "Timor-Leste",
+      "population": 1361744,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.41,
+        "tonnes2022": 201508,
+        "tonnes2030": 213144,
+        "tonnes2040": 311786,
+        "tonnes2050": 353408,
+        "reportedYear": 2021
+      },
+      "treatment": {
+        "year": 2021,
+        "shares": {
+          "recycling": null,
+          "composting": null,
+          "incineration": null,
+          "sanitaryLandfill": null,
+          "otherLandfill": null,
+          "openDump": null,
+          "uncollected": null,
+          "other": 100
+        }
+      },
+      "composition": {
+        "year": 2021,
+        "shares": {
+          "foodOrganic": 58.6,
+          "paperCardboard": 13,
+          "plastic": 9.7,
+          "glass": 3.8,
+          "metal": 5.4,
+          "other": 9.5
+        }
+      }
+    },
+    {
+      "code": "TGO",
+      "iso2": "TG",
+      "name": "Togo",
+      "population": 8983194,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.11,
+        "tonnes2022": 350135,
+        "tonnes2030": 428807,
+        "tonnes2040": 537654,
+        "tonnes2050": 658583,
+        "reportedYear": 2023
+      },
+      "composition": {
+        "year": 2012,
+        "shares": {
+          "foodOrganic": 38,
+          "paperCardboard": 4,
+          "plastic": 10,
+          "glass": 2,
+          "metal": 4,
+          "other": 42
+        }
+      }
+    },
+    {
+      "code": "TON",
+      "iso2": "TO",
+      "name": "Tonga",
+      "population": 105268,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.24,
+        "tonnes2022": 9232,
+        "tonnes2030": 9304,
+        "tonnes2040": 11232,
+        "tonnes2050": 14551,
+        "reportedYear": 2021
+      },
+      "treatment": {
+        "year": 2021,
+        "shares": {
+          "recycling": 9.1,
+          "composting": null,
+          "incineration": null,
+          "sanitaryLandfill": 32.2,
+          "otherLandfill": null,
+          "openDump": null,
+          "uncollected": 9.5,
+          "other": 49.2
+        }
+      },
+      "composition": {
+        "year": 2021,
+        "shares": {
+          "foodOrganic": 39.9,
+          "paperCardboard": 20.4,
+          "plastic": 10.5,
+          "glass": 3.3,
+          "metal": 5.4,
+          "other": 20.5
+        }
+      }
+    },
+    {
+      "code": "TTO",
+      "iso2": "TT",
+      "name": "Trinidad and Tobago",
+      "population": 1491733,
+      "generation": {
+        "kgPerPersonPerDay2022": 1.45,
+        "tonnes2022": 788198,
+        "tonnes2030": 840055,
+        "tonnes2040": 871641,
+        "tonnes2050": 883200,
+        "reportedYear": 2021
+      },
+      "composition": {
+        "year": 2022,
+        "shares": {
+          "foodOrganic": 32.4,
+          "paperCardboard": 18,
+          "plastic": 12.8,
+          "glass": 2.1,
+          "metal": 2.2,
+          "other": 32.5
+        }
+      }
+    },
+    {
+      "code": "TUN",
+      "iso2": "TN",
+      "name": "Tunisia",
+      "population": 12078065,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.67,
+        "tonnes2022": 2949293,
+        "tonnes2030": 3306142,
+        "tonnes2040": 3911115,
+        "tonnes2050": 4557844,
+        "reportedYear": 2020
+      },
+      "treatment": {
+        "year": 2012,
+        "shares": {
+          "recycling": 4,
+          "composting": 5,
+          "incineration": null,
+          "sanitaryLandfill": null,
+          "otherLandfill": 70,
+          "openDump": 21,
+          "uncollected": null,
+          "other": null
+        }
+      },
+      "composition": {
+        "year": 2023,
+        "shares": {
+          "foodOrganic": 63.2,
+          "paperCardboard": 8.6,
+          "plastic": 9.4,
+          "glass": 1.1,
+          "metal": 1.6,
+          "other": 16.1
+        }
+      }
+    },
+    {
+      "code": "TUR",
+      "iso2": "TR",
+      "name": "Türkiye",
+      "population": 86947617,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.95,
+        "tonnes2022": 30283757,
+        "tonnes2030": 34435116,
+        "tonnes2040": 38020274,
+        "tonnes2050": 40030989,
+        "reportedYear": 2022
+      },
+      "treatment": {
+        "year": 2021,
+        "shares": {
+          "recycling": 12,
+          "composting": 0.3,
+          "incineration": null,
+          "sanitaryLandfill": null,
+          "otherLandfill": 81.2,
+          "openDump": null,
+          "uncollected": null,
+          "other": 6.5
+        }
+      },
+      "composition": {
+        "year": 2018,
+        "shares": {
+          "foodOrganic": 55.5,
+          "paperCardboard": 8.1,
+          "plastic": 5.9,
+          "glass": 3.4,
+          "metal": 1.4,
+          "other": 25.7
+        }
+      }
+    },
+    {
+      "code": "TKM",
+      "iso2": "TM",
+      "name": "Turkmenistan",
+      "population": 7162213,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.33,
+        "tonnes2022": 860065,
+        "tonnes2030": 1003103,
+        "tonnes2040": 1229613,
+        "tonnes2050": 1441782,
+        "reportedYear": 2017
+      },
+      "treatment": {
+        "year": 2017,
+        "shares": {
+          "recycling": 1,
+          "composting": null,
+          "incineration": null,
+          "sanitaryLandfill": null,
+          "otherLandfill": null,
+          "openDump": 99,
+          "uncollected": null,
+          "other": null
+        }
+      },
+      "composition": {
+        "year": 2000,
+        "shares": {
+          "foodOrganic": 16.2,
+          "paperCardboard": null,
+          "plastic": 2.2,
+          "glass": 4.6,
+          "metal": 11.4,
+          "other": 65.6
+        }
+      }
+    },
+    {
+      "code": "TCA",
+      "iso2": "TC",
+      "name": "Turks and Caicos Islands",
+      "population": 45669,
+      "generation": {
+        "kgPerPersonPerDay2022": 1.07,
+        "tonnes2022": 17804,
+        "tonnes2030": 17298,
+        "tonnes2040": 15214,
+        "tonnes2050": 11580,
+        "reportedYear": null
+      },
+      "composition": {
+        "year": 2004,
+        "shares": {
+          "foodOrganic": 21.9,
+          "paperCardboard": 31.7,
+          "plastic": 16.3,
+          "glass": 20.6,
+          "metal": 7.6,
+          "other": 1.9
+        }
+      }
+    },
+    {
+      "code": "TUV",
+      "iso2": "TV",
+      "name": "Tuvalu",
+      "population": 10080,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.4,
+        "tonnes2022": 1488,
+        "tonnes2030": 1390,
+        "tonnes2040": 1515,
+        "tonnes2050": 1741,
+        "reportedYear": 2019
+      },
+      "treatment": {
+        "year": 2019,
+        "shares": {
+          "recycling": 6.3,
+          "composting": null,
+          "incineration": null,
+          "sanitaryLandfill": null,
+          "otherLandfill": null,
+          "openDump": 35.4,
+          "uncollected": 5.3,
+          "other": 53
+        }
+      },
+      "composition": {
+        "year": 2019,
+        "shares": {
+          "foodOrganic": 42,
+          "paperCardboard": 10.2,
+          "plastic": 14.6,
+          "glass": 7.2,
+          "metal": 12,
+          "other": 14
+        }
+      }
+    },
+    {
+      "code": "UGA",
+      "iso2": "UG",
+      "name": "Uganda",
+      "population": 46644329,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.62,
+        "tonnes2022": 10554334,
+        "tonnes2030": 13428442,
+        "tonnes2040": 17126698,
+        "tonnes2050": 25645598,
+        "reportedYear": 2022
+      },
+      "composition": {
+        "year": 2013,
+        "shares": {
+          "foodOrganic": 81,
+          "paperCardboard": 5.3,
+          "plastic": 1.6,
+          "glass": 0.9,
+          "metal": 3.1,
+          "other": 8.1
+        }
+      }
+    },
+    {
+      "code": "UKR",
+      "iso2": "UA",
+      "name": "Ukraine",
+      "population": 44073121,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.69,
+        "tonnes2022": 11161413,
+        "tonnes2030": 11453278,
+        "tonnes2040": 12590190,
+        "tonnes2050": 12889404,
+        "reportedYear": 2023
+      },
+      "treatment": {
+        "year": 2023,
+        "shares": {
+          "recycling": 5,
+          "composting": 1,
+          "incineration": 1.5,
+          "sanitaryLandfill": null,
+          "otherLandfill": 83.4,
+          "openDump": null,
+          "uncollected": null,
+          "other": 9.1
+        }
+      },
+      "composition": {
+        "year": 2014,
+        "shares": {
+          "foodOrganic": 44,
+          "paperCardboard": 13,
+          "plastic": 11,
+          "glass": 9,
+          "metal": 2,
+          "other": 21
+        }
+      }
+    },
+    {
+      "code": "ARE",
+      "iso2": "AE",
+      "name": "United Arab Emirates",
+      "population": 10039142,
+      "generation": {
+        "kgPerPersonPerDay2022": 1.26,
+        "tonnes2022": 4617980,
+        "tonnes2030": 5892146,
+        "tonnes2040": 6860709,
+        "tonnes2050": 7786395,
+        "reportedYear": 2022
+      },
+      "treatment": {
+        "year": 2022,
+        "shares": {
+          "recycling": 9,
+          "composting": 0.5,
+          "incineration": 0.1,
+          "sanitaryLandfill": null,
+          "otherLandfill": 90.4,
+          "openDump": null,
+          "uncollected": null,
+          "other": null
+        }
+      },
+      "composition": {
+        "year": 2015,
+        "shares": {
+          "foodOrganic": 27.6,
+          "paperCardboard": 26.1,
+          "plastic": 25,
+          "glass": 3.4,
+          "metal": 2.7,
+          "other": 15.2
+        }
+      }
+    },
+    {
+      "code": "GBR",
+      "iso2": "GB",
+      "name": "United Kingdom",
+      "population": 67915749,
+      "generation": {
+        "kgPerPersonPerDay2022": 1.29,
+        "tonnes2022": 31945349,
+        "tonnes2030": 34595041,
+        "tonnes2040": 37325334,
+        "tonnes2050": 39669398,
+        "reportedYear": 2021
+      },
+      "treatment": {
+        "year": 2022,
+        "shares": {
+          "recycling": 26.2,
+          "composting": 16.2,
+          "incineration": 45.4,
+          "sanitaryLandfill": null,
+          "otherLandfill": 9.2,
+          "openDump": null,
+          "uncollected": null,
+          "other": 3
+        }
+      },
+      "composition": {
+        "year": 2017,
+        "shares": {
+          "foodOrganic": 37.5,
+          "paperCardboard": 17.5,
+          "plastic": 9.2,
+          "glass": 6.9,
+          "metal": 3.8,
+          "other": 25.1
+        }
+      }
+    },
+    {
+      "code": "USA",
+      "iso2": "US",
+      "name": "United States",
+      "population": 340592993,
+      "generation": {
+        "kgPerPersonPerDay2022": 2.21,
+        "tonnes2022": 274658377,
+        "tonnes2030": 295060574,
+        "tonnes2040": 313933391,
+        "tonnes2050": 328445978,
+        "reportedYear": 2018
+      },
+      "treatment": {
+        "year": 2018,
+        "shares": {
+          "recycling": 24.1,
+          "composting": 15.1,
+          "incineration": 11.7,
+          "sanitaryLandfill": 49.1,
+          "otherLandfill": null,
+          "openDump": null,
+          "uncollected": null,
+          "other": null
+        }
+      },
+      "composition": {
+        "year": 2018,
+        "shares": {
+          "foodOrganic": 33.7,
+          "paperCardboard": 23.1,
+          "plastic": 12.2,
+          "glass": 4.2,
+          "metal": 8.8,
+          "other": 18
+        }
+      }
+    },
+    {
+      "code": "URY",
+      "iso2": "UY",
+      "name": "Uruguay",
+      "population": 3393144,
+      "generation": {
+        "kgPerPersonPerDay2022": 1.03,
+        "tonnes2022": 1273688,
+        "tonnes2030": 1366601,
+        "tonnes2040": 1448180,
+        "tonnes2050": 1489159,
+        "reportedYear": 2021
+      },
+      "treatment": {
+        "year": 2021,
+        "shares": {
+          "recycling": null,
+          "composting": null,
+          "incineration": null,
+          "sanitaryLandfill": 64.8,
+          "otherLandfill": 29.9,
+          "openDump": 5,
+          "uncollected": null,
+          "other": 0.3
+        }
+      },
+      "composition": {
+        "year": 2015,
+        "shares": {
+          "foodOrganic": 40.2,
+          "paperCardboard": 13.8,
+          "plastic": 17.3,
+          "glass": 3.4,
+          "metal": 3.6,
+          "other": 21.7
+        }
+      }
+    },
+    {
+      "code": "UZB",
+      "iso2": "UZ",
+      "name": "Uzbekistan",
+      "population": 34583751,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.54,
+        "tonnes2022": 6816841,
+        "tonnes2030": 8109623,
+        "tonnes2040": 11442214,
+        "tonnes2050": 14835789,
+        "reportedYear": 2022
+      },
+      "treatment": {
+        "year": 2024,
+        "shares": {
+          "recycling": 5.2,
+          "composting": null,
+          "incineration": null,
+          "sanitaryLandfill": null,
+          "otherLandfill": 80.9,
+          "openDump": null,
+          "uncollected": 13.9,
+          "other": null
+        }
+      },
+      "composition": {
+        "year": 2020,
+        "shares": {
+          "foodOrganic": 41,
+          "paperCardboard": 3,
+          "plastic": 8,
+          "glass": 5,
+          "metal": 2,
+          "other": 41
+        }
+      }
+    },
+    {
+      "code": "VUT",
+      "iso2": "VU",
+      "name": "Vanuatu",
+      "population": 309361,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.36,
+        "tonnes2022": 40185,
+        "tonnes2030": 50503,
+        "tonnes2040": 63131,
+        "tonnes2050": 77068,
+        "reportedYear": 2019
+      },
+      "treatment": {
+        "year": 2020,
+        "shares": {
+          "recycling": 1.5,
+          "composting": 0.2,
+          "incineration": null,
+          "sanitaryLandfill": null,
+          "otherLandfill": null,
+          "openDump": 40.2,
+          "uncollected": 58.1,
+          "other": null
+        }
+      },
+      "composition": {
+        "year": 2018,
+        "shares": {
+          "foodOrganic": 37.2,
+          "paperCardboard": 4.3,
+          "plastic": 10.3,
+          "glass": 3.3,
+          "metal": 11.5,
+          "other": 33.4
+        }
+      }
+    },
+    {
+      "code": "VEN",
+      "iso2": "VE",
+      "name": "Venezuela, RB",
+      "population": 28175250,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.81,
+        "tonnes2022": 8281901,
+        "tonnes2030": 9120460,
+        "tonnes2040": 10204127,
+        "tonnes2050": 11000980,
+        "reportedYear": 2020
+      },
+      "treatment": {
+        "year": 2021,
+        "shares": {
+          "recycling": null,
+          "composting": null,
+          "incineration": null,
+          "sanitaryLandfill": null,
+          "otherLandfill": 78.1,
+          "openDump": null,
+          "uncollected": 21.9,
+          "other": null
+        }
+      },
+      "composition": {
+        "year": 2019,
+        "shares": {
+          "foodOrganic": 50,
+          "paperCardboard": 20,
+          "plastic": 10,
+          "glass": 5,
+          "metal": 5,
+          "other": 10
+        }
+      }
+    },
+    {
+      "code": "VNM",
+      "iso2": "VN",
+      "name": "Viet Nam",
+      "population": 99332219,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.58,
+        "tonnes2022": 21071803,
+        "tonnes2030": 22725550,
+        "tonnes2040": 29161554,
+        "tonnes2050": 32946361,
+        "reportedYear": 2015
+      },
+      "treatment": {
+        "year": 2019,
+        "shares": {
+          "recycling": 7.5,
+          "composting": 3,
+          "incineration": 10.5,
+          "sanitaryLandfill": 15,
+          "otherLandfill": 32.3,
+          "openDump": null,
+          "uncollected": 25,
+          "other": 6.7
+        }
+      },
+      "composition": {
+        "year": 2015,
+        "shares": {
+          "foodOrganic": 55,
+          "paperCardboard": 5,
+          "plastic": 10,
+          "glass": 3,
+          "metal": 6,
+          "other": 21
+        }
+      }
+    },
+    {
+      "code": "VIR",
+      "iso2": "VI",
+      "name": "Virgin Islands (US)",
+      "population": 86915,
+      "generation": {
+        "kgPerPersonPerDay2022": 3.46,
+        "tonnes2022": 109732,
+        "tonnes2030": 94743,
+        "tonnes2040": 76264,
+        "tonnes2050": 54412,
+        "reportedYear": 2011
+      },
+      "composition": {
+        "year": 2019,
+        "shares": {
+          "foodOrganic": 15.2,
+          "paperCardboard": 18.5,
+          "plastic": 13.6,
+          "glass": 9.1,
+          "metal": 5.4,
+          "other": 38.2
+        }
+      }
+    },
+    {
+      "code": "PSE",
+      "iso2": "PS",
+      "name": "West Bank and Gaza",
+      "population": 5242563,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.82,
+        "tonnes2022": 1577724,
+        "tonnes2030": 2150235,
+        "tonnes2040": 2801191,
+        "tonnes2050": 3514942,
+        "reportedYear": 2019
+      },
+      "treatment": {
+        "year": 2019,
+        "shares": {
+          "recycling": 2.8,
+          "composting": null,
+          "incineration": null,
+          "sanitaryLandfill": null,
+          "otherLandfill": 59.8,
+          "openDump": 29.4,
+          "uncollected": 8,
+          "other": null
+        }
+      },
+      "composition": {
+        "year": 2019,
+        "shares": {
+          "foodOrganic": 50,
+          "paperCardboard": 12.5,
+          "plastic": 14.6,
+          "glass": 1.9,
+          "metal": 2.4,
+          "other": 18.6
+        }
+      }
+    },
+    {
+      "code": "YEM",
+      "iso2": "YE",
+      "name": "Yemen, Rep.",
+      "population": 37651414,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.42,
+        "tonnes2022": 5764174,
+        "tonnes2030": 8033879,
+        "tonnes2040": 11223727,
+        "tonnes2050": 14877902,
+        "reportedYear": 2016
+      },
+      "treatment": {
+        "year": 2016,
+        "shares": {
+          "recycling": null,
+          "composting": null,
+          "incineration": null,
+          "sanitaryLandfill": null,
+          "otherLandfill": 17.7,
+          "openDump": null,
+          "uncollected": 82.3,
+          "other": null
+        }
+      },
+      "composition": {
+        "year": 2014,
+        "shares": {
+          "foodOrganic": 65,
+          "paperCardboard": 7,
+          "plastic": 10,
+          "glass": 1,
+          "metal": 6,
+          "other": 11
+        }
+      }
+    },
+    {
+      "code": "ZMB",
+      "iso2": "ZM",
+      "name": "Zambia",
+      "population": 19875494,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.6,
+        "tonnes2022": 4352733,
+        "tonnes2030": 6357149,
+        "tonnes2040": 10059761,
+        "tonnes2050": 15073020,
+        "reportedYear": 2022
+      },
+      "treatment": {
+        "year": 2024,
+        "shares": {
+          "recycling": 6,
+          "composting": null,
+          "incineration": null,
+          "sanitaryLandfill": null,
+          "otherLandfill": null,
+          "openDump": null,
+          "uncollected": null,
+          "other": 94
+        }
+      },
+      "composition": {
+        "year": 2022,
+        "shares": {
+          "foodOrganic": 51,
+          "paperCardboard": 6,
+          "plastic": 14,
+          "glass": 4,
+          "metal": 9,
+          "other": 16
+        }
+      }
+    },
+    {
+      "code": "ZWE",
+      "iso2": "ZW",
+      "name": "Zimbabwe",
+      "population": 15934852,
+      "generation": {
+        "kgPerPersonPerDay2022": 0.46,
+        "tonnes2022": 2665434,
+        "tonnes2030": 3599994,
+        "tonnes2040": 5246262,
+        "tonnes2050": 7260977,
+        "reportedYear": 2020
+      },
+      "composition": {
+        "year": 2017,
+        "shares": {
+          "foodOrganic": 44.7,
+          "paperCardboard": 16.2,
+          "plastic": 15.4,
+          "glass": 4.2,
+          "metal": 4.5,
+          "other": 15
+        }
+      }
+    }
+  ]
+}

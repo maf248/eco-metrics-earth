@@ -92,7 +92,7 @@ exports[`Navbar snapshots should match snapshot with an active route 1`] = `
       </span>
       <span
         aria-hidden="true"
-        class="font-mono text-sm font-medium text-accent select-none transition-opacity duration-500 opacity-0"
+        class="font-mono text-sm font-medium text-accent select-none transition-opacity duration-500 motion-reduce:transition-none opacity-0"
       >
         [↵]
       </span>
@@ -1454,7 +1454,7 @@ exports[`Navbar snapshots should match snapshot with no active route 1`] = `
       </span>
       <span
         aria-hidden="true"
-        class="font-mono text-sm font-medium text-accent select-none transition-opacity duration-500 opacity-0"
+        class="font-mono text-sm font-medium text-accent select-none transition-opacity duration-500 motion-reduce:transition-none opacity-0"
       >
         [↵]
       </span>

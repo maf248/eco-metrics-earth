@@ -41,6 +41,9 @@ src/
 │   ├── co2-emissions/        # Co2EmissionsModule — OWID-backed endpoint (service, controller, constants)
 │   ├── energy-sources/       # EnergySourcesModule — OWID-backed endpoint (service, controller, constants, Ember origin, 2000+ licensing note)
 │   ├── global-temperature/   # GlobalTemperatureModule — OWID-backed endpoint (service, controller, constants, baseline guard)
+│   ├── waste-recycling/      # WasteRecyclingModule — static World Bank dataset (module, controller, service with shape validation, attribution)
+│   │   └── data/
+│   │       └── waste-recycling.json  # Generated: 217 countries, treatment, composition, projections to 2050
 │   ├── data-sources/         # DataSourcesModule — aggregates @DataSourceContributor() providers into the catalog
 │   ├── providers/
 │   │   └── owid/             # OwidModule — cached OWID provider client (Grapher CSV + API v1 JSON) + OwidProviderStatus (the single OWID data-source declaration)
@@ -98,6 +101,7 @@ appConfig.internalApiKey; // INTERNAL_API_KEY (undefined when unset or empty)
 | `GET`  | `/api/v1/energy-sources`           | Electricity generation (TWh) by source since 2000 for every country plus World, year-aligned arrays (`null` = no value); Ember credit in `data.origin`; provider failures answer `200` with `meta.stale: true` from the stored snapshot, or `502` without one                                                                                    | `ApiResponse<EnergySourcesData>`                    |
 | `GET`  | `/api/v1/global-temperature`       | Annual temperature anomaly since 1940 (°C vs 1991-2020) for every country plus World, year-aligned arrays, plus `data.global` (World since 1850 vs 1861-1890 with 95% bounds); upstream credits in `data.origin` and `data.global.origin`; provider failures answer `200` with `meta.stale: true` from the stored snapshot, or `502` without one | `ApiResponse<GlobalTemperatureData>`                |
 | `GET`  | `/api/v1/water-footprint/products` | Static product dataset — optional `category` query filter (`food-beverages`, `textiles`, `technology`, `manufactured`, `digital-computing`, `vehicles`, `energy-extractives`)                                                                                                                                                                    | `ApiResponse<WaterFootprintProduct[]>`              |
+| `GET`  | `/api/v1/waste-recycling`          | World Bank What a Waste 3.0 dataset bundled with the API: municipal waste per country (2022, projections to 2050), treatment and composition shares (`null` = not reported, never 0), world totals and recycling summary. Calls no external service                                                                                              | `ApiResponse<WasteRecyclingData>`                   |
 | `GET`  | `/api/v1/data-sources`             | Catalog of the data sources in use (live providers with their upstream origins, and static datasets with their publications), declared by each module                                                                                                                                                                                            | `ApiResponse<DataSourcesCatalog>`                   |
 
 ---
@@ -199,3 +203,21 @@ See [AGENTS.md — Adding a new eco-category module](../../AGENTS.md#adding-a-ne
 1. Create `src/modules/<category>/` with `<category>.module.ts`, `<category>.controller.ts`, `<category>.service.ts`
 2. Import the new module in `AppModule`
 3. Write unit tests in `__tests__/<category>/`
+
+## Regenerating the waste dataset
+
+`src/modules/waste-recycling/data/waste-recycling.json` is generated from the World Bank "What a Waste 3.0" country
+workbook (CC BY 4.0, files last updated 2026-03-11). The workbook is not committed. Download it from
+`https://datacatalogfiles.worldbank.org/ddh-published/0039597/DR0095901/What_a_Waste_3.0_COUNTRY_Dataset_&_Codebook.xlsx`
+and run, from the repo root:
+
+```bash
+npm run data:waste-recycling -- <path-to-workbook.xlsx> --retrieved YYYY-MM-DD
+```
+
+The script reads the `Country dataset` and `Codebook` sheets by machine key (never by column letter) and fails when one
+is missing. A blank group is `null`, reported groups are scaled to 100 and rounded with the largest-remainder method,
+and the same workbook always gives byte-identical output. When the World Bank publishes a new release, update
+`WASTE_SOURCE` in `scripts/lib/waste-recycling-source.mjs` and the `lastUpdated` in the API tests. A monthly workflow
+(`.github/workflows/waste-data-check.yml`) opens an issue when a new edition or a revised workbook appears; see
+[Updating the dataset](../../docs/data-sources/waste-recycling.md#updating-the-dataset).

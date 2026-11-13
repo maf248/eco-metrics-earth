@@ -26,6 +26,22 @@ test.describe('Data sources page', () => {
       },
     );
 
+    test('should list the World Bank waste dataset with its license', async ({ page }) => {
+      await page.goto(dataSourcesPage.url);
+
+      await expect(page.getByRole('heading', { name: 'Municipal waste by country' })).toBeVisible();
+      const publication = page
+        .getByRole('listitem')
+        .filter({ has: page.getByRole('link', { name: /What a Waste 3\.0/ }) })
+        .last();
+      await expect(publication).toContainText('Published 2026');
+      await expect(publication).toContainText('217 entries');
+      await expect(publication.getByRole('link', { name: 'CC BY 4.0' })).toHaveAttribute(
+        'href',
+        'https://creativecommons.org/licenses/by/4.0/',
+      );
+    });
+
     test('should list Our World in Data as a live provider for the CO2 emissions page', async ({
       page,
     }) => {

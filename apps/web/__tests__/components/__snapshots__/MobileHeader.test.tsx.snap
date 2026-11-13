@@ -92,7 +92,7 @@ exports[`MobileHeader snapshots should match snapshot 1`] = `
       </span>
       <span
         aria-hidden="true"
-        class="font-mono text-sm font-medium text-accent select-none transition-opacity duration-500 opacity-0"
+        class="font-mono text-sm font-medium text-accent select-none transition-opacity duration-500 motion-reduce:transition-none opacity-0"
       >
         [↵]
       </span>

@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 
 import { NotFoundIcon } from '@/components/icons';
+import { PAGE_TITLE_CLASS_NAME } from '@/lib/pageTitleClassName';
 
 export const metadata: Metadata = {
   title: 'Page Not Found',
@@ -21,7 +22,7 @@ export default function NotFound() {
           </div>
         </Link>
         <div className="text-center">
-          <h1 className="text-4xl font-bold text-fg">Oops! We couldn&apos;t find that...</h1>
+          <h1 className={PAGE_TITLE_CLASS_NAME}>Oops! We couldn&apos;t find that...</h1>
           <p className="mt-4 text-fg-secondary">
             The page you&apos;re looking for doesn&apos;t exist or may have moved.
           </p>

@@ -519,3 +519,55 @@ describe('CountryCombobox — lazy flags', () => {
     expect(document.querySelectorAll('.fi').length).toBeLessThan(OPTIONS.length);
   });
 });
+
+describe('CountryCombobox — disabled', () => {
+  const setupDisabled = () => {
+    const onChange = jest.fn();
+    render(
+      <CountryCombobox
+        label="Country"
+        options={OPTIONS}
+        value="BRA"
+        onChange={onChange}
+        disabled
+        placeholder="Limit reached"
+      />,
+    );
+    return { input: screen.getByRole('combobox', { name: 'Country' }), onChange };
+  };
+
+  it('should stay focusable but read-only, announced as disabled, with its placeholder', () => {
+    const { input } = setupDisabled();
+
+    input.focus();
+    expect(input).toHaveFocus();
+    expect(input).toHaveAttribute('aria-disabled', 'true');
+    expect(input).toHaveAttribute('readonly');
+    expect(input).toHaveAttribute('placeholder', 'Limit reached');
+    expect(input).toHaveClass('cursor-not-allowed');
+  });
+
+  it('should never open the list, filter or select, and hide the clear button', () => {
+    const { input, onChange } = setupDisabled();
+
+    fireEvent.click(input);
+    key(input, 'ArrowDown');
+    key(input, 'Enter');
+    type(input, 'arg');
+
+    expect(input).toHaveAttribute('aria-expanded', 'false');
+    expect(optionNames()).toEqual([]);
+    expect(screen.queryByText('No countries found')).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Clear search' })).not.toBeInTheDocument();
+    expect(onChange).not.toHaveBeenCalled();
+  });
+
+  it('should keep the default placeholder and behavior when enabled', () => {
+    const { input } = setup();
+
+    expect(input).toHaveAttribute('placeholder', 'Search countries');
+    expect(input).not.toHaveAttribute('aria-disabled');
+    key(input, 'ArrowDown');
+    expect(input).toHaveAttribute('aria-expanded', 'true');
+  });
+});

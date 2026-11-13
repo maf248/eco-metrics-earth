@@ -35,9 +35,9 @@ An environmental metrics dashboard monorepo — tracking air quality, CO₂ emis
 
 ### Packages
 
-| Package           | Name                  | Description                                                                                                                                                                                                                                                                                                                   |
-| ----------------- | --------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `packages/shared` | `@eco-metrics/shared` | Shared TypeScript types: `ApiResponse<T>`, `ApiResponseMeta`, `EcoCategory`, `ECO_CATEGORIES`, `MetricPoint`, `MetricSeries`, `DataSourceAttribution`, data sources catalog types, country codes and year-aligned series types, and the domain types of water footprint, CO₂ emissions, global temperature and energy sources |
+| Package           | Name                  | Description                                                                                                                                                                                                                                                                                                                                    |
+| ----------------- | --------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `packages/shared` | `@eco-metrics/shared` | Shared TypeScript types: `ApiResponse<T>`, `ApiResponseMeta`, `EcoCategory`, `ECO_CATEGORIES`, `MetricPoint`, `MetricSeries`, `DataSourceAttribution`, data sources catalog types, country codes and year-aligned series types, and the domain types of water footprint, CO₂ emissions, global temperature, energy sources and waste recycling |
 
 ### Deploy Targets
 
@@ -143,6 +143,7 @@ eco-metrics-earth/
 │   │       │   ├── co2-emissions/    # CO2 emissions module (OWID-backed, all countries in one payload)
 │   │       │   ├── energy-sources/   # Energy sources module (OWID-backed electricity mix by source since 2000, all countries in one payload)
 │   │       │   ├── global-temperature/ # Global temperature module (OWID-backed, anomaly vs 1991-2020, all countries in one payload)
+│   │       │   ├── waste-recycling/  # Module, controller, service + static World Bank dataset (data/)
 │   │       │   ├── data-sources/     # Catalog of sources
 │   │       │   └── water-footprint/  # Module, controller, service + static dataset (data/)
 │   │       ├── common/          # Outbound HTTP client, provider errors (502), last-good provider snapshots (`snapshots/`), year-aligned series builder (`series/`), global exception filter, catch-all 404 fallback
@@ -152,7 +153,7 @@ eco-metrics-earth/
 │       ├── e2e/                 # Playwright E2E tests
 │       └── src/
 │           ├── app/             # Routes, layouts, pages
-│           ├── components/      # Reusable UI components (charts/, co2-emissions/, global-temperature/, energy-sources/, country explorer, year table, data attribution)
+│           ├── components/      # Reusable UI components (charts/, co2-emissions/, global-temperature/, energy-sources/, waste-recycling/, country explorer, year table, data attribution)
 │           └── lib/             # Utilities and helpers (BFF fetch, category page registry)
 ├── packages/
 │   └── shared/                  # @eco-metrics/shared
@@ -167,6 +168,7 @@ eco-metrics-earth/
 │           ├── energy-sources.ts           # Energy sources wire types (ENERGY_SOURCE_IDS, electricity generation by source)
 │           ├── global-temperature.ts       # Global temperature wire types (anomaly, baseline, upstream origin)
 │           ├── metric-series.ts            # MetricPoint + MetricSeries time-series shapes
+│           ├── waste-recycling.ts          # Waste & recycling wire types (generation, treatment, composition, world summary)
 │           └── water-footprint.ts          # Water-footprint product, category and water-type types
 ├── dev/                         # Local development tooling (Caddy reverse proxy)
 ├── docs/                        # Data sources, deploy runbooks, design system, planning
@@ -195,6 +197,7 @@ eco-metrics-earth/
 | `GET`  | `/api/v1/co2-emissions`            | Annual CO2 emissions (total and per capita) for every country and World since 1950, year-aligned; `502` when the provider is unavailable and no stored snapshot exists (with one: `200` and `meta.stale: true`)                                                                                                                                                                                |
 | `GET`  | `/api/v1/energy-sources`           | Electricity generation (TWh) by source for every country and World since 2000, year-aligned (electricity only; `null` = no reported value) with the Ember origin; `502` when the provider is unavailable and no stored snapshot exists (with one: `200` and `meta.stale: true`)                                                                                                                |
 | `GET`  | `/api/v1/global-temperature`       | Annual temperature anomaly (°C vs the 1991-2020 average) for every country and World since 1940, year-aligned, plus the World series since 1850 against the pre-industrial 1861-1890 baseline (with 95% bounds) and the upstream origins (Copernicus ERA5, Met Office HadCRUT5); `502` when the provider is unavailable and no stored snapshot exists (with one: `200` and `meta.stale: true`) |
+| `GET`  | `/api/v1/waste-recycling`          | Municipal waste of every country and the world (World Bank What a Waste 3.0, bundled static dataset): generation in 2022 and projected to 2050, treatment and composition shares, with the World Bank attribution                                                                                                                                                                              |
 | `GET`  | `/api/v1/water-footprint/products` | Static product water-footprint dataset (60 products, with citations) — optional `category` filter (`food-beverages`, `textiles`, `technology`, `manufactured`, `digital-computing`, `vehicles`, `energy-extractives`)                                                                                                                                                                          |
 | `GET`  | `/api/v1/data-sources`             | Catalog of the data sources in use (live providers with the upstream origins of their data, and static datasets with their publications)                                                                                                                                                                                                                                                       |
 

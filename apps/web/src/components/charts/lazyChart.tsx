@@ -5,12 +5,16 @@ import { useSyncExternalStore } from 'react';
 import type { ComponentType } from 'react';
 
 import { ChartSkeleton, chartBoxClassName, type ChartSkeletonVariant } from './ChartSkeleton';
-import type { ChartPalette } from './chartTokens';
+import type { ChartPalette, ChartRamp } from './chartTokens';
 
 export interface LazyChartProps {
   option: EChartsCoreOption;
   /** Series colours; the categorical palette when omitted. */
   palette?: ChartPalette;
+  /** Sequential ramp of a choropleth's classes; the heat ramp when omitted. */
+  ramp?: ChartRamp;
+  /** Number of placeholder bars while a `bars` chart loads. */
+  rows?: number;
   /** Called once with the ECharts instance when the loaded chart mounts. */
   onReady?: (chart: EChartsType) => void;
 }
@@ -62,7 +66,7 @@ export function lazyChart(
     };
   };
 
-  function Chart({ option, palette, onReady }: LazyChartProps) {
+  function Chart({ option, palette, ramp, rows, onReady }: Readonly<LazyChartProps>) {
     // The server snapshot keeps hydration on the skeleton the HTML holds, even if the chunk
     // arrived first; a client navigation reads the loaded chart directly and draws at once.
     const Loaded = useSyncExternalStore(
@@ -72,12 +76,13 @@ export function lazyChart(
     );
 
     if (!Loaded) {
-      return <ChartSkeleton variant={variant} />;
+      return <ChartSkeleton variant={variant} rows={rows} />;
     }
     return (
       <Loaded
         option={option}
         palette={palette}
+        ramp={ramp}
         onReady={onReady}
         className={chartBoxClassName(variant)}
       />

@@ -7,8 +7,40 @@ import {
   CATEGORY_CONTENT_CLASS_NAME,
   KEY_FIGURES_CLASS_NAME,
 } from '@/lib/cardClassNames';
+import { CATEGORY_SKELETONS, type SkeletonBlock } from '@/lib/categorySkeletons';
+import type { EcoCategory } from '@eco-metrics/shared';
+
+/** The copy that identifies a block in the rendered skeleton. */
+function primaryText(block: SkeletonBlock): string {
+  switch (block.kind) {
+    case 'intro':
+      return block.text;
+    case 'keyFigures':
+      return block.lead;
+    case 'explorer':
+      return block.heading;
+    case 'map':
+      return block.title;
+    case 'productList':
+      return block.status;
+  }
+}
 
 describe('CategoryDataSkeleton', () => {
+  it.each(Object.keys(CATEGORY_SKELETONS) as EcoCategory[])(
+    'should draw the blocks of %s in their declared order',
+    (category) => {
+      const { container } = render(<CategoryDataSkeleton category={category} />);
+      const text = container.textContent ?? '';
+      const positions = (CATEGORY_SKELETONS[category] ?? []).map((block) =>
+        text.indexOf(primaryText(block)),
+      );
+
+      expect(positions.every((position) => position >= 0)).toBe(true);
+      expect(positions).toEqual([...positions].sort((a, b) => a - b));
+    },
+  );
+
   it('should render nothing for a category without live data', () => {
     const { container } = render(<CategoryDataSkeleton category="ocean-health" />);
     expect(container).toBeEmptyDOMElement();
@@ -70,5 +102,15 @@ describe('ChartSkeleton', () => {
   it('should keep the map aspect ratio for the map variant', () => {
     render(<ChartSkeleton variant="map" />);
     expect(screen.getByTestId('chart-skeleton')).toHaveClass('aspect-2238/1000');
+  });
+
+  it('should render the waste page as intro, key figures and a map card with a measure control', () => {
+    render(<CategoryDataSkeleton category="waste-recycling" />);
+
+    const map = screen.getByTestId('chart-skeleton');
+    expect(map.parentElement?.parentElement).toHaveClass(...CARD_CLASS_NAME.split(' '));
+    expect(screen.getByTestId('category-data-skeleton')).not.toHaveTextContent(
+      /2\.33|0\.80|3\.49|130|46%|18%/,
+    );
   });
 });

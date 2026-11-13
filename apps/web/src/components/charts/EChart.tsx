@@ -4,7 +4,7 @@ import type { EChartsCoreOption, EChartsType } from 'echarts/core';
 import { useEffect, useRef } from 'react';
 
 import { buildChartTheme, createCanvasColorResolver, type ColorResolver } from './chartTheme';
-import type { ChartPalette } from './chartTokens';
+import type { ChartPalette, ChartRamp } from './chartTokens';
 import { echarts } from './echartsSetup';
 
 interface EChartProps {
@@ -15,6 +15,8 @@ interface EChartProps {
   initSize?: { width: number; height: number };
   /** Series colours (read at mount; changing it later is not supported). Categorical by default. */
   palette?: ChartPalette;
+  /** Sequential ramp of a choropleth's classes; the heat ramp by default. May change after mount. */
+  ramp?: ChartRamp;
   /** Called once with the instance, after the first option and theme (read at mount). */
   onReady?: (chart: EChartsType) => void;
 }
@@ -40,6 +42,7 @@ export function EChart({
   className,
   initSize,
   palette = 'categorical',
+  ramp = 'heat',
   onReady,
 }: EChartProps) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -47,12 +50,13 @@ export function EChart({
   const resolverRef = useRef<ColorResolver | null>(null);
   const optionRef = useRef(option);
   const paletteRef = useRef(palette);
+  const rampRef = useRef(ramp);
   const onReadyRef = useRef(onReady);
   const isFirstOptionRun = useRef(true);
 
   const applyTheme = (chart: EChartsType): void => {
     resolverRef.current ??= createCanvasColorResolver();
-    chart.setTheme(buildChartTheme(resolverRef.current, paletteRef.current));
+    chart.setTheme(buildChartTheme(resolverRef.current, paletteRef.current, rampRef.current));
   };
 
   const applyOption = (chart: EChartsType): void => {
@@ -94,6 +98,17 @@ export function EChart({
     // The instance lives as long as the component; option updates are handled below.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    if (rampRef.current === ramp) {
+      return;
+    }
+    rampRef.current = ramp;
+    if (chartRef.current) {
+      applyTheme(chartRef.current);
+    }
+    // `applyTheme` only reads refs.
+  }, [ramp]);
 
   useEffect(() => {
     optionRef.current = option;

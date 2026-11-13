@@ -24,6 +24,8 @@ export const SUMMARY_MAX_LENGTH = 120;
  * to `LIVE_CATEGORIES`: shipping data for a category means adding its summary here.
  */
 export const LIVE_CATEGORY_SUMMARIES: Partial<Record<EcoCategory, string>> = {
+  [ECO_CATEGORIES.WASTE_RECYCLING]:
+    'How much waste each country generates, what is recycled, composted or dumped, and projections to 2050.',
   [ECO_CATEGORIES.GLOBAL_TEMPERATURE]:
     'How far each year’s temperature is from the recent average, for every country since 1940.',
   [ECO_CATEGORIES.CO2_EMISSIONS]:

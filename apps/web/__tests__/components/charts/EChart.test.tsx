@@ -211,6 +211,24 @@ describe('EChart', () => {
     });
   });
 
+  describe('ramp', () => {
+    const MAP_LIKE = { ...OPTION };
+
+    it('should re-apply the theme when the ramp changes while mounted, and only then', async () => {
+      const { rerender } = render(
+        <EChart option={MAP_LIKE} ramp="heat" initSize={{ width: 400, height: 300 }} />,
+      );
+      await waitFor(() => expect(calls).toContain('setTheme'));
+
+      calls.length = 0;
+      rerender(<EChart option={MAP_LIKE} ramp="heat" initSize={{ width: 400, height: 300 }} />);
+      expect(calls).not.toContain('setTheme');
+
+      rerender(<EChart option={MAP_LIKE} ramp="good" initSize={{ width: 400, height: 300 }} />);
+      await waitFor(() => expect(calls).toContain('setTheme'));
+    });
+  });
+
   it('should resize the chart when the container is resized', () => {
     render(<EChart option={OPTION} initSize={{ width: 400, height: 300 }} />);
 

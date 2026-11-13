@@ -31,3 +31,7 @@ export const CARD_BLEED_CLASS_NAME = '-mx-4 sm:mx-0';
  * is `bg-surface-card`, so it blends into the card.
  */
 export const TABLE_REGION_CLASS_NAME = `${CARD_BLEED_CLASS_NAME} border-y border-line-strong focus-visible:outline-none max-sm:focus-visible:outline-solid max-sm:focus-visible:outline-2 max-sm:focus-visible:-outline-offset-2 max-sm:focus-visible:outline-focus-ring sm:rounded-lg sm:border sm:focus-visible:ring-2 sm:focus-visible:ring-focus-ring sm:focus-visible:ring-offset-2 ring-offset-focus-offset`;
+
+/** Focus indicator of a control inside a card: a ring with an offset from the card's surface. */
+export const FOCUS_RING_CLASS_NAME =
+  'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2 ring-offset-focus-offset';

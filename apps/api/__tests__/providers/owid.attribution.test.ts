@@ -13,12 +13,13 @@ const collectSourceFiles = (dir: string): string[] =>
   });
 
 const PUBLISHERS_FILE = join('apps', 'api', 'src', 'common', 'publishers', 'publishers.ts');
-// Upstream origins name their own licenses (the producer's CC BY 4.0); these are the only
-// other files allowed to spell it out.
+// Upstream origins name their own licenses (the producer's CC BY 4.0), and a static dataset
+// without a republisher declares its own; these are the only other files allowed to spell it out.
 const ORIGIN_DECLARATIONS = [
   join('apps', 'api', 'src', 'modules', 'co2-emissions', 'co2-emissions.constants.ts'),
   join('apps', 'api', 'src', 'modules', 'energy-sources', 'energy-sources.constants.ts'),
   join('apps', 'api', 'src', 'modules', 'global-temperature', 'global-temperature.constants.ts'),
+  join('apps', 'api', 'src', 'modules', 'waste-recycling', 'waste-recycling.attribution.ts'),
 ];
 
 describe('OWID_PUBLISHER', () => {

@@ -24,6 +24,10 @@ describe('WaterFootprintService over the real dataset', () => {
     expect(matches[0]).toMatchObject({ entryCount: 37, publishedYear: 2018 });
   });
 
+  it('should leave every water-footprint publication without a license', () => {
+    expect(dataset.publications.some((publication) => 'license' in publication)).toBe(false);
+  });
+
   it('should give every publication a numeric year and no dataset-level timestamp', () => {
     expect(dataset).not.toHaveProperty('lastUpdated');
     expect(dataset.publications.every(({ publishedYear }) => Number.isInteger(publishedYear))).toBe(

@@ -1,5 +1,6 @@
 import type { EChartsCoreOption } from 'echarts/core';
 
+import { escapeHtml } from '@/lib/escapeHtml';
 import { formatPerCapita, formatTotal } from '@/lib/formatNumber';
 import {
   WORLD_MAP_NAME,
@@ -42,17 +43,6 @@ function pieces(): { lt?: number; gte?: number }[] {
     { gte: CO2_MAP_CLASS_BREAKS[CO2_MAP_CLASS_BREAKS.length - 1] },
   ];
 }
-
-const HTML_ESCAPES: Record<string, string> = {
-  '&': '&amp;',
-  '<': '&lt;',
-  '>': '&gt;',
-  '"': '&quot;',
-  "'": '&#39;',
-};
-
-/** The tooltip is HTML: a name from the payload is escaped, never trusted as markup. */
-const escapeHtml = (text: string): string => text.replace(/[&<>"']/g, (char) => HTML_ESCAPES[char]);
 
 /** Tooltip text of a country; a missing total is said, never printed as a number. */
 export function formatCo2MapTooltip(item: Omit<CountryItem, 'name'>, year: number): string {

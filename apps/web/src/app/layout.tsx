@@ -73,7 +73,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
              */}
             <a
               href="#main-content"
-              className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-accent-solid focus:text-on-accent focus:rounded-md focus:font-medium focus:outline-none"
+              className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-accent-solid-strong focus:text-on-accent focus:rounded-md focus:font-medium focus:outline-none"
             >
               Skip to main content
             </a>

@@ -1,0 +1,49 @@
+# Monthly check of the World Bank "What a Waste" source behind the bundled waste dataset.
+# The dataset is static and refreshed by hand (see docs/data-sources/waste-recycling.md), so this
+# only opens an issue when a new edition or a revised workbook appears. Scheduled workflows run on
+# the default branch only. It never deploys or pushes.
+name: Waste data check
+
+on:
+  schedule:
+    - cron: '17 9 1 * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: waste-data-check
+  cancel-in-progress: false
+
+jobs:
+  check:
+    name: Check source
+    runs-on: ubuntu-latest
+    env:
+      ISSUE_TITLE: 'Waste dataset: new World Bank What a Waste data available'
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: '.nvmrc'
+
+      - name: Check the source
+        id: check
+        run: node scripts/check-waste-recycling-source.mjs --body-file "$RUNNER_TEMP/issue.md"
+
+      - name: Open an issue
+        if: steps.check.outputs.changed == 'true'
+        run: |
+          existing=$(gh issue list --state open --search "in:title \"$ISSUE_TITLE\"" --json title \
+            --jq "[.[] | select(.title == env.ISSUE_TITLE)] | length")
+          if [ "$existing" != "0" ]; then
+            echo "An open issue with this title already exists; not opening another."
+          else
+            gh issue create --title "$ISSUE_TITLE" --body-file "$RUNNER_TEMP/issue.md"
+          fi

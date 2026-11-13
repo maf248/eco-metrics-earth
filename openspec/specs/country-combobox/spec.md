@@ -8,7 +8,7 @@ Provide an accessible, searchable country selector with flags, following the WAI
 
 ### Requirement: Generic searchable country combobox following the WAI-ARIA pattern
 
-`apps/web/src/components/CountryCombobox.tsx` (a Client Component, hand-built, no UI library) SHALL accept `options: { code: string; name: string; iso2: string | null }[]`, the selected `value` (a code), `onChange(code)` and a visible `label`, and SHALL implement the WAI-ARIA 1.2 editable combobox with list autocomplete: a `<label>` associated with an `<input role="combobox">` carrying `aria-expanded`, `aria-controls`, `aria-autocomplete="list"` and `aria-activedescendant`; a popup `<ul role="listbox">` of `<li role="option">` elements with unique ids, the active option marked `aria-selected="true"`; `autocomplete="off"`; and a polite visually hidden live region that announces the number of matches ("12 countries found", "No countries found"). The input SHALL show the selected entity's name when closed.
+`apps/web/src/components/CountryCombobox.tsx` (a Client Component, hand-built, no UI library) SHALL accept `options: { code: string; name: string; iso2: string | null }[]`, the selected `value` (a code), `onChange(code)`, a visible `label`, an optional `placeholder` (default "Search countries"), an optional `disabled` flag, an optional `describedBy` id (set as `aria-describedby` on the input) and an optional `inputRef`, and SHALL implement the WAI-ARIA 1.2 editable combobox with list autocomplete: a `<label>` associated with an `<input role="combobox">` carrying `aria-expanded`, `aria-controls`, `aria-autocomplete="list"` and `aria-activedescendant`; a popup `<ul role="listbox">` of `<li role="option">` elements with unique ids, the active option marked `aria-selected="true"`; `autocomplete="off"`; and a polite visually hidden live region that announces the number of matches ("12 countries found", "No countries found"). The input SHALL show the selected entity's name when closed.
 
 #### Scenario: Roles and relationships
 
@@ -156,6 +156,11 @@ Each option and the input SHALL show the entity's flag through `CountryFlag`: a 
 ### Requirement: Mobile and desktop presentation with tokens only
 
 The combobox SHALL use `text-base` (16 px) on the input to avoid iOS zoom, `min-h-11` on the input, the clear button and every option (44 px touch targets), a listbox limited to `max-h-60` with `overflow-y-auto`, the full width of its container up to `max-w-sm`, and truncated option text. Colors SHALL come only from tokens (`bg-surface-raised`, `border-line-strong`, `text-fg`, `text-fg-muted`, `bg-hover`, `text-accent`), with the repository focus-ring pattern (`focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2 ring-offset-focus-offset`). The active option SHALL be indicated by background and a leading bar (not by color alone) and the chosen entity by a check glyph. Wording SHALL be plain: label "Country", placeholder "Search countries", empty state "No countries found".
+
+#### Scenario: Disabled
+
+- **WHEN** `disabled` is set
+- **THEN** the input stays focusable but is read-only with `aria-disabled="true"` and disabled styling from tokens, the list never opens, typing changes nothing and the clear button is hidden
 
 #### Scenario: Touch targets and font size
 

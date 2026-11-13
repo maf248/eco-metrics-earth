@@ -107,6 +107,16 @@ describe('chart theme adapter', () => {
     ]);
   });
 
+  it('should give the visual map the good-is-high ramp when asked', () => {
+    expect(buildChartTheme(undefined, 'categorical', 'good').visualMap.inRange.color).toEqual([
+      'rgba(88, 198, 155, 1)',
+      'rgba(54, 169, 128, 1)',
+      'rgba(20, 140, 102, 1)',
+      'rgba(18, 110, 80, 1)',
+      'rgba(15, 81, 59, 1)',
+    ]);
+  });
+
   it('should fill map regions with the no-data token and outline them', () => {
     const { map } = buildChartTheme();
     expect(map.itemStyle).toEqual({

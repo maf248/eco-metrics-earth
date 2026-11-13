@@ -18,7 +18,7 @@ export const CATEGORY_DESCRIPTIONS: Record<EcoCategory, string> = {
   'air-quality':
     'Air quality data is coming soon: pollutant levels such as PM2.5 and ozone, and how clean the air is in cities around the world.',
   'waste-recycling':
-    'Waste and recycling data is coming to eco-metrics earth: how much waste countries produce and how much is recycled or composted.',
+    'Municipal waste by country: how much each generates per person, how much is recycled, composted or dumped, and projections to 2050. Data from the World Bank.',
   'endangered-species':
     'Endangered species data is coming soon: how many species are threatened with extinction and how that risk is changing over time.',
   deforestation:
@@ -43,6 +43,7 @@ export const CATEGORY_DESCRIPTIONS: Record<EcoCategory, string> = {
  * labels and must stay short (e.g. `Water Footprint`).
  */
 const METADATA_TITLE_OVERRIDES: Partial<Record<EcoCategory, string>> = {
+  'waste-recycling': 'Waste Generation & Recycling by Country',
   'co2-emissions': 'CO2 Emissions by Country',
   'global-temperature': 'Global Temperature Anomalies by Country',
   'energy-sources': 'Electricity Mix by Country',
