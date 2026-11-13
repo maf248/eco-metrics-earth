@@ -1,3 +1,13 @@
+## [2.16.0](https://github.com/maf248/eco-metrics-earth/compare/api-v2.15.0...api-v2.16.0) (2026-11-13)
+
+### Features
+
+* **api:** add the waste and recycling endpoint from the world bank what a waste dataset ([a61367f](https://github.com/maf248/eco-metrics-earth/commit/a61367f264288f8e71b41944c50b3dcf8fbd21bb))
+
+### Bug Fixes
+
+* **api:** bump fast-xml-parser to 5.12.0 to patch a dependabot alert ([9d85183](https://github.com/maf248/eco-metrics-earth/commit/9d85183475daf54ba05bd61fd2e8199e21ecc350))
+
 ## [2.15.0](https://github.com/maf248/eco-metrics-earth/compare/api-v2.14.2...api-v2.15.0) (2026-11-06)
 
 ### Features
