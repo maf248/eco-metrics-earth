@@ -1,3 +1,15 @@
+## [2.22.0](https://github.com/maf248/eco-metrics-earth/compare/v2.21.0...v2.22.0) (2026-11-13)
+
+### Features
+
+* **api:** add the waste and recycling endpoint from the world bank what a waste dataset ([a61367f](https://github.com/maf248/eco-metrics-earth/commit/a61367f264288f8e71b41944c50b3dcf8fbd21bb))
+* **web:** add the waste and recycling page with a world map, country comparison and projection ([a187756](https://github.com/maf248/eco-metrics-earth/commit/a1877568676f6de5b9fc3351288308d81d05bd79))
+
+### Bug Fixes
+
+* **api:** bump fast-xml-parser to 5.12.0 to patch a dependabot alert ([9d85183](https://github.com/maf248/eco-metrics-earth/commit/9d85183475daf54ba05bd61fd2e8199e21ecc350))
+* **web:** render the brand text the same on server and client under reduced motion ([2d3d451](https://github.com/maf248/eco-metrics-earth/commit/2d3d4511b25cf652aca8d753e7ad0fdee2342040))
+
 ## [2.21.0](https://github.com/maf248/eco-metrics-earth/compare/v2.20.1...v2.21.0) (2026-11-11)
 
 ### Features
