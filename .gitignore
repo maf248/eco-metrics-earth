@@ -43,15 +43,10 @@ test-output/
 # Next.js
 .next/
 
-# NestJS / API build
-apps/api/dist/
-
 # TypeScript incremental build outputs
 **/out-tsc/
 **/*.tsbuildinfo
 apps/api/package-lock.json
-**/dist/
-packages/shared/dist/
 
 .nx/polygraph
 .claude/worktrees
@@ -72,8 +67,6 @@ postman/environments/*.environment.json
 
 # OpenCode model reference (personal notes)
 OPENCODE_MODELS.md
-
-test-output
 
 # Playwright E2E
 test-results/

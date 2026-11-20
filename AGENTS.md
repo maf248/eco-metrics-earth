@@ -373,7 +373,7 @@ Pre-PR checklist: `npm run lint`, `npm run build`, `npm run test`, and `npm run 
   - `packages/shared/`-only deps → install in `packages/shared/package.json`
   - Shared dev tooling (e.g., `eslint`, `prettier`, `nx`, `typescript`) → root `package.json`
   - When in doubt, ask before installing.
-- **`legacy-peer-deps=true` in `.npmrc` is required** because `eslint-plugin-jsx-a11y@6.10.2` does not declare ESLint 10 in its peer dependencies. Remove it only when a jsx-a11y release adds ESLint 10 support (tracked as I04 in ROADMAP.md).
+- **`legacy-peer-deps=true` in `.npmrc` is required** because `eslint-plugin-jsx-a11y@6.10.2` does not declare ESLint 10 in its peer dependencies. Remove it only when a jsx-a11y release adds ESLint 10 support (tracked as I03 in ROADMAP.md).
 - **Dependabot alerts are enabled** (repository Security tab) for known vulnerabilities in the manifests. Automated security-fix PRs are **disabled** on purpose: GitHub always opens them against `main`, which only receives PRs from `develop`. Apply alert fixes manually on `develop`. Routine version updates (base image digest, GitHub Actions) come as weekly `chore(deps)` PRs against `develop` (`.github/dependabot.yml`).
 - To update a package: check `npm outdated`, verify compatibility, install with `--save-exact`, then run `npm run build` and `npm run test` before committing.
 
@@ -490,6 +490,7 @@ The user must **explicitly authorize** every `git commit` and every `git push`. 
 ### Push workflow — husky pre-push hook & local E2E
 
 - `.husky/pre-push` blocks direct pushes to `main` and runs `npx nx affected --target=test --base=origin/develop` (fast, NX-cached). E2E is not push-time: CI runs the full suite on every push; locally use `npm run e2e` (deterministic — the webServer wrapper brings up both servers and cleans up their process trees).
+- E2E workers (`apps/web/playwright.config.ts`): locally 2, because every worker competes with `next dev` compiling pages on demand and Playwright's default (half the cores) makes `page.goto` time out and starves the machine; in CI, Playwright's default (half the runner's vCPUs). `E2E_WORKERS` overrides both (a number or a percentage, e.g. `E2E_WORKERS=100%`).
 - SSH keep-alive hygiene: set `ServerAliveInterval` for your GitHub SSH host in `~/.ssh/config` so long pushes don't die with `Connection closed by remote host`.
 - If you start dev servers manually: `next dev` spawns a `next-server` worker that survives its parent and holds `:3000` — kill it by PID (`ss -tlnp | grep :3000`), never `pkill -f` with a self-matching pattern.
 

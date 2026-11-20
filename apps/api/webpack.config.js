@@ -16,7 +16,6 @@ module.exports = {
       main: './src/main.ts',
       tsConfig: './tsconfig.app.json',
       assets: [
-        './src/assets',
         { input: './src/modules/water-footprint/data', output: 'data', glob: '**/*' },
         { input: './src/modules/waste-recycling/data', output: 'data', glob: '**/*' },
       ],

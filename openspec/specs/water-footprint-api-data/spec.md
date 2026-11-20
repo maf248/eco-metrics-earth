@@ -93,12 +93,12 @@ The dataset SHALL contain 60 products across 7 categories: 39 Food & Beverages, 
 
 ### Requirement: Webpack asset copy to dist/data
 
-The `assets` option in `apps/api/webpack.config.js` SHALL use an explicit object-form entry for the dataset:
+The `assets` option in `apps/api/webpack.config.js` SHALL copy every dataset bundled with the API through an explicit object-form entry, and SHALL NOT carry string entries for folders that hold no bundled files (such as the Nx scaffold's `'./src/assets'`):
 
 ```js
 assets: [
-  './src/assets',
   { input: './src/modules/water-footprint/data', output: 'data', glob: '**/*' },
+  { input: './src/modules/waste-recycling/data', output: 'data', glob: '**/*' },
 ],
 ```
 
@@ -109,6 +109,12 @@ The object form is REQUIRED: `@nx/webpack`'s `normalizeAssets` computes a string
 - **WHEN** `npx nx build api` completes
 - **THEN** `apps/api/dist/data/water-footprint.json` exists
 - **THEN** `find apps/api/dist -name 'water-footprint.json'` yields exactly one result
+
+#### Scenario: No scaffold asset folder
+
+- **WHEN** `apps/api/webpack.config.js` is inspected
+- **THEN** its `assets` option contains only object-form dataset entries
+- **AND** `apps/api/src/assets/` does not exist in the repository
 
 ### Requirement: Module and app tests run without fs mocks
 

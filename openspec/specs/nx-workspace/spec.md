@@ -8,11 +8,11 @@ Defines the NX monorepo workspace structure, project layout, and toolchain confi
 
 ### Requirement: NX workspace initialized with apps and packages
 
-The NX workspace SHALL contain the `web` and `api` apps and the `shared` package, all recognized by NX and runnable through its task runner — on **NX 23.2.1** (all `nx` / `@nx/*` package families pinned to the exact version `23.2.1`, no `^` or `~`, in lockstep). Targets SHALL continue to be inferred via the `nx.json` plugins (`@nx/js/typescript`, `@nx/jest/plugin`, `@nx/next/plugin`, `@nx/eslint/plugin`, `@nx/webpack/plugin`, `@nx/playwright/plugin`) and the `nx.targets` blocks in each project's `package.json` — without `project.json` or deprecated executors.
+The NX workspace SHALL contain the `web` and `api` apps and the `shared` package, all recognized by NX and runnable through its task runner — on **NX 23** (all `nx` / `@nx/*` package families pinned to one exact version, no `^` or `~`, in lockstep; the version in use is the one in the root `package.json`, mirrored in the README tech-stack table). Targets SHALL continue to be inferred via the `nx.json` plugins (`@nx/js/typescript`, `@nx/jest/plugin`, `@nx/next/plugin`, `@nx/eslint/plugin`, `@nx/webpack/plugin`, `@nx/playwright/plugin`) and the `nx.targets` blocks in each project's `package.json` — without `project.json` or deprecated executors.
 
 #### Scenario: Start all apps in development
 
-- **GIVEN** the workspace migrated to NX 23.2.1 with the cache reset (`npx nx reset`)
+- **GIVEN** the workspace on its pinned NX 23 release with the cache reset (`npx nx reset`)
 - **WHEN** `nx run-many --targets=dev,serve --all` is executed
 - **THEN** the `web` and `api` apps start in parallel without errors or deprecation warnings
 - **AND** HMR for `@eco-metrics/shared` works in `web` (via explicit `transpilePackages` in `next.config.ts`)
@@ -20,7 +20,7 @@ The NX workspace SHALL contain the `web` and `api` apps and the `shared` package
 #### Scenario: Run all monorepo tests
 
 - **WHEN** `nx run-many --target=test --all` is executed
-- **THEN** Jest runs in the three projects (279 tests) and returns results without errors or configuration warnings
+- **THEN** Jest runs in the three projects and returns results without errors or configuration warnings
 
 #### Scenario: Build all apps
 
@@ -61,7 +61,7 @@ The workspace dependency tree SHALL be free of `npm audit` advisories whose fix 
 
 #### Scenario: Audit without NX subtree advisories
 
-- **GIVEN** the workspace on NX 23.2.1 with `package-lock.json` regenerated
+- **GIVEN** the workspace on its pinned NX 23 release with `package-lock.json` regenerated
 - **WHEN** `npm audit --json` is executed
 - **THEN** no listed advisory has a fix path through the `nx` / `@nx/*` / `@module-federation/*` family
 - **AND** the NX subtree baseline block (advisories against `@nx/*` ≤22.7.6, `@module-federation/*`, `webpack-dev-server`, `svgo`, `undici`, `ws`, `adm-zip`, `axios`/`tmp`/`yaml`/`form-data`/`brace-expansion` from `nx@22.7.2`) has disappeared from the report
@@ -85,6 +85,6 @@ The workspace SHALL operate on NX 23 without deprecation warnings in build, test
 
 #### Scenario: NX versions in lockstep with exact pin
 
-- **WHEN** the root `package.json` is inspected after the migration
-- **THEN** the ten NX family packages (`nx`, `@nx/devkit`, `@nx/jest`, `@nx/js`, `@nx/nest`, `@nx/next`, `@nx/node`, `@nx/playwright`, `@nx/react`, `@nx/webpack`) are pinned to the exact `"23.2.1"`
+- **WHEN** the root `package.json` is inspected
+- **THEN** the ten NX family packages (`nx`, `@nx/devkit`, `@nx/jest`, `@nx/js`, `@nx/nest`, `@nx/next`, `@nx/node`, `@nx/playwright`, `@nx/react`, `@nx/webpack`) are all pinned to the same exact 23.x version
 - **AND** `npm ls` shows no nested NX family copies in 22.x versions
