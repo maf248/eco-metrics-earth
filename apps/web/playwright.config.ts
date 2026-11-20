@@ -5,17 +5,22 @@ import { defineConfig, devices } from '@playwright/test';
 // For CI, you may want to set BASE_URL to the deployed application.
 const baseURL = process.env['BASE_URL'] || 'http://localhost:3000';
 
-/**
- * Read environment variables from file.
- * https://github.com/motdotla/dotenv
+/*
+ * Workers compete with `next dev` compiling pages on demand: locally 2 (Playwright's default of half
+ * the cores makes `page.goto` time out), in CI Playwright's default. `E2E_WORKERS` overrides both.
  */
-// require('dotenv').config();
+function resolveWorkers(): number | string | undefined {
+  const override = process.env['E2E_WORKERS'];
+  if (override) return /^\d+$/.test(override) ? Number(override) : override;
+  return process.env['CI'] ? undefined : 2;
+}
 
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig({
   ...nxE2EPreset(__filename, { testDir: './e2e' }),
+  workers: resolveWorkers(),
   /* Show each test name in console output */
   reporter: 'list',
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
