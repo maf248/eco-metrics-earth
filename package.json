@@ -14,7 +14,7 @@
     "prepare": "husky",
     "reset": "rm -rf node_modules .nx apps/web/.next packages/shared/dist && npm install",
     "typecheck": "nx run-many --target=typecheck --all",
-    "clean:reports": "rm -rf coverage apps/api/test-output packages/shared/test-output",
+    "clean:reports": "rm -rf coverage apps/api/test-output apps/web/test-output packages/shared/test-output",
     "update-snapshots": "NX_NATIVE_COMMAND_RUNNER=false nx run-many --target=test --all -- --updateSnapshot",
     "e2e": "nx e2e web",
     "geo:world": "node scripts/generate-world-geometry.mjs",
