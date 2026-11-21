@@ -214,4 +214,35 @@ describe('AppConfigService', () => {
       expect(service.snapshotPrefix).toBeUndefined();
     });
   });
+
+  describe('logLevel', () => {
+    it.each([
+      ['production', 'info'],
+      ['development', 'debug'],
+      ['test', 'silent'],
+    ])('should default to the %s level %s when LOG_LEVEL is unset', (nodeEnv, expected) => {
+      const service = buildService({ NODE_ENV: nodeEnv });
+      expect(service.logLevel).toBe(expected);
+    });
+
+    it.each(['production', 'development', 'test'])(
+      'should return the explicit LOG_LEVEL when NODE_ENV is %s',
+      (nodeEnv) => {
+        const service = buildService({ NODE_ENV: nodeEnv, LOG_LEVEL: 'warn' });
+        expect(service.logLevel).toBe('warn');
+      },
+    );
+  });
+
+  describe('gcpProjectId', () => {
+    it('should return the project id when set', () => {
+      const service = buildService({ GCP_PROJECT_ID: 'my-project' });
+      expect(service.gcpProjectId).toBe('my-project');
+    });
+
+    it('should return undefined when unset or empty', () => {
+      expect(buildService({}).gcpProjectId).toBeUndefined();
+      expect(buildService({ GCP_PROJECT_ID: '' }).gcpProjectId).toBeUndefined();
+    });
+  });
 });

@@ -2,13 +2,20 @@ import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import helmet from 'helmet';
+import { Logger } from 'nestjs-pino';
 
 import { AppModule } from './app/app.module';
 import { applyGlobalPipeline } from './app/global-pipeline';
 import { AppConfigService } from './config/app-config.service';
 
 async function bootstrap() {
-  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  // bufferLogs holds boot logs until the pino logger is installed; abortOnError: false makes a
+  // module-initialization failure (invalid env var, DI error) reject so the catch below logs it.
+  const app = await NestFactory.create<NestExpressApplication>(AppModule, {
+    bufferLogs: true,
+    abortOnError: false,
+  });
+  app.useLogger(app.get(Logger));
 
   applyGlobalPipeline(app);
 
@@ -46,7 +53,8 @@ async function bootstrap() {
 }
 
 bootstrap().catch((err: unknown) => {
-  // eslint-disable-next-line no-console -- intentional: console is the only logger available before NestJS DI is initialized
-  console.error('Fatal error during bootstrap:', err);
+  // No DI logger exists before NestFactory.create resolves: write one Cloud Logging JSON line.
+  const message = err instanceof Error && err.stack ? err.stack : String(err);
+  process.stderr.write(`${JSON.stringify({ severity: 'ERROR', message })}\n`);
   process.exit(1);
 });

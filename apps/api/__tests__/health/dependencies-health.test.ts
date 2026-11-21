@@ -190,6 +190,42 @@ describe('liveness independence from providers', () => {
   });
 });
 
+describe('deploy workflow service environment', () => {
+  it('should pass GCP_PROJECT_ID from the repository variable for log correlation', () => {
+    const workflow = readFileSync(
+      join(__dirname, '../../../../.github/workflows/deploy-api.yml'),
+      'utf-8',
+    );
+
+    expect(workflow).toContain('GCP_PROJECT_ID=${{ vars.GCP_PROJECT_ID }}');
+  });
+
+  describe('deploy-cloudrun step blocks', () => {
+    const workflow = readFileSync(
+      join(__dirname, '../../../../.github/workflows/deploy-api.yml'),
+      'utf-8',
+    );
+    const envVarsBlock = workflow.slice(
+      workflow.indexOf('env_vars: |'),
+      workflow.indexOf('secrets: |'),
+    );
+    const secretsBlock = workflow.slice(
+      workflow.indexOf('secrets: |'),
+      workflow.indexOf('flags: >-'),
+    );
+
+    it('should set the proxy hop count and the project id in env_vars', () => {
+      expect(envVarsBlock).toContain('TRUST_PROXY_HOPS=1');
+      expect(envVarsBlock).toContain('GCP_PROJECT_ID=${{ vars.GCP_PROJECT_ID }}');
+    });
+
+    it('should mount INTERNAL_API_KEY from Secret Manager and never as a literal env var', () => {
+      expect(secretsBlock).toContain('INTERNAL_API_KEY=internal-api-key:latest');
+      expect(envVarsBlock).not.toContain('INTERNAL_API_KEY');
+    });
+  });
+});
+
 describe('GET /health/dependencies behind the global InternalKeyGuard', () => {
   const SECRET = 's'.repeat(32);
   let guardedApp: INestApplication;

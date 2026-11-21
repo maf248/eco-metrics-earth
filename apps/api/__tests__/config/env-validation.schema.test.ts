@@ -398,4 +398,49 @@ describe('envValidationSchema', () => {
       expect(error?.message).toContain('SNAPSHOT_PREFIX');
     });
   });
+
+  describe('LOG_LEVEL', () => {
+    it('should leave LOG_LEVEL undefined when unset (the default is applied by AppConfigService)', () => {
+      const { error, value } = validate({});
+      expect(error).toBeUndefined();
+      expect(value.LOG_LEVEL).toBeUndefined();
+    });
+
+    it.each(['fatal', 'error', 'warn', 'info', 'debug', 'trace', 'silent'])(
+      'should accept %s',
+      (level) => {
+        const { error, value } = validate({ LOG_LEVEL: level });
+        expect(error).toBeUndefined();
+        expect(value.LOG_LEVEL).toBe(level);
+      },
+    );
+
+    it('should reject an unknown level with a message naming LOG_LEVEL', () => {
+      const { error } = validate({ LOG_LEVEL: 'verbose' });
+      expect(error).toBeDefined();
+      expect(error?.message).toContain('LOG_LEVEL');
+    });
+  });
+
+  describe('GCP_PROJECT_ID', () => {
+    it('should accept a valid project id', () => {
+      const { error, value } = validate({ GCP_PROJECT_ID: 'my-project' });
+      expect(error).toBeUndefined();
+      expect(value.GCP_PROJECT_ID).toBe('my-project');
+    });
+
+    it('should accept an unset or empty value', () => {
+      expect(validate({}).error).toBeUndefined();
+      expect(validate({ GCP_PROJECT_ID: '' }).error).toBeUndefined();
+    });
+
+    it.each(['Not A Project', 'Upper-Case1', '1starts-with-digit', 'short', 'ends-with-hyphen-'])(
+      'should reject %s with a message naming GCP_PROJECT_ID',
+      (projectId) => {
+        const { error } = validate({ GCP_PROJECT_ID: projectId });
+        expect(error).toBeDefined();
+        expect(error?.message).toContain('GCP_PROJECT_ID');
+      },
+    );
+  });
 });

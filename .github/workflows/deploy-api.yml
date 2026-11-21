@@ -263,6 +263,7 @@ jobs:
             CORS_ORIGIN=${{ steps.cors.outputs.origin }}
             SWAGGER_ENABLED=false
             TRUST_PROXY_HOPS=1
+            GCP_PROJECT_ID=${{ vars.GCP_PROJECT_ID }}
             ${{ steps.cors.outputs.pattern }}
             ${{ steps.snapshot.outputs.bucket }}
             ${{ steps.snapshot.outputs.prefix }}

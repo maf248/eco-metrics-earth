@@ -143,7 +143,7 @@ describe('AllExceptionsFilter', () => {
     );
   });
 
-  it('should treat unknown non-Error values as 500 without a stack', () => {
+  it('should treat unknown non-Error values as 500 and still log a non-empty message', () => {
     filter.catch('string-thrown', host);
 
     expect(response.status).toHaveBeenCalledWith(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -157,7 +157,19 @@ describe('AllExceptionsFilter', () => {
         status: HttpStatus.INTERNAL_SERVER_ERROR,
         error: 'Internal server error',
       }),
-      undefined,
+      expect.stringContaining('string-thrown'),
+    );
+  });
+
+  it('should still log a message when the thrown value cannot be converted to a string', () => {
+    const unprintable = Object.create(null) as unknown;
+
+    expect(() => filter.catch(unprintable, host)).not.toThrow();
+
+    expect(response.status).toHaveBeenCalledWith(HttpStatus.INTERNAL_SERVER_ERROR);
+    expect(loggerErrorSpy).toHaveBeenCalledWith(
+      expect.objectContaining({ status: HttpStatus.INTERNAL_SERVER_ERROR }),
+      'Non-error thrown (unprintable)',
     );
   });
 });
