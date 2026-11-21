@@ -27,7 +27,7 @@ The API SHALL define `ProviderError` (extends `Error`, accepting `{ cause }`) an
 
 ### Requirement: The global filter maps provider errors to 502
 
-`AllExceptionsFilter` SHALL respond to any `ProviderError` with HTTP `502` and the body `{ success: false, error: 'Data provider unavailable or returned invalid data', status: 502 }`, the `ApiResponse` error format. The body SHALL be a constant string and SHALL NOT include the provider URL, the underlying message or a stack. The filter SHALL log the error class, its message and its `cause` chain at `error` level. Errors that are neither `HttpException` nor `ProviderError` SHALL keep responding `500` with `Internal server error`, and `HttpException` handling SHALL be unchanged.
+`AllExceptionsFilter` SHALL respond to any `ProviderError` with HTTP `502` and the body `{ success: false, error: 'Data provider unavailable or returned invalid data', status: 502 }`, the `ApiResponse` error format. The body SHALL be a constant string and SHALL NOT include the provider URL, the underlying message or a stack. The filter SHALL log the error class, its message and its `cause` chain at `error` level as one structured entry whose `message` is the error's stack (or `Name: message` when there is none), so each failure appears once and Google Cloud Error Reporting can group it. Errors that are neither `HttpException` nor `ProviderError` SHALL keep responding `500` with `Internal server error`, and `HttpException` handling SHALL be unchanged.
 
 #### Scenario: Transport error becomes 502
 
@@ -50,7 +50,7 @@ The API SHALL define `ProviderError` (extends `Error`, accepting `{ cause }`) an
 #### Scenario: The failure is logged
 
 - **WHEN** the filter handles a provider error
-- **THEN** a log entry at `error` level includes the error name, message and the `cause` chain
+- **THEN** exactly one log entry at `error` level includes the error name, message, the `cause` chain, and a `message` containing the stack
 
 #### Scenario: Unexpected errors stay 500
 
