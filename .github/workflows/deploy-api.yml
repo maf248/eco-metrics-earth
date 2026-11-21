@@ -64,6 +64,8 @@ jobs:
           CORS_ORIGIN_PATTERN_DEV: ${{ vars.CORS_ORIGIN_PATTERN_DEV }}
           # Optional: unset disables snapshot persistence, so it is not part of the pre-flight list.
           SNAPSHOT_BUCKET: ${{ vars.SNAPSHOT_BUCKET }}
+          # Optional: unset disables Sentry, so it is not part of the pre-flight list either.
+          SENTRY_DSN_API: ${{ vars.SENTRY_DSN_API }}
         run: |
           case "$DEPLOY_TARGET" in
             production)
@@ -112,6 +114,7 @@ jobs:
             echo "pattern=${!pattern_var}"
             echo "snapshot_bucket=${SNAPSHOT_BUCKET}"
             echo "snapshot_prefix=${DEPLOY_TARGET}"
+            echo "sentry_dsn=${SENTRY_DSN_API}"
           } >> "$GITHUB_OUTPUT"
 
           echo "Deploy target: $DEPLOY_TARGET → service $service, package $package (CORS from $origin_var / $pattern_var)."
@@ -249,6 +252,25 @@ jobs:
             } >> "$GITHUB_OUTPUT"
           fi
 
+      # Sentry is opt-in: the three lines are emitted only when the optional SENTRY_DSN_API
+      # repository variable is set. The environment is the deploy target and the release is the
+      # commit SHA. The DSN is public by design; the API needs no Sentry auth token.
+      - name: Prepare Sentry env values for deploy-cloudrun
+        if: steps.detect.outputs.deploy == 'true'
+        id: sentry
+        env:
+          SENTRY_DSN: ${{ steps.target.outputs.sentry_dsn }}
+          SENTRY_ENVIRONMENT: ${{ inputs.target }}
+          SENTRY_RELEASE: ${{ github.sha }}
+        run: |
+          if [ -n "$SENTRY_DSN" ]; then
+            {
+              echo "dsn=SENTRY_DSN=$SENTRY_DSN"
+              echo "environment=SENTRY_ENVIRONMENT=$SENTRY_ENVIRONMENT"
+              echo "release=SENTRY_RELEASE=$SENTRY_RELEASE"
+            } >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Deploy to Cloud Run
         if: steps.detect.outputs.deploy == 'true'
         id: deploy
@@ -267,6 +289,9 @@ jobs:
             ${{ steps.cors.outputs.pattern }}
             ${{ steps.snapshot.outputs.bucket }}
             ${{ steps.snapshot.outputs.prefix }}
+            ${{ steps.sentry.outputs.dsn }}
+            ${{ steps.sentry.outputs.environment }}
+            ${{ steps.sentry.outputs.release }}
           secrets: |
             INTERNAL_API_KEY=internal-api-key:latest
           flags: >-

@@ -36,10 +36,11 @@ function owidBaseUrlValidator(defaultValue: string) {
 // GCS bucket naming rules: 3-63 characters of lowercase letters, digits, dashes, underscores and
 // dots, starting and ending with a letter or digit.
 const SNAPSHOT_BUCKET_PATTERN = /^[a-z0-9][a-z0-9._-]{1,61}[a-z0-9]$/;
-const SNAPSHOT_PREFIX_PATTERN = /^[a-z0-9]+(-[a-z0-9]+)*$/;
+const KEBAB_CASE_PATTERN = /^[a-z0-9]+(-[a-z0-9]+)*$/;
 // GCP project ids: 6-30 characters, lowercase letters, digits and hyphens, starting with a letter
 // and not ending with a hyphen.
 const GCP_PROJECT_ID_PATTERN = /^[a-z][a-z0-9-]{4,28}[a-z0-9]$/;
+const SENTRY_RELEASE_PATTERN = /^\S{1,200}$/;
 const LOG_LEVELS = ['fatal', 'error', 'warn', 'info', 'debug', 'trace', 'silent'] as const;
 
 export const envValidationSchema = Joi.object({
@@ -130,8 +131,8 @@ export const envValidationSchema = Joi.object({
   }),
   SNAPSHOT_PREFIX: Joi.when('SNAPSHOT_BUCKET', {
     is: Joi.string().min(1).required(),
-    then: Joi.string().pattern(SNAPSHOT_PREFIX_PATTERN).required(),
-    otherwise: Joi.string().pattern(SNAPSHOT_PREFIX_PATTERN).optional().allow(''),
+    then: Joi.string().pattern(KEBAB_CASE_PATTERN).required(),
+    otherwise: Joi.string().pattern(KEBAB_CASE_PATTERN).optional().allow(''),
   }).messages({
     'string.pattern.base': 'SNAPSHOT_PREFIX must be kebab-case (for example "production").',
     'string.empty': 'SNAPSHOT_PREFIX is required when SNAPSHOT_BUCKET is set.',
@@ -148,6 +149,21 @@ export const envValidationSchema = Joi.object({
   GCP_PROJECT_ID: Joi.string().pattern(GCP_PROJECT_ID_PATTERN).optional().allow('').messages({
     'string.pattern.base':
       'GCP_PROJECT_ID must be a valid GCP project id (6-30 lowercase letters, digits or hyphens, starting with a letter).',
+  }),
+  // Sentry settings are optional; unset or empty keeps the SDK disabled (see `src/instrument.ts`).
+  SENTRY_DSN: Joi.string().uri({ scheme: 'https' }).optional().allow('').messages({
+    'string.uri': 'SENTRY_DSN must be an https URI (or empty to disable Sentry).',
+    'string.uriCustomScheme': 'SENTRY_DSN must be an https URI (or empty to disable Sentry).',
+    'string.base': 'SENTRY_DSN must be a string.',
+  }),
+  SENTRY_ENVIRONMENT: Joi.string().pattern(KEBAB_CASE_PATTERN).optional().allow('').messages({
+    'string.pattern.base': 'SENTRY_ENVIRONMENT must be kebab-case (for example "production").',
+    'string.base': 'SENTRY_ENVIRONMENT must be a string.',
+  }),
+  SENTRY_RELEASE: Joi.string().pattern(SENTRY_RELEASE_PATTERN).optional().allow('').messages({
+    'string.pattern.base':
+      'SENTRY_RELEASE must be 1 to 200 characters without whitespace (for example a commit SHA).',
+    'string.base': 'SENTRY_RELEASE must be a string.',
   }),
   INTERNAL_API_KEY: Joi.when('NODE_ENV', {
     is: 'production',
