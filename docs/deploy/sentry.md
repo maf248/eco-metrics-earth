@@ -8,7 +8,7 @@ The click paths below are those of the Sentry UI at the time of writing. If a la
 
 - **Cloud Logging and Error Reporting** keep recording every API 5xx (see section 23 of [`cloud-run.md`](./cloud-run.md)). They are unchanged.
 - **Sentry** is an additional view: web server and browser errors (which only reached Vercel logs or nobody), release and environment tagging, alerts and an uptime check.
-- Only errors are sent: no tracing, profiling or Session Replay, and no user context set by the app (`sendDefaultPii: false`, so no default PII such as cookies or request bodies). An error event carries its stack trace, the page URL, breadcrumbs of recent navigation, fetch calls, console output and clicks, and browser and OS context. The SDK's default integrations stay on, apart from `BrowserSession`.
+- Only errors are sent: no tracing, profiling or Session Replay, and no user context set by the app (`sendDefaultPii: false`, so no default PII such as cookies or request bodies). An error event carries its stack trace, the page URL, breadcrumbs of recent navigation, fetch calls, console output and clicks, and browser and OS context. The SDK's default integrations stay on, apart from `BrowserSession`. Sentry still infers the client IP server-side unless the organization setting below is on.
 
 ## What is sent and what is not
 
@@ -49,24 +49,28 @@ Create them in **each** project (`eco-metrics-web` and `eco-metrics-api`) under 
 | `Regression in production`          | The issue changes state from resolved to unresolved    | environment `production` | Send an email to the owner |
 | `Issue spike in production (20/1h)` | The issue is seen more than **20** times in **1 hour** | environment `production` | Send an email to the owner |
 
-## 3. Quota guards
+## 3. Privacy: do not store IP addresses
+
+In **Settings → Security & Privacy** (organization level) turn on **Prevent Storing of IP Addresses**. Without it Sentry records the browser IP from the ingest request, even with `sendDefaultPii: false`. It applies to every project.
+
+## 4. Quota guards
 
 - **Client-key rate limit** (the daily backstop): **Settings → Projects → project → Client Keys (DSN) → Configure → Rate limit**, for example **80 events per 1 day** per project. Even a flood the app-side throttle does not collapse cannot burn the monthly quota.
 - **Inbound filters** and **spike protection**: leave on (**Settings → Projects → project → Inbound Filters**; spike protection is on by default).
 - **Quota check**: **Stats** in the organization menu shows the monthly usage.
 
-## 4. Uptime monitor
+## 5. Uptime monitor
 
 The Developer plan allows one monitor. Create it under **Insights → Uptime Monitors → Add Uptime Monitor** (match by name if labels move) with the **production web URL** as target.
 
 Why the web: a fully down site produces no errors, so only an uptime check can see it. An API outage already surfaces as web server errors (BFF reads that throw) and as API 5xx events, and the API liveness endpoint is free of provider calls so it would add little signal.
 
-## 5. Stack traces
+## 6. Stack traces
 
 - **Web**: with `SENTRY_AUTH_TOKEN` set, the Vercel build uploads source maps for the release and deletes them from `.next`, so they are never served. Without a token the plugin is disabled and the build still succeeds.
 - **API**: the image starts Node with `--enable-source-maps` (Dockerfile `CMD`), so `Error.stack` shows TypeScript paths from the `main.js.map` shipped in the image. This applies to Sentry and also to the stack in the Cloud Logging entry that Error Reporting groups on. There is no upload and the API needs no token.
 
-## 6. Verify end to end
+## 7. Verify end to end
 
 - **Web**: on the production page, open the browser console and run `setTimeout(() => { throw new Error('sentry-verify') })`. The error appears in `eco-metrics-web` with environment `production` and a mapped stack (an ad blocker may block the client request).
 - **API**: force a provider failure on the dev service; it appears once as `provider-unavailable` in `eco-metrics-api` with environment `development`, and the stack shows `.ts` paths (also in Cloud Logging).
