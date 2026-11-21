@@ -7,12 +7,14 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 
 import { waitForUrl } from './readiness.ts';
 import {
+  E2E_API_SENTRY_ENV,
   E2E_INTERNAL_API_KEY,
   E2E_OWID_API_BASE_URL,
   E2E_OWID_FIXTURE_PORT,
   E2E_OWID_GRAPHER_BASE_URL,
   E2E_OWID_FIXTURE_READY_URL,
   E2E_TRUST_PROXY_HOPS,
+  E2E_WEB_SENTRY_ENV,
 } from './utils/api-env.ts';
 import { startOwidFixtureServer } from './utils/owid-fixture-server.ts';
 
@@ -373,6 +375,7 @@ async function startApi(manager: ServerManager): Promise<void> {
     OWID_API_BASE_URL: E2E_OWID_API_BASE_URL,
     // NODE_ENV is unset here, so the API would log every request at debug through pino-pretty.
     LOG_LEVEL: 'warn',
+    ...E2E_API_SENTRY_ENV,
   });
   manager.register(api);
 
@@ -413,6 +416,7 @@ async function startWeb(manager: ServerManager): Promise<void> {
   log('starting web server...');
   const web = spawnServer(WEB_COMMAND, WEB_ARGS, manager, {
     INTERNAL_API_KEY: E2E_INTERNAL_API_KEY,
+    ...E2E_WEB_SENTRY_ENV,
   });
   manager.register(web);
 

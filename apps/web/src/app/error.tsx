@@ -1,5 +1,6 @@
 'use client';
 
+import * as Sentry from '@sentry/nextjs';
 import Link from 'next/link';
 import { useEffect } from 'react';
 
@@ -13,9 +14,10 @@ interface ErrorPageProps {
 
 export default function ErrorPage({ error, reset }: ErrorPageProps) {
   useEffect(() => {
-    // Log the error to an error reporting service in production
-    // eslint-disable-next-line no-console
-    console.error('Uncaught error:', error);
+    // An error with a digest happened on the server and Next's onRequestError already reported it.
+    if (error.digest === undefined) {
+      Sentry.captureException(error);
+    }
   }, [error]);
 
   return (

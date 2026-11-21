@@ -3,6 +3,7 @@
   "version": "2.18.2",
   "private": true,
   "dependencies": {
+    "@sentry/nextjs": "11.11.0",
     "echarts": "6.1.0",
     "flag-icons": "7.6.0",
     "next": "16.4.6",
@@ -32,6 +33,15 @@
           "command": "tsc -p tsconfig.json --noEmit",
           "cwd": "apps/web"
         }
+      },
+      "build": {
+        "inputs": [
+          "production",
+          "^production",
+          {
+            "env": "NEXT_PUBLIC_SENTRY_DSN"
+          }
+        ]
       },
       "analyze": {
         "executor": "nx:run-commands",

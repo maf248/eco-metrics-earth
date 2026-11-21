@@ -1,6 +1,11 @@
+import * as Sentry from '@sentry/nextjs';
 import { fireEvent, render, screen } from '@testing-library/react';
 
 import ErrorPage from '@/app/error';
+
+jest.mock('@sentry/nextjs', () => ({ captureException: jest.fn() }));
+
+const captureException = Sentry.captureException as jest.Mock;
 
 describe('ErrorPage', () => {
   const mockReset = jest.fn();
@@ -8,12 +13,7 @@ describe('ErrorPage', () => {
 
   beforeEach(() => {
     mockReset.mockClear();
-    // Suppress console.error from the useEffect log in the component
-    jest.spyOn(console, 'error').mockImplementation(() => {});
-  });
-
-  afterEach(() => {
-    jest.restoreAllMocks();
+    captureException.mockClear();
   });
 
   it('should render the error heading', () => {
@@ -61,11 +61,16 @@ describe('ErrorPage', () => {
     expect(screen.getByTestId('error-icon')).toBeTruthy();
   });
 
-  it('should log the error to console.error on mount', () => {
-    const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+  it('should report a client error without a digest to Sentry once', () => {
     render(<ErrorPage error={testError} reset={mockReset} />);
-    expect(consoleSpy).toHaveBeenCalledWith('Uncaught error:', testError);
-    consoleSpy.mockRestore();
+    expect(captureException).toHaveBeenCalledTimes(1);
+    expect(captureException).toHaveBeenCalledWith(testError);
+  });
+
+  it('should not report an error with a digest, because the server already did', () => {
+    const serverError = Object.assign(new Error('server failure'), { digest: 'abc' });
+    render(<ErrorPage error={serverError} reset={mockReset} />);
+    expect(captureException).not.toHaveBeenCalled();
   });
 
   it('should match snapshot', () => {

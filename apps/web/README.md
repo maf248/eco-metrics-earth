@@ -128,12 +128,14 @@ Copy `.env.example` before running locally:
 cp apps/web/.env.example apps/web/.env.local
 ```
 
-| Variable               | Default                        | Description                                                                                             |
-| ---------------------- | ------------------------------ | ------------------------------------------------------------------------------------------------------- |
-| `NEXT_PUBLIC_SITE_URL` | `http://localhost:3000`        | Canonical base URL for SEO metadata, sitemap, and Open Graph                                            |
-| `API_BASE_URL`         | `http://localhost:3001/api/v1` | Base URL of the NestJS BFF (server-side only). Set to the deployed API URL in production                |
-| `INTERNAL_API_KEY`     | —                              | Server-only secret sent as `X-Internal-Api-Key`; the API answers `401` without it. Never `NEXT_PUBLIC_` |
-| `ANALYZE`              | `false`                        | Set to `true` to generate a bundle analysis report on build (webpack only)                              |
+| Variable                 | Default                        | Description                                                                                             |
+| ------------------------ | ------------------------------ | ------------------------------------------------------------------------------------------------------- |
+| `NEXT_PUBLIC_SITE_URL`   | `http://localhost:3000`        | Canonical base URL for SEO metadata, sitemap, and Open Graph                                            |
+| `API_BASE_URL`           | `http://localhost:3001/api/v1` | Base URL of the NestJS BFF (server-side only). Set to the deployed API URL in production                |
+| `INTERNAL_API_KEY`       | —                              | Server-only secret sent as `X-Internal-Api-Key`; the API answers `401` without it. Never `NEXT_PUBLIC_` |
+| `NEXT_PUBLIC_SENTRY_DSN` | —                              | Optional Sentry DSN of the web project (public, inlined at build); empty/unset disables Sentry          |
+| `SENTRY_AUTH_TOKEN`      | —                              | Secret, a Vercel build-time variable only (source map upload); never committed                          |
+| `ANALYZE`                | `false`                        | Set to `true` to generate a bundle analysis report on build (webpack only)                              |
 
 ---
 

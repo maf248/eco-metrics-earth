@@ -23,3 +23,10 @@ export const E2E_OWID_FIXTURE_PORT = 3999;
 export const E2E_OWID_GRAPHER_BASE_URL = `http://localhost:${E2E_OWID_FIXTURE_PORT}/grapher`;
 export const E2E_OWID_API_BASE_URL = `http://localhost:${E2E_OWID_FIXTURE_PORT}/v1`;
 export const E2E_OWID_FIXTURE_READY_URL = `http://localhost:${E2E_OWID_FIXTURE_PORT}/`;
+
+/**
+ * Sentry stays disabled in E2E: an empty DSN beats any DSN a developer's local `.env` defines
+ * (an inherited variable is never overridden by Next's env files), so no E2E run sends events.
+ */
+export const E2E_API_SENTRY_ENV = { SENTRY_DSN: '' } as const;
+export const E2E_WEB_SENTRY_ENV = { NEXT_PUBLIC_SENTRY_DSN: '' } as const;
