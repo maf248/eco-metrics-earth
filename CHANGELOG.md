@@ -1,3 +1,10 @@
+## [2.24.0](https://github.com/maf248/eco-metrics-earth/compare/v2.23.0...v2.24.0) (2026-11-21)
+
+### Features
+
+* **api:** report 5xx errors to sentry ([e933f43](https://github.com/maf248/eco-metrics-earth/commit/e933f430234e8e75fe1a84ff84eb621685c61f2d))
+* **web:** report server and client errors to sentry ([8a75389](https://github.com/maf248/eco-metrics-earth/commit/8a75389af5d0567c387b71cb9984ff025f0297af))
+
 ## [2.23.0](https://github.com/maf248/eco-metrics-earth/compare/v2.22.2...v2.23.0) (2026-11-21)
 
 ### Features
