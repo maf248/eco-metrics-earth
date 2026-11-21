@@ -8,6 +8,8 @@ type MockResponse = Pick<Response, 'ok' | 'status' | 'json'>;
 const isNumberList = (data: unknown): data is number[] =>
   Array.isArray(data) && data.every((item) => typeof item === 'number');
 
+const TRACEPARENT_PATTERN = /^00-[0-9a-f]{32}-[0-9a-f]{16}-00$/;
+
 const request = () => fetchFromBff({ path: '/things', label: 'Things', isData: isNumberList });
 
 describe('fetchFromBff', () => {
@@ -133,7 +135,10 @@ describe('fetchFromBff', () => {
       await request();
 
       for (const [, init] of fetchMock.mock.calls as Array<[string, FetchInit]>) {
-        expect(init.headers).toEqual({ 'X-Internal-Api-Key': 'k'.repeat(32) });
+        expect(init.headers).toEqual({
+          'X-Internal-Api-Key': 'k'.repeat(32),
+          traceparent: expect.stringMatching(TRACEPARENT_PATTERN),
+        });
         expect(init.next).toEqual({ revalidate: 86400 });
         expect(init.signal).toBeInstanceOf(AbortSignal);
       }
@@ -144,7 +149,9 @@ describe('fetchFromBff', () => {
 
       await request();
 
-      expect((fetchMock.mock.calls[0][1] as FetchInit).headers).toEqual({});
+      expect((fetchMock.mock.calls[0][1] as FetchInit).headers).toEqual({
+        traceparent: expect.stringMatching(TRACEPARENT_PATTERN),
+      });
     });
 
     it('should never log the key when both attempts fail', async () => {
@@ -154,6 +161,54 @@ describe('fetchFromBff', () => {
       await expect(request()).rejects.toThrow();
 
       expect(inspect(consoleErrorSpy.mock.calls, { depth: null })).not.toContain('k'.repeat(32));
+    });
+  });
+
+  describe('trace correlation', () => {
+    const headersOf = (fetchMock: jest.Mock): Array<Record<string, string>> =>
+      (fetchMock.mock.calls as Array<[string, FetchInit]>).map(
+        ([, init]) => init.headers as Record<string, string>,
+      );
+
+    const traceIdOf = (headers: Record<string, string>): string =>
+      headers.traceparent.split('-')[1];
+
+    it('should send a fresh traceparent with a non-zero trace id on every attempt', async () => {
+      const fetchMock = mockFetch(timeout, success);
+
+      await request();
+
+      const [first, second] = headersOf(fetchMock);
+      expect(first.traceparent).toMatch(TRACEPARENT_PATTERN);
+      expect(second.traceparent).toMatch(TRACEPARENT_PATTERN);
+      expect(traceIdOf(first)).not.toBe('0'.repeat(32));
+      expect(traceIdOf(first)).not.toBe(traceIdOf(second));
+    });
+
+    it('should not send a X-Request-ID header, which would defeat the Next fetch Data Cache', async () => {
+      const fetchMock = mockFetch(timeout, success);
+
+      await request();
+
+      for (const headers of headersOf(fetchMock)) {
+        expect(Object.keys(headers).map((name) => name.toLowerCase())).not.toContain(
+          'x-request-id',
+        );
+      }
+    });
+
+    it('should log the trace id of every attempt and never the key when both attempts fail', async () => {
+      process.env.INTERNAL_API_KEY = 'k'.repeat(32);
+      const fetchMock = mockFetch(timeout, timeout);
+
+      await expect(request()).rejects.toThrow();
+
+      const [first, second] = headersOf(fetchMock);
+      expect(consoleErrorSpy).toHaveBeenCalledTimes(1);
+      const logged = inspect(consoleErrorSpy.mock.calls, { depth: null });
+      expect(logged).toContain(traceIdOf(first));
+      expect(logged).toContain(traceIdOf(second));
+      expect(logged).not.toContain('k'.repeat(32));
     });
   });
 });

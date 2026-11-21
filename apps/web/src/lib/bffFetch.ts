@@ -1,5 +1,7 @@
 import 'server-only';
 
+import { randomBytes } from 'node:crypto';
+
 import { apiBaseUrl } from '@/lib/apiBaseUrl';
 import { internalApiHeaders } from '@/lib/internalApiHeaders';
 import type { ApiResponseMeta } from '@eco-metrics/shared';
@@ -36,6 +38,24 @@ interface BffEnvelopeOptions<T> extends BffFetchOptions<T> {
 export interface BffEnvelope<T> {
   data: T;
   meta?: ApiResponseMeta;
+}
+
+interface Traceparent {
+  /** Value of the W3C `traceparent` request header. */
+  header: string;
+  /** The 32 hex characters the API logs as `requestId`. */
+  traceId: string;
+}
+
+/**
+ * A fresh, unsampled W3C trace context for one attempt. `traceparent` (and not a custom header
+ * such as `X-Request-ID`) because Next.js leaves it out of the fetch Data Cache key: a random
+ * custom header would turn every read into a cache miss and defeat `revalidate`.
+ */
+function newTraceparent(): Traceparent {
+  const traceId = randomBytes(16).toString('hex');
+  const spanId = randomBytes(8).toString('hex');
+  return { header: `00-${traceId}-${spanId}-00`, traceId };
 }
 
 const isString = (value: unknown): value is string => typeof value === 'string';
@@ -98,9 +118,10 @@ async function fetchEnvelope<T>(
   requireMeta: boolean,
   previousError: unknown,
   shortenAfterProviderError: boolean,
+  traceparent: string,
 ): Promise<BffEnvelope<T>> {
   const response = await fetch(url, {
-    headers: internalApiHeaders(),
+    headers: { ...internalApiHeaders(), traceparent },
     ...cacheOptions(previousError, shortenAfterProviderError),
     // A per-attempt signal also opts the request out of render-pass memoization,
     // so the retry is a real second request.
@@ -132,7 +153,8 @@ async function fetchEnvelope<T>(
 }
 
 type AttemptsResult<T> =
-  { ok: true; envelope: BffEnvelope<T> } | { ok: false; url: string; lastError: unknown };
+  | { ok: true; envelope: BffEnvelope<T> }
+  | { ok: false; url: string; lastError: unknown; traceIds: string[] };
 
 /** Runs the attempts of one read; the caller decides what a failure means. */
 async function readWithRetry<T>(
@@ -140,9 +162,12 @@ async function readWithRetry<T>(
   shortenAfterProviderError = false,
 ): Promise<AttemptsResult<T>> {
   const url = `${apiBaseUrl()}${path}`;
+  const traceIds: string[] = [];
   let lastError: unknown;
 
   for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
+    const trace = newTraceparent();
+    traceIds.push(trace.traceId);
     try {
       return {
         ok: true,
@@ -152,6 +177,7 @@ async function readWithRetry<T>(
           requireMeta,
           lastError,
           shortenAfterProviderError,
+          trace.header,
         ),
       };
     } catch (error) {
@@ -159,12 +185,21 @@ async function readWithRetry<T>(
     }
   }
 
-  return { ok: false, url, lastError };
+  return { ok: false, url, lastError, traceIds };
 }
 
-function logFailure({ label }: BffFetchOptions<unknown>, url: string, lastError: unknown): void {
+/** One log line per failed read; the trace ids match the API's `requestId` log field. */
+function logFailure(
+  { label }: BffFetchOptions<unknown>,
+  url: string,
+  traceIds: string[],
+  lastError: unknown,
+): void {
   // eslint-disable-next-line no-console
-  console.error(`${label} fetch failed after ${MAX_ATTEMPTS} attempts (${url}):`, lastError);
+  console.error(
+    `${label} fetch failed after ${MAX_ATTEMPTS} attempts (${url}) [trace ids: ${traceIds.join(', ')}]:`,
+    lastError,
+  );
 }
 
 /**
@@ -183,7 +218,7 @@ export async function fetchEnvelopeFromBff<T>(
     return result.envelope;
   }
 
-  logFailure(options, result.url, result.lastError);
+  logFailure(options, result.url, result.traceIds, result.lastError);
   throw new Error(`${options.label} could not be fetched from the BFF`, {
     cause: result.lastError,
   });
@@ -237,7 +272,7 @@ export async function fetchProviderPayloadFromBff<T>(
     return { kind: 'ok', payload: { data, meta } };
   }
 
-  logFailure(options, result.url, result.lastError);
+  logFailure(options, result.url, result.traceIds, result.lastError);
   if (result.lastError instanceof BffProviderError) {
     return { kind: 'provider-unavailable' };
   }

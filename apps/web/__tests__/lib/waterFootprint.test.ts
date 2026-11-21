@@ -182,7 +182,10 @@ describe('getWaterFootprintProducts', () => {
 
       for (const call of fetchMock.mock.calls) {
         const init = call[1] as FetchInit;
-        expect(init.headers).toEqual({ 'X-Internal-Api-Key': 'k'.repeat(32) });
+        expect(init.headers).toEqual({
+          'X-Internal-Api-Key': 'k'.repeat(32),
+          traceparent: expect.stringMatching(/^00-[0-9a-f]{32}-[0-9a-f]{16}-00$/),
+        });
         expect(init.next).toEqual({ revalidate: 86400 });
         expect(init.signal).toBeInstanceOf(AbortSignal);
       }
@@ -205,12 +208,16 @@ describe('getWaterFootprintProducts', () => {
       delete process.env.INTERNAL_API_KEY;
       let fetchMock = mockFetch(success);
       await getWaterFootprintProducts();
-      expect((fetchMock.mock.calls[0][1] as FetchInit).headers).toEqual({});
+      expect((fetchMock.mock.calls[0][1] as FetchInit).headers).toEqual({
+        traceparent: expect.stringMatching(/^00-[0-9a-f]{32}-[0-9a-f]{16}-00$/),
+      });
 
       process.env.INTERNAL_API_KEY = '   ';
       fetchMock = mockFetch(success);
       await getWaterFootprintProducts();
-      expect((fetchMock.mock.calls[0][1] as FetchInit).headers).toEqual({});
+      expect((fetchMock.mock.calls[0][1] as FetchInit).headers).toEqual({
+        traceparent: expect.stringMatching(/^00-[0-9a-f]{32}-[0-9a-f]{16}-00$/),
+      });
     });
   });
 });
