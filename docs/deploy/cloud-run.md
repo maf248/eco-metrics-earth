@@ -131,6 +131,7 @@ In the GitHub repo, go to **Settings → Secrets and variables → Actions → V
 | `CORS_ORIGIN_PATTERN`     | **Production** service, optional anchored regex. Leave unset: previews use the dev service                                                   |
 | `CORS_ORIGIN_DEV`         | **Dev** service. Comma-separated list of exact origins, e.g. `http://localhost:3000,https://eco-metrics-earth-git-develop-<team>.vercel.app` |
 | `CORS_ORIGIN_PATTERN_DEV` | **Dev** service, optional anchored regex for Vercel previews, e.g. `^https://eco-metrics-earth-[a-z0-9-]+\.vercel\.app$`                     |
+| `SENTRY_DSN_API`          | Optional, both services. The `eco-metrics-api` Sentry DSN (public). Unset disables Sentry; see [`sentry.md`](./sentry.md)                    |
 
 > The workflow escapes commas and backslashes in these values automatically before passing them to `deploy-cloudrun`, so store the raw value in the GitHub variable (no manual escaping).
 >
@@ -456,6 +457,12 @@ In Error Reporting, open **Configure Notifications** and add the email channel. 
 2. The response carries `X-Request-ID`, and the `requestId` in the logs matches.
 3. A category page rendered on a Vercel preview logs nothing on success. For a forced BFF failure, the trace id in the Vercel `console.error` matches the `requestId` and the trace of the Cloud Run request entry. If Cloud Run replaced the incoming trace id, correlation still works through `requestId`; update this note.
 4. A forced 5xx on the dev service (for example `OWID_API_BASE_URL` pointed at an unreachable host with no snapshot) appears once in Error Reporting. If it does not group, also emit the stack in a `stack_trace` field (one-line change in `AllExceptionsFilter`).
+
+## 24. Sentry
+
+The API also reports 5xx outcomes to Sentry (project `eco-metrics-api`), in addition to the Cloud Logging entries above. The deploy workflow passes `SENTRY_DSN`, `SENTRY_ENVIRONMENT` (the deploy target) and `SENTRY_RELEASE` (the commit SHA) only when the `SENTRY_DSN_API` repository variable is set. Setup, alerts, quota guards and the uptime monitor are in [`sentry.md`](./sentry.md).
+
+The image starts Node with `--enable-source-maps`, so stacks show TypeScript paths (from the `main.js.map` in the image) in Cloud Logging, Error Reporting and Sentry alike.
 
 ## Troubleshooting
 

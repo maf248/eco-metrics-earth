@@ -42,7 +42,7 @@ The Next.js web app SHALL serve a set of HTTP security headers on every response
 
 ### Requirement: Web app serves a Content-Security-Policy header
 
-The Next.js web app SHALL serve a `Content-Security-Policy` header that restricts resource loading to self-hosted assets by default (the site loads no third-party stylesheets or fonts), allowing inline styles and scripts required by Next.js App Router, and additionally constraining `<base>` tag rewriting, form submission targets, plugin/object embedding, nested browsing contexts, and insecure subresource loading. The CSP applied to production responses SHALL contain the following directives: `default-src 'self'`, `script-src 'self' 'unsafe-inline'` (with `'unsafe-eval'` additionally present only in development builds), `style-src 'self' 'unsafe-inline'`, `font-src 'self'`, `img-src 'self' data: blob:`, `connect-src 'self'`, `frame-ancestors 'none'`, `base-uri 'self'`, `form-action 'self'`, `object-src 'none'`, and `frame-src 'none'`. Production responses SHALL additionally contain `upgrade-insecure-requests`; development responses SHALL NOT contain it.
+The web app SHALL serve a `Content-Security-Policy` with: `default-src 'self'`; `script-src 'self' 'unsafe-inline'` (plus `'unsafe-eval'` in development only); `style-src 'self' 'unsafe-inline'`; `font-src 'self'`; `img-src 'self' data: blob:`; `connect-src 'self'`, plus the Sentry ingest origin only when a Sentry DSN is configured; `frame-ancestors 'none'`; `base-uri 'self'`; `form-action 'self'`; `object-src 'none'`; `frame-src 'none'`; and `upgrade-insecure-requests` in production only.
 
 #### Scenario: CSP prevents embedding in iframes
 
@@ -94,6 +94,18 @@ The Next.js web app SHALL serve a `Content-Security-Policy` header that restrict
 
 - **WHEN** the web app is served by the development server over `http://localhost`
 - **THEN** the `Content-Security-Policy` header does NOT contain `upgrade-insecure-requests`, so local `http://` requests are never upgraded
+
+#### Scenario: CSP allows only the Sentry ingest origin when a DSN is configured
+
+- **GIVEN** `NEXT_PUBLIC_SENTRY_DSN` has the host `o1.ingest.de.sentry.io`
+- **WHEN** the CSP is built
+- **THEN** `connect-src` is `'self' https://o1.ingest.de.sentry.io`, with no wildcard and no other origin
+
+#### Scenario: CSP keeps connect-src self without a DSN
+
+- **GIVEN** `NEXT_PUBLIC_SENTRY_DSN` is unset, empty or not a valid URL
+- **WHEN** the CSP is built
+- **THEN** `connect-src` is exactly `'self'`
 
 ### Requirement: Empty .env files are removed from git tracking
 
