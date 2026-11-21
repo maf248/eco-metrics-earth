@@ -1,3 +1,9 @@
+## [2.20.0](https://github.com/maf248/eco-metrics-earth/compare/web-v2.19.0...web-v2.20.0) (2026-11-21)
+
+### Features
+
+* **web:** report server and client errors to sentry ([8a75389](https://github.com/maf248/eco-metrics-earth/commit/8a75389af5d0567c387b71cb9984ff025f0297af))
+
 ## [2.19.0](https://github.com/maf248/eco-metrics-earth/compare/web-v2.18.2...web-v2.19.0) (2026-11-21)
 
 ### Features
