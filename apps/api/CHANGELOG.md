@@ -1,3 +1,9 @@
+## [2.17.0](https://github.com/maf248/eco-metrics-earth/compare/api-v2.16.0...api-v2.17.0) (2026-11-21)
+
+### Features
+
+* **api:** log as structured json in the cloud logging format ([6067923](https://github.com/maf248/eco-metrics-earth/commit/60679238c9b3d14b0325ba9b40094ff1fff833fd))
+
 ## [2.16.0](https://github.com/maf248/eco-metrics-earth/compare/api-v2.15.0...api-v2.16.0) (2026-11-13)
 
 ### Features
