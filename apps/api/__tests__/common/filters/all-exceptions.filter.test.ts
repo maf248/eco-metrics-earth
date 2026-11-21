@@ -34,10 +34,10 @@ describe('AllExceptionsFilter', () => {
     loggerErrorSpy.mockRestore();
   });
 
-  it('should preserve status and message for HttpException errors', () => {
+  it('should preserve status and message for HttpException errors', async () => {
     const exception = new HttpException('Not found', HttpStatus.NOT_FOUND);
 
-    filter.catch(exception, host);
+    await filter.catch(exception, host);
 
     expect(response.status).toHaveBeenCalledWith(HttpStatus.NOT_FOUND);
     expect(response.json).toHaveBeenCalledWith({
@@ -48,13 +48,13 @@ describe('AllExceptionsFilter', () => {
     expect(loggerErrorSpy).not.toHaveBeenCalled();
   });
 
-  it('should unwrap a single validation message from the error response object', () => {
+  it('should unwrap a single validation message from the error response object', async () => {
     const exception = new HttpException(
       { statusCode: 400, message: 'fromDate must be a valid date', error: 'Bad Request' },
       HttpStatus.BAD_REQUEST,
     );
 
-    filter.catch(exception, host);
+    await filter.catch(exception, host);
 
     expect(response.status).toHaveBeenCalledWith(HttpStatus.BAD_REQUEST);
     expect(response.json).toHaveBeenCalledWith({
@@ -64,10 +64,10 @@ describe('AllExceptionsFilter', () => {
     });
   });
 
-  it('should fall back to Unknown error when the HttpException response has no message', () => {
+  it('should fall back to Unknown error when the HttpException response has no message', async () => {
     const exception = new HttpException({ error: 'Bad Request' }, HttpStatus.BAD_REQUEST);
 
-    filter.catch(exception, host);
+    await filter.catch(exception, host);
 
     expect(response.status).toHaveBeenCalledWith(HttpStatus.BAD_REQUEST);
     expect(response.json).toHaveBeenCalledWith({
@@ -78,7 +78,7 @@ describe('AllExceptionsFilter', () => {
     expect(loggerErrorSpy).not.toHaveBeenCalled();
   });
 
-  it('should join multiple validation messages into a single error string', () => {
+  it('should join multiple validation messages into a single error string', async () => {
     const exception = new HttpException(
       {
         statusCode: 400,
@@ -88,7 +88,7 @@ describe('AllExceptionsFilter', () => {
       HttpStatus.BAD_REQUEST,
     );
 
-    filter.catch(exception, host);
+    await filter.catch(exception, host);
 
     expect(response.json).toHaveBeenCalledWith({
       success: false,
@@ -97,10 +97,10 @@ describe('AllExceptionsFilter', () => {
     });
   });
 
-  it('should fall back to 500 for non-HttpException errors and log the stack', () => {
+  it('should fall back to 500 for non-HttpException errors and log the stack', async () => {
     const exception = new Error('Unexpected failure');
 
-    filter.catch(exception, host);
+    await filter.catch(exception, host);
 
     expect(response.status).toHaveBeenCalledWith(HttpStatus.INTERNAL_SERVER_ERROR);
     expect(response.json).toHaveBeenCalledWith({
@@ -120,10 +120,10 @@ describe('AllExceptionsFilter', () => {
     );
   });
 
-  it('should log 5xx HttpExceptions with their explicit message and stack', () => {
+  it('should log 5xx HttpExceptions with their explicit message and stack', async () => {
     const exception = new HttpException('Service unavailable', HttpStatus.SERVICE_UNAVAILABLE);
 
-    filter.catch(exception, host);
+    await filter.catch(exception, host);
 
     expect(response.status).toHaveBeenCalledWith(HttpStatus.SERVICE_UNAVAILABLE);
     expect(response.json).toHaveBeenCalledWith({
@@ -143,8 +143,8 @@ describe('AllExceptionsFilter', () => {
     );
   });
 
-  it('should treat unknown non-Error values as 500 and still log a non-empty message', () => {
-    filter.catch('string-thrown', host);
+  it('should treat unknown non-Error values as 500 and still log a non-empty message', async () => {
+    await filter.catch('string-thrown', host);
 
     expect(response.status).toHaveBeenCalledWith(HttpStatus.INTERNAL_SERVER_ERROR);
     expect(response.json).toHaveBeenCalledWith({
@@ -161,10 +161,10 @@ describe('AllExceptionsFilter', () => {
     );
   });
 
-  it('should still log a message when the thrown value cannot be converted to a string', () => {
+  it('should still log a message when the thrown value cannot be converted to a string', async () => {
     const unprintable = Object.create(null) as unknown;
 
-    expect(() => filter.catch(unprintable, host)).not.toThrow();
+    await expect(filter.catch(unprintable, host)).resolves.toBeUndefined();
 
     expect(response.status).toHaveBeenCalledWith(HttpStatus.INTERNAL_SERVER_ERROR);
     expect(loggerErrorSpy).toHaveBeenCalledWith(

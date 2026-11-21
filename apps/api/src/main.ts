@@ -1,3 +1,6 @@
+// Must stay the first import: Sentry is initialized before any framework module loads.
+import './instrument';
+
 import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';

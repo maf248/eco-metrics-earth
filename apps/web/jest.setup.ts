@@ -11,6 +11,11 @@ import { setPlatformAPI } from 'zrender/lib/core/platform';
  *  - AbortSignal.timeout: used by server-side fetch helpers to bound request duration.
  *    Node 24 and modern browsers implement it natively; jsdom does not.
  */
+
+// Sentry stays disabled in unit tests, even when a developer's local env file defines a DSN
+// (`next/jest` loads `.env*` files into the process before the tests run).
+delete process.env.NEXT_PUBLIC_SENTRY_DSN;
+
 global.ResizeObserver = class ResizeObserver {
   observe() {}
   unobserve() {}

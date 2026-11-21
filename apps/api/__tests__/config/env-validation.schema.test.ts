@@ -422,6 +422,53 @@ describe('envValidationSchema', () => {
     });
   });
 
+  describe('Sentry settings', () => {
+    it('should accept unset values', () => {
+      expect(validate({}).error).toBeUndefined();
+    });
+
+    it('should accept all three empty', () => {
+      const { error } = validate({ SENTRY_DSN: '', SENTRY_ENVIRONMENT: '', SENTRY_RELEASE: '' });
+      expect(error).toBeUndefined();
+    });
+
+    it('should accept a complete valid configuration', () => {
+      const { error } = validate({
+        SENTRY_DSN: 'https://key@o1.ingest.de.sentry.io/42',
+        SENTRY_ENVIRONMENT: 'development',
+        SENTRY_RELEASE: 'a'.repeat(40),
+      });
+      expect(error).toBeUndefined();
+    });
+
+    it.each(['not a url', 'http://key@o1.ingest.de.sentry.io/42'])(
+      'should reject SENTRY_DSN %s with a message naming SENTRY_DSN',
+      (dsn) => {
+        const { error } = validate({ SENTRY_DSN: dsn });
+        expect(error).toBeDefined();
+        expect(error?.message).toContain('SENTRY_DSN');
+      },
+    );
+
+    it.each(['Not Kebab', 'UPPER', 'trailing-'])(
+      'should reject SENTRY_ENVIRONMENT %s with a message naming SENTRY_ENVIRONMENT',
+      (environment) => {
+        const { error } = validate({ SENTRY_ENVIRONMENT: environment });
+        expect(error).toBeDefined();
+        expect(error?.message).toContain('SENTRY_ENVIRONMENT');
+      },
+    );
+
+    it.each(['has space', 'a'.repeat(201)])(
+      'should reject an invalid SENTRY_RELEASE with a message naming SENTRY_RELEASE',
+      (release) => {
+        const { error } = validate({ SENTRY_RELEASE: release });
+        expect(error).toBeDefined();
+        expect(error?.message).toContain('SENTRY_RELEASE');
+      },
+    );
+  });
+
   describe('GCP_PROJECT_ID', () => {
     it('should accept a valid project id', () => {
       const { error, value } = validate({ GCP_PROJECT_ID: 'my-project' });

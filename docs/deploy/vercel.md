@@ -42,6 +42,10 @@ Checks are identified by the GitHub Actions **job name**. The job `ci` in `.gith
 - **Verify on the first gated merge to `main`.** Vercel documents the hold for "custom production domains"; confirm that `eco-metrics-earth.vercel.app` keeps serving the previous deployment until CI passes. If it updates earlier, the gate does not cover that domain.
 - **Bypass.** **Force Promote** on the deployment page promotes a deployment without waiting for the checks. Use it only deliberately (for example a hotfix when CI itself is broken).
 
+## Sentry variables
+
+The web build reads `NEXT_PUBLIC_SENTRY_DSN` (public, Production and Preview) and `SENTRY_AUTH_TOKEN` (type Secret, Production and Preview; used only to upload source maps). Vercel applies variables only to new builds, so redeploy after changing them. See [`sentry.md`](./sentry.md).
+
 ## Troubleshooting
 
 ### A production deployment is stuck waiting for a check

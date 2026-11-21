@@ -84,6 +84,7 @@
           "^production",
           "{workspaceRoot}/jest.preset.js",
           "{workspaceRoot}/.github/workflows/deploy-api.yml",
+          "{workspaceRoot}/Dockerfile",
           "{workspaceRoot}/scripts/lib/waste-recycling-source.mjs",
           "{workspaceRoot}/scripts/lib/waste-recycling-transform.mjs",
           "{workspaceRoot}/scripts/generate-waste-recycling-data.mjs"
@@ -103,6 +104,7 @@
     "@nestjs/swagger": "12.1.2",
     "@nestjs/terminus": "12.2.0",
     "@nestjs/throttler": "6.8.0",
+    "@sentry/nestjs": "11.11.0",
     "axios": "1.21.1",
     "cache-manager": "6.4.3",
     "class-transformer": "0.5.1",

@@ -248,6 +248,7 @@ Pending — define and validate it in the first change that encodes polarity wit
 ### Page titles
 
 - The `<h1>` of the home, every category page, the data sources page and the not-found and error pages shares `PAGE_TITLE_CLASS_NAME` (`lib/pageTitleClassName.ts`): the brand's terminal style, `font-mono tracking-tight text-accent`, at `text-4xl font-bold` with `text-balance`. It is the only heading in `accent`: `<h2>`/`<h3>` stay `text-fg`.
+- **Root fallback exception (`app/global-error.tsx`):** it replaces the root layout, so no stylesheet or design tokens are loaded. It is deliberately unstyled plain HTML (its `<h1>` does not use `PAGE_TITLE_CLASS_NAME`, and it uses no color utilities). It only shows when the root layout itself fails.
 - Only the home title is animated (`TypewriterText`). Category titles are static and have no cursor: their header also renders in the pending-navigation view, and a title that types itself on every navigation delays reading it.
 
 ### Home page

@@ -6,11 +6,19 @@ import {
   HttpStatus,
   Logger,
 } from '@nestjs/common';
+import * as Sentry from '@sentry/nestjs';
 import { Request, Response } from 'express';
 
 import { ProviderError } from '../errors/provider-error';
+import {
+  DEFAULT_GROUP_WINDOW_MS,
+  PROVIDER_GROUP_WINDOW_MS,
+  SentryThrottle,
+} from '../sentry/sentry-throttle';
 
 const PROVIDER_ERROR_MESSAGE = 'Data provider unavailable or returned invalid data';
+const PROVIDER_EVENT_GROUP = 'provider-unavailable';
+const SENTRY_FLUSH_TIMEOUT_MS = 2000;
 
 /** Describes an error and its `cause` chain as `Name: message` entries, outermost first. */
 function describeCauseChain(error: unknown): string[] {
@@ -42,12 +50,17 @@ function describeException(exception: unknown): string {
  * Provider failures ({@link ProviderError}) become 502 with a constant body, so
  * provider URLs and internals never leak; other non-HttpExceptions (unexpected
  * runtime errors) are treated as 500.
+ *
+ * It is also the single Sentry capture point: every 5xx outcome (never a 4xx) is reported once,
+ * throttled per event group, after the Cloud Logging entry is written.
  */
 @Catch()
 export class AllExceptionsFilter implements ExceptionFilter {
   private readonly logger = new Logger(AllExceptionsFilter.name);
 
-  catch(exception: unknown, host: ArgumentsHost): void {
+  constructor(private readonly throttle: SentryThrottle = new SentryThrottle()) {}
+
+  async catch(exception: unknown, host: ArgumentsHost): Promise<void> {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
     const request = ctx.getRequest<Request>();
@@ -60,7 +73,8 @@ export class AllExceptionsFilter implements ExceptionFilter {
         errorMessage: exception.message,
         causes: describeCauseChain(exception),
       });
-      response.status(status).json({ success: false, error: PROVIDER_ERROR_MESSAGE, status });
+      await this.reportToSentry(exception, status);
+      this.respond(response, status, { success: false, error: PROVIDER_ERROR_MESSAGE, status });
       return;
     }
 
@@ -82,13 +96,21 @@ export class AllExceptionsFilter implements ExceptionFilter {
 
     if (status >= 500) {
       this.logFailure(exception, request, status, { error: errorMessage });
+      await this.reportToSentry(exception, status);
     }
 
-    response.status(status).json({
-      success: false,
-      error: errorMessage,
-      status,
-    });
+    this.respond(response, status, { success: false, error: errorMessage, status });
+  }
+
+  /**
+   * Writes the response unless it was already started. `catch` is async and Nest does not await
+   * it, so a throw here would be an unhandled rejection that crashes the process.
+   */
+  private respond(response: Response, status: number, body: unknown): void {
+    if (response.headersSent) {
+      return;
+    }
+    response.status(status).json(body);
   }
 
   /**
@@ -105,5 +127,37 @@ export class AllExceptionsFilter implements ExceptionFilter {
       { status, method: request.method, path: request.url, ...extra },
       describeException(exception),
     );
+  }
+
+  /**
+   * Sends one 5xx to Sentry when the throttle admits its event group, then waits (bounded) for the
+   * transport, because Cloud Run throttles the CPU once the response is written. Never throws: a
+   * Sentry failure must not change the response.
+   */
+  private async reportToSentry(exception: unknown, status: number): Promise<void> {
+    try {
+      if (exception instanceof ProviderError) {
+        if (!this.throttle.admit(PROVIDER_EVENT_GROUP, PROVIDER_GROUP_WINDOW_MS)) {
+          return;
+        }
+        Sentry.captureException(exception, {
+          fingerprint: [PROVIDER_EVENT_GROUP],
+          level: 'warning',
+          tags: { status: String(status) },
+        });
+      } else {
+        const group =
+          exception instanceof Error
+            ? `${exception.name}: ${exception.message}`
+            : 'non-error-thrown';
+        if (!this.throttle.admit(group, DEFAULT_GROUP_WINDOW_MS)) {
+          return;
+        }
+        Sentry.captureException(exception);
+      }
+      await Sentry.flush(SENTRY_FLUSH_TIMEOUT_MS);
+    } catch {
+      // Sentry is an additional view: ignore its failures.
+    }
   }
 }

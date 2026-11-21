@@ -49,4 +49,4 @@ USER node
 # Cloud Run injects PORT at runtime; this documents the expected default.
 EXPOSE 8080
 
-CMD ["node", "main.js"]
+CMD ["node", "--enable-source-maps", "main.js"]
