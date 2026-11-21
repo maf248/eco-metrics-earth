@@ -22,12 +22,12 @@ The manual Sentry setup runbook: token and variable storage, alert rules, quota 
 
 ### Requirement: The runbook defines alerts, quota guards and uptime
 
-The runbook SHALL define, per Sentry project, an issue alert for a new issue and for a regression in the `production` environment, an issue alert for an issue seen more than a stated number of times in one hour, a client-key rate limit as a daily backstop, and a single uptime monitor on the production web URL with the reason for that target. All SHALL notify by email.
+The runbook SHALL define, per Sentry project, an issue alert for a new issue and for a regression in the `production` environment, an issue alert for an escalating issue (Sentry's spike detection), a client-key rate limit as a daily backstop, and a single uptime monitor on the production web URL with the reason for that target. All SHALL notify by email.
 
 #### Scenario: Alert rules are listed
 
 - **WHEN** the runbook alert section is read
-- **THEN** it gives the rule names, conditions, the `production` environment filter, the action and the number of times used for the frequency rule, for both projects
+- **THEN** it gives the rule names, conditions, the `production` environment filter, the action and the throttle, for both projects
 
 #### Scenario: Uptime target is justified
 
