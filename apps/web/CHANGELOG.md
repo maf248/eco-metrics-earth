@@ -1,3 +1,9 @@
+## [2.19.0](https://github.com/maf248/eco-metrics-earth/compare/web-v2.18.2...web-v2.19.0) (2026-11-21)
+
+### Features
+
+* **web:** send a traceparent on bff reads to correlate with api logs ([f20dce6](https://github.com/maf248/eco-metrics-earth/commit/f20dce65a3687d28803432f3adaf647664175754))
+
 ## [2.18.2](https://github.com/maf248/eco-metrics-earth/compare/web-v2.18.1...web-v2.18.2) (2026-11-13)
 
 ### Bug Fixes
