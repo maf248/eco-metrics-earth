@@ -27,6 +27,7 @@ function createFakeApp(appConfig: FakeAppConfig) {
     });
 
   const app = {
+    useLogger: track('useLogger'),
     useGlobalPipes: track('useGlobalPipes'),
     useGlobalFilters: track('useGlobalFilters'),
     use: track('use'),
@@ -127,5 +128,73 @@ describe('main bootstrap', () => {
 
     expect(calls.indexOf('set')).toBeGreaterThanOrEqual(0);
     expect(calls.indexOf('set')).toBeLessThan(calls.indexOf('listen'));
+  });
+
+  it('should create the app with buffered logs and abortOnError disabled', async () => {
+    await runMain({ corsOrigins: [], swaggerEnabled: false, port: 3001, trustProxyHops: 1 });
+
+    expect(NestFactory.create).toHaveBeenCalledWith(
+      expect.anything(),
+      expect.objectContaining({ bufferLogs: true, abortOnError: false }),
+    );
+  });
+
+  it('should install the pino logger exactly once, before listen', async () => {
+    const { app, calls } = await runMain({
+      corsOrigins: [],
+      swaggerEnabled: false,
+      port: 3001,
+      trustProxyHops: 1,
+    });
+
+    expect(app.useLogger).toHaveBeenCalledTimes(1);
+    expect(calls.indexOf('useLogger')).toBeLessThan(calls.indexOf('listen'));
+  });
+
+  describe('bootstrap failure', () => {
+    let stderrWrite: jest.SpyInstance;
+    let exit: jest.SpyInstance;
+
+    beforeEach(() => {
+      stderrWrite = jest.spyOn(process.stderr, 'write').mockImplementation(() => true);
+      exit = jest.spyOn(process, 'exit').mockImplementation((() => undefined) as never);
+    });
+
+    afterEach(() => {
+      stderrWrite.mockRestore();
+      exit.mockRestore();
+    });
+
+    it('should write one JSON line with severity ERROR and the stack, then exit with 1', async () => {
+      const failure = new Error('Config validation error: "LOG_LEVEL" must be one of ...');
+      (NestFactory.create as jest.Mock).mockRejectedValue(failure);
+
+      await jest.isolateModulesAsync(async () => {
+        await import('../../src/main');
+      });
+      await new Promise<void>((resolve) => setImmediate(resolve));
+
+      expect(stderrWrite).toHaveBeenCalledTimes(1);
+      const written = String(stderrWrite.mock.calls[0][0]);
+      expect(written.endsWith('\n')).toBe(true);
+      expect(written.trimEnd().split('\n')).toHaveLength(1);
+      const entry = JSON.parse(written) as { severity: string; message: string };
+      expect(entry.severity).toBe('ERROR');
+      expect(entry.message).toBe(failure.stack);
+      expect(exit).toHaveBeenCalledWith(1);
+    });
+
+    it('should log a non-Error rejection as a string message', async () => {
+      (NestFactory.create as jest.Mock).mockRejectedValue('plain failure');
+
+      await jest.isolateModulesAsync(async () => {
+        await import('../../src/main');
+      });
+      await new Promise<void>((resolve) => setImmediate(resolve));
+
+      const entry = JSON.parse(String(stderrWrite.mock.calls[0][0])) as { message: string };
+      expect(entry.message).toBe('plain failure');
+      expect(exit).toHaveBeenCalledWith(1);
+    });
   });
 });

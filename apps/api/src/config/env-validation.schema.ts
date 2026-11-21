@@ -37,6 +37,10 @@ function owidBaseUrlValidator(defaultValue: string) {
 // dots, starting and ending with a letter or digit.
 const SNAPSHOT_BUCKET_PATTERN = /^[a-z0-9][a-z0-9._-]{1,61}[a-z0-9]$/;
 const SNAPSHOT_PREFIX_PATTERN = /^[a-z0-9]+(-[a-z0-9]+)*$/;
+// GCP project ids: 6-30 characters, lowercase letters, digits and hyphens, starting with a letter
+// and not ending with a hyphen.
+const GCP_PROJECT_ID_PATTERN = /^[a-z][a-z0-9-]{4,28}[a-z0-9]$/;
+const LOG_LEVELS = ['fatal', 'error', 'warn', 'info', 'debug', 'trace', 'silent'] as const;
 
 export const envValidationSchema = Joi.object({
   PORT: Joi.number().port().default(3001),
@@ -132,6 +136,18 @@ export const envValidationSchema = Joi.object({
     'string.pattern.base': 'SNAPSHOT_PREFIX must be kebab-case (for example "production").',
     'string.empty': 'SNAPSHOT_PREFIX is required when SNAPSHOT_BUCKET is set.',
     'any.required': 'SNAPSHOT_PREFIX is required when SNAPSHOT_BUCKET is set.',
+  }),
+  // No schema default: AppConfigService applies the default by NODE_ENV.
+  LOG_LEVEL: Joi.string()
+    .valid(...LOG_LEVELS)
+    .optional()
+    .messages({
+      'any.only': `LOG_LEVEL must be one of: ${LOG_LEVELS.join(', ')}.`,
+      'string.base': 'LOG_LEVEL must be a string.',
+    }),
+  GCP_PROJECT_ID: Joi.string().pattern(GCP_PROJECT_ID_PATTERN).optional().allow('').messages({
+    'string.pattern.base':
+      'GCP_PROJECT_ID must be a valid GCP project id (6-30 lowercase letters, digits or hyphens, starting with a letter).',
   }),
   INTERNAL_API_KEY: Joi.when('NODE_ENV', {
     is: 'production',

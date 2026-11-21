@@ -77,6 +77,13 @@ export default defineConfig(
       'no-console': 'off',
     },
   },
+  // API sources log through the Nest Logger (routed to pino); console is never allowed there.
+  {
+    files: ['apps/api/src/**/*.ts'],
+    rules: {
+      'no-console': 'error',
+    },
+  },
   {
     ignores: ['node_modules/**', '**/dist/**', '.nx/**', 'coverage/**', '**/.next/**', '**/*.cts'],
   },

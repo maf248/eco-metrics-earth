@@ -69,4 +69,27 @@ export class AppConfigService {
     const prefix = this.configService.get<string>('SNAPSHOT_PREFIX');
     return prefix ? prefix : undefined;
   }
+
+  /** Pino log level: `LOG_LEVEL` when set, else `info` (production), `debug` (development), `silent` (test). */
+  get logLevel(): string {
+    const explicit = this.configService.get<string>('LOG_LEVEL');
+    if (explicit) {
+      return explicit;
+    }
+
+    switch (this.nodeEnv) {
+      case 'production':
+        return 'info';
+      case 'test':
+        return 'silent';
+      default:
+        return 'debug';
+    }
+  }
+
+  /** GCP project id used to build Cloud Logging trace fields. Undefined when unset or empty. */
+  get gcpProjectId(): string | undefined {
+    const projectId = this.configService.get<string>('GCP_PROJECT_ID');
+    return projectId ? projectId : undefined;
+  }
 }

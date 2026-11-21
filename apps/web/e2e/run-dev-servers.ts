@@ -371,6 +371,8 @@ async function startApi(manager: ServerManager): Promise<void> {
     INTERNAL_API_KEY: E2E_INTERNAL_API_KEY,
     OWID_GRAPHER_BASE_URL: E2E_OWID_GRAPHER_BASE_URL,
     OWID_API_BASE_URL: E2E_OWID_API_BASE_URL,
+    // NODE_ENV is unset here, so the API would log every request at debug through pino-pretty.
+    LOG_LEVEL: 'warn',
   });
   manager.register(api);
 

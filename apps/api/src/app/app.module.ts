@@ -6,6 +6,7 @@ import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { FallbackModule } from '../common/fallback/fallback.module';
 import { InternalKeyGuard } from '../common/internal-key/internal-key.guard';
 import { buildThrottlerOptions } from '../common/internal-key/throttler-options';
+import { AppLoggingModule } from '../common/logging/app-logging.module';
 import { AppConfigModule } from '../config/app-config.module';
 import { AppConfigService } from '../config/app-config.service';
 import { envValidationSchema } from '../config/env-validation.schema';
@@ -36,6 +37,7 @@ import { WaterFootprintModule } from '../modules/water-footprint/water-footprint
       useFactory: (appConfig: AppConfigService) => buildThrottlerOptions(appConfig),
     }),
     AppConfigModule,
+    AppLoggingModule,
     HealthModule,
     WaterFootprintModule,
     WasteRecyclingModule,

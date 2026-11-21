@@ -23,6 +23,19 @@ function describeCauseChain(error: unknown): string[] {
   return chain;
 }
 
+/** The stack of an error, else `Name: message`; never empty or `undefined`. */
+function describeException(exception: unknown): string {
+  if (exception instanceof Error) {
+    return exception.stack ?? `${exception.name}: ${exception.message}`;
+  }
+  try {
+    return `Non-error thrown: ${String(exception)}`;
+  } catch {
+    // e.g. Object.create(null) has no toString
+    return 'Non-error thrown (unprintable)';
+  }
+}
+
 /**
  * Global exception filter that normalizes all errors into the
  * {@link ApiResponse} shape: `{ success: false, error: string, status: number }`.
@@ -41,18 +54,12 @@ export class AllExceptionsFilter implements ExceptionFilter {
 
     if (exception instanceof ProviderError) {
       const status = HttpStatus.BAD_GATEWAY;
-      this.logger.error(
-        {
-          status,
-          error: PROVIDER_ERROR_MESSAGE,
-          path: request.url,
-          method: request.method,
-          errorName: exception.name,
-          errorMessage: exception.message,
-          causes: describeCauseChain(exception),
-        },
-        exception.stack,
-      );
+      this.logFailure(exception, request, status, {
+        error: PROVIDER_ERROR_MESSAGE,
+        errorName: exception.name,
+        errorMessage: exception.message,
+        causes: describeCauseChain(exception),
+      });
       response.status(status).json({ success: false, error: PROVIDER_ERROR_MESSAGE, status });
       return;
     }
@@ -74,10 +81,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
         : String(message);
 
     if (status >= 500) {
-      this.logger.error(
-        { status, error: errorMessage, path: request.url, method: request.method },
-        exception instanceof Error ? exception.stack : undefined,
-      );
+      this.logFailure(exception, request, status, { error: errorMessage });
     }
 
     response.status(status).json({
@@ -85,5 +89,21 @@ export class AllExceptionsFilter implements ExceptionFilter {
       error: errorMessage,
       status,
     });
+  }
+
+  /**
+   * Logs a 5xx outcome as one entry whose `message` is the stack (so Cloud Error Reporting groups
+   * it) or `Name: message` when there is none. This is the only place exceptions are logged.
+   */
+  private logFailure(
+    exception: unknown,
+    request: Request,
+    status: number,
+    extra: Record<string, unknown>,
+  ): void {
+    this.logger.error(
+      { status, method: request.method, path: request.url, ...extra },
+      describeException(exception),
+    );
   }
 }

@@ -424,6 +424,39 @@ By default the alerts go by email to the billing account administrators. A budge
 
 Deploy the API before the web for every payload change (the web guards the payload shape). A contract change of a category payload should be followed by deleting its object (`gcloud storage rm gs://<SNAPSHOT_BUCKET>/<prefix>/<category>.json`), because a stored snapshot keeps the old shape until the next successful fetch overwrites it.
 
+## 23. Logs and Error Reporting
+
+The API writes one JSON object per line to stdout. Cloud Run forwards it to Cloud Logging with no setup and no cost beyond the log volume; `severity` and `message` become the log entry's own fields and the rest lands in `jsonPayload`.
+
+### Reading the logs
+
+Open **Logs Explorer** (Cloud Console → Logging) and filter by service:
+
+```
+resource.type="cloud_run_revision"
+resource.labels.service_name="eco-metrics-api"        # or "eco-metrics-api-dev"
+```
+
+- **Severity:** add `severity>=WARNING` for warnings (4xx completion lines) and errors. 5xx failures are `ERROR` entries written by the global exception filter, with the stack in `message`.
+- **One request:** every line of a request carries `requestId`, and the API echoes it in the `X-Request-ID` response header. Filter with `jsonPayload.requestId="<id>"`.
+- **By trace:** lines carry `logging.googleapis.com/trace` (built from the `GCP_PROJECT_ID` env var, which the deploy workflow sets), so Logs Explorer nests the application lines under Cloud Run's own request entry. The web's `bffFetch` sends a W3C `traceparent` per attempt, and its failure log line (Vercel logs) includes the trace ids, which equal the API `requestId`.
+- **Volume:** the startup probe (`GET /api/v1/health`) is not logged. Set `LOG_LEVEL=warn` on the service (`gcloud run services update <service> --update-env-vars LOG_LEVEL=warn`) to drop the per-request `INFO` lines without a code change; unset it to go back to `info`. The next deploy keeps the variable because the workflow only manages the variables it sets.
+
+### Error Reporting
+
+Error Reporting needs no setup: it reads the same entries and groups the ones whose `message` contains a stack trace, so each distinct 5xx (including provider `502`s with no stored snapshot) appears as one error group under the Cloud Run service. Open **Error Reporting** in the Cloud Console and pick the project.
+
+### Optional: email notifications (manual, console only)
+
+In Error Reporting, open **Configure Notifications** and add the email channel. Notifications are sent for new error groups and for regressions (a resolved group that reappears), at most 20 per hour per project. This is not managed by the repo.
+
+### Post-deploy verification (after the first deploy of structured logging)
+
+1. In Logs Explorer for `eco-metrics-api-dev`, a category request shows `severity`, `message`, `requestId`, and the application lines nested under the Cloud Run request entry.
+2. The response carries `X-Request-ID`, and the `requestId` in the logs matches.
+3. A category page rendered on a Vercel preview logs nothing on success. For a forced BFF failure, the trace id in the Vercel `console.error` matches the `requestId` and the trace of the Cloud Run request entry. If Cloud Run replaced the incoming trace id, correlation still works through `requestId`; update this note.
+4. A forced 5xx on the dev service (for example `OWID_API_BASE_URL` pointed at an unreachable host with no snapshot) appears once in Error Reporting. If it does not group, also emit the stack in a `stack_trace` field (one-line change in `AllExceptionsFilter`).
+
 ## Troubleshooting
 
 > Commands below use `eco-metrics-api`; replace it with `eco-metrics-api-dev` when the problem is on the dev service.

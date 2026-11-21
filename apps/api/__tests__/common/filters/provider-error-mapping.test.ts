@@ -104,7 +104,18 @@ describe('provider failure contract through the global pipeline', () => {
         errorMessage: 'No World entity',
         causes: ['ProviderDataError: No World entity', 'Error: root cause'],
       }),
-      expect.any(String),
+      expect.stringMatching(/^ProviderDataError: No World entity\n\s+at /),
+    );
+  });
+
+  it('should log a provider status failure once with its name and stack', async () => {
+    const response = await supertest(app.getHttpServer()).get('/provider-failure-test/outbound');
+
+    expect(response.status).toBe(502);
+    expect(loggerErrorSpy).toHaveBeenCalledTimes(1);
+    expect(loggerErrorSpy).toHaveBeenCalledWith(
+      expect.objectContaining({ status: 502, errorName: 'OutboundHttpStatusError' }),
+      expect.stringMatching(/^\S.*\n\s+at /),
     );
   });
 
