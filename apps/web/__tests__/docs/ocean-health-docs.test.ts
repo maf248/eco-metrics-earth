@@ -49,9 +49,9 @@ describe('ocean health documentation', () => {
     });
   });
 
-  describe('ROADMAP.md provider coverage matrix', () => {
-    it('should name the three providers used by the ocean-health row', () => {
-      const row = lineStartingWith(readRepoFile('ROADMAP.md'), '| ocean-health');
+  describe('ROADMAP.md project status', () => {
+    it('should name the three providers of ocean-health in the real data row', () => {
+      const row = lineStartingWith(readRepoFile('ROADMAP.md'), '| **Datos reales**');
 
       expect(row).toContain('Copernicus');
       expect(row).toContain('OWID');
