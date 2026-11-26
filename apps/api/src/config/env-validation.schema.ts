@@ -120,6 +120,18 @@ export const envValidationSchema = Joi.object({
   OWID_API_BASE_URL: owidBaseUrlValidator('https://api.ourworldindata.org/v1'),
   OWID_HTTP_TIMEOUT_MS: Joi.number().integer().min(1000).max(60000).default(10000),
   OWID_CACHE_TTL_SECONDS: Joi.number().integer().min(60).max(604800).default(86400),
+  COPERNICUS_CLIMATE_PULSE_BASE_URL: owidBaseUrlValidator(
+    'https://sites.ecmwf.int/data/climatepulse/data/series',
+  ),
+  COPERNICUS_CLIMATE_PULSE_CACHE_TTL_SECONDS: Joi.number()
+    .integer()
+    .min(60)
+    .max(86400)
+    .default(21600),
+  NOAA_LSA_BASE_URL: owidBaseUrlValidator(
+    'https://www.star.nesdis.noaa.gov/socd/lsa/SeaLevelRise/slr',
+  ),
+  NOAA_LSA_CACHE_TTL_SECONDS: Joi.number().integer().min(3600).max(2592000).default(604800),
   TRUST_PROXY_HOPS: Joi.number().integer().min(0).default(0).messages({
     'number.base': 'TRUST_PROXY_HOPS must be a non-negative integer.',
     'number.integer': 'TRUST_PROXY_HOPS must be a non-negative integer.',

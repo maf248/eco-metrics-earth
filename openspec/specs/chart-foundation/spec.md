@@ -115,7 +115,7 @@ A Client Component `LazyEChart` SHALL import `EChart` on demand, on the client o
 
 #### Scenario: Other routes do not load ECharts
 
-- **WHEN** the production build output of a placeholder category route (e.g. `/ocean-health/`) is inspected
+- **WHEN** the production build output of a placeholder category route (e.g. `/air-quality/`) is inspected
 - **THEN** it references no chunk that contains `echarts`
 
 ### Requirement: Mobile-safe, accessible option defaults
@@ -416,3 +416,29 @@ A lazy map entry SHALL register the map series and the piecewise visual map only
 
 - **WHEN** an `EChart` with `onReady` mounts and then receives a new option
 - **THEN** `onReady` was called exactly once, with the instance
+
+### Requirement: Series can take a muted role from the theme
+
+The chart theme adapter SHALL expose a resolved `mutedLine` color built from an existing design token (`line-strong`, at a low opacity validated on both surfaces), and the lazy chart wrapper SHALL apply it to every series an option builder flags `muted: true`, before `setOption` and again whenever the theme changes. An option builder SHALL write only the flag, never a color, so chart options still name no color. A muted series SHALL NOT take a palette position away from the unflagged series.
+
+#### Scenario: Muted series take the adapter color
+
+- **GIVEN** an option with series flagged `muted: true`
+- **WHEN** the chart mounts in light and in dark mode
+- **THEN** those series' line color is the resolved `mutedLine` of the active theme
+
+#### Scenario: Palette positions are unaffected
+
+- **GIVEN** two unflagged series and several muted ones
+- **WHEN** the chart mounts
+- **THEN** the unflagged series take the first two palette colors
+
+#### Scenario: Theme change re-applies the role
+
+- **WHEN** the `dark` class on `<html>` toggles
+- **THEN** the muted series update to the other theme's color
+
+#### Scenario: Options stay color-free
+
+- **WHEN** the unit test scans the ocean-health option builders' output
+- **THEN** no string in it is a color

@@ -191,10 +191,14 @@ describe('GET /api/v1/global-temperature', () => {
     );
   });
 
-  it('should keep the dependencies check at a single owid indicator', async () => {
+  it('should keep the dependencies check at one indicator per provider', async () => {
     const response = await supertest(app.getHttpServer()).get('/api/v1/health/dependencies');
 
-    expect(Object.keys(response.body.details)).toEqual(['owid']);
+    expect(Object.keys(response.body.details)).toEqual([
+      'owid',
+      'copernicus-climate-pulse',
+      'noaa-lsa',
+    ]);
   });
 
   it('should document the endpoint in Swagger with its 200 and 502 responses', () => {
@@ -303,6 +307,10 @@ describe('GET /api/v1/global-temperature global series', () => {
       ['Ember', ['energy-sources']],
       ['Global Carbon Project', ['co2-emissions']],
       ['Met Office Hadley Centre', ['global-temperature']],
+      ['Met Office Hadley Centre', ['ocean-health']],
+      ['NOAA National Centers for Environmental Information', ['ocean-health']],
+      ['School of Ocean & Earth Science & Technology', ['ocean-health']],
+      ['United States Environmental Protection Agency', ['ocean-health']],
     ]);
     const era5 = owid.origins[0];
     expect(era5.notice).toBe('Contains modified Copernicus Climate Change Service information');

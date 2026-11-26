@@ -9,13 +9,22 @@ import { AppConfigService } from '../../../config/app-config.service';
 
 import { OwidClientError, OwidInvalidParameterError, OwidParseError } from './owid-errors';
 import type {
+  OwidDatedSeries,
+  OwidGrapherDatedSeriesOptions,
   OwidGrapherSeriesOptions,
   OwidIndicatorData,
   OwidIndicatorMetadata,
   OwidIndicatorMetadataEntity,
   OwidGrapherTab,
 } from './owid.types';
-import { type GrapherTable, parseGrapherTable, selectGrapherColumn } from './parseGrapherCsv';
+import {
+  type GrapherDatedTable,
+  type GrapherTable,
+  parseGrapherDatedTable,
+  parseGrapherTable,
+  selectDatedColumns,
+  selectGrapherColumn,
+} from './parseGrapherCsv';
 
 const SLUG_PATTERN = /^[a-z0-9-]+$/;
 const COUNTRY_CODE_PATTERN = /^[A-Z0-9_]+$/;
@@ -355,6 +364,41 @@ export class OwidClient {
       // selectGrapherColumn builds fresh objects, so the result never shares
       // references with the cached table.
       return selectGrapherColumn(table, options.column);
+    } catch (error) {
+      if (error instanceof OwidClientError) {
+        throw error.withContext(`OWID chart "${slug}"`);
+      }
+      throw error;
+    }
+  }
+
+  /**
+   * Reads a date-indexed chart (`entity,day,<columns...>`, no `code` column) for
+   * one entity: ascending ISO dates, one `number | null` per requested column.
+   * Cached under its own namespace; the cached table keeps every column.
+   */
+  async getGrapherDatedSeries(
+    slug: string,
+    options: OwidGrapherDatedSeriesOptions,
+  ): Promise<OwidDatedSeries> {
+    validateSlug(slug);
+    validateTab(options.tab);
+    validateCountryCodes(options.country);
+
+    const countries = normalizeCountries(options.country);
+    const country = countries.length > 0 ? countries.join('~') : 'all';
+    const tab = options.tab ? `:tab=${options.tab}` : '';
+    const key = `owid:grapher-dated:${slug}:c=${country}${tab}`;
+    const url = buildGrapherUrl(this.appConfig.owidGrapherBaseUrl, slug, {
+      tab: options.tab,
+      country: options.country,
+    });
+
+    try {
+      const table = await this.cache.wrap<GrapherDatedTable>(key, async () =>
+        parseGrapherDatedTable(await this.httpClient.getText(url)),
+      );
+      return selectDatedColumns(table, options.columns);
     } catch (error) {
       if (error instanceof OwidClientError) {
         throw error.withContext(`OWID chart "${slug}"`);

@@ -28,6 +28,8 @@ export const LIVE_CATEGORY_SUMMARIES: Partial<Record<EcoCategory, string>> = {
     'How much waste each country generates, what is recycled, composted or dumped, and projections to 2050.',
   [ECO_CATEGORIES.GLOBAL_TEMPERATURE]:
     'How far each year’s temperature is from the recent average, for every country since 1940.',
+  [ECO_CATEGORIES.OCEAN_HEALTH]:
+    'Daily sea surface temperature and its record, plus ocean heat, sea level rise and ocean acidification.',
   [ECO_CATEGORIES.CO2_EMISSIONS]:
     'How much CO2 each country emits, in total and per person, on a world map and a ranking.',
   [ECO_CATEGORIES.ENERGY_SOURCES]:

@@ -25,6 +25,7 @@ export const CATEGORY_SLUGS: EcoCategory[] = Object.values(ECO_CATEGORIES);
 export const LIVE_CATEGORY_SLUGS: EcoCategory[] = [
   'waste-recycling',
   'global-temperature',
+  'ocean-health',
   'co2-emissions',
   'energy-sources',
   'water-footprint',
@@ -58,6 +59,8 @@ export const CATEGORY_DESCRIPTION_SAMPLES = {
     'CO2 emissions by country since 1950: a world map and ranking of emissions per person, and yearly totals for every country. Data from Our World in Data.',
   'global-temperature':
     "Global temperature by country since 1940: how far each year's surface temperature is from the 1991–2020 average. Data from Our World in Data.",
+  'ocean-health':
+    'Ocean health data: daily sea surface temperature and its record, ocean heat content, sea level and ocean pH. Data from Copernicus, NOAA and Our World in Data.',
   'energy-sources':
     'Electricity mix by country since 2000: coal, gas, oil, nuclear, hydro, wind, solar and bioenergy, as a share and in TWh. Data from Our World in Data.',
   'waste-recycling':
@@ -71,6 +74,7 @@ export const CATEGORY_DESCRIPTION_SAMPLES = {
 export const CATEGORY_METADATA_TITLES = {
   'co2-emissions': 'CO2 Emissions by Country',
   'global-temperature': 'Global Temperature Anomalies by Country',
+  'ocean-health': 'Ocean Health: Sea Temperature, Sea Level & pH',
   'energy-sources': 'Electricity Mix by Country',
   'waste-recycling': 'Waste Generation & Recycling by Country',
   'water-footprint': waterFootprintPage.title,

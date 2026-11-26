@@ -77,6 +77,33 @@ describe('HomePage — topics', () => {
     }
   });
 
+  it('should show the ocean health card with its title, summary and link', () => {
+    render(<HomePage />);
+
+    const card = within(topics())
+      .getByRole('heading', { level: 3, name: 'Ocean Health: Sea Temperature, Sea Level & pH' })
+      .closest('li');
+    expect(card).not.toBeNull();
+    expect(
+      within(card as HTMLElement).getByText(
+        'Daily sea surface temperature and its record, plus ocean heat, sea level rise and ocean acidification.',
+      ),
+    ).toBeInTheDocument();
+    expect(
+      within(card as HTMLElement).getByRole('link', { name: 'Explore Ocean Health' }),
+    ).toHaveAttribute('href', '/ocean-health');
+  });
+
+  it('should place the ocean health card after global temperature and before CO2 emissions', () => {
+    render(<HomePage />);
+    const hrefs = within(topics())
+      .getAllByRole('link')
+      .map((link) => link.getAttribute('href'));
+
+    expect(hrefs.indexOf('/ocean-health')).toBe(hrefs.indexOf('/global-temperature') + 1);
+    expect(hrefs.indexOf('/co2-emissions')).toBe(hrefs.indexOf('/ocean-health') + 1);
+  });
+
   it('should render exactly one link per card', () => {
     render(<HomePage />);
     expect(within(topics()).getAllByRole('link')).toHaveLength(LIVE_CATEGORIES.length);

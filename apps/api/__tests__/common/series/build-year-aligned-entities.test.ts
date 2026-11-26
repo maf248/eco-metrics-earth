@@ -6,6 +6,7 @@ import {
   buildYearAlignedEntities,
   latestTimestamp,
   roundTo,
+  valueYearRange,
 } from '../../../src/common/series/build-year-aligned-entities';
 
 function makeSeries(code: string, name: string, points: [number, number | null][]): MetricSeries {
@@ -263,5 +264,27 @@ describe('alignSeriesToYears', () => {
 
   it('should return only nulls for a missing series', () => {
     expect(alignSeriesToYears(undefined, 1850, 2, (value) => value)).toEqual([null, null]);
+  });
+});
+
+describe('valueYearRange', () => {
+  it('should span the first and last year with a value across every list', () => {
+    const range = valueYearRange([
+      [
+        { year: 1955, value: null },
+        { year: 1958, value: 1 },
+      ],
+      [
+        { year: 1960, value: 2 },
+        { year: 2025, value: 3 },
+        { year: 2026, value: null },
+      ],
+    ]);
+
+    expect(range).toEqual({ startYear: 1958, endYear: 2025 });
+  });
+
+  it('should return undefined when no list has a value', () => {
+    expect(valueYearRange([[{ year: 2000, value: null }], []])).toBeUndefined();
   });
 });

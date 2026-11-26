@@ -12,7 +12,7 @@ import {
   startOwidFixtureServer,
 } from '../../e2e/utils/owid-fixture-server';
 
-const FIXTURES_DIR = join(__dirname, '../../e2e/fixtures/owid');
+const FIXTURES_DIR = join(__dirname, '../../e2e/fixtures');
 const respond = (url: string | undefined) => respondWithFixture(url, FIXTURES_DIR);
 
 describe('respondWithFixture', () => {
@@ -146,6 +146,62 @@ describe('respondWithFixture', () => {
     expect(metadata.updatedAt).toBeTruthy();
   });
 
+  it('should serve the ocean health OWID charts in the real format', () => {
+    const anomaly = respond('/grapher/sea-surface-temperature-anomaly.csv?tab=chart');
+    const heat = respond('/grapher/ocean-heat-content-upper.csv');
+    const deep = respond('/grapher/ocean-heat-top-2000m.csv');
+    const ph = respond('/grapher/seawater-ph.csv');
+
+    expect(anomaly.body.split('\n')[0]).toBe(
+      'entity,code,year,sea_temperature_anomaly_annual,sea_temperature_anomaly_low_annual,sea_temperature_anomaly_high_annual',
+    );
+    for (const code of ['OWID_WRL', 'OWID_NH', 'OWID_SH']) {
+      expect(anomaly.body).toContain(`,${code},2025,`);
+    }
+    expect(anomaly.body).not.toContain(',2026,');
+    expect(heat.body.split('\n')[0]).toContain('ocean_heat_content_csiro_700m');
+    expect(deep.body.split('\n')[0]).toContain('ocean_heat_content_noaa_2000m');
+    expect(ph.body.split('\n')[0]).toBe('entity,day,ocean_ph_yearly_average,ocean_ph');
+  });
+
+  it('should serve the ocean health indicator metadata with the dataset identity', () => {
+    for (const id of [1357160, 1357159, 1357158, 1357137]) {
+      const { status, body } = respond(`/v1/indicators/${id}.metadata.json`);
+
+      expect(status).toBe(200);
+      const metadata = JSON.parse(body) as Record<string, unknown>;
+      expect(metadata.datasetName).toBeTruthy();
+      expect(metadata.updatedAt).toBeTruthy();
+    }
+  });
+
+  it('should serve the Copernicus file with its comment header, three full years and a partial one', () => {
+    const { status, contentType, body } = respond(
+      '/copernicus/era5_daily_series_sst_60S-60N_ocean.csv',
+    );
+
+    expect(status).toBe(200);
+    expect(contentType).toContain('text/csv');
+    expect(body).toContain('# Units: deg. C');
+    expect(body).toContain('date,sst,clim_91-20,ano_91-20,status\n2022-01-01,');
+    expect(body).toContain('\n2024-02-29,');
+    expect(body).toContain('\n2025-06-30,');
+    expect(body).not.toContain('\n2025-07-01,');
+  });
+
+  it('should serve the NOAA file with the trend line and three missions with values', () => {
+    const { status, body } = respond('/noaa-lsa/slr_sla_gbl_free_ref_90.csv');
+
+    expect(status).toBe(200);
+    expect(body).toContain('#trend = 3.11 mm/year');
+    const rows = body.split('\n').filter((line) => /^\d{4}\./.test(line));
+    expect(rows.length).toBeGreaterThan(200);
+    const filled = [1, 2, 3, 4, 5].filter((column) =>
+      rows.some((row) => row.split(',')[column].trim() !== ''),
+    );
+    expect(filled).toEqual([1, 4, 5]);
+  });
+
   it('should answer 404 for anything else', () => {
     expect(respond('/grapher/unknown.csv').status).toBe(404);
   });
@@ -183,6 +239,19 @@ describe('startOwidFixtureServer', () => {
 
     expect(response.status).toBe(200);
     expect(await response.text()).toContain('emissions_total_per_capita');
+  });
+
+  it('should answer a HEAD request with the status and no body', async () => {
+    server = await startOwidFixtureServer(0, FIXTURES_DIR);
+    const { port } = server.address() as AddressInfo;
+
+    const response = await fetch(
+      `http://localhost:${port}/copernicus/era5_daily_series_sst_60S-60N_ocean.csv`,
+      { method: 'HEAD' },
+    );
+
+    expect(response.status).toBe(200);
+    expect(await response.text()).toBe('');
   });
 
   it('should reject when the port is already taken', async () => {

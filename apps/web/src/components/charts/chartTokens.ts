@@ -128,3 +128,11 @@ export const CHART_UI_TOKENS = {
 } as const;
 
 export type ChartUiTokenRole = keyof typeof CHART_UI_TOKENS;
+
+/**
+ * Token of the muted series role: the line of a series that gives context without competing
+ * with the highlighted ones (for example the earlier years of a multi-year overlay). It is the
+ * structural `line-strong` border token, so no new color exists; the theme adapter resolves it
+ * and the chart wrapper applies it to series flagged `muted: true`.
+ */
+export const CHART_MUTED_LINE_TOKEN = 'line-strong';

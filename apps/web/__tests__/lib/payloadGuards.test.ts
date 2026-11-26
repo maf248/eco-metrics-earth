@@ -1,6 +1,10 @@
 import {
   hasStrings,
+  isBaseline,
+  isCreditedOrigin,
   isDataSourceOrigin,
+  isIsoDate,
+  isIsoDateArray,
   isNumberOrNullArray,
   isYearAlignedCountryData,
 } from '@/lib/payloadGuards';
@@ -112,5 +116,48 @@ describe('isDataSourceOrigin', () => {
     ['null', null],
   ])('should reject %s', (_label, value) => {
     expect(isDataSourceOrigin(value)).toBe(false);
+  });
+});
+
+describe('isCreditedOrigin', () => {
+  const origin = {
+    producer: 'Producer',
+    title: 'Dataset',
+    url: 'https://producer.example',
+    license: { name: 'CC BY 4.0', url: 'https://creativecommons.org/licenses/by/4.0/' },
+  };
+
+  it('should require the notice a license asks for', () => {
+    expect(isCreditedOrigin({ ...origin, notice: 'Credit' })).toBe(true);
+    expect(isCreditedOrigin(origin)).toBe(false);
+    expect(isCreditedOrigin(null)).toBe(false);
+  });
+});
+
+describe('isBaseline', () => {
+  it('should accept an ordered reference period only', () => {
+    expect(isBaseline({ startYear: 1991, endYear: 2020 })).toBe(true);
+    expect(isBaseline({ startYear: 2020, endYear: 1991 })).toBe(false);
+    expect(isBaseline({ startYear: '1991', endYear: 2020 })).toBe(false);
+    expect(isBaseline(null)).toBe(false);
+  });
+});
+
+describe('isIsoDate', () => {
+  it.each(['2026-11-24', '2024-02-29'])('should accept %s', (value) => {
+    expect(isIsoDate(value)).toBe(true);
+  });
+
+  it.each(['2025-02-29', '2025-13-01', '2025-02-31', '2025-1-1', '24/11/2026', '', 5, null])(
+    'should reject %s',
+    (value) => {
+      expect(isIsoDate(value)).toBe(false);
+    },
+  );
+
+  it('should check every item of an array', () => {
+    expect(isIsoDateArray(['2026-11-24', '2026-11-25'])).toBe(true);
+    expect(isIsoDateArray(['2026-11-24', 'x'])).toBe(false);
+    expect(isIsoDateArray('2026-11-24')).toBe(false);
   });
 });

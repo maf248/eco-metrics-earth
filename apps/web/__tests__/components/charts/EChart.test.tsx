@@ -173,6 +173,53 @@ describe('EChart', () => {
     });
   });
 
+  describe('muted series role', () => {
+    const MUTED_OPTION = {
+      ...OPTION,
+      series: [
+        // Muted series come first: they must not take palette positions from the others.
+        { type: 'line', name: 'Earlier 1', data: [1, 2], muted: true },
+        { type: 'line', name: 'Earlier 2', data: [2, 3], muted: true, lineStyle: { width: 1 } },
+        { type: 'line', name: 'Current', data: [3, 4] },
+        { type: 'line', name: 'Record', data: [4, 5] },
+      ],
+    };
+
+    it('should paint the flagged series with the muted line color of the theme', async () => {
+      const { container } = render(
+        <EChart option={MUTED_OPTION} initSize={{ width: 400, height: 300 }} />,
+      );
+
+      await waitFor(() => expect(container.innerHTML).toContain('rgb(229,231,235)'));
+    });
+
+    it('should leave the first palette colors to the unflagged series', async () => {
+      const { container } = render(
+        <EChart option={MUTED_OPTION} initSize={{ width: 400, height: 300 }} />,
+      );
+
+      await waitFor(() => {
+        expect(container.innerHTML).toContain('rgb(42,120,214)');
+        expect(container.innerHTML).toContain('rgb(235,104,52)');
+      });
+    });
+
+    it('should repaint the flagged series when the dark class is added', async () => {
+      const { container } = render(
+        <EChart option={MUTED_OPTION} initSize={{ width: 400, height: 300 }} />,
+      );
+      await waitFor(() => expect(container.innerHTML).toContain('rgb(229,231,235)'));
+
+      declareTokens({ 'line-strong': '#374151' });
+      act(() => {
+        document.documentElement.classList.add('dark');
+      });
+
+      await waitFor(() => expect(container.innerHTML).toContain('rgb(55,65,81)'));
+      expect(container.innerHTML).not.toContain('stroke="rgb(229,231,235)" stroke-width="2"');
+    });
+  });
+
   describe('palette', () => {
     it('should color the series with the energy mix palette when asked', async () => {
       const { container } = render(

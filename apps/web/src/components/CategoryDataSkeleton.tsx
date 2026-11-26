@@ -51,6 +51,42 @@ function KeyFigures({ lead, details }: Readonly<{ lead: string; details: readonl
   );
 }
 
+function FigureGrid({
+  figures,
+}: Readonly<{
+  figures: readonly { label: string; value: string; lines: readonly string[]; source: string }[];
+}>) {
+  return (
+    <div className={KEY_FIGURES_CLASS_NAME}>
+      <ul className="grid sm:grid-cols-2 sm:gap-8">
+        {figures.map(({ label, value, lines, source }) => (
+          <li
+            key={label}
+            className="border-t border-line-divider py-6 first:border-t-0 first:pt-0 last:pb-0 sm:border-t-0 sm:py-0"
+          >
+            <p className="text-sm font-medium">
+              <Bars>{label}</Bars>
+            </p>
+            <p className="mt-1 whitespace-nowrap text-3xl font-bold sm:text-4xl">
+              <Bars>{value}</Bars>
+            </p>
+            <div className="mt-2 space-y-1 text-sm">
+              {lines.map((line) => (
+                <p key={line}>
+                  <Bars>{line}</Bars>
+                </p>
+              ))}
+            </div>
+            <p className="mt-2 text-xs">
+              <Bars>{source}</Bars>
+            </p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
 function Control({
   label,
   className,
@@ -112,6 +148,27 @@ function MapCard({ title, hasMeasureToggle }: Readonly<Extract<SkeletonBlock, { 
   );
 }
 
+function ChartCard({
+  heading,
+  intro,
+  chartTitle,
+}: Readonly<Extract<SkeletonBlock, { kind: 'chart' }>>) {
+  return (
+    <div className={CARD_CLASS_NAME}>
+      <p className="mb-4 text-xl font-semibold">
+        <Bars>{heading}</Bars>
+      </p>
+      <p className="text-sm">
+        <Bars>{intro}</Bars>
+      </p>
+      <p className="mb-2 mt-6 text-base font-semibold leading-snug sm:text-lg">
+        <Bars>{chartTitle}</Bars>
+      </p>
+      <ChartSkeleton />
+    </div>
+  );
+}
+
 function ProductList({ status }: Readonly<{ status: string }>) {
   return (
     <>
@@ -144,10 +201,14 @@ function Block({ block }: Readonly<{ block: SkeletonBlock }>) {
       return <Intro {...block} />;
     case 'keyFigures':
       return <KeyFigures {...block} />;
+    case 'figureGrid':
+      return <FigureGrid {...block} />;
     case 'explorer':
       return <Explorer {...block} />;
     case 'map':
       return <MapCard {...block} />;
+    case 'chart':
+      return <ChartCard {...block} />;
     case 'productList':
       return <ProductList {...block} />;
   }

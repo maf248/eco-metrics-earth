@@ -15,6 +15,7 @@ import { Co2EmissionsModule } from '../modules/co2-emissions/co2-emissions.modul
 import { DataSourcesModule } from '../modules/data-sources/data-sources.module';
 import { EnergySourcesModule } from '../modules/energy-sources/energy-sources.module';
 import { GlobalTemperatureModule } from '../modules/global-temperature/global-temperature.module';
+import { OceanHealthModule } from '../modules/ocean-health/ocean-health.module';
 import { OwidModule } from '../modules/providers/owid/owid.module';
 import { WasteRecyclingModule } from '../modules/waste-recycling/waste-recycling.module';
 import { WaterFootprintModule } from '../modules/water-footprint/water-footprint.module';
@@ -45,6 +46,7 @@ import { WaterFootprintModule } from '../modules/water-footprint/water-footprint
     Co2EmissionsModule,
     GlobalTemperatureModule,
     EnergySourcesModule,
+    OceanHealthModule,
     DataSourcesModule,
     FallbackModule,
   ],

@@ -3,9 +3,15 @@
 import type { EChartsCoreOption, EChartsType } from 'echarts/core';
 import { useEffect, useRef } from 'react';
 
-import { buildChartTheme, createCanvasColorResolver, type ColorResolver } from './chartTheme';
+import {
+  buildChartTheme,
+  createCanvasColorResolver,
+  resolveMutedLine,
+  type ColorResolver,
+} from './chartTheme';
 import type { ChartPalette, ChartRamp } from './chartTokens';
 import { echarts } from './echartsSetup';
+import { applyMutedRole, hasMutedSeries } from './mutedSeries';
 
 interface EChartProps {
   option: EChartsCoreOption;
@@ -60,8 +66,14 @@ export function EChart({
   };
 
   const applyOption = (chart: EChartsType): void => {
+    // The muted role is resolved from the theme in effect each time, so it follows a theme change.
+    let themed = optionRef.current;
+    if (hasMutedSeries(themed)) {
+      resolverRef.current ??= createCanvasColorResolver();
+      themed = applyMutedRole(themed, resolveMutedLine(resolverRef.current));
+    }
     chart.setOption({
-      ...optionRef.current,
+      ...themed,
       animation: !prefersReducedMotion(),
       animationDuration: ANIMATION_DURATION_MS,
     });
@@ -83,7 +95,12 @@ export function EChart({
     const resizeObserver = new ResizeObserver(() => chart.resize());
     resizeObserver.observe(element);
 
-    const themeObserver = new MutationObserver(() => applyTheme(chart));
+    const themeObserver = new MutationObserver(() => {
+      applyTheme(chart);
+      if (hasMutedSeries(optionRef.current)) {
+        applyOption(chart);
+      }
+    });
     themeObserver.observe(document.documentElement, {
       attributes: true,
       attributeFilter: ['class'],

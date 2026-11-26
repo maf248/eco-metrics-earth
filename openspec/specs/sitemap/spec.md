@@ -24,12 +24,12 @@ All URLs SHALL end with a trailing slash.
 #### Scenario: Sitemap includes all category URLs
 
 - **WHEN** the sitemap function is called
-- **THEN** the result contains exactly one category entry per category with live data (currently 5: `waste-recycling`, `global-temperature`, `co2-emissions`, `energy-sources`, `water-footprint`)
+- **THEN** the result contains exactly one category entry per category with live data (currently 6: `waste-recycling`, `global-temperature`, `ocean-health`, `co2-emissions`, `energy-sources`, `water-footprint`)
 
 #### Scenario: Sitemap excludes placeholder categories
 
 - **WHEN** the sitemap function is called
-- **THEN** no entry points to a category without live data (e.g. `/ocean-health/`)
+- **THEN** no entry points to a category without live data (e.g. `/air-quality/`)
 
 #### Scenario: Category entries have correct priority and frequency
 

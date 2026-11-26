@@ -83,3 +83,37 @@ export function isDataSourceOrigin(value: unknown): value is DataSourceOrigin {
     OPTIONAL_ORIGIN_TEXTS.every((key) => rest[key] === undefined || typeof rest[key] === 'string')
   );
 }
+
+/**
+ * A `DataSourceOrigin` whose license asks for a notice wherever the data is shown, so the notice
+ * is required (the API serves it, the page prints it).
+ */
+export function isCreditedOrigin(value: unknown): value is DataSourceOrigin {
+  return isDataSourceOrigin(value) && typeof value.notice === 'string';
+}
+
+/** True for a reference period with numeric, non-inverted years. */
+export function isBaseline(value: unknown): boolean {
+  if (typeof value !== 'object' || value === null) {
+    return false;
+  }
+  const { startYear, endYear } = value as Record<string, unknown>;
+  return typeof startYear === 'number' && typeof endYear === 'number' && startYear <= endYear;
+}
+
+const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
+
+/** True for an ISO 8601 calendar date (`YYYY-MM-DD`) that exists. */
+export function isIsoDate(value: unknown): value is string {
+  if (typeof value !== 'string' || !ISO_DATE.test(value)) {
+    return false;
+  }
+  const time = new Date(`${value}T00:00:00Z`).getTime();
+  // `2025-02-31` parses to 3 March: only a date that survives the round trip exists.
+  return !Number.isNaN(time) && new Date(time).toISOString().startsWith(value);
+}
+
+/** True for an array whose items are all ISO calendar dates. */
+export function isIsoDateArray(value: unknown): value is string[] {
+  return Array.isArray(value) && value.every(isIsoDate);
+}

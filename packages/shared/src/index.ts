@@ -37,6 +37,19 @@ export type {
   GlobalTemperatureEntity,
   GlobalTemperatureGlobal,
 } from './lib/global-temperature';
+export type {
+  OceanHeatContentData,
+  OceanHeatDepth,
+  OceanHeatSource,
+  OceanPhData,
+  OceanSeaLevelData,
+  OceanSeaLevelMission,
+  OceanSstAnomalyData,
+  OceanSstAnomalyRegion,
+  OceanSstDailyData,
+  OceanSstDailyPoint,
+  OceanSstStatus,
+} from './lib/ocean-health';
 export { ENERGY_SOURCE_IDS, RENEWABLE_SOURCE_IDS } from './lib/energy-sources';
 export type { EnergySourceId, EnergySourcesData, EnergySourcesEntity } from './lib/energy-sources';
 export type {

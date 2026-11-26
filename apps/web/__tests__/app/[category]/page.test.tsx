@@ -94,15 +94,15 @@ jest.mock('next/navigation', () => ({
 
 describe('CategoryPage', () => {
   it('should render an h1 heading', async () => {
-    const element = await CategoryPage({ params: Promise.resolve({ category: 'ocean-health' }) });
+    const element = await CategoryPage({ params: Promise.resolve({ category: 'air-quality' }) });
     render(element);
     expect(screen.getByRole('heading', { level: 1 })).toBeTruthy();
   });
 
-  it('should display the correct title for ocean-health', async () => {
-    const element = await CategoryPage({ params: Promise.resolve({ category: 'ocean-health' }) });
+  it('should display the correct title for air-quality', async () => {
+    const element = await CategoryPage({ params: Promise.resolve({ category: 'air-quality' }) });
     render(element);
-    expect(screen.getByText('Ocean Health')).toBeTruthy();
+    expect(screen.getByText('Air Quality')).toBeTruthy();
   });
 
   it('should display the correct title for co2-emissions', async () => {
@@ -179,7 +179,7 @@ describe('CategoryPage', () => {
   });
 
   it('should leave the <main> landmark to the root layout', async () => {
-    const element = await CategoryPage({ params: Promise.resolve({ category: 'ocean-health' }) });
+    const element = await CategoryPage({ params: Promise.resolve({ category: 'air-quality' }) });
     const { container } = render(element);
     expect(container.querySelector('main')).toBeNull();
   });
@@ -188,17 +188,17 @@ describe('CategoryPage', () => {
 describe('generateMetadata', () => {
   it('should return a title with the human-readable category name', async () => {
     const metadata = await generateMetadata({
-      params: Promise.resolve({ category: 'ocean-health' }),
+      params: Promise.resolve({ category: 'air-quality' }),
     });
-    expect(metadata.title).toBe('Ocean Health');
+    expect(metadata.title).toBe('Air Quality');
   });
 
   it('should mark a placeholder category as noindex, follow', async () => {
     const metadata = await generateMetadata({
-      params: Promise.resolve({ category: 'ocean-health' }),
+      params: Promise.resolve({ category: 'air-quality' }),
     });
     expect(metadata.robots).toEqual({ index: false, follow: true });
-    expect(metadata.alternates?.canonical).toMatch(/\/ocean-health\/$/);
+    expect(metadata.alternates?.canonical).toMatch(/\/air-quality\/$/);
   });
 
   it('should leave a category with live data indexable', async () => {
@@ -234,11 +234,25 @@ describe('generateMetadata', () => {
   it.each([
     ['co2-emissions', 'CO2 Emissions by Country'],
     ['global-temperature', 'Global Temperature Anomalies by Country'],
+    ['ocean-health', 'Ocean Health: Sea Temperature, Sea Level & pH'],
   ] as const)('should return the keyword-bearing title for %s', async (category, title) => {
     const metadata = await generateMetadata({ params: Promise.resolve({ category }) });
     expect(metadata.title).toBe(title);
     expect(metadata.openGraph?.title).toBe(title);
     expect(metadata.twitter?.title).toBe(title);
+  });
+
+  it('should describe the live ocean-health content, with a canonical URL and no noindex', async () => {
+    const metadata = await generateMetadata({
+      params: Promise.resolve({ category: 'ocean-health' }),
+    });
+
+    expect(metadata.description).toBe(CATEGORY_DESCRIPTIONS['ocean-health']);
+    expect(metadata.description).not.toMatch(/coming soon/i);
+    expect(metadata.openGraph?.description).toBe(CATEGORY_DESCRIPTIONS['ocean-health']);
+    expect(metadata.twitter?.description).toBe(CATEGORY_DESCRIPTIONS['ocean-health']);
+    expect(metadata.alternates?.canonical).toMatch(/\/ocean-health\/$/);
+    expect(metadata.robots).toBeUndefined();
   });
 
   it('should return the correct title for waste-recycling', async () => {
@@ -355,8 +369,8 @@ describe('notFound behavior', () => {
 });
 
 describe('CategoryPage — placeholder without a registry entry', () => {
-  it('should call no registered loader for ocean-health', async () => {
-    await CategoryPage({ params: Promise.resolve({ category: 'ocean-health' }) });
+  it('should call no registered loader for air-quality', async () => {
+    await CategoryPage({ params: Promise.resolve({ category: 'air-quality' }) });
 
     expect(getWasteRecycling).not.toHaveBeenCalled();
     expect(getCo2Emissions).not.toHaveBeenCalled();
@@ -377,12 +391,13 @@ describe('generateStaticParams', () => {
 
   it('should return every category except the ones with a registry entry', async () => {
     const params = await generateStaticParams();
-    expect(params).toHaveLength(7);
+    expect(params).toHaveLength(6);
     expect(params).not.toContainEqual({ category: ECO_CATEGORIES.WATER_FOOTPRINT });
     expect(params).not.toContainEqual({ category: ECO_CATEGORIES.CO2_EMISSIONS });
     expect(params).not.toContainEqual({ category: ECO_CATEGORIES.GLOBAL_TEMPERATURE });
     expect(params).not.toContainEqual({ category: ECO_CATEGORIES.ENERGY_SOURCES });
     expect(params).not.toContainEqual({ category: ECO_CATEGORIES.WASTE_RECYCLING });
+    expect(params).not.toContainEqual({ category: ECO_CATEGORIES.OCEAN_HEALTH });
   });
 
   it('should never be empty, because the route needs one param to pre-render without the BFF', async () => {
@@ -392,7 +407,7 @@ describe('generateStaticParams', () => {
 
 describe('CategoryPage — layout', () => {
   it('should render the content with top-anchored layout (justify-start)', async () => {
-    const element = await CategoryPage({ params: Promise.resolve({ category: 'ocean-health' }) });
+    const element = await CategoryPage({ params: Promise.resolve({ category: 'air-quality' }) });
     const { container } = render(element);
     const content = container.firstElementChild;
     expect(content?.className).toContain('justify-start');
@@ -400,7 +415,7 @@ describe('CategoryPage — layout', () => {
   });
 
   it('should clear the mobile header with pt-header top padding', async () => {
-    const element = await CategoryPage({ params: Promise.resolve({ category: 'ocean-health' }) });
+    const element = await CategoryPage({ params: Promise.resolve({ category: 'air-quality' }) });
     const { container } = render(element);
     const content = container.firstElementChild;
     expect(content?.className).toContain('pt-header');
@@ -408,8 +423,8 @@ describe('CategoryPage — layout', () => {
 });
 
 describe('CategoryPage snapshots', () => {
-  it('should match snapshot for ocean-health', async () => {
-    const element = await CategoryPage({ params: Promise.resolve({ category: 'ocean-health' }) });
+  it('should match snapshot for air-quality', async () => {
+    const element = await CategoryPage({ params: Promise.resolve({ category: 'air-quality' }) });
     const { asFragment } = render(element);
     expect(asFragment()).toMatchSnapshot();
   });
@@ -436,10 +451,10 @@ describe('CategoryPage — water-footprint branch', () => {
   });
 
   it('should keep the coming-soon placeholder for non-water-footprint categories', async () => {
-    const element = await CategoryPage({ params: Promise.resolve({ category: 'ocean-health' }) });
+    const element = await CategoryPage({ params: Promise.resolve({ category: 'air-quality' }) });
     render(element);
 
-    expect(screen.getByText('Ocean Health metrics — coming soon.')).toBeInTheDocument();
+    expect(screen.getByText('Air Quality metrics — coming soon.')).toBeInTheDocument();
     expect(screen.queryByRole('table')).not.toBeInTheDocument();
   });
 
@@ -461,7 +476,7 @@ describe('CategoryPage — water-footprint branch', () => {
   it('should not call the helper for non-water-footprint categories', async () => {
     jest.mocked(getWaterFootprintProducts).mockClear();
 
-    await CategoryPage({ params: Promise.resolve({ category: 'ocean-health' }) });
+    await CategoryPage({ params: Promise.resolve({ category: 'air-quality' }) });
 
     expect(getWaterFootprintProducts).not.toHaveBeenCalled();
   });
@@ -495,7 +510,7 @@ describe('CategoryPage — co2-emissions branch', () => {
   it('should not load CO2 data for other categories', async () => {
     jest.mocked(getCo2Emissions).mockClear();
 
-    await CategoryPage({ params: Promise.resolve({ category: 'ocean-health' }) });
+    await CategoryPage({ params: Promise.resolve({ category: 'air-quality' }) });
 
     expect(getCo2Emissions).not.toHaveBeenCalled();
   });
@@ -529,7 +544,7 @@ describe('CategoryPage — global-temperature branch', () => {
   it('should not load temperature data for other categories', async () => {
     jest.mocked(getGlobalTemperature).mockClear();
 
-    await CategoryPage({ params: Promise.resolve({ category: 'ocean-health' }) });
+    await CategoryPage({ params: Promise.resolve({ category: 'air-quality' }) });
 
     expect(getGlobalTemperature).not.toHaveBeenCalled();
   });
@@ -569,7 +584,7 @@ describe('CategoryPage — energy-sources branch', () => {
   it('should not load energy data for other categories', async () => {
     jest.mocked(getEnergySources).mockClear();
 
-    await CategoryPage({ params: Promise.resolve({ category: 'ocean-health' }) });
+    await CategoryPage({ params: Promise.resolve({ category: 'air-quality' }) });
 
     expect(getEnergySources).not.toHaveBeenCalled();
   });

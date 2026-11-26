@@ -36,6 +36,7 @@
   --line: oklch(92.8% 0.006 264.531); /* gray-200 */
   --line-strong: oklch(92.8% 0.006 264.531); /* gray-200 */
   --line-subtle: oklch(96.7% 0.003 264.542); /* gray-100 */
+  --line-divider: oklch(87.2% 0.01 258.338); /* gray-300 */
   /* Warning: stale notice and unavailable state. Amber, never an error red. */
   --warning-surface: oklch(98.7% 0.022 95.277); /* amber-50 */
   --warning-line: oklch(87.9% 0.169 91.605); /* amber-300 */
@@ -118,6 +119,7 @@
   --line: oklch(27.8% 0.033 256.848); /* gray-800 */
   --line-strong: oklch(37.3% 0.034 259.733); /* gray-700 */
   --line-subtle: oklch(27.8% 0.033 256.848); /* gray-800 */
+  --line-divider: oklch(27.8% 0.033 256.848); /* gray-800 */
   --warning-surface: oklch(27.9% 0.077 45.635); /* amber-950 */
   --warning-line: oklch(47.3% 0.137 46.201); /* amber-800 */
   --warning-fg: oklch(96.2% 0.059 95.617); /* amber-100 */
@@ -195,6 +197,7 @@
   --color-line: var(--line);
   --color-line-strong: var(--line-strong);
   --color-line-subtle: var(--line-subtle);
+  --color-line-divider: var(--line-divider);
   --color-warning-surface: var(--warning-surface);
   --color-warning-line: var(--warning-line);
   --color-warning-fg: var(--warning-fg);

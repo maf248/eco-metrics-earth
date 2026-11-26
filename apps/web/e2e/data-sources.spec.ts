@@ -60,13 +60,21 @@ test.describe('Data sources page', () => {
       await page.goto(dataSourcesPage.url);
 
       const providers = page.getByRole('region', { name: 'Live data providers' });
-      await expect(providers.getByRole('heading', { name: 'Data produced by' })).toBeVisible();
+      // Every provider with upstream producers has its own "Data produced by" list.
+      await expect(
+        providers.getByRole('heading', { name: 'Data produced by' }).first(),
+      ).toBeVisible();
       for (const [producer, title, license] of [
         ['Global Carbon Project', 'Global Carbon Budget', 'CC BY 4.0'],
         ['Copernicus Climate Change Service (C3S)', 'ERA5 monthly averaged data', 'CC BY 4.0'],
         ['Met Office Hadley Centre', 'HadCRUT5', 'Open Government Licence v3.0'],
       ] as const) {
-        const origin = providers.getByRole('listitem').filter({ hasText: producer }).last();
+        // The producer may appear twice (the Met Office produces HadCRUT5 and HadSST).
+        const origin = providers
+          .getByRole('listitem')
+          .filter({ hasText: producer })
+          .filter({ hasText: title })
+          .last();
         await expect(origin.getByRole('link', { name: new RegExp(title) })).toBeVisible();
         await expect(origin.getByRole('link', { name: license })).toBeVisible();
       }

@@ -188,6 +188,57 @@ describe('envValidationSchema', () => {
     });
   });
 
+  describe('Copernicus Climate Pulse and NOAA LSA settings', () => {
+    it('should apply the defaults when nothing is set', () => {
+      const { error, value } = validate({});
+
+      expect(error).toBeUndefined();
+      expect(value.COPERNICUS_CLIMATE_PULSE_BASE_URL).toBe(
+        'https://sites.ecmwf.int/data/climatepulse/data/series',
+      );
+      expect(value.COPERNICUS_CLIMATE_PULSE_CACHE_TTL_SECONDS).toBe(21600);
+      expect(value.NOAA_LSA_BASE_URL).toBe(
+        'https://www.star.nesdis.noaa.gov/socd/lsa/SeaLevelRise/slr',
+      );
+      expect(value.NOAA_LSA_CACHE_TTL_SECONDS).toBe(604800);
+    });
+
+    it.each(['COPERNICUS_CLIMATE_PULSE_BASE_URL', 'NOAA_LSA_BASE_URL'])(
+      'should reject a trailing slash in %s with the shared message',
+      (name) => {
+        const { error } = validate({ [name]: 'https://example.com/series/' });
+
+        expect(error?.message).toContain(name);
+        expect(error?.message).toContain('must not end with a trailing slash');
+      },
+    );
+
+    it.each(['COPERNICUS_CLIMATE_PULSE_BASE_URL', 'NOAA_LSA_BASE_URL'])(
+      'should reject a value that is not a URI in %s',
+      (name) => {
+        expect(validate({ [name]: 'not-a-url' }).error?.message).toContain(name);
+      },
+    );
+
+    it.each([
+      ['COPERNICUS_CLIMATE_PULSE_CACHE_TTL_SECONDS', 10],
+      ['COPERNICUS_CLIMATE_PULSE_CACHE_TTL_SECONDS', 86401],
+      ['NOAA_LSA_CACHE_TTL_SECONDS', 60],
+      ['NOAA_LSA_CACHE_TTL_SECONDS', 2592001],
+    ])('should reject %s = %d as out of bounds', (name, ttl) => {
+      expect(validate({ [name]: ttl }).error?.message).toContain(name);
+    });
+
+    it.each([
+      ['COPERNICUS_CLIMATE_PULSE_CACHE_TTL_SECONDS', 60],
+      ['COPERNICUS_CLIMATE_PULSE_CACHE_TTL_SECONDS', 86400],
+      ['NOAA_LSA_CACHE_TTL_SECONDS', 3600],
+      ['NOAA_LSA_CACHE_TTL_SECONDS', 2592000],
+    ])('should accept %s = %d at the bound', (name, ttl) => {
+      expect(validate({ [name]: ttl }).error).toBeUndefined();
+    });
+  });
+
   describe('OWID_CACHE_TTL_SECONDS', () => {
     it('should default to 86400 when absent', () => {
       const { error, value } = validate({});

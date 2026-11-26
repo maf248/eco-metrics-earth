@@ -18,7 +18,16 @@ const PUBLISHERS_FILE = join('apps', 'api', 'src', 'common', 'publishers', 'publ
 const ORIGIN_DECLARATIONS = [
   join('apps', 'api', 'src', 'modules', 'co2-emissions', 'co2-emissions.constants.ts'),
   join('apps', 'api', 'src', 'modules', 'energy-sources', 'energy-sources.constants.ts'),
-  join('apps', 'api', 'src', 'modules', 'global-temperature', 'global-temperature.constants.ts'),
+  join('apps', 'api', 'src', 'modules', 'ocean-health', 'ocean-health.constants.ts'),
+  join(
+    'apps',
+    'api',
+    'src',
+    'modules',
+    'providers',
+    'copernicus-climate-pulse',
+    'copernicus-climate-pulse.constants.ts',
+  ),
   join('apps', 'api', 'src', 'modules', 'waste-recycling', 'waste-recycling.attribution.ts'),
 ];
 

@@ -96,7 +96,7 @@ describe('Navbar', () => {
   });
 
   it('should update the active link when the pathname changes', () => {
-    mockUsePathname.mockReturnValue('/ocean-health/');
+    mockUsePathname.mockReturnValue('/air-quality/');
     render(<Navbar />);
 
     const allLinks = screen.getAllByRole('link');
@@ -104,7 +104,7 @@ describe('Navbar', () => {
 
     expect(activeLinks).toHaveLength(1);
     // next/link strips trailing slashes in jsdom — assert the normalized form
-    expect(activeLinks[0].getAttribute('href')).toBe('/ocean-health');
+    expect(activeLinks[0].getAttribute('href')).toBe('/air-quality');
   });
 
   it('should render a brand link to the home page', () => {

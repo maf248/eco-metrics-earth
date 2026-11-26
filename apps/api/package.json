@@ -87,7 +87,8 @@
           "{workspaceRoot}/Dockerfile",
           "{workspaceRoot}/scripts/lib/waste-recycling-source.mjs",
           "{workspaceRoot}/scripts/lib/waste-recycling-transform.mjs",
-          "{workspaceRoot}/scripts/generate-waste-recycling-data.mjs"
+          "{workspaceRoot}/scripts/generate-waste-recycling-data.mjs",
+          "{workspaceRoot}/README.md"
         ]
       }
     }

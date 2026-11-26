@@ -1,29 +1,56 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import { cacheLife } from 'next/cache';
 
-import { DEGRADED_REVALIDATE_SECONDS } from '@/lib/bffFetch';
+import { ProviderBackedContent, type ProviderPageState } from '@/components/ProviderBackedContent';
+import { DEGRADED_REVALIDATE_SECONDS, type ProviderPayloadResult } from '@/lib/bffFetch';
 import {
   CATEGORY_PAGES,
   defineCategoryPage,
   defineProviderCategoryPage,
+  defineSectionedProviderCategoryPage,
   loadCategoryData,
+  resolveProviderPageState,
 } from '@/lib/categoryPages';
 import { CATEGORY_SKELETONS } from '@/lib/categorySkeletons';
 import { getCo2Emissions } from '@/lib/co2Emissions';
 import { getEnergySources } from '@/lib/energySources';
 import { getGlobalTemperature } from '@/lib/globalTemperature';
+import {
+  getOceanHeatContent,
+  getOceanPh,
+  getOceanSeaLevel,
+  getOceanSst,
+  getOceanSstAnomaly,
+} from '@/lib/oceanHealth';
 import { getWasteRecycling } from '@/lib/wasteRecycling';
 import { getWaterFootprintProducts } from '@/lib/waterFootprint';
 
 import { CO2_FIXTURE, CO2_META } from '../fixtures/co2Emissions';
 import { ENERGY_FIXTURE, ENERGY_META } from '../fixtures/energySources';
 import { TEMPERATURE_FIXTURE, TEMPERATURE_META } from '../fixtures/globalTemperature';
+import {
+  COPERNICUS_META,
+  NOAA_LSA_META,
+  OCEAN_HEAT_FIXTURE,
+  OCEAN_PH_FIXTURE,
+  OCEAN_SEA_LEVEL_FIXTURE,
+  OCEAN_SST_ANOMALY_FIXTURE,
+  OCEAN_SST_DAILY_FIXTURE,
+  OWID_OCEAN_META,
+} from '../fixtures/oceanHealth';
 import { WASTE_FIXTURE, WASTE_META } from '../fixtures/wasteRecycling';
 
 jest.mock('@/lib/waterFootprint', () => ({ getWaterFootprintProducts: jest.fn() }));
 jest.mock('@/lib/co2Emissions', () => ({ getCo2Emissions: jest.fn() }));
 jest.mock('@/lib/globalTemperature', () => ({ getGlobalTemperature: jest.fn() }));
 jest.mock('@/lib/energySources', () => ({ getEnergySources: jest.fn() }));
+jest.mock('@/lib/oceanHealth', () => ({
+  getOceanSst: jest.fn(),
+  getOceanSstAnomaly: jest.fn(),
+  getOceanHeatContent: jest.fn(),
+  getOceanSeaLevel: jest.fn(),
+  getOceanPh: jest.fn(),
+}));
 jest.mock('@/lib/wasteRecycling', () => ({ getWasteRecycling: jest.fn() }));
 jest.mock('@/components/charts/LazyBarEChart', () => ({
   LazyBarEChart: () => <div data-testid="bar-stub" />,
@@ -41,11 +68,12 @@ jest.mock('@/components/charts/LazyEChart', () => ({
 jest.mock('next/cache', () => ({ cacheLife: jest.fn() }));
 
 describe('CATEGORY_PAGES', () => {
-  it('should register exactly the five categories with live data', () => {
+  it('should register exactly the six categories with live data', () => {
     expect(Object.keys(CATEGORY_PAGES).sort()).toEqual([
       'co2-emissions',
       'energy-sources',
       'global-temperature',
+      'ocean-health',
       'waste-recycling',
       'water-footprint',
     ]);
@@ -80,6 +108,10 @@ describe('CATEGORY_PAGES', () => {
     expect(screen.getByText('No water footprint data is currently available.')).toBeInTheDocument();
   });
 });
+
+type SectionStatesOf<S extends Record<string, { meta: typeof TEMPERATURE_META }>> = {
+  [K in keyof S]: ProviderPageState<S[K]>;
+};
 
 const NOW = new Date('2026-10-28T12:00:00.000Z');
 const DAY_MS = 24 * 60 * 60 * 1000;
@@ -272,6 +304,364 @@ describe('defineProviderCategoryPage', () => {
   });
 });
 
+describe('CATEGORY_PAGES ocean-health entry', () => {
+  const ok = <T,>(data: T, meta: typeof COPERNICUS_META) => ({
+    kind: 'ok' as const,
+    payload: { data, meta },
+  });
+  const stale = (meta: typeof OWID_OCEAN_META, days: number) => ({
+    ...meta,
+    stale: true,
+    fetchedAt: daysAgo(days),
+  });
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+    jest.useFakeTimers({ now: NOW });
+    jest.mocked(getOceanSst).mockResolvedValue(ok(OCEAN_SST_DAILY_FIXTURE, COPERNICUS_META));
+    jest
+      .mocked(getOceanSstAnomaly)
+      .mockResolvedValue(ok(OCEAN_SST_ANOMALY_FIXTURE, OWID_OCEAN_META));
+    jest.mocked(getOceanHeatContent).mockResolvedValue(ok(OCEAN_HEAT_FIXTURE, OWID_OCEAN_META));
+    jest.mocked(getOceanSeaLevel).mockResolvedValue(ok(OCEAN_SEA_LEVEL_FIXTURE, NOAA_LSA_META));
+    jest.mocked(getOceanPh).mockResolvedValue(ok(OCEAN_PH_FIXTURE, OWID_OCEAN_META));
+  });
+
+  afterEach(() => {
+    jest.useRealTimers();
+  });
+
+  async function renderOcean() {
+    const definition = CATEGORY_PAGES['ocean-health'];
+    if (!definition) throw new Error('missing entry');
+    const { Content } = definition;
+    const states = await definition.load();
+    return { definition, states, ...render(<Content data={states} />) };
+  }
+
+  it('should render every section inside the centered container, with no degraded state', async () => {
+    const { container } = await renderOcean();
+
+    expect(container.firstElementChild).toHaveClass('mt-8', 'w-full', 'flex', 'justify-center');
+    expect(within(screen.getByTestId('ocean-key-figures')).getAllByRole('listitem')).toHaveLength(
+      4,
+    );
+    expect(
+      screen.getAllByRole('heading', { level: 2 }).map((heading) => heading.textContent),
+    ).toEqual([
+      'Daily sea surface temperature since 2022',
+      'Annual sea surface temperature anomaly',
+      'Ocean heat content',
+      'Global mean sea level',
+      'Ocean pH at Hawaii',
+    ]);
+    expect(screen.queryByTestId('stale-data-notice')).not.toBeInTheDocument();
+    expect(screen.queryByTestId('data-unavailable')).not.toBeInTheDocument();
+  });
+
+  it('should read the five providers once each', async () => {
+    await renderOcean();
+
+    for (const loader of [
+      getOceanSst,
+      getOceanSstAnomaly,
+      getOceanHeatContent,
+      getOceanSeaLevel,
+      getOceanPh,
+    ]) {
+      expect(loader).toHaveBeenCalledTimes(1);
+    }
+  });
+
+  it('should show the unavailable state of one provider only, naming it, and keep the rest', async () => {
+    jest.mocked(getOceanSeaLevel).mockResolvedValue({ kind: 'provider-unavailable' });
+
+    const { definition, states } = await renderOcean();
+
+    expect(screen.getByTestId('data-unavailable')).toHaveTextContent(
+      'NOAA Laboratory for Satellite Altimetry',
+    );
+    const seaLevel = screen.getByRole('region', { name: 'Global mean sea level' });
+    expect(within(seaLevel).getByTestId('data-unavailable')).toBeInTheDocument();
+    expect(screen.getByTestId('ocean-key-figure-sst')).toBeInTheDocument();
+    expect(screen.queryByTestId('ocean-key-figure-sea-level')).not.toBeInTheDocument();
+    expect(within(screen.getByTestId('ocean-key-figures')).getAllByRole('listitem')).toHaveLength(
+      3,
+    );
+    expect(
+      screen.getByRole('heading', { level: 2, name: 'Ocean pH at Hawaii' }),
+    ).toBeInTheDocument();
+    expect(definition.isDegraded?.(states)).toBe(true);
+    expect(document.querySelector('script[type="application/ld+json"]')?.textContent).not.toContain(
+      'NOAA Laboratory for Satellite Altimetry',
+    );
+  });
+
+  it('should show one unavailable state and no daily chart when Copernicus is down', async () => {
+    jest.mocked(getOceanSst).mockResolvedValue({ kind: 'provider-unavailable' });
+
+    await renderOcean();
+
+    expect(screen.getAllByTestId('data-unavailable')).toHaveLength(1);
+    expect(screen.getByTestId('data-unavailable')).toHaveTextContent('Copernicus Climate Pulse');
+    expect(screen.queryByTestId('ocean-key-figure-sst')).not.toBeInTheDocument();
+    expect(within(screen.getByTestId('ocean-key-figures')).getAllByRole('listitem')).toHaveLength(
+      3,
+    );
+    expect(screen.queryByTestId('ocean-sst-daily-attribution')).not.toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { level: 2, name: 'Ocean heat content' }),
+    ).toBeInTheDocument();
+  });
+
+  it('should show the stale notice above one section only', async () => {
+    jest
+      .mocked(getOceanSstAnomaly)
+      .mockResolvedValue(ok(OCEAN_SST_ANOMALY_FIXTURE, stale(OWID_OCEAN_META, 14)));
+
+    await renderOcean();
+
+    const notices = screen.getAllByTestId('stale-data-notice');
+    expect(notices).toHaveLength(1);
+    const anomaly = screen.getByRole('region', { name: 'Annual sea surface temperature anomaly' });
+    expect(within(anomaly).getByTestId('stale-data-notice')).toHaveTextContent('Our World in Data');
+  });
+
+  it('should show no key figures panel when every provider is unavailable', async () => {
+    for (const read of [
+      getOceanSst,
+      getOceanSstAnomaly,
+      getOceanHeatContent,
+      getOceanSeaLevel,
+      getOceanPh,
+    ]) {
+      jest.mocked(read).mockResolvedValue({ kind: 'provider-unavailable' });
+    }
+
+    await renderOcean();
+
+    expect(screen.getAllByTestId('data-unavailable')).toHaveLength(5);
+    expect(screen.queryByTestId('ocean-key-figures')).not.toBeInTheDocument();
+  });
+
+  it('should show the notice once above the daily chart for a 3-day-old Copernicus payload', async () => {
+    jest
+      .mocked(getOceanSst)
+      .mockResolvedValue(ok(OCEAN_SST_DAILY_FIXTURE, stale(COPERNICUS_META, 3)));
+
+    const { container } = await renderOcean();
+
+    expect(screen.getAllByTestId('stale-data-notice')).toHaveLength(1);
+    const notice = screen.getByTestId('stale-data-notice');
+    const figure = screen.getByTestId('ocean-key-figure-sst');
+    const daily = screen.getByRole('heading', { level: 2, name: /^Daily sea surface temperature/ });
+    // Figures, then the notice, then the daily chart it belongs to.
+    expect(figure.compareDocumentPosition(notice) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(notice.compareDocumentPosition(daily) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(container).toBeInTheDocument();
+  });
+
+  it('should treat a 3-day-old payload of a default-threshold provider as fresh', async () => {
+    jest
+      .mocked(getOceanSstAnomaly)
+      .mockResolvedValue(ok(OCEAN_SST_ANOMALY_FIXTURE, stale(OWID_OCEAN_META, 3)));
+
+    await renderOcean();
+
+    expect(screen.queryByTestId('stale-data-notice')).not.toBeInTheDocument();
+  });
+
+  it('should propagate a failure of our own BFF', async () => {
+    jest.mocked(getOceanPh).mockRejectedValue(new Error('BFF down'));
+    const definition = CATEGORY_PAGES['ocean-health'];
+
+    await expect(definition?.load()).rejects.toThrow('BFF down');
+  });
+
+  it('should not be degraded when every provider answers', async () => {
+    const { definition, states } = await renderOcean();
+
+    expect(definition.isDegraded?.(states)).toBe(false);
+  });
+});
+
+describe('defineSectionedProviderCategoryPage', () => {
+  type Payload = { meta: typeof TEMPERATURE_META };
+  type Sections = { first: Payload; second: Payload };
+
+  const fresh = (provider: string): Payload => ({
+    meta: { ...TEMPERATURE_META, source: { ...TEMPERATURE_META.source, provider } },
+  });
+  const stale = (days: number): Payload => ({
+    meta: { ...TEMPERATURE_META, stale: true, fetchedAt: daysAgo(days) },
+  });
+
+  const Content = ({ states }: { states: SectionStatesOf<Sections> }) => (
+    <>
+      {(['first', 'second'] as const).map((key) => (
+        <section key={key} data-testid={`section-${key}`}>
+          <ProviderBackedContent
+            state={states[key]}
+            Content={({ data }) => <p data-testid={`inner-${key}`}>{data.meta.source.provider}</p>}
+          />
+        </section>
+      ))}
+    </>
+  );
+
+  beforeEach(() => {
+    jest.useFakeTimers({ now: NOW });
+  });
+
+  afterEach(() => {
+    jest.useRealTimers();
+  });
+
+  it('should resolve a provider outage in one section without failing the others', async () => {
+    const definition = defineSectionedProviderCategoryPage<Sections>({
+      sections: {
+        first: {
+          provider: { name: 'First' },
+          load: async () => ({ kind: 'ok' as const, payload: fresh('First') }),
+        },
+        second: {
+          provider: { name: 'Second' },
+          load: async () => ({ kind: 'provider-unavailable' as const }),
+        },
+      },
+      Content,
+    });
+
+    const states = (await definition.load()) as Record<string, { kind: string }>;
+
+    expect(states.first.kind).toBe('fresh');
+    expect(states.second).toEqual({ kind: 'unavailable', providerName: 'Second' });
+    const { Content: Page } = definition;
+    render(<Page data={states} />);
+    expect(screen.getByTestId('inner-first')).toBeInTheDocument();
+    expect(screen.getByTestId('data-unavailable')).toHaveTextContent('Second');
+    expect(screen.queryByTestId('inner-second')).not.toBeInTheDocument();
+  });
+
+  it('should apply the freshness override of each section on its own', async () => {
+    const definition = defineSectionedProviderCategoryPage<Sections>({
+      sections: {
+        first: {
+          provider: { name: 'First', freshness: { silentDays: 2, noticeDays: 30 } },
+          load: async () => ({ kind: 'ok' as const, payload: stale(3) }),
+        },
+        second: {
+          provider: { name: 'Second' },
+          load: async () => ({ kind: 'ok' as const, payload: stale(3) }),
+        },
+      },
+      Content,
+    });
+
+    const states = (await definition.load()) as Record<string, { kind: string }>;
+
+    expect(states.first.kind).toBe('stale-notice');
+    expect(states.second.kind).toBe('fresh');
+  });
+
+  it('should be degraded only when a section is unavailable without a payload', async () => {
+    const build = (second: ProviderPayloadResult<Payload>) =>
+      defineSectionedProviderCategoryPage<Sections>({
+        sections: {
+          first: {
+            provider: { name: 'First' },
+            load: async () => ({ kind: 'ok' as const, payload: fresh('First') }),
+          },
+          second: { provider: { name: 'Second' }, load: async () => second },
+        },
+        Content,
+      });
+
+    const down = build({ kind: 'provider-unavailable' });
+    const staleButShown = build({ kind: 'ok', payload: stale(14) });
+    const tooOld = build({ kind: 'ok', payload: stale(40) });
+
+    expect(down.isDegraded?.(await down.load())).toBe(true);
+    expect(staleButShown.isDegraded?.(await staleButShown.load())).toBe(false);
+    // Too old to show but with a payload: the attribution still renders, no short revalidation.
+    expect(tooOld.isDegraded?.(await tooOld.load())).toBe(false);
+  });
+
+  it('should propagate a failure of our own BFF in any section', async () => {
+    const definition = defineSectionedProviderCategoryPage<Sections>({
+      sections: {
+        first: {
+          provider: { name: 'First' },
+          load: async () => ({ kind: 'ok' as const, payload: fresh('First') }),
+        },
+        second: {
+          provider: { name: 'Second' },
+          load: async () => {
+            throw new Error('BFF down');
+          },
+        },
+      },
+      Content,
+    });
+
+    await expect(definition.load()).rejects.toThrow('BFF down');
+  });
+
+  it('should start every section read before any of them resolves', async () => {
+    const started: string[] = [];
+    const releases: (() => void)[] = [];
+    const slow = (key: string, payload: Payload) => () => {
+      started.push(key);
+      return new Promise<ProviderPayloadResult<Payload>>((resolve) => {
+        releases.push(() => resolve({ kind: 'ok', payload }));
+      });
+    };
+    const definition = defineSectionedProviderCategoryPage<Sections>({
+      sections: {
+        first: { provider: { name: 'First' }, load: slow('first', fresh('First')) },
+        second: { provider: { name: 'Second' }, load: slow('second', fresh('Second')) },
+      },
+      Content,
+    });
+
+    const loading = definition.load();
+    await Promise.resolve();
+
+    expect(started).toEqual(['first', 'second']);
+    releases.forEach((release) => release());
+    await expect(loading).resolves.toHaveProperty('second');
+  });
+});
+
+describe('resolveProviderPageState', () => {
+  beforeEach(() => {
+    jest.useFakeTimers({ now: NOW });
+  });
+
+  afterEach(() => {
+    jest.useRealTimers();
+  });
+
+  it('should resolve every state the single-provider helper shows', () => {
+    const provider = { name: 'Registry name' };
+    const at = (days: number) => ({
+      kind: 'ok' as const,
+      payload: { meta: { ...TEMPERATURE_META, stale: true, fetchedAt: daysAgo(days) } },
+    });
+
+    expect(resolveProviderPageState({ kind: 'provider-unavailable' }, provider)).toEqual({
+      kind: 'unavailable',
+      providerName: 'Registry name',
+    });
+    expect(resolveProviderPageState(at(1), provider).kind).toBe('fresh');
+    expect(resolveProviderPageState(at(14), provider).kind).toBe('stale-notice');
+    expect(resolveProviderPageState(at(40), provider)).toMatchObject({
+      kind: 'unavailable',
+      providerName: 'Our World in Data',
+    });
+  });
+});
+
 describe('defineCategoryPage', () => {
   it('should return the definition it was given', async () => {
     const definition = defineCategoryPage({
@@ -310,7 +700,7 @@ describe('loadCategoryData', () => {
   });
 
   it('should resolve to nothing for a category without an entry', async () => {
-    await expect(loadCategoryData('ocean-health')).resolves.toBeUndefined();
+    await expect(loadCategoryData('air-quality')).resolves.toBeUndefined();
   });
 });
 

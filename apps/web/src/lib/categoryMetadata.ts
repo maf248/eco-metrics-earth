@@ -24,7 +24,7 @@ export const CATEGORY_DESCRIPTIONS: Record<EcoCategory, string> = {
   deforestation:
     'Deforestation data is coming to eco-metrics earth: how much forest is lost each year and where, from open sources.',
   'ocean-health':
-    "Ocean health data is coming soon: sea surface temperature, acidification and other signals of how the world's oceans are changing.",
+    'Ocean health data: daily sea surface temperature and its record, ocean heat content, sea level and ocean pH. Data from Copernicus, NOAA and Our World in Data.',
   reforestation:
     'Reforestation data is coming to eco-metrics earth: how much forest is being restored or planted, and where it is happening.',
   'glacier-melting':
@@ -46,6 +46,7 @@ const METADATA_TITLE_OVERRIDES: Partial<Record<EcoCategory, string>> = {
   'waste-recycling': 'Waste Generation & Recycling by Country',
   'co2-emissions': 'CO2 Emissions by Country',
   'global-temperature': 'Global Temperature Anomalies by Country',
+  'ocean-health': 'Ocean Health: Sea Temperature, Sea Level & pH',
   'energy-sources': 'Electricity Mix by Country',
   'water-footprint': 'Water Footprint of Food & Products',
 };

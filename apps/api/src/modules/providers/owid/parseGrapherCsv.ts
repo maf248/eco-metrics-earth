@@ -1,10 +1,13 @@
 import type { MetricSeries } from '@eco-metrics/shared';
 
+import { isIsoCalendarDate } from '../../../common/parsing/csv-cells';
+
 import {
   OwidInvalidParameterError,
   OwidParseError,
   OwidUnsupportedChartError,
 } from './owid-errors';
+import type { OwidDatedSeries } from './owid.types';
 
 const EXPECTED_HEADER_PREFIX = ['entity', 'code', 'year'];
 
@@ -219,4 +222,103 @@ export function selectGrapherColumn(table: GrapherTable, column?: string): Metri
 
 export function parseGrapherCsv(csv: string, column?: string): MetricSeries[] {
   return selectGrapherColumn(parseGrapherTable(csv), column);
+}
+
+const DATED_HEADER_PREFIX = ['entity', 'day'];
+
+/** A parsed date-indexed Grapher CSV: every value column, numerically validated. */
+export interface GrapherDatedTable {
+  entityName: string;
+  valueColumns: string[];
+  /** Sorted ascending by date. */
+  rows: { date: string; cells: (number | null)[] }[];
+}
+
+/**
+ * Parses a date-indexed Grapher CSV (`entity,day,<value columns...>`, no `code`
+ * column). Separate from {@link parseGrapherTable}, whose strict header check is
+ * what makes a map-tab response fail loudly. Expects one entity and ISO dates.
+ */
+export function parseGrapherDatedTable(csv: string): GrapherDatedTable {
+  const parser = createCsvParser(csv);
+
+  const header = parser.parseNextRow();
+  if (header === null) {
+    throw new OwidParseError('Malformed CSV: no header row found.');
+  }
+  if (
+    header.length < DATED_HEADER_PREFIX.length + 1 ||
+    DATED_HEADER_PREFIX.some((name, i) => header[i] !== name)
+  ) {
+    throw new OwidParseError(
+      `Malformed CSV: expected header to start with "entity,day" followed by at least one value column, got "${header.join(',')}".`,
+    );
+  }
+
+  const valueColumns = header.slice(DATED_HEADER_PREFIX.length);
+  const rows: GrapherDatedTable['rows'] = [];
+  let entityName: string | undefined;
+
+  let rowIndex = 1;
+  let row = parser.parseNextRow();
+  while (row !== null) {
+    // A trailing newline yields no extra row; a lone blank line is tolerated only at the end.
+    if (!(row.length === 1 && row[0] === '')) {
+      if (row.length !== header.length) {
+        throw new OwidParseError(
+          `Malformed CSV: row ${rowIndex + 1} has ${row.length} columns, expected ${header.length}.`,
+        );
+      }
+      const [name, date] = row;
+      if (!isIsoCalendarDate(date)) {
+        throw new OwidParseError(
+          `Malformed CSV: row ${rowIndex + 1} has a non-ISO date "${date}".`,
+        );
+      }
+      if (entityName !== undefined && name !== entityName) {
+        throw new OwidParseError(
+          `Malformed CSV: expected a single entity, found "${entityName}" and "${name}".`,
+        );
+      }
+      entityName = name;
+      rows.push({
+        date,
+        cells: row.slice(DATED_HEADER_PREFIX.length).map((cell) => parseNumericValue(cell)),
+      });
+    }
+    row = parser.parseNextRow();
+    rowIndex += 1;
+  }
+
+  if (entityName === undefined) {
+    throw new OwidParseError('Malformed CSV: no data rows found.');
+  }
+  rows.sort((a, b) => a.date.localeCompare(b.date));
+
+  return { entityName, valueColumns, rows };
+}
+
+/**
+ * Picks `columns` of a parsed dated table. Always builds new objects, so the
+ * result never shares references with the (cached) table.
+ */
+export function selectDatedColumns(table: GrapherDatedTable, columns: string[]): OwidDatedSeries {
+  const indexes = columns.map((column) => {
+    const index = table.valueColumns.indexOf(column);
+    if (index === -1) {
+      throw new OwidParseError(
+        `Missing column "${column}". Available value columns: ${formatColumns(table.valueColumns)}.`,
+      );
+    }
+    return index;
+  });
+
+  return {
+    entityName: table.entityName,
+    columns: [...columns],
+    rows: table.rows.map(({ date, cells }) => ({
+      date,
+      values: indexes.map((index) => cells[index]),
+    })),
+  };
 }

@@ -3,6 +3,8 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { HealthCheckResult, HealthCheckService } from '@nestjs/terminus';
 import type { Response } from 'express';
 
+import { CopernicusClimatePulseHealthIndicator } from './copernicus-climate-pulse.health-indicator';
+import { NoaaLsaHealthIndicator } from './noaa-lsa.health-indicator';
 import { OwidHealthIndicator } from './owid.health-indicator';
 
 /**
@@ -16,6 +18,8 @@ export class DependenciesHealthController {
   constructor(
     private readonly health: HealthCheckService,
     private readonly owid: OwidHealthIndicator,
+    private readonly copernicusClimatePulse: CopernicusClimatePulseHealthIndicator,
+    private readonly noaaLsa: NoaaLsaHealthIndicator,
   ) {}
 
   @Get('dependencies')
@@ -31,16 +35,28 @@ export class DependenciesHealthController {
     schema: {
       example: {
         status: 'ok',
-        info: { owid: { status: 'up' } },
+        info: {
+          owid: { status: 'up' },
+          'copernicus-climate-pulse': { status: 'up' },
+          'noaa-lsa': { status: 'up' },
+        },
         error: {},
-        details: { owid: { status: 'up' } },
+        details: {
+          owid: { status: 'up' },
+          'copernicus-climate-pulse': { status: 'up' },
+          'noaa-lsa': { status: 'up' },
+        },
       },
     },
   })
   @ApiResponse({ status: 503, description: 'At least one provider is unreachable' })
   async check(@Res({ passthrough: true }) response: Response): Promise<HealthCheckResult> {
     try {
-      return await this.health.check([() => this.owid.check()]);
+      return await this.health.check([
+        () => this.owid.check(),
+        () => this.copernicusClimatePulse.check(),
+        () => this.noaaLsa.check(),
+      ]);
     } catch (error) {
       // Terminus signals failure with a ServiceUnavailableException whose response is the
       // result object. Return it as the body so the global filter does not flatten it.

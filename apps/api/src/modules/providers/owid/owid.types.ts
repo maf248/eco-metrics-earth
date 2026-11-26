@@ -39,3 +39,28 @@ export interface OwidGrapherSeriesOptions {
   timeRange?: { from: number; to: number };
   column?: string;
 }
+
+export interface OwidGrapherDatedSeriesOptions {
+  /** Which tab of the chart to request (see {@link OwidGrapherSeriesOptions.tab}). */
+  tab?: OwidGrapherTab;
+  country?: string[];
+  /** Value columns to return, by short name. At least one. */
+  columns: string[];
+}
+
+/** One date of a date-indexed chart with one value per requested column. */
+export interface OwidDatedRow {
+  /** ISO 8601 calendar date (`YYYY-MM-DD`). */
+  date: string;
+  /** Same order as the requested columns; `null` for a blank cell. */
+  values: (number | null)[];
+}
+
+/** The rows of a date-indexed chart (`entity,day,<columns...>`) for its single entity. */
+export interface OwidDatedSeries {
+  entityName: string;
+  /** The requested columns, in the requested order. */
+  columns: string[];
+  /** Ascending by date. */
+  rows: OwidDatedRow[];
+}

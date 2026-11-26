@@ -5,6 +5,7 @@ import { HttpService } from '@nestjs/axios';
 import { ConsoleLogger, INestApplication } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { Test, TestingModule } from '@nestjs/testing';
 import { Observable, of, throwError } from 'rxjs';
 import supertest from 'supertest';
@@ -72,6 +73,52 @@ describe('GET /health/dependencies', () => {
     expect(response.status).toBe(200);
     expect(response.body.status).toBe('ok');
     expect(response.body.info.owid.status).toBe('up');
+    expect(Object.keys(response.body.info)).toEqual([
+      'owid',
+      'copernicus-climate-pulse',
+      'noaa-lsa',
+    ]);
+    expect(response.body.info['copernicus-climate-pulse'].status).toBe('up');
+    expect(response.body.info['noaa-lsa'].status).toBe('up');
+  });
+
+  it('should answer 503 naming only the provider that is down', async () => {
+    responder = ({ url }) =>
+      url.includes('slr_sla_gbl_free_ref_90.csv')
+        ? throwError(() => axiosError('connect ECONNREFUSED'))
+        : of({ status: 200, data: {} });
+
+    const response = await supertest(app.getHttpServer()).get('/health/dependencies');
+
+    expect(response.status).toBe(503);
+    expect(Object.keys(response.body.error)).toEqual(['noaa-lsa']);
+    expect(response.body.error['noaa-lsa'].status).toBe('down');
+    expect(response.body.info.owid.status).toBe('up');
+    expect(response.body.info['copernicus-climate-pulse'].status).toBe('up');
+  });
+
+  it('should probe the two CSV providers with HEAD, a 3 second timeout and the API User-Agent', async () => {
+    responder = () => of({ status: 200, data: {} });
+
+    await supertest(app.getHttpServer()).get('/health/dependencies');
+
+    const headers = { 'User-Agent': expect.stringContaining('eco-metrics-earth-api') };
+    expect(request).toHaveBeenCalledWith(
+      expect.objectContaining({
+        method: 'HEAD',
+        url: 'https://sites.ecmwf.int/data/climatepulse/data/series/era5_daily_series_sst_60S-60N_ocean.csv',
+        timeout: 3000,
+        headers,
+      }),
+    );
+    expect(request).toHaveBeenCalledWith(
+      expect.objectContaining({
+        method: 'HEAD',
+        url: 'https://www.star.nesdis.noaa.gov/socd/lsa/SeaLevelRise/slr/slr_sla_gbl_free_ref_90.csv',
+        timeout: 3000,
+        headers,
+      }),
+    );
   });
 
   it('should answer 503 with the Terminus body on a connection error', async () => {
@@ -83,6 +130,7 @@ describe('GET /health/dependencies', () => {
     expect(response.body.status).toBe('error');
     expect(response.body.error.owid.status).toBe('down');
     expect(response.body.details.owid.status).toBe('down');
+    expect(Object.keys(response.body.error)).toHaveLength(3);
     expect(response.body).not.toHaveProperty('success');
   });
 
@@ -101,7 +149,7 @@ describe('GET /health/dependencies', () => {
 
     await supertest(app.getHttpServer()).get('/health/dependencies');
 
-    expect(request).toHaveBeenCalledTimes(1);
+    expect(request).toHaveBeenCalledTimes(3);
     expect(request).toHaveBeenCalledWith(
       expect.objectContaining({
         url: 'https://ourworldindata.org/grapher/co-emissions-per-capita.metadata.json',
@@ -122,6 +170,18 @@ describe('GET /health/dependencies', () => {
       error: 'Internal server error',
       status: 500,
     });
+  });
+
+  it('should document all three provider keys in the Swagger example of the dependencies route', () => {
+    const document = SwaggerModule.createDocument(app, new DocumentBuilder().build());
+    const path = Object.keys(document.paths).find((key) => key.endsWith('/health/dependencies'));
+    const ok = path ? document.paths[path]?.get?.responses?.['200'] : undefined;
+    const example = JSON.stringify(ok);
+
+    expect(example).toBeDefined();
+    expect(example).toContain('"owid"');
+    expect(example).toContain('"copernicus-climate-pulse"');
+    expect(example).toContain('"noaa-lsa"');
   });
 });
 
@@ -280,6 +340,6 @@ describe('GET /health/dependencies behind the global InternalKeyGuard', () => {
       .set('X-Internal-Api-Key', SECRET);
 
     expect(response.status).toBe(200);
-    expect(request).toHaveBeenCalledTimes(1);
+    expect(request).toHaveBeenCalledTimes(3);
   });
 });

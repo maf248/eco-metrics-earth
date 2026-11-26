@@ -359,7 +359,7 @@ For a project that already runs the single `eco-metrics-api` service deployed fr
 
 ## 22. Provider snapshot bucket (one-time, before the first push that enables it)
 
-When OWID is unreachable the API serves the last good payload of each OWID-backed category (`meta.stale: true`) instead of a `502`. The payloads live in one Cloud Storage bucket, one object per category per environment: `production/<category>.json` and `development/<category>.json`. The feature is opt-in: with the `SNAPSHOT_BUCKET` repository variable unset, nothing is deployed with persistence and the API behaves as before. Run this section **before the first push to `develop`** that should use it; the code is safe in any order, because an unset, missing or inaccessible bucket only disables persistence.
+When a provider (OWID, Copernicus Climate Pulse or NOAA Laboratory for Satellite Altimetry) is unreachable the API serves the last good payload of each affected category (`meta.stale: true`) instead of a `502`. The payloads live in one Cloud Storage bucket, one object per category per environment: `production/<category>.json` and `development/<category>.json`; `ocean-health` has one object per section, because each section has its own provider (`ocean-health-sea-surface-temperature.json`, `ocean-health-sea-surface-anomaly.json`, `ocean-health-heat-content.json`, `ocean-health-sea-level.json` and `ocean-health-ph.json`). The feature is opt-in: with the `SNAPSHOT_BUCKET` repository variable unset, nothing is deployed with persistence and the API behaves as before. Run this section **before the first push to `develop`** that should use it; the code is safe in any order, because an unset, missing or inaccessible bucket only disables persistence.
 
 > **Region.** Create the bucket in `us-central1`, the same region as the Cloud Run services (§8, `GCP_REGION`). Same-region traffic between Cloud Run and the bucket is free; another region breaks the free-tier numbers below.
 
@@ -419,8 +419,8 @@ By default the alerts go by email to the billing account administrators. A budge
 
 1. Run the commands above and set the `SNAPSHOT_BUCKET` variable.
 2. Push to `develop`; wait for `Deploy API (development)`.
-3. Call each endpoint once on the dev service: `curl -s <DEV_API_URL>/api/v1/co2-emissions -H "X-Internal-Api-Key: $INTERNAL_API_KEY" >/dev/null`, then `global-temperature` and `energy-sources` (each with the same header).
-4. Check the objects: `gcloud storage ls gs://<SNAPSHOT_BUCKET>/development/` should list `co2-emissions.json`, `energy-sources.json` and `global-temperature.json`.
+3. Call each endpoint once on the dev service: `curl -s <DEV_API_URL>/api/v1/co2-emissions -H "X-Internal-Api-Key: $INTERNAL_API_KEY" >/dev/null`, then `global-temperature`, `energy-sources` and the five `ocean-health/*` endpoints (each with the same header).
+4. Check the objects: `gcloud storage ls gs://<SNAPSHOT_BUCKET>/development/` should list `co2-emissions.json`, `energy-sources.json`, `global-temperature.json` and the five `ocean-health-*.json` objects.
 5. Open the `develop` → `main` pull request. Production creates `production/*.json` on its first requests.
 
 Deploy the API before the web for every payload change (the web guards the payload shape). A contract change of a category payload should be followed by deleting its object (`gcloud storage rm gs://<SNAPSHOT_BUCKET>/<prefix>/<category>.json`), because a stored snapshot keeps the old shape until the next successful fetch overwrites it.

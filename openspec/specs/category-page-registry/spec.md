@@ -18,7 +18,7 @@ Dispatch category pages with live data through a registry, so new categories onl
 
 #### Scenario: Unregistered category renders the placeholder
 
-- **WHEN** the page renders a category with no entry (e.g. `ocean-health`)
+- **WHEN** the page renders a category with no entry (e.g. `air-quality`)
 - **THEN** the "coming soon" placeholder is rendered and no `load` is called
 
 #### Scenario: Fetch failure propagates
@@ -30,7 +30,7 @@ Dispatch category pages with live data through a registry, so new categories onl
 #### Scenario: Water-footprint and CO2 are registered
 
 - **WHEN** `CATEGORY_PAGES` is inspected
-- **THEN** it has entries for exactly `water-footprint`, `co2-emissions`, `global-temperature`, `energy-sources` and `waste-recycling`
+- **THEN** it has entries for exactly `water-footprint`, `co2-emissions`, `global-temperature`, `energy-sources`, `waste-recycling` and `ocean-health`
 
 #### Scenario: Energy sources renders through the registry
 
@@ -43,6 +43,12 @@ Dispatch category pages with live data through a registry, so new categories onl
 - **GIVEN** the `waste-recycling` entry whose `load` is `getWasteRecycling`
 - **WHEN** the page renders `waste-recycling`
 - **THEN** `WasteRecyclingContent` is rendered with the fetched payload below the common header
+
+#### Scenario: Ocean health renders through a sectioned registry entry
+
+- **GIVEN** the `ocean-health` entry built with `defineSectionedProviderCategoryPage`
+- **WHEN** the page renders `ocean-health`
+- **THEN** `OceanHealthContent` is rendered with the map of section states inside the container `mt-8 w-full flex justify-center`, below the common header
 
 #### Scenario: Declared skeleton blocks shape the data region
 

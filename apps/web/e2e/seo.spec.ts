@@ -75,6 +75,7 @@ test.describe('Category page metadata', () => {
       'air-quality',
       'co2-emissions',
       'global-temperature',
+      'ocean-health',
       'energy-sources',
       'waste-recycling',
     ] as const) {
@@ -182,7 +183,7 @@ test.describe('Sitemap.xml', () => {
   test('should list the home, the live categories and data sources', async ({ request }) => {
     const response = await request.get('/sitemap.xml');
     const text = await response.text();
-    // Home page + 5 live category pages + data sources = 7 entries
+    // Home page + 6 live category pages + data sources = 8 entries
     const urlCount = (text.match(/<url>/g) || []).length;
     expect(urlCount).toBe(2 + LIVE_CATEGORY_SLUGS.length);
     // Placeholder categories are noindex, so only live ones are listed, with a trailing slash
@@ -198,12 +199,12 @@ test.describe('Sitemap.xml', () => {
 
 test.describe('Robots meta', () => {
   test('should mark a placeholder category as noindex, follow', async ({ request }) => {
-    const html = await (await request.get('/ocean-health/')).text();
+    const html = await (await request.get('/air-quality/')).text();
     expect(html).toContain('name="robots" content="noindex, follow"');
     expect(html).toContain('rel="canonical"');
   });
 
-  for (const path of ['/', '/co2-emissions/', '/data-sources/']) {
+  for (const path of ['/', '/co2-emissions/', '/ocean-health/', '/data-sources/']) {
     test(`should leave ${path} indexable`, async ({ request }) => {
       const html = await (await request.get(path)).text();
       expect(html).not.toContain('name="robots"');
@@ -267,7 +268,8 @@ test.describe('Complete HTML on direct visits', () => {
     { path: '/co2-emissions/', heading: 'CO2 Emissions', content: 'application/ld+json' },
     { path: '/energy-sources/', heading: 'Energy Sources', content: 'application/ld+json' },
     { path: '/waste-recycling/', heading: 'Waste &amp; Recycling', content: 'application/ld+json' },
-    { path: '/ocean-health/', heading: 'Ocean Health', content: 'coming soon' },
+    { path: '/ocean-health/', heading: 'Ocean Health', content: 'application/ld+json' },
+    { path: '/air-quality/', heading: 'Air Quality', content: 'coming soon' },
   ]) {
     test(`should deliver ${path} complete and visible without JavaScript`, async ({ request }) => {
       const html = await (await request.get(path)).text();

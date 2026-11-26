@@ -175,10 +175,14 @@ describe('GET /api/v1/energy-sources', () => {
     expect(ember).toMatchObject({ ...ENERGY_ORIGIN, categories: ['energy-sources'] });
   });
 
-  it('should keep the dependencies check at a single owid indicator', async () => {
+  it('should keep the dependencies check at one indicator per provider', async () => {
     const response = await supertest(app.getHttpServer()).get('/api/v1/health/dependencies');
 
-    expect(Object.keys(response.body.details)).toEqual(['owid']);
+    expect(Object.keys(response.body.details)).toEqual([
+      'owid',
+      'copernicus-climate-pulse',
+      'noaa-lsa',
+    ]);
   });
 
   it('should document the endpoint in Swagger with its 200 and 502 responses', () => {

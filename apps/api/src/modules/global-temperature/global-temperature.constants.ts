@@ -42,28 +42,6 @@ export const GLOBAL_SERIES_START_YEAR = 1850;
 /** OWID's pre-industrial baseline, as recommended by the source. */
 export const GLOBAL_SERIES_BASELINE = { startYear: 1861, endYear: 1890 } as const;
 
-/**
- * Upstream producer of the per-country series. Its license (CC BY 4.0 on the
- * Climate Data Store page; the Copernicus license text asks for the same credit)
- * allows any lawful use, commercial included, with the notice and the
- * no-liability statement. The payload completes the notice with the dataset
- * year; the catalog lists it as is, since it is built without calling the provider.
- */
-export const ERA5_ORIGIN: DataSourceOrigin = {
-  producer: 'Copernicus Climate Change Service (C3S)',
-  title: 'ERA5 monthly averaged data on single levels from 1940 to present',
-  url: 'https://cds.climate.copernicus.eu/datasets/reanalysis-era5-single-levels-monthly-means',
-  license: { name: 'CC BY 4.0', url: 'https://creativecommons.org/licenses/by/4.0/' },
-  notice: 'Contains modified Copernicus Climate Change Service information',
-  citation:
-    'Hersbach et al. (2023), ERA5 monthly averaged data on single levels from 1940 to present, ' +
-    'Copernicus Climate Change Service (C3S) Climate Data Store (CDS), ' +
-    'doi:10.24381/cds.f17050d7',
-  disclaimer:
-    'Neither the European Commission nor ECMWF is responsible for any use that may be made of ' +
-    'the Copernicus information or data it contains.',
-};
-
 /** Upstream producer of the long-run global series (Crown copyright, Open Government Licence). */
 export const HADCRUT5_ORIGIN: DataSourceOrigin = {
   producer: 'Met Office Hadley Centre',
