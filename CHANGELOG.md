@@ -1,3 +1,9 @@
+## [2.25.0](https://github.com/maf248/eco-metrics-earth/compare/v2.24.0...v2.25.0) (2026-11-27)
+
+### Features
+
+* **ocean-health:** populate the ocean health page from three providers ([976ac1b](https://github.com/maf248/eco-metrics-earth/commit/976ac1b42e474762772d3b20edbd2a0310baae00))
+
 ## [2.24.0](https://github.com/maf248/eco-metrics-earth/compare/v2.23.0...v2.24.0) (2026-11-21)
 
 ### Features
