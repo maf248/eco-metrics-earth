@@ -342,6 +342,23 @@ test.describe('Accessibility audit — data sources page', () => {
   });
 });
 
+test.describe('Accessibility audit — not-found page', () => {
+  for (const theme of ['light', 'dark'] as const) {
+    test(`should have zero critical and serious violations in the ${theme} theme`, async ({
+      page,
+    }) => {
+      await page.addInitScript((value) => localStorage.setItem('eco-metrics-theme', value), theme);
+      const response = await page.goto('/nonexistent/');
+      expect(response?.status()).toBe(404);
+      const results = await analyzeSettled(page);
+      const violations = results.violations.filter(
+        (v) => v.impact === 'critical' || v.impact === 'serious',
+      );
+      expect(violations).toEqual([]);
+    });
+  }
+});
+
 test.describe('Skip-to-content link', { tag: '@smoke' }, () => {
   test('should exist on home page and target #main-content', async ({ page }) => {
     await page.goto('/');
