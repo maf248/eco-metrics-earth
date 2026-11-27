@@ -15,9 +15,11 @@ interface CategoryErrorProps {
 }
 
 /**
- * A category whose data could not be loaded at all, with no cached page to serve: the category
- * keeps its header and shows the same warning panel as a provider outage, never the generic error
- * or the not-found page (unknown slugs never reach here). The failed server render stays a 5xx.
+ * Error boundary of a category. A server render error (it carries a `digest`) is in practice a
+ * failed data load with no cached page left to serve: the category keeps its header and shows the warning
+ * panel of a provider outage, and the failed render stays a 5xx. An error raised in the browser
+ * (no `digest`) is a rendering failure, not missing data, so it gets a generic message instead.
+ * Never the not-found page: unknown slugs never reach here.
  */
 export default function CategoryError({ error, retry }: CategoryErrorProps) {
   const { category } = useParams<{ category: string }>();
@@ -32,7 +34,14 @@ export default function CategoryError({ error, retry }: CategoryErrorProps) {
   return (
     <div className={CATEGORY_PAGE_CLASS_NAME}>
       {isEcoCategory(category) ? <CategoryHeader category={category} /> : null}
-      <DataUnavailable />
+      {error.digest === undefined ? (
+        <div role="alert" className="mt-8 max-w-prose text-center">
+          <h2 className="text-xl font-semibold text-fg">Something went wrong</h2>
+          <p className="mt-2 text-fg-body">An unexpected error occurred while showing this page.</p>
+        </div>
+      ) : (
+        <DataUnavailable />
+      )}
       <button
         type="button"
         onClick={() => retry()}

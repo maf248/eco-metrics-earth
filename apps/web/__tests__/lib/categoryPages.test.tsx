@@ -1,4 +1,3 @@
-import * as Sentry from '@sentry/nextjs';
 import { render, screen, within } from '@testing-library/react';
 import { cacheLife } from 'next/cache';
 
@@ -24,6 +23,7 @@ import {
   getOceanSst,
   getOceanSstAnomaly,
 } from '@/lib/oceanHealth';
+import { reportSectionFailure } from '@/lib/sectionFailureReporter';
 import { getWasteRecycling } from '@/lib/wasteRecycling';
 import { getWaterFootprintProducts } from '@/lib/waterFootprint';
 
@@ -68,7 +68,7 @@ jest.mock('@/components/charts/LazyEChart', () => ({
 }));
 
 jest.mock('next/cache', () => ({ cacheLife: jest.fn() }));
-jest.mock('@sentry/nextjs', () => ({ captureException: jest.fn() }));
+jest.mock('@/lib/sectionFailureReporter', () => ({ reportSectionFailure: jest.fn() }));
 
 describe('CATEGORY_PAGES', () => {
   it('should register exactly the seven categories with live data', () => {
@@ -599,7 +599,7 @@ describe('defineSectionedProviderCategoryPage', () => {
       throw new Error(message);
     };
 
-    beforeEach(() => jest.mocked(Sentry.captureException).mockClear());
+    beforeEach(() => jest.mocked(reportSectionFailure).mockClear());
 
     it('should leave only that section failed, report it and keep the others', async () => {
       const definition = defineSectionedProviderCategoryPage<Sections>({
@@ -617,10 +617,8 @@ describe('defineSectionedProviderCategoryPage', () => {
 
       expect(states.first.kind).toBe('fresh');
       expect(states.second).toEqual({ kind: 'failed' });
-      expect(Sentry.captureException).toHaveBeenCalledTimes(1);
-      expect(Sentry.captureException).toHaveBeenCalledWith(new Error('BFF down'), {
-        tags: { section: 'second' },
-      });
+      expect(reportSectionFailure).toHaveBeenCalledTimes(1);
+      expect(reportSectionFailure).toHaveBeenCalledWith('second', new Error('BFF down'));
       expect(definition.isDegraded?.(states)).toBe(true);
     });
 
@@ -654,7 +652,7 @@ describe('defineSectionedProviderCategoryPage', () => {
       });
 
       await expect(definition.load()).rejects.toThrow('first down');
-      expect(Sentry.captureException).not.toHaveBeenCalled();
+      expect(reportSectionFailure).not.toHaveBeenCalled();
     });
 
     it('should not take a date from a failed section', async () => {

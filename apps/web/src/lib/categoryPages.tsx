@@ -1,4 +1,3 @@
-import * as Sentry from '@sentry/nextjs';
 import { cacheLife } from 'next/cache';
 import type { ComponentType } from 'react';
 
@@ -34,6 +33,7 @@ import {
   getOceanSstAnomaly,
 } from '@/lib/oceanHealth';
 import { evaluateFreshness, type FreshnessThresholds } from '@/lib/providerFreshness';
+import { reportSectionFailure } from '@/lib/sectionFailureReporter';
 import { getWasteRecycling } from '@/lib/wasteRecycling';
 import { getWaterFootprintProducts } from '@/lib/waterFootprint';
 import { ECO_CATEGORIES } from '@eco-metrics/shared';
@@ -177,7 +177,7 @@ function isSectionWithoutPayload<P extends ProviderPayload>(state: SectionState<
  * Registers a category whose page reads several providers, one section each, so an outage
  * affects only its own section. Every section is read concurrently and resolved like
  * `defineProviderCategoryPage` does. A read that fails for another reason (our own BFF) leaves
- * its section `failed`, which renders nothing, and is reported to Sentry; only when every read
+ * its section `failed`, which renders nothing, and is reported (throttled); only when every read
  * fails does the load throw, so the last good page keeps being served from the cache. The page
  * leaves the 24 h cache when any section is failed or unavailable without a payload.
  */
@@ -196,7 +196,7 @@ export function defineSectionedProviderCategoryPage<S extends SectionPayloads>({
         }),
       );
       const failures = results.filter((result) => result.status === 'rejected');
-      if (failures.length === results.length) {
+      if (results.length > 0 && failures.length === results.length) {
         // Nothing to show: the request fails (reported by onRequestError) and nothing is cached.
         throw failures[0].reason;
       }
@@ -204,7 +204,7 @@ export function defineSectionedProviderCategoryPage<S extends SectionPayloads>({
         if (result.status === 'fulfilled') {
           return [keys[index], result.value] as const;
         }
-        Sentry.captureException(result.reason, { tags: { section: keys[index] } });
+        reportSectionFailure(keys[index], result.reason);
         return [keys[index], { kind: 'failed' } as const] as const;
       });
       return Object.fromEntries(entries) as SectionStates<S>;

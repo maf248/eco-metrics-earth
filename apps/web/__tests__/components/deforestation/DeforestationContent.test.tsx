@@ -89,7 +89,9 @@ describe('DeforestationContent', () => {
   });
 
   it('should leave out the cause card entirely when its read failed', () => {
-    render(<DeforestationContent states={{ ...FRESH, treeCoverLoss: { kind: 'failed' } }} />);
+    const { container } = render(
+      <DeforestationContent states={{ ...FRESH, treeCoverLoss: { kind: 'failed' } }} />,
+    );
 
     expect(screen.getByTestId('forest-key-figures')).toBeInTheDocument();
     expect(
@@ -97,6 +99,8 @@ describe('DeforestationContent', () => {
     ).not.toBeInTheDocument();
     expect(screen.queryByTestId('data-unavailable')).not.toBeInTheDocument();
     expect(screen.getByTestId('deforestation-methodology')).toBeInTheDocument();
+    // No spacing is left behind where the card would have been.
+    expect(container.querySelectorAll('div.mt-8:empty')).toHaveLength(0);
   });
 
   it('should leave out the key figures and forest sections when the forest area read failed', () => {

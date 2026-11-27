@@ -85,6 +85,8 @@ interface SectionProps<P extends ProviderPayload> {
   title: string;
   state: SectionState<P>;
   Cards: ComponentType<{ data: P }>;
+  /** Classes of a wrapper, for spacing that must disappear with a failed section. */
+  className?: string;
 }
 
 /**
@@ -97,15 +99,15 @@ function DeforestationSection<P extends ProviderPayload>({
   title,
   state,
   Cards,
+  className,
 }: SectionProps<P>) {
   // A section whose read failed is left out entirely, heading included.
   if (state.kind === 'failed') {
     return null;
   }
-  if (shownPayload(state)) {
-    return <ProviderBackedContent state={state} Content={Cards} />;
-  }
-  return (
+  const content = shownPayload(state) ? (
+    <ProviderBackedContent state={state} Content={Cards} />
+  ) : (
     <section aria-labelledby={headingId} className={`mt-8 ${CARD_CLASS_NAME}`}>
       <h2 id={headingId} className="mb-4 text-xl font-semibold text-fg">
         {title}
@@ -113,6 +115,7 @@ function DeforestationSection<P extends ProviderPayload>({
       <ProviderBackedContent state={state} Content={Cards} />
     </section>
   );
+  return className ? <div className={className}>{content}</div> : content;
 }
 
 /**
@@ -148,12 +151,12 @@ export function DeforestationContent({ states }: DeforestationContentProps) {
         state={states.forestArea}
         Cards={ForestAreaCards}
       />
-      <div className="mt-8" />
       <DeforestationSection
         headingId="tree-cover-loss-heading"
         title="Tree cover loss by cause"
         state={states.treeCoverLoss}
         Cards={TreeCoverLossCard}
+        className="mt-8"
       />
 
       <DeforestationMethodology />
