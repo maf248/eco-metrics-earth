@@ -8,6 +8,7 @@ import {
   defineCategoryPage,
   defineProviderCategoryPage,
   defineSectionedProviderCategoryPage,
+  getCategoryLastModified,
   loadCategoryData,
   resolveProviderPageState,
 } from '@/lib/categoryPages';
@@ -708,5 +709,127 @@ describe('loadCategoryData', () => {
 describe('CATEGORY_SKELETONS', () => {
   it('should declare exactly the categories with live data', () => {
     expect(Object.keys(CATEGORY_SKELETONS).sort()).toEqual(Object.keys(CATEGORY_PAGES).sort());
+  });
+});
+
+describe('lastModified', () => {
+  const at = (lastUpdated: string) => ({
+    kind: 'ok' as const,
+    payload: {
+      meta: {
+        ...CO2_META,
+        fetchedAt: NOW.toISOString(),
+        source: { ...CO2_META.source, lastUpdated },
+      },
+    },
+  });
+  const provider = { name: 'Provider' };
+  const Content = () => null;
+
+  beforeEach(() => jest.useFakeTimers({ now: NOW }));
+  afterEach(() => jest.useRealTimers());
+
+  it('should take the payload date of a provider-backed page', async () => {
+    const definition = defineProviderCategoryPage({
+      provider,
+      load: async () => at('2026-10-20T00:00:00.000Z'),
+      Content,
+    });
+
+    expect(definition.lastModified?.(await definition.load())).toBe('2026-10-20T00:00:00.000Z');
+  });
+
+  it('should have no date when the provider is down without a snapshot', async () => {
+    const definition = defineProviderCategoryPage({
+      provider,
+      load: async () => ({ kind: 'provider-unavailable' as const }),
+      Content,
+    });
+
+    expect(definition.lastModified?.(await definition.load())).toBeUndefined();
+  });
+
+  it('should take the latest date across the sections that have a payload', async () => {
+    const definition = defineSectionedProviderCategoryPage({
+      sections: {
+        a: { provider, load: async () => at('2026-10-01T00:00:00.000Z') },
+        b: { provider, load: async () => at('2026-10-15T00:00:00.000Z') },
+        c: { provider, load: async () => ({ kind: 'provider-unavailable' as const }) },
+      },
+      Content,
+    });
+
+    expect(definition.lastModified?.(await definition.load())).toBe('2026-10-15T00:00:00.000Z');
+  });
+
+  it('should ignore a section whose date does not parse', async () => {
+    const definition = defineSectionedProviderCategoryPage({
+      sections: {
+        a: { provider, load: async () => at('not a date') },
+        b: { provider, load: async () => at('2026-10-01T00:00:00.000Z') },
+      },
+      Content,
+    });
+
+    expect(definition.lastModified?.(await definition.load())).toBe('2026-10-01T00:00:00.000Z');
+  });
+
+  it('should have no date when no section has a payload', async () => {
+    const definition = defineSectionedProviderCategoryPage({
+      sections: { a: { provider, load: async () => ({ kind: 'provider-unavailable' as const }) } },
+      Content,
+    });
+
+    expect(definition.lastModified?.(await definition.load())).toBeUndefined();
+  });
+});
+
+describe('getCategoryLastModified', () => {
+  beforeEach(() => jest.useFakeTimers({ now: NOW }));
+  afterEach(() => jest.useRealTimers());
+
+  it('should resolve to the data date of a provider-backed category', async () => {
+    jest.mocked(getCo2Emissions).mockResolvedValue({
+      kind: 'ok',
+      payload: { data: CO2_FIXTURE, meta: CO2_META },
+    });
+
+    await expect(getCategoryLastModified('co2-emissions')).resolves.toEqual(
+      new Date(CO2_META.source.lastUpdated),
+    );
+  });
+
+  it('should resolve to the dataset date of waste and recycling', async () => {
+    jest.mocked(getWasteRecycling).mockResolvedValue({ data: WASTE_FIXTURE, meta: WASTE_META });
+
+    await expect(getCategoryLastModified('waste-recycling')).resolves.toEqual(
+      new Date(WASTE_META.source.lastUpdated),
+    );
+  });
+
+  it('should resolve to undefined when the data date does not parse', async () => {
+    jest.mocked(getCo2Emissions).mockResolvedValue({
+      kind: 'ok',
+      payload: {
+        data: CO2_FIXTURE,
+        meta: { ...CO2_META, source: { ...CO2_META.source, lastUpdated: 'not a date' } },
+      },
+    });
+
+    await expect(getCategoryLastModified('co2-emissions')).resolves.toBeUndefined();
+  });
+
+  it('should resolve to undefined, not reject, when the read fails', async () => {
+    jest.mocked(getCo2Emissions).mockRejectedValue(new Error('BFF down'));
+
+    await expect(getCategoryLastModified('co2-emissions')).resolves.toBeUndefined();
+  });
+
+  it('should resolve to undefined for water footprint, whose data has no date', async () => {
+    await expect(getCategoryLastModified('water-footprint')).resolves.toBeUndefined();
+  });
+
+  it('should resolve to undefined for a category without an entry', async () => {
+    await expect(getCategoryLastModified('air-quality')).resolves.toBeUndefined();
   });
 });

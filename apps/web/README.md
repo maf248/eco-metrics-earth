@@ -106,7 +106,7 @@ Additional SEO outputs:
 
 - `robots.ts` — a single `User-agent: *` group allowing `/`; no disallow rules (the API lives on its own domain)
 - `og-image.png/route.tsx` — site-wide 1200×630 social card, referenced as `og:image`/`twitter:image` by every page
-- `sitemap.ts` — home (`priority: 1.0`) + the category pages with live data (`priority: 0.8`), `changeFrequency: weekly`, + data sources (`0.5`, monthly). Placeholder categories are left out and declare `robots: noindex, follow` in their metadata; both follow `isLiveCategory` (`lib/liveCategories.ts`)
+- `sitemap.ts` — home (`priority: 1.0`) + the category pages with live data (`priority: 0.8`), `changeFrequency: weekly`, + data sources (`0.5`, monthly). Each `lastModified` is the date of the data the page shows (`getCategoryLastModified`; home and data sources take the latest), omitted when unknown; rendered per request (`connection()`) so the build never reads the BFF. Placeholder categories are left out and declare `robots: noindex, follow` in their metadata; both follow `isLiveCategory` (`lib/liveCategories.ts`)
 - Structured data — `WebSite` + `Organization` on the home (`lib/siteStructuredData.ts`), `Dataset` on each provider-backed category page (`lib/datasetJsonLd.ts`; `ocean-health` has one `Dataset` for its five sections, built from the sections that are present), whose `isBasedOn` sources are `CreativeWork` (`buildSourceWork`), never nested `Dataset`s
 - `manifest.ts` — PWA manifest; `display: standalone`, `theme_color: #10b981`
 

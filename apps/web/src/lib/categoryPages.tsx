@@ -45,6 +45,8 @@ export interface CategoryPageDefinition<T = unknown> {
   Content: ComponentType<{ data: T }>;
   /** True for a result that must leave the cache in minutes (the provider is down). */
   isDegraded?: (data: T) => boolean;
+  /** ISO 8601 date of the shown data's last upstream update (`meta.source.lastUpdated`). */
+  lastModified?: (data: T) => string | undefined;
 }
 
 /**
@@ -101,6 +103,27 @@ export function resolveProviderPageState<P extends ProviderPayload>(
   }
 }
 
+/** The upstream update date of the payload a state shows, if it shows one. */
+function stateLastUpdated<P extends ProviderPayload>(
+  state: ProviderPageState<P>,
+): string | undefined {
+  return state.payload?.meta.source.lastUpdated;
+}
+
+/** The latest of several ISO 8601 dates, ignoring absent ones. */
+function latestIsoDate(dates: readonly (string | undefined)[]): string | undefined {
+  let latest: string | undefined;
+  let latestTime = -Infinity;
+  for (const date of dates) {
+    const time = date === undefined ? NaN : Date.parse(date);
+    if (!Number.isNaN(time) && time > latestTime) {
+      latest = date;
+      latestTime = time;
+    }
+  }
+  return latest;
+}
+
 /** True for a state that carries no payload: the page must leave the 24 h cache within minutes. */
 function isWithoutPayload<P extends ProviderPayload>(state: ProviderPageState<P>): boolean {
   return state.kind === 'unavailable' && !state.payload;
@@ -122,6 +145,7 @@ export function defineProviderCategoryPage<P extends ProviderPayload>({
     load: async () => resolveProviderPageState(await load(), provider),
     Content: ({ data }) => <ProviderBackedContent state={data} Content={Content} />,
     isDegraded: isWithoutPayload,
+    lastModified: stateLastUpdated,
   });
 }
 
@@ -169,6 +193,10 @@ export function defineSectionedProviderCategoryPage<S extends SectionPayloads>({
     Content: ({ data }) => <Content states={data} />,
     isDegraded: (states) =>
       Object.values<ProviderPageState<ProviderPayload>>(states).some(isWithoutPayload),
+    lastModified: (states) =>
+      latestIsoDate(
+        Object.values<ProviderPageState<ProviderPayload>>(states).map(stateLastUpdated),
+      ),
   });
 }
 
@@ -187,6 +215,7 @@ const NOAA_LSA_PROVIDER_NAME = 'NOAA Laboratory for Satellite Altimetry';
 export const CATEGORY_PAGES: Partial<Record<EcoCategory, CategoryPageDefinition>> = {
   [ECO_CATEGORIES.WASTE_RECYCLING]: defineCategoryPage({
     load: getWasteRecycling,
+    lastModified: (data) => data.meta.source.lastUpdated,
     Content: ({ data }) => (
       <div className="mt-8 w-full flex justify-center">
         <WasteRecyclingContent data={data} />
@@ -279,4 +308,22 @@ export async function loadCategoryData(category: EcoCategory): Promise<unknown> 
   const revalidate = definition.isDegraded?.(data) ? DEGRADED_REVALIDATE_SECONDS : DAY_SECONDS;
   cacheLife({ stale: revalidate, revalidate, expire: DAY_SECONDS * 30 });
   return data;
+}
+
+/**
+ * The date of the data a category page shows, for the sitemap. Reads through the page's own
+ * cached loader; any failure (the page reports its own) or unknown date resolves to `undefined`.
+ */
+export async function getCategoryLastModified(category: EcoCategory): Promise<Date | undefined> {
+  const definition = CATEGORY_PAGES[category];
+  if (!definition?.lastModified) {
+    return undefined;
+  }
+  try {
+    const iso = definition.lastModified(await loadCategoryData(category));
+    const date = iso === undefined ? undefined : new Date(iso);
+    return date && !Number.isNaN(date.getTime()) ? date : undefined;
+  } catch {
+    return undefined;
+  }
 }

@@ -196,6 +196,22 @@ test.describe('Sitemap.xml', () => {
     expect(text).toContain('<loc>http://localhost:3000/</loc>');
     expect(text).toContain('<loc>http://localhost:3000/data-sources/</loc>');
   });
+
+  test('should date entries with their data, never the request time', async ({ request }) => {
+    const text = await (await request.get('/sitemap.xml')).text();
+    const entry = (path: string) =>
+      text
+        .split('<url>')
+        .find((block) => block.includes(`<loc>http://localhost:3000${path}</loc>`));
+    const lastmod = (path: string) => entry(path)?.match(/<lastmod>([^<]+)<\/lastmod>/)?.[1];
+    const today = new Date().toISOString().slice(0, 10);
+
+    // CO2 has a provider date; water footprint's data carries none, so its entry has no lastmod.
+    expect(lastmod('/co2-emissions/')).toMatch(/^\d{4}-\d{2}-\d{2}/);
+    expect(lastmod('/co2-emissions/')?.slice(0, 10)).not.toBe(today);
+    expect(entry('/water-footprint/')).toBeDefined();
+    expect(lastmod('/water-footprint/')).toBeUndefined();
+  });
 });
 
 test.describe('Robots meta', () => {
