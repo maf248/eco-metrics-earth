@@ -110,14 +110,37 @@ describe('presentation docs', () => {
   });
 
   describe('design-system.md Color Palettes', () => {
-    it('should keep the divergent palette marked pending', () => {
-      const divergent = sectionFrom(designSystem, '### Divergent (light / dark)');
+    const divergent = sectionFrom(designSystem, '### Divergent (light / dark)');
+    const globalsCss = readRepoFile('apps/web/src/app/globals.css');
+    const [lightBlock, darkBlock] = [
+      globalsCss.slice(globalsCss.indexOf('\n:root {'), globalsCss.indexOf('\n.dark {')),
+      globalsCss.slice(globalsCss.indexOf('\n.dark {')),
+    ];
+    const tokenValue = (block: string, token: string): string | undefined =>
+      new RegExp(`--${token}:\\s*(#[0-9a-f]{6})`, 'i').exec(block)?.[1];
 
-      expect(divergent).toMatch(/^\s*Pending/m);
+    it.each([1, 2, 3, 4, 5, 6, 7])(
+      'should list chart-div-%s with the values declared in globals.css',
+      (step) => {
+        const token = `chart-div-${step}`;
+        const row = divergent.split('\n').find((line) => line.startsWith(`| \`${token}\``));
+
+        expect(row).toBeDefined();
+        expect(row).toContain(tokenValue(lightBlock, token));
+        expect(row).toContain(tokenValue(darkBlock, token));
+      },
+    );
+
+    it('should document the divergent palette, its breaks, validation and exceptions, none pending', () => {
+      expect(divergent).not.toMatch(/pending/i);
+      expect(divergent).toMatch(/below -50, -50 to -25, -25 to -5, -5 to \+5/);
+      expect(divergent).toMatch(/Validation/);
+      expect(divergent).toMatch(/Recorded exceptions/);
+      expect(divergent).toMatch(/never carried by colour alone/);
     });
 
-    it('should declare no divergent token in globals.css', () => {
-      expect(readRepoFile('apps/web/src/app/globals.css')).not.toMatch(/--[\w-]*diverg/i);
+    it('should no longer call the divergent palette pending anywhere in the document', () => {
+      expect(designSystem).not.toMatch(/divergent[^.\n]*pending|pending[^.\n]*divergent/i);
     });
   });
 
@@ -179,6 +202,25 @@ describe('presentation docs', () => {
       expect(rule9).toMatch(/stretches a map/);
       expect(rule9).toMatch(/aspect-2238\/1000/);
       expect(rule9).toMatch(/npm run geo:world/);
+    });
+  });
+
+  describe('design-system.md deforestation conventions', () => {
+    const conventions = sectionFrom(
+      designSystem,
+      '### Deforestation page (forest area and tree cover loss)',
+    );
+
+    it.each([
+      /Two sources, two measures, never combined/,
+      /A single comparison has no year slider/,
+      /does not start at zero/,
+      /Unit scaling/,
+      /million hectares/,
+      /`null` is not zero, for blank drivers too/,
+      /rank only countries whose first-year forest area is at least 1 million hectares|ranks only countries whose first-year forest area is at least 1 million hectares/,
+    ])('should state the convention %s', (pattern) => {
+      expect(conventions).toMatch(pattern);
     });
   });
 

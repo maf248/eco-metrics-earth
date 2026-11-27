@@ -175,6 +175,34 @@ describe('respondWithFixture', () => {
     }
   });
 
+  it('should serve the deforestation charts in the real format, with World and the edge entities', () => {
+    const area = respond('/grapher/forest-area-km.csv?v=1&csvType=filtered&tab=chart');
+    const share = respond('/grapher/forest-area-as-share-of-land-area.csv?tab=chart');
+    const loss = respond('/grapher/tree-cover-loss-by-dominant-driver.csv?tab=chart');
+
+    expect(area.body.split('\n')[0]).toBe('entity,code,year,_1a_forestarea');
+    expect(share.body.split('\n')[0]).toBe('entity,code,year,forest_share');
+    expect(loss.body.split('\n')[0]).toContain('tree_cover_loss_ha__category_wildfire');
+    expect(area.body).toContain('World,OWID_WRL,1990,4343532500');
+    expect(area.body).toContain('World,OWID_WRL,2025,4140214500');
+    expect(area.body).toContain('Nauru,NRU,1990,0\n');
+    for (const code of ['BRA', 'CHN', 'RUS', 'ARG', 'SDN', 'SSD', 'URY', 'IRL', 'LUX']) {
+      expect(area.body).toContain(`,${code},1990,`);
+    }
+    expect(loss.body).toContain(',OWID_WRL,2024,');
+  });
+
+  it('should serve the deforestation indicator metadata with the dataset identity', () => {
+    for (const id of [1129226, 1132530, 1104660]) {
+      const { status, body } = respond(`/v1/indicators/${id}.metadata.json`);
+
+      expect(status).toBe(200);
+      const metadata = JSON.parse(body) as Record<string, unknown>;
+      expect(metadata.datasetName).toBeTruthy();
+      expect(metadata.updatedAt).toBeTruthy();
+    }
+  });
+
   it('should serve the Copernicus file with its comment header, three full years and a partial one', () => {
     const { status, contentType, body } = respond(
       '/copernicus/era5_daily_series_sst_60S-60N_ocean.csv',

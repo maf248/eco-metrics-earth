@@ -1,0 +1,319 @@
+{
+  "id": 1132530,
+  "name": "Share of land covered by forest",
+  "unit": "%",
+  "shortUnit": "%",
+  "timespan": "1000-2025",
+  "descriptionShort": "Share of land area covered by forest, including both natural forests and forest plantations.",
+  "datasetName": "Historic forest cover estimates from combined sources",
+  "datasetVersion": "2025-12-29",
+  "updatedAt": "2026-09-10T01:11:51.000Z",
+  "origins": [
+    {
+      "id": 27781,
+      "title": "DEFRA – Government Forestry and Woodlands Policy Statement",
+      "producer": "Department for Environment, Food & Rural Affairs",
+      "citationFull": "Government Forestry and Woodlands Policy Statement – Incorporating the Government’s Response to the Independent Panel on Forestry's Final Report (2013). Forest Policy Team, Department for Environment, Food & Rural Affairs.",
+      "attributionShort": "DEFRA",
+      "urlMain": "https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/221023/pb13871-forestry-policy-statement.pdf",
+      "dateAccessed": "2025-05-06",
+      "datePublished": "2013-01-01",
+      "license": {
+        "url": "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/",
+        "name": "Open Government Licence"
+      }
+    },
+    {
+      "id": 3623,
+      "title": "Vietnam Forestry Outlook Study",
+      "producer": "Food and Agriculture Organization of the United Nations Regional Office for Asia and the Pacific",
+      "citationFull": "Vietnam Forestry Outlook Study. Asia-Pacific Forestry Sector Outlook Study II (APFSOS/WP/2009/09). Food and Agriculture Organization of the United Nations Regional Office for Asia and the Pacific, 2009.",
+      "attributionShort": "FAO",
+      "urlMain": "https://web.archive.org/web/20230715025310/http://www.fao.org/3/am254e/am254e00.pdf",
+      "dateAccessed": "2025-05-06",
+      "datePublished": "2009-09-01",
+      "license": {
+        "url": "http://www.fao.org/contact-us/terms/db-terms-of-use/en",
+        "name": "CC BY-NC-SA 3.0 IGO"
+      }
+    },
+    {
+      "id": 27782,
+      "title": "National inventory of woodland and trees",
+      "producer": "Forest Research",
+      "citationFull": "National inventory of woodland and trees – England, Wales and Scotland. Forest Research, Forestry Commission.",
+      "attributionShort": "Forest Research",
+      "urlMain": "https://www.forestresearch.gov.uk/tools-and-resources/national-forest-inventory/national-inventory-of-woodland-and-trees/",
+      "dateAccessed": "2025-05-06",
+      "datePublished": "2002-01-01",
+      "license": {
+        "url": "https://www.forestresearch.gov.uk/crown-copyright/",
+        "name": "© Crown copyright 2002"
+      }
+    },
+    {
+      "id": 3625,
+      "title": "The course and drivers of the forest transition: The case of France",
+      "producer": "Mather A.S., Fairbairn J., and Needle C.J.",
+      "citationFull": "A.S. Mather, J. Fairbairn, C.L. Needle, The course and drivers of the forest transition: The case of France, Journal of Rural Studies, Volume 15, Issue 1, 1999.",
+      "attributionShort": "Mather et al.",
+      "urlMain": "https://www.sciencedirect.com/science/article/abs/pii/S0743016798000230",
+      "dateAccessed": "2025-05-07",
+      "datePublished": "1999-01-01",
+      "license": {
+        "url": "https://www.elsevier.com/legal/elsevier-website-terms-and-conditions",
+        "name": "Copyright © 1998 Published by Elsevier Ltd"
+      }
+    },
+    {
+      "id": 3626,
+      "title": "Forest history and the Great Divergence: China, Japan, and the West compared",
+      "producer": "Osamu Saito",
+      "citationFull": "Saito O. Forest history and the Great Divergence: China, Japan, and the West compared. Journal of Global History. 2009;4(3):379-404. doi:10.1017/S1740022809990131",
+      "attributionShort": "Osamu Saito",
+      "urlMain": "https://www.cambridge.org/core/journals/journal-of-global-history/article/abs/forest-history-and-the-great-divergence-china-japan-and-the-west-compared/6140D78077980694B07B40B6396C0343",
+      "dateAccessed": "2025-05-07",
+      "datePublished": "2009-11-01",
+      "license": {
+        "url": "https://www.cambridge.org/core/journals/journal-of-global-history/article/abs/forest-history-and-the-great-divergence-china-japan-and-the-west-compared/6140D78077980694B07B40B6396C0343",
+        "name": "Copyright © 2009, Cambridge University Press"
+      }
+    },
+    {
+      "id": 3627,
+      "title": "Reconstructing Taiwan’s land cover changes between 1904 and 2015 from historical maps and satellite images",
+      "producer": "Yi-Ying Chen et al.",
+      "citationFull": "Chen YY, Huang W, Wang WH, Juang JY, Hong JS, Kato T, Luyssaert S. Reconstructing Taiwan's land cover changes between 1904 and 2015 from historical maps and satellite images. Sci Rep. 2019 Mar 6;9(1):3643. doi: 10.1038/s41598-019-40063-1. PMID: 30842476; PMCID: PMC6403323.",
+      "attributionShort": "Yi-Ying Chen et al.",
+      "urlMain": "https://www.nature.com/articles/s41598-019-40063-1",
+      "dateAccessed": "2025-05-07",
+      "datePublished": "2019-03-06",
+      "license": {
+        "url": "https://www.nature.com/articles/s41598-019-40063-1#rightslink",
+        "name": "CC BY 4.0"
+      }
+    },
+    {
+      "id": 3628,
+      "title": "Forest transition theory and the reforesting of Scotland",
+      "producer": "A.S. Mather",
+      "citationFull": "A.S. Mather (2004) Forest transition theory and the reforesting of Scotland, Scottish Geographical Journal, 120:1-2, 83-98, DOI: 10.1080/00369220418737194",
+      "attributionShort": "Mather",
+      "urlMain": "https://www.tandfonline.com/doi/abs/10.1080/00369220418737194",
+      "dateAccessed": "2025-05-08",
+      "datePublished": "2008-02-28",
+      "license": {
+        "url": "https://www.tandfonline.com/page/terms-and-conditions",
+        "name": "Copyright © 2023 Royal Scottish Geographical Society"
+      }
+    },
+    {
+      "id": 3629,
+      "title": "Forest area in Costa Rica: A comparative study of tropical forest cover estimates over time",
+      "producer": "Kleinn, C., Corrales, L., & Morales, D.",
+      "citationFull": "Kleinn, C., Corrales, L. & Morales, D. Forest Area in Costa Rica: A Comparative Study of Tropical Forest Cover Estimates over Time. Environ Monit Assess 73, 17–40 (2002). https://doi.org/10.1023/A:1012659129083",
+      "attributionShort": "Kleinn, Corrales, & Morales",
+      "urlMain": "https://link.springer.com/article/10.1023/A:1012659129083",
+      "dateAccessed": "2025-05-08",
+      "datePublished": "2002-01-01",
+      "license": {
+        "url": "https://link.springer.com/article/10.1023/A:1012659129083",
+        "name": "© 2002 Kluwer Academic Publishers"
+      }
+    },
+    {
+      "id": 3630,
+      "title": "Forest transition in South Korea: Reality, path and drivers",
+      "producer": "Soo Bae J., Won Joo, R. and Kim, Y.S.",
+      "citationFull": "Jae Soo Bae, Rin Won Joo, Yeon-Su. Kim, Forest transition in South Korea: Reality, path and drivers, Land Use Policy, Volume 29, Issue 1, 2012, https://doi.org/10.1016/j.landusepol.2011.06.007.",
+      "attributionShort": "Soo Bae et al.",
+      "urlMain": "https://www.sciencedirect.com/science/article/abs/pii/S0264837711000615",
+      "dateAccessed": "2025-05-08",
+      "datePublished": "2012-01-01",
+      "license": {
+        "url": "https://www.sciencedirect.com/science/article/abs/pii/S0264837711000615",
+        "name": "Copyright © 2011 Elsevier Ltd. All rights reserved."
+      }
+    },
+    {
+      "id": 3631,
+      "title": "U.S. Forest Resource Facts and Historical Trends",
+      "producer": "United States Department of Agriculture, Forest Service",
+      "citationFull": "U.S. Forest Resource Facts and Historical Trends. U.S. Department of Agriculture, Forest Service, 2014.",
+      "attributionShort": "USDA Forest Service",
+      "urlMain": "https://www.fs.usda.gov/sites/default/files/legacy_files/media/types/publication/field_pdf/forestfacts-2014aug-fs1035-508complete.pdf",
+      "dateAccessed": "2025-05-07",
+      "datePublished": "2014-08-01",
+      "license": {
+        "url": "https://www.usda.gov/about-usda/policies-and-links/open-government-usda",
+        "name": "Public domain"
+      }
+    },
+    {
+      "id": 3632,
+      "title": "Reconstructing forest and grassland cover changes in China over the past millennium",
+      "producer": "He, F., Yang, F, & Wang, Y.",
+      "citationFull": "He F, Yang F, Wang Y. 2025. Reconstructing forest and grassland cover changes in China over the past millennium. Science China Earth Sciences, 68 (1): 94–110, https://doi.org/10.1007/s11430-024-1454-4",
+      "attributionShort": "He et al.",
+      "urlMain": "https://link.springer.com/article/10.1007/s11430-024-1454-4",
+      "dateAccessed": "2025-05-16",
+      "datePublished": "2024-11-28",
+      "license": {
+        "url": "https://link.springer.com/termsandconditions",
+        "name": "© 2025 Springer Nature"
+      }
+    },
+    {
+      "id": 27783,
+      "title": "Scotland's Forestry Strategy: 2019–2029",
+      "producer": "Scottish Government",
+      "citationFull": "Scottish Government. 2025. Scotland's Forestry Strategy: 2019-2029. Edinburgh: The Scottish Government, https://www.gov.scot/binaries/content/documents/govscot/publications/strategy-plan/2019/02/scotlands-forestry-strategy-20192029/documents/scotlands-forestry-strategy-2019-2029/scotlands-forestry-strategy-2019-2029/govscot%3Adocument/scotlands-forestry-strategy-2019-2029.pdf",
+      "attributionShort": "Scottish Government",
+      "urlMain": "https://www.gov.scot/binaries/content/documents/govscot/publications/strategy-plan/2019/02/scotlands-forestry-strategy-20192029/documents/scotlands-forestry-strategy-2019-2029/scotlands-forestry-strategy-2019-2029/govscot%3Adocument/scotlands-forestry-strategy-2019-2029.pdf",
+      "dateAccessed": "2025-05-30",
+      "datePublished": "2019",
+      "license": {
+        "url": "https://www.gov.scot/crown-copyright/",
+        "name": "Open Government Licence v3.0 except"
+      }
+    },
+    {
+      "id": 9461,
+      "title": "Global Forest Resources Assessment",
+      "producer": "Food and Agriculture Organization of the United Nations",
+      "citationFull": "Food and Agriculture Organization of the United Nations. 2025. Global Forest Resources Assessment 2025. Rome.",
+      "attributionShort": "FAO",
+      "versionProducer": "2025",
+      "urlMain": "https://www.fao.org/forest-resources-assessment/en",
+      "urlDownload": "https://fra-data.fao.org/api/file/bulk-download?assessmentName=fra&cycleName=2025&countryIso=WO",
+      "dateAccessed": "2025-12-05",
+      "datePublished": "2025-10-24",
+      "license": {
+        "url": "https://www.fao.org/contact-us/terms/db-terms-of-use/en",
+        "name": "CC BY 4.0"
+      }
+    },
+    {
+      "id": 24759,
+      "title": "World Development Indicators",
+      "description": "The World Development Indicators (WDI) database, published by the World Bank, is a comprehensive collection of global development data, providing key economic, social, and environmental statistics. It includes over 1,500 indicators covering more than 200 countries and territories, with data spanning several decades. WDI serves as a vital resource for policymakers, researchers, businesses, and analysts seeking to understand global trends and make data-driven decisions. The database covers a wide range of topics, including economic growth, education, health, poverty, trade, energy, infrastructure, governance, and environmental sustainability. The indicators are sourced from reputable national and international agencies, ensuring high-quality, consistent, and comparable data. Users can access the database through interactive online tools, API services, and downloadable datasets, facilitating detailed analysis and visualization. WDI is also used for tracking progress on the Sustainable Development Goals (SDGs) and other global development initiatives. By providing accessible and reliable statistics, it helps to inform policy discussions and strategies globally. Whether for academic research, policy planning, or economic analysis, the World Development Indicators database is an essential tool for understanding and addressing global development challenges.",
+      "producer": "Food and Agriculture Organization of the United Nations (FAO), via World Bank",
+      "citationFull": "FAOSTAT, Food and Agriculture Organization of the United Nations (FAO), uri: https://www.fao.org/faostat/en/#data/RL, publisher: Food and Agriculture Organization of the United Nations (FAO). Indicator AG.LND.TOTL.K2 (https://data.worldbank.org/indicator/AG.LND.TOTL.K2). World Development Indicators – World Bank (2026). Accessed on 2026-07-27.",
+      "versionProducer": "129",
+      "urlMain": "https://data.worldbank.org/indicator/AG.LND.TOTL.K2",
+      "urlDownload": "https://databankfiles.worldbank.org/public/ddpext_download/WDI_CSV.zip",
+      "dateAccessed": "2026-07-27",
+      "datePublished": "2026-07-15",
+      "license": {
+        "url": "https://datacatalog.worldbank.org/search/dataset/0037712/World-Development-Indicators",
+        "name": "CC BY 4.0"
+      }
+    }
+  ],
+  "dimensions": {
+    "entities": {
+      "values": [
+        {
+          "id": 19,
+          "name": "Angola",
+          "code": "AGO"
+        },
+        {
+          "id": 21,
+          "name": "Argentina",
+          "code": "ARG"
+        },
+        {
+          "id": 32,
+          "name": "Benin",
+          "code": "BEN"
+        },
+        {
+          "id": 37,
+          "name": "Brazil",
+          "code": "BRA"
+        },
+        {
+          "id": 40,
+          "name": "Burkina Faso",
+          "code": "BFA"
+        },
+        {
+          "id": 44,
+          "name": "Canada",
+          "code": "CAN"
+        },
+        {
+          "id": 171,
+          "name": "China",
+          "code": "CHN"
+        },
+        {
+          "id": 167,
+          "name": "Democratic Republic of Congo",
+          "code": "COD"
+        },
+        {
+          "id": 137,
+          "name": "India",
+          "code": "IND"
+        },
+        {
+          "id": 136,
+          "name": "Indonesia",
+          "code": "IDN"
+        },
+        {
+          "id": 2,
+          "name": "Ireland",
+          "code": "IRL"
+        },
+        {
+          "id": 210,
+          "name": "Luxembourg",
+          "code": "LUX"
+        },
+        {
+          "id": 218,
+          "name": "Nauru",
+          "code": "NRU"
+        },
+        {
+          "id": 98,
+          "name": "Paraguay",
+          "code": "PRY"
+        },
+        {
+          "id": 12,
+          "name": "Russia",
+          "code": "RUS"
+        },
+        {
+          "id": 258,
+          "name": "South Sudan",
+          "code": "SSD"
+        },
+        {
+          "id": 79,
+          "name": "Sudan",
+          "code": "SDN"
+        },
+        {
+          "id": 64,
+          "name": "Tanzania",
+          "code": "TZA"
+        },
+        {
+          "id": 63,
+          "name": "Uruguay",
+          "code": "URY"
+        },
+        {
+          "id": 355,
+          "name": "World",
+          "code": "OWID_WRL"
+        }
+      ]
+    }
+  }
+}

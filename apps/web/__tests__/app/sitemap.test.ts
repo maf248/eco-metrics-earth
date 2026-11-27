@@ -22,6 +22,14 @@ describe('sitemap', () => {
     }
   });
 
+  it('should list the deforestation page with a trailing slash and the category priority', () => {
+    const entries = sitemap();
+    const deforestation = entries.filter(({ url }) => url.endsWith('/deforestation/'));
+
+    expect(deforestation).toHaveLength(1);
+    expect(deforestation[0].priority).toBe(0.8);
+  });
+
   it('should list ocean-health, now live, and no longer treat it as a placeholder', () => {
     const urls = sitemap().map(({ url }) => url);
 

@@ -10,6 +10,7 @@ import CategoryPage, {
 import { CATEGORY_DESCRIPTIONS } from '@/lib/categoryMetadata';
 import { getCo2Emissions } from '@/lib/co2Emissions';
 import { getDataSources } from '@/lib/dataSources';
+import { getForestArea, getTreeCoverLoss } from '@/lib/deforestation';
 import { getEnergySources } from '@/lib/energySources';
 import { getGlobalTemperature } from '@/lib/globalTemperature';
 import { OG_IMAGE } from '@/lib/socialMetadata';
@@ -18,6 +19,7 @@ import { getWaterFootprintProducts } from '@/lib/waterFootprint';
 import { ECO_CATEGORIES } from '@eco-metrics/shared';
 
 import { CO2_FIXTURE, CO2_META } from '../../fixtures/co2Emissions';
+import { FOREST_PAYLOAD, TREE_COVER_LOSS_PAYLOAD } from '../../fixtures/deforestation';
 import { ENERGY_FIXTURE, ENERGY_META } from '../../fixtures/energySources';
 import { TEMPERATURE_FIXTURE, TEMPERATURE_META } from '../../fixtures/globalTemperature';
 import { WASTE_FIXTURE, WASTE_META } from '../../fixtures/wasteRecycling';
@@ -53,6 +55,11 @@ jest.mock('@/lib/wasteRecycling', () => ({
   getWasteRecycling: jest.fn(),
 }));
 
+jest.mock('@/lib/deforestation', () => ({
+  getForestArea: jest.fn(),
+  getTreeCoverLoss: jest.fn(),
+}));
+
 jest.mock('@/components/charts/LazyBarEChart', () => ({
   LazyBarEChart: () => <div data-testid="bar-stub" />,
 }));
@@ -64,6 +71,10 @@ jest.mock('@/components/charts/ChoroplethMap', () => ({
 // ECharts is loaded lazily in the browser; the page test only needs the surrounding markup.
 jest.mock('@/components/charts/LazyEChart', () => ({
   LazyEChart: () => <div data-testid="chart-stub" />,
+}));
+
+jest.mock('@/components/charts/LazyColumnEChart', () => ({
+  LazyColumnEChart: () => <div data-testid="column-stub" />,
 }));
 
 jest.mock('@/components/charts/LazyPieEChart', () => ({
@@ -84,6 +95,8 @@ beforeEach(() => {
     .mocked(getEnergySources)
     .mockResolvedValue({ kind: 'ok', payload: { data: ENERGY_FIXTURE, meta: ENERGY_META } });
   jest.mocked(getWasteRecycling).mockResolvedValue({ data: WASTE_FIXTURE, meta: WASTE_META });
+  jest.mocked(getForestArea).mockResolvedValue({ kind: 'ok', payload: FOREST_PAYLOAD });
+  jest.mocked(getTreeCoverLoss).mockResolvedValue({ kind: 'ok', payload: TREE_COVER_LOSS_PAYLOAD });
 });
 
 jest.mock('next/cache', () => ({ cacheLife: jest.fn() }));
@@ -135,7 +148,9 @@ describe('CategoryPage', () => {
       params: Promise.resolve({ category: 'deforestation' }),
     });
     render(element);
-    expect(screen.getByText('Deforestation')).toBeTruthy();
+    expect(screen.getByRole('heading', { level: 1, name: 'Deforestation' })).toBeTruthy();
+    expect(getForestArea).toHaveBeenCalled();
+    expect(getTreeCoverLoss).toHaveBeenCalled();
   });
 
   it('should display the correct title for waste-recycling', async () => {
@@ -377,6 +392,8 @@ describe('CategoryPage — placeholder without a registry entry', () => {
     expect(getGlobalTemperature).not.toHaveBeenCalled();
     expect(getEnergySources).not.toHaveBeenCalled();
     expect(getWaterFootprintProducts).not.toHaveBeenCalled();
+    expect(getForestArea).not.toHaveBeenCalled();
+    expect(getTreeCoverLoss).not.toHaveBeenCalled();
   });
 });
 
@@ -391,13 +408,15 @@ describe('generateStaticParams', () => {
 
   it('should return every category except the ones with a registry entry', async () => {
     const params = await generateStaticParams();
-    expect(params).toHaveLength(6);
+    expect(params).toHaveLength(5);
     expect(params).not.toContainEqual({ category: ECO_CATEGORIES.WATER_FOOTPRINT });
     expect(params).not.toContainEqual({ category: ECO_CATEGORIES.CO2_EMISSIONS });
     expect(params).not.toContainEqual({ category: ECO_CATEGORIES.GLOBAL_TEMPERATURE });
     expect(params).not.toContainEqual({ category: ECO_CATEGORIES.ENERGY_SOURCES });
     expect(params).not.toContainEqual({ category: ECO_CATEGORIES.WASTE_RECYCLING });
+    expect(params).not.toContainEqual({ category: ECO_CATEGORIES.DEFORESTATION });
     expect(params).not.toContainEqual({ category: ECO_CATEGORIES.OCEAN_HEALTH });
+    expect(params).not.toContainEqual({ category: ECO_CATEGORIES.DEFORESTATION });
   });
 
   it('should never be empty, because the route needs one param to pre-render without the BFF', async () => {
@@ -627,6 +646,58 @@ describe('CategoryPage — waste-recycling branch', () => {
     });
 
     expect(metadata.description).toBe(CATEGORY_DESCRIPTIONS['waste-recycling']);
+    expect(metadata.description).not.toMatch(/coming/);
+  });
+});
+
+describe('CategoryPage — deforestation branch', () => {
+  const SECTION_HEADINGS = ['Forest area', 'Forest change since 1990', 'Tree cover loss by cause'];
+
+  it('should render the intro, the key figures and the three sections in that order', async () => {
+    const element = await CategoryPage({
+      params: Promise.resolve({ category: 'deforestation' }),
+    });
+    render(element);
+
+    const intro = screen.getByText('How much forest is the world losing, where, and why?');
+    const figures = screen.getByTestId('forest-key-figures');
+    expect(intro.compareDocumentPosition(figures) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    const headings = screen
+      .getAllByRole('heading', { level: 2 })
+      .map((heading) => heading.textContent)
+      .filter((name) => SECTION_HEADINGS.includes(name ?? ''));
+    expect(headings).toEqual(SECTION_HEADINGS);
+  });
+
+  it('should keep the other sections when the forest area is unavailable', async () => {
+    jest.mocked(getForestArea).mockResolvedValueOnce({ kind: 'provider-unavailable' });
+
+    const element = await CategoryPage({
+      params: Promise.resolve({ category: 'deforestation' }),
+    });
+    render(element);
+
+    expect(screen.queryByTestId('forest-key-figures')).not.toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { level: 2, name: 'Tree cover loss by cause' }),
+    ).toBeInTheDocument();
+  });
+
+  it('should propagate a loader failure instead of rendering the page', async () => {
+    const failure = new Error('Forest area data could not be fetched from the BFF');
+    jest.mocked(getForestArea).mockRejectedValueOnce(failure);
+
+    await expect(
+      CategoryPage({ params: Promise.resolve({ category: 'deforestation' }) }),
+    ).rejects.toBe(failure);
+  });
+
+  it('should publish the live description in the metadata', async () => {
+    const metadata = await generateMetadata({
+      params: Promise.resolve({ category: 'deforestation' }),
+    });
+
+    expect(metadata.description).toBe(CATEGORY_DESCRIPTIONS.deforestation);
     expect(metadata.description).not.toMatch(/coming/);
   });
 });

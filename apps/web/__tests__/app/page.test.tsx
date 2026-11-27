@@ -94,13 +94,14 @@ describe('HomePage — topics', () => {
     ).toHaveAttribute('href', '/ocean-health');
   });
 
-  it('should place the ocean health card after global temperature and before CO2 emissions', () => {
+  it('should place the deforestation card after global temperature, then ocean health and CO2 emissions', () => {
     render(<HomePage />);
     const hrefs = within(topics())
       .getAllByRole('link')
       .map((link) => link.getAttribute('href'));
 
-    expect(hrefs.indexOf('/ocean-health')).toBe(hrefs.indexOf('/global-temperature') + 1);
+    expect(hrefs.indexOf('/deforestation')).toBe(hrefs.indexOf('/global-temperature') + 1);
+    expect(hrefs.indexOf('/ocean-health')).toBe(hrefs.indexOf('/deforestation') + 1);
     expect(hrefs.indexOf('/co2-emissions')).toBe(hrefs.indexOf('/ocean-health') + 1);
   });
 

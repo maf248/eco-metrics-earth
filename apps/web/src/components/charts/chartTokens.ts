@@ -62,6 +62,25 @@ const CHART_WASTE_COMPOSITION_TOKENS = [
 ] as const;
 
 /**
+ * Tree cover loss colors, in the order of the drivers (permanent agriculture, hard commodities,
+ * settlements and infrastructure, shifting cultivation, logging, wildfire, other natural
+ * disturbances). A semantic palette made of existing tokens only: yellow and sand for the
+ * agricultural drivers, charcoal and violet for mining and built-up land, brown for logging, red
+ * for fire and teal for natural disturbances. No cause is green: green reads as forest. The order
+ * is the stacking order and part of the palette; every pair was checked
+ * (docs/design-system.md, Tree cover loss by cause).
+ */
+export const CHART_TREE_COVER_LOSS_TOKENS = [
+  'chart-4',
+  'energy-coal',
+  'energy-nuclear',
+  'energy-gas',
+  'energy-oil',
+  'chart-8',
+  'energy-wind',
+] as const;
+
+/**
  * Sequential (choropleth) classes, low to high, in the order they were validated
  * (docs/design-system.md, Color Palettes). Declared as `--chart-seq-N` in `globals.css`;
  * the theme adapter gives them to the visual map, the map legend reads them with `var()`.
@@ -87,27 +106,46 @@ export const CHART_SEQUENTIAL_GOOD_TOKENS = [
 ] as const;
 
 /**
- * Which sequential ramp a choropleth uses: `heat` (yellow to dark red; more is worse or a
- * neutral quantity) or `good` (greens; more is better).
+ * Divergent classes of a change around zero, from the loss end to the gain end: a warm loss arm
+ * (dark red to light orange), a neutral middle class and a cool gain arm (light to dark blue),
+ * three steps each side. Declared as `--chart-div-N` in `globals.css`; validated in
+ * docs/design-system.md (Divergent).
  */
-export type ChartRamp = 'heat' | 'good';
+export const CHART_DIVERGENT_TOKENS = [
+  'chart-div-1',
+  'chart-div-2',
+  'chart-div-3',
+  'chart-div-4',
+  'chart-div-5',
+  'chart-div-6',
+  'chart-div-7',
+] as const;
+
+/**
+ * Which ramp a choropleth uses: `heat` (yellow to dark red; more is worse or a neutral
+ * quantity), `good` (greens; more is better) or `divergent` (loss to gain around zero).
+ */
+export type ChartRamp = 'heat' | 'good' | 'divergent';
 
 export const CHART_RAMP_TOKENS: Record<ChartRamp, readonly string[]> = {
   heat: CHART_SEQUENTIAL_TOKENS,
   good: CHART_SEQUENTIAL_GOOD_TOKENS,
+  divergent: CHART_DIVERGENT_TOKENS,
 };
 
 /** Fill of a map region without a value. Declared as `--chart-no-data` in `globals.css`. */
 export const CHART_NO_DATA_TOKEN = 'chart-no-data';
 
 /** Which colour palette a chart takes its series colours from. */
-export type ChartPalette = 'categorical' | 'energyMix' | 'wasteTreatment' | 'wasteComposition';
+export type ChartPalette =
+  'categorical' | 'energyMix' | 'wasteTreatment' | 'wasteComposition' | 'treeCoverLoss';
 
 export const CHART_PALETTE_TOKENS: Record<ChartPalette, readonly string[]> = {
   categorical: CHART_COLOR_TOKENS,
   energyMix: CHART_ENERGY_TOKENS,
   wasteTreatment: CHART_WASTE_TREATMENT_TOKENS,
   wasteComposition: CHART_WASTE_COMPOSITION_TOKENS,
+  treeCoverLoss: CHART_TREE_COVER_LOSS_TOKENS,
 };
 
 export type ChartColorToken = (typeof CHART_COLOR_TOKENS)[number];

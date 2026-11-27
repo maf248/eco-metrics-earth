@@ -11,6 +11,8 @@ interface SortHeaderProps {
   order: SortOrder;
   /** Called with the order to sort this column by when the header is pressed. */
   onSort: (order: SortOrder) => void;
+  /** Order a press gives an inactive column; highest first when omitted. */
+  firstOrder?: SortOrder;
   /** Layout classes of the `<th>` (padding). */
   className: string;
   /** The visible content of the header button. */
@@ -41,17 +43,20 @@ function SortArrow({ order }: Readonly<{ order: SortOrder }>) {
 
 /**
  * A sortable column header. The active column shows its order in accent and `aria-sort`; pressing
- * it reverses the order, pressing another column sorts by it, highest first. The accessible name
- * starts with the visible text (WCAG 2.5.3) and then says the order and what a press does.
+ * it reverses the order, pressing another column sorts by it in its `firstOrder` (highest first by
+ * default). The accessible name starts with the visible text (WCAG 2.5.3) and then says the order
+ * and what a press does.
  */
 export function SortHeader({
   active,
   order,
   onSort,
+  firstOrder = 'descending',
   className,
   children,
 }: Readonly<SortHeaderProps>) {
-  const next: SortOrder = active && order === 'descending' ? 'ascending' : 'descending';
+  const reversed: SortOrder = order === 'descending' ? 'ascending' : 'descending';
+  const next: SortOrder = active ? reversed : firstOrder;
   const state = active ? `, ${ORDER_LABELS[order]}` : '';
 
   return (

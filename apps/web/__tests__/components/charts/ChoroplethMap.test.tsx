@@ -1,4 +1,4 @@
-import { act, fireEvent, render, screen } from '@testing-library/react';
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
 
 import { ChoroplethMap } from '@/components/charts/ChoroplethMap';
 import type { WorldRegion } from '@/lib/worldGeometry';
@@ -23,6 +23,7 @@ function fakeChart() {
     setOption: jest.fn((option: { series: { zoom: number }[] }) => {
       zoom = option.series[0].zoom;
     }),
+    dispatchAction: jest.fn(),
   };
 }
 
@@ -83,6 +84,48 @@ describe('ChoroplethMap', () => {
     act(() => chart.handlers.get('click')?.({ name: 'region:Somaliland' }));
     expect(onRegionClick).toHaveBeenCalledTimes(1);
     expect(onRegionClick).toHaveBeenCalledWith('ARG');
+  });
+
+  it('should sync the chart selection with the option flags, so clearing a selection unselects it', async () => {
+    const optionFor = (selectedCode: string | null) => () => ({
+      series: [
+        {
+          data: ['ARG', 'BRA', 'CHL'].map((name) => ({ name, selected: name === selectedCode })),
+        },
+      ],
+    });
+    const { rerender } = render(
+      <ChoroplethMap buildOption={optionFor('BRA')} onRegionClick={jest.fn()} />,
+    );
+    await screen.findByTestId('map-stub');
+
+    await waitFor(() =>
+      expect(chart.dispatchAction).toHaveBeenCalledWith({
+        type: 'unselect',
+        seriesIndex: 0,
+        dataIndex: [0, 2],
+      }),
+    );
+    expect(chart.dispatchAction).toHaveBeenLastCalledWith({
+      type: 'select',
+      seriesIndex: 0,
+      dataIndex: [1],
+    });
+
+    chart.dispatchAction.mockClear();
+    rerender(<ChoroplethMap buildOption={optionFor(null)} onRegionClick={jest.fn()} />);
+
+    expect(chart.dispatchAction).toHaveBeenCalledTimes(1);
+    expect(chart.dispatchAction).toHaveBeenCalledWith({
+      type: 'unselect',
+      seriesIndex: 0,
+      dataIndex: [0, 1, 2],
+    });
+  });
+
+  it('should dispatch no selection action for an option without series data', async () => {
+    await renderMap();
+    expect(chart.dispatchAction).not.toHaveBeenCalled();
   });
 
   it('should zoom in and out within the scale limit, and reset the view', async () => {

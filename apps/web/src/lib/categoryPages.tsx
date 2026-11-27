@@ -2,6 +2,10 @@ import { cacheLife } from 'next/cache';
 import type { ComponentType } from 'react';
 
 import { Co2EmissionsContent } from '@/components/co2-emissions/Co2EmissionsContent';
+import {
+  DeforestationContent,
+  type DeforestationPayloads,
+} from '@/components/deforestation/DeforestationContent';
 import { EnergySourcesContent } from '@/components/energy-sources/EnergySourcesContent';
 import { GlobalTemperatureContent } from '@/components/global-temperature/GlobalTemperatureContent';
 import {
@@ -17,6 +21,7 @@ import { WasteRecyclingContent } from '@/components/waste-recycling/WasteRecycli
 import { WaterFootprintContent } from '@/components/water-footprint/WaterFootprintContent';
 import { DEGRADED_REVALIDATE_SECONDS, type ProviderPayloadResult } from '@/lib/bffFetch';
 import { getCo2Emissions } from '@/lib/co2Emissions';
+import { getForestArea, getTreeCoverLoss } from '@/lib/deforestation';
 import { getEnergySources } from '@/lib/energySources';
 import { getGlobalTemperature } from '@/lib/globalTemperature';
 import {
@@ -232,6 +237,18 @@ export const CATEGORY_PAGES: Partial<Record<EcoCategory, CategoryPageDefinition>
     Content: ({ states }) => (
       <div className="mt-8 w-full flex justify-center">
         <OceanHealthContent states={states} />
+      </div>
+    ),
+  }),
+  // Both sections read Our World in Data; each has its own endpoint, snapshot and state.
+  [ECO_CATEGORIES.DEFORESTATION]: defineSectionedProviderCategoryPage<DeforestationPayloads>({
+    sections: {
+      forestArea: { provider: { name: OWID_PROVIDER_NAME }, load: getForestArea },
+      treeCoverLoss: { provider: { name: OWID_PROVIDER_NAME }, load: getTreeCoverLoss },
+    },
+    Content: ({ states }) => (
+      <div className="mt-8 w-full flex justify-center">
+        <DeforestationContent states={states} />
       </div>
     ),
   }),

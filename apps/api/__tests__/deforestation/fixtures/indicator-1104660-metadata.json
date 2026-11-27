@@ -1,0 +1,129 @@
+{
+  "id": 1104660,
+  "name": "Tree cover loss driven by agriculture",
+  "unit": "hectares",
+  "shortUnit": "ha",
+  "timespan": "2001-2024",
+  "descriptionShort": "Long-term, permanent [tree cover loss](#dod:tree-cover-loss) for small- to large-scale agriculture.",
+  "datasetName": "Tree Cover Loss by Dominant Driver",
+  "datasetVersion": "2025-08-26",
+  "updatedAt": "2026-08-12T10:24:03.000Z",
+  "origins": [
+    {
+      "id": 7059,
+      "title": "Tree Cover Loss by Dominant Driver",
+      "description": "This data set includes tree cover loss by driver. Statistics were calculated from annual tree cover loss (Hansen et al. 2013), categorized by driver (Sims et al. 2025). Sims et al. 2025 classifies the dominant driver at 1 km resolution from 2001-2024. The dominant driver is defined as the direct driver that caused the majority of tree cover loss within each 1 km cell over the time period. Years correspond to the loss year of the annual tree cover loss data (Hansen et al. 2013).\n\nThe tree cover loss data was produced by the University of Maryland's GLAD laboratory in partnership with Google (Hansen et al. 2013). Tree cover loss is defined as “stand replacement disturbance” which is considered to be clearing of at least half of tree cover within a 30-meter pixel.\n\nTree cover loss by dominant driver was produced by WRI and Google DeepMind (Sims et al. 2025). Driver categories are defined as follows:\n\n- Permanent agriculture: Long-term, permanent tree cover loss for small- to large-scale agriculture.\n- Hard commodities: Loss due to the establishment or expansion of mining or energy infrastructure.\n- Shifting cultivation: Tree cover loss due to small- to medium-scale clearing for temporary cultivation that is later abandoned and followed by subsequent regrowth of secondary forest or vegetation.\n- Logging: Forest management and logging activities occurring within managed, natural or semi-natural forests and plantations, often with evidence of forest regrowth or planting in subsequent years.\n- Wildfire: Tree cover loss due to fire with no visible human conversion or agricultural activity afterward. Fires may be started by natural causes (e.g. lightning) or may be related to human activities (accidental or deliberate).\n- Settlements and infrastructure: Tree cover loss due to expansion and intensification of roads, settlements, urban areas, or built infrastructure (not associated with other classes).\n- Other natural disturbances: Tree cover loss due to other non-fire natural disturbances (e.g., landslides, insect outbreaks, river meandering). If loss due to natural causes is followed by salvage or sanitation logging, it is classified as forest management.",
+      "producer": "Global Forest Watch",
+      "citationFull": "- Sims, M., R. Stanimirova, A. Raichuk, M. Neumann et al. 2025. \"Global Drivers of Forest Loss at 1 km Resolution.\" Environmental Research Letters. https://doi.org/10.1088/1748-9326/add606.  Available online from: https://datasets.wri.org/datasets/dominant-drivers-of-tree-cover-loss-at-1km\n- Hansen, M.C., P.V. Potapov, R. Moore, et al. 2013. \"High-Resolution Global Maps of 21st-Century Forest Cover Change.\" Science 342: 850–53. DOI: 10.1126/science.1244693. Data available on-line from: https://glad.earthengine.app/view/global-forest-change.\n- Global Administrative Areas Database, version 4.1. Available at http://gadm.org/",
+      "attributionShort": "GFW",
+      "urlMain": "https://datasets.wri.org/datasets/dominant-drivers-of-tree-cover-loss-at-1km",
+      "dateAccessed": "2025-08-27",
+      "datePublished": "2025-07-01",
+      "license": {
+        "url": "https://datasets.wri.org/datasets/dominant-drivers-of-tree-cover-loss-at-1km",
+        "name": "Creative Commons Attribution"
+      }
+    }
+  ],
+  "dimensions": {
+    "entities": {
+      "values": [
+        {
+          "id": 19,
+          "name": "Angola",
+          "code": "AGO"
+        },
+        {
+          "id": 21,
+          "name": "Argentina",
+          "code": "ARG"
+        },
+        {
+          "id": 32,
+          "name": "Benin",
+          "code": "BEN"
+        },
+        {
+          "id": 37,
+          "name": "Brazil",
+          "code": "BRA"
+        },
+        {
+          "id": 40,
+          "name": "Burkina Faso",
+          "code": "BFA"
+        },
+        {
+          "id": 44,
+          "name": "Canada",
+          "code": "CAN"
+        },
+        {
+          "id": 171,
+          "name": "China",
+          "code": "CHN"
+        },
+        {
+          "id": 167,
+          "name": "Democratic Republic of Congo",
+          "code": "COD"
+        },
+        {
+          "id": 137,
+          "name": "India",
+          "code": "IND"
+        },
+        {
+          "id": 136,
+          "name": "Indonesia",
+          "code": "IDN"
+        },
+        {
+          "id": 2,
+          "name": "Ireland",
+          "code": "IRL"
+        },
+        {
+          "id": 210,
+          "name": "Luxembourg",
+          "code": "LUX"
+        },
+        {
+          "id": 98,
+          "name": "Paraguay",
+          "code": "PRY"
+        },
+        {
+          "id": 12,
+          "name": "Russia",
+          "code": "RUS"
+        },
+        {
+          "id": 258,
+          "name": "South Sudan",
+          "code": "SSD"
+        },
+        {
+          "id": 79,
+          "name": "Sudan",
+          "code": "SDN"
+        },
+        {
+          "id": 64,
+          "name": "Tanzania",
+          "code": "TZA"
+        },
+        {
+          "id": 63,
+          "name": "Uruguay",
+          "code": "URY"
+        },
+        {
+          "id": 355,
+          "name": "World",
+          "code": "OWID_WRL"
+        }
+      ]
+    }
+  }
+}

@@ -23,6 +23,7 @@ describe('LIVE_CATEGORIES', () => {
     expect(LIVE_CATEGORIES).toEqual([
       'waste-recycling',
       'global-temperature',
+      'deforestation',
       'ocean-health',
       'co2-emissions',
       'energy-sources',

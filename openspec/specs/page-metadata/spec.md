@@ -125,18 +125,17 @@ The site description SHALL be defined once, as the string `Explore environmental
 
 ### Requirement: Category descriptions are unique and honest
 
-`apps/web/src/lib/categoryMetadata.ts` SHALL export a `Record<EcoCategory, string>` of meta descriptions, so a missing `EcoCategory` fails type-checking. Every description SHALL be 110-160 characters, SHALL be unique across categories, and SHALL differ from the site description. The 6 placeholder categories SHALL state that the data is coming ("is coming soon" or "is coming to eco-metrics earth") and SHALL NOT promise data that is not yet available. The placeholder descriptions are:
+`apps/web/src/lib/categoryMetadata.ts` SHALL export a `Record<EcoCategory, string>` of meta descriptions, so a missing `EcoCategory` fails type-checking. Every description SHALL be 110-160 characters, SHALL be unique across categories, and SHALL differ from the site description. The 5 placeholder categories SHALL state that the data is coming ("is coming soon" or "is coming to eco-metrics earth") and SHALL NOT promise data that is not yet available. The placeholder descriptions are:
 
 | Category             | Description                                                                                                                      |
 | -------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
 | `air-quality`        | Air quality data is coming soon: pollutant levels such as PM2.5 and ozone, and how clean the air is in cities around the world.  |
 | `endangered-species` | Endangered species data is coming soon: how many species are threatened with extinction and how that risk is changing over time. |
-| `deforestation`      | Deforestation data is coming to eco-metrics earth: how much forest is lost each year and where, from open sources.               |
 | `reforestation`      | Reforestation data is coming to eco-metrics earth: how much forest is being restored or planted, and where it is happening.      |
 | `glacier-melting`    | Glacier melting data is coming soon: how fast glaciers and ice sheets are losing mass, and what it means for sea level.          |
 | `plastic-pollution`  | Plastic pollution data is coming to eco-metrics earth: how much plastic is produced, wasted and ends up in the ocean.            |
 
-The water-footprint description is defined by the `water-footprint-page` capability, the co2-emissions description by the `co2-emissions-page` capability, the global-temperature description by the `global-temperature-page` capability, the energy-sources description by the `energy-sources-page` capability, the waste-recycling description by the `waste-recycling-page` capability and the ocean-health description by the `ocean-health-page` capability. When a category ships real data, its change SHALL replace the placeholder description with one that describes the live content.
+The water-footprint description is defined by the `water-footprint-page` capability, the co2-emissions description by the `co2-emissions-page` capability, the global-temperature description by the `global-temperature-page` capability, the energy-sources description by the `energy-sources-page` capability, the waste-recycling description by the `waste-recycling-page` capability, the ocean-health description by the `ocean-health-page` capability and the deforestation description by the `deforestation-page` capability: "Forest area by country since 1990, a map and ranking of forest change, and tree cover loss by cause. Data from FAO, Global Forest Watch and Our World in Data." When a category ships real data, its change SHALL replace the placeholder description with one that describes the live content.
 
 #### Scenario: Length bounds
 
@@ -151,7 +150,7 @@ The water-footprint description is defined by the `water-footprint-page` capabil
 
 #### Scenario: Placeholder descriptions are honest
 
-- **WHEN** the unit test reads the description of each of the 6 categories without live data
+- **WHEN** the unit test reads the description of each of the 5 categories without live data
 - **THEN** each contains "coming soon" or "coming to eco-metrics earth"
 
 #### Scenario: Missing category fails type-checking
@@ -174,6 +173,17 @@ The water-footprint description is defined by the `water-footprint-page` capabil
 
 - **WHEN** the description of `ocean-health` is read
 - **THEN** it does not contain "coming soon" and names sea surface temperature, ocean heat content, sea level, ocean pH and the providers Copernicus, NOAA and Our World in Data
+
+#### Scenario: Deforestation describes live content
+
+- **WHEN** the description of `deforestation` is read
+- **THEN** it does not contain "coming" and names forest area, tree cover loss, FAO, Global Forest Watch and Our World in Data
+- **AND** it does not state that tree cover loss is deforestation
+
+#### Scenario: Deforestation title override
+
+- **WHEN** the page title of `/deforestation/` is read
+- **THEN** it is "Forest Area & Tree Cover Loss by Country | eco-metrics earth" and the `<h1>` remains "Deforestation"
 
 ### Requirement: Placeholder category pages are not indexed
 

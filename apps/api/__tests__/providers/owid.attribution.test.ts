@@ -17,6 +17,7 @@ const PUBLISHERS_FILE = join('apps', 'api', 'src', 'common', 'publishers', 'publ
 // without a republisher declares its own; these are the only other files allowed to spell it out.
 const ORIGIN_DECLARATIONS = [
   join('apps', 'api', 'src', 'modules', 'co2-emissions', 'co2-emissions.constants.ts'),
+  join('apps', 'api', 'src', 'modules', 'deforestation', 'deforestation.constants.ts'),
   join('apps', 'api', 'src', 'modules', 'energy-sources', 'energy-sources.constants.ts'),
   join('apps', 'api', 'src', 'modules', 'ocean-health', 'ocean-health.constants.ts'),
   join(

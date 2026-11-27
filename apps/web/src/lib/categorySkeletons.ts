@@ -20,10 +20,24 @@ export type SkeletonBlock =
       kind: 'explorer';
       heading: string;
       chartTitle: string;
+      /** Text under the chart title, when the page has one. */
+      subtitle?: string;
       hasMeasureToggle?: boolean;
       hasDonut?: boolean;
+      /** Whether the card follows another card of the page, which sets it apart by a margin. */
+      follows?: boolean;
     }
-  | { kind: 'map'; title: string; hasMeasureToggle?: boolean }
+  | {
+      kind: 'map';
+      title: string;
+      /** Card heading above the map title, when the card has one. */
+      heading?: string;
+      hasMeasureToggle?: boolean;
+      /** Legend class labels, drawn as swatches under the map, when the map has a legend. */
+      legendLabels?: readonly string[];
+      /** Whether a collapsed "View data table" disclosure closes the card. */
+      hasTableDisclosure?: boolean;
+    }
   | { kind: 'chart'; heading: string; intro: string; chartTitle: string }
   | { kind: 'productList'; status: string };
 
@@ -160,6 +174,46 @@ export const CATEGORY_SKELETONS: Partial<Record<EcoCategory, readonly SkeletonBl
       chartTitle: 'World: share of electricity by source (%)',
       hasMeasureToggle: true,
       hasDonut: true,
+    },
+  ],
+  [ECO_CATEGORIES.DEFORESTATION]: [
+    { kind: 'intro', text: 'How much forest is the world losing, where, and why?' },
+    {
+      kind: 'keyFigures',
+      lead: 'Since 1990 the world has lost a net share of its forest, an area about the size of a large country. Forests now cover about a third of the world’s land.',
+      details: [],
+    },
+    {
+      kind: 'explorer',
+      heading: 'Forest area',
+      chartTitle: 'World: forest area (million hectares)',
+      subtitle:
+        'Forest area, plantations included. FAO reports at intervals of 5 to 10 years; the years in between are interpolated. The vertical axis does not start at zero.',
+      hasMeasureToggle: true,
+    },
+    {
+      kind: 'map',
+      heading: 'Forest change since 1990',
+      title: 'Change in forest area since 1990 (%)',
+      legendLabels: [
+        '< −50%',
+        '−50 to −25%',
+        '−25 to −5%',
+        '−5 to +5%',
+        '+5 to +25%',
+        '+25 to +50%',
+        '≥ +50%',
+        'No data',
+      ],
+      hasTableDisclosure: true,
+    },
+    {
+      kind: 'explorer',
+      heading: 'Tree cover loss by cause',
+      chartTitle: 'World: tree cover loss by cause (million hectares per year)',
+      subtitle:
+        'Tree cover loss detected by satellite each year, by dominant cause, in million hectares. It is not the same as deforestation: loss from fires and logging is often followed by regrowth.',
+      follows: true,
     },
   ],
 };

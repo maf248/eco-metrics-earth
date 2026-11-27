@@ -68,9 +68,10 @@ jest.mock('@/components/charts/LazyEChart', () => ({
 jest.mock('next/cache', () => ({ cacheLife: jest.fn() }));
 
 describe('CATEGORY_PAGES', () => {
-  it('should register exactly the six categories with live data', () => {
+  it('should register exactly the seven categories with live data', () => {
     expect(Object.keys(CATEGORY_PAGES).sort()).toEqual([
       'co2-emissions',
+      'deforestation',
       'energy-sources',
       'global-temperature',
       'ocean-health',

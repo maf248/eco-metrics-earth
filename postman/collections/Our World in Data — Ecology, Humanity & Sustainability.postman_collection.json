@@ -3532,7 +3532,7 @@
                     }
                   ]
                 },
-                "description": "Datos en formato CSV del chart `forest-area-km`."
+                "description": "Datos en formato CSV del chart `forest-area-km`. Este chart abre en la pestana de mapa: sin `tab=chart` ignora `country` y devuelve un solo ano por pais (la API del proyecto siempre pide `tab=chart`)."
               },
               "response": []
             },
@@ -3602,6 +3602,190 @@
             }
           ],
           "description": "Area total de bosques."
+        },
+        {
+          "name": "Forest Area as Share of Land Area",
+          "item": [
+            {
+              "name": "Data (CSV)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                      "pm.test(\"Tiempo de respuesta < 30s\", () => pm.expect(pm.response.responseTime).to.be.below(30000));",
+                      "pm.test(\"Tiene contenido CSV\", () => pm.expect(pm.response.text()).to.include(\",\"));"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "User-Agent",
+                    "value": "Postman OWID Collection/1.0"
+                  }
+                ],
+                "url": {
+                  "raw": "{{grapher_base_url}}/forest-area-as-share-of-land-area.csv?v=1&csvType=filtered&useColumnShortNames=true&tab=chart&country=OWID_WRL~BRA~CHN",
+                  "host": ["{{grapher_base_url}}"],
+                  "path": ["forest-area-as-share-of-land-area.csv"],
+                  "query": [
+                    {
+                      "key": "v",
+                      "value": "1"
+                    },
+                    {
+                      "key": "csvType",
+                      "value": "filtered"
+                    },
+                    {
+                      "key": "useColumnShortNames",
+                      "value": "true"
+                    },
+                    {
+                      "key": "tab",
+                      "value": "chart"
+                    },
+                    {
+                      "key": "country",
+                      "value": "OWID_WRL~BRA~CHN"
+                    }
+                  ]
+                },
+                "description": "Datos en formato CSV del chart `forest-area-as-share-of-land-area` (Area forestal como porcentaje de la superficie terrestre). Se pide con `tab=chart` y `country` como la API del proyecto (World, Brasil y China como ejemplo); este chart abre en la pestana de mapa y llega hasta el ano 1000 (estimaciones historicas); el proyecto usa solo 1990 en adelante (`time=1990..`), la serie FAO."
+              },
+              "response": []
+            },
+            {
+              "name": "Metadata (JSON)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                      "pm.test(\"Tiempo de respuesta < 30s\", () => pm.expect(pm.response.responseTime).to.be.below(30000));",
+                      "pm.test(\"Es JSON valido\", () => { pm.response.to.have.header(\"Content-Type\"); pm.response.json(); });"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "User-Agent",
+                    "value": "Postman OWID Collection/1.0"
+                  }
+                ],
+                "url": {
+                  "raw": "{{grapher_base_url}}/forest-area-as-share-of-land-area.metadata.json",
+                  "host": ["{{grapher_base_url}}"],
+                  "path": ["forest-area-as-share-of-land-area.metadata.json"]
+                },
+                "description": "Metadata (titulo, unidades, fuentes, citas) del chart `forest-area-as-share-of-land-area`."
+              },
+              "response": []
+            }
+          ],
+          "description": "Area forestal como porcentaje de la superficie terrestre"
+        },
+        {
+          "name": "Tree Cover Loss by Dominant Driver",
+          "item": [
+            {
+              "name": "Data (CSV)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                      "pm.test(\"Tiempo de respuesta < 30s\", () => pm.expect(pm.response.responseTime).to.be.below(30000));",
+                      "pm.test(\"Tiene contenido CSV\", () => pm.expect(pm.response.text()).to.include(\",\"));"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "User-Agent",
+                    "value": "Postman OWID Collection/1.0"
+                  }
+                ],
+                "url": {
+                  "raw": "{{grapher_base_url}}/tree-cover-loss-by-dominant-driver.csv?v=1&csvType=filtered&useColumnShortNames=true&tab=chart&country=OWID_WRL~BRA~CHN",
+                  "host": ["{{grapher_base_url}}"],
+                  "path": ["tree-cover-loss-by-dominant-driver.csv"],
+                  "query": [
+                    {
+                      "key": "v",
+                      "value": "1"
+                    },
+                    {
+                      "key": "csvType",
+                      "value": "filtered"
+                    },
+                    {
+                      "key": "useColumnShortNames",
+                      "value": "true"
+                    },
+                    {
+                      "key": "tab",
+                      "value": "chart"
+                    },
+                    {
+                      "key": "country",
+                      "value": "OWID_WRL~BRA~CHN"
+                    }
+                  ]
+                },
+                "description": "Datos en formato CSV del chart `tree-cover-loss-by-dominant-driver` (Perdida de cobertura arborea por causa dominante (Global Forest Watch)). Se pide con `tab=chart` y `country` como la API del proyecto (World, Brasil y China como ejemplo); una sola descarga trae las siete causas como columnas; los valores en blanco significan que la fuente no lista perdida para esa causa."
+              },
+              "response": []
+            },
+            {
+              "name": "Metadata (JSON)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                      "pm.test(\"Tiempo de respuesta < 30s\", () => pm.expect(pm.response.responseTime).to.be.below(30000));",
+                      "pm.test(\"Es JSON valido\", () => { pm.response.to.have.header(\"Content-Type\"); pm.response.json(); });"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "User-Agent",
+                    "value": "Postman OWID Collection/1.0"
+                  }
+                ],
+                "url": {
+                  "raw": "{{grapher_base_url}}/tree-cover-loss-by-dominant-driver.metadata.json",
+                  "host": ["{{grapher_base_url}}"],
+                  "path": ["tree-cover-loss-by-dominant-driver.metadata.json"]
+                },
+                "description": "Metadata (titulo, unidades, fuentes, citas) del chart `tree-cover-loss-by-dominant-driver`."
+              },
+              "response": []
+            }
+          ],
+          "description": "Perdida de cobertura arborea por causa dominante (Global Forest Watch)"
         },
         {
           "name": "Living Planet Index",

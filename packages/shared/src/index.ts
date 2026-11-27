@@ -50,6 +50,15 @@ export type {
   OceanSstDailyPoint,
   OceanSstStatus,
 } from './lib/ocean-health';
+export { TREE_COVER_LOSS_DRIVER_IDS } from './lib/deforestation';
+export type {
+  ForestAreaData,
+  ForestAreaEntity,
+  TreeCoverLossData,
+  TreeCoverLossDriver,
+  TreeCoverLossDriverId,
+  TreeCoverLossEntity,
+} from './lib/deforestation';
 export { ENERGY_SOURCE_IDS, RENEWABLE_SOURCE_IDS } from './lib/energy-sources';
 export type { EnergySourceId, EnergySourcesData, EnergySourcesEntity } from './lib/energy-sources';
 export type {

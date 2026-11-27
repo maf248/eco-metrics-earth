@@ -305,12 +305,14 @@ describe('GET /api/v1/global-temperature global series', () => {
     expect(producers).toEqual([
       ['Copernicus Climate Change Service (C3S)', ['global-temperature']],
       ['Ember', ['energy-sources']],
+      ['Food and Agriculture Organization of the United Nations', ['deforestation']],
       ['Global Carbon Project', ['co2-emissions']],
       ['Met Office Hadley Centre', ['global-temperature']],
       ['Met Office Hadley Centre', ['ocean-health']],
       ['NOAA National Centers for Environmental Information', ['ocean-health']],
       ['School of Ocean & Earth Science & Technology', ['ocean-health']],
       ['United States Environmental Protection Agency', ['ocean-health']],
+      ['World Resources Institute and Google DeepMind (Global Forest Watch)', ['deforestation']],
     ]);
     const era5 = owid.origins[0];
     expect(era5.notice).toBe('Contains modified Copernicus Climate Change Service information');

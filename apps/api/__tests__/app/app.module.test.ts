@@ -61,7 +61,13 @@ describe('AppModule', () => {
       { id: 'noaa-lsa', categories: ['ocean-health'] },
       {
         id: 'owid',
-        categories: ['co2-emissions', 'energy-sources', 'global-temperature', 'ocean-health'],
+        categories: [
+          'co2-emissions',
+          'deforestation',
+          'energy-sources',
+          'global-temperature',
+          'ocean-health',
+        ],
       },
     ]);
   });

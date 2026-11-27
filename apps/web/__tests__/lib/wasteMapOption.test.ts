@@ -89,12 +89,12 @@ describe('map selection', () => {
     const option = selectedOption('DEU');
 
     expect(item(option, 'DEU')).toMatchObject({ selected: true });
-    expect(item(option, 'BRA')).not.toHaveProperty('selected');
+    expect(item(option, 'BRA')).toMatchObject({ selected: false });
     expect((option.series[0] as unknown as { selectedMode: string }).selectedMode).toBe('single');
   });
 
   it('should select nothing by default', () => {
-    expect(item(build('recycled'), 'DEU')).not.toHaveProperty('selected');
+    expect(item(build('recycled'), 'DEU')).toMatchObject({ selected: false });
   });
 });
 

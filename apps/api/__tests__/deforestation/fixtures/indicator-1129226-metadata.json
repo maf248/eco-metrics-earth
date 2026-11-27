@@ -1,0 +1,135 @@
+{
+  "id": 1129226,
+  "name": "Forest area",
+  "unit": "hectares",
+  "shortUnit": "ha",
+  "timespan": "1990-2025",
+  "descriptionShort": "Forest area is land under natural or planted stands of trees of at least 5 meters in situ, whether productive or not, and excludes tree stands in agricultural production systems.",
+  "datasetName": "Global Forest Resources Assessment",
+  "datasetVersion": "2025-12-05",
+  "updatedAt": "2026-08-12T10:24:32.000Z",
+  "origins": [
+    {
+      "id": 9461,
+      "title": "Global Forest Resources Assessment",
+      "producer": "Food and Agriculture Organization of the United Nations",
+      "citationFull": "Food and Agriculture Organization of the United Nations. 2025. Global Forest Resources Assessment 2025. Rome.",
+      "attributionShort": "FAO",
+      "versionProducer": "2025",
+      "urlMain": "https://www.fao.org/forest-resources-assessment/en",
+      "urlDownload": "https://fra-data.fao.org/api/file/bulk-download?assessmentName=fra&cycleName=2025&countryIso=WO",
+      "dateAccessed": "2025-12-05",
+      "datePublished": "2025-10-24",
+      "license": {
+        "url": "https://www.fao.org/contact-us/terms/db-terms-of-use/en",
+        "name": "CC BY 4.0"
+      }
+    }
+  ],
+  "dimensions": {
+    "entities": {
+      "values": [
+        {
+          "id": 19,
+          "name": "Angola",
+          "code": "AGO"
+        },
+        {
+          "id": 21,
+          "name": "Argentina",
+          "code": "ARG"
+        },
+        {
+          "id": 32,
+          "name": "Benin",
+          "code": "BEN"
+        },
+        {
+          "id": 37,
+          "name": "Brazil",
+          "code": "BRA"
+        },
+        {
+          "id": 40,
+          "name": "Burkina Faso",
+          "code": "BFA"
+        },
+        {
+          "id": 44,
+          "name": "Canada",
+          "code": "CAN"
+        },
+        {
+          "id": 171,
+          "name": "China",
+          "code": "CHN"
+        },
+        {
+          "id": 167,
+          "name": "Democratic Republic of Congo",
+          "code": "COD"
+        },
+        {
+          "id": 137,
+          "name": "India",
+          "code": "IND"
+        },
+        {
+          "id": 136,
+          "name": "Indonesia",
+          "code": "IDN"
+        },
+        {
+          "id": 2,
+          "name": "Ireland",
+          "code": "IRL"
+        },
+        {
+          "id": 210,
+          "name": "Luxembourg",
+          "code": "LUX"
+        },
+        {
+          "id": 218,
+          "name": "Nauru",
+          "code": "NRU"
+        },
+        {
+          "id": 98,
+          "name": "Paraguay",
+          "code": "PRY"
+        },
+        {
+          "id": 12,
+          "name": "Russia",
+          "code": "RUS"
+        },
+        {
+          "id": 258,
+          "name": "South Sudan",
+          "code": "SSD"
+        },
+        {
+          "id": 79,
+          "name": "Sudan",
+          "code": "SDN"
+        },
+        {
+          "id": 64,
+          "name": "Tanzania",
+          "code": "TZA"
+        },
+        {
+          "id": 63,
+          "name": "Uruguay",
+          "code": "URY"
+        },
+        {
+          "id": 355,
+          "name": "World",
+          "code": "OWID_WRL"
+        }
+      ]
+    }
+  }
+}
