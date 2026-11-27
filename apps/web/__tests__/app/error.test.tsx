@@ -2,6 +2,7 @@ import * as Sentry from '@sentry/nextjs';
 import { fireEvent, render, screen } from '@testing-library/react';
 
 import ErrorPage from '@/app/error';
+import { ErrorIcon, NotFoundIcon } from '@/components/icons';
 
 jest.mock('@sentry/nextjs', () => ({ captureException: jest.fn() }));
 
@@ -59,6 +60,18 @@ describe('ErrorPage', () => {
   it('should render the icon wrapper with data-testid', () => {
     render(<ErrorPage error={testError} reset={mockReset} />);
     expect(screen.getByTestId('error-icon')).toBeTruthy();
+  });
+
+  it('should show the generic error icon, not the 404 icon', () => {
+    render(<ErrorPage error={testError} reset={mockReset} />);
+    const shown = screen.getByTestId('error-icon').querySelector('svg')?.innerHTML;
+    const errorIcon = render(<ErrorIcon />).container.querySelector('svg')?.innerHTML;
+    const notFoundIcon = render(<NotFoundIcon />).container.querySelector('svg')?.innerHTML;
+
+    expect(shown).toBeTruthy();
+    expect(errorIcon).toBeTruthy();
+    expect(shown).toBe(errorIcon);
+    expect(shown).not.toBe(notFoundIcon);
   });
 
   it('should report a client error without a digest to Sentry once', () => {

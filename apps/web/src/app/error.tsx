@@ -4,7 +4,7 @@ import * as Sentry from '@sentry/nextjs';
 import Link from 'next/link';
 import { useEffect } from 'react';
 
-import { NotFoundIcon } from '@/components/icons';
+import { ErrorIcon } from '@/components/icons';
 import { PAGE_TITLE_CLASS_NAME } from '@/lib/pageTitleClassName';
 
 interface ErrorPageProps {
@@ -28,7 +28,7 @@ export default function ErrorPage({ error, reset }: ErrorPageProps) {
           aria-label="Error"
           className="flex items-center justify-center w-48 h-48 rounded-2xl bg-well p-4"
         >
-          <NotFoundIcon aria-hidden className="w-32 h-32 drop-shadow-icon-xl" />
+          <ErrorIcon aria-hidden className="w-32 h-32 drop-shadow-icon-xl" />
         </div>
         <div className="text-center" role="alert">
           <h1 className={PAGE_TITLE_CLASS_NAME}>Oops! Something went wrong…</h1>
