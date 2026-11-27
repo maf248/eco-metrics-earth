@@ -1,3 +1,9 @@
+## [2.22.0](https://github.com/maf248/eco-metrics-earth/compare/web-v2.21.0...web-v2.22.0) (2026-11-27)
+
+### Bug Fixes
+
+* **web:** clear the map outline when a selection is removed from the table ([dd67cbb](https://github.com/maf248/eco-metrics-earth/commit/dd67cbbd1f803458fd9001b2d4d4e43dac8de8ff))
+
 ## [2.21.0](https://github.com/maf248/eco-metrics-earth/compare/web-v2.20.0...web-v2.21.0) (2026-11-27)
 
 ## [2.20.0](https://github.com/maf248/eco-metrics-earth/compare/web-v2.19.0...web-v2.20.0) (2026-11-21)
