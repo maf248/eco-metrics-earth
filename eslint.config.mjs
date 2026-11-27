@@ -85,6 +85,14 @@ export default defineConfig(
     },
   },
   {
-    ignores: ['node_modules/**', '**/dist/**', '.nx/**', 'coverage/**', '**/.next/**', '**/*.cts'],
+    ignores: [
+      'node_modules/**',
+      '**/dist/**',
+      '**/out-tsc/**',
+      '.nx/**',
+      'coverage/**',
+      '**/.next/**',
+      '**/*.cts',
+    ],
   },
 );
