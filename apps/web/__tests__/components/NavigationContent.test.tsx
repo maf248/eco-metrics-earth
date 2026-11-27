@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { NavigationContent } from '@/components/NavigationContent';
 import { usePendingNavigation } from '@/components/PendingNavigation';
 
-const mockUsePathname = jest.fn(() => '/ocean-health/');
+const mockUsePathname = jest.fn(() => '/air-quality/');
 
 jest.mock('next/navigation', () => ({ usePathname: () => mockUsePathname() }));
 jest.mock('@/components/PendingNavigation', () => ({ usePendingNavigation: jest.fn() }));
@@ -117,7 +117,7 @@ describe('NavigationContent', () => {
   });
 
   it('should ignore a pending navigation to the current path', () => {
-    renderPendingOn('/ocean-health');
+    renderPendingOn('/air-quality');
     expect(screen.queryByTestId('pending-category')).not.toBeInTheDocument();
   });
 

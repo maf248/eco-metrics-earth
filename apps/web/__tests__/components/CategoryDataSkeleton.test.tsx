@@ -17,10 +17,14 @@ function primaryText(block: SkeletonBlock): string {
       return block.text;
     case 'keyFigures':
       return block.lead;
+    case 'figureGrid':
+      return block.figures[0].label;
     case 'explorer':
       return block.heading;
     case 'map':
       return block.title;
+    case 'chart':
+      return block.heading;
     case 'productList':
       return block.status;
   }
@@ -41,8 +45,21 @@ describe('CategoryDataSkeleton', () => {
     },
   );
 
-  it('should render nothing for a category without live data', () => {
+  it('should shape the ocean health region as intro, key figures and the first chart card', () => {
     const { container } = render(<CategoryDataSkeleton category="ocean-health" />);
+
+    expect(CATEGORY_SKELETONS['ocean-health']?.map(({ kind }) => kind)).toEqual([
+      'intro',
+      'figureGrid',
+      'chart',
+    ]);
+    expect(container.querySelectorAll('li')).toHaveLength(4);
+    expect(container.querySelectorAll('[data-testid="chart-skeleton"]')).toHaveLength(1);
+    expect(container.textContent).toContain('Daily sea surface temperature since 1979');
+  });
+
+  it('should render nothing for a category without live data', () => {
+    const { container } = render(<CategoryDataSkeleton category="air-quality" />);
     expect(container).toBeEmptyDOMElement();
   });
 

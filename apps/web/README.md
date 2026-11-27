@@ -30,7 +30,7 @@ src/app/
 └── sitemap.ts        # sitemap.xml — home + the categories with live data + data sources
 ```
 
-Category pages use `generateStaticParams` to pre-render every `ECO_CATEGORIES` slug at build time except the categories with live data (the registry in `lib/categoryPages.tsx`: `water-footprint`, `co2-emissions`, `global-temperature`, `energy-sources` and `waste-recycling`), which are generated on demand on their first request and then cached, so the build never needs the BFF. That first request waits for the complete page (`ensureStatic = 'navigation'`): there is no `loading.tsx` or `<Suspense>` around the data, so crawlers always get the content in the visible document. Client navigations show the header and skeletons from `NavigationContent` meanwhile. A rewrite in `next.config.ts` gives unknown slugs a real 404 with the complete not-found page; percent-encoded unknown slugs and valid categories in another case skip it and get a real 404 drawn by JavaScript. If the API fetch fails twice (10 s per attempt), the page throws: during a revalidation the last good page keeps being served.
+Category pages use `generateStaticParams` to pre-render every `ECO_CATEGORIES` slug at build time except the categories with live data (the registry in `lib/categoryPages.tsx`: `water-footprint`, `co2-emissions`, `global-temperature`, `ocean-health`, `energy-sources` and `waste-recycling`), which are generated on demand on their first request and then cached, so the build never needs the BFF. That first request waits for the complete page (`ensureStatic = 'navigation'`): there is no `loading.tsx` or `<Suspense>` around the data, so crawlers always get the content in the visible document. Client navigations show the header and skeletons from `NavigationContent` meanwhile. A rewrite in `next.config.ts` gives unknown slugs a real 404 with the complete not-found page; percent-encoded unknown slugs and valid categories in another case skip it and get a real 404 drawn by JavaScript. If the API fetch fails twice (10 s per attempt), the page throws: during a revalidation the last good page keeps being served.
 
 ### Components
 
@@ -50,12 +50,14 @@ src/components/
 ├── CountryExplorer.tsx    # Generic explorer shell: country selection (World default) + layout
 ├── MeasureToggle.tsx      # Generic radio-group toggle between the measures of a chart
 ├── YearDataTable.tsx      # Generic collapsed year table, the text equivalent of a chart (`wide` for many columns)
+├── RowDataTable.tsx       # Generic collapsed table of date-keyed rows (daily values, monthly measurements), with an optional note
 ├── DataAttribution.tsx    # Generic "Data:" line from the API's meta and dataset identity
 ├── OriginCredit.tsx       # Credit of an upstream origin (producer, linked title and license, notice, citation)
 ├── co2-emissions/         # CO2 page: key figures, explorer, data table, content
 ├── energy-sources/        # Energy sources page: key figures, explorer (stacked area + toggle, donut), year and latest-year tables, content
 ├── waste-recycling/       # Waste & Recycling page: key figures, world map with measure selector and country table, treatment and composition bars, projection chart, content
 ├── global-temperature/    # Global temperature page: key figures, country explorer, long-run pre-industrial section, content
+├── ocean-health/          # Ocean Health page: key figures panel (one figure per section with data), daily overlay chart, annual anomaly, heat content, sea level and pH sections, each in its own provider-backed card, content
 ├── ThemeProvider.tsx      # React Context theme provider — light/dark + localStorage persistence
 ├── ThemeToggle.tsx        # Lamp-style theme toggle — zero-flash via blocking script in layout
 └── icons/
@@ -81,16 +83,16 @@ src/components/
 
 ### Utilities (`src/lib/`)
 
-| File                | Purpose                                                                                                                                                                        |
-| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `navItems.ts`       | Builds `NAV_ITEMS[]` from `ECO_CATEGORIES` — merges slug, label, href, icon into one object                                                                                    |
-| `categoryIcon.ts`   | Maps a slug to its SVG icon component; warns in development for unknown slugs, falls back to `SiteLogoIcon`                                                                    |
-| `categoryTitle.ts`  | Maps a slug to its display title; handles overrides for titles that can't be derived mechanically (`waste-recycling` → `Waste & Recycling`, `co2-emissions` → `CO2 Emissions`) |
-| `siteUrl.ts`        | Returns the canonical base URL from `NEXT_PUBLIC_SITE_URL`, no trailing slash; falls back to `http://localhost:3000`                                                           |
-| `socialMetadata.ts` | Shared social metadata: `OG_IMAGE`, `buildOpenGraph()`, `buildTwitter()`                                                                                                       |
-| `categoryPages.tsx` | Registry of categories with live data (`load` + `Content`); drives the page dispatch and `generateStaticParams`                                                                |
-| `bffFetch.ts`       | Server-side BFF reads with retry and shape validation; `fetchEnvelopeFromBff` also returns the attribution `meta`                                                              |
-| `slugToTitle.ts`    | Generic slug → Title Case conversion (`air-quality` → `Air Quality`)                                                                                                           |
+| File                | Purpose                                                                                                                                                                                                  |
+| ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `navItems.ts`       | Builds `NAV_ITEMS[]` from `ECO_CATEGORIES` — merges slug, label, href, icon into one object                                                                                                              |
+| `categoryIcon.ts`   | Maps a slug to its SVG icon component; warns in development for unknown slugs, falls back to `SiteLogoIcon`                                                                                              |
+| `categoryTitle.ts`  | Maps a slug to its display title; handles overrides for titles that can't be derived mechanically (`waste-recycling` → `Waste & Recycling`, `co2-emissions` → `CO2 Emissions`)                           |
+| `siteUrl.ts`        | Returns the canonical base URL from `NEXT_PUBLIC_SITE_URL`, no trailing slash; falls back to `http://localhost:3000`                                                                                     |
+| `socialMetadata.ts` | Shared social metadata: `OG_IMAGE`, `buildOpenGraph()`, `buildTwitter()`                                                                                                                                 |
+| `categoryPages.tsx` | Registry of categories with live data (`load` + `Content`); drives the page dispatch and `generateStaticParams`; `defineSectionedProviderCategoryPage` gives a multi-provider page one state per section |
+| `bffFetch.ts`       | Server-side BFF reads with retry and shape validation; `fetchEnvelopeFromBff` also returns the attribution `meta`                                                                                        |
+| `slugToTitle.ts`    | Generic slug → Title Case conversion (`air-quality` → `Air Quality`)                                                                                                                                     |
 
 ### SEO
 
@@ -101,7 +103,7 @@ Additional SEO outputs:
 - `robots.ts` — a single `User-agent: *` group allowing `/`; no disallow rules (the API lives on its own domain)
 - `og-image.png/route.tsx` — site-wide 1200×630 social card, referenced as `og:image`/`twitter:image` by every page
 - `sitemap.ts` — home (`priority: 1.0`) + the category pages with live data (`priority: 0.8`), `changeFrequency: weekly`, + data sources (`0.5`, monthly). Placeholder categories are left out and declare `robots: noindex, follow` in their metadata; both follow `isLiveCategory` (`lib/liveCategories.ts`)
-- Structured data — `WebSite` + `Organization` on the home (`lib/siteStructuredData.ts`), `Dataset` on each provider-backed category page (`lib/datasetJsonLd.ts`), whose `isBasedOn` sources are `CreativeWork` (`buildSourceWork`), never nested `Dataset`s
+- Structured data — `WebSite` + `Organization` on the home (`lib/siteStructuredData.ts`), `Dataset` on each provider-backed category page (`lib/datasetJsonLd.ts`; `ocean-health` has one `Dataset` for its five sections, built from the sections that are present), whose `isBasedOn` sources are `CreativeWork` (`buildSourceWork`), never nested `Dataset`s
 - `manifest.ts` — PWA manifest; `display: standalone`, `theme_color: #10b981`
 
 ### Security headers (`next.config.ts`)

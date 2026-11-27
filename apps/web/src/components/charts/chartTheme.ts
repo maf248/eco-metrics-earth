@@ -1,4 +1,5 @@
 import {
+  CHART_MUTED_LINE_TOKEN,
   CHART_NO_DATA_TOKEN,
   CHART_PALETTE_TOKENS,
   CHART_RAMP_TOKENS,
@@ -86,6 +87,15 @@ function readToken(name: string): string {
     console.warn(`[chartTheme] Token --${name} is empty or not declared.`);
   }
   return value;
+}
+
+/**
+ * The color of the muted series role in the theme in effect. It is resolved on its own, not
+ * inside the ECharts theme: a theme cannot color individual series, so the chart wrapper applies
+ * it to the series an option flags `muted: true` (see `mutedSeries.ts`).
+ */
+export function resolveMutedLine(resolve: ColorResolver = createCanvasColorResolver()): string {
+  return resolve(readToken(CHART_MUTED_LINE_TOKEN));
 }
 
 /**

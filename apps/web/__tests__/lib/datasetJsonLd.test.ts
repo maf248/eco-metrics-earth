@@ -1,4 +1,9 @@
-import { buildDatasetJsonLd, buildSourceWork, licenseUrl } from '@/lib/datasetJsonLd';
+import {
+  buildDatasetJsonLd,
+  buildMultiProviderDatasetJsonLd,
+  buildSourceWork,
+  licenseUrl,
+} from '@/lib/datasetJsonLd';
 
 import { CO2_META } from '../fixtures/co2Emissions';
 
@@ -107,5 +112,63 @@ describe('licenseUrl', () => {
 
   it.each(['ODbL 1.0', 'CC0 1.0', 'Public domain'])('should keep %s as is', (license) => {
     expect(licenseUrl(license)).toBe(license);
+  });
+});
+
+describe('buildMultiProviderDatasetJsonLd', () => {
+  const other = {
+    ...CO2_META,
+    source: {
+      provider: 'Another Provider',
+      license: 'Public domain',
+      sourceUrl: 'https://another.example',
+      lastUpdated: '2030-01-01T00:00:00.000Z',
+    },
+  };
+  const input = {
+    pageUrl: 'https://eco-metrics.earth/thing/',
+    dataSourcesUrl: 'https://eco-metrics.earth/data-sources/',
+    fields,
+  };
+
+  it('should list every distinct provider as a creator and every distinct license', () => {
+    const jsonLd = buildMultiProviderDatasetJsonLd({
+      ...input,
+      metas: [CO2_META, other, CO2_META],
+    });
+
+    expect(jsonLd.creator).toEqual([
+      { '@type': 'Organization', name: 'Our World in Data', url: 'https://ourworldindata.org' },
+      { '@type': 'Organization', name: 'Another Provider', url: 'https://another.example' },
+    ]);
+    expect(jsonLd.license).toEqual([
+      'https://creativecommons.org/licenses/by/4.0/',
+      'Public domain',
+    ]);
+  });
+
+  it('should use the most recent update of any provider as dateModified', () => {
+    const jsonLd = buildMultiProviderDatasetJsonLd({ ...input, metas: [CO2_META, other] });
+
+    expect(jsonLd.dateModified).toBe('2030-01-01T00:00:00.000Z');
+  });
+
+  it('should collapse to the single-provider shape with one provider', () => {
+    const multi = buildMultiProviderDatasetJsonLd({ ...input, metas: [CO2_META] });
+
+    expect(multi).toEqual(buildDatasetJsonLd({ ...input, meta: CO2_META }));
+  });
+
+  it('should keep the shared fields of every dataset page', () => {
+    const jsonLd = buildMultiProviderDatasetJsonLd({ ...input, metas: [CO2_META, other] });
+
+    expect(jsonLd).toMatchObject({
+      '@type': 'Dataset',
+      name: fields.name,
+      url: input.pageUrl,
+      isBasedOn: fields.isBasedOn,
+      includedInDataCatalog: { url: input.dataSourcesUrl },
+    });
+    expect(jsonLd).not.toHaveProperty('distribution');
   });
 });

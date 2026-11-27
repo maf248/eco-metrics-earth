@@ -46,6 +46,7 @@ Declared in `apps/web/src/app/globals.css`. Values are Tailwind 4.3.3 palette en
 | `line`                | Structural borders (header, nav)                         | gray-200    | gray-800    |
 | `line-strong`         | Table head row, card borders                             | gray-200    | gray-700    |
 | `line-subtle`         | Table body row dividers                                  | gray-100    | gray-800    |
+| `line-divider`        | Hairline between stacked key figures (mobile)            | gray-300    | gray-800    |
 | `warning-surface`     | Stale notice background                                  | amber-50    | amber-950   |
 | `warning-line`        | Stale notice border                                      | amber-300   | amber-800   |
 | `warning-fg`          | Stale notice text; warning icon (notice and unavailable) | amber-900   | amber-100   |
@@ -313,6 +314,28 @@ Pending — define and validate it in the first change that encodes polarity wit
 - **Tables follow the toggle.** The year table of a chart with a measure toggle shows the measure the chart shows, so it is always the text equivalent of what is visible; a small table that doubles as a donut legend (`EnergyLatestTable`) is visible rather than collapsed. Many columns use `YearDataTable`'s `wide` flag: header text wraps at a narrow width (`max-w-32`), so a long source name takes two lines instead of widening its column, and the table's minimum width fits the desktop card, so it scrolls only on narrower screens, never squeezing the columns.
 - **`MeasureToggle`** is the one radio-group toggle between measures ("Total / Per capita", "Share (%) / Generation (TWh)"). Its optional `grid` prop lays the options out as an equal-width two-column grid below `sm` (one row from `sm` up), for a toggle with four options that would not fit a phone in one row; only the waste map uses it, each cell keeps the 44 px touch target with tighter padding and `text-sm`, an option may give a `shortLabel` shown below `sm` so it fits one line (the full `label` stays its accessible name and shows from `sm` up: "Recycled + composted" for "Recycled or composted"), and its loading skeleton reserves the resulting two-row height below `sm`.
 
+### Multi-provider pages and overlay charts
+
+Conventions the ocean health page (`/ocean-health/`) established. None adds a color token.
+
+**Per-section degraded states.** A page that reads several providers keeps one `ProviderPageState` per section (`defineSectionedProviderCategoryPage`) and renders each through `ProviderBackedContent`, so an outage only takes its own section down:
+
+- Each section is a card (`CARD_CLASS_NAME`) with its own `<h2>`. The **stale notice** sits directly under that heading, above the section body, for that section only; the **unavailable state** replaces the body under the same heading (its own `<h2>`, "Data temporarily unavailable", is a second h2 inside the card: same level, accepted so `DataUnavailable` stays one component for every page).
+- **Headline figures from several providers** (the ocean health key figures panel): each figure is derived from its own section's payload and names its period and its source, so a stale value is never presented as current; a section without a payload contributes no figure, and with none the panel is not rendered. The stale notice or unavailable state of a section stays in that section's slot (for Copernicus, above the daily chart), never on the panel.
+- A section that is unavailable contributes nothing to the page's `Dataset` JSON-LD; with none present no JSON-LD is rendered.
+
+**Muted series role.** A series flagged `muted: true` by an option builder is drawn in the theme adapter's `mutedLine`: the existing `line-strong` token at full opacity (`resolveMutedLine`, `components/charts/chartTheme.ts`), applied by `EChart` before `setOption` and re-applied on a theme change. Builders write only the flag, never a color, so options stay color-free. Opacity is deliberately not lowered: `line-strong` is already the lightest structural line (gray-200 on `surface-card` in light mode, 1.18:1 against it; gray-700 in dark mode, 1.83:1 against `#111111`), and a lower opacity would only fade it further. Muted lines are context, never the only carrier of information: the highlighted series, the legend, the tooltip and the table carry the data. The wrapper also writes the color on the series' `color` and `itemStyle`, because ECharts hands every series without an explicit color a palette slot, which would push the unflagged series off the first palette colors.
+
+**Multi-year overlay chart** (the daily sea surface temperature): one line per year on a shared calendar-day axis (a leap year's 366 days, with a `null` 29 February slot in common years, labelled by month on the first day of each month). Earlier years are `muted`, `silent` (not hover targets), without symbols and with their animation off; the current and record years are highlighted with the first palette colors (one line, named for both roles, when the record is in the current year) and the climatology is a dashed series in the next palette color. The legend and the axis tooltip list only the highlighted series and the climatology, and a sentence under the chart says what the grey lines are. The value axis follows the data (about 20 °C): a zero baseline would flatten every year onto one line.
+
+**Marker-plus-line chart** (ocean pH at Hawaii): the monthly measurements are markers with no connecting line (they are samples taken on cruises, not a continuous record) and the rolling yearly average is a line drawn over them. The value axis does **not** start at zero: pH moves by about 0.1 over decades, so a zero baseline would hide it; the exact values are in the table under the chart (chart rule 12 applies).
+
+**Date-keyed tables** (`RowDataTable`): like `YearDataTable` (collapsed disclosure, keyboard-focusable scroll region, em dash for `null`, newest first) for data keyed by date. The daily table is bounded to the most recent 90 days and says so in a note ("Showing the most recent 90 days"); the pH table (every month) is unbounded. A date-keyed series too dense to list in full gets a `YearDataTable` of yearly averages instead: the sea level table has one row per year and one column per mission (the mean of its observations that year), and its caption says a partly covered year averages what it has.
+
+**Toggles.** The annual anomaly's region toggle ("Region": World, Northern Hemisphere, Southern Hemisphere) and the heat content's depth toggle ("Depth": 0–700 m, 0–2000 m) are `MeasureToggle` radio groups: component state only, no URL, nothing fetched. The chart and the table follow the selection, a hidden live region announces it, and a chart whose set of series changes with the toggle (the depths have four and three sources) remounts through `ChartPanel`'s `chartKey`, because ECharts merges a new option into the old one and would keep the series that is gone. A source keeps the same palette position at every depth.
+
+**End date derived from the data.** A feed that is not current (the NOAA sea level file ends in February 2025) states its last observation as the month and year taken from the payload's `endDate`, formatted in UTC, and says the series is not current when that date is far behind the time the payload was fetched; the copy never hard-codes the month.
+
 ### Navigation and skeletons
 
 - **Skeletons mean "not here yet", on the client only.** A direct visit delivers the complete page, so the HTML never holds a fallback, except for the chart area (charts render in the browser). Do not add `loading.tsx` or a `<Suspense>` around page data: React moves a boundary over about 12.8 KB out of the visible document.
@@ -322,7 +345,7 @@ Pending — define and validate it in the first change that encodes polarity wit
 
 ### Degraded provider states
 
-A provider-backed category (OWID today) can be served from a stored snapshot when its provider is down. The page decides from `meta.stale` and `meta.fetchedAt` (`lib/providerFreshness.ts`), once, on the server:
+A provider-backed category (OWID, and the Copernicus Climate Pulse and NOAA Laboratory for Satellite Altimetry sections of the ocean health page) can be served from a stored snapshot when its provider is down. The page, or each section of a multi-provider page, decides from `meta.stale` and `meta.fetchedAt` (`lib/providerFreshness.ts`), once, on the server:
 
 | Age of the stored data (stale only) | Shown                                      |
 | ----------------------------------- | ------------------------------------------ |
@@ -330,7 +353,7 @@ A provider-backed category (OWID today) can be served from a stored snapshot whe
 | over 7 and up to 30 days            | the data under the **stale notice**        |
 | over 30 days, or provider `502`     | the **unavailable state** in place of data |
 
-Defaults are `silentDays: 7` and `noticeDays: 30` (`DEFAULT_FRESHNESS_THRESHOLDS`); a category may override them with `provider.freshness` in its registry entry (`defineProviderCategoryPage`). A payload without `stale: true` is always fresh, whatever its age.
+Defaults are `silentDays: 7` and `noticeDays: 30` (`DEFAULT_FRESHNESS_THRESHOLDS`); a category may override them with `provider.freshness` in its registry entry (`defineProviderCategoryPage`), and a section of a multi-provider page in its own section entry (`defineSectionedProviderCategoryPage`: the ocean health daily section, about the latest day, uses `2` and `30`). A payload without `stale: true` is always fresh, whatever its age.
 
 - **Stale notice** (`StaleDataNotice`): a banner directly above the section content, `warning-surface` background, `warning-line` border, `warning-fg` text and a decorative `WarningIcon`. Copy: "{Provider} is currently unreachable. Showing the copy we retrieved on {date}." with the date through `formatUtcDate` in a `<time dateTime>` and the provider from `meta.source.provider`. `role="status"` (informational, never `alert`), no controls.
 - **Unavailable state** (`DataUnavailable`): replaces only the section content; the common header (icon and `<h1>`) stays and, when `meta` is known, so does the source attribution (`DataAttribution`). Neutral panel (`surface-raised`, `line-strong`, `fg`, `fg-body`) with the `WarningIcon` in `warning-fg`, not error red. `<h2>` "Data temporarily unavailable", body "We couldn't reach {Provider} to load this data. We're keeping an eye on it and it should be back soon.", and "Last retrieved from {Provider}: {date}" only when a snapshot date is known. `role="status"`, not `alert`; **no retry button**: ISR retries server-side, so a client control would only suggest an action that does nothing. The provider name comes from `meta.source.provider` when `meta` exists, otherwise from the registry entry (a `502` carries no `meta`).

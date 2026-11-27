@@ -42,7 +42,7 @@ describe('AppModule', () => {
     );
   });
 
-  it('should register the data sources module, the static datasets and the OWID provider', async () => {
+  it('should register the data sources module, the static datasets and the live providers', async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
     }).compile();
@@ -57,7 +57,12 @@ describe('AppModule', () => {
       }),
     ]);
     expect(catalog.providers.map(({ id, categories }) => ({ id, categories }))).toEqual([
-      { id: 'owid', categories: ['co2-emissions', 'energy-sources', 'global-temperature'] },
+      { id: 'copernicus-climate-pulse', categories: ['ocean-health'] },
+      { id: 'noaa-lsa', categories: ['ocean-health'] },
+      {
+        id: 'owid',
+        categories: ['co2-emissions', 'energy-sources', 'global-temperature', 'ocean-health'],
+      },
     ]);
   });
 

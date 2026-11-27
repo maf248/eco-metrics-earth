@@ -41,13 +41,15 @@ The deploy sets `SENTRY_ENVIRONMENT` to the deploy target (`production` for `eco
 
 ## 2. Alert rules
 
-Create them in **each** project (`eco-metrics-web` and `eco-metrics-api`) under **Alerts → Create Alert → Issues**. All notify by email to the owner.
+Per project, under **Monitors → Alerts**. All email the owner (the only member).
 
-| Rule name                           | Condition                                              | Filter                   | Action                     |
-| ----------------------------------- | ------------------------------------------------------ | ------------------------ | -------------------------- |
-| `New issue in production`           | A new issue is created                                 | environment `production` | Send an email to the owner |
-| `Regression in production`          | The issue changes state from resolved to unresolved    | environment `production` | Send an email to the owner |
-| `Issue spike in production (20/1h)` | The issue is seen more than **20** times in **1 hour** | environment `production` | Send an email to the owner |
+| Rule                                                            | Project           | Trigger                                           | Environment                 | Throttle   |
+| --------------------------------------------------------------- | ----------------- | ------------------------------------------------- | --------------------------- | ---------- |
+| `Send a notification for high priority issues` (Sentry default) | each              | Sentry marks a new issue as high priority         | web: `production`; api: all | none       |
+| `Escalation or regression (web)`                                | `eco-metrics-web` | An issue escalates, or a resolved issue regresses | `production`                | 30 minutes |
+| `Escalation or regression (api)`                                | `eco-metrics-api` | An issue escalates, or a resolved issue regresses | all                         | 30 minutes |
+
+"Escalates" is Sentry's own spike detection, so no fixed event-count rule is needed. An environment only appears in the filter after the project receives its first event in it: set the api rules to `production` after its first production event.
 
 ## 3. Privacy: do not store IP addresses
 
@@ -55,13 +57,13 @@ In **Settings → Security & Privacy** (organization level) turn on **Prevent St
 
 ## 4. Quota guards
 
-- **Client-key rate limit** (the daily backstop): **Settings → Projects → project → Client Keys (DSN) → Configure → Rate limit**, for example **80 events per 1 day** per project. Even a flood the app-side throttle does not collapse cannot burn the monthly quota.
+- **Client-key rate limit** (the daily backstop): **Settings → Projects → project → Client Keys (DSN) → Configure → Rate limit**, set to **80 events per 1 day** in both projects. Even a flood the app-side throttle does not collapse cannot burn the monthly quota.
 - **Inbound filters** and **spike protection**: leave on (**Settings → Projects → project → Inbound Filters**; spike protection is on by default).
 - **Quota check**: **Stats** in the organization menu shows the monthly usage.
 
 ## 5. Uptime monitor
 
-The Developer plan allows one monitor. Create it under **Insights → Uptime Monitors → Add Uptime Monitor** (match by name if labels move) with the **production web URL** as target.
+The Developer plan allows one monitor: **Monitors → Uptime → Add Uptime Monitor**, project `eco-metrics-web`, environment `production`, URL `https://eco-metrics-earth.vercel.app/`, `GET`, every 1 minute, timeout 10 s, default assertions (status 200 to 299), assigned to the owner. An issue opens after 3 failed checks and resolves after 1 success.
 
 Why the web: a fully down site produces no errors, so only an uptime check can see it. An API outage already surfaces as web server errors (BFF reads that throw) and as API 5xx events, and the API liveness endpoint is free of provider calls so it would add little signal.
 
@@ -72,7 +74,7 @@ Why the web: a fully down site produces no errors, so only an uptime check can s
 
 ## 7. Verify end to end
 
-- **Web**: on the production page, open the browser console and run `setTimeout(() => { throw new Error('sentry-verify') })`. The error appears in `eco-metrics-web` with environment `production` and a mapped stack (an ad blocker may block the client request).
+- **Web**: on the production page, open the browser console and run `setTimeout(() => { throw new Error('sentry-verify') })`. The error appears in `eco-metrics-web` with environment `production` (an ad blocker may block the client request). Its stack shows `<anonymous>` because the code came from the console; errors from the app's own code show mapped source files. Resolve the test issue afterwards.
 - **API**: force a provider failure on the dev service; it appears once as `provider-unavailable` in `eco-metrics-api` with environment `development`, and the stack shows `.ts` paths (also in Cloud Logging).
 - `/api/v1/health` must still answer `ok` with Sentry enabled.
 

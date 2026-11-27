@@ -97,7 +97,27 @@ export function formatAnomaly(value: number): string {
   return anomalyFormatter.format(value).replace('-', MINUS_SIGN);
 }
 
+const signedWholeFormatter = new Intl.NumberFormat(LOCALE, {
+  signDisplay: 'exceptZero',
+  maximumFractionDigits: 0,
+});
+
+/** Signed whole number with the real minus sign, for headline changes: `+10`, `−3`, `0`. */
+export function formatSignedWhole(value: number): string {
+  return signedWholeFormatter.format(value).replace('-', MINUS_SIGN);
+}
+
 /** Short signed axis label with at most one decimal: `+0.5`, `−1`, `0`. */
 export function formatAnomalyAxis(value: number): string {
   return anomalyAxisFormatter.format(value).replace('-', MINUS_SIGN);
+}
+
+const heatContentFormatter = new Intl.NumberFormat(LOCALE, {
+  minimumFractionDigits: 1,
+  maximumFractionDigits: 2,
+});
+
+/** Ocean heat content in 10²² J, one or two decimals, with the real minus sign: `12.5`, `−7.57`. */
+export function formatHeatContent(value: number): string {
+  return heatContentFormatter.format(value).replace('-', MINUS_SIGN);
 }

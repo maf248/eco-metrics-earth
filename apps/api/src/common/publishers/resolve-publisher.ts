@@ -1,9 +1,16 @@
 import { DataSourcePublisher } from '@eco-metrics/shared';
 
-import { OWID_PUBLISHER } from './publishers';
+import {
+  COPERNICUS_CLIMATE_PULSE_PUBLISHER,
+  NOAA_LSA_PUBLISHER,
+  OWID_PUBLISHER,
+} from './publishers';
 
 const PUBLISHERS_BY_HOST: Record<string, DataSourcePublisher> = {
   'ourworldindata.org': OWID_PUBLISHER,
+  'pulse.climate.copernicus.eu': COPERNICUS_CLIMATE_PULSE_PUBLISHER,
+  'sites.ecmwf.int': COPERNICUS_CLIMATE_PULSE_PUBLISHER,
+  'www.star.nesdis.noaa.gov': NOAA_LSA_PUBLISHER,
 };
 
 /**

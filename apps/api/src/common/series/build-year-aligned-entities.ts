@@ -1,5 +1,6 @@
 import {
   type CountryEntity,
+  type MetricPoint,
   type MetricSeries,
   WORLD_ENTITY_CODE,
   iso2ForEntityCode,
@@ -49,6 +50,26 @@ export function latestTimestamp(first: string, ...rest: string[]): string {
     (latest, candidate) => (Date.parse(latest) >= Date.parse(candidate) ? latest : candidate),
     first,
   );
+}
+
+/**
+ * First and last year with a value across several point lists, or `undefined`
+ * when none has one. A `null` value never widens the range.
+ */
+export function valueYearRange(
+  pointLists: Iterable<readonly MetricPoint[]>,
+): { startYear: number; endYear: number } | undefined {
+  let startYear: number | undefined;
+  let endYear: number | undefined;
+  for (const points of pointLists) {
+    for (const { year, value } of points) {
+      if (value !== null) {
+        startYear = startYear === undefined ? year : Math.min(startYear, year);
+        endYear = endYear === undefined ? year : Math.max(endYear, year);
+      }
+    }
+  }
+  return startYear === undefined || endYear === undefined ? undefined : { startYear, endYear };
 }
 
 /** Keeps only the allowed entities, indexed by code. */

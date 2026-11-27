@@ -22,6 +22,13 @@ describe('sitemap', () => {
     }
   });
 
+  it('should list ocean-health, now live, and no longer treat it as a placeholder', () => {
+    const urls = sitemap().map(({ url }) => url);
+
+    expect(urls.filter((url) => url.endsWith('/ocean-health/'))).toHaveLength(1);
+    expect(LIVE_CATEGORIES).toContain('ocean-health');
+  });
+
   it('should not list any placeholder category', () => {
     const urls = sitemap().map(({ url }) => url);
     for (const category of Object.values(ECO_CATEGORIES)) {

@@ -8,7 +8,9 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 import { waitForUrl } from './readiness.ts';
 import {
   E2E_API_SENTRY_ENV,
+  E2E_COPERNICUS_CLIMATE_PULSE_BASE_URL,
   E2E_INTERNAL_API_KEY,
+  E2E_NOAA_LSA_BASE_URL,
   E2E_OWID_API_BASE_URL,
   E2E_OWID_FIXTURE_PORT,
   E2E_OWID_GRAPHER_BASE_URL,
@@ -18,7 +20,7 @@ import {
 } from './utils/api-env.ts';
 import { startOwidFixtureServer } from './utils/owid-fixture-server.ts';
 
-const OWID_FIXTURES_DIR = fileURLToPath(new URL('./fixtures/owid', import.meta.url));
+const FIXTURES_DIR = fileURLToPath(new URL('./fixtures', import.meta.url));
 const API_HEALTH_URL = 'http://localhost:3001/api/v1/health';
 const WEB_URL = 'http://localhost:3000';
 const API_COMMAND = 'npx';
@@ -344,7 +346,7 @@ async function startOwidFixtures(manager: ServerManager): Promise<void> {
   log(`starting OWID fixture server on :${E2E_OWID_FIXTURE_PORT}...`);
   try {
     manager.registerFixtureServer(
-      await startOwidFixtureServer(E2E_OWID_FIXTURE_PORT, OWID_FIXTURES_DIR),
+      await startOwidFixtureServer(E2E_OWID_FIXTURE_PORT, FIXTURES_DIR),
     );
     await waitForUrl(E2E_OWID_FIXTURE_READY_URL, {
       timeoutMs: PRE_CHECK_TIMEOUT_MS * 5,
@@ -373,6 +375,8 @@ async function startApi(manager: ServerManager): Promise<void> {
     INTERNAL_API_KEY: E2E_INTERNAL_API_KEY,
     OWID_GRAPHER_BASE_URL: E2E_OWID_GRAPHER_BASE_URL,
     OWID_API_BASE_URL: E2E_OWID_API_BASE_URL,
+    COPERNICUS_CLIMATE_PULSE_BASE_URL: E2E_COPERNICUS_CLIMATE_PULSE_BASE_URL,
+    NOAA_LSA_BASE_URL: E2E_NOAA_LSA_BASE_URL,
     // NODE_ENV is unset here, so the API would log every request at debug through pino-pretty.
     LOG_LEVEL: 'warn',
     ...E2E_API_SENTRY_ENV,

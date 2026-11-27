@@ -46,6 +46,22 @@ export class AppConfigService {
     return this.configService.getOrThrow<number>('OWID_CACHE_TTL_SECONDS');
   }
 
+  get copernicusClimatePulseBaseUrl(): string {
+    return this.configService.getOrThrow<string>('COPERNICUS_CLIMATE_PULSE_BASE_URL');
+  }
+
+  get copernicusClimatePulseCacheTtlSeconds(): number {
+    return this.configService.getOrThrow<number>('COPERNICUS_CLIMATE_PULSE_CACHE_TTL_SECONDS');
+  }
+
+  get noaaLsaBaseUrl(): string {
+    return this.configService.getOrThrow<string>('NOAA_LSA_BASE_URL');
+  }
+
+  get noaaLsaCacheTtlSeconds(): number {
+    return this.configService.getOrThrow<number>('NOAA_LSA_CACHE_TTL_SECONDS');
+  }
+
   /** Number of trusted reverse-proxy hops in front of the API (Express `trust proxy`). Default: 0. */
   get trustProxyHops(): number {
     return this.configService.get<number>('TRUST_PROXY_HOPS') ?? 0;

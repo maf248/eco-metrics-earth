@@ -74,20 +74,17 @@ interface DatasetJsonLdInput {
   fields: DatasetJsonLdFields;
 }
 
-/**
- * schema.org `Dataset` for a data page, for search engines (Google Dataset
- * Search). Builds what every dataset page shares from the API's attribution
- * (`meta`) and the canonical URLs, and takes the category-specific parts as
- * input. No `distribution` is declared: the data is not offered as a download.
- */
-export function buildDatasetJsonLd({
-  meta,
-  pageUrl,
-  dataSourcesUrl,
-  fields,
-}: DatasetJsonLdInput): Record<string, unknown> {
-  const { provider, license, sourceUrl, lastUpdated } = meta.source;
+interface DatasetBody {
+  creator: Record<string, unknown> | Record<string, unknown>[];
+  license: string | string[];
+  dateModified: string;
+}
 
+/** What every dataset page shares, around the parts that come from its sources. */
+function assembleDataset(
+  { creator, license, dateModified }: DatasetBody,
+  { pageUrl, dataSourcesUrl, fields }: Omit<DatasetJsonLdInput, 'meta'>,
+): Record<string, unknown> {
   return {
     '@context': 'https://schema.org',
     '@type': 'Dataset',
@@ -96,10 +93,10 @@ export function buildDatasetJsonLd({
     url: pageUrl,
     keywords: fields.keywords,
     isAccessibleForFree: true,
-    license: licenseUrl(license),
-    creator: { '@type': 'Organization', name: provider, url: sourceUrl },
+    license,
+    creator,
     isBasedOn: fields.isBasedOn,
-    dateModified: lastUpdated,
+    dateModified,
     temporalCoverage: fields.temporalCoverage,
     spatialCoverage: {
       '@type': 'Place',
@@ -113,4 +110,63 @@ export function buildDatasetJsonLd({
       url: dataSourcesUrl,
     },
   };
+}
+
+function organization({ provider, sourceUrl }: ApiResponseMeta['source']): Record<string, unknown> {
+  return { '@type': 'Organization', name: provider, url: sourceUrl };
+}
+
+/**
+ * schema.org `Dataset` for a data page, for search engines (Google Dataset
+ * Search). Builds what every dataset page shares from the API's attribution
+ * (`meta`) and the canonical URLs, and takes the category-specific parts as
+ * input. No `distribution` is declared: the data is not offered as a download.
+ */
+export function buildDatasetJsonLd({
+  meta,
+  pageUrl,
+  dataSourcesUrl,
+  fields,
+}: DatasetJsonLdInput): Record<string, unknown> {
+  const { license, lastUpdated } = meta.source;
+
+  return assembleDataset(
+    { creator: organization(meta.source), license: licenseUrl(license), dateModified: lastUpdated },
+    { pageUrl, dataSourcesUrl, fields },
+  );
+}
+
+interface MultiProviderDatasetJsonLdInput extends Omit<DatasetJsonLdInput, 'meta'> {
+  /** The attribution of every provider the page's data comes from (at least one). */
+  metas: readonly ApiResponseMeta[];
+}
+
+/**
+ * Like {@link buildDatasetJsonLd} for a page whose data comes from several providers, each with
+ * its own license: every distinct provider is a `creator`, every distinct license is listed
+ * (a single value when they agree) and `dateModified` is the most recent update of any of them.
+ */
+export function buildMultiProviderDatasetJsonLd({
+  metas,
+  pageUrl,
+  dataSourcesUrl,
+  fields,
+}: MultiProviderDatasetJsonLdInput): Record<string, unknown> {
+  const sources = metas.map(({ source }) => source);
+  const creators = sources
+    .filter(({ provider }, index) => sources.findIndex((s) => s.provider === provider) === index)
+    .map(organization);
+  const licenses = [...new Set(sources.map(({ license }) => licenseUrl(license)))];
+  const dateModified = sources
+    .map(({ lastUpdated }) => lastUpdated)
+    .reduce((latest, current) => (current > latest ? current : latest));
+
+  return assembleDataset(
+    {
+      creator: creators.length === 1 ? creators[0] : creators,
+      license: licenses.length === 1 ? licenses[0] : licenses,
+      dateModified,
+    },
+    { pageUrl, dataSourcesUrl, fields },
+  );
 }

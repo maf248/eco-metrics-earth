@@ -16,8 +16,8 @@ async function delayNavigationPayloads(page: Page): Promise<void> {
 }
 
 async function openFromPlaceholder(page: Page): Promise<void> {
-  await page.goto('/ocean-health/');
-  await expect(page.getByRole('heading', { level: 1, name: 'Ocean Health' })).toBeVisible();
+  await page.goto('/air-quality/');
+  await expect(page.getByRole('heading', { level: 1, name: 'Air Quality' })).toBeVisible();
   await delayNavigationPayloads(page);
 }
 
@@ -67,10 +67,10 @@ test.describe('Client navigation between categories', () => {
 
   test('shows the progress bar only when the navigation is slow', async ({ page }) => {
     await openFromPlaceholder(page);
-    await navLink(page, 'Air Quality').click();
+    await navLink(page, 'Deforestation').click();
 
     await expect(page.getByTestId('navigation-progress')).toBeVisible();
-    await expect(page).toHaveURL(/\/air-quality\/$/);
+    await expect(page).toHaveURL(/\/deforestation\/$/);
     await expect(page.getByTestId('navigation-progress')).toHaveCount(0);
   });
 
@@ -89,8 +89,8 @@ test.describe('Client navigation between categories', () => {
     await page.goto('/co2-emissions/');
     await expect(page.getByTestId('echart').locator('svg').first()).toBeVisible();
 
-    await navLink(page, 'Ocean Health').click();
-    await expect(page).toHaveURL(/\/ocean-health\/$/);
+    await navLink(page, 'Air Quality').click();
+    await expect(page).toHaveURL(/\/air-quality\/$/);
     await expect(page.locator('main')).toHaveCount(1);
 
     await page.goBack();
@@ -136,6 +136,12 @@ test.describe('Client navigation between categories', () => {
         content: 'echart',
       },
       {
+        name: 'Ocean Health',
+        slug: 'ocean-health',
+        skeleton: 'chart-skeleton',
+        content: 'echart',
+      },
+      {
         name: 'Energy Sources',
         slug: 'energy-sources',
         skeleton: 'chart-skeleton',
@@ -168,7 +174,7 @@ test.describe('Client navigation between categories', () => {
   }
 
   test('gives the fixed navigation its own view transition group', async ({ page }) => {
-    await page.goto('/ocean-health/');
+    await page.goto('/air-quality/');
     const name = await page
       .getByRole('navigation', { name: 'Main navigation' })
       .evaluate((nav) => getComputedStyle(nav).viewTransitionName);
@@ -180,7 +186,7 @@ test.describe('Client navigation between categories', () => {
     await openFromPlaceholder(page);
     await page.addStyleTag({ content: '::view-transition-group(*){animation-duration:2s}' });
 
-    await navLink(page, 'Air Quality').click();
+    await navLink(page, 'Deforestation').click();
 
     await expect
       .poll(() =>
@@ -222,15 +228,15 @@ test.describe('Client navigation between categories', () => {
     await expect(page.getByTestId('echart').first()).toBeVisible();
     await scrollTo(600);
 
-    await navLink(page, 'Ocean Health').click();
-    await expect(page).toHaveURL(/\/ocean-health\/$/, { timeout: 30_000 });
+    await navLink(page, 'Air Quality').click();
+    await expect(page).toHaveURL(/\/air-quality\/$/, { timeout: 30_000 });
     await page.goBack();
     await expect(page).toHaveURL(/\/energy-sources\/$/, { timeout: 30_000 });
     await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(600);
 
     await scrollTo(300);
     await page.goForward();
-    await expect(page).toHaveURL(/\/ocean-health\/$/, { timeout: 30_000 });
+    await expect(page).toHaveURL(/\/air-quality\/$/, { timeout: 30_000 });
     await page.goBack();
     await expect(page).toHaveURL(/\/energy-sources\/$/, { timeout: 30_000 });
     await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(300);
@@ -244,7 +250,7 @@ test.describe('Client navigation between categories', () => {
       }
     });
 
-    await page.goto('/ocean-health/', { waitUntil: 'networkidle' });
+    await page.goto('/air-quality/', { waitUntil: 'networkidle' });
 
     expect(payloads.filter((bytes) => bytes > 100_000)).toEqual([]);
   });

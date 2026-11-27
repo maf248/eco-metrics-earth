@@ -247,6 +247,41 @@ test.describe('Accessibility audit — waste and recycling page', () => {
   });
 });
 
+test.describe('Accessibility audit — ocean health page', () => {
+  test.setTimeout(60_000);
+
+  const criticalAndSerious = (results: Awaited<ReturnType<typeof analyzeSettled>>) =>
+    results.violations.filter((v) => v.impact === 'critical' || v.impact === 'serious');
+
+  for (const theme of ['light', 'dark'] as const) {
+    test(`should have zero critical and serious violations in the ${theme} theme`, async ({
+      page,
+    }) => {
+      await page.addInitScript((value) => localStorage.setItem('eco-metrics-theme', value), theme);
+      await page.goto('/ocean-health/');
+      // Scroll every section into view so the lazy charts are mounted when axe runs.
+      for (const section of await page.getByRole('region').all()) {
+        await section.scrollIntoViewIfNeeded();
+      }
+      await expect(page.getByTestId('echart').locator('svg').first()).toBeVisible();
+
+      expect(criticalAndSerious(await analyzeSettled(page))).toEqual([]);
+    });
+  }
+
+  test('should have zero critical and serious violations with the data tables open', async ({
+    page,
+  }) => {
+    await page.goto('/ocean-health/');
+    for (const summary of await page.getByText('View data table').all()) {
+      await summary.click();
+    }
+    await expect(page.getByRole('table').first()).toBeVisible();
+
+    expect(criticalAndSerious(await analyzeSettled(page))).toEqual([]);
+  });
+});
+
 test.describe('Accessibility audit — data sources page', () => {
   test('should have zero critical and serious violations', async ({ page }) => {
     await page.goto(dataSourcesPage.url);

@@ -1,0 +1,39 @@
+{
+  "id": 1357137,
+  "name": "Monthly measurement of ocean pH levels",
+  "unit": "pH",
+  "shortUnit": "pH",
+  "timespan": "",
+  "datasetName": "Climate Change Impacts - Monthly",
+  "datasetVersion": "2026-11-11",
+  "updatedAt": "2026-11-11T21:16:30.000Z",
+  "origins": [
+    {
+      "id": 28413,
+      "title": "Hawaii Ocean Time-series",
+      "producer": "School of Ocean & Earth Science & Technology",
+      "citationFull": "School of Ocean and Earth Science and Technology at the University of Hawai'i at Manoa – Hawaii Ocean Time-series (HOT).\n\nDore, J.E., R. Lukas, D.W. Sadler, M.J. Church, and D.M. Karl. 2009. Physical and biogeochemical modulation of ocean acidification in the central North Pacific. Proc Natl Acad Sci USA 106:12235-12240.\n\nHOT observations are supported by the U.S. National Science Foundation under Award #1756517.\n\nMore details can be found at [the HOT Carbon Dioxide page](https://hahana.soest.hawaii.edu/hot/hotco2/hotco2.html), specifically in [this technical document](https://hahana.soest.hawaii.edu/hot/hotco2/HOT_surface_CO2_readme.pdf).",
+      "attribution": "School of Ocean & Earth Science & Technology – Hawaii Ocean Time-series (2026)",
+      "attributionShort": "SOEST/Hawaii",
+      "urlMain": "https://hahana.soest.hawaii.edu/hot/",
+      "urlDownload": "https://hahana.soest.hawaii.edu/hot/hotco2/HOT_surface_CO2.txt",
+      "dateAccessed": "2026-11-11",
+      "datePublished": "2026-01-01",
+      "license": {
+        "url": "https://hahana.soest.hawaii.edu/hot/dataaccess.html",
+        "name": "Public domain"
+      }
+    }
+  ],
+  "dimensions": {
+    "entities": {
+      "values": [
+        {
+          "id": 3913,
+          "name": "Hawaii",
+          "code": null
+        }
+      ]
+    }
+  }
+}

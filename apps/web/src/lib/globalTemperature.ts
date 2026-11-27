@@ -3,7 +3,8 @@ import 'server-only';
 import { fetchProviderPayloadFromBff, type ProviderPayloadResult } from '@/lib/bffFetch';
 import {
   hasStrings,
-  isDataSourceOrigin,
+  isBaseline,
+  isCreditedOrigin,
   isNumberOrNullArray,
   isYearAlignedCountryData,
 } from '@/lib/payloadGuards';
@@ -12,19 +13,6 @@ import type { ApiResponseMeta, GlobalTemperatureData } from '@eco-metrics/shared
 export interface GlobalTemperaturePayload {
   data: GlobalTemperatureData;
   meta: ApiResponseMeta;
-}
-
-/** Both upstream licenses ask for their notice wherever the data is shown, so it is required. */
-function isCreditedOrigin(value: unknown): boolean {
-  return isDataSourceOrigin(value) && typeof value.notice === 'string';
-}
-
-function isBaseline(value: unknown): boolean {
-  if (typeof value !== 'object' || value === null) {
-    return false;
-  }
-  const { startYear, endYear } = value as Record<string, unknown>;
-  return typeof startYear === 'number' && typeof endYear === 'number' && startYear <= endYear;
 }
 
 /** The World series since 1850: aligned mean and bounds, baseline, dataset and origin. */

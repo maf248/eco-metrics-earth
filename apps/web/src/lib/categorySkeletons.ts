@@ -6,6 +6,16 @@ import type { EcoCategory } from '@eco-metrics/shared';
 export type SkeletonBlock =
   | { kind: 'intro'; text: string; note?: string }
   | { kind: 'keyFigures'; lead: string; details: readonly string[] }
+  /** A grid of headline figures: a label, a large value, short lines and a source each. */
+  | {
+      kind: 'figureGrid';
+      figures: readonly {
+        label: string;
+        value: string;
+        lines: readonly string[];
+        source: string;
+      }[];
+    }
   | {
       kind: 'explorer';
       heading: string;
@@ -14,6 +24,7 @@ export type SkeletonBlock =
       hasDonut?: boolean;
     }
   | { kind: 'map'; title: string; hasMeasureToggle?: boolean }
+  | { kind: 'chart'; heading: string; intro: string; chartTitle: string }
   | { kind: 'productList'; status: string };
 
 /**
@@ -80,6 +91,57 @@ export const CATEGORY_SKELETONS: Partial<Record<EcoCategory, readonly SkeletonBl
       kind: 'explorer',
       heading: 'Explore temperature by country',
       chartTitle: 'World: annual temperature anomaly (°C, relative to the 1991–2020 average)',
+    },
+  ],
+  [ECO_CATEGORIES.OCEAN_HEALTH]: [
+    {
+      kind: 'intro',
+      text: 'Daily sea surface temperature, plus the ocean’s annual warming, stored heat, sea level and pH.',
+    },
+    {
+      kind: 'figureGrid',
+      figures: [
+        {
+          label: 'Latest daily sea surface temperature',
+          value: '20.88 °C',
+          lines: [
+            '+0.76 °C vs the 1991–2020 average, ocean between 60°S–60°N, on 22 Nov 2026',
+            'Daily record since 1979: 21.11 °C on 24 Aug 2026',
+          ],
+          source: 'Source: Copernicus Climate Pulse',
+        },
+        {
+          label: 'Ocean warming',
+          value: '+1.10 °C',
+          lines: [
+            'World sea surface temperature in 2025, vs the 1861–1890 average',
+            'Warmest year: 2024 (+1.21 °C)',
+          ],
+          source: 'Source: Met Office Hadley Centre, via Our World in Data',
+        },
+        {
+          label: 'Sea level rise',
+          value: '+10 cm',
+          lines: ['Global mean sea level, Dec 1992 to Feb 2025', 'Trend: 3.11 mm/year'],
+          source: 'Source: NOAA Laboratory for Satellite Altimetry',
+        },
+        {
+          label: 'Ocean acidity',
+          value: '+17%',
+          lines: [
+            'More acidic at Hawaii, 1989–2024',
+            'pH fell from 8.11 to 8.04 (yearly averages)',
+          ],
+          source: 'Source: Hawaii Ocean Time-series, via Our World in Data',
+        },
+      ],
+    },
+    {
+      kind: 'chart',
+      heading: 'Daily sea surface temperature since 1979',
+      intro:
+        'Every line is one year of the daily average sea surface temperature, laid over the same calendar days, so the current year can be read against all the earlier ones.',
+      chartTitle: 'Daily sea surface temperature, 60°S–60°N (°C)',
     },
   ],
   [ECO_CATEGORIES.ENERGY_SOURCES]: [

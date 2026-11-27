@@ -16,12 +16,16 @@ export function apiHeaders(extra: Record<string, string> = {}): Record<string, s
 export const E2E_TRUST_PROXY_HOPS = '1';
 
 /**
- * Local stand-in for Our World in Data, so E2E never reaches the live provider.
- * The API is started with these base URLs (see `run-dev-servers.ts`).
+ * Local stand-in for the data providers (Our World in Data, Copernicus Climate Pulse and the NOAA
+ * Laboratory for Satellite Altimetry), so E2E never reaches a live provider. One fixture server
+ * answers all of them on one port; the API is started with these base URLs (see
+ * `run-dev-servers.ts`).
  */
 export const E2E_OWID_FIXTURE_PORT = 3999;
 export const E2E_OWID_GRAPHER_BASE_URL = `http://localhost:${E2E_OWID_FIXTURE_PORT}/grapher`;
 export const E2E_OWID_API_BASE_URL = `http://localhost:${E2E_OWID_FIXTURE_PORT}/v1`;
+export const E2E_COPERNICUS_CLIMATE_PULSE_BASE_URL = `http://localhost:${E2E_OWID_FIXTURE_PORT}/copernicus`;
+export const E2E_NOAA_LSA_BASE_URL = `http://localhost:${E2E_OWID_FIXTURE_PORT}/noaa-lsa`;
 export const E2E_OWID_FIXTURE_READY_URL = `http://localhost:${E2E_OWID_FIXTURE_PORT}/`;
 
 /**

@@ -156,6 +156,30 @@ describe('AppConfigService', () => {
     });
   });
 
+  describe('Copernicus Climate Pulse and NOAA LSA getters', () => {
+    it.each([
+      ['copernicusClimatePulseBaseUrl', 'COPERNICUS_CLIMATE_PULSE_BASE_URL', 'https://a.example/s'],
+      ['copernicusClimatePulseCacheTtlSeconds', 'COPERNICUS_CLIMATE_PULSE_CACHE_TTL_SECONDS', 120],
+      ['noaaLsaBaseUrl', 'NOAA_LSA_BASE_URL', 'https://b.example/slr'],
+      ['noaaLsaCacheTtlSeconds', 'NOAA_LSA_CACHE_TTL_SECONDS', 7200],
+    ] as const)('should return %s from %s', (getter, name, value) => {
+      const service = buildService({ [name]: value });
+
+      expect(service[getter]).toBe(value);
+    });
+
+    it.each([
+      ['copernicusClimatePulseBaseUrl', 'COPERNICUS_CLIMATE_PULSE_BASE_URL'],
+      ['copernicusClimatePulseCacheTtlSeconds', 'COPERNICUS_CLIMATE_PULSE_CACHE_TTL_SECONDS'],
+      ['noaaLsaBaseUrl', 'NOAA_LSA_BASE_URL'],
+      ['noaaLsaCacheTtlSeconds', 'NOAA_LSA_CACHE_TTL_SECONDS'],
+    ] as const)('should throw when %s is not in config', (getter, name) => {
+      const service = buildService({});
+
+      expect(() => service[getter]).toThrow(name);
+    });
+  });
+
   describe('trustProxyHops', () => {
     it('should return the configured hop count', () => {
       const service = buildService({ TRUST_PROXY_HOPS: 1 });

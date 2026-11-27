@@ -10,10 +10,11 @@ import { ECO_CATEGORIES } from '@eco-metrics/shared';
 describe('isLiveCategory', () => {
   it('should be true for a category with live data', () => {
     expect(isLiveCategory('co2-emissions')).toBe(true);
+    expect(isLiveCategory('ocean-health')).toBe(true);
   });
 
   it('should be false for a placeholder category', () => {
-    expect(isLiveCategory('ocean-health')).toBe(false);
+    expect(isLiveCategory('air-quality')).toBe(false);
   });
 });
 
@@ -22,6 +23,7 @@ describe('LIVE_CATEGORIES', () => {
     expect(LIVE_CATEGORIES).toEqual([
       'waste-recycling',
       'global-temperature',
+      'ocean-health',
       'co2-emissions',
       'energy-sources',
       'water-footprint',

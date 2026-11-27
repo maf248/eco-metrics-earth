@@ -1,6 +1,7 @@
 import {
   buildChartTheme,
   createCanvasColorResolver,
+  resolveMutedLine,
 } from '../../../src/components/charts/chartTheme';
 import {
   CHART_COLOR_TOKENS,
@@ -133,6 +134,18 @@ describe('chart theme adapter', () => {
       expect(state.itemStyle).toMatchObject({ areaColor: null, color: null, borderWidth: 1.5 });
       expect(state.itemStyle.borderColor).toBe('rgba(17, 24, 39, 1)');
     }
+  });
+
+  it('should resolve the muted line from the line-strong token, in each theme', () => {
+    expect(resolveMutedLine()).toBe('rgba(229, 231, 235, 1)');
+
+    declareTokens({ 'line-strong': '#374151' });
+
+    expect(resolveMutedLine()).toBe('rgba(55, 65, 81, 1)');
+  });
+
+  it('should not add the muted line to the ECharts theme', () => {
+    expect(buildChartTheme()).not.toHaveProperty('mutedLine');
   });
 
   it('should accept an injected resolver', () => {

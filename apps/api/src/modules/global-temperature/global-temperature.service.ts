@@ -9,6 +9,7 @@ import {
 } from '@eco-metrics/shared';
 
 import { ProviderDataError } from '../../common/errors/provider-error';
+import { assertBaselineMatches } from '../../common/series/baseline';
 import {
   alignSeriesToYears,
   buildYearAlignedEntities,
@@ -19,12 +20,12 @@ import {
   ProviderSnapshotService,
   type Snapshotted,
 } from '../../common/snapshots/provider-snapshot.service';
+import { ERA5_ORIGIN } from '../providers/copernicus-climate-pulse/copernicus-climate-pulse.constants';
 import { OwidClient } from '../providers/owid/owid-client.service';
 import { OwidProviderStatus } from '../providers/owid/owid-provider-status';
 import type { OwidGrapherSeriesOptions, OwidIndicatorMetadata } from '../providers/owid/owid.types';
 
 import {
-  ERA5_ORIGIN,
   GLOBAL_SERIES_BASELINE,
   GLOBAL_SERIES_CHART,
   GLOBAL_SERIES_START_YEAR,
@@ -65,32 +66,6 @@ export interface GlobalTemperatureResult {
 
 const LABEL = 'Global temperature';
 const MIN_WORLD_YEARS = 2;
-
-// Anchored so `11991-2020` or `1991-20201` never match.
-const dashed = (baseline: { startYear: number; endYear: number }): RegExp =>
-  new RegExp(`(?<!\\d)${baseline.startYear}[-–]${baseline.endYear}(?!\\d)`);
-
-/**
- * The baseline is prose in the provider's description, not a field of the data.
- * A different reference period must become a failure, never a mislabelled chart.
- */
-function assertBaselineMatches(
-  description: string | null,
-  baseline: { startYear: number; endYear: number },
-  what: string,
-): void {
-  const { startYear, endYear } = baseline;
-  if (description === null) {
-    throw new ProviderDataError(
-      `${what} indicator has no short description to verify the ${startYear}-${endYear} baseline`,
-    );
-  }
-  if (!dashed(baseline).test(description)) {
-    throw new ProviderDataError(
-      `${what} indicator description does not mention the expected ${startYear}-${endYear} baseline`,
-    );
-  }
-}
 
 /** The credit year is the year the dataset version starts with, as OWID prints it. */
 function datasetYear(metadata: OwidIndicatorMetadata): string {

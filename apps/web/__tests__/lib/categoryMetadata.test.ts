@@ -10,6 +10,7 @@ const LIVE = [
   ECO_CATEGORIES.GLOBAL_TEMPERATURE,
   ECO_CATEGORIES.ENERGY_SOURCES,
   ECO_CATEGORIES.WASTE_RECYCLING,
+  ECO_CATEGORIES.OCEAN_HEALTH,
 ];
 const PLACEHOLDERS = CATEGORIES.filter((slug) => !LIVE.some((live) => live === slug));
 
@@ -27,8 +28,8 @@ describe('CATEGORY_DESCRIPTIONS', () => {
     expect(values).not.toContain(SITE_DESCRIPTION);
   });
 
-  it('should have exactly 7 honest placeholders', () => {
-    expect(PLACEHOLDERS).toHaveLength(7);
+  it('should have exactly 6 honest placeholders', () => {
+    expect(PLACEHOLDERS).toHaveLength(6);
   });
 
   it('should describe the live CO2 emissions content', () => {
@@ -59,6 +60,21 @@ describe('CATEGORY_DESCRIPTIONS', () => {
     expect(CATEGORY_DESCRIPTIONS['waste-recycling']).not.toMatch(/coming/);
   });
 
+  it('should describe the live ocean health content and name its providers', () => {
+    const description = CATEGORY_DESCRIPTIONS['ocean-health'];
+
+    expect(description).toBe(
+      'Ocean health data: daily sea surface temperature and its record, ocean heat content, sea level and ocean pH. Data from Copernicus, NOAA and Our World in Data.',
+    );
+    expect(description).not.toMatch(/coming/);
+    for (const term of ['sea surface temperature', 'ocean heat content', 'sea level', 'ocean pH']) {
+      expect(description).toContain(term);
+    }
+    for (const provider of ['Copernicus', 'NOAA', 'Our World in Data']) {
+      expect(description).toContain(provider);
+    }
+  });
+
   it.each(PLACEHOLDERS)('should state that the data is coming for placeholder %s', (slug) => {
     expect(CATEGORY_DESCRIPTIONS[slug]).toMatch(/coming soon|coming to eco-metrics earth/);
   });
@@ -71,6 +87,7 @@ describe('getCategoryMetadataTitle', () => {
     ['global-temperature', 'Global Temperature Anomalies by Country'],
     ['energy-sources', 'Electricity Mix by Country'],
     ['waste-recycling', 'Waste Generation & Recycling by Country'],
+    ['ocean-health', 'Ocean Health: Sea Temperature, Sea Level & pH'],
   ] as const)('should return the keyword-bearing override for %s', (slug, title) => {
     expect(getCategoryMetadataTitle(slug)).toBe(title);
   });

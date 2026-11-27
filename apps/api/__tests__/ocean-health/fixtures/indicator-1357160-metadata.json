@@ -1,0 +1,88 @@
+{
+  "id": 1357160,
+  "name": "Annual sea surface temperature anomalies",
+  "unit": "degrees Celsius",
+  "shortUnit": "°C",
+  "timespan": "1850-2026",
+  "descriptionShort": "Deviation of the average sea surface temperature measured at a nominal depth of 20cm from the 1861-1890 mean, in degrees Celsius.",
+  "datasetName": "Climate Change Impacts - Annual",
+  "datasetVersion": "2026-11-11",
+  "updatedAt": "2026-11-11T21:16:33.000Z",
+  "origins": [
+    {
+      "id": 28408,
+      "titleSnapshot": "Hadley Centre's Sea Surface Temperature (HadSST) – World",
+      "title": "Hadley Centre's Sea Surface Temperature (HadSST)",
+      "producer": "Met Office Hadley Centre",
+      "citationFull": "Met Office Hadley Centre – Hadley Centre's Sea Surface Temperature (HadSST).\n\nKennedy, J. J., Rayner, N. A., Atkinson, C. P., & Killick, R.\nE. (2019). An ensemble data set of sea-surface temperature change from 1850:\nthe Met Office Hadley Centre HadSST.4.0.0.0 data set. Journal of Geophysical\nResearch: Atmospheres, 124. https://doi.org/10.1029/2018JD029867",
+      "attribution": "Met Office Hadley Centre – Hadley Centre's Sea Surface Temperature (HadSST) (2026)",
+      "attributionShort": "Met Office",
+      "versionProducer": "4.2.0.0",
+      "urlMain": "https://www.metoffice.gov.uk/hadobs/hadsst4/",
+      "urlDownload": "https://www.metoffice.gov.uk/hadobs/hadsst4/data/data/HadSST.4.2.0.0_monthly_GLOBE.csv",
+      "dateAccessed": "2026-11-11",
+      "datePublished": "2026-11-10",
+      "license": {
+        "url": "https://www.metoffice.gov.uk/hadobs/hadsst4/data/download.html",
+        "name": "Open Government Licence v3"
+      }
+    },
+    {
+      "id": 28409,
+      "titleSnapshot": "Hadley Centre's Sea Surface Temperature (HadSST) – Northern hemisphere",
+      "title": "Hadley Centre's Sea Surface Temperature (HadSST)",
+      "producer": "Met Office Hadley Centre",
+      "citationFull": "Met Office Hadley Centre – Hadley Centre's Sea Surface Temperature (HadSST).\n\nKennedy, J. J., Rayner, N. A., Atkinson, C. P., & Killick, R.\nE. (2019). An ensemble data set of sea-surface temperature change from 1850:\nthe Met Office Hadley Centre HadSST.4.0.0.0 data set. Journal of Geophysical\nResearch: Atmospheres, 124. https://doi.org/10.1029/2018JD029867",
+      "attribution": "Met Office Hadley Centre – Hadley Centre's Sea Surface Temperature (HadSST) (2026)",
+      "attributionShort": "Met Office",
+      "versionProducer": "4.2.0.0",
+      "urlMain": "https://www.metoffice.gov.uk/hadobs/hadsst4/",
+      "urlDownload": "https://www.metoffice.gov.uk/hadobs/hadsst4/data/data/HadSST.4.2.0.0_monthly_NHEM.csv",
+      "dateAccessed": "2026-11-11",
+      "datePublished": "2026-11-10",
+      "license": {
+        "url": "https://www.metoffice.gov.uk/hadobs/hadsst4/data/download.html",
+        "name": "Open Government Licence v3"
+      }
+    },
+    {
+      "id": 28410,
+      "titleSnapshot": "Hadley Centre's Sea Surface Temperature (HadSST) – Southern hemisphere",
+      "title": "Hadley Centre's Sea Surface Temperature (HadSST)",
+      "producer": "Met Office Hadley Centre",
+      "citationFull": "Met Office Hadley Centre – Hadley Centre's Sea Surface Temperature (HadSST).\n\nKennedy, J. J., Rayner, N. A., Atkinson, C. P., & Killick, R.\nE. (2019). An ensemble data set of sea-surface temperature change from 1850:\nthe Met Office Hadley Centre HadSST.4.0.0.0 data set. Journal of Geophysical\nResearch: Atmospheres, 124. https://doi.org/10.1029/2018JD029867",
+      "attribution": "Met Office Hadley Centre – Hadley Centre's Sea Surface Temperature (HadSST) (2026)",
+      "attributionShort": "Met Office",
+      "versionProducer": "4.2.0.0",
+      "urlMain": "https://www.metoffice.gov.uk/hadobs/hadsst4/",
+      "urlDownload": "https://www.metoffice.gov.uk/hadobs/hadsst4/data/data/HadSST.4.2.0.0_monthly_SHEM.csv",
+      "dateAccessed": "2026-11-11",
+      "datePublished": "2026-11-10",
+      "license": {
+        "url": "https://www.metoffice.gov.uk/hadobs/hadsst4/data/download.html",
+        "name": "Open Government Licence v3"
+      }
+    }
+  ],
+  "dimensions": {
+    "entities": {
+      "values": [
+        {
+          "id": 36403,
+          "name": "Northern Hemisphere",
+          "code": "OWID_NH"
+        },
+        {
+          "id": 36404,
+          "name": "Southern Hemisphere",
+          "code": "OWID_SH"
+        },
+        {
+          "id": 355,
+          "name": "World",
+          "code": "OWID_WRL"
+        }
+      ]
+    }
+  }
+}

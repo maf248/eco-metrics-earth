@@ -58,7 +58,10 @@
           "{workspaceRoot}/jest.preset.js",
           "{workspaceRoot}/scripts/**/*",
           "{workspaceRoot}/.github/workflows/**/*",
-          "{workspaceRoot}/docs/**/*"
+          "{workspaceRoot}/docs/**/*",
+          "{workspaceRoot}/AGENTS.md",
+          "{workspaceRoot}/ROADMAP.md",
+          "{workspaceRoot}/README.md"
         ]
       }
     }

@@ -11,10 +11,10 @@ describe('CategoryHeader', () => {
   });
 
   it('should render the placeholder text of a category without live data', () => {
-    render(<CategoryHeader category="ocean-health" />);
+    render(<CategoryHeader category="air-quality" />);
 
-    expect(screen.getByRole('heading', { level: 1, name: 'Ocean Health' })).toBeInTheDocument();
-    expect(screen.getByText('Ocean Health metrics — coming soon.')).toBeInTheDocument();
+    expect(screen.getByRole('heading', { level: 1, name: 'Air Quality' })).toBeInTheDocument();
+    expect(screen.getByText('Air Quality metrics — coming soon.')).toBeInTheDocument();
   });
 
   it('should show the title in the brand style, static and with no cursor', () => {
