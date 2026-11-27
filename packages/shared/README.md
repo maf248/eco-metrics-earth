@@ -73,6 +73,23 @@ interface WaterFootprintProduct {
 }
 ```
 
+### `ForestAreaData` / `TreeCoverLossData`
+
+Wire types of the deforestation endpoints (`GET /api/v1/deforestation/forest-area` and
+`GET /api/v1/deforestation/tree-cover-loss`), year-aligned like the other country payloads: index `i`
+is `startYear + i`. Forest area is in hectares with its share of land area (FAO); tree cover loss is
+in hectares per year by seven dominant drivers (`TREE_COVER_LOSS_DRIVER_IDS`, in stacking order),
+where `null` means no value, never zero. Each payload carries its upstream `origin`.
+
+```typescript
+interface ForestAreaEntity extends CountryEntity {
+  area: (number | null)[]; // hectares
+  share: (number | null)[]; // % of land area
+}
+
+type TreeCoverLossEntity = CountryEntity & Record<TreeCoverLossDriverId, (number | null)[]>;
+```
+
 ### `MetricPoint` / `MetricSeries`
 
 Time-series shape used by provider clients and BFF endpoints. A `MetricSeries` groups one or

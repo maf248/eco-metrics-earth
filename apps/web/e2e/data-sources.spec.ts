@@ -66,6 +66,16 @@ test.describe('Data sources page', () => {
       ).toBeVisible();
       for (const [producer, title, license] of [
         ['Global Carbon Project', 'Global Carbon Budget', 'CC BY 4.0'],
+        [
+          'Food and Agriculture Organization of the United Nations',
+          'Global Forest Resources Assessment 2025',
+          'CC BY 4.0',
+        ],
+        [
+          'World Resources Institute and Google DeepMind (Global Forest Watch)',
+          'Tree cover loss by dominant driver (Sims et al., 2025)',
+          'CC BY 4.0',
+        ],
         ['Copernicus Climate Change Service (C3S)', 'ERA5 monthly averaged data', 'CC BY 4.0'],
         ['Met Office Hadley Centre', 'HadCRUT5', 'Open Government Licence v3.0'],
       ] as const) {
@@ -75,7 +85,7 @@ test.describe('Data sources page', () => {
           .filter({ hasText: producer })
           .filter({ hasText: title })
           .last();
-        await expect(origin.getByRole('link', { name: new RegExp(title) })).toBeVisible();
+        await expect(origin.getByRole('link', { name: title })).toBeVisible();
         await expect(origin.getByRole('link', { name: license })).toBeVisible();
       }
       await expect(providers).toContainText('Contains modified Copernicus Climate Change Service');

@@ -61,7 +61,8 @@
           "{workspaceRoot}/docs/**/*",
           "{workspaceRoot}/AGENTS.md",
           "{workspaceRoot}/ROADMAP.md",
-          "{workspaceRoot}/README.md"
+          "{workspaceRoot}/README.md",
+          "{workspaceRoot}/postman/**/*"
         ]
       }
     }

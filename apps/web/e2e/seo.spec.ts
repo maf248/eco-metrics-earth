@@ -75,6 +75,7 @@ test.describe('Category page metadata', () => {
       'air-quality',
       'co2-emissions',
       'global-temperature',
+      'deforestation',
       'ocean-health',
       'energy-sources',
       'waste-recycling',
@@ -183,7 +184,7 @@ test.describe('Sitemap.xml', () => {
   test('should list the home, the live categories and data sources', async ({ request }) => {
     const response = await request.get('/sitemap.xml');
     const text = await response.text();
-    // Home page + 6 live category pages + data sources = 8 entries
+    // Home page + one entry per live category page + data sources
     const urlCount = (text.match(/<url>/g) || []).length;
     expect(urlCount).toBe(2 + LIVE_CATEGORY_SLUGS.length);
     // Placeholder categories are noindex, so only live ones are listed, with a trailing slash
@@ -204,7 +205,13 @@ test.describe('Robots meta', () => {
     expect(html).toContain('rel="canonical"');
   });
 
-  for (const path of ['/', '/co2-emissions/', '/ocean-health/', '/data-sources/']) {
+  for (const path of [
+    '/',
+    '/co2-emissions/',
+    '/ocean-health/',
+    '/deforestation/',
+    '/data-sources/',
+  ]) {
     test(`should leave ${path} indexable`, async ({ request }) => {
       const html = await (await request.get(path)).text();
       expect(html).not.toContain('name="robots"');
@@ -269,6 +276,7 @@ test.describe('Complete HTML on direct visits', () => {
     { path: '/energy-sources/', heading: 'Energy Sources', content: 'application/ld+json' },
     { path: '/waste-recycling/', heading: 'Waste &amp; Recycling', content: 'application/ld+json' },
     { path: '/ocean-health/', heading: 'Ocean Health', content: 'application/ld+json' },
+    { path: '/deforestation/', heading: 'Deforestation', content: 'application/ld+json' },
     { path: '/air-quality/', heading: 'Air Quality', content: 'coming soon' },
   ]) {
     test(`should deliver ${path} complete and visible without JavaScript`, async ({ request }) => {

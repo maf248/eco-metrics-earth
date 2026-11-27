@@ -22,7 +22,7 @@ export const CATEGORY_DESCRIPTIONS: Record<EcoCategory, string> = {
   'endangered-species':
     'Endangered species data is coming soon: how many species are threatened with extinction and how that risk is changing over time.',
   deforestation:
-    'Deforestation data is coming to eco-metrics earth: how much forest is lost each year and where, from open sources.',
+    'Forest area by country since 1990, a map and ranking of forest change, and tree cover loss by cause. Data from FAO, Global Forest Watch and Our World in Data.',
   'ocean-health':
     'Ocean health data: daily sea surface temperature and its record, ocean heat content, sea level and ocean pH. Data from Copernicus, NOAA and Our World in Data.',
   reforestation:
@@ -48,6 +48,7 @@ const METADATA_TITLE_OVERRIDES: Partial<Record<EcoCategory, string>> = {
   'global-temperature': 'Global Temperature Anomalies by Country',
   'ocean-health': 'Ocean Health: Sea Temperature, Sea Level & pH',
   'energy-sources': 'Electricity Mix by Country',
+  deforestation: 'Forest Area & Tree Cover Loss by Country',
   'water-footprint': 'Water Footprint of Food & Products',
 };
 

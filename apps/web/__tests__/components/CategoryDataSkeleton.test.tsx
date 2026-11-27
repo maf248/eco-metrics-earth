@@ -58,6 +58,24 @@ describe('CategoryDataSkeleton', () => {
     expect(container.textContent).toContain('Daily sea surface temperature since 1979');
   });
 
+  it('should repeat the deforestation layout: explorer, change card with map, legend and ranking, cause card', () => {
+    render(<CategoryDataSkeleton category="deforestation" />);
+
+    expect(CATEGORY_SKELETONS.deforestation?.map(({ kind }) => kind)).toEqual([
+      'intro',
+      'keyFigures',
+      'explorer',
+      'map',
+      'explorer',
+    ]);
+    expect(screen.getAllByTestId('chart-skeleton')).toHaveLength(3);
+    const region = screen.getByTestId('category-data-skeleton');
+    expect(region).toHaveTextContent('Forest change since 1990');
+    expect(region).toHaveTextContent('−5 to +5%');
+    expect(region).toHaveTextContent('View data table');
+    expect(region).toHaveTextContent('Tree cover loss by cause');
+  });
+
   it('should render nothing for a category without live data', () => {
     const { container } = render(<CategoryDataSkeleton category="air-quality" />);
     expect(container).toBeEmptyDOMElement();

@@ -25,6 +25,7 @@ export const CATEGORY_SLUGS: EcoCategory[] = Object.values(ECO_CATEGORIES);
 export const LIVE_CATEGORY_SLUGS: EcoCategory[] = [
   'waste-recycling',
   'global-temperature',
+  'deforestation',
   'ocean-health',
   'co2-emissions',
   'energy-sources',
@@ -59,6 +60,8 @@ export const CATEGORY_DESCRIPTION_SAMPLES = {
     'CO2 emissions by country since 1950: a world map and ranking of emissions per person, and yearly totals for every country. Data from Our World in Data.',
   'global-temperature':
     "Global temperature by country since 1940: how far each year's surface temperature is from the 1991–2020 average. Data from Our World in Data.",
+  deforestation:
+    'Forest area by country since 1990, a map and ranking of forest change, and tree cover loss by cause. Data from FAO, Global Forest Watch and Our World in Data.',
   'ocean-health':
     'Ocean health data: daily sea surface temperature and its record, ocean heat content, sea level and ocean pH. Data from Copernicus, NOAA and Our World in Data.',
   'energy-sources':
@@ -73,6 +76,7 @@ export const CATEGORY_DESCRIPTION_SAMPLES = {
  */
 export const CATEGORY_METADATA_TITLES = {
   'co2-emissions': 'CO2 Emissions by Country',
+  deforestation: 'Forest Area & Tree Cover Loss by Country',
   'global-temperature': 'Global Temperature Anomalies by Country',
   'ocean-health': 'Ocean Health: Sea Temperature, Sea Level & pH',
   'energy-sources': 'Electricity Mix by Country',

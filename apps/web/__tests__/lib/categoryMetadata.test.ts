@@ -11,6 +11,7 @@ const LIVE = [
   ECO_CATEGORIES.ENERGY_SOURCES,
   ECO_CATEGORIES.WASTE_RECYCLING,
   ECO_CATEGORIES.OCEAN_HEALTH,
+  ECO_CATEGORIES.DEFORESTATION,
 ];
 const PLACEHOLDERS = CATEGORIES.filter((slug) => !LIVE.some((live) => live === slug));
 
@@ -28,8 +29,8 @@ describe('CATEGORY_DESCRIPTIONS', () => {
     expect(values).not.toContain(SITE_DESCRIPTION);
   });
 
-  it('should have exactly 6 honest placeholders', () => {
-    expect(PLACEHOLDERS).toHaveLength(6);
+  it('should have exactly 5 honest placeholders', () => {
+    expect(PLACEHOLDERS).toHaveLength(5);
   });
 
   it('should describe the live CO2 emissions content', () => {
@@ -75,6 +76,25 @@ describe('CATEGORY_DESCRIPTIONS', () => {
     }
   });
 
+  it('should describe the live deforestation content without calling tree cover loss deforestation', () => {
+    const description = CATEGORY_DESCRIPTIONS.deforestation;
+
+    expect(description).toBe(
+      'Forest area by country since 1990, a map and ranking of forest change, and tree cover loss by cause. Data from FAO, Global Forest Watch and Our World in Data.',
+    );
+    expect(description).not.toMatch(/coming/);
+    expect(description).not.toMatch(/deforestation/i);
+    for (const term of [
+      'Forest area',
+      'tree cover loss',
+      'FAO',
+      'Global Forest Watch',
+      'Our World in Data',
+    ]) {
+      expect(description).toContain(term);
+    }
+  });
+
   it.each(PLACEHOLDERS)('should state that the data is coming for placeholder %s', (slug) => {
     expect(CATEGORY_DESCRIPTIONS[slug]).toMatch(/coming soon|coming to eco-metrics earth/);
   });
@@ -88,6 +108,7 @@ describe('getCategoryMetadataTitle', () => {
     ['energy-sources', 'Electricity Mix by Country'],
     ['waste-recycling', 'Waste Generation & Recycling by Country'],
     ['ocean-health', 'Ocean Health: Sea Temperature, Sea Level & pH'],
+    ['deforestation', 'Forest Area & Tree Cover Loss by Country'],
   ] as const)('should return the keyword-bearing override for %s', (slug, title) => {
     expect(getCategoryMetadataTitle(slug)).toBe(title);
   });

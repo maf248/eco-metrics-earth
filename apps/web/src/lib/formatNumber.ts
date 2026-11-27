@@ -121,3 +121,31 @@ const heatContentFormatter = new Intl.NumberFormat(LOCALE, {
 export function formatHeatContent(value: number): string {
   return heatContentFormatter.format(value).replace('-', MINUS_SIGN);
 }
+
+const signedPercentFormatter = new Intl.NumberFormat(LOCALE, {
+  signDisplay: 'exceptZero',
+  minimumFractionDigits: 1,
+  maximumFractionDigits: 1,
+});
+
+/** A percentage change with one decimal and an explicit sign: `+45.0%`, `−21.4%`, `0.0%`. */
+export function formatSignedPercent(value: number): string {
+  return `${signedPercentFormatter.format(value).replace('-', MINUS_SIGN)}%`;
+}
+
+const wholeFormatter = new Intl.NumberFormat(LOCALE, { maximumFractionDigits: 0 });
+
+/** Whole number with thousands separators: `4,140,214`. */
+export function formatWhole(value: number): string {
+  return wholeFormatter.format(value);
+}
+
+const oneDecimalFormatter = new Intl.NumberFormat(LOCALE, {
+  minimumFractionDigits: 1,
+  maximumFractionDigits: 1,
+});
+
+/** One decimal with separators: `4,343.5`. */
+export function formatOneDecimal(value: number): string {
+  return oneDecimalFormatter.format(value);
+}

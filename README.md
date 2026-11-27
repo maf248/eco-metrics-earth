@@ -144,6 +144,7 @@ eco-metrics-earth/
 │   │       │   ├── providers/copernicus-climate-pulse/ # Cached Copernicus Climate Pulse client (daily SST CSV) + its data-source status
 │   │       │   ├── providers/noaa-lsa/ # Cached NOAA Laboratory for Satellite Altimetry client (sea level CSV) + its data-source status
 │   │       │   ├── co2-emissions/    # CO2 emissions module (OWID-backed, all countries in one payload)
+│   │       │   ├── deforestation/    # Deforestation module: two endpoints, one per source (FAO forest area, Global Forest Watch tree cover loss by cause), both through OWID, each with its own snapshot
 │   │       │   ├── energy-sources/   # Energy sources module (OWID-backed electricity mix by source since 2000, all countries in one payload)
 │   │       │   ├── global-temperature/ # Global temperature module (OWID-backed, anomaly vs 1991-2020, all countries in one payload)
 │   │       │   ├── ocean-health/     # Ocean health module: five endpoints, one per section and provider (Copernicus, OWID, NOAA LSA)
@@ -157,7 +158,7 @@ eco-metrics-earth/
 │       ├── e2e/                 # Playwright E2E tests
 │       └── src/
 │           ├── app/             # Routes, layouts, pages
-│           ├── components/      # Reusable UI components (charts/, co2-emissions/, global-temperature/, energy-sources/, ocean-health/, waste-recycling/, country explorer, year and row data tables, data attribution)
+│           ├── components/      # Reusable UI components (charts/, co2-emissions/, global-temperature/, deforestation/, energy-sources/, ocean-health/, waste-recycling/, country explorer, year and row data tables, data attribution)
 │           └── lib/             # Utilities and helpers (BFF fetch, category page registry)
 ├── packages/
 │   └── shared/                  # @eco-metrics/shared
@@ -169,6 +170,7 @@ eco-metrics-earth/
 │           ├── data-source-attribution.ts  # DataSourceAttribution (provider, license, source)
 │           ├── data-sources.ts             # Data sources catalog types
 │           ├── eco-category.ts             # EcoCategory type + ECO_CATEGORIES const
+│           ├── deforestation.ts            # Deforestation wire types (forest area and share by country, tree cover loss by driver, driver ids)
 │           ├── energy-sources.ts           # Energy sources wire types (ENERGY_SOURCE_IDS, electricity generation by source)
 │           ├── global-temperature.ts       # Global temperature wire types (anomaly, baseline, upstream origin)
 │           ├── metric-series.ts            # MetricPoint + MetricSeries time-series shapes
@@ -200,6 +202,8 @@ eco-metrics-earth/
 | `GET`  | `/api/v1/health`                               | Health check — returns `{ status: 'ok' }`                                                                                                                                                                                                                                                                                                                                                      |
 | `GET`  | `/api/v1/health/dependencies`                  | Provider reachability (Terminus) — `200` when up, `503` when a provider is down; not the `ApiResponse` envelope                                                                                                                                                                                                                                                                                |
 | `GET`  | `/api/v1/co2-emissions`                        | Annual CO2 emissions (total and per capita) for every country and World since 1950, year-aligned; `502` when the provider is unavailable and no stored snapshot exists (with one: `200` and `meta.stale: true`)                                                                                                                                                                                |
+| `GET`  | `/api/v1/deforestation/forest-area`            | Forest area (hectares) and as a share of land area for every country and the World, 1990 to the latest FAO year, year-aligned; FAO Global Forest Resources Assessment 2025 in `data.origin` (OWID)                                                                                                                                                                                             |
+| `GET`  | `/api/v1/deforestation/tree-cover-loss`        | Tree cover loss (hectares per year) by seven dominant causes for every country and the World since 2001, `null` = no value; WRI and Google DeepMind in `data.origin` (OWID, Global Forest Watch)                                                                                                                                                                                               |
 | `GET`  | `/api/v1/energy-sources`                       | Electricity generation (TWh) by source for every country and World since 2000, year-aligned (electricity only; `null` = no reported value) with the Ember origin; `502` when the provider is unavailable and no stored snapshot exists (with one: `200` and `meta.stale: true`)                                                                                                                |
 | `GET`  | `/api/v1/global-temperature`                   | Annual temperature anomaly (°C vs the 1991-2020 average) for every country and World since 1940, year-aligned, plus the World series since 1850 against the pre-industrial 1861-1890 baseline (with 95% bounds) and the upstream origins (Copernicus ERA5, Met Office HadCRUT5); `502` when the provider is unavailable and no stored snapshot exists (with one: `200` and `meta.stale: true`) |
 | `GET`  | `/api/v1/ocean-health/sea-surface-temperature` | Daily sea surface temperature (°C, ocean 60°S-60°N) since 1979 aligned by calendar day, with the 1991-2020 climatology, the latest and record days and the last 90 days (Copernicus Climate Pulse); `502` without data                                                                                                                                                                         |

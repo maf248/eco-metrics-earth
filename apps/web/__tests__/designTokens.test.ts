@@ -13,6 +13,7 @@ import path from 'node:path';
 
 import {
   CHART_COLOR_TOKENS,
+  CHART_DIVERGENT_TOKENS,
   CHART_ENERGY_TOKENS,
   CHART_NO_DATA_TOKEN,
   CHART_SEQUENTIAL_GOOD_TOKENS,
@@ -71,10 +72,12 @@ function declaredProperties(css: string, selector: string): string[] {
 const css = fs.readFileSync(GLOBALS_CSS, 'utf8');
 // Chart tokens are a separate group: hex values read by name by the chart theme adapter,
 // never exposed as Tailwind utilities (docs/design-system.md, Color Palettes): the categorical
-// `--chart-N`, the sequential `--chart-seq-N` and `--chart-seq-good-N` with `--chart-no-data`, and the energy mix `--energy-*`.
+// `--chart-N`, the sequential `--chart-seq-N` and `--chart-seq-good-N` with `--chart-no-data`, the
+// divergent `--chart-div-N`, and the energy mix `--energy-*`.
 const isCategoricalToken = (token: string): boolean => /^chart-\d+$/.test(token);
 const isSequentialToken = (token: string): boolean =>
   token.startsWith('chart-seq-') || token === CHART_NO_DATA_TOKEN;
+const isDivergentToken = (token: string): boolean => token.startsWith('chart-div-');
 const isEnergyToken = (token: string): boolean => token.startsWith('energy-');
 const isChartToken = (token: string): boolean => token.startsWith('chart-') || isEnergyToken(token);
 const lightTokens = declaredProperties(css, ':root');
@@ -85,6 +88,7 @@ const darkChartTokens = darkTokens.filter(isChartToken);
 const lightCategoricalTokens = lightTokens.filter(isCategoricalToken);
 const lightEnergyTokens = lightTokens.filter(isEnergyToken);
 const lightSequentialTokens = lightTokens.filter(isSequentialToken);
+const lightDivergentTokens = lightTokens.filter(isDivergentToken);
 
 const themeMappings = [
   ...css
@@ -163,9 +167,30 @@ describe('design tokens — chart tokens', () => {
     );
   });
 
+  it('should declare exactly the divergent names the chart theme adapter reads, in both themes', () => {
+    expect(lightDivergentTokens).toEqual([...CHART_DIVERGENT_TOKENS]);
+    expect(darkTokens.filter(isDivergentToken)).toEqual([...CHART_DIVERGENT_TOKENS]);
+    expect(lightDivergentTokens).toHaveLength(7);
+  });
+
+  it('should list every divergent token with both values in docs/design-system.md', () => {
+    const docs = fs.readFileSync(path.join(REPO_ROOT, 'docs/design-system.md'), 'utf8');
+    const value = (block: string, token: string): string =>
+      new RegExp(`--${token}:\\s*(#[0-9a-fA-F]{6});`).exec(block)?.[1] ?? 'missing';
+    for (const token of CHART_DIVERGENT_TOKENS) {
+      const row = docs.split('\n').find((line) => line.startsWith(`| \`${token}\``));
+      expect(row).toBeDefined();
+      expect(row).toContain(value(themeBlock('light'), token));
+      expect(row).toContain(value(themeBlock('dark'), token));
+    }
+  });
+
   it('should only declare chart tokens of a known palette', () => {
     const known = (token: string): boolean =>
-      isCategoricalToken(token) || isSequentialToken(token) || isEnergyToken(token);
+      isCategoricalToken(token) ||
+      isSequentialToken(token) ||
+      isDivergentToken(token) ||
+      isEnergyToken(token);
     expect(lightChartTokens.filter((token) => !known(token))).toEqual([]);
   });
 });

@@ -34,6 +34,8 @@ export const LIVE_CATEGORY_SUMMARIES: Partial<Record<EcoCategory, string>> = {
     'How much CO2 each country emits, in total and per person, on a world map and a ranking.',
   [ECO_CATEGORIES.ENERGY_SOURCES]:
     'Where each country’s electricity comes from: coal, gas, nuclear, hydro, wind, solar and more.',
+  [ECO_CATEGORIES.DEFORESTATION]:
+    'How much forest each country has lost or gained since 1990, and what causes tree cover loss.',
   [ECO_CATEGORIES.WATER_FOOTPRINT]:
     'How much water it takes to make everyday products, from food and textiles to technology.',
 };

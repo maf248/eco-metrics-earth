@@ -67,10 +67,10 @@ test.describe('Client navigation between categories', () => {
 
   test('shows the progress bar only when the navigation is slow', async ({ page }) => {
     await openFromPlaceholder(page);
-    await navLink(page, 'Deforestation').click();
+    await navLink(page, 'Reforestation').click();
 
     await expect(page.getByTestId('navigation-progress')).toBeVisible();
-    await expect(page).toHaveURL(/\/deforestation\/$/);
+    await expect(page).toHaveURL(/\/reforestation\/$/);
     await expect(page.getByTestId('navigation-progress')).toHaveCount(0);
   });
 
@@ -136,6 +136,12 @@ test.describe('Client navigation between categories', () => {
         content: 'echart',
       },
       {
+        name: 'Deforestation',
+        slug: 'deforestation',
+        skeleton: 'chart-skeleton',
+        content: 'echart',
+      },
+      {
         name: 'Ocean Health',
         slug: 'ocean-health',
         skeleton: 'chart-skeleton',
@@ -186,7 +192,7 @@ test.describe('Client navigation between categories', () => {
     await openFromPlaceholder(page);
     await page.addStyleTag({ content: '::view-transition-group(*){animation-duration:2s}' });
 
-    await navLink(page, 'Deforestation').click();
+    await navLink(page, 'Reforestation').click();
 
     await expect
       .poll(() =>

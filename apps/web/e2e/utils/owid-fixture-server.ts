@@ -90,6 +90,30 @@ export const OWID_FIXTURE_ROUTES: Readonly<Record<string, FixtureRoute>> = {
     file: 'owid/indicator-1357137-metadata.json',
     contentType: 'application/json',
   },
+  '/grapher/forest-area-km.csv': {
+    file: 'owid/forest-area-km.csv',
+    contentType: 'text/csv; charset=utf-8',
+  },
+  '/grapher/forest-area-as-share-of-land-area.csv': {
+    file: 'owid/forest-area-as-share-of-land-area.csv',
+    contentType: 'text/csv; charset=utf-8',
+  },
+  '/grapher/tree-cover-loss-by-dominant-driver.csv': {
+    file: 'owid/tree-cover-loss-by-dominant-driver.csv',
+    contentType: 'text/csv; charset=utf-8',
+  },
+  '/v1/indicators/1129226.metadata.json': {
+    file: 'owid/indicator-1129226-metadata.json',
+    contentType: 'application/json',
+  },
+  '/v1/indicators/1132530.metadata.json': {
+    file: 'owid/indicator-1132530-metadata.json',
+    contentType: 'application/json',
+  },
+  '/v1/indicators/1104660.metadata.json': {
+    file: 'owid/indicator-1104660-metadata.json',
+    contentType: 'application/json',
+  },
   '/copernicus/era5_daily_series_sst_60S-60N_ocean.csv': {
     file: 'copernicus/era5_daily_series_sst_60S-60N_ocean.csv',
     contentType: 'text/csv; charset=utf-8',

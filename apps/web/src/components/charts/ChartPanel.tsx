@@ -1,8 +1,10 @@
 'use client';
 
 import type { EChartsCoreOption } from 'echarts/core';
+import type { ReactNode } from 'react';
 
 import type { ChartPalette } from '@/components/charts/chartTokens';
+import { LazyColumnEChart } from '@/components/charts/LazyColumnEChart';
 import { LazyEChart } from '@/components/charts/LazyEChart';
 import { RenderWhenVisible } from '@/components/charts/RenderWhenVisible';
 
@@ -25,6 +27,10 @@ interface ChartPanelProps {
    * has would stay on the chart.
    */
   chartKey?: string;
+  /** Subtitle under the title: what the chart shows and how to read it (caveats, axis). */
+  description?: ReactNode;
+  /** `columns` draws vertical bars (registers the bar chart); lines and areas otherwise. */
+  kind?: 'line' | 'columns';
 }
 
 /** A chart with its title and a visually hidden announcement of what it shows. */
@@ -35,12 +41,16 @@ export function ChartPanel({
   palette,
   deferred = false,
   chartKey,
+  kind = 'line',
+  description,
 }: ChartPanelProps) {
-  const chart = <LazyEChart key={chartKey} option={option} palette={palette} />;
+  const Chart = kind === 'columns' ? LazyColumnEChart : LazyEChart;
+  const chart = <Chart key={chartKey} option={option} palette={palette} />;
 
   return (
     <>
       <h3 className="mb-2 mt-6 text-base font-semibold leading-snug text-fg sm:text-lg">{title}</h3>
+      {description ? <p className="mb-2 text-sm text-fg-secondary">{description}</p> : null}
       {deferred ? <RenderWhenVisible>{chart}</RenderWhenVisible> : chart}
 
       <p role="status" className="sr-only">

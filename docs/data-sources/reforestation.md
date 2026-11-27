@@ -9,7 +9,7 @@ Tracks tree planting initiatives, forest restoration progress, and net forest ga
 ### 1. Global Forest Watch — Tree Cover Gain (WRI)
 
 - **URL:** https://data-api.globalforestwatch.org/
-- **License:** ⚠️ Non-commercial only — CC BY-NC-SA on some datasets.
+- **License:** Per dataset, not per portal: the Hansen/UMD datasets are CC BY 4.0, while other GFW datasets may carry other (including non-commercial) licences. Check the licence of the tree cover gain dataset record before use.
 - **Model:** Free and open. REST + JSON/GeoJSON.
 - **Data:** Tree cover gain dataset (Hansen 2000–2020) used as a proxy for gross reforestation. Same API as the Deforestation category.
 - **API key:** Required for some endpoints (free).
@@ -29,7 +29,7 @@ Tracks tree planting initiatives, forest restoration progress, and net forest ga
 ### 2. FAO Forest Resources Assessment (FRA) / FAOSTAT
 
 - **URL:** https://www.fao.org/forest-resources-assessment/en/ — FAOSTAT bulk CSV: `https://bulks-faostat.fao.org/production/`
-- **License:** ✅ Commercial/ads OK — CC BY 4.0 (FAO Statistical Database Terms of Use).
+- **License:** CC BY 4.0 under the FAO Statistical Database Terms of Use, which add that the datasets may not be used for or in conjunction with the promotion of a commercial enterprise or its products or services, or in a way that suggests FAO endorses them.
 - **Model:** Free. Annual country-level data (bulk CSV downloads).
 - **Data:** Net forest area change, forest plantations, natural regeneration by country (every 5 years — FRA cycle).
 - **API key:** Not required.

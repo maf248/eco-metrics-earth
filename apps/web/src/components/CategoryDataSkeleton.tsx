@@ -105,11 +105,13 @@ function Control({
 function Explorer({
   heading,
   chartTitle,
+  subtitle,
   hasMeasureToggle,
   hasDonut,
+  follows,
 }: Readonly<Extract<SkeletonBlock, { kind: 'explorer' }>>) {
   return (
-    <div className={CARD_CLASS_NAME}>
+    <div className={`${follows ? 'mt-8 ' : ''}${CARD_CLASS_NAME}`}>
       <p className="mb-4 text-xl font-semibold">
         <Bars>{heading}</Bars>
       </p>
@@ -117,9 +119,16 @@ function Explorer({
         <Control label="Country" className="w-full max-w-sm" box="h-11" />
         {hasMeasureToggle && <Control label="Measure" className="w-52" box="h-13.5" />}
       </div>
-      <p className="mb-2 mt-6 text-base font-semibold leading-snug sm:text-lg">
+      <p
+        className={`mt-6 text-base font-semibold leading-snug sm:text-lg ${subtitle ? '' : 'mb-2'}`}
+      >
         <Bars>{chartTitle}</Bars>
       </p>
+      {subtitle && (
+        <p className="my-2 text-sm">
+          <Bars>{subtitle}</Bars>
+        </p>
+      )}
       <ChartSkeleton />
       {hasDonut && (
         <div className="mt-6">
@@ -130,9 +139,20 @@ function Explorer({
   );
 }
 
-function MapCard({ title, hasMeasureToggle }: Readonly<Extract<SkeletonBlock, { kind: 'map' }>>) {
+function MapCard({
+  title,
+  heading,
+  hasMeasureToggle,
+  legendLabels,
+  hasTableDisclosure,
+}: Readonly<Extract<SkeletonBlock, { kind: 'map' }>>) {
   return (
     <div className={`mt-8 ${CARD_CLASS_NAME}`}>
+      {heading && (
+        <p className="mb-4 text-xl font-semibold">
+          <Bars>{heading}</Bars>
+        </p>
+      )}
       <p className="text-base font-semibold leading-snug sm:text-lg">
         <Bars>{title}</Bars>
       </p>
@@ -141,9 +161,28 @@ function MapCard({ title, hasMeasureToggle }: Readonly<Extract<SkeletonBlock, { 
           <Control label="Measure" className="w-full sm:w-lg" box="h-25.5 sm:h-13.5" />
         </div>
       )}
-      <div className="mt-3">
+      <div className={heading ? 'mt-2' : 'mt-3'}>
         <ChartSkeleton variant="map" />
       </div>
+      {legendLabels && (
+        <ul className="mt-3 flex flex-wrap justify-center gap-x-3 gap-y-2 text-[11px] sm:gap-x-4 sm:text-xs">
+          {legendLabels.map((label) => (
+            <li key={label} className="flex flex-col items-center gap-1 leading-tight">
+              <span className={`block h-2.5 w-7 rounded-sm ${PULSE_CLASS_NAME}`} />
+              <span className="whitespace-nowrap">
+                <Bars>{label}</Bars>
+              </span>
+            </li>
+          ))}
+        </ul>
+      )}
+      {hasTableDisclosure && (
+        <div className="mt-4 border-t border-line-subtle pt-2">
+          <div className="flex min-h-11 items-center px-1">
+            <Bars>View data table</Bars>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -230,7 +269,8 @@ export function CategoryDataSkeleton({ category }: Readonly<{ category: EcoCateg
     >
       <div className={`w-full pb-12 sm:px-4 ${isList ? 'max-w-6xl' : 'max-w-4xl'}`}>
         {blocks.map((block) => (
-          <Block key={block.kind} block={block} />
+          // A category may repeat a kind (two cards), so the kind alone is not a key.
+          <Block key={JSON.stringify(block)} block={block} />
         ))}
       </div>
     </div>

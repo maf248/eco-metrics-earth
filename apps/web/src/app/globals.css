@@ -93,6 +93,15 @@
   --chart-seq-good-4: #126e50; /* deep green */
   --chart-seq-good-5: #0f513b; /* forest */
   --chart-no-data: #e5e5e5; /* neutral */
+  /* Divergent ramp (change around zero, loss to gain): warm loss arm, neutral middle, cool gain
+   * arm. Read by name by the chart theme adapter and the map legend, not Tailwind utilities. */
+  --chart-div-1: #831a1b; /* dark red */
+  --chart-div-2: #c0401f; /* red-orange */
+  --chart-div-3: #d58042; /* light orange */
+  --chart-div-4: #b4afa5; /* neutral */
+  --chart-div-5: #679ecc; /* light blue */
+  --chart-div-6: #2773c0; /* blue */
+  --chart-div-7: #0d458c; /* dark blue */
 }
 
 .dark {
@@ -172,6 +181,13 @@
   --chart-seq-good-4: #2d9570; /* deep green */
   --chart-seq-good-5: #237356; /* forest */
   --chart-no-data: #262626; /* neutral */
+  --chart-div-1: #ff8f96; /* bright red */
+  --chart-div-2: #ee7233; /* red-orange */
+  --chart-div-3: #9e671e; /* muted orange */
+  --chart-div-4: #534f49; /* neutral */
+  --chart-div-5: #417c9d; /* muted blue */
+  --chart-div-6: #4f9ee4; /* blue */
+  --chart-div-7: #78c6ff; /* bright blue */
 }
 
 @theme inline {

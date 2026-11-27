@@ -6,6 +6,7 @@ import {
 import {
   CHART_COLOR_TOKENS,
   CHART_ENERGY_TOKENS,
+  CHART_TREE_COVER_LOSS_TOKENS,
 } from '../../../src/components/charts/chartTokens';
 
 import { clearTokens, declareTokens, stubCanvasContext } from './canvasStub';
@@ -118,6 +119,22 @@ describe('chart theme adapter', () => {
     ]);
   });
 
+  it('should give the visual map the seven divergent tokens, loss to gain, when asked', () => {
+    const theme = buildChartTheme(undefined, 'categorical', 'divergent');
+
+    expect(theme.visualMap.inRange.color).toEqual([
+      'rgba(131, 26, 27, 1)',
+      'rgba(192, 64, 31, 1)',
+      'rgba(213, 128, 66, 1)',
+      'rgba(180, 175, 165, 1)',
+      'rgba(103, 158, 204, 1)',
+      'rgba(39, 115, 192, 1)',
+      'rgba(13, 69, 140, 1)',
+    ]);
+    // The no-data fill is the same neutral whichever ramp is selected.
+    expect(theme.map.itemStyle.areaColor).toBe('rgba(229, 229, 229, 1)');
+  });
+
   it('should fill map regions with the no-data token and outline them', () => {
     const { map } = buildChartTheme();
     expect(map.itemStyle).toEqual({
@@ -174,6 +191,23 @@ describe('chart theme adapter', () => {
       'rgba(0, 196, 198, 1)',
       'rgba(233, 164, 0, 1)',
       'rgba(38, 119, 30, 1)',
+    ]);
+  });
+
+  it('should resolve the seven tree cover loss tokens in stacking order, none of them green', () => {
+    const theme = buildChartTheme(undefined, 'treeCoverLoss');
+
+    expect(CHART_TREE_COVER_LOSS_TOKENS).toHaveLength(7);
+    expect(CHART_TREE_COVER_LOSS_TOKENS).not.toContain('chart-6');
+    expect(CHART_TREE_COVER_LOSS_TOKENS).not.toContain('energy-bio');
+    expect(theme.color).toEqual([
+      'rgba(237, 161, 0, 1)',
+      'rgba(37, 41, 51, 1)',
+      'rgba(109, 2, 141, 1)',
+      'rgba(202, 172, 124, 1)',
+      'rgba(151, 84, 28, 1)',
+      'rgba(227, 73, 72, 1)',
+      'rgba(0, 196, 198, 1)',
     ]);
   });
 

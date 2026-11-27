@@ -28,4 +28,24 @@ describe('MapLegend', () => {
       [...container.querySelectorAll('[data-token]')].map((el) => el.getAttribute('data-token')),
     ).toEqual(['chart-seq-good-1', 'chart-seq-good-2', 'chart-no-data']);
   });
+
+  it('should paint seven swatches from the divergent ramp, in order, then no data', () => {
+    const labels = ['a', 'b', 'c', 'd', 'e', 'f', 'g'];
+    const { container } = render(
+      <MapLegend classLabels={labels} label="Legend" ramp="divergent" />,
+    );
+
+    expect(
+      [...container.querySelectorAll('[data-token]')].map((el) => el.getAttribute('data-token')),
+    ).toEqual([
+      'chart-div-1',
+      'chart-div-2',
+      'chart-div-3',
+      'chart-div-4',
+      'chart-div-5',
+      'chart-div-6',
+      'chart-div-7',
+      'chart-no-data',
+    ]);
+  });
 });

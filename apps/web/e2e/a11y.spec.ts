@@ -282,6 +282,55 @@ test.describe('Accessibility audit — ocean health page', () => {
   });
 });
 
+test.describe('Accessibility audit — deforestation page', () => {
+  test.setTimeout(90_000);
+
+  const criticalAndSerious = (results: Awaited<ReturnType<typeof analyzeSettled>>) =>
+    results.violations.filter((v) => v.impact === 'critical' || v.impact === 'serious');
+
+  /** Scrolls every section into view so the lazy charts and the map are mounted. */
+  async function mountEverything(page: Page): Promise<void> {
+    for (const section of await page.getByRole('region').all()) {
+      await section.scrollIntoViewIfNeeded();
+    }
+    await expect(page.getByTestId('echart').locator('svg').first()).toBeVisible();
+    await expect
+      .poll(() => page.getByTestId('echart').locator('svg').count())
+      .toBeGreaterThanOrEqual(3);
+  }
+
+  for (const theme of ['light', 'dark'] as const) {
+    test(`should have zero critical and serious violations in the ${theme} theme`, async ({
+      page,
+    }) => {
+      await page.addInitScript((value) => localStorage.setItem('eco-metrics-theme', value), theme);
+      await page.goto('/deforestation/');
+      await mountEverything(page);
+
+      expect(criticalAndSerious(await analyzeSettled(page))).toEqual([]);
+    });
+  }
+
+  test('should have zero critical and serious violations with every table open and a country selected', async ({
+    page,
+  }) => {
+    await page.goto('/deforestation/');
+    await mountEverything(page);
+    for (const summary of await page.getByText('View data table').all()) {
+      await summary.click();
+    }
+    const ranking = page.getByTestId('forest-ranking-region');
+    await expect(ranking).toBeVisible();
+    await ranking.getByRole('button', { name: 'Brazil' }).click();
+    await expect(ranking.getByRole('button', { name: 'Brazil' })).toHaveAttribute(
+      'aria-pressed',
+      'true',
+    );
+
+    expect(criticalAndSerious(await analyzeSettled(page))).toEqual([]);
+  });
+});
+
 test.describe('Accessibility audit — data sources page', () => {
   test('should have zero critical and serious violations', async ({ page }) => {
     await page.goto(dataSourcesPage.url);
