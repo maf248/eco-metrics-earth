@@ -1,3 +1,10 @@
+## [2.22.1](https://github.com/maf248/eco-metrics-earth/compare/web-v2.22.0...web-v2.22.1) (2026-11-27)
+
+### Bug Fixes
+
+* **web:** keep the error page's assistive-tech output to its message ([3c8e827](https://github.com/maf248/eco-metrics-earth/commit/3c8e82722e01103fa2123a929d0631241521a2f7))
+* **web:** show a dedicated error icon on the generic error page ([80bb7e0](https://github.com/maf248/eco-metrics-earth/commit/80bb7e0342b063dff1674794d4d74dd5fed5afb0))
+
 ## [2.22.0](https://github.com/maf248/eco-metrics-earth/compare/web-v2.21.0...web-v2.22.0) (2026-11-27)
 
 ### Bug Fixes
