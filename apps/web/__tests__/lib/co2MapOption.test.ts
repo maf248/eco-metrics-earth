@@ -95,6 +95,7 @@ describe('buildCo2MapOption', () => {
       value: 13.8,
       label: 'United States',
       total: 4650,
+      selected: false,
     });
   });
 
@@ -115,7 +116,7 @@ describe('buildCo2MapOption', () => {
   it('should mark only the selected country as selected', () => {
     const option = build(2024, 'ARG');
     expect(itemByName(option, 'ARG')?.selected).toBe(true);
-    expect(itemByName(option, 'USA')).not.toHaveProperty('selected');
+    expect(itemByName(option, 'USA')?.selected).toBe(false);
   });
 
   it('should describe the map and year for assistive technology', () => {

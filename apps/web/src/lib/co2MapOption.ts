@@ -91,7 +91,8 @@ export function buildCo2MapOption({
       value: perCapita,
       label: entity.name,
       total: entity.total[index] ?? null,
-      ...(code === selectedCode ? { selected: true } : {}),
+      // Always explicit: setOption merges, so an omitted flag would keep a previous selection.
+      selected: code === selectedCode,
     };
   });
 

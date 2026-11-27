@@ -128,6 +128,30 @@ export function ChoroplethMap({ buildOption, onRegionClick, ramp }: Readonly<Cho
 
   const option = useMemo(() => (regions ? buildOption(regions) : null), [regions, buildOption]);
 
+  // ECharts keeps a region's selection outside the option, and `setOption` merges, so a region
+  // selected earlier (from the map or from a table) stays outlined after the caller clears its
+  // `selected` flag. Sync the chart's selection with the flags after every option change; the
+  // chart's own effect has already applied the option when this parent effect runs.
+  useEffect(() => {
+    if (!chart || !option) {
+      return;
+    }
+    const data = (option as { series?: { data?: ({ selected?: boolean } | null)[] }[] }).series?.[0]
+      ?.data;
+    if (!data) {
+      return;
+    }
+    const selected: number[] = [];
+    const unselected: number[] = [];
+    data.forEach((item, index) => (item?.selected ? selected : unselected).push(index));
+    if (unselected.length > 0) {
+      chart.dispatchAction({ type: 'unselect', seriesIndex: 0, dataIndex: unselected });
+    }
+    if (selected.length > 0) {
+      chart.dispatchAction({ type: 'select', seriesIndex: 0, dataIndex: selected });
+    }
+  }, [chart, option]);
+
   const handleReady = useCallback((instance: EChartsType) => {
     instance.on('georoam', () => setMoved(true));
     instance.on('click', (params: { name?: string; data?: unknown }) => {

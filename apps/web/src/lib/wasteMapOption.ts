@@ -95,7 +95,8 @@ export function buildWasteMapOption({
       label: country.name,
       year: reading.yearLabel,
       note: reading.note,
-      ...(code === selectedCode ? { selected: true } : {}),
+      // Always explicit: setOption merges, so an omitted flag would keep a previous selection.
+      selected: code === selectedCode,
     };
   });
 
