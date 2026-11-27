@@ -2,8 +2,8 @@ import type { ComponentType } from 'react';
 
 import {
   ProviderBackedContent,
-  type ProviderPageState,
   type ProviderPayload,
+  type SectionState,
 } from '@/components/ProviderBackedContent';
 import { CARD_CLASS_NAME } from '@/lib/cardClassNames';
 
@@ -11,8 +11,8 @@ interface OceanSectionProps<P extends ProviderPayload> {
   /** Id of the heading, which names the section for assistive technology. */
   headingId: string;
   title: string;
-  /** What this section's provider shows right now: data, data under a notice, or an outage. */
-  state: ProviderPageState<P>;
+  /** What this section shows right now: data, data under a notice, an outage, or nothing. */
+  state: SectionState<P>;
   /** The section body, rendered for fresh and stale data. */
   Body: ComponentType<{ data: P }>;
 }
@@ -28,6 +28,10 @@ export function OceanSection<P extends ProviderPayload>({
   state,
   Body,
 }: OceanSectionProps<P>) {
+  // A section whose read failed is left out entirely, heading included.
+  if (state.kind === 'failed') {
+    return null;
+  }
   return (
     <section aria-labelledby={headingId} className={`mt-8 ${CARD_CLASS_NAME}`}>
       <h2 id={headingId} className="mb-4 text-xl font-semibold text-fg">

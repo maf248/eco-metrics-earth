@@ -1,7 +1,7 @@
 import { render, screen, within } from '@testing-library/react';
 
 import { OceanSection } from '@/components/ocean-health/OceanSection';
-import type { ProviderPageState } from '@/components/ProviderBackedContent';
+import type { SectionState } from '@/components/ProviderBackedContent';
 
 import { OWID_OCEAN_META } from '../../fixtures/oceanHealth';
 
@@ -10,13 +10,19 @@ const payload: Payload = { meta: OWID_OCEAN_META };
 
 const Body = () => <p data-testid="body">the section body</p>;
 
-function renderSection(state: ProviderPageState<Payload>) {
+function renderSection(state: SectionState<Payload>) {
   return render(
     <OceanSection headingId="the-heading" title="A section" state={state} Body={Body} />,
   );
 }
 
 describe('OceanSection', () => {
+  it('should render nothing, heading included, when its read failed', () => {
+    const { container } = renderSection({ kind: 'failed' });
+
+    expect(container).toBeEmptyDOMElement();
+  });
+
   it('should be a region named by its own h2, holding the body when the data is fresh', () => {
     renderSection({ kind: 'fresh', payload });
 

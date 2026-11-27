@@ -10,7 +10,7 @@ import { JsonLd } from '@/components/JsonLd';
 import { OriginCredit } from '@/components/OriginCredit';
 import {
   ProviderBackedContent,
-  type ProviderPageState,
+  type SectionState,
   type ProviderPayload,
 } from '@/components/ProviderBackedContent';
 import {
@@ -36,7 +36,7 @@ interface DeforestationContentProps {
 }
 
 /** The payload of a section whose data is shown (fresh, or under a stale notice). */
-function shownPayload<P extends ProviderPayload>(state: ProviderPageState<P>): P | undefined {
+function shownPayload<P extends ProviderPayload>(state: SectionState<P>): P | undefined {
   return state.kind === 'fresh' || state.kind === 'stale-notice' ? state.payload : undefined;
 }
 
@@ -83,7 +83,7 @@ function TreeCoverLossCard({ data: { data, meta } }: { data: TreeCoverLossPayloa
 interface SectionProps<P extends ProviderPayload> {
   headingId: string;
   title: string;
-  state: ProviderPageState<P>;
+  state: SectionState<P>;
   Cards: ComponentType<{ data: P }>;
 }
 
@@ -98,6 +98,10 @@ function DeforestationSection<P extends ProviderPayload>({
   state,
   Cards,
 }: SectionProps<P>) {
+  // A section whose read failed is left out entirely, heading included.
+  if (state.kind === 'failed') {
+    return null;
+  }
   if (shownPayload(state)) {
     return <ProviderBackedContent state={state} Content={Cards} />;
   }

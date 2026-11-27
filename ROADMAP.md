@@ -84,15 +84,7 @@ _Sin propuestas abiertas._
 
 ## 🟡 Importante / Media Prioridad
 
-### P1: Que una sección con error no tire abajo toda la página
-
-**Problema:** en las páginas por secciones (`ocean-health` y `deforestation`) solo la caída de un proveedor queda aislada en su sección; cualquier otro error de nuestra API en una sola sección (un 404 por desfase de deploy, un payload con otra forma, un 500) hace fallar la página entera y muestra `error.tsx`.
-
-**Idea:** tratar el error de una sección como "sección no disponible" (el mismo estado que ya existe para el proveedor caído) y reportarlo a Sentry, manteniendo el error de página completa solo cuando fallan todas. Complementa el gate que publica la web recién cuando la API nueva está arriba: ese gate evita la ventana entre deploys, esto limita el daño de cualquier error puntual.
-
-**A validar:** que no tape errores reales (que lleguen a Sentry y a los logs), que no quede cacheado 24 h un estado de error (revalidación corta como la del `502` del proveedor) y si aplica también a las páginas de un solo proveedor.
-
-**Dificultad:** 3/10. **Requiere:** spec OpenSpec.
+_Sin propuestas abiertas._
 
 ---
 
@@ -100,9 +92,8 @@ _Sin propuestas abiertas._
 
 Si no estás seguro por dónde empezar, este es el orden recomendado:
 
-1. **P1** — aislar el error de una sección para que no caiga la página entera.
-2. **I09** — sharding de los E2E: el CI ya pasó el disparador de 18 min.
-3. Mejoras rápidas del backlog: **I18** (PRs a `main` completados solos), **I19** (referencias al dominio viejo) e **I16** (analytics).
+1. **I09** — sharding de los E2E: el CI ya pasó el disparador de 18 min.
+2. Mejoras rápidas del backlog: **I18** (PRs a `main` completados solos), **I19** (referencias al dominio viejo) e **I16** (analytics).
 
 D1 (TypeScript 7) queda como seguimiento pasivo — sin acción por ahora.
 

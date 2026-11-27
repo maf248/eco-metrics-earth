@@ -2,14 +2,15 @@ import { WarningIcon } from '@/components/icons';
 import { formatUtcDate } from '@/lib/formatUtcDate';
 
 interface DataUnavailableProps {
-  /** Name of the unreachable provider. */
-  providerName: string;
+  /** Name of the unreachable provider; absent when our own data could not be loaded. */
+  providerName?: string;
   /** ISO 8601 time of the last successful provider fetch, only when a snapshot date is known. */
   lastRetrievedAt?: string;
 }
 
 /**
- * Replaces a section's content when its provider is down and no usable data exists.
+ * Replaces a section's content when its provider is down and no usable data exists, or a
+ * category's whole content when its data could not be loaded (no provider name then).
  * Neutral panel with the warning icon (not an error red); `role="status"`, not
  * `alert`, and no retry control: ISR retries server-side.
  */
@@ -23,10 +24,12 @@ export function DataUnavailable({ providerName, lastRetrievedAt }: DataUnavailab
       <WarningIcon className="h-10 w-10 text-warning-fg" />
       <h2 className="text-xl font-semibold text-fg">Data temporarily unavailable</h2>
       <p className="max-w-prose text-fg-body">
-        We couldn&apos;t reach {providerName} to load this data. We&apos;re keeping an eye on it and
-        it should be back soon.
+        {providerName
+          ? `We couldn't reach ${providerName} to load this data.`
+          : "We couldn't load this data right now."}{' '}
+        We&apos;re keeping an eye on it and it should be back soon.
       </p>
-      {lastRetrievedAt ? (
+      {providerName && lastRetrievedAt ? (
         <p className="text-sm text-fg-muted">
           Last retrieved from {providerName}:{' '}
           <time dateTime={lastRetrievedAt}>{formatUtcDate(lastRetrievedAt)}</time>

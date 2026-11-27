@@ -1,3 +1,4 @@
+import * as Sentry from '@sentry/nextjs';
 import { cacheLife } from 'next/cache';
 import type { ComponentType } from 'react';
 
@@ -16,6 +17,7 @@ import {
   ProviderBackedContent,
   type ProviderPageState,
   type ProviderPayload,
+  type SectionState,
 } from '@/components/ProviderBackedContent';
 import { WasteRecyclingContent } from '@/components/waste-recycling/WasteRecyclingContent';
 import { WaterFootprintContent } from '@/components/water-footprint/WaterFootprintContent';
@@ -104,10 +106,8 @@ export function resolveProviderPageState<P extends ProviderPayload>(
 }
 
 /** The upstream update date of the payload a state shows, if it shows one. */
-function stateLastUpdated<P extends ProviderPayload>(
-  state: ProviderPageState<P>,
-): string | undefined {
-  return state.payload?.meta.source.lastUpdated;
+function stateLastUpdated<P extends ProviderPayload>(state: SectionState<P>): string | undefined {
+  return 'payload' in state ? state.payload?.meta.source.lastUpdated : undefined;
 }
 
 /** The latest of several ISO 8601 dates, ignoring absent ones. */
@@ -160,7 +160,7 @@ export interface ProviderSectionOptions<P extends ProviderPayload> {
 type SectionPayloads = Record<string, ProviderPayload>;
 
 /** What a sectioned page's `Content` receives: the resolved state of every section. */
-export type SectionStates<S extends SectionPayloads> = { [K in keyof S]: ProviderPageState<S[K]> };
+export type SectionStates<S extends SectionPayloads> = { [K in keyof S]: SectionState<S[K]> };
 
 export interface SectionedProviderCategoryOptions<S extends SectionPayloads> {
   sections: { [K in keyof S]: ProviderSectionOptions<S[K]> };
@@ -168,11 +168,18 @@ export interface SectionedProviderCategoryOptions<S extends SectionPayloads> {
   Content: ComponentType<{ states: SectionStates<S> }>;
 }
 
+/** True for a section that shows no payload: failed, or unavailable without one. */
+function isSectionWithoutPayload<P extends ProviderPayload>(state: SectionState<P>): boolean {
+  return state.kind === 'failed' || isWithoutPayload(state);
+}
+
 /**
  * Registers a category whose page reads several providers, one section each, so an outage
  * affects only its own section. Every section is read concurrently and resolved like
- * `defineProviderCategoryPage` does; a failure of our own BFF in any section still throws for the
- * whole page. The page leaves the 24 h cache when any section is unavailable without a payload.
+ * `defineProviderCategoryPage` does. A read that fails for another reason (our own BFF) leaves
+ * its section `failed`, which renders nothing, and is reported to Sentry; only when every read
+ * fails does the load throw, so the last good page keeps being served from the cache. The page
+ * leaves the 24 h cache when any section is failed or unavailable without a payload.
  */
 export function defineSectionedProviderCategoryPage<S extends SectionPayloads>({
   sections,
@@ -182,21 +189,31 @@ export function defineSectionedProviderCategoryPage<S extends SectionPayloads>({
 
   return defineCategoryPage<SectionStates<S>>({
     load: async () => {
-      const entries = await Promise.all(
+      const results = await Promise.allSettled(
         keys.map(async (key) => {
           const { provider, load } = sections[key];
-          return [key, resolveProviderPageState(await load(), provider)] as const;
+          return resolveProviderPageState(await load(), provider);
         }),
       );
+      const failures = results.filter((result) => result.status === 'rejected');
+      if (failures.length === results.length) {
+        // Nothing to show: the request fails (reported by onRequestError) and nothing is cached.
+        throw failures[0].reason;
+      }
+      const entries = results.map((result, index) => {
+        if (result.status === 'fulfilled') {
+          return [keys[index], result.value] as const;
+        }
+        Sentry.captureException(result.reason, { tags: { section: keys[index] } });
+        return [keys[index], { kind: 'failed' } as const] as const;
+      });
       return Object.fromEntries(entries) as SectionStates<S>;
     },
     Content: ({ data }) => <Content states={data} />,
     isDegraded: (states) =>
-      Object.values<ProviderPageState<ProviderPayload>>(states).some(isWithoutPayload),
+      Object.values<SectionState<ProviderPayload>>(states).some(isSectionWithoutPayload),
     lastModified: (states) =>
-      latestIsoDate(
-        Object.values<ProviderPageState<ProviderPayload>>(states).map(stateLastUpdated),
-      ),
+      latestIsoDate(Object.values<SectionState<ProviderPayload>>(states).map(stateLastUpdated)),
   });
 }
 

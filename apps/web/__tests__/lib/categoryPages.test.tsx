@@ -1,7 +1,8 @@
+import * as Sentry from '@sentry/nextjs';
 import { render, screen, within } from '@testing-library/react';
 import { cacheLife } from 'next/cache';
 
-import { ProviderBackedContent, type ProviderPageState } from '@/components/ProviderBackedContent';
+import { ProviderBackedContent, type SectionState } from '@/components/ProviderBackedContent';
 import { DEGRADED_REVALIDATE_SECONDS, type ProviderPayloadResult } from '@/lib/bffFetch';
 import {
   CATEGORY_PAGES,
@@ -67,6 +68,7 @@ jest.mock('@/components/charts/LazyEChart', () => ({
 }));
 
 jest.mock('next/cache', () => ({ cacheLife: jest.fn() }));
+jest.mock('@sentry/nextjs', () => ({ captureException: jest.fn() }));
 
 describe('CATEGORY_PAGES', () => {
   it('should register exactly the seven categories with live data', () => {
@@ -112,7 +114,7 @@ describe('CATEGORY_PAGES', () => {
 });
 
 type SectionStatesOf<S extends Record<string, { meta: typeof TEMPERATURE_META }>> = {
-  [K in keyof S]: ProviderPageState<S[K]>;
+  [K in keyof S]: SectionState<S[K]>;
 };
 
 const NOW = new Date('2026-10-28T12:00:00.000Z');
@@ -473,11 +475,14 @@ describe('CATEGORY_PAGES ocean-health entry', () => {
     expect(screen.queryByTestId('stale-data-notice')).not.toBeInTheDocument();
   });
 
-  it('should propagate a failure of our own BFF', async () => {
+  it('should hide only the section whose read fails for another reason than an outage', async () => {
     jest.mocked(getOceanPh).mockRejectedValue(new Error('BFF down'));
-    const definition = CATEGORY_PAGES['ocean-health'];
+    const { definition, states } = await renderOcean();
 
-    await expect(definition?.load()).rejects.toThrow('BFF down');
+    expect((states as Record<string, unknown>).ph).toEqual({ kind: 'failed' });
+    expect(screen.queryByRole('heading', { name: 'Ocean pH at Hawaii' })).not.toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Global mean sea level' })).toBeInTheDocument();
+    expect(definition.isDegraded?.(states)).toBe(true);
   });
 
   it('should not be degraded when every provider answers', async () => {
@@ -589,24 +594,85 @@ describe('defineSectionedProviderCategoryPage', () => {
     expect(tooOld.isDegraded?.(await tooOld.load())).toBe(false);
   });
 
-  it('should propagate a failure of our own BFF in any section', async () => {
-    const definition = defineSectionedProviderCategoryPage<Sections>({
-      sections: {
-        first: {
-          provider: { name: 'First' },
-          load: async () => ({ kind: 'ok' as const, payload: fresh('First') }),
-        },
-        second: {
-          provider: { name: 'Second' },
-          load: async () => {
-            throw new Error('BFF down');
+  describe('when a read fails for another reason than a provider outage', () => {
+    const failing = (message: string) => async (): Promise<ProviderPayloadResult<Payload>> => {
+      throw new Error(message);
+    };
+
+    beforeEach(() => jest.mocked(Sentry.captureException).mockClear());
+
+    it('should leave only that section failed, report it and keep the others', async () => {
+      const definition = defineSectionedProviderCategoryPage<Sections>({
+        sections: {
+          first: {
+            provider: { name: 'First' },
+            load: async () => ({ kind: 'ok' as const, payload: fresh('First') }),
           },
+          second: { provider: { name: 'Second' }, load: failing('BFF down') },
         },
-      },
-      Content,
+        Content,
+      });
+
+      const states = (await definition.load()) as Record<string, { kind: string }>;
+
+      expect(states.first.kind).toBe('fresh');
+      expect(states.second).toEqual({ kind: 'failed' });
+      expect(Sentry.captureException).toHaveBeenCalledTimes(1);
+      expect(Sentry.captureException).toHaveBeenCalledWith(new Error('BFF down'), {
+        tags: { section: 'second' },
+      });
+      expect(definition.isDegraded?.(states)).toBe(true);
     });
 
-    await expect(definition.load()).rejects.toThrow('BFF down');
+    it('should render the failed section as nothing', async () => {
+      const definition = defineSectionedProviderCategoryPage<Sections>({
+        sections: {
+          first: {
+            provider: { name: 'First' },
+            load: async () => ({ kind: 'ok' as const, payload: fresh('First') }),
+          },
+          second: { provider: { name: 'Second' }, load: failing('BFF down') },
+        },
+        Content,
+      });
+      const { Content: Page } = definition;
+
+      render(<Page data={await definition.load()} />);
+
+      expect(screen.getByTestId('inner-first')).toBeInTheDocument();
+      expect(screen.getByTestId('section-second')).toBeEmptyDOMElement();
+      expect(screen.queryByTestId('data-unavailable')).not.toBeInTheDocument();
+    });
+
+    it('should reject with the first error when every read fails, reporting nothing itself', async () => {
+      const definition = defineSectionedProviderCategoryPage<Sections>({
+        sections: {
+          first: { provider: { name: 'First' }, load: failing('first down') },
+          second: { provider: { name: 'Second' }, load: failing('second down') },
+        },
+        Content,
+      });
+
+      await expect(definition.load()).rejects.toThrow('first down');
+      expect(Sentry.captureException).not.toHaveBeenCalled();
+    });
+
+    it('should not take a date from a failed section', async () => {
+      const definition = defineSectionedProviderCategoryPage<Sections>({
+        sections: {
+          first: {
+            provider: { name: 'First' },
+            load: async () => ({ kind: 'ok' as const, payload: fresh('First') }),
+          },
+          second: { provider: { name: 'Second' }, load: failing('BFF down') },
+        },
+        Content,
+      });
+
+      expect(definition.lastModified?.(await definition.load())).toBe(
+        TEMPERATURE_META.source.lastUpdated,
+      );
+    });
   });
 
   it('should start every section read before any of them resolves', async () => {
@@ -703,6 +769,20 @@ describe('loadCategoryData', () => {
 
   it('should resolve to nothing for a category without an entry', async () => {
     await expect(loadCategoryData('air-quality')).resolves.toBeUndefined();
+  });
+
+  it('should keep the 30-day expire for healthy and degraded renders', async () => {
+    const thirtyDays = 30 * 86_400;
+    jest.mocked(getCo2Emissions).mockResolvedValue({
+      kind: 'ok',
+      payload: { data: CO2_FIXTURE, meta: CO2_META },
+    });
+    await loadCategoryData('co2-emissions');
+    expect(lastLifetime()).toMatchObject({ expire: thirtyDays });
+
+    jest.mocked(getCo2Emissions).mockResolvedValue({ kind: 'provider-unavailable' });
+    await loadCategoryData('co2-emissions');
+    expect(lastLifetime()).toMatchObject({ expire: thirtyDays });
   });
 });
 
