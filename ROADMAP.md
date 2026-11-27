@@ -12,7 +12,7 @@ Este documento registra todas las propuestas de mejora identificadas para el pro
 | Lint             | ✅     | Sin warnings                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
 | Build            | ✅     | Compila correctamente                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
 | CI               | ✅     | Una corrida por push en cualquier branch (`permissions` mínimos, `concurrency` que cancela corridas reemplazadas sin cortar deploys); guardia de lockfile podado del API; build de la imagen Docker del API sin publicarla cuando cambian sus inputs; E2E salteado en pushes que solo tocan docs; el nombre del job es contrato con Vercel Deployment Checks                                                                                                                                                                                                                                                              |
-| CD / Deploy      | ✅     | web: Vercel (producción retenida por Deployment Check hasta CI verde); api: Cloud Run vía `deploy-api.yml` llamado desde CI (`main` → `eco-metrics-api`, `develop` → `eco-metrics-api-dev`, que consumen los previews de Vercel), imagen reproducible desde lockfile podado, una imagen por entorno en Artifact Registry con cleanup que conserva las últimas 3                                                                                                                                                                                                                                                           |
+| CD / Deploy      | ✅     | web: Vercel (producción retenida por Deployment Checks hasta CI verde y la API de producción desplegada y sirviendo; alta del segundo check en Vercel pendiente tras el primer run en `main`, ver `docs/deploy/vercel.md`); api: Cloud Run vía `deploy-api.yml` llamado desde CI (`main` → `eco-metrics-api`, `develop` → `eco-metrics-api-dev`, que consumen los previews de Vercel), imagen reproducible desde lockfile podado, una imagen por entorno en Artifact Registry con cleanup que conserva las últimas 3                                                                                                      |
 | Dependencias     | 🟡     | Producción sin advisories (`npm audit --omit=dev` limpio). Dependabot alerts activas (los PRs automáticos de seguridad quedan apagados porque GitHub los abre contra `main`). Los `overrides` de `package.json` fuerzan versiones corregidas; el de `undici@^7` existe porque `nx` pinnea `undici` 7.29.0 con advisories altas: quitarlo cuando `nx` lo traiga corregido. Quedan abiertas solo dos moderadas de desarrollo, `minimatch` (GHSA-g3hv-75wg-m249) y `glob` (GHSA-3g3m-2fjr-6pw4), que traen `nx`, `jest`, `@swc/cli` y el `npm` empaquetado; el fix está en la siguiente major, así que no se fuerza override |
 | Coverage         | ✅     | Medido con Jest                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
 | E2E              | ✅     | Playwright en 5 browsers (chromium corre todo; firefox, webkit y los dos mobile solo los checks `@smoke`), en CI, arranque determinista y proveedores simulados con un servidor de fixtures local (OWID, Copernicus, NOAA LSA; sin red)                                                                                                                                                                                                                                                                                                                                                                                   |
@@ -63,7 +63,15 @@ _Sin propuestas abiertas._
 
 ## 🟡 Importante / Media Prioridad
 
-_Sin propuestas abiertas._
+### P1: Que una sección con error no tire abajo toda la página
+
+**Problema:** en las páginas por secciones (`ocean-health`) solo la caída de un proveedor queda aislada en su sección; cualquier otro error de nuestra API en una sola sección (un 404 por desfase de deploy, un payload con otra forma, un 500) hace fallar la página entera y muestra `error.tsx`.
+
+**Idea:** tratar el error de una sección como "sección no disponible" (el mismo estado que ya existe para el proveedor caído) y reportarlo a Sentry, manteniendo el error de página completa solo cuando fallan todas. Complementa el gate que publica la web recién cuando la API nueva está arriba: ese gate evita la ventana entre deploys, esto limita el daño de cualquier error puntual.
+
+**A validar:** que no tape errores reales (que lleguen a Sentry y a los logs), que no quede cacheado 24 h un estado de error (revalidación corta como la del `502` del proveedor) y si aplica también a las páginas de un solo proveedor.
+
+**Dificultad:** 3/10. **Requiere:** spec OpenSpec.
 
 ---
 
@@ -71,7 +79,8 @@ _Sin propuestas abiertas._
 
 Si no estás seguro por dónde empezar, este es el orden recomendado:
 
-_Sin propuestas abiertas._
+1. **P1** — aislar el error de una sección para que no caiga la página entera.
+2. Mejoras rápidas del backlog: **I16** (ícono de la página de error), **I19** (fechas del sitemap), **I21** (PRs a `main` completados solos) e **I17** (analytics).
 
 D1 (TypeScript 7) queda como seguimiento pasivo — sin acción por ahora.
 
@@ -111,11 +120,13 @@ Lista de hallazgos del análisis de repositorio, ordenados por prioridad (más c
 
 - **I09.** Sharding de los E2E en GitHub Actions — hoy el job de CI tarda ~14–15 min, casi todo E2E, y crece ~1,5–2 min por cada categoría con datos (quedan 6 de 12). Partir en 2 shards bajaría el job a ~11–13 min (no a la mitad: cada shard repite contenedor, `npm ci`, arranque de servidores y compilación de páginas en `next dev`) a cambio de ~4–5 min más de runner por corrida, que no se cobran por ser repo público. Disparador: CI > 18 min.
 - **I10.** Analizar GitHub Environments (`production` / `development`) para el deploy de la API, disponibles gratis desde que el repo es público. Ventajas posibles: que GitHub restrinja el deploy a producción a `main`, aprobación manual opcional antes de producción, variables por entorno en vez del sufijo `_DEV` e historial de deploys en el repo. Solo evaluar; adoptarlo requiere spec.
+- **I21.** Completar solo los PR `develop → main`: hoy abren con título "Develop" y descripción vacía. Un workflow en `pull_request` (`opened`, base `main`, head `develop`) lee los commits de `main..develop` (sin los de release ni los merges), reescribe el título con un resumen de lo que sube (p. ej. "Release: ocean-health, roadmap" o cantidad de feat/fix/docs) y arma la descripción con los mensajes cortos agrupados por tipo, marcando si toca API, web o ambas (la web de producción espera el deploy de la API). Solo completa si el título sigue siendo el default y la descripción está vacía, para no pisar lo escrito a mano. Corre en ~15–30 s aparte del CI (que es solo por `push`) y no bloquea nada; permisos `contents: read` y `pull-requests: write`. Opcional: indicar si la release será minor (hay `feat`) o patch. Dificultad: 2/10.
 
 ### 🟢 Configuración / Build
 
 - **I03.** `legacy-peer-deps=true` en `.npmrc` — workaround porque `eslint-plugin-jsx-a11y@6.10.2` no declara ESLint 10 en sus peer deps. PR [#1081](https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/pull/1081) abierto. Eliminar cuando se publique un release con soporte.
 - **I04.** Sin Storybook ni documentación visual de componentes. Hay 102 componentes, 86 sin contar los 16 íconos (26 Nov 2026), por encima del umbral de ~40 fijado para reconsiderarlo; muchas piezas genéricas (explorador por país, panel de chart, tablas, atribución) ya tienen tests unitarios. Reevaluar si el overhead de configuración y mantenimiento se justifica.
+- **I20.** Dependabot para npm: hoy solo cubre Docker y GitHub Actions, y las actualizaciones de paquetes se revisan a mano con `npm outdated`. Sumar el ecosistema `npm` contra `develop`, semanal, agrupando parches y minors en un PR y dejando las majors aparte (las de toolchain requieren spec). Validar que respete las versiones exactas, los workspaces y el lockfile podado del API. Simple de configurar; el costo es revisar los PRs.
 
 ### 🟡 Datos / Proveedores
 
@@ -130,6 +141,10 @@ Lista de hallazgos del análisis de repositorio, ordenados por prioridad (más c
 
 ### 🟢 Producto
 
+- **I16.** La página de error genérica (`error.tsx`) muestra el ícono de "404" (`NotFoundIcon`) aunque el problema no sea una página inexistente, lo que confunde. Usar un ícono propio de error. Trivial, sin spec.
+- **I17.** Analytics sin cookies: hoy no hay ninguna métrica de uso. Sumar Vercel Web Analytics (qué categorías se visitan, de dónde llegan) y, opcional, Speed Insights (Core Web Vitals reales) para priorizar el resto del roadmap. Revisar el cupo del plan gratuito, el ajuste del CSP y si hace falta aviso de privacidad. Dificultad: 2/10. Requiere: spec chica.
+- **I18.** Imagen para compartir (Open Graph) propia de cada categoría: hoy todas usan `og-image.png`, así que un link a una categoría se ve igual que la home en redes y mensajería. Generarlas con `opengraph-image.tsx` (nombre de la categoría y, opcional, una cifra destacada), cuidando que no dependan del BFF en cada request. Dificultad: 3/10. Requiere: spec.
+- **I19.** El sitemap declara `lastModified: new Date()` en cada pedido, así que siempre dice "ahora" y Google termina ignorando el dato. Usar una fecha real (la del deploy o la de los datos de cada categoría). Simple.
 - **I15.** Investigar multi-idioma: viabilidad y costo (i18n del App Router, rutas por idioma con `hreflang` y sitemap, traducción de copys, cifras y fechas, datos de proveedores que solo vienen en inglés), qué idiomas incluir según la audiencia (español como primer candidato) y el impacto en SEO, caché e E2E. Solo evaluar; adoptarlo requiere spec.
 
 ---

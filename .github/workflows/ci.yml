@@ -166,6 +166,11 @@ jobs:
 
   # Production follows `main`, like the web app on Vercel; `develop` feeds the
   # dev service that Vercel previews consume. Both deploy only after CI passes.
+  #
+  # Contract with Vercel Deployment Checks: the `name` below is the first half of the
+  # check `Deploy API (production) / Build and deploy API to Cloud Run (production)`;
+  # the second half is the `deploy` job name in deploy-api.yml. Renaming or moving this
+  # job, or changing `target`, breaks the web production gate. See docs/deploy/vercel.md.
   deploy-api-production:
     name: Deploy API (production)
     needs: [ci, api-image]
