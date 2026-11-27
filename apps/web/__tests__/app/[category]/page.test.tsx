@@ -331,7 +331,13 @@ describe('generateMetadata', () => {
     const openGraph = metadata.openGraph as { type?: string; images?: unknown };
     expect(openGraph.type).toBe('website');
     expect(metadata.openGraph?.siteName).toBe('eco-metrics earth');
-    expect(openGraph.images).toEqual([OG_IMAGE]);
+    expect(openGraph.images).toEqual([
+      {
+        ...OG_IMAGE,
+        url: '/air-quality/og-image.png',
+        alt: 'eco-metrics earth | Air Quality',
+      },
+    ]);
   });
 
   it('should use the summary_large_image twitter card for air-quality', async () => {

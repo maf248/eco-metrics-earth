@@ -113,12 +113,16 @@ test.describe('Category page metadata', () => {
 });
 
 const SOCIAL_CARD_PAGES = [
-  { name: 'home page', url: homePage.url },
-  { name: 'category page', url: categoryPage('air-quality').url },
+  { name: 'home page', url: homePage.url, card: 'http://localhost:3000/og-image.png' },
+  {
+    name: 'category page',
+    url: categoryPage('air-quality').url,
+    card: 'http://localhost:3000/air-quality/og-image.png',
+  },
 ];
 
 test.describe('Social card metadata', () => {
-  for (const { name, url } of SOCIAL_CARD_PAGES) {
+  for (const { name, url, card } of SOCIAL_CARD_PAGES) {
     test(`should declare the shared Open Graph fields and social card on the ${name}`, async ({
       page,
     }) => {
@@ -128,10 +132,7 @@ test.describe('Social card metadata', () => {
         'content',
         'eco-metrics earth',
       );
-      await expect(page.locator('meta[property="og:image"]')).toHaveAttribute(
-        'content',
-        'http://localhost:3000/og-image.png',
-      );
+      await expect(page.locator('meta[property="og:image"]')).toHaveAttribute('content', card);
       await expect(page.locator('meta[property="og:image:width"]')).toHaveAttribute(
         'content',
         '1200',
@@ -145,18 +146,21 @@ test.describe('Social card metadata', () => {
         'content',
         'summary_large_image',
       );
-      await expect(page.locator('meta[name="twitter:image"]')).toHaveAttribute(
-        'content',
-        'http://localhost:3000/og-image.png',
-      );
+      await expect(page.locator('meta[name="twitter:image"]')).toHaveAttribute('content', card);
     });
   }
 
-  test('should serve the social card as a PNG without a redirect', async ({ request }) => {
-    const response = await request.get('/og-image.png', { maxRedirects: 0 });
-    expect(response.status()).toBe(200);
-    expect(response.headers()['content-type']).toBe('image/png');
-  });
+  for (const path of [
+    '/og-image.png',
+    '/co2-emissions/og-image.png',
+    '/air-quality/og-image.png',
+  ]) {
+    test(`should serve ${path} as a PNG without a redirect`, async ({ request }) => {
+      const response = await request.get(path, { maxRedirects: 0 });
+      expect(response.status()).toBe(200);
+      expect(response.headers()['content-type']).toBe('image/png');
+    });
+  }
 
   test('should declare the PNG apple touch icon', async ({ page, request }) => {
     await page.goto(homePage.url);

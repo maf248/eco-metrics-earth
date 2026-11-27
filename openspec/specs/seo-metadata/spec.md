@@ -8,7 +8,7 @@ Defines the Open Graph, Twitter Card, icon, theme-color, and 404 metadata for th
 
 ### Requirement: Root layout has complete Open Graph metadata
 
-The root layout `Metadata` export SHALL include `openGraph.type`, `openGraph.siteName`, and a `twitter.card` of `summary_large_image`. Every route SHALL emit an `og:image` and a `twitter:image` that resolve to a site-wide 1200×630 PNG social card (logo, site name and tagline on the black brand background) with alt text, so link previews render on social networks. Pages that declare their own `openGraph` or `twitter` metadata SHALL NOT lose the type, site name, image or large card. The image URL SHALL respond `200` directly, without a redirect.
+The root layout `Metadata` export SHALL include `openGraph.type`, `openGraph.siteName`, and a `twitter.card` of `summary_large_image`. Every route SHALL emit an `og:image` and a `twitter:image` that resolve to a 1200×630 PNG social card with alt text, so link previews render on social networks: category pages use their own category card (see "Category social cards"), every other route the site-wide card (logo, site name and tagline on the black brand background). Pages that declare their own `openGraph` or `twitter` metadata SHALL NOT lose the type, site name, image or large card. The image URL SHALL respond `200` directly, without a redirect.
 
 #### Scenario: Open Graph type is declared
 
@@ -35,7 +35,7 @@ The root layout `Metadata` export SHALL include `openGraph.type`, `openGraph.sit
 #### Scenario: Twitter image is declared
 
 - **WHEN** a social crawler reads the HTML of the home page or any category page
-- **THEN** the page includes a `twitter:image` meta tag pointing to the same 1200×630 PNG social card
+- **THEN** the page includes a `twitter:image` meta tag pointing to the same 1200×630 PNG social card as its `og:image`
 
 ### Requirement: Root layout declares themeColor and icons metadata
 
@@ -88,3 +88,28 @@ The site-wide social card served at `/og-image.png` SHALL show, in addition to t
 - **GIVEN** the build is running
 - **WHEN** the card is opened in a browser
 - **THEN** the CTA is legible, does not overlap the tagline, and fits inside the 1200×630 canvas
+
+### Requirement: Category social cards
+
+`apps/web/src/app/[category]/og-image.png/route.tsx` SHALL serve, for every `ECO_CATEGORIES` slug (live and placeholder), a 1200×630 PNG at `/<category>/og-image.png` with `200` and no redirect, prerendered at build time through `generateStaticParams` and built from static data only (never the BFF). The card SHALL share the site card's layout and palette (black background, white and gray text, emerald accent and bottom border) and show the category's icon from `CATEGORY_ICONS`, its name (`getCategoryTitle`), its description (`CATEGORY_DESCRIPTIONS`) and the site name as the accent line. Any other slug SHALL get `404`. The site card's output SHALL NOT change.
+
+#### Scenario: A category card is served
+
+- **WHEN** `GET /co2-emissions/og-image.png` is requested
+- **THEN** the response is `200` with `Content-Type: image/png` and no redirect
+
+#### Scenario: Placeholder categories have a card
+
+- **WHEN** `GET /air-quality/og-image.png` is requested
+- **THEN** the response is `200` with `Content-Type: image/png`
+
+#### Scenario: Unknown slug has no card
+
+- **WHEN** the route handler is called with a slug that is not a category
+- **THEN** it responds `404`
+
+#### Scenario: Category pages declare their card
+
+- **WHEN** a social crawler reads the HTML of `/co2-emissions/`
+- **THEN** `og:image` and `twitter:image` are `{siteUrl}/co2-emissions/og-image.png`
+- **AND** `og:image:alt` names the category
