@@ -127,7 +127,7 @@ In the GitHub repo, go to **Settings → Secrets and variables → Actions → V
 | `GCP_REGION`              | `us-central1` (or another Tier 1 region for the free-tier numbers above)                                                                     |
 | `WIF_PROVIDER`            | `projects/<GCP_PROJECT_NUMBER>/locations/global/workloadIdentityPools/...`                                                                   |
 | `WIF_SERVICE_ACCOUNT`     | `github-deployer@<GCP_PROJECT_ID>.iam.gserviceaccount.com`                                                                                   |
-| `CORS_ORIGIN`             | **Production** service. Comma-separated list of exact origins, e.g. `https://eco-metrics-earth.vercel.app`                                   |
+| `CORS_ORIGIN`             | **Production** service. Comma-separated list of exact origins, e.g. `https://eco-metrics.earth`                                              |
 | `CORS_ORIGIN_PATTERN`     | **Production** service, optional anchored regex. Leave unset: previews use the dev service                                                   |
 | `CORS_ORIGIN_DEV`         | **Dev** service. Comma-separated list of exact origins, e.g. `http://localhost:3000,https://eco-metrics-earth-git-develop-<team>.vercel.app` |
 | `CORS_ORIGIN_PATTERN_DEV` | **Dev** service, optional anchored regex for Vercel previews, e.g. `^https://eco-metrics-earth-[a-z0-9-]+\.vercel\.app$`                     |
