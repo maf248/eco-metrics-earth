@@ -1,3 +1,13 @@
+## [2.26.0](https://github.com/maf248/eco-metrics-earth/compare/v2.25.0...v2.26.0) (2026-11-27)
+
+### Features
+
+* **deforestation:** add forest area and tree cover loss category ([c3d1859](https://github.com/maf248/eco-metrics-earth/commit/c3d185946d6a07a8404947e48dda33d0cfc801be))
+
+### Bug Fixes
+
+* **web:** clear the map outline when a selection is removed from the table ([dd67cbb](https://github.com/maf248/eco-metrics-earth/commit/dd67cbbd1f803458fd9001b2d4d4e43dac8de8ff))
+
 ## [2.25.0](https://github.com/maf248/eco-metrics-earth/compare/v2.24.0...v2.25.0) (2026-11-27)
 
 ### Features
