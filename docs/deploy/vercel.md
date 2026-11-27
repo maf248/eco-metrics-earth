@@ -24,7 +24,7 @@ Previews therefore never read from or load the production API. Setup steps are i
 Only the project owner can do this; it is a Vercel dashboard setting, not code.
 
 1. **Enable automatic production aliasing** (prerequisite). In the Vercel project, open **Settings → Environments → Production** (or **Settings → Git**, depending on the dashboard version) and make sure production deployments are assigned to the production domains automatically. Deployment Checks hold the assignment of the domains until the checks pass.
-2. **Add the Deployment Check.** Open **Settings → Deployment Checks** and add the GitHub Actions job named exactly:
+2. **Add the Deployment Check.** Open **Settings → Build and Deployment → Deployment Checks → Add Checks**, choose **GitHub** under _Import from GitHub_, then in **Select checks to add** paste the SHA of a commit whose CI run reported the job, turn on **Show All Checks** and select the job named exactly:
 
    ```
    Format, Lint, Typecheck, Build & Test
@@ -32,13 +32,13 @@ Only the project owner can do this; it is a Vercel dashboard setting, not code.
 
    Do this only after the CI changes are on `develop` and a run shows that job name.
 
-3. **Add the API deploy check.** In the same place add the second check, named exactly:
+3. **Add the API deploy check.** The same way (SHA of a `main` commit, **Show All Checks**), add the second check, named exactly:
 
    ```
    Deploy API (production) / Build and deploy API to Cloud Run (production)
    ```
 
-   Order matters: merge the change, wait for a run on `main` that reports this name, and only then add it. Vercel cannot select a check that has never reported; if you type a name that never reports, production deployments wait forever (see troubleshooting).
+   Order matters: merge the change, wait for a run on `main` that reports this name, and only then add it. Vercel cannot select a check that has never reported; if you type a name that never reports, production deployments wait forever (see troubleshooting). Never add a check from **Send workflow updates to Vercel**: that section is for the `vercel/repository-dispatch` action, which this repository does not use, so such a check never reports.
 
 ## API deploy check: the two-file name contract
 
@@ -94,7 +94,7 @@ The web build reads `NEXT_PUBLIC_SENTRY_DSN` (public, Production and Preview) an
 
 1. Open the commit's CI run and find the job `Deploy API (production) / Build and deploy API to Cloud Run (production)`. If it is running, wait: an API change deploys for a few minutes, and deploys of the same target queue behind each other.
 2. If it failed, the web stays held on purpose and the previous deployment keeps serving. Read the failed step: `Verify the new revision serves traffic` failing on traffic is a pinned rollback (see [`cloud-run.md`](./cloud-run.md#the-verify-the-new-revision-serves-traffic-step-fails)). Fix and push, re-run the failed job, or use Force Promote only when the web change does not depend on the API change.
-3. If no such job exists for the commit, or it has a different name, the contract was broken (see the two-file name contract above): restore the name, or remove the check from **Settings → Deployment Checks** and re-add it after a run reports the new name.
+3. If no such job exists for the commit, or it has a different name, the contract was broken (see the two-file name contract above): restore the name, or remove the check from **Deployment Checks** and re-add it after a run reports the new name.
 4. A `cancelled` job means a newer commit replaced the pending run; that older commit's web is never promoted, which is expected.
 
 ### Previews still build before CI finishes
