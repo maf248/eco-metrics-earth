@@ -9,7 +9,6 @@ exports[`ErrorPage should match snapshot 1`] = `
       class="flex flex-col items-center gap-6 mt-14 lg:mt-0"
     >
       <div
-        aria-label="Error"
         class="flex items-center justify-center w-48 h-48 rounded-2xl bg-well p-4"
         data-testid="error-icon"
       >
@@ -38,18 +37,21 @@ exports[`ErrorPage should match snapshot 1`] = `
       </div>
       <div
         class="text-center"
-        role="alert"
       >
-        <h1
-          class="font-mono text-4xl font-bold tracking-tight text-balance text-accent"
+        <div
+          role="alert"
         >
-          Oops! Something went wrong…
-        </h1>
-        <p
-          class="mt-4 text-fg-secondary"
-        >
-          An unexpected error occurred while loading this page.
-        </p>
+          <h1
+            class="font-mono text-4xl font-bold tracking-tight text-balance text-accent"
+          >
+            Oops! Something went wrong…
+          </h1>
+          <p
+            class="mt-4 text-fg-secondary"
+          >
+            An unexpected error occurred while loading this page.
+          </p>
+        </div>
         <div
           class="mt-6 flex flex-row items-center justify-center gap-4"
         >

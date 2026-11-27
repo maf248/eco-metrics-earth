@@ -1,5 +1,5 @@
 import * as Sentry from '@sentry/nextjs';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, within } from '@testing-library/react';
 
 import ErrorPage from '@/app/error';
 import { ErrorIcon, NotFoundIcon } from '@/components/icons';
@@ -38,10 +38,12 @@ describe('ErrorPage', () => {
     expect(mockReset).toHaveBeenCalledTimes(1);
   });
 
-  it('should have aria-label="Error" on the icon wrapper', () => {
+  it('should keep the icon decorative and leave naming the error to the heading', () => {
     render(<ErrorPage error={testError} reset={mockReset} />);
     const icon = screen.getByTestId('error-icon');
-    expect(icon.getAttribute('aria-label')).toBe('Error');
+    // aria-label is prohibited on a generic <div> (ARIA 1.2), so the wrapper carries no name.
+    expect(icon).not.toHaveAttribute('aria-label');
+    expect(icon.querySelector('svg')).toHaveAttribute('aria-hidden', 'true');
   });
 
   it('should render a Go back home link pointing to /', () => {
@@ -52,9 +54,15 @@ describe('ErrorPage', () => {
     expect(homeLink.getAttribute('href')).toBe('/');
   });
 
-  it('should have role="alert" on the text content wrapper for screen reader announcement', () => {
+  it('should announce only the heading and message through role="alert", not the buttons', () => {
     render(<ErrorPage error={testError} reset={mockReset} />);
-    expect(screen.getByRole('alert')).toBeTruthy();
+    const alert = screen.getByRole('alert');
+    expect(within(alert).getByRole('heading', { level: 1 })).toBeTruthy();
+    expect(
+      within(alert).getByText('An unexpected error occurred while loading this page.'),
+    ).toBeTruthy();
+    expect(within(alert).queryByRole('button')).toBeNull();
+    expect(within(alert).queryByRole('link')).toBeNull();
   });
 
   it('should render the icon wrapper with data-testid', () => {

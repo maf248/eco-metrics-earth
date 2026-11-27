@@ -25,16 +25,18 @@ export default function ErrorPage({ error, reset }: ErrorPageProps) {
       <div className="flex flex-col items-center gap-6 mt-14 lg:mt-0">
         <div
           data-testid="error-icon"
-          aria-label="Error"
           className="flex items-center justify-center w-48 h-48 rounded-2xl bg-well p-4"
         >
           <ErrorIcon aria-hidden className="w-32 h-32 drop-shadow-icon-xl" />
         </div>
-        <div className="text-center" role="alert">
-          <h1 className={PAGE_TITLE_CLASS_NAME}>Oops! Something went wrong…</h1>
-          <p className="mt-4 text-fg-secondary">
-            An unexpected error occurred while loading this page.
-          </p>
+        <div className="text-center">
+          {/* The live region holds only the message, so the buttons are not read as part of it. */}
+          <div role="alert">
+            <h1 className={PAGE_TITLE_CLASS_NAME}>Oops! Something went wrong…</h1>
+            <p className="mt-4 text-fg-secondary">
+              An unexpected error occurred while loading this page.
+            </p>
+          </div>
           <div className="mt-6 flex flex-row items-center justify-center gap-4">
             <button
               type="button"
