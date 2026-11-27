@@ -181,6 +181,8 @@ Pick one:
 
 Watch the workflow build the image, push it to Artifact Registry, and deploy the Cloud Run service. Each target has its own concurrency group (`deploy-api-production`, `deploy-api-development`): a running deploy is never cancelled mid-rollout, at most one more run per target waits (a newer waiting run replaces an older one, which is safe because change detection diffs against the serving commit), and deploys of different targets run independently.
 
+Once added in Vercel, the `Deploy API (production)` job is also a Deployment Check that holds the web production deployment until the API deploy succeeds, and its last step (`Verify the new revision serves traffic`) fails the job unless the new revision serves 100 percent of the traffic. Its name is a contract: see [`vercel.md`](./vercel.md#api-deploy-check-the-two-file-name-contract).
+
 ## 12. Record the Cloud Run URLs
 
 After a successful deploy, the final step prints a URL like:
@@ -293,6 +295,8 @@ Recommended safeguards:
   5. A day later, check the size: `gcloud artifacts repositories describe eco-metrics --location=<GCP_REGION> --project=<GCP_PROJECT_ID>` prints `Repository Size: …` (it should stay below 0.5 GB).
 
   Rolling back further than the two previous images per environment means reverting in git and redeploying. After step 4, Cloud Run revisions created before the migration point at the deleted `api` package and can no longer start, so traffic rollback only works to revisions deployed from the new packages.
+
+  A traffic rollback pins the service to an older revision, and later deploys then create revisions that receive no traffic. Undo the pin before the next deploy: `gcloud run services update-traffic <service> --region <GCP_REGION> --project <GCP_PROJECT_ID> --to-latest`.
 
 - Both services scale to zero and share the always-free tier of the billing account.
 - Cloud Logging: 30-day retention on the free tier, with 50 GB/month ingestion free.
@@ -565,6 +569,20 @@ End users only wait on a cold start for that first request after a deploy.
 **Symptom:** the `Deploy API` job is green but there is no new revision.
 
 **Fix:** change detection found no API inputs in the diff between the serving commit and the pushed commit. Open the job summary (deployed SHA, target SHA, matched files, decision). To deploy anyway, run **Actions → Deploy API → Run workflow** (a manual run skips change detection).
+
+### The `Verify the new revision serves traffic` step fails
+
+**Symptom:** the deploy succeeded but the last step fails with `Revision <name> receives 0% of the traffic, not 100% (traffic held by: <older revision>)` and the web production deployment stays held.
+
+**Cause:** the service traffic is pinned to an older revision (a manual rollback), so the new revision is ready but receives no traffic.
+
+**Fix:** restore routing to the latest revision and re-run the failed job:
+
+```bash
+gcloud run services update-traffic <service> --region <GCP_REGION> --project <GCP_PROJECT_ID> --to-latest
+```
+
+If the step reports a not-ready latest revision, open the Cloud Run revisions list for the service and check the startup probe logs (see [Startup probe timeout](#startup-probe-timeout)). If it reports a different image, the service template was changed outside this workflow between the deploy and the check: re-run the failed job, so change detection compares against the serving image again and redeploys.
 
 ### Deployed SHA unknown after a force-push
 

@@ -12,7 +12,7 @@ Este documento registra todas las propuestas de mejora identificadas para el pro
 | Lint             | ✅     | Sin warnings                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
 | Build            | ✅     | Compila correctamente                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
 | CI               | ✅     | Una corrida por push en cualquier branch (`permissions` mínimos, `concurrency` que cancela corridas reemplazadas sin cortar deploys); guardia de lockfile podado del API; build de la imagen Docker del API sin publicarla cuando cambian sus inputs; E2E salteado en pushes que solo tocan docs; el nombre del job es contrato con Vercel Deployment Checks                                                                                                                                                                                                                                                              |
-| CD / Deploy      | ✅     | web: Vercel (producción retenida por Deployment Check hasta CI verde); api: Cloud Run vía `deploy-api.yml` llamado desde CI (`main` → `eco-metrics-api`, `develop` → `eco-metrics-api-dev`, que consumen los previews de Vercel), imagen reproducible desde lockfile podado, una imagen por entorno en Artifact Registry con cleanup que conserva las últimas 3                                                                                                                                                                                                                                                           |
+| CD / Deploy      | ✅     | web: Vercel (producción retenida por Deployment Checks hasta CI verde y la API de producción desplegada y sirviendo; alta del segundo check en Vercel pendiente tras el primer run en `main`, ver `docs/deploy/vercel.md`); api: Cloud Run vía `deploy-api.yml` llamado desde CI (`main` → `eco-metrics-api`, `develop` → `eco-metrics-api-dev`, que consumen los previews de Vercel), imagen reproducible desde lockfile podado, una imagen por entorno en Artifact Registry con cleanup que conserva las últimas 3                                                                                                      |
 | Dependencias     | 🟡     | Producción sin advisories (`npm audit --omit=dev` limpio). Dependabot alerts activas (los PRs automáticos de seguridad quedan apagados porque GitHub los abre contra `main`). Los `overrides` de `package.json` fuerzan versiones corregidas; el de `undici@^7` existe porque `nx` pinnea `undici` 7.29.0 con advisories altas: quitarlo cuando `nx` lo traiga corregido. Quedan abiertas solo dos moderadas de desarrollo, `minimatch` (GHSA-g3hv-75wg-m249) y `glob` (GHSA-3g3m-2fjr-6pw4), que traen `nx`, `jest`, `@swc/cli` y el `npm` empaquetado; el fix está en la siguiente major, así que no se fuerza override |
 | Coverage         | ✅     | Medido con Jest                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
 | E2E              | ✅     | Playwright en 5 browsers (chromium corre todo; firefox, webkit y los dos mobile solo los checks `@smoke`), en CI, arranque determinista y proveedores simulados con un servidor de fixtures local (OWID, Copernicus, NOAA LSA; sin red)                                                                                                                                                                                                                                                                                                                                                                                   |
@@ -63,28 +63,11 @@ _Sin propuestas abiertas._
 
 ## 🟡 Importante / Media Prioridad
 
-### P1: Desplegar la API antes que la web cuando un cambio toca ambas
-
-**Problema:** Vercel publica la web apenas termina el job `ci`, mientras el deploy de la API a Cloud Run (`deploy-api-*`) sigue unos minutos más. En esa ventana la web nueva habla con la API vieja: lo existente sigue andando, pero los endpoints nuevos responden 404 y la página que los usa muestra la página de error (pasó con `ocean-health` en el preview de develop), y un cambio en la forma de un endpoint existente podría romper una página que ya estaba en producción. No hay stale-if-error que lo cubra: la página nueva no tiene versión anterior en caché.
-
-**Idea:** sumar el job de deploy de la API a producción como Deployment Check de Vercel, junto al job `ci`, para que la web de producción no se publique hasta que la API nueva esté arriba.
-
-**Ya verificado:** el job de deploy corre en cada push a `main` y saltea sus pasos por dentro cuando no hay cambios en la API, así que termina en `success` y no traba los pushes que no la tocan; los commits de release no pasan por Vercel (`scripts/vercel-ignore.sh`).
-
-**A validar:**
-
-- El nombre exacto del check: el job vive en un workflow reutilizable, así que GitHub lo reporta como `Deploy API (production) / Build and deploy API to Cloud Run (production)`; pasa a ser contrato con Vercel, igual que el job `ci`.
-- Que si el deploy de la API falla, la web efectivamente quede retenida, y cómo forzarla a mano si hiciera falta.
-- Previews de develop: no tienen Deployment Checks, y cuando entra otro push el `cancel-in-progress` de CI cancela la corrida anterior antes de que despliegue la API dev (así pasó con `ocean-health`). Decidir si se acepta como ventana de preview o si conviene no cancelar el deploy.
-- Complemento: contratos compatibles hacia atrás (primero agregar en la API, después usar en la web).
-
-**Dificultad:** 2/10. **Requiere:** spec OpenSpec (cambia el flujo de deploy).
-
-### P2: Que una sección con error no tire abajo toda la página
+### P1: Que una sección con error no tire abajo toda la página
 
 **Problema:** en las páginas por secciones (`ocean-health`) solo la caída de un proveedor queda aislada en su sección; cualquier otro error de nuestra API en una sola sección (un 404 por desfase de deploy, un payload con otra forma, un 500) hace fallar la página entera y muestra `error.tsx`.
 
-**Idea:** tratar el error de una sección como "sección no disponible" (el mismo estado que ya existe para el proveedor caído) y reportarlo a Sentry, manteniendo el error de página completa solo cuando fallan todas. Complementa a P1: P1 evita la ventana entre deploys, P2 limita el daño de cualquier error puntual.
+**Idea:** tratar el error de una sección como "sección no disponible" (el mismo estado que ya existe para el proveedor caído) y reportarlo a Sentry, manteniendo el error de página completa solo cuando fallan todas. Complementa el gate que publica la web recién cuando la API nueva está arriba: ese gate evita la ventana entre deploys, esto limita el daño de cualquier error puntual.
 
 **A validar:** que no tape errores reales (que lleguen a Sentry y a los logs), que no quede cacheado 24 h un estado de error (revalidación corta como la del `502` del proveedor) y si aplica también a las páginas de un solo proveedor.
 
@@ -96,9 +79,8 @@ _Sin propuestas abiertas._
 
 Si no estás seguro por dónde empezar, este es el orden recomendado:
 
-1. **P1** — desplegar la API antes que la web (evita errores en la ventana entre ambos deploys).
-2. **P2** — aislar el error de una sección para que no caiga la página entera.
-3. Mejoras rápidas del backlog: **I16** (ícono de la página de error), **I19** (fechas del sitemap), **I21** (PRs a `main` completados solos) e **I17** (analytics).
+1. **P1** — aislar el error de una sección para que no caiga la página entera.
+2. Mejoras rápidas del backlog: **I16** (ícono de la página de error), **I19** (fechas del sitemap), **I21** (PRs a `main` completados solos) e **I17** (analytics).
 
 D1 (TypeScript 7) queda como seguimiento pasivo — sin acción por ahora.
 
@@ -138,7 +120,7 @@ Lista de hallazgos del análisis de repositorio, ordenados por prioridad (más c
 
 - **I09.** Sharding de los E2E en GitHub Actions — hoy el job de CI tarda ~14–15 min, casi todo E2E, y crece ~1,5–2 min por cada categoría con datos (quedan 6 de 12). Partir en 2 shards bajaría el job a ~11–13 min (no a la mitad: cada shard repite contenedor, `npm ci`, arranque de servidores y compilación de páginas en `next dev`) a cambio de ~4–5 min más de runner por corrida, que no se cobran por ser repo público. Disparador: CI > 18 min.
 - **I10.** Analizar GitHub Environments (`production` / `development`) para el deploy de la API, disponibles gratis desde que el repo es público. Ventajas posibles: que GitHub restrinja el deploy a producción a `main`, aprobación manual opcional antes de producción, variables por entorno en vez del sufijo `_DEV` e historial de deploys en el repo. Solo evaluar; adoptarlo requiere spec.
-- **I21.** Completar solo los PR `develop → main`: hoy abren con título "Develop" y descripción vacía. Un workflow en `pull_request` (`opened`, base `main`, head `develop`) lee los commits de `main..develop` (sin los de release ni los merges), reescribe el título con un resumen de lo que sube (p. ej. "Release: ocean-health, roadmap" o cantidad de feat/fix/docs) y arma la descripción con los mensajes cortos agrupados por tipo, marcando si toca API, web o ambas (para esperar el deploy de la API, ver P1). Solo completa si el título sigue siendo el default y la descripción está vacía, para no pisar lo escrito a mano. Corre en ~15–30 s aparte del CI (que es solo por `push`) y no bloquea nada; permisos `contents: read` y `pull-requests: write`. Opcional: indicar si la release será minor (hay `feat`) o patch. Dificultad: 2/10.
+- **I21.** Completar solo los PR `develop → main`: hoy abren con título "Develop" y descripción vacía. Un workflow en `pull_request` (`opened`, base `main`, head `develop`) lee los commits de `main..develop` (sin los de release ni los merges), reescribe el título con un resumen de lo que sube (p. ej. "Release: ocean-health, roadmap" o cantidad de feat/fix/docs) y arma la descripción con los mensajes cortos agrupados por tipo, marcando si toca API, web o ambas (la web de producción espera el deploy de la API). Solo completa si el título sigue siendo el default y la descripción está vacía, para no pisar lo escrito a mano. Corre en ~15–30 s aparte del CI (que es solo por `push`) y no bloquea nada; permisos `contents: read` y `pull-requests: write`. Opcional: indicar si la release será minor (hay `feat`) o patch. Dificultad: 2/10.
 
 ### 🟢 Configuración / Build
 

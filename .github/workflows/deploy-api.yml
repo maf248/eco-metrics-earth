@@ -24,6 +24,10 @@ on:
         default: development
 
 jobs:
+  # Contract with Vercel Deployment Checks: this `name` is the second half of the check
+  # `Deploy API (production) / Build and deploy API to Cloud Run (production)`; the first
+  # half is the `deploy-api-production` job name in ci.yml. Changing either name or the
+  # `target` value breaks the web production gate. See docs/deploy/vercel.md.
   deploy:
     name: Build and deploy API to Cloud Run (${{ inputs.target }})
     runs-on: ubuntu-latest
@@ -305,3 +309,59 @@ jobs:
       - name: Show deployed URL
         if: steps.detect.outputs.deploy == 'true'
         run: echo "Deployed API URL ${{ steps.deploy.outputs.url }}"
+
+      # The Vercel Deployment Check on this job needs success to mean the new code is live,
+      # but `deploy-cloudrun` does not move traffic off a pinned revision (manual rollback).
+      - name: Verify the new revision serves traffic
+        if: steps.detect.outputs.deploy == 'true'
+        env:
+          SERVICE: ${{ steps.target.outputs.service }}
+          GCP_REGION: ${{ vars.GCP_REGION }}
+          GCP_PROJECT_ID: ${{ vars.GCP_PROJECT_ID }}
+          IMAGE: ${{ steps.target.outputs.image }}
+          URL: ${{ steps.deploy.outputs.url }}
+        run: |
+          set -euo pipefail
+
+          state=$(gcloud run services describe "$SERVICE" \
+            --region "$GCP_REGION" --project "$GCP_PROJECT_ID" --format=json)
+
+          created=$(jq -r '.status.latestCreatedRevisionName // ""' <<< "$state")
+          ready=$(jq -r '.status.latestReadyRevisionName // ""' <<< "$state")
+          template_image=$(jq -r '.spec.template.spec.containers[0].image // ""' <<< "$state")
+          percent=$(jq -r --arg rev "$ready" \
+            '[.status.traffic[]? | select(.latestRevision == true or .revisionName == $rev) | .percent // 0] | add // 0' <<< "$state")
+
+          echo "Latest created revision: ${created:-none}"
+          echo "Latest ready revision:   ${ready:-none}"
+          echo "Template image:          ${template_image:-none}"
+          echo "Expected image:          $IMAGE"
+          echo "Traffic on ready revision: ${percent}%"
+
+          if [ -z "$ready" ] || [ "$created" != "$ready" ]; then
+            echo "::error::The latest created revision ($created) is not the latest ready revision ($ready)."
+            exit 1
+          fi
+
+          if [ "$template_image" != "$IMAGE" ]; then
+            echo "::error::The service template image ($template_image) is not the image just deployed."
+            exit 1
+          fi
+
+          if [ "$percent" != "100" ]; then
+            pinned=$(jq -r --arg rev "$ready" \
+              '[.status.traffic[]? | select((.percent // 0) > 0 and .revisionName != $rev) | .revisionName // "unknown"] | join(", ")' <<< "$state")
+            echo "::error::Revision $ready receives ${percent}% of the traffic, not 100% (traffic held by: ${pinned:-unknown})."
+            echo "Current traffic status:"
+            jq -r '.status.traffic[]? | "  \(.revisionName // .tag // "latest"): \(.percent // 0)%"' <<< "$state"
+            echo "Most likely the traffic is pinned to another revision (manual rollback or split). Fix:"
+            echo "  gcloud run services update-traffic $SERVICE --region $GCP_REGION --project $GCP_PROJECT_ID --to-latest"
+            echo "Then re-run the failed job."
+            exit 1
+          fi
+
+          curl --fail --silent --show-error \
+            --retry 3 --retry-delay 2 --retry-connrefused --max-time 10 \
+            "$URL/api/v1/health"
+          echo
+          echo "Revision $ready serves 100% of the traffic and answers the health check."

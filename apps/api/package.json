@@ -83,6 +83,7 @@
           "default",
           "^production",
           "{workspaceRoot}/jest.preset.js",
+          "{workspaceRoot}/.github/workflows/ci.yml",
           "{workspaceRoot}/.github/workflows/deploy-api.yml",
           "{workspaceRoot}/Dockerfile",
           "{workspaceRoot}/scripts/lib/waste-recycling-source.mjs",
