@@ -3,6 +3,7 @@ export { default as BottleIcon } from './BottleIcon';
 export { default as Co2EmissionsIcon } from './Co2EmissionsIcon';
 export { default as DeforestationIcon } from './DeforestationIcon';
 export { default as EndangeredSpeciesIcon } from './EndangeredSpeciesIcon';
+export { default as ErrorIcon } from './ErrorIcon';
 export { default as GlacierMeltingIcon } from './GlacierMeltingIcon';
 export { default as GlobalTemperatureIcon } from './GlobalTemperatureIcon';
 export { default as LightBulbIcon } from './LightBulbIcon';

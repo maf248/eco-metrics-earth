@@ -70,7 +70,9 @@ src/components/
     ├── EndangeredSpeciesIcon.tsx
     ├── GlacierMeltingIcon.tsx
     ├── GlobalTemperatureIcon.tsx
-    ├── NotFoundIcon.tsx
+    ├── NotFoundIcon.tsx    # Used by the not-found page
+    ├── ErrorIcon.tsx       # Used by the generic error page
+    ├── WarningIcon.tsx     # Used by the stale and unavailable provider states
     ├── OceanHealthIcon.tsx
     ├── ReforestationIcon.tsx
     ├── EnergySourcesIcon.tsx
