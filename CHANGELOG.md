@@ -1,3 +1,9 @@
+## [2.27.2](https://github.com/maf248/eco-metrics-earth/compare/v2.27.1...v2.27.2) (2026-11-28)
+
+### Bug Fixes
+
+* **tooling:** predict release pr deploys with the real deploy rules ([ba7cebc](https://github.com/maf248/eco-metrics-earth/commit/ba7cebc9a237a11a66b85cea123751e32e934b57))
+
 ## [2.27.1](https://github.com/maf248/eco-metrics-earth/compare/v2.27.0...v2.27.1) (2026-11-28)
 
 ### Bug Fixes
