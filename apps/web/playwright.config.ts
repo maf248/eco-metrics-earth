@@ -21,6 +21,8 @@ function resolveWorkers(): number | string | undefined {
 export default defineConfig({
   ...nxE2EPreset(__filename, { testDir: './e2e' }),
   workers: resolveWorkers(),
+  /* Renders every live page once before the first test (see the file). */
+  globalSetup: './e2e/global-setup.ts',
   /* Show each test name in console output */
   reporter: 'list',
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
@@ -32,7 +34,11 @@ export default defineConfig({
   /* Run your local dev server before starting the tests */
   webServer: {
     command: 'node apps/web/e2e/run-dev-servers.ts',
-    url: 'http://localhost:3000',
+    /*
+     * A category page, not `/`: polling it makes `next dev` compile the `[category]` route before
+     * the first test, so a shard's first client navigation to a category does not wait for it.
+     */
+    url: 'http://localhost:3000/air-quality/',
     reuseExistingServer: !process.env.CI,
     cwd: workspaceRoot,
     timeout: 180_000,
