@@ -340,7 +340,7 @@ The page SHALL have a unique title, meta description, canonical URL with a trail
 
 ### Requirement: One Dataset JSON-LD credits every provider and origin present
 
-The page SHALL declare exactly one schema.org `Dataset` in JSON-LD, built from the sections present, whose `isBasedOn` (typed `CreativeWork`) credits every provider and origin of those sections.
+The page SHALL declare exactly one schema.org `Dataset` in JSON-LD, built from the sections present, whose `isBasedOn` (typed `CreativeWork`) credits every provider and origin of those sections. Its `dateModified` SHALL be the latest data date of those sections, the sea level section counting its last observation (`data.endDate`), because NOAA LSA publishes no update date and its `meta.source.lastUpdated` is the API's retrieval time.
 
 #### Scenario: All sections present
 
@@ -358,6 +358,12 @@ The page SHALL declare exactly one schema.org `Dataset` in JSON-LD, built from t
 - **GIVEN** every section is unavailable
 - **WHEN** the page renders
 - **THEN** no JSON-LD is rendered
+
+#### Scenario: Sea level is dated by its data
+
+- **GIVEN** only the sea level section, with `data.endDate` `2025-02-15` and a retrieval-time `meta.source.lastUpdated`
+- **WHEN** the structured data is built
+- **THEN** `dateModified` is `2025-02-15`
 
 ### Requirement: The data sources page lists the new providers and origins
 

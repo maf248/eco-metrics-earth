@@ -120,7 +120,16 @@ describe('buildOceanHealthDatasetJsonLd', () => {
       'https://creativecommons.org/licenses/by/4.0/',
       'Public domain',
     ]);
-    expect(jsonLd?.dateModified).toBe('2026-11-24T08:00:00.000Z');
+    expect(jsonLd?.dateModified).toBe('2026-11-24T00:00:00.000Z');
+  });
+
+  it('should date sea level by its last observation, not its retrieval time', () => {
+    const retrieved = { ...NOAA_LSA_META.source, lastUpdated: '2026-11-28T00:30:00.000Z' };
+    const jsonLd = build({
+      seaLevel: { data: OCEAN_SEA_LEVEL_FIXTURE, meta: { ...NOAA_LSA_META, source: retrieved } },
+    });
+
+    expect(jsonLd?.dateModified).toBe(OCEAN_SEA_LEVEL_FIXTURE.endDate);
   });
 
   it('should cover the earliest start to the latest end of the present sections', () => {

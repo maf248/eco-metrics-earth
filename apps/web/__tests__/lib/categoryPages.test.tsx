@@ -485,6 +485,19 @@ describe('CATEGORY_PAGES ocean-health entry', () => {
     expect(definition.isDegraded?.(states)).toBe(true);
   });
 
+  it('should date the sea level section by its last observation, not its retrieval time', async () => {
+    jest.mocked(getOceanSst).mockResolvedValue({ kind: 'provider-unavailable' });
+    jest.mocked(getOceanSstAnomaly).mockResolvedValue({ kind: 'provider-unavailable' });
+    jest.mocked(getOceanHeatContent).mockResolvedValue({ kind: 'provider-unavailable' });
+    jest.mocked(getOceanPh).mockResolvedValue({ kind: 'provider-unavailable' });
+    const definition = CATEGORY_PAGES['ocean-health'];
+    if (!definition) throw new Error('missing entry');
+
+    expect(definition.lastModified?.(await definition.load())).toBe(
+      OCEAN_SEA_LEVEL_FIXTURE.endDate,
+    );
+  });
+
   it('should not be degraded when every provider answers', async () => {
     const { definition, states } = await renderOcean();
 
@@ -850,6 +863,21 @@ describe('lastModified', () => {
     });
 
     expect(definition.lastModified?.(await definition.load())).toBe('2026-10-01T00:00:00.000Z');
+  });
+
+  it('should take the date a section declares from its payload over its meta', async () => {
+    const definition = defineSectionedProviderCategoryPage({
+      sections: {
+        a: {
+          provider,
+          load: async () => at('2026-10-20T00:00:00.000Z'),
+          dataDate: () => '2025-02-15',
+        },
+      },
+      Content,
+    });
+
+    expect(definition.lastModified?.(await definition.load())).toBe('2025-02-15');
   });
 
   it('should have no date when no section has a payload', async () => {
