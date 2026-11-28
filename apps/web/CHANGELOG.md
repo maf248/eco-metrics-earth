@@ -1,3 +1,10 @@
+## [2.23.1](https://github.com/maf248/eco-metrics-earth/compare/web-v2.23.0...web-v2.23.1) (2026-11-28)
+
+### Bug Fixes
+
+* **web:** date sea level by its last observation in sitemap and JSON-LD ([fd375c4](https://github.com/maf248/eco-metrics-earth/commit/fd375c4b886a34a2ef80c6c06212bb202083bf12))
+* **web:** re-fetch the page from the root error boundaries ([c0939d2](https://github.com/maf248/eco-metrics-earth/commit/c0939d23d9a8850a27f3bf3e27151064597bd80b))
+
 ## [2.23.0](https://github.com/maf248/eco-metrics-earth/compare/web-v2.22.1...web-v2.23.0) (2026-11-28)
 
 ### Features
