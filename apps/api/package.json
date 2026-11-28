@@ -89,6 +89,12 @@
           "{workspaceRoot}/scripts/lib/waste-recycling-source.mjs",
           "{workspaceRoot}/scripts/lib/waste-recycling-transform.mjs",
           "{workspaceRoot}/scripts/generate-waste-recycling-data.mjs",
+          "{workspaceRoot}/scripts/release-pr-autofill.mjs",
+          "{workspaceRoot}/scripts/release-pr-autofill.d.mts",
+          "{workspaceRoot}/.github/workflows/release-pr-autofill.yml",
+          "{workspaceRoot}/.releaserc.mjs",
+          "{workspaceRoot}/apps/web/.releaserc.mjs",
+          "{workspaceRoot}/apps/api/.releaserc.mjs",
           "{workspaceRoot}/README.md"
         ]
       }
