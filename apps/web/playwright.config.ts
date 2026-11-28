@@ -32,7 +32,11 @@ export default defineConfig({
   /* Run your local dev server before starting the tests */
   webServer: {
     command: 'node apps/web/e2e/run-dev-servers.ts',
-    url: 'http://localhost:3000',
+    /*
+     * A category page, not `/`: polling it makes `next dev` compile the `[category]` route before
+     * the first test, so a shard's first client navigation to a category does not wait for it.
+     */
+    url: 'http://localhost:3000/air-quality/',
     reuseExistingServer: !process.env.CI,
     cwd: workspaceRoot,
     timeout: 180_000,
