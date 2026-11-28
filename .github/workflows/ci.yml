@@ -8,28 +8,25 @@ permissions:
   contents: read
 
 jobs:
-  ci:
-    # CONTRACT: this exact name is selected in Vercel Deployment Checks and the
-    # `deploy-api-*` jobs depend on this job. It is also the CI_CHECK_NAME the
-    # E2E gate below looks up on the base commit. Do not rename it without
-    # updating Vercel (see docs/deploy/vercel.md) and CI_CHECK_NAME.
-    name: Format, Lint, Typecheck, Build & Test
+  # `checks` and the `e2e` shards run in parallel, so a run lasts as long as the
+  # slowest of them; the gate job `ci` concludes from both. Standard runners are
+  # free on public repositories; on a private one each shard would bill minutes.
+  checks:
+    name: 'Checks: format, lint, typecheck, build & unit tests'
     runs-on: ubuntu-latest
-    # Job-level permissions replace the workflow-level block; `checks: read`
-    # lets the E2E gate read the check runs of the base commit.
     permissions:
       contents: read
-      checks: read
-    # A full run takes ~7 min; fail fast on a hung step instead of GitHub's 6 h default.
-    timeout-minutes: 30
+    # A full run takes ~3 min; fail fast on a hung step instead of GitHub's 6 h default.
+    timeout-minutes: 20
     # Official Playwright image: ships Node, all browsers and all OS
-    # dependencies, so the job never touches `apt` or downloads browsers
-    # (the Ubuntu mirror has hung runs before). The tag must be a literal here
-    # because `env` is not available in `container.image`; keep it equal to the
-    # installed `@playwright/test` version (enforced by the guard step below).
+    # dependencies, so no job touches `apt` or downloads browsers (the Ubuntu
+    # mirror has hung runs before). Declared once here and reused by `e2e`
+    # through the alias. The tag must be a literal because `env` is not
+    # available in `container.image`; keep it equal to the installed
+    # `@playwright/test` version (enforced by the guard step below).
     # `--ipc=host` avoids Chromium shared-memory crashes; `--init` reaps the
     # processes spawned by the E2E dev-server wrapper.
-    container:
+    container: &playwright-container
       image: mcr.microsoft.com/playwright:v1.65.1-noble
       options: --init --ipc=host
     # GitHub sets HOME=/github/home in containers; Playwright's CI guide
@@ -48,13 +45,6 @@ jobs:
         uses: actions/checkout@v7
         with:
           fetch-depth: 0
-
-      # The job runs as root in the container while the runner user owns the
-      # workspace, so git refuses it ("dubious ownership") once checkout drops
-      # its temporary safe.directory entry. The E2E gate reads git history, so
-      # trust the workspace in the job's own global config (HOME=/root).
-      - name: Mark the workspace as a safe git directory
-        run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
 
       - name: Setup Node.js
         uses: actions/setup-node@v7
@@ -96,9 +86,54 @@ jobs:
       - name: Test
         run: npm run test
 
+  # Playwright shards, in parallel with `checks` (not after it: waiting would
+  # add its ~3 min to every green run). Playwright splits by test count; the
+  # shard count is the matrix length alone. Revisit it when the slowest shard
+  # passes ~6 min. Nothing is uploaded: each shard's log lists its tests.
+  e2e:
+    name: E2E (shard ${{ matrix.shard }}/${{ strategy.job-total }})
+    runs-on: ubuntu-latest
+    # `checks: read` lets the E2E gate read the check runs of the base commit.
+    permissions:
+      contents: read
+      checks: read
+    timeout-minutes: 20
+    strategy:
+      # One failing shard must not hide the failures of the others.
+      fail-fast: false
+      matrix:
+        shard: [1, 2, 3, 4]
+    container: *playwright-container
+    env:
+      HOME: /root
+    # Same policy as `checks`. The shard is part of the key: a shared group
+    # would make the shards of one run cancel each other.
+    concurrency:
+      group: ${{ github.workflow }}-e2e-${{ matrix.shard }}-${{ github.ref }}
+      cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      # The job runs as root in the container while the runner user owns the
+      # workspace, so git refuses it ("dubious ownership") once checkout drops
+      # its temporary safe.directory entry. The E2E gate reads git history, so
+      # trust the workspace in the job's own global config (HOME=/root).
+      - name: Mark the workspace as a safe git directory
+        run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'npm'
+
       # Decides whether E2E is redundant: docs-only diff AND a green CI check
-      # on the base commit. The job and every other step always run; an error
-      # or any doubt leaves the output unset or false, so E2E runs.
+      # on the base commit. The job always runs and reports; an error or any
+      # doubt leaves the output unset or false, so E2E runs. The detector has
+      # no dependencies, so it runs before `npm ci` and a skip saves both.
       - name: Decide whether E2E can be skipped
         id: e2e_gate
         env:
@@ -107,20 +142,53 @@ jobs:
           BASE_SHA: ${{ github.event.before }}
           HEAD_SHA: ${{ github.sha }}
           GITHUB_TOKEN: ${{ github.token }}
-          # Must equal the job `name` above (the CONTRACT comment); `job.name`
-          # is not available in expression contexts.
+          # Must equal the gate job's `name` (the CONTRACT comment below);
+          # `job.name` is not available in expression contexts.
           CI_CHECK_NAME: Format, Lint, Typecheck, Build & Test
         run: node scripts/detect-e2e-skip.cjs
+
+      - name: Install dependencies
+        if: steps.e2e_gate.outputs.skip_e2e != 'true'
+        run: npm ci
 
       # Browsers and OS dependencies come from the container image.
       - name: E2E
         if: steps.e2e_gate.outputs.skip_e2e != 'true'
-        timeout-minutes: 20
-        run: npm run e2e
+        timeout-minutes: 15
+        run: npm run e2e -- --shard=${{ matrix.shard }}/${{ strategy.job-total }}
+
+  ci:
+    # CONTRACT: this exact name is selected in Vercel Deployment Checks and the
+    # `deploy-api-*` jobs depend on this job. It is also the CI_CHECK_NAME the
+    # E2E gate above looks up on the base commit. Do not rename it without
+    # updating Vercel (see docs/deploy/vercel.md) and CI_CHECK_NAME.
+    name: Format, Lint, Typecheck, Build & Test
+    # The gate verifies nothing itself: it succeeds only when `checks` and
+    # every E2E shard succeeded. `always()` makes it report after a failure.
+    # Off `main`, a run superseded by a newer push (its jobs cancelled) skips
+    # the gate instead of failing it. On `main` it always runs, so production
+    # is never released by a skipped check.
+    needs: [checks, e2e]
+    if: ${{ always() && (github.ref == 'refs/heads/main' || !contains(needs.*.result, 'cancelled')) }}
+    runs-on: ubuntu-latest
+    permissions: {}
+    timeout-minutes: 5
+    steps:
+      - name: Require every verification job to pass
+        env:
+          CHECKS_RESULT: ${{ needs.checks.result }}
+          E2E_RESULT: ${{ needs.e2e.result }}
+        run: |
+          echo "checks: $CHECKS_RESULT"
+          echo "e2e: $E2E_RESULT"
+          if [ "$CHECKS_RESULT" != 'success' ] || [ "$E2E_RESULT" != 'success' ]; then
+            echo '::error::A verification job did not succeed (see the results above).'
+            exit 1
+          fi
 
   # Builds the API image with the production Dockerfile, without publishing it,
-  # so a broken image fails here instead of at deploy time. Separate from `ci`:
-  # that job runs in the Playwright container, which has no Docker daemon.
+  # so a broken image fails here instead of at deploy time. Separate from the
+  # verification jobs: the Playwright container has no Docker daemon.
   # Gating is step-level on purpose: a job skipped by a job-level `if` would
   # also skip the `deploy-api-*` jobs that need it.
   api-image:
@@ -130,7 +198,7 @@ jobs:
     timeout-minutes: 15
     permissions:
       contents: read
-    # Same policy as `ci`: a newer push supersedes the running check, except on `main`.
+    # Same policy as `checks`: a newer push supersedes the running check, except on `main`.
     concurrency:
       group: ${{ github.workflow }}-api-image-${{ github.ref }}
       cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
