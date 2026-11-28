@@ -1,13 +1,14 @@
 import { render, screen, within } from '@testing-library/react';
 import { cacheLife } from 'next/cache';
 
-import { ProviderBackedContent, type ProviderPageState } from '@/components/ProviderBackedContent';
+import { ProviderBackedContent, type SectionState } from '@/components/ProviderBackedContent';
 import { DEGRADED_REVALIDATE_SECONDS, type ProviderPayloadResult } from '@/lib/bffFetch';
 import {
   CATEGORY_PAGES,
   defineCategoryPage,
   defineProviderCategoryPage,
   defineSectionedProviderCategoryPage,
+  getCategoryLastModified,
   loadCategoryData,
   resolveProviderPageState,
 } from '@/lib/categoryPages';
@@ -22,6 +23,7 @@ import {
   getOceanSst,
   getOceanSstAnomaly,
 } from '@/lib/oceanHealth';
+import { reportSectionFailure } from '@/lib/sectionFailureReporter';
 import { getWasteRecycling } from '@/lib/wasteRecycling';
 import { getWaterFootprintProducts } from '@/lib/waterFootprint';
 
@@ -66,6 +68,7 @@ jest.mock('@/components/charts/LazyEChart', () => ({
 }));
 
 jest.mock('next/cache', () => ({ cacheLife: jest.fn() }));
+jest.mock('@/lib/sectionFailureReporter', () => ({ reportSectionFailure: jest.fn() }));
 
 describe('CATEGORY_PAGES', () => {
   it('should register exactly the seven categories with live data', () => {
@@ -111,7 +114,7 @@ describe('CATEGORY_PAGES', () => {
 });
 
 type SectionStatesOf<S extends Record<string, { meta: typeof TEMPERATURE_META }>> = {
-  [K in keyof S]: ProviderPageState<S[K]>;
+  [K in keyof S]: SectionState<S[K]>;
 };
 
 const NOW = new Date('2026-10-28T12:00:00.000Z');
@@ -472,11 +475,14 @@ describe('CATEGORY_PAGES ocean-health entry', () => {
     expect(screen.queryByTestId('stale-data-notice')).not.toBeInTheDocument();
   });
 
-  it('should propagate a failure of our own BFF', async () => {
+  it('should hide only the section whose read fails for another reason than an outage', async () => {
     jest.mocked(getOceanPh).mockRejectedValue(new Error('BFF down'));
-    const definition = CATEGORY_PAGES['ocean-health'];
+    const { definition, states } = await renderOcean();
 
-    await expect(definition?.load()).rejects.toThrow('BFF down');
+    expect((states as Record<string, unknown>).ph).toEqual({ kind: 'failed' });
+    expect(screen.queryByRole('heading', { name: 'Ocean pH at Hawaii' })).not.toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Global mean sea level' })).toBeInTheDocument();
+    expect(definition.isDegraded?.(states)).toBe(true);
   });
 
   it('should not be degraded when every provider answers', async () => {
@@ -588,24 +594,83 @@ describe('defineSectionedProviderCategoryPage', () => {
     expect(tooOld.isDegraded?.(await tooOld.load())).toBe(false);
   });
 
-  it('should propagate a failure of our own BFF in any section', async () => {
-    const definition = defineSectionedProviderCategoryPage<Sections>({
-      sections: {
-        first: {
-          provider: { name: 'First' },
-          load: async () => ({ kind: 'ok' as const, payload: fresh('First') }),
-        },
-        second: {
-          provider: { name: 'Second' },
-          load: async () => {
-            throw new Error('BFF down');
+  describe('when a read fails for another reason than a provider outage', () => {
+    const failing = (message: string) => async (): Promise<ProviderPayloadResult<Payload>> => {
+      throw new Error(message);
+    };
+
+    beforeEach(() => jest.mocked(reportSectionFailure).mockClear());
+
+    it('should leave only that section failed, report it and keep the others', async () => {
+      const definition = defineSectionedProviderCategoryPage<Sections>({
+        sections: {
+          first: {
+            provider: { name: 'First' },
+            load: async () => ({ kind: 'ok' as const, payload: fresh('First') }),
           },
+          second: { provider: { name: 'Second' }, load: failing('BFF down') },
         },
-      },
-      Content,
+        Content,
+      });
+
+      const states = (await definition.load()) as Record<string, { kind: string }>;
+
+      expect(states.first.kind).toBe('fresh');
+      expect(states.second).toEqual({ kind: 'failed' });
+      expect(reportSectionFailure).toHaveBeenCalledTimes(1);
+      expect(reportSectionFailure).toHaveBeenCalledWith('second', new Error('BFF down'));
+      expect(definition.isDegraded?.(states)).toBe(true);
     });
 
-    await expect(definition.load()).rejects.toThrow('BFF down');
+    it('should render the failed section as nothing', async () => {
+      const definition = defineSectionedProviderCategoryPage<Sections>({
+        sections: {
+          first: {
+            provider: { name: 'First' },
+            load: async () => ({ kind: 'ok' as const, payload: fresh('First') }),
+          },
+          second: { provider: { name: 'Second' }, load: failing('BFF down') },
+        },
+        Content,
+      });
+      const { Content: Page } = definition;
+
+      render(<Page data={await definition.load()} />);
+
+      expect(screen.getByTestId('inner-first')).toBeInTheDocument();
+      expect(screen.getByTestId('section-second')).toBeEmptyDOMElement();
+      expect(screen.queryByTestId('data-unavailable')).not.toBeInTheDocument();
+    });
+
+    it('should reject with the first error when every read fails, reporting nothing itself', async () => {
+      const definition = defineSectionedProviderCategoryPage<Sections>({
+        sections: {
+          first: { provider: { name: 'First' }, load: failing('first down') },
+          second: { provider: { name: 'Second' }, load: failing('second down') },
+        },
+        Content,
+      });
+
+      await expect(definition.load()).rejects.toThrow('first down');
+      expect(reportSectionFailure).not.toHaveBeenCalled();
+    });
+
+    it('should not take a date from a failed section', async () => {
+      const definition = defineSectionedProviderCategoryPage<Sections>({
+        sections: {
+          first: {
+            provider: { name: 'First' },
+            load: async () => ({ kind: 'ok' as const, payload: fresh('First') }),
+          },
+          second: { provider: { name: 'Second' }, load: failing('BFF down') },
+        },
+        Content,
+      });
+
+      expect(definition.lastModified?.(await definition.load())).toBe(
+        TEMPERATURE_META.source.lastUpdated,
+      );
+    });
   });
 
   it('should start every section read before any of them resolves', async () => {
@@ -703,10 +768,146 @@ describe('loadCategoryData', () => {
   it('should resolve to nothing for a category without an entry', async () => {
     await expect(loadCategoryData('air-quality')).resolves.toBeUndefined();
   });
+
+  it('should keep the 30-day expire for healthy and degraded renders', async () => {
+    const thirtyDays = 30 * 86_400;
+    jest.mocked(getCo2Emissions).mockResolvedValue({
+      kind: 'ok',
+      payload: { data: CO2_FIXTURE, meta: CO2_META },
+    });
+    await loadCategoryData('co2-emissions');
+    expect(lastLifetime()).toMatchObject({ expire: thirtyDays });
+
+    jest.mocked(getCo2Emissions).mockResolvedValue({ kind: 'provider-unavailable' });
+    await loadCategoryData('co2-emissions');
+    expect(lastLifetime()).toMatchObject({ expire: thirtyDays });
+  });
 });
 
 describe('CATEGORY_SKELETONS', () => {
   it('should declare exactly the categories with live data', () => {
     expect(Object.keys(CATEGORY_SKELETONS).sort()).toEqual(Object.keys(CATEGORY_PAGES).sort());
+  });
+});
+
+describe('lastModified', () => {
+  const at = (lastUpdated: string) => ({
+    kind: 'ok' as const,
+    payload: {
+      meta: {
+        ...CO2_META,
+        fetchedAt: NOW.toISOString(),
+        source: { ...CO2_META.source, lastUpdated },
+      },
+    },
+  });
+  const provider = { name: 'Provider' };
+  const Content = () => null;
+
+  beforeEach(() => jest.useFakeTimers({ now: NOW }));
+  afterEach(() => jest.useRealTimers());
+
+  it('should take the payload date of a provider-backed page', async () => {
+    const definition = defineProviderCategoryPage({
+      provider,
+      load: async () => at('2026-10-20T00:00:00.000Z'),
+      Content,
+    });
+
+    expect(definition.lastModified?.(await definition.load())).toBe('2026-10-20T00:00:00.000Z');
+  });
+
+  it('should have no date when the provider is down without a snapshot', async () => {
+    const definition = defineProviderCategoryPage({
+      provider,
+      load: async () => ({ kind: 'provider-unavailable' as const }),
+      Content,
+    });
+
+    expect(definition.lastModified?.(await definition.load())).toBeUndefined();
+  });
+
+  it('should take the latest date across the sections that have a payload', async () => {
+    const definition = defineSectionedProviderCategoryPage({
+      sections: {
+        a: { provider, load: async () => at('2026-10-01T00:00:00.000Z') },
+        b: { provider, load: async () => at('2026-10-15T00:00:00.000Z') },
+        c: { provider, load: async () => ({ kind: 'provider-unavailable' as const }) },
+      },
+      Content,
+    });
+
+    expect(definition.lastModified?.(await definition.load())).toBe('2026-10-15T00:00:00.000Z');
+  });
+
+  it('should ignore a section whose date does not parse', async () => {
+    const definition = defineSectionedProviderCategoryPage({
+      sections: {
+        a: { provider, load: async () => at('not a date') },
+        b: { provider, load: async () => at('2026-10-01T00:00:00.000Z') },
+      },
+      Content,
+    });
+
+    expect(definition.lastModified?.(await definition.load())).toBe('2026-10-01T00:00:00.000Z');
+  });
+
+  it('should have no date when no section has a payload', async () => {
+    const definition = defineSectionedProviderCategoryPage({
+      sections: { a: { provider, load: async () => ({ kind: 'provider-unavailable' as const }) } },
+      Content,
+    });
+
+    expect(definition.lastModified?.(await definition.load())).toBeUndefined();
+  });
+});
+
+describe('getCategoryLastModified', () => {
+  beforeEach(() => jest.useFakeTimers({ now: NOW }));
+  afterEach(() => jest.useRealTimers());
+
+  it('should resolve to the data date of a provider-backed category', async () => {
+    jest.mocked(getCo2Emissions).mockResolvedValue({
+      kind: 'ok',
+      payload: { data: CO2_FIXTURE, meta: CO2_META },
+    });
+
+    await expect(getCategoryLastModified('co2-emissions')).resolves.toEqual(
+      new Date(CO2_META.source.lastUpdated),
+    );
+  });
+
+  it('should resolve to the dataset date of waste and recycling', async () => {
+    jest.mocked(getWasteRecycling).mockResolvedValue({ data: WASTE_FIXTURE, meta: WASTE_META });
+
+    await expect(getCategoryLastModified('waste-recycling')).resolves.toEqual(
+      new Date(WASTE_META.source.lastUpdated),
+    );
+  });
+
+  it('should resolve to undefined when the data date does not parse', async () => {
+    jest.mocked(getCo2Emissions).mockResolvedValue({
+      kind: 'ok',
+      payload: {
+        data: CO2_FIXTURE,
+        meta: { ...CO2_META, source: { ...CO2_META.source, lastUpdated: 'not a date' } },
+      },
+    });
+
+    await expect(getCategoryLastModified('co2-emissions')).resolves.toBeUndefined();
+  });
+
+  it('should resolve to undefined, not reject, when the read fails', async () => {
+    jest.mocked(getCo2Emissions).mockRejectedValue(new Error('BFF down'));
+
+    await expect(getCategoryLastModified('co2-emissions')).resolves.toBeUndefined();
+  });
+
+  it('should resolve to undefined for water footprint, whose data has no date', async () => {
+    await expect(getCategoryLastModified('water-footprint')).resolves.toBeUndefined();
+  });
+
+  it('should resolve to undefined for a category without an entry', async () => {
+    await expect(getCategoryLastModified('air-quality')).resolves.toBeUndefined();
   });
 });

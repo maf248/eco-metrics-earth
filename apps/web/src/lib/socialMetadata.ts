@@ -1,5 +1,7 @@
 import type { Metadata } from 'next';
 
+import type { EcoCategory } from '@eco-metrics/shared';
+
 type OpenGraph = NonNullable<Metadata['openGraph']>;
 type Twitter = NonNullable<Metadata['twitter']>;
 
@@ -23,6 +25,18 @@ export const OG_IMAGE = {
   alt: 'eco-metrics earth | Environmental data on CO2, climate, energy and water',
   type: 'image/png',
 } as const;
+
+/**
+ * A category's own social card, served by `app/[category]/og-image.png/route.tsx`, with the same
+ * size, type and `.png` path rule as `OG_IMAGE`.
+ */
+export function buildCategoryOgImage(category: EcoCategory, title: string) {
+  return {
+    ...OG_IMAGE,
+    url: `/${category}/og-image.png`,
+    alt: `${SITE_NAME} | ${title}`,
+  };
+}
 
 /**
  * Next.js merges `metadata` across segments shallowly: a page that declares

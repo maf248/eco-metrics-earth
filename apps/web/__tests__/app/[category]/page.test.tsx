@@ -24,6 +24,7 @@ import { ENERGY_FIXTURE, ENERGY_META } from '../../fixtures/energySources';
 import { TEMPERATURE_FIXTURE, TEMPERATURE_META } from '../../fixtures/globalTemperature';
 import { WASTE_FIXTURE, WASTE_META } from '../../fixtures/wasteRecycling';
 
+jest.mock('@sentry/nextjs', () => ({ captureException: jest.fn() }));
 jest.mock('@/lib/waterFootprint', () => ({
   getWaterFootprintProducts: jest.fn().mockResolvedValue([
     {
@@ -331,7 +332,13 @@ describe('generateMetadata', () => {
     const openGraph = metadata.openGraph as { type?: string; images?: unknown };
     expect(openGraph.type).toBe('website');
     expect(metadata.openGraph?.siteName).toBe('eco-metrics earth');
-    expect(openGraph.images).toEqual([OG_IMAGE]);
+    expect(openGraph.images).toEqual([
+      {
+        ...OG_IMAGE,
+        url: '/air-quality/og-image.png',
+        alt: 'eco-metrics earth | Air Quality',
+      },
+    ]);
   });
 
   it('should use the summary_large_image twitter card for air-quality', async () => {
@@ -683,9 +690,25 @@ describe('CategoryPage — deforestation branch', () => {
     ).toBeInTheDocument();
   });
 
-  it('should propagate a loader failure instead of rendering the page', async () => {
+  it('should hide a section whose read fails and render the other one', async () => {
+    jest
+      .mocked(getForestArea)
+      .mockRejectedValueOnce(new Error('Forest area data could not be fetched from the BFF'));
+
+    render(await CategoryPage({ params: Promise.resolve({ category: 'deforestation' }) }));
+
+    expect(
+      screen.queryByRole('heading', { level: 2, name: 'Forest area' }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { level: 2, name: 'Tree cover loss by cause' }),
+    ).toBeInTheDocument();
+  });
+
+  it('should propagate the failure when every section read fails', async () => {
     const failure = new Error('Forest area data could not be fetched from the BFF');
     jest.mocked(getForestArea).mockRejectedValueOnce(failure);
+    jest.mocked(getTreeCoverLoss).mockRejectedValueOnce(new Error('Tree cover loss failed'));
 
     await expect(
       CategoryPage({ params: Promise.resolve({ category: 'deforestation' }) }),

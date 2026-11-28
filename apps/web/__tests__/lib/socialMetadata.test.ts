@@ -1,4 +1,5 @@
 import {
+  buildCategoryOgImage,
   buildOpenGraph,
   buildTwitter,
   OG_IMAGE,
@@ -58,6 +59,18 @@ describe('buildTwitter', () => {
       card: 'summary_large_image',
       title: 'CO2 Emissions',
       description: 'desc',
+    });
+  });
+});
+
+describe('buildCategoryOgImage', () => {
+  it('should point at the category card with the site card size and type', () => {
+    expect(buildCategoryOgImage('co2-emissions', 'CO2 Emissions by Country')).toEqual({
+      url: '/co2-emissions/og-image.png',
+      width: 1200,
+      height: 630,
+      type: 'image/png',
+      alt: 'eco-metrics earth | CO2 Emissions by Country',
     });
   });
 });

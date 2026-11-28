@@ -10,7 +10,7 @@ import { JsonLd } from '@/components/JsonLd';
 import { OriginCredit } from '@/components/OriginCredit';
 import {
   ProviderBackedContent,
-  type ProviderPageState,
+  type SectionState,
   type ProviderPayload,
 } from '@/components/ProviderBackedContent';
 import {
@@ -36,7 +36,7 @@ interface DeforestationContentProps {
 }
 
 /** The payload of a section whose data is shown (fresh, or under a stale notice). */
-function shownPayload<P extends ProviderPayload>(state: ProviderPageState<P>): P | undefined {
+function shownPayload<P extends ProviderPayload>(state: SectionState<P>): P | undefined {
   return state.kind === 'fresh' || state.kind === 'stale-notice' ? state.payload : undefined;
 }
 
@@ -83,8 +83,10 @@ function TreeCoverLossCard({ data: { data, meta } }: { data: TreeCoverLossPayloa
 interface SectionProps<P extends ProviderPayload> {
   headingId: string;
   title: string;
-  state: ProviderPageState<P>;
+  state: SectionState<P>;
   Cards: ComponentType<{ data: P }>;
+  /** Classes of a wrapper, for spacing that must disappear with a failed section. */
+  className?: string;
 }
 
 /**
@@ -97,11 +99,15 @@ function DeforestationSection<P extends ProviderPayload>({
   title,
   state,
   Cards,
+  className,
 }: SectionProps<P>) {
-  if (shownPayload(state)) {
-    return <ProviderBackedContent state={state} Content={Cards} />;
+  // A section whose read failed is left out entirely, heading included.
+  if (state.kind === 'failed') {
+    return null;
   }
-  return (
+  const content = shownPayload(state) ? (
+    <ProviderBackedContent state={state} Content={Cards} />
+  ) : (
     <section aria-labelledby={headingId} className={`mt-8 ${CARD_CLASS_NAME}`}>
       <h2 id={headingId} className="mb-4 text-xl font-semibold text-fg">
         {title}
@@ -109,6 +115,7 @@ function DeforestationSection<P extends ProviderPayload>({
       <ProviderBackedContent state={state} Content={Cards} />
     </section>
   );
+  return className ? <div className={className}>{content}</div> : content;
 }
 
 /**
@@ -144,12 +151,12 @@ export function DeforestationContent({ states }: DeforestationContentProps) {
         state={states.forestArea}
         Cards={ForestAreaCards}
       />
-      <div className="mt-8" />
       <DeforestationSection
         headingId="tree-cover-loss-heading"
         title="Tree cover loss by cause"
         state={states.treeCoverLoss}
         Cards={TreeCoverLossCard}
+        className="mt-8"
       />
 
       <DeforestationMethodology />

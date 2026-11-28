@@ -16,6 +16,7 @@ import {
   ProviderBackedContent,
   type ProviderPageState,
   type ProviderPayload,
+  type SectionState,
 } from '@/components/ProviderBackedContent';
 import { WasteRecyclingContent } from '@/components/waste-recycling/WasteRecyclingContent';
 import { WaterFootprintContent } from '@/components/water-footprint/WaterFootprintContent';
@@ -32,6 +33,7 @@ import {
   getOceanSstAnomaly,
 } from '@/lib/oceanHealth';
 import { evaluateFreshness, type FreshnessThresholds } from '@/lib/providerFreshness';
+import { reportSectionFailure } from '@/lib/sectionFailureReporter';
 import { getWasteRecycling } from '@/lib/wasteRecycling';
 import { getWaterFootprintProducts } from '@/lib/waterFootprint';
 import { ECO_CATEGORIES } from '@eco-metrics/shared';
@@ -45,6 +47,8 @@ export interface CategoryPageDefinition<T = unknown> {
   Content: ComponentType<{ data: T }>;
   /** True for a result that must leave the cache in minutes (the provider is down). */
   isDegraded?: (data: T) => boolean;
+  /** ISO 8601 date of the shown data's last upstream update (`meta.source.lastUpdated`). */
+  lastModified?: (data: T) => string | undefined;
 }
 
 /**
@@ -101,6 +105,25 @@ export function resolveProviderPageState<P extends ProviderPayload>(
   }
 }
 
+/** The upstream update date of the payload a state shows, if it shows one. */
+function stateLastUpdated<P extends ProviderPayload>(state: SectionState<P>): string | undefined {
+  return 'payload' in state ? state.payload?.meta.source.lastUpdated : undefined;
+}
+
+/** The latest of several ISO 8601 dates, ignoring absent ones. */
+function latestIsoDate(dates: readonly (string | undefined)[]): string | undefined {
+  let latest: string | undefined;
+  let latestTime = -Infinity;
+  for (const date of dates) {
+    const time = date === undefined ? NaN : Date.parse(date);
+    if (!Number.isNaN(time) && time > latestTime) {
+      latest = date;
+      latestTime = time;
+    }
+  }
+  return latest;
+}
+
 /** True for a state that carries no payload: the page must leave the 24 h cache within minutes. */
 function isWithoutPayload<P extends ProviderPayload>(state: ProviderPageState<P>): boolean {
   return state.kind === 'unavailable' && !state.payload;
@@ -122,6 +145,7 @@ export function defineProviderCategoryPage<P extends ProviderPayload>({
     load: async () => resolveProviderPageState(await load(), provider),
     Content: ({ data }) => <ProviderBackedContent state={data} Content={Content} />,
     isDegraded: isWithoutPayload,
+    lastModified: stateLastUpdated,
   });
 }
 
@@ -136,7 +160,7 @@ export interface ProviderSectionOptions<P extends ProviderPayload> {
 type SectionPayloads = Record<string, ProviderPayload>;
 
 /** What a sectioned page's `Content` receives: the resolved state of every section. */
-export type SectionStates<S extends SectionPayloads> = { [K in keyof S]: ProviderPageState<S[K]> };
+export type SectionStates<S extends SectionPayloads> = { [K in keyof S]: SectionState<S[K]> };
 
 export interface SectionedProviderCategoryOptions<S extends SectionPayloads> {
   sections: { [K in keyof S]: ProviderSectionOptions<S[K]> };
@@ -144,11 +168,18 @@ export interface SectionedProviderCategoryOptions<S extends SectionPayloads> {
   Content: ComponentType<{ states: SectionStates<S> }>;
 }
 
+/** True for a section that shows no payload: failed, or unavailable without one. */
+function isSectionWithoutPayload<P extends ProviderPayload>(state: SectionState<P>): boolean {
+  return state.kind === 'failed' || isWithoutPayload(state);
+}
+
 /**
  * Registers a category whose page reads several providers, one section each, so an outage
  * affects only its own section. Every section is read concurrently and resolved like
- * `defineProviderCategoryPage` does; a failure of our own BFF in any section still throws for the
- * whole page. The page leaves the 24 h cache when any section is unavailable without a payload.
+ * `defineProviderCategoryPage` does. A read that fails for another reason (our own BFF) leaves
+ * its section `failed`, which renders nothing, and is reported (throttled); only when every read
+ * fails does the load throw, so the last good page keeps being served from the cache. The page
+ * leaves the 24 h cache when any section is failed or unavailable without a payload.
  */
 export function defineSectionedProviderCategoryPage<S extends SectionPayloads>({
   sections,
@@ -158,17 +189,31 @@ export function defineSectionedProviderCategoryPage<S extends SectionPayloads>({
 
   return defineCategoryPage<SectionStates<S>>({
     load: async () => {
-      const entries = await Promise.all(
+      const results = await Promise.allSettled(
         keys.map(async (key) => {
           const { provider, load } = sections[key];
-          return [key, resolveProviderPageState(await load(), provider)] as const;
+          return resolveProviderPageState(await load(), provider);
         }),
       );
+      const failures = results.filter((result) => result.status === 'rejected');
+      if (results.length > 0 && failures.length === results.length) {
+        // Nothing to show: the request fails (reported by onRequestError) and nothing is cached.
+        throw failures[0].reason;
+      }
+      const entries = results.map((result, index) => {
+        if (result.status === 'fulfilled') {
+          return [keys[index], result.value] as const;
+        }
+        reportSectionFailure(keys[index], result.reason);
+        return [keys[index], { kind: 'failed' } as const] as const;
+      });
       return Object.fromEntries(entries) as SectionStates<S>;
     },
     Content: ({ data }) => <Content states={data} />,
     isDegraded: (states) =>
-      Object.values<ProviderPageState<ProviderPayload>>(states).some(isWithoutPayload),
+      Object.values<SectionState<ProviderPayload>>(states).some(isSectionWithoutPayload),
+    lastModified: (states) =>
+      latestIsoDate(Object.values<SectionState<ProviderPayload>>(states).map(stateLastUpdated)),
   });
 }
 
@@ -187,6 +232,7 @@ const NOAA_LSA_PROVIDER_NAME = 'NOAA Laboratory for Satellite Altimetry';
 export const CATEGORY_PAGES: Partial<Record<EcoCategory, CategoryPageDefinition>> = {
   [ECO_CATEGORIES.WASTE_RECYCLING]: defineCategoryPage({
     load: getWasteRecycling,
+    lastModified: (data) => data.meta.source.lastUpdated,
     Content: ({ data }) => (
       <div className="mt-8 w-full flex justify-center">
         <WasteRecyclingContent data={data} />
@@ -279,4 +325,22 @@ export async function loadCategoryData(category: EcoCategory): Promise<unknown> 
   const revalidate = definition.isDegraded?.(data) ? DEGRADED_REVALIDATE_SECONDS : DAY_SECONDS;
   cacheLife({ stale: revalidate, revalidate, expire: DAY_SECONDS * 30 });
   return data;
+}
+
+/**
+ * The date of the data a category page shows, for the sitemap. Reads through the page's own
+ * cached loader; any failure (the page reports its own) or unknown date resolves to `undefined`.
+ */
+export async function getCategoryLastModified(category: EcoCategory): Promise<Date | undefined> {
+  const definition = CATEGORY_PAGES[category];
+  if (!definition?.lastModified) {
+    return undefined;
+  }
+  try {
+    const iso = definition.lastModified(await loadCategoryData(category));
+    const date = iso === undefined ? undefined : new Date(iso);
+    return date && !Number.isNaN(date.getTime()) ? date : undefined;
+  } catch {
+    return undefined;
+  }
 }

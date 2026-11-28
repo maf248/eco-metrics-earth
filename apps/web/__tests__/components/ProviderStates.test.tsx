@@ -167,3 +167,24 @@ describe('ProviderBackedContent', () => {
     expect(screen.queryByTestId('unavailable-data-attribution')).not.toBeInTheDocument();
   });
 });
+
+describe('ProviderBackedContent with a failed section', () => {
+  it('should render nothing at all', () => {
+    const { container } = render(
+      <ProviderBackedContent state={{ kind: 'failed' }} Content={() => <p>content</p>} />,
+    );
+
+    expect(container).toBeEmptyDOMElement();
+  });
+});
+
+describe('DataUnavailable without a provider', () => {
+  it('should say our data could not be loaded and show no retrieval date', () => {
+    render(<DataUnavailable lastRetrievedAt="2026-11-01T00:00:00.000Z" />);
+
+    expect(screen.getByRole('status')).toHaveTextContent(
+      "We couldn't load this data right now. We're keeping an eye on it and it should be back soon.",
+    );
+    expect(screen.queryByText(/Last retrieved/)).not.toBeInTheDocument();
+  });
+});

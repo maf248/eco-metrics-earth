@@ -22,8 +22,14 @@ export type ProviderPageState<P extends ProviderPayload> =
       fetchedAt?: string;
     };
 
+/**
+ * The state of one section of a sectioned page: a provider state, or `failed` when the section's
+ * read failed for another reason than a provider outage. A failed section is not rendered at all.
+ */
+export type SectionState<P extends ProviderPayload> = ProviderPageState<P> | { kind: 'failed' };
+
 interface ProviderBackedContentProps<P extends ProviderPayload> {
-  state: ProviderPageState<P>;
+  state: SectionState<P>;
   /** The category's own content, rendered for fresh and stale data. */
   Content: ComponentType<{ data: P }>;
 }
@@ -38,6 +44,10 @@ export function ProviderBackedContent<P extends ProviderPayload>({
   state,
   Content,
 }: ProviderBackedContentProps<P>) {
+  if (state.kind === 'failed') {
+    return null;
+  }
+
   if (state.kind === 'fresh') {
     return <Content data={state.payload} />;
   }

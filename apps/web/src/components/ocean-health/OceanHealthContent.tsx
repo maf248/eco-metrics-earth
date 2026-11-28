@@ -8,7 +8,7 @@ import { OceanSstAnomalySection } from '@/components/ocean-health/OceanSstAnomal
 import { OceanSstDailySection } from '@/components/ocean-health/OceanSstDailySection';
 import {
   ProviderBackedContent,
-  type ProviderPageState,
+  type SectionState,
   type ProviderPayload,
 } from '@/components/ProviderBackedContent';
 import { CATEGORY_CONTENT_CLASS_NAME } from '@/lib/cardClassNames';
@@ -42,7 +42,7 @@ interface OceanHealthContentProps {
 }
 
 /** The payload of a section whose data is shown (fresh, or under a stale notice). */
-function shownPayload<P extends ProviderPayload>(state: ProviderPageState<P>): P | undefined {
+function shownPayload<P extends ProviderPayload>(state: SectionState<P>): P | undefined {
   return state.kind === 'fresh' || state.kind === 'stale-notice' ? state.payload : undefined;
 }
 

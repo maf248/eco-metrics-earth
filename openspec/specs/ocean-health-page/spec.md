@@ -243,7 +243,7 @@ Under every chart a collapsed `DataTableDisclosure` SHALL give its text equivale
 
 ### Requirement: Each section degrades independently
 
-Each section SHALL render through `ProviderBackedContent` under its own heading, so a provider outage shows the stale notice or the unavailable state for that section only.
+Each section SHALL render through `ProviderBackedContent` under its own heading, so a provider outage shows the stale notice or the unavailable state for that section only. A section whose read fails for any other reason SHALL be hidden entirely (see `category-page-registry`).
 
 #### Scenario: One provider unavailable
 
@@ -273,9 +273,16 @@ Each section SHALL render through `ProviderBackedContent` under its own heading,
 
 #### Scenario: Our own BFF failing still throws
 
-- **GIVEN** a section read fails for a reason other than a provider outage
+- **GIVEN** every section read fails for a reason other than a provider outage
 - **WHEN** the page loads
 - **THEN** the error propagates as in every other category
+
+#### Scenario: One section read fails
+
+- **GIVEN** the sea level read rejects for a reason other than a provider outage and the others resolve data
+- **WHEN** the page renders
+- **THEN** no sea level section (heading or content) and no sea level key figure is rendered
+- **AND** the other sections and figures render normally and the page does not throw
 
 #### Scenario: Healthy providers show no degraded UI
 

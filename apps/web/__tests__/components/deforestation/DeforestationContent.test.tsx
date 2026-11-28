@@ -88,6 +88,29 @@ describe('DeforestationContent', () => {
     expect(blocks[0].textContent).toContain('Tree cover loss by dominant driver');
   });
 
+  it('should leave out the cause card entirely when its read failed', () => {
+    const { container } = render(
+      <DeforestationContent states={{ ...FRESH, treeCoverLoss: { kind: 'failed' } }} />,
+    );
+
+    expect(screen.getByTestId('forest-key-figures')).toBeInTheDocument();
+    expect(
+      screen.queryByRole('heading', { name: 'Tree cover loss by cause' }),
+    ).not.toBeInTheDocument();
+    expect(screen.queryByTestId('data-unavailable')).not.toBeInTheDocument();
+    expect(screen.getByTestId('deforestation-methodology')).toBeInTheDocument();
+    // No spacing is left behind where the card would have been.
+    expect(container.querySelectorAll('div.mt-8:empty')).toHaveLength(0);
+  });
+
+  it('should leave out the key figures and forest sections when the forest area read failed', () => {
+    render(<DeforestationContent states={{ ...FRESH, forestArea: { kind: 'failed' } }} />);
+
+    expect(screen.queryByTestId('forest-key-figures')).not.toBeInTheDocument();
+    expect(screen.queryByRole('heading', { name: 'Forest area' })).not.toBeInTheDocument();
+    expect(screen.getByRole('region', { name: 'Tree cover loss by cause' })).toBeInTheDocument();
+  });
+
   it('should keep the forest sections and show the unavailable state only in the cause card', () => {
     render(<DeforestationContent states={{ ...FRESH, treeCoverLoss: UNAVAILABLE }} />);
 

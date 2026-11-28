@@ -63,7 +63,7 @@ In **Settings → Security & Privacy** (organization level) turn on **Prevent St
 
 ## 5. Uptime monitor
 
-The Developer plan allows one monitor: **Monitors → Uptime → Add Uptime Monitor**, project `eco-metrics-web`, environment `production`, URL `https://eco-metrics-earth.vercel.app/`, `GET`, every 1 minute, timeout 10 s, default assertions (status 200 to 299), assigned to the owner. An issue opens after 3 failed checks and resolves after 1 success.
+The Developer plan allows one monitor: **Monitors → Uptime → Add Uptime Monitor**, project `eco-metrics-web`, environment `production`, URL `https://eco-metrics.earth/`, `GET`, every 1 minute, timeout 10 s, default assertions (status 200 to 299), assigned to the owner. An issue opens after 3 failed checks and resolves after 1 success.
 
 Why the web: a fully down site produces no errors, so only an uptime check can see it. An API outage already surfaces as web server errors (BFF reads that throw) and as API 5xx events, and the API liveness endpoint is free of provider calls so it would add little signal.
 

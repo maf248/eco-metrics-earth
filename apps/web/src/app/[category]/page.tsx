@@ -7,7 +7,7 @@ import { CATEGORY_PAGES, loadCategoryData } from '@/lib/categoryPages';
 import { isEcoCategory } from '@/lib/isEcoCategory';
 import { isLiveCategory } from '@/lib/liveCategories';
 import { siteUrl } from '@/lib/siteUrl';
-import { buildOpenGraph, buildTwitter } from '@/lib/socialMetadata';
+import { buildCategoryOgImage, buildOpenGraph, buildTwitter } from '@/lib/socialMetadata';
 import { ECO_CATEGORIES } from '@eco-metrics/shared';
 
 // Covers the worst-case BFF fetch (2 attempts x 10 s) within the Vercel Hobby limit.
@@ -53,6 +53,7 @@ export async function generateMetadata({ params }: CategoryPageProps): Promise<M
       title,
       description,
       url: canonicalUrl,
+      images: [buildCategoryOgImage(category, title)],
     }),
     twitter: buildTwitter({
       title,
