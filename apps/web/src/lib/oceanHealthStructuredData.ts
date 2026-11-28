@@ -167,7 +167,8 @@ export function buildOceanHealthDatasetJsonLd({
 
   if (seaLevel) {
     const { data, meta } = seaLevel;
-    metas.push(meta);
+    // NOAA LSA publishes no update date and the API's is the retrieval time: date it by its data.
+    metas.push({ ...meta, source: { ...meta.source, lastUpdated: data.endDate } });
     coverage.push({ from: data.startDate, to: data.endDate });
     variableMeasured.push({
       '@type': 'PropertyValue',

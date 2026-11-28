@@ -47,7 +47,10 @@ export interface CategoryPageDefinition<T = unknown> {
   Content: ComponentType<{ data: T }>;
   /** True for a result that must leave the cache in minutes (the provider is down). */
   isDegraded?: (data: T) => boolean;
-  /** ISO 8601 date of the shown data's last upstream update (`meta.source.lastUpdated`). */
+  /**
+   * ISO 8601 date the shown data last changed: `meta.source.lastUpdated`, unless a section
+   * declares `dataDate`.
+   */
   lastModified?: (data: T) => string | undefined;
 }
 
@@ -105,9 +108,18 @@ export function resolveProviderPageState<P extends ProviderPayload>(
   }
 }
 
-/** The upstream update date of the payload a state shows, if it shows one. */
-function stateLastUpdated<P extends ProviderPayload>(state: SectionState<P>): string | undefined {
-  return 'payload' in state ? state.payload?.meta.source.lastUpdated : undefined;
+/**
+ * The date the data of a state last changed, if it carries a payload: `dataDate` when given,
+ * otherwise the upstream update date (`meta.source.lastUpdated`).
+ */
+function stateLastUpdated<P extends ProviderPayload>(
+  state: SectionState<P>,
+  dataDate?: (payload: P) => string | undefined,
+): string | undefined {
+  if (!('payload' in state) || !state.payload) {
+    return undefined;
+  }
+  return dataDate ? dataDate(state.payload) : state.payload.meta.source.lastUpdated;
 }
 
 /** The latest of several ISO 8601 dates, ignoring absent ones. */
@@ -154,6 +166,11 @@ export interface ProviderSectionOptions<P extends ProviderPayload> {
   provider: ProviderCategoryOptions<P>['provider'];
   /** Server-side read through `fetchProviderPayloadFromBff`. Other failures propagate. */
   load: () => Promise<ProviderPayloadResult<P>>;
+  /**
+   * The date the section's data last changed, for a provider whose `meta.source.lastUpdated` is
+   * the retrieval time rather than an upstream update date.
+   */
+  dataDate?: (payload: P) => string | undefined;
 }
 
 /** The payload type of each section, by section key. */
@@ -213,7 +230,7 @@ export function defineSectionedProviderCategoryPage<S extends SectionPayloads>({
     isDegraded: (states) =>
       Object.values<SectionState<ProviderPayload>>(states).some(isSectionWithoutPayload),
     lastModified: (states) =>
-      latestIsoDate(Object.values<SectionState<ProviderPayload>>(states).map(stateLastUpdated)),
+      latestIsoDate(keys.map((key) => stateLastUpdated(states[key], sections[key].dataDate))),
   });
 }
 
@@ -277,7 +294,13 @@ export const CATEGORY_PAGES: Partial<Record<EcoCategory, CategoryPageDefinition>
       },
       anomaly: { provider: { name: OWID_PROVIDER_NAME }, load: getOceanSstAnomaly },
       heat: { provider: { name: OWID_PROVIDER_NAME }, load: getOceanHeatContent },
-      seaLevel: { provider: { name: NOAA_LSA_PROVIDER_NAME }, load: getOceanSeaLevel },
+      // NOAA LSA publishes no update date and the API's is the retrieval time: use the last
+      // observation.
+      seaLevel: {
+        provider: { name: NOAA_LSA_PROVIDER_NAME },
+        load: getOceanSeaLevel,
+        dataDate: (payload) => payload.data.endDate,
+      },
       ph: { provider: { name: OWID_PROVIDER_NAME }, load: getOceanPh },
     },
     Content: ({ states }) => (

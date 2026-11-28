@@ -64,7 +64,7 @@ The environment SHALL be Vercel's `VERCEL_ENV` (`production` or `preview`) captu
 
 ### Requirement: Client-originated errors are reported by the boundaries
 
-`src/app/error.tsx` and a new `src/app/global-error.tsx` SHALL call `Sentry.captureException` for an error without a `digest` and SHALL NOT for one with a `digest`, which Next already reported through `onRequestError`. `error.tsx` SHALL stop logging to the console. `global-error.tsx` SHALL render its own `<html>` and `<body>`, a heading and a retry button, and no color utilities.
+`src/app/error.tsx` and a new `src/app/global-error.tsx` SHALL call `Sentry.captureException` for an error without a `digest` and SHALL NOT for one with a `digest`, which Next already reported through `onRequestError`. `error.tsx` SHALL stop logging to the console. `global-error.tsx` SHALL render its own `<html>` and `<body>`, a heading and a retry button, and no color utilities. The retry button of both boundaries SHALL call `retry` (re-fetch and re-render the segment), not `reset`, which only re-renders and cannot recover from a failed server read.
 
 #### Scenario: Client render error
 
@@ -79,7 +79,7 @@ The environment SHALL be Vercel's `VERCEL_ENV` (`production` or `preview`) captu
 #### Scenario: Global error fallback
 
 - **WHEN** `GlobalError` renders
-- **THEN** the output contains `<html>`, `<body>`, a heading and a retry button that calls `reset`
+- **THEN** the output contains `<html>`, `<body>`, a heading and a retry button that calls `retry`
 
 ### Requirement: Known noise is not sent
 
