@@ -2,13 +2,14 @@
 //
 // The pure functions at the top have no I/O. The I/O layer reads git (in `--repo`) and loads the
 // real `.releaserc.mjs` files and the commit analyzer (from the workspace root, where
-// `node_modules` lives), so the prediction cannot drift from what `release.yml` does. The script
-// writes two files and never calls the network; the workflow applies them.
+// `node_modules` lives), so the prediction cannot drift from what `release.yml` does. Deploys are
+// decided by the real rules too: `scripts/api-image-inputs.pattern` and `scripts/vercel-ignore.sh`.
+// The script writes two files and never calls the network; the workflow applies them.
 //
 // Usage: node scripts/release-pr-autofill.mjs --out-dir <dir> [--base origin/main] [--head HEAD]
 //        [--repo <dir>]
 import { spawnSync } from 'node:child_process';
-import { mkdirSync, realpathSync, writeFileSync } from 'node:fs';
+import { mkdirSync, readFileSync, realpathSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 
@@ -127,16 +128,6 @@ export function buildTitle(rootVersion, topics) {
   return guardTitle(`${prefix}: ${safeTopics[0].slice(0, Math.max(room, 0))}…${suffix}`);
 }
 
-/** Which apps deploy for a list of changed files. */
-export function deployTargets(files) {
-  const touches = (prefixes) =>
-    files.some((file) => prefixes.some((prefix) => file.startsWith(prefix)));
-  return {
-    api: touches(['apps/api/', 'packages/shared/']),
-    web: touches(['apps/web/', 'packages/shared/']),
-  };
-}
-
 /** A subject as an inline code span: no mention, no autolink, no inner backtick. */
 export function sanitizeSubject(subject) {
   return `\`${subject.replace(/\s+/g, ' ').replace(/`/g, "'").trim()}\``;
@@ -159,7 +150,7 @@ function deployLines({ api, web }) {
 
 /**
  * The PR description. `releases` is `[{ label, prefix, type, last, next }]` (type `null` = no
- * release), `deploys` the result of `deployTargets` and `commits` `[{ hash, subject }]`.
+ * release), `deploys` the result of `readDeployTargets` and `commits` `[{ hash, subject }]`.
  */
 export function buildBody({ releases, deploys, commits, head, maxLength = MAX_BODY_LENGTH }) {
   const lines = [
@@ -243,6 +234,60 @@ export function readChangedFiles(repo, base, head) {
     .filter((file) => file.length > 0);
 }
 
+/**
+ * Which apps deploy, decided with the real rules and none of its own. The API deploys when any
+ * changed file matches `scripts/api-image-inputs.pattern`, evaluated as `deploy-api.yml` does
+ * (`grep -E` with the file content as the pattern). The web deploys when `scripts/vercel-ignore.sh`
+ * exits 1 for the merge base and the head. Both files come from `workspaceRoot`; git runs in `repo`.
+ * Any unexpected status or spawn error throws. `spawn` is injectable for tests.
+ */
+export function readDeployTargets(repo, base, head, workspaceRoot, spawn = spawnSync) {
+  const files = readChangedFiles(repo, base, head);
+
+  // `$(cat file)` strips trailing newlines; do the same.
+  const pattern = readFileSync(
+    join(workspaceRoot, 'scripts/api-image-inputs.pattern'),
+    'utf8',
+  ).replace(/\n+$/, '');
+  let api = false;
+  // With no changed file there is nothing to match, so grep is not called.
+  if (files.length > 0) {
+    const grep = spawn('grep', ['-E', pattern], {
+      input: `${files.join('\n')}\n`,
+      encoding: 'utf8',
+      // grep echoes every match; same headroom as `git()` so a large diff never hits ENOBUFS.
+      maxBuffer: 64 * 1024 * 1024,
+    });
+    api = statusToBoolean(grep, 'grep');
+  }
+
+  const mergeBase = git(repo, ['merge-base', base, head]).trim();
+  const sha = git(repo, ['rev-parse', head]).trim();
+  const ignore = spawn('bash', [join(workspaceRoot, 'scripts/vercel-ignore.sh')], {
+    cwd: repo,
+    encoding: 'utf8',
+    env: {
+      ...process.env,
+      VERCEL_GIT_PREVIOUS_SHA: mergeBase,
+      VERCEL_GIT_COMMIT_SHA: sha,
+      VERCEL_GIT_COMMIT_MESSAGE: 'Merge pull request',
+    },
+  });
+  // vercel-ignore.sh: exit 1 builds, exit 0 skips.
+  const web = statusToBoolean(ignore, 'vercel-ignore.sh', { yes: 1, no: 0 });
+
+  return { api, web };
+}
+
+/** Maps a spawn result to a boolean (`yes` status is true, `no` status false); else throws. */
+function statusToBoolean(result, name, { yes = 0, no = 1 } = {}) {
+  if (result.error) throw new Error(`${name} could not run: ${result.error.message}`);
+  if (result.status === yes) return true;
+  if (result.status === no) return false;
+  const detail = result.stderr ? `: ${String(result.stderr).trim()}` : '';
+  throw new Error(`${name} ended with unexpected status ${result.status}${detail}`);
+}
+
 /** The highest `x.y.z` among the tags `<prefix>x.y.z` reachable from `base`, or `null`. */
 export function readLastVersion(repo, base, prefix) {
   const versions = git(repo, ['tag', '--merged', base, '--list', `${prefix}*`])
@@ -302,16 +347,16 @@ function parseArguments(argv) {
 }
 
 /** Computes the result and writes `title.txt` and `body.md` to `--out-dir`. */
-export async function run(argv) {
+export async function run(argv, spawn = spawnSync) {
   const { base, head, repo, outDir } = parseArguments(argv);
   const workspaceRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..');
   const commits = readCommits(repo, base, head);
-  const files = readChangedFiles(repo, base, head);
   const releases = await predictReleases(repo, base, commits, workspaceRoot);
+  const deploys = readDeployTargets(repo, base, head, workspaceRoot, spawn);
   const shortHead = git(repo, ['rev-parse', '--short=7', head]).trim();
 
   const title = buildTitle(releases[0].next, collectTopics([...commits].reverse()));
-  const body = buildBody({ releases, deploys: deployTargets(files), commits, head: shortHead });
+  const body = buildBody({ releases, deploys, commits, head: shortHead });
 
   mkdirSync(outDir, { recursive: true });
   writeFileSync(join(outDir, 'title.txt'), title);
