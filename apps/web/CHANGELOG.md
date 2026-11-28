@@ -1,3 +1,9 @@
+## [2.24.0](https://github.com/maf248/eco-metrics-earth/compare/web-v2.23.1...web-v2.24.0) (2026-11-28)
+
+### Features
+
+* **web:** add cookieless analytics and a privacy page ([c74ed3d](https://github.com/maf248/eco-metrics-earth/commit/c74ed3d3181fddfdd3dedcf8b005e5d5d5d6c169))
+
 ## [2.23.1](https://github.com/maf248/eco-metrics-earth/compare/web-v2.23.0...web-v2.23.1) (2026-11-28)
 
 ### Bug Fixes
