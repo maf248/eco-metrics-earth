@@ -25,7 +25,10 @@ export function Footer() {
         </p>
       </div>
       <p className="mx-auto mt-6 max-w-6xl border-t border-line-subtle pt-4 text-xs text-fg-muted">
-        © 2026 eco-metrics earth · by maf248
+        © 2026 eco-metrics earth · by maf248 ·{' '}
+        <Link href="/privacy/" className={LINK_CLASS_NAME}>
+          Privacy
+        </Link>
       </p>
     </footer>
   );

@@ -20,6 +20,29 @@ import {
 
 const ROOT = join(__dirname, '../../../..');
 const SCRIPT = join(ROOT, 'scripts/release-pr-autofill.mjs');
+
+/**
+ * Fixed ES module run with `node -e`: argv is `[script, scenario, ...run() arguments]`. It calls
+ * `run()` with a spawn that fails the way the scenario names, and mirrors the entry point's catch.
+ */
+const FAILING_SPAWN_DRIVER = `
+import { pathToFileURL } from 'node:url';
+const [script, scenario, ...args] = process.argv.slice(1);
+const spawns = {
+  status: () => ({ status: 2, stderr: 'boom' }),
+  'spawn-error': () => ({ status: null, error: new Error('ENOENT') }),
+  'vercel-ignore': (command) =>
+    command === 'grep' ? { status: 1, stderr: '' } : { status: 2, stderr: 'bad' },
+};
+try {
+  if (!Object.hasOwn(spawns, scenario)) throw new Error('Unknown scenario: ' + scenario);
+  const { run } = await import(pathToFileURL(script).href);
+  await run(args, spawns[scenario]);
+} catch (error) {
+  console.error(error.message);
+  process.exitCode = 1;
+}
+`;
 const WORKFLOW = readFileSync(join(ROOT, '.github/workflows/release-pr-autofill.yml'), 'utf8')
   .split('\n')
   .filter((line) => !line.trimStart().startsWith('#'))
@@ -549,37 +572,26 @@ describe('release-pr-autofill script (integration)', () => {
     });
 
     it.each([
-      [
-        'an unexpected status',
-        '{ status: 2, stderr: "boom" }',
-        'grep ended with unexpected status 2',
-      ],
-      [
-        'a spawn error',
-        '{ status: null, error: new Error("ENOENT") }',
-        'grep could not run: ENOENT',
-      ],
+      ['an unexpected status', 'status', 'grep ended with unexpected status 2'],
+      ['a spawn error', 'spawn-error', 'grep could not run: ENOENT'],
       [
         'an unexpected vercel-ignore.sh status',
-        'command === "grep" ? { status: 1, stderr: "" } : { status: 2, stderr: "bad" }',
+        'vercel-ignore',
         'vercel-ignore.sh ended with unexpected status 2',
       ],
-    ])('should exit non-zero and write no file on %s', (_label, result, message) => {
+    ])('should exit non-zero and write no file on %s', (_label, scenario, message) => {
       // Runs `run()` with an injected failing spawn, in a child process, because Jest cannot
-      // import the commit analyzer (ESM) in-process. The catch mirrors the script entry point.
+      // import the commit analyzer (ESM) in-process. The driver is a fixed string: the script
+      // path, the scenario and the `run()` arguments reach it through argv, never through
+      // generated code. The catch mirrors the script entry point.
       const target = join(dir, '..', `${dir.split('/').pop()}-failure`);
       rmSync(target, { recursive: true, force: true });
-      const driver = `import(${JSON.stringify(SCRIPT)}).then((m) => m.run(${JSON.stringify([
-        '--repo',
-        dir,
-        '--base',
-        'main',
-        '--head',
-        'develop',
-        '--out-dir',
-        target,
-      ])}, (command) => (${result}))).catch((e) => { console.error(e.message); process.exitCode = 1; });`;
-      const child = spawnSync(process.execPath, ['-e', driver], { encoding: 'utf8' });
+      const args = ['--repo', dir, '--base', 'main', '--head', 'develop', '--out-dir', target];
+      const child = spawnSync(
+        process.execPath,
+        ['--input-type=module', '-e', FAILING_SPAWN_DRIVER, SCRIPT, scenario, ...args],
+        { encoding: 'utf8' },
+      );
       expect(child.status).not.toBe(0);
       expect(child.stderr).toContain(message);
       expect(existsSync(target)).toBe(false);

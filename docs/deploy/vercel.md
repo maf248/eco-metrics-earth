@@ -81,6 +81,24 @@ The gate removes the window in the normal case but not for API rollbacks or Forc
 
 The web build reads `NEXT_PUBLIC_SENTRY_DSN` (public, Production and Preview) and `SENTRY_AUTH_TOKEN` (type Secret, Production and Preview; used only to upload source maps). Vercel applies variables only to new builds, so redeploy after changing them. See [`sentry.md`](./sentry.md).
 
+## Web Analytics and Speed Insights
+
+The web app renders Vercel Web Analytics and Speed Insights from the root layout, only when `VERCEL_ENV` is `production` (`apps/web/src/lib/analyticsEnabled.ts`). Previews, local runs, Jest and E2E render neither, so they make no `/_vercel/*` request. Both products are cookieless and same-origin, so the Content-Security-Policy is unchanged.
+
+**Manual step (repository owner):** enable both for the project in the Vercel dashboard, in the **Analytics** tab (Web Analytics) and in the **Speed Insights** tab. Until they are enabled, the scripts return 404 on production and the site works unchanged. The data is read in the same two tabs.
+
+Hobby quotas:
+
+- Web Analytics: 50,000 events per month, shared by the team.
+- Speed Insights: 10,000 events per rolling 30 days; the code samples at `0.5` to halve consumption.
+- Going over a quota only pauses collection (Speed Insights for at least 14 days). It never bills and never affects the site.
+
+**After the first production deploy with both enabled:** open the site with the browser console and confirm there is no Content-Security-Policy violation and that the scripts load from the site's own origin. The packages switch to `https://va.vercel-scripts.com` only when a `dsn` is configured (hosting outside Vercel); if that ever shows up, the CSP needs a deliberate change.
+
+`VERCEL_ENV` is fixed when a build runs. A preview deployment promoted to production without a rebuild keeps `preview` and reports nothing; the normal flow (merge to `main`, build as production) is unaffected.
+
+The project runs on the Vercel Hobby plan, which Vercel limits to personal, non-commercial use. If the site is ever monetized (ads, sponsorships, paid features), the project must move to a paid plan (Pro) first.
+
 ## Troubleshooting
 
 ### A production deployment is stuck waiting for a check

@@ -52,6 +52,12 @@ export const dataSourcesPage = {
   fullTitle: 'Data sources | eco-metrics earth',
 };
 
+export const privacyPage = {
+  url: '/privacy/',
+  title: 'Privacy',
+  fullTitle: 'Privacy | eco-metrics earth',
+};
+
 /** Per-category meta descriptions: a placeholder category and the live data pages. */
 export const CATEGORY_DESCRIPTION_SAMPLES = {
   'air-quality':

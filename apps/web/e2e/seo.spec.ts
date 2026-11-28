@@ -95,6 +95,11 @@ test.describe('Category page metadata', () => {
     await expect(canonical).toHaveAttribute('href', /\/air-quality\/$/);
   });
 
+  test('should have a canonical link with trailing slash on the privacy page', async ({ page }) => {
+    await page.goto('/privacy/');
+    await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', /\/privacy\/$/);
+  });
+
   test('should have dynamic Open Graph tags on category page', async ({ page }) => {
     const cp = categoryPage('air-quality');
     await page.goto(cp.url);
@@ -185,12 +190,14 @@ test.describe('Sitemap.xml', () => {
     expect(text).toContain('<urlset');
   });
 
-  test('should list the home, the live categories and data sources', async ({ request }) => {
+  test('should list the home, the live categories, data sources and privacy', async ({
+    request,
+  }) => {
     const response = await request.get('/sitemap.xml');
     const text = await response.text();
-    // Home page + one entry per live category page + data sources
+    // Home page + one entry per live category page + data sources + privacy
     const urlCount = (text.match(/<url>/g) || []).length;
-    expect(urlCount).toBe(2 + LIVE_CATEGORY_SLUGS.length);
+    expect(urlCount).toBe(3 + LIVE_CATEGORY_SLUGS.length);
     // Placeholder categories are noindex, so only live ones are listed, with a trailing slash
     for (const slug of CATEGORY_SLUGS) {
       const listed = text.includes(`/${slug}/</loc>`);
@@ -199,6 +206,7 @@ test.describe('Sitemap.xml', () => {
     // Home page entry
     expect(text).toContain('<loc>http://localhost:3000/</loc>');
     expect(text).toContain('<loc>http://localhost:3000/data-sources/</loc>');
+    expect(text).toContain('<loc>http://localhost:3000/privacy/</loc>');
   });
 
   test('should date entries with their data, never the request time', async ({ request }) => {
@@ -231,6 +239,7 @@ test.describe('Robots meta', () => {
     '/ocean-health/',
     '/deforestation/',
     '/data-sources/',
+    '/privacy/',
   ]) {
     test(`should leave ${path} indexable`, async ({ request }) => {
       const html = await (await request.get(path)).text();

@@ -51,5 +51,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.5,
   };
 
-  return [homeEntry, ...categoryEntries, dataSourcesEntry];
+  // The page has no data date, so it carries no `lastModified`.
+  const privacyEntry: MetadataRoute.Sitemap[number] = {
+    url: `${base}/privacy/`,
+    changeFrequency: 'yearly',
+    priority: 0.3,
+  };
+
+  return [homeEntry, ...categoryEntries, dataSourcesEntry, privacyEntry];
 }
