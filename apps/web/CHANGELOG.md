@@ -1,3 +1,15 @@
+## [2.23.0](https://github.com/maf248/eco-metrics-earth/compare/web-v2.22.1...web-v2.23.0) (2026-11-28)
+
+### Features
+
+* **web:** date sitemap entries with the data they show ([979c032](https://github.com/maf248/eco-metrics-earth/commit/979c03271b4efa944261df7cde86cba8d5fd8dc4))
+* **web:** give each category its own social card ([7bfd4b4](https://github.com/maf248/eco-metrics-earth/commit/7bfd4b434f5fbb86bf224bf979a43188ccfd2462))
+* **web:** isolate failed sections and keep the category on data errors ([3373b50](https://github.com/maf248/eco-metrics-earth/commit/3373b503ed4c76cfb4091560919a5bea7258ad07))
+
+### Bug Fixes
+
+* **web:** throttle section failure reports and tell browser errors apart ([dc9d302](https://github.com/maf248/eco-metrics-earth/commit/dc9d3024b55623ebd902501d7c46191c3356943d))
+
 ## [2.22.1](https://github.com/maf248/eco-metrics-earth/compare/web-v2.22.0...web-v2.22.1) (2026-11-27)
 
 ### Bug Fixes
