@@ -143,9 +143,15 @@ describe('deploy-api.yml deploy gating and concurrency', () => {
     expect(reusableJob).toContain('cancel-in-progress: false');
   });
 
-  it('should cancel superseded CI runs only off main', () => {
-    expect(jobText(CI, 'ci')).toContain(
-      "cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}",
-    );
+  it('should cancel superseded verification jobs only off main', () => {
+    for (const key of ['checks', 'e2e']) {
+      expect(jobText(CI, key)).toContain(
+        "cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}",
+      );
+    }
+  });
+
+  it('should keep the gate job the deploys need out of any cancellation group', () => {
+    expect(jobText(CI, 'ci')).not.toMatch(/^ {4}concurrency:/m);
   });
 });

@@ -51,7 +51,7 @@ The check name is built from two files: the caller job `name: Deploy API (produc
 
 ## Job-name coupling
 
-Checks are identified by the GitHub Actions **job name**. The job `ci` in `.github/workflows/ci.yml` carries a comment marking its name as a contract. The job runs inside the `mcr.microsoft.com/playwright` container; this does not affect the check name. If the job is renamed, update the Deployment Check in Vercel in the same change; otherwise Vercel waits for a check that never reports, or stops enforcing it. On docs-only commits whose base revision passed CI, the job `Format, Lint, Typecheck, Build & Test` still runs and reports; only its `E2E` step may be skipped.
+Checks are identified by the GitHub Actions **job name**. The job `ci` in `.github/workflows/ci.yml` carries a comment marking its name as a contract. It is a gate: it verifies nothing itself and succeeds only when the `checks` job and every E2E shard (`E2E (shard <n>/4)`) succeeded, so adding or removing shards never touches Vercel. Select only the gate; the verification jobs have their own names and are not part of the Deployment Check. On `main` the gate always reports `success` or `failure`; off `main` a superseded run reports it as `skipped`. If the job is renamed, update the Deployment Check in Vercel in the same change; otherwise Vercel waits for a check that never reports, or stops enforcing it. On docs-only commits whose base revision passed CI, the job `Format, Lint, Typecheck, Build & Test` still runs and reports; only the shards' install and `E2E` steps may be skipped.
 
 ## What is and is not gated
 
@@ -64,14 +64,14 @@ Checks are identified by the GitHub Actions **job name**. The job `ci` in `.gith
 
 ### Failure and recovery
 
-| Situation                                | API deploy check                 | Web production                          | Recovery                                                                             |
-| ---------------------------------------- | -------------------------------- | --------------------------------------- | ------------------------------------------------------------------------------------ |
-| API unchanged                            | `success` after detection        | promoted once both checks pass          | none                                                                                 |
-| API changed, deployed and verified       | `success` after the deploy       | promoted after the deploy               | none                                                                                 |
-| API deploy or verification fails         | `failure`                        | held; previous deployment keeps serving | fix and push (detection retries), re-run the failed job, or deliberate Force Promote |
-| CI fails                                 | job `skipped`, never a pass      | held by the CI check                    | fix and push                                                                         |
-| Pending run superseded by a newer commit | `cancelled` for the older commit | older commit's web held, never promoted | none: the newer commit includes it and is gated on its own checks                    |
-| Manual dispatch of `Deploy API`          | different name, not in the gate  | unaffected                              | n/a                                                                                  |
+| Situation                              | API deploy check                | Web production                          | Recovery                                                                             |
+| -------------------------------------- | ------------------------------- | --------------------------------------- | ------------------------------------------------------------------------------------ |
+| API unchanged                          | `success` after detection       | promoted once both checks pass          | none                                                                                 |
+| API changed, deployed and verified     | `success` after the deploy      | promoted after the deploy               | none                                                                                 |
+| API deploy or verification fails       | `failure`                       | held; previous deployment keeps serving | fix and push (detection retries), re-run the failed job, or deliberate Force Promote |
+| CI fails                               | job `skipped`, never a pass     | held by the CI check                    | fix and push                                                                         |
+| Run superseded or cancelled off `main` | `skipped` for that commit       | older commit's web held, never promoted | none: the newer commit includes it and is gated on its own checks                    |
+| Manual dispatch of `Deploy API`        | different name, not in the gate | unaffected                              | n/a                                                                                  |
 
 ### Backward-compatible API contracts
 

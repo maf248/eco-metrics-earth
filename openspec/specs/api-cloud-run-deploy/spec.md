@@ -367,7 +367,7 @@ The deploy workflow SHALL pass `TRUST_PROXY_HOPS=1` in the `env_vars` of the `de
 
 ### Requirement: Automatic API deploys are gated by the CI job on the same commit
 
-The automatic API deploys SHALL run only as jobs of the CI workflow (`.github/workflows/ci.yml`) that call `./.github/workflows/deploy-api.yml` with `needs:` on the CI job `Format, Lint, Typecheck, Build & Test`. There SHALL be exactly two calling jobs: one with `if: github.event_name == 'push' && github.ref == 'refs/heads/main'` passing `target: production`, and one with `if: github.event_name == 'push' && github.ref == 'refs/heads/develop'` passing `target: development`. Each calling job SHALL grant `permissions: contents: read, id-token: write`, and SHALL use `secrets: inherit` only if the called workflow requires secrets (it currently reads only `vars`, so it SHALL NOT). The image deployed SHALL be built from the same commit SHA that passed CI (image tag = `github.sha`). If the CI job fails or is cancelled, the deploy job SHALL NOT run. Release commits pushed by `release.yml` carry `[skip ci]` and therefore never trigger a deploy on their own.
+The automatic API deploys SHALL run only as jobs of the CI workflow (`.github/workflows/ci.yml`) that call `./.github/workflows/deploy-api.yml` with `needs:` on the CI job `Format, Lint, Typecheck, Build & Test`. There SHALL be exactly two calling jobs: one with `if: github.event_name == 'push' && github.ref == 'refs/heads/main'` passing `target: production`, and one with `if: github.event_name == 'push' && github.ref == 'refs/heads/develop'` passing `target: development`. Each calling job SHALL grant `permissions: contents: read, id-token: write`, and SHALL use `secrets: inherit` only if the called workflow requires secrets (it currently reads only `vars`, so it SHALL NOT). The image deployed SHALL be built from the same commit SHA that passed CI (image tag = `github.sha`). The CI job is the gate job of capability `ci-workflow`, which concludes from the verification jobs. If it fails, is cancelled or is skipped, the deploy job SHALL NOT run. Release commits pushed by `release.yml` carry `[skip ci]` and therefore never trigger a deploy on their own.
 
 #### Scenario: Green CI on develop deploys
 
@@ -391,8 +391,8 @@ The automatic API deploys SHALL run only as jobs of the CI workflow (`.github/wo
 
 #### Scenario: Superseded CI run does not deploy
 
-- **GIVEN** a push to `develop` whose CI job is cancelled because a newer push superseded it
-- **WHEN** the cancelled run finishes
+- **GIVEN** a push to `develop` whose verification jobs are cancelled because a newer push superseded it, so its CI gate job is skipped
+- **WHEN** the superseded run finishes
 - **THEN** its deploy job does not run (the newer push's pipeline decides)
 
 #### Scenario: Other refs and pull requests never deploy

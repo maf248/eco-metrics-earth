@@ -695,70 +695,229 @@ describe('scripts/detect-e2e-skip.cjs', () => {
   });
 });
 
-describe('.github/workflows/ci.yml E2E gate', () => {
+describe('.github/workflows/ci.yml jobs', () => {
   const workflow = fs.readFileSync(WORKFLOW_PATH, 'utf8');
-  const ciJob = workflow.slice(workflow.indexOf('\n  ci:\n'), workflow.indexOf('\n  api-image:'));
-  const jobHeader = ciJob.slice(0, ciJob.indexOf('\n    steps:'));
-  const steps = ciJob
-    .slice(ciJob.indexOf('\n    steps:'))
-    .split(/\n {6}- (?=name:|uses:)/)
-    .slice(1);
-  const stepNamed = (name: string) => steps.find((step) => step.startsWith(`name: ${name}\n`));
 
-  it('should gate only the E2E step on the detector output', () => {
-    expect(stepNamed('E2E')).toContain("if: steps.e2e_gate.outputs.skip_e2e != 'true'");
+  /** The text of one top-level job, from its key line to the next job key. */
+  const jobText = (key: string): string => {
+    const start = workflow.indexOf(`\n  ${key}:\n`);
+    expect(start).toBeGreaterThanOrEqual(0);
+    const next = workflow.slice(start + 1).search(/\n {2}[a-z][\w-]*:\n/);
+    return next === -1 ? workflow.slice(start) : workflow.slice(start, start + 1 + next);
+  };
+  const headerOf = (job: string) => job.slice(0, job.indexOf('\n    steps:'));
+  const stepsOf = (job: string) =>
+    job
+      .slice(job.indexOf('\n    steps:'))
+      .split(/\n {6}- (?=name:|uses:)/)
+      .slice(1);
+  const stepNamed = (steps: string[], name: string) =>
+    steps.find((step) => step.startsWith(`name: ${name}\n`));
+  const nameOf = (header: string) => /^ {4}name: (.+)$/m.exec(header)?.[1];
+
+  const checksJob = jobText('checks');
+  const checksHeader = headerOf(checksJob);
+  const checksSteps = stepsOf(checksJob);
+  const e2eJob = jobText('e2e');
+  const e2eHeader = headerOf(e2eJob);
+  const e2eSteps = stepsOf(e2eJob);
+  const gateJob = jobText('ci');
+  const gateHeader = headerOf(gateJob);
+
+  describe('gate job', () => {
+    it('should carry the contract name and comment', () => {
+      expect(nameOf(gateHeader)).toBe(CHECK_NAME);
+      expect(gateHeader).toContain('CONTRACT:');
+      expect(gateHeader).toContain('docs/deploy/vercel.md');
+    });
+
+    it('should need the checks job and every E2E shard', () => {
+      expect(gateHeader).toMatch(/^ {4}needs: \[checks, e2e\]$/m);
+    });
+
+    it('should always run on main and skip off main only when a verification job was cancelled', () => {
+      expect(gateHeader).toContain(
+        "if: ${{ always() && (github.ref == 'refs/heads/main' || !contains(needs.*.result, 'cancelled')) }}",
+      );
+    });
+
+    it('should run without a container, a checkout or permissions', () => {
+      expect(gateHeader).not.toMatch(/^ {4}container:/m);
+      expect(gateHeader).toMatch(/^ {4}permissions: \{\}$/m);
+      expect(gateJob).not.toContain('actions/checkout');
+      expect(gateHeader).not.toMatch(/^ {4}concurrency:/m);
+    });
+
+    it('should fail unless both results are success, reading them from env', () => {
+      const [step] = stepsOf(gateJob);
+
+      expect(stepsOf(gateJob)).toHaveLength(1);
+      expect(step).toContain('CHECKS_RESULT: ${{ needs.checks.result }}');
+      expect(step).toContain('E2E_RESULT: ${{ needs.e2e.result }}');
+      expect(step).toContain(`[ "$CHECKS_RESULT" != 'success' ] || [ "$E2E_RESULT" != 'success' ]`);
+      expect(step).toContain('exit 1');
+      expect(step.slice(step.indexOf('run: |'))).not.toContain('${{');
+    });
+
+    it.each([
+      ['success', 'success', 0],
+      ['failure', 'success', 1],
+      ['success', 'failure', 1],
+      ['cancelled', 'success', 1],
+      ['success', 'cancelled', 1],
+      ['success', 'skipped', 1],
+    ])('should exit when checks is %s and e2e is %s with status %i', (checks, e2e, status) => {
+      const [step] = stepsOf(gateJob);
+      const script = step
+        .slice(step.indexOf('run: |') + 'run: |'.length)
+        .split('\n')
+        .map((line) => line.replace(/^ {10}/, ''))
+        .join('\n');
+
+      const result = spawnSync('bash', ['-c', script], {
+        encoding: 'utf8',
+        env: { ...process.env, CHECKS_RESULT: checks, E2E_RESULT: e2e },
+      });
+
+      expect(result.status).toBe(status);
+      expect(result.stdout).toContain(`checks: ${checks}`);
+      expect(result.stdout).toContain(`e2e: ${e2e}`);
+    });
+
+    it('should be the only job named after the contract', () => {
+      expect(workflow.split(`name: ${CHECK_NAME}\n`)).toHaveLength(2);
+      expect(nameOf(checksHeader)).not.toBe(CHECK_NAME);
+      expect(nameOf(e2eHeader)).not.toBe(CHECK_NAME);
+    });
   });
 
-  it('should run the detector in a step with id e2e_gate right before E2E', () => {
-    const index = steps.findIndex((step) => step.startsWith('name: E2E\n'));
+  describe('checks job', () => {
+    it('should always run the format, lint, typecheck, build, prune and test steps', () => {
+      for (const name of ['Format check', 'Lint', 'Typecheck', 'Build', 'Test']) {
+        expect(stepNamed(checksSteps, name)).toBeDefined();
+      }
+      const prune = checksSteps.filter((step) => /^name: Verify API production install/.test(step));
+      expect(prune).toHaveLength(2);
+    });
 
-    expect(steps[index - 1]).toContain('id: e2e_gate');
-    expect(steps[index - 1]).toContain('run: node scripts/detect-e2e-skip.cjs');
+    it('should verify the Playwright image right after installing dependencies', () => {
+      const install = checksSteps.findIndex((step) =>
+        step.startsWith('name: Install dependencies\n'),
+      );
+
+      expect(checksSteps[install + 1]).toMatch(/^name: Verify Playwright image matches/);
+      expect(checksSteps[install + 1]).toContain('run: node scripts/check-playwright-image.mjs');
+    });
+
+    it('should not put an if on the job or on any step', () => {
+      expect(checksHeader).not.toMatch(/^ {4}if:/m);
+      expect(checksSteps.filter((step) => /^ {8}if:/m.test(step))).toHaveLength(0);
+    });
+
+    it('should not run E2E or the E2E gate', () => {
+      expect(stepNamed(checksSteps, 'E2E')).toBeUndefined();
+      expect(checksJob).not.toContain('detect-e2e-skip');
+    });
+
+    it('should grant only contents read permission', () => {
+      expect(checksHeader).toMatch(/\n {4}permissions:\n {6}contents: read\n(?! {6}\w)/);
+    });
+
+    it('should declare the Playwright container once, as an anchor', () => {
+      expect(checksHeader).toMatch(
+        /\n {4}container: &playwright-container\n {6}image: mcr\.microsoft\.com\/playwright:v\d+\.\d+\.\d+-noble\n {6}options: --init --ipc=host\n/,
+      );
+      expect(workflow.match(/image: mcr\.microsoft\.com\/playwright:/g)).toHaveLength(1);
+    });
+
+    it('should keep the cancellation group of the former CI job', () => {
+      expect(checksHeader).toContain('group: ${{ github.workflow }}-${{ github.ref }}\n');
+      expect(checksHeader).toContain("cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}");
+    });
   });
 
-  it('should not put an if on the ci job or on any other step', () => {
-    expect(jobHeader).not.toMatch(/^ {4}if:/m);
-    const gated = steps.filter((step) => /^ {8}if:/m.test(step));
-    expect(gated).toHaveLength(1);
-    expect(gated[0]).toMatch(/^name: E2E\n/);
+  describe('e2e job', () => {
+    it('should be a four-shard matrix that does not fail fast', () => {
+      expect(e2eHeader).toMatch(/\n {6}fail-fast: false\n/);
+      expect(e2eHeader).toMatch(/\n {8}shard: \[1, 2, 3, 4\]\n/);
+    });
+
+    it('should name each shard and pass the shard to Playwright from the matrix', () => {
+      expect(nameOf(e2eHeader)).toBe('E2E (shard ${{ matrix.shard }}/${{ strategy.job-total }})');
+      expect(stepNamed(e2eSteps, 'E2E')).toContain(
+        'run: npm run e2e -- --shard=${{ matrix.shard }}/${{ strategy.job-total }}',
+      );
+    });
+
+    it('should start in parallel with checks', () => {
+      expect(e2eHeader).not.toMatch(/^ {4}needs:/m);
+    });
+
+    it('should reuse the Playwright container through the alias', () => {
+      expect(e2eHeader).toMatch(/^ {4}container: \*playwright-container$/m);
+      expect(e2eHeader).toMatch(/\n {4}env:\n {6}HOME: \/root\n/);
+    });
+
+    it('should cancel superseded shards per shard, never on main', () => {
+      expect(e2eHeader).toContain(
+        'group: ${{ github.workflow }}-e2e-${{ matrix.shard }}-${{ github.ref }}\n',
+      );
+      expect(e2eHeader).toContain("cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}");
+    });
+
+    it('should gate only the install and E2E steps on the detector output', () => {
+      const gated = e2eSteps.filter((step) => /^ {8}if:/m.test(step));
+
+      expect(e2eHeader).not.toMatch(/^ {4}if:/m);
+      expect(gated.map((step) => /^name: (.+)$/m.exec(step)?.[1])).toEqual([
+        'Install dependencies',
+        'E2E',
+      ]);
+      for (const step of gated) {
+        expect(step).toContain("if: steps.e2e_gate.outputs.skip_e2e != 'true'");
+      }
+    });
+
+    it('should run the detector in a step with id e2e_gate right before installing', () => {
+      const install = e2eSteps.findIndex((step) => step.startsWith('name: Install dependencies\n'));
+
+      expect(e2eSteps[install - 1]).toContain('id: e2e_gate');
+      expect(e2eSteps[install - 1]).toContain('run: node scripts/detect-e2e-skip.cjs');
+      expect(install + 1).toBe(e2eSteps.findIndex((step) => step.startsWith('name: E2E\n')));
+    });
+
+    it('should grant contents and checks read permissions to the job', () => {
+      expect(e2eHeader).toMatch(/\n {4}permissions:\n {6}contents: read\n {6}checks: read\n/);
+    });
+
+    it('should pass the gate job name to the detector as CI_CHECK_NAME', () => {
+      const checkName = /^ {10}CI_CHECK_NAME: (.+)$/m.exec(e2eJob)?.[1];
+
+      expect(checkName).toBe(CHECK_NAME);
+      expect(checkName).toBe(nameOf(gateHeader));
+    });
+
+    it('should declare its own timeout on the E2E step', () => {
+      expect(stepNamed(e2eSteps, 'E2E')).toMatch(/^ {8}timeout-minutes: \d+$/m);
+    });
   });
 
-  it('should always run the format, lint, typecheck, build, prune and test steps', () => {
-    for (const name of ['Format check', 'Lint', 'Typecheck', 'Build', 'Test']) {
-      expect(stepNamed(name)).toBeDefined();
-      expect(stepNamed(name)).not.toMatch(/^ {8}if:/m);
-    }
-    const prune = steps.filter((step) => /^name: Verify API production install/.test(step));
-    expect(prune).toHaveLength(2);
-  });
-
-  it('should grant contents and checks read permissions to the job', () => {
-    expect(jobHeader).toMatch(/\n {4}permissions:\n {6}contents: read\n {6}checks: read\n/);
-  });
-
-  it('should pass the job name to the detector as CI_CHECK_NAME', () => {
-    const jobName = /^ {4}name: (.+)$/m.exec(jobHeader)?.[1];
-    const checkName = /^ {10}CI_CHECK_NAME: (.+)$/m.exec(ciJob)?.[1];
-
-    expect(jobName).toBe(CHECK_NAME);
-    expect(checkName).toBe(jobName);
-  });
-
-  it('should trust the workspace as a git safe.directory right after checkout', () => {
-    const checkout = steps.findIndex((step) => step.startsWith('name: Checkout\n'));
-    const safe = steps.findIndex((step) =>
+  it('should trust the workspace as a git safe.directory right after checkout in the e2e job', () => {
+    const checkout = e2eSteps.findIndex((step) => step.startsWith('name: Checkout\n'));
+    const safe = e2eSteps.findIndex((step) =>
       step.startsWith('name: Mark the workspace as a safe git directory\n'),
     );
-    const gate = steps.findIndex((step) => step.includes('id: e2e_gate'));
+    const gate = e2eSteps.findIndex((step) => step.includes('id: e2e_gate'));
 
     expect(safe).toBe(checkout + 1);
-    expect(safe).toBeLessThan(gate);
-    expect(steps[safe]).toContain(
+    expect(e2eSteps[safe]).toContain(
       'run: git config --global --add safe.directory "$GITHUB_WORKSPACE"',
     );
+    expect(gate).toBeGreaterThan(safe);
   });
 
-  it('should not use paths-ignore', () => {
+  it('should not use paths-ignore or a workflow-level concurrency block', () => {
     expect(workflow).not.toContain('paths-ignore');
+    expect(workflow).not.toMatch(/^concurrency:/m);
   });
 });
