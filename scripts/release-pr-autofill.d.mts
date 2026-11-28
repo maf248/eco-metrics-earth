@@ -50,7 +50,23 @@ export function groupCommits(commits: ListedCommit[]): CommitGroup[];
 export function collectTopics(commits: ListedCommit[]): string[];
 export function bump(version: string, type: ReleaseType): string;
 export function buildTitle(rootVersion: string | null | undefined, topics: string[]): string;
-export function deployTargets(files: string[]): DeployTargets;
 export function sanitizeSubject(subject: string): string;
 export function buildBody(input: BuildBodyInput): string;
-export function run(argv: string[]): Promise<void>;
+export type SpawnResult = {
+  status: number | null;
+  stderr?: string | null;
+  error?: Error;
+};
+export type SpawnFunction = (
+  command: string,
+  args: string[],
+  options: Record<string, unknown>,
+) => SpawnResult;
+export function readDeployTargets(
+  repo: string,
+  base: string,
+  head: string,
+  workspaceRoot: string,
+  spawn?: SpawnFunction,
+): DeployTargets;
+export function run(argv: string[], spawn?: SpawnFunction): Promise<void>;

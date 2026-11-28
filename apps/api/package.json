@@ -91,6 +91,8 @@
           "{workspaceRoot}/scripts/generate-waste-recycling-data.mjs",
           "{workspaceRoot}/scripts/release-pr-autofill.mjs",
           "{workspaceRoot}/scripts/release-pr-autofill.d.mts",
+          "{workspaceRoot}/scripts/api-image-inputs.pattern",
+          "{workspaceRoot}/scripts/vercel-ignore.sh",
           "{workspaceRoot}/.github/workflows/release-pr-autofill.yml",
           "{workspaceRoot}/.releaserc.mjs",
           "{workspaceRoot}/apps/web/.releaserc.mjs",

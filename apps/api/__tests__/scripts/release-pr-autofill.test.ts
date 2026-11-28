@@ -9,10 +9,11 @@ import {
   buildBody,
   buildTitle,
   collectTopics,
-  deployTargets,
   groupCommits,
   parseCommit,
+  readDeployTargets,
   sanitizeSubject,
+  type DeployTargets,
   type ListedCommit,
   type StreamRelease,
 } from '../../../../scripts/release-pr-autofill.mjs';
@@ -26,6 +27,11 @@ const WORKFLOW = readFileSync(join(ROOT, '.github/workflows/release-pr-autofill.
 
 const commit = (subject: string, hash = 'abcdef0123456789'): ListedCommit => ({ hash, subject });
 const commitsOf = (...subjects: string[]): ListedCommit[] => subjects.map((s) => commit(s));
+
+const API: DeployTargets = { api: true, web: false };
+const WEB: DeployTargets = { api: false, web: true };
+const BOTH: DeployTargets = { api: true, web: true };
+const NEITHER: DeployTargets = { api: false, web: false };
 
 const NO_RELEASES: StreamRelease[] = [
   { label: 'Root', prefix: 'v', type: null, last: '3.1.0', next: null },
@@ -149,15 +155,6 @@ describe('buildTitle', () => {
   });
 });
 
-describe('deployTargets', () => {
-  it('should detect web only, API only, shared and docs only', () => {
-    expect(deployTargets(['apps/web/src/a.ts'])).toEqual({ api: false, web: true });
-    expect(deployTargets(['apps/api/src/a.ts'])).toEqual({ api: true, web: false });
-    expect(deployTargets(['packages/shared/src/a.ts'])).toEqual({ api: true, web: true });
-    expect(deployTargets(['docs/a.md', 'openspec/b.md'])).toEqual({ api: false, web: false });
-  });
-});
-
 describe('groupCommits', () => {
   it('should group in display order, omit empty groups and send the rest to Other', () => {
     const groups = groupCommits(
@@ -177,10 +174,14 @@ describe('sanitizeSubject', () => {
 });
 
 describe('buildBody', () => {
-  const build = (commits: ListedCommit[], files: string[] = [], maxLength?: number): string =>
+  const build = (
+    commits: ListedCommit[],
+    deploys: DeployTargets = NEITHER,
+    maxLength?: number,
+  ): string =>
     buildBody({
       releases: NO_RELEASES,
-      deploys: deployTargets(files),
+      deploys,
       commits,
       head: 'abc1234',
       maxLength,
@@ -201,7 +202,7 @@ describe('buildBody', () => {
     ];
     const body = buildBody({
       releases,
-      deploys: deployTargets(['packages/shared/a.ts']),
+      deploys: BOTH,
       commits: commitsOf('feat(web): a'),
       head: 'abc1234',
     });
@@ -215,11 +216,11 @@ describe('buildBody', () => {
   });
 
   it('should state a single deploy target without the waiting line', () => {
-    const webOnly = build([], ['apps/web/a.ts']);
+    const webOnly = build([], WEB);
     expect(webOnly).toContain('- Web only.');
     expect(webOnly).not.toContain('waits for');
-    expect(build([], ['apps/api/a.ts'])).toContain('- API only.');
-    expect(build([], ['docs/a.md'])).toContain('- Neither API nor web.');
+    expect(build([], API)).toContain('- API only.');
+    expect(build([], NEITHER)).toContain('- Neither API nor web.');
   });
 
   it('should group commits under their headings with the short hash', () => {
@@ -237,7 +238,7 @@ describe('buildBody', () => {
 
   it('should replace the commits over the length cap with a count', () => {
     const many = Array.from({ length: 50 }, (_, i) => commit(`fix(web): item number ${i}`));
-    const body = build(many, [], 1000);
+    const body = build(many, NEITHER, 1000);
     expect(body.length).toBeLessThan(1000);
     expect(body).toMatch(/\+\d+ more\n$/);
   });
@@ -336,7 +337,7 @@ describe('release-pr-autofill.yml', () => {
   });
 
   it('should not expand any expression inside a run block', () => {
-    expect(runBlocks.length).toBeGreaterThanOrEqual(4);
+    expect(runBlocks.length).toBeGreaterThanOrEqual(3);
     for (const block of runBlocks) {
       expect(block).not.toContain('${{');
     }
@@ -346,11 +347,11 @@ describe('release-pr-autofill.yml', () => {
     expect(runBlocks.some((block) => block.includes('gh api --method PATCH'))).toBe(true);
   });
 
-  it('should check out the PR head with full history and tags, and fetch main', () => {
+  it('should check out the PR head with full history and tags, with no extra fetch', () => {
     expect(WORKFLOW).toMatch(
       /uses: actions\/checkout@v\d+\n {8}with:\n {10}ref: \$\{\{ github\.event\.pull_request\.head\.sha \}\}\n {10}fetch-depth: 0\n/,
     );
-    expect(runBlocks.some((block) => block.startsWith('git fetch origin main'))).toBe(true);
+    expect(runBlocks.some((block) => block.includes('git fetch'))).toBe(false);
   });
 
   it('should install with the Node version of .nvmrc and without lifecycle scripts', () => {
@@ -401,7 +402,7 @@ describe('release-pr-autofill script (integration)', () => {
   };
 
   const runScript = (...args: string[]): { status: number | null; stderr: string } => {
-    const result = spawnSync('node', [SCRIPT, '--repo', dir, '--out-dir', out, ...args], {
+    const result = spawnSync(process.execPath, [SCRIPT, '--repo', dir, '--out-dir', out, ...args], {
       encoding: 'utf8',
     });
     return { status: result.status, stderr: result.stderr };
@@ -453,9 +454,9 @@ describe('release-pr-autofill script (integration)', () => {
     expect(body.match(/^- `[0-9a-f]{7}` /gm)).toHaveLength(2);
   });
 
-  it('should report no deploy when only root files changed', () => {
+  it('should report the web only when only root text files changed', () => {
     const body = readFileSync(join(out, 'body.md'), 'utf8');
-    expect(body).toContain('## Deploys\n\n- Neither API nor web.\n');
+    expect(body).toContain('## Deploys\n\n- Web only.\n');
   });
 
   it('should not import any networking module', () => {
@@ -503,10 +504,107 @@ describe('release-pr-autofill script (integration)', () => {
     git('commit', '-m', 'chore(api): seed a legacy file');
     git('checkout', '-q', '-b', 'rename-only');
     mkdirSync(join(dir, 'docs'), { recursive: true });
-    git('mv', 'apps/api/legacy.ts', 'docs/legacy.ts');
+    git('mv', 'apps/api/legacy.ts', 'docs/legacy.md');
     git('commit', '-m', 'docs(api): move the legacy file to the docs');
     expect(runScript('--base', 'main', '--head', 'rename-only').status).toBe(0);
     expect(readFileSync(join(out, 'body.md'), 'utf8')).toContain('## Deploys\n\n- API only.\n');
+  });
+
+  describe('deploy detection with the real rules', () => {
+    const commitPaths = (branch: string, message: string, files: Record<string, string>): void => {
+      git('checkout', '-q', 'main');
+      git('checkout', '-q', '-b', branch);
+      for (const [path, content] of Object.entries(files)) {
+        mkdirSync(join(dir, path, '..'), { recursive: true });
+        writeFileSync(join(dir, path), content);
+      }
+      git('add', '.');
+      git('commit', '-m', message);
+    };
+
+    const deploysSection = (branch: string): string => {
+      rmSync(out, { recursive: true, force: true });
+      expect(runScript('--base', 'main', '--head', branch).status).toBe(0);
+      const body = readFileSync(join(out, 'body.md'), 'utf8');
+      return body.slice(body.indexOf('## Deploys'), body.indexOf('## Commits'));
+    };
+
+    const WAITING = '- The web production deploy waits for the API production deploy.\n';
+
+    it.each([
+      ['web-only', { 'apps/web/x.ts': 'a' }, '- Web only.\n'],
+      ['api-only', { 'apps/api/x.ts': 'a' }, '- API only.\n'],
+      ['shared', { 'packages/shared/x.ts': 'a' }, `- API and web.\n${WAITING}`],
+      ['docs-and-spec', { 'docs/a.md': 'a', 'openspec/b.txt': 'b' }, '- Neither API nor web.\n'],
+      ['scripts-only', { 'scripts/foo.mjs': 'a' }, '- Web only.\n'],
+      [
+        'scripts-and-api',
+        { 'scripts/foo.mjs': 'a', 'apps/api/x.ts': 'a' },
+        `- API and web.\n${WAITING}`,
+      ],
+      ['root-manifest', { 'package.json': '{}' }, `- API and web.\n${WAITING}`],
+    ])('should report the real deploys for %s', (branch, files, expected) => {
+      commitPaths(`deploy-${branch}`, 'chore: change files', files);
+      expect(deploysSection(`deploy-${branch}`)).toBe(`## Deploys\n\n${expected}\n`);
+    });
+
+    it.each([
+      [
+        'an unexpected status',
+        '{ status: 2, stderr: "boom" }',
+        'grep ended with unexpected status 2',
+      ],
+      [
+        'a spawn error',
+        '{ status: null, error: new Error("ENOENT") }',
+        'grep could not run: ENOENT',
+      ],
+      [
+        'an unexpected vercel-ignore.sh status',
+        'command === "grep" ? { status: 1, stderr: "" } : { status: 2, stderr: "bad" }',
+        'vercel-ignore.sh ended with unexpected status 2',
+      ],
+    ])('should exit non-zero and write no file on %s', (_label, result, message) => {
+      // Runs `run()` with an injected failing spawn, in a child process, because Jest cannot
+      // import the commit analyzer (ESM) in-process. The catch mirrors the script entry point.
+      const target = join(dir, '..', `${dir.split('/').pop()}-failure`);
+      rmSync(target, { recursive: true, force: true });
+      const driver = `import(${JSON.stringify(SCRIPT)}).then((m) => m.run(${JSON.stringify([
+        '--repo',
+        dir,
+        '--base',
+        'main',
+        '--head',
+        'develop',
+        '--out-dir',
+        target,
+      ])}, (command) => (${result}))).catch((e) => { console.error(e.message); process.exitCode = 1; });`;
+      const child = spawnSync(process.execPath, ['-e', driver], { encoding: 'utf8' });
+      expect(child.status).not.toBe(0);
+      expect(child.stderr).toContain(message);
+      expect(existsSync(target)).toBe(false);
+    });
+
+    it('should fail when vercel-ignore.sh ends with an unexpected status', () => {
+      const spawn = (command: string): { status: number; stderr: string } =>
+        command === 'grep' ? { status: 1, stderr: '' } : { status: 2, stderr: 'bad' };
+      expect(() => readDeployTargets(dir, 'main', 'develop', ROOT, spawn)).toThrow(
+        'vercel-ignore.sh ended with unexpected status 2: bad',
+      );
+    });
+
+    it('should report no API deploy for an empty file list without calling grep', () => {
+      const calls: string[] = [];
+      const spawn = (command: string): { status: number } => {
+        calls.push(command);
+        return { status: 0 };
+      };
+      expect(readDeployTargets(dir, 'main', 'main', ROOT, spawn)).toEqual({
+        api: false,
+        web: false,
+      });
+      expect(calls).toEqual(['bash']);
+    });
   });
 
   it('should exit non-zero and write nothing when the base does not exist', () => {
@@ -525,7 +623,7 @@ describe('release-pr-autofill script (integration)', () => {
   });
 
   it('should exit non-zero when --out-dir is missing or an argument is unknown', () => {
-    const missing = spawnSync('node', [SCRIPT, '--repo', dir], { encoding: 'utf8' });
+    const missing = spawnSync(process.execPath, [SCRIPT, '--repo', dir], { encoding: 'utf8' });
     expect(missing.status).not.toBe(0);
     expect(missing.stderr).toContain('Missing --out-dir');
     const unknown = runScript('--bogus', 'x');

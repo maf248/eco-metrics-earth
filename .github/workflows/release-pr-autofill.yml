@@ -24,16 +24,14 @@ jobs:
       cancel-in-progress: true
     steps:
       # No credentials are persisted: the job never pushes, and the token reaches only the step that
-      # edits the PR, never `npm ci` or the script.
+      # edits the PR, never `npm ci` or the script. `fetch-depth: 0` fetches every branch and tag, so
+      # `origin/main` and the release tags are already there; no extra fetch is needed.
       - name: Checkout
         uses: actions/checkout@v7
         with:
           ref: ${{ github.event.pull_request.head.sha }}
           fetch-depth: 0
           persist-credentials: false
-
-      - name: Fetch main
-        run: git fetch origin main
 
       - name: Setup Node.js
         uses: actions/setup-node@v7
