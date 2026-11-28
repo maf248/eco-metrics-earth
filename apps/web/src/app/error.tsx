@@ -9,10 +9,11 @@ import { PAGE_TITLE_CLASS_NAME } from '@/lib/pageTitleClassName';
 
 interface ErrorPageProps {
   error: Error & { digest?: string };
-  reset: () => void;
+  /** Re-fetches and re-renders the failed segment. */
+  retry: () => void;
 }
 
-export default function ErrorPage({ error, reset }: ErrorPageProps) {
+export default function ErrorPage({ error, retry }: ErrorPageProps) {
   useEffect(() => {
     // An error with a digest happened on the server and Next's onRequestError already reported it.
     if (error.digest === undefined) {
@@ -40,7 +41,7 @@ export default function ErrorPage({ error, reset }: ErrorPageProps) {
           <div className="mt-6 flex flex-row items-center justify-center gap-4">
             <button
               type="button"
-              onClick={reset}
+              onClick={() => retry()}
               className="px-6 py-3 rounded-lg bg-accent-solid-strong text-on-accent font-medium hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2 ring-offset-focus-offset transition-colors duration-150"
             >
               Try again

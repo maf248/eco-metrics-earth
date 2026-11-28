@@ -8,27 +8,27 @@ jest.mock('@sentry/nextjs', () => ({ captureException: jest.fn() }));
 const captureException = Sentry.captureException as jest.Mock;
 
 describe('GlobalError', () => {
-  const reset = jest.fn();
+  const retry = jest.fn();
 
   beforeEach(() => {
     captureException.mockClear();
-    reset.mockClear();
+    retry.mockClear();
   });
 
   function renderGlobalError(error: Error & { digest?: string }) {
     // Rendering into the document element itself avoids invalid <html> nesting warnings.
-    return render(<GlobalError error={error} reset={reset} />, {
+    return render(<GlobalError error={error} retry={retry} />, {
       container: document,
       baseElement: document,
     });
   }
 
-  it('should render a heading and a retry button that calls reset', () => {
+  it('should render a heading and a retry button that calls retry', () => {
     renderGlobalError(new Error('boom'));
 
     expect(screen.getByRole('heading', { level: 1 })).toBeTruthy();
     fireEvent.click(screen.getByRole('button', { name: 'Try again' }));
-    expect(reset).toHaveBeenCalledTimes(1);
+    expect(retry).toHaveBeenCalledTimes(1);
   });
 
   it('should render its own html and body', () => {
