@@ -21,6 +21,8 @@ function resolveWorkers(): number | string | undefined {
 export default defineConfig({
   ...nxE2EPreset(__filename, { testDir: './e2e' }),
   workers: resolveWorkers(),
+  /* Renders every live page once before the first test (see the file). */
+  globalSetup: './e2e/global-setup.ts',
   /* Show each test name in console output */
   reporter: 'list',
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
