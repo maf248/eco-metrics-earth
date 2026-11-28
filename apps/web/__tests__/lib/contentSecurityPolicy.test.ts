@@ -26,6 +26,22 @@ describe('buildContentSecurityPolicy', () => {
     expect(buildContentSecurityPolicy({ isDev: false })).toBe(PRODUCTION_CSP);
   });
 
+  it('should keep connect-src on the own origin only in production', () => {
+    expect(connectSrc(buildContentSecurityPolicy({ isDev: false }))).toBe("connect-src 'self'");
+  });
+
+  it.each([
+    { isDev: false, sentryDsn: undefined },
+    { isDev: false, sentryDsn: DSN },
+    { isDev: true, sentryDsn: undefined },
+    { isDev: true, sentryDsn: DSN },
+  ])('should allow no Vercel analytics host (%p)', (options) => {
+    const csp = buildContentSecurityPolicy(options);
+    expect(csp).not.toContain('vercel-scripts.com');
+    expect(csp).not.toContain('vercel-insights.com');
+    expect(csp).not.toContain('vercel.com');
+  });
+
   it('should add unsafe-eval and drop upgrade-insecure-requests in development', () => {
     const csp = buildContentSecurityPolicy({ isDev: true });
     expect(csp).toContain("script-src 'self' 'unsafe-inline' 'unsafe-eval'");

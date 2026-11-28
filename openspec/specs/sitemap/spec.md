@@ -13,6 +13,7 @@ Defines the sitemap route and its home and category URL entries.
 - One entry for the home page (`siteUrl() + "/"`), with `changeFrequency: 'weekly'` and `priority: 1.0`.
 - One entry for each `ECO_CATEGORIES` slug with live data (`siteUrl() + "/" + slug + "/"`), each with `changeFrequency: 'weekly'` and `priority: 0.8`. Placeholder categories SHALL NOT be listed: their pages declare `noindex` (see `page-metadata`).
 - One entry for the data sources page (`siteUrl() + "/data-sources/"`), with `changeFrequency: 'monthly'` and `priority: 0.5`.
+- One entry for the privacy page (`siteUrl() + "/privacy/"`), with `changeFrequency: 'yearly'` and `priority: 0.3`, and no `lastModified` (the page has no data date).
 
 All URLs SHALL end with a trailing slash.
 
@@ -46,3 +47,10 @@ All URLs SHALL end with a trailing slash.
 - **WHEN** the sitemap function is called and awaited
 - **THEN** the result contains exactly one entry whose `url` is `siteUrl() + "/data-sources/"`
 - **AND** that entry has `changeFrequency: 'monthly'` and `priority: 0.5`
+
+#### Scenario: Sitemap includes the privacy page
+
+- **WHEN** the sitemap function is called and awaited
+- **THEN** the result contains exactly one entry whose `url` is `siteUrl() + "/privacy/"`
+- **AND** that entry has `changeFrequency: 'yearly'` and `priority: 0.3`
+- **AND** that entry has no `lastModified`, even when every category date is known

@@ -1,3 +1,5 @@
+import { Analytics } from '@vercel/analytics/next';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 import type { Metadata, Viewport } from 'next';
 import type { ReactNode } from 'react';
 
@@ -8,6 +10,7 @@ import { NavigationContent } from '@/components/NavigationContent';
 import { PendingNavigationProvider } from '@/components/PendingNavigation';
 import ThemeProvider from '@/components/ThemeProvider';
 import ThemeToggle from '@/components/ThemeToggle';
+import { analyticsEnabled } from '@/lib/analyticsEnabled';
 import { siteUrl } from '@/lib/siteUrl';
 import { SITE_DESCRIPTION, buildOpenGraph, buildTwitter } from '@/lib/socialMetadata';
 
@@ -103,6 +106,13 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             </div>
           </PendingNavigationProvider>
         </ThemeProvider>
+        {/* Cookieless and production-only: the `/_vercel/*` scripts exist only on Vercel. */}
+        {analyticsEnabled() && (
+          <>
+            <Analytics />
+            <SpeedInsights sampleRate={0.5} />
+          </>
+        )}
       </body>
     </html>
   );

@@ -1,7 +1,7 @@
 import AxeBuilder from '@axe-core/playwright';
 import { test, expect, type Page } from '@playwright/test';
 
-import { categoryPage, CATEGORY_SLUGS, dataSourcesPage } from './utils/pages';
+import { categoryPage, CATEGORY_SLUGS, dataSourcesPage, privacyPage } from './utils/pages';
 import { selectors } from './utils/selectors';
 
 // Axe samples computed colors, so a `transition-colors` still running after load
@@ -342,6 +342,22 @@ test.describe('Accessibility audit — data sources page', () => {
   });
 });
 
+test.describe('Accessibility audit — privacy page', () => {
+  for (const theme of ['light', 'dark'] as const) {
+    test(`should have zero critical and serious violations in the ${theme} theme`, async ({
+      page,
+    }) => {
+      await page.addInitScript((value) => localStorage.setItem('eco-metrics-theme', value), theme);
+      await page.goto(privacyPage.url);
+      const results = await analyzeSettled(page);
+      const violations = results.violations.filter(
+        (v) => v.impact === 'critical' || v.impact === 'serious',
+      );
+      expect(violations).toEqual([]);
+    });
+  }
+});
+
 test.describe('Accessibility audit — not-found page', () => {
   for (const theme of ['light', 'dark'] as const) {
     test(`should have zero critical and serious violations in the ${theme} theme`, async ({
@@ -389,7 +405,13 @@ test.describe('Semantic landmarks', { tag: '@smoke' }, () => {
     await expect(main).toBeVisible();
   });
 
-  const footerPages = ['/', categoryPage('air-quality').url, dataSourcesPage.url, '/no-such-page/'];
+  const footerPages = [
+    '/',
+    categoryPage('air-quality').url,
+    dataSourcesPage.url,
+    privacyPage.url,
+    '/no-such-page/',
+  ];
 
   for (const url of footerPages) {
     test(`should have a single footer landmark outside main, in document flow on ${url}`, async ({

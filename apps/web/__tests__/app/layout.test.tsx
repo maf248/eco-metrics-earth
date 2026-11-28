@@ -9,6 +9,16 @@ jest.mock('next/navigation', () => ({
   useRouter: () => ({ push: jest.fn() }),
 }));
 
+// The Vercel components inject scripts — replace them with markers
+jest.mock('@vercel/analytics/next', () => ({
+  Analytics: () => <div data-testid="vercel-analytics" />,
+}));
+jest.mock('@vercel/speed-insights/next', () => ({
+  SpeedInsights: ({ sampleRate }: { sampleRate?: number }) => (
+    <div data-testid="vercel-speed-insights" data-sample-rate={sampleRate} />
+  ),
+}));
+
 // MobileHeader calls window.matchMedia at render time — jsdom does not implement it
 Object.defineProperty(window, 'matchMedia', {
   writable: true,
@@ -171,5 +181,51 @@ describe('RootLayout — MobileHeader', () => {
       </RootLayout>,
     );
     expect(html).toContain('eco-metrics earth \u2014 go to home');
+  });
+});
+
+describe('RootLayout — web analytics', () => {
+  const original = process.env.VERCEL_ENV;
+  const render = () =>
+    renderToString(
+      <RootLayout>
+        <div>test content</div>
+      </RootLayout>,
+    );
+
+  afterEach(() => {
+    if (original === undefined) {
+      delete process.env.VERCEL_ENV;
+    } else {
+      process.env.VERCEL_ENV = original;
+    }
+  });
+
+  it('should render both components after the content wrapper in production', () => {
+    process.env.VERCEL_ENV = 'production';
+    const html = render();
+    expect(html).toContain('data-testid="vercel-analytics"');
+    expect(html).toContain('data-testid="vercel-speed-insights"');
+    expect(html.indexOf('lg:pl-76')).toBeLessThan(html.indexOf('vercel-analytics'));
+    expect(html.indexOf('vercel-analytics')).toBeLessThan(html.indexOf('</body>'));
+  });
+
+  it('should sample Speed Insights at 50 percent', () => {
+    process.env.VERCEL_ENV = 'production';
+    expect(render()).toContain('data-sample-rate="0.5"');
+  });
+
+  it('should render neither component on a preview deployment', () => {
+    process.env.VERCEL_ENV = 'preview';
+    const html = render();
+    expect(html).not.toContain('vercel-analytics');
+    expect(html).not.toContain('vercel-speed-insights');
+  });
+
+  it('should render neither component when VERCEL_ENV is unset', () => {
+    delete process.env.VERCEL_ENV;
+    const html = render();
+    expect(html).not.toContain('vercel-analytics');
+    expect(html).not.toContain('vercel-speed-insights');
   });
 });

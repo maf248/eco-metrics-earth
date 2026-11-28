@@ -16,6 +16,9 @@ import { setPlatformAPI } from 'zrender/lib/core/platform';
 // (`next/jest` loads `.env*` files into the process before the tests run).
 delete process.env.NEXT_PUBLIC_SENTRY_DSN;
 
+// Analytics render only when `VERCEL_ENV` is `production`; a developer's shell must not leak it.
+delete process.env.VERCEL_ENV;
+
 global.ResizeObserver = class ResizeObserver {
   observe() {}
   unobserve() {}

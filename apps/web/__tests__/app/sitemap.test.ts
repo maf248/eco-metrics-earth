@@ -16,9 +16,9 @@ describe('sitemap', () => {
     jest.mocked(getCategoryLastModified).mockReset().mockResolvedValue(undefined);
   });
 
-  it('should return one entry for home, each live category and data sources', async () => {
+  it('should return one entry for home, each live category, data sources and privacy', async () => {
     const result = await sitemap();
-    expect(result).toHaveLength(2 + LIVE_CATEGORIES.length);
+    expect(result).toHaveLength(3 + LIVE_CATEGORIES.length);
   });
 
   it('should list each category with live data exactly once', async () => {
@@ -72,7 +72,7 @@ describe('sitemap', () => {
 
   it('should have all category entries with priority 0.8', async () => {
     const result = await sitemap();
-    const categories = result.slice(1, -1);
+    const categories = result.slice(1, -2);
     categories.forEach((entry) => {
       expect(entry.priority).toBe(0.8);
     });
@@ -87,7 +87,7 @@ describe('sitemap', () => {
 
   it('should have changeFrequency weekly for the home and category entries', async () => {
     const result = await sitemap();
-    result.slice(0, -1).forEach((entry) => {
+    result.slice(0, -2).forEach((entry) => {
       expect(entry.changeFrequency).toBe('weekly');
     });
   });
@@ -97,6 +97,21 @@ describe('sitemap', () => {
 
     expect(entries).toHaveLength(1);
     expect(entries[0]).toMatchObject({ changeFrequency: 'monthly', priority: 0.5 });
+  });
+
+  it('should include the privacy page once, yearly with priority 0.3', async () => {
+    const entries = (await sitemap()).filter(({ url }) => url.endsWith('/privacy/'));
+
+    expect(entries).toHaveLength(1);
+    expect(entries[0]).toMatchObject({ changeFrequency: 'yearly', priority: 0.3 });
+  });
+
+  it('should list the privacy page without lastModified even when every date is known', async () => {
+    jest.mocked(getCategoryLastModified).mockResolvedValue(NEWER);
+    const entry = (await sitemap()).find(({ url }) => url.endsWith('/privacy/'));
+
+    expect(entry).toBeDefined();
+    expect(entry).not.toHaveProperty('lastModified');
   });
 
   it('should date each category entry with its data date', async () => {
@@ -118,7 +133,7 @@ describe('sitemap', () => {
     const entries = await sitemap();
 
     expect(entries[0].lastModified).toEqual(NEWER);
-    expect(entries[entries.length - 1].lastModified).toEqual(NEWER);
+    expect(entries.find(({ url }) => url.endsWith('/data-sources/'))?.lastModified).toEqual(NEWER);
   });
 
   it('should list an entry without lastModified when its date is unknown', async () => {
@@ -135,7 +150,7 @@ describe('sitemap', () => {
   it('should list every entry without lastModified when no date is known', async () => {
     const entries = await sitemap();
 
-    expect(entries).toHaveLength(2 + LIVE_CATEGORIES.length);
+    expect(entries).toHaveLength(3 + LIVE_CATEGORIES.length);
     entries.forEach((entry) => expect(entry).not.toHaveProperty('lastModified'));
   });
 
